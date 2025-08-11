@@ -1,0 +1,5 @@
+services:
+  scanner-lite:
+    build: .
+    ports:
+      - "5173:8080"   # host:container

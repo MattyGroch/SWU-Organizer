@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SWU Binder Organizer</title>
+    <style>
+      :root { color-scheme: dark; }
+      body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:#0b0b0f; color:#eaeaf0; }
+      .container { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+      .card { background:#11121a; border: 1px solid #232433; border-radius: 16px; padding: 16px; }
+      .row { display:flex; gap:12px; flex-wrap:wrap; align-items: center; }
+      .row > * { flex: none; }
+      input, select { background:#0f1017; color:#eaeaf0; border:1px solid #2b2d3d; border-radius:10px; padding:10px 12px; outline:none; }
+      input::placeholder { color:#9aa0b4; }
+      .pill { background:#0f1017; border:1px solid #2b2d3d; border-radius:999px; padding:6px 10px; color:#c8ccd9; }
+      .muted { color:#9aa0b4; font-size:12px; }
+      .title { font-size:22px; font-weight:600; margin: 0 0 8px; }
+      .big { font-size:28px; font-weight:700; }
+      .grid-wrap { display:flex; justify-content:center; padding: 8px; }
+      .legend { display:flex; gap:12px; justify-content:center; margin-top:8px; color:#c8ccd9; font-size:12px; }
+      .legend .dot { width:10px; height:10px; border-radius:2px; display:inline-block; margin-right:6px; vertical-align:middle; }
+      .err { color:#ff8a8a; }
+      a.btn { color:#eaeaf0; text-decoration:none; border:1px solid #2b2d3d; padding:8px 12px; border-radius:10px; }
+      .container { max-width: 1200px; }
+      .autocomplete { position: relative; }
+      .autocomplete input { width: 340px; }
+      .sug {
+        position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+        background: #0f1017; border: 1px solid #2b2d3d; border-radius: 10px;
+        max-height: 320px; overflow: auto; z-index: 20;
+        box-shadow: 0 8px 24px rgba(0,0,0,.4);
+      }
+      .sug-item { display: grid; grid-template-columns: 1fr auto auto; gap: 8px;
+        padding: 10px 12px; cursor: pointer; align-items: center; }
+      .sug-item:hover, .sug-item.active { background: #171826; }
+      .sug-name { color: #eaeaf0; }
+      .sug-num { color: #c8ccd9; font-variant-numeric: tabular-nums; }
+      .sug-kind { background: #171826; color: #9aa0b4; border: 1px solid #2b2d3d;
+        border-radius: 8px; padding: 2px 6px; font-size: 11px; }
+      .qtybtns { display:flex; gap:6px; }
+      .qtybtns button { background:#11121a; color:#eaeaf0; border:1px solid #2b2d3d;
+        border-radius:8px; padding:2px 8px; line-height:20px; cursor:pointer; }
+      .qtybtns button:hover { background:#171826; }
+      .qtybtns.small button { padding:2px 6px; }
+      .table { width:100%; border-collapse: collapse; margin-top: 8px; }
+      .table th, .table td { text-align:left; padding:10px 12px; border-bottom:1px solid #232433; }
+      .table th { color:#c8ccd9; font-weight:600; }
+      .mono { font-variant-numeric: tabular-nums; }
+      .pager { display:flex; gap:8px; align-items:center; margin-left:auto; }
+      .cell { cursor: pointer; }
+      .cell:hover rect { filter: brightness(1.05); }
+      .binder-subtitle { font-size: 14px; color: #c8ccd9; }
+      .toolbar-group {
+        display: inline-flex;
+        border: 1px solid #2b2d3d;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #14161f;
+      }
+
+      .tbtn {
+        -webkit-appearance: none;
+        appearance: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        height: 36px;
+        border: 0;
+        background: transparent;
+        color: #eaeaf0;
+        cursor: pointer;
+        user-select: none;
+        /* force identical text metrics on buttons/labels across browsers */
+        font: 500 14px/14px system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      }
+      .tbtn + .tbtn { border-left: 1px solid #2b2d3d; }
+      .tbtn:hover { background: rgba(255,255,255,0.06); }
+      .tbtn:focus-visible { outline: 2px solid #8b5cf6; outline-offset: -2px; }
+
+      .tbtn svg { width: 16px; height: 16px; fill: currentColor; }
+      .tbtn span { font: inherit; }
+
+      .tbtn-danger { color: #fca5a5; }
+      .tbtn-danger:hover { background: rgba(127,29,29,0.25); }
+      /* slash key hint inside the search input */
+      .autocomplete.search { position: relative; }
+      .autocomplete.search input { padding-left: 44px; }  /* make room for the key */
+
+      .search-kbd {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 2px 6px;
+        border: 1px solid #2b2d3d;
+        border-radius: 6px;
+        background: #0f1017;
+        color: #c8ccd9;
+        font: 500 12px/18px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        pointer-events: none; /* don’t block clicks */
+      }
+
+      /* Hide the hint on touch devices where the hotkey isn’t useful */
+      @media (hover: none) and (pointer: coarse) {
+        .search-kbd { display: none; }
+        .autocomplete.search input { padding-left: 12px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
