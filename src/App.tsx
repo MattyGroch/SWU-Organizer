@@ -74,6 +74,12 @@ export default function App() {
   // Data variants
   const [cardsAll, setCardsAll] = useState<Card[]>([]);     // unique by Number (used to color pages)
   const [cardsBase, setCardsBase] = useState<Card[]>([]);   // base printing per Name (lowest Number)
+  // alt maps for search: baseNumber -> all numbers (base first), altNumber -> baseNumber
+  const [baseToAll, setBaseToAll] = useState<Map<number, number[]>>(new Map());
+  const [altToBase, setAltToBase] = useState<Map<number, number>>(new Map());
+
+  // Normalization function for search
+  const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   // Rarity normalization
   function normalizeRarity(r: any): string | undefined {
@@ -94,8 +100,60 @@ export default function App() {
     return map[k] ?? v; // fall back to the original string
   }
 
+  //Type normalization
+  function normalizeType(t: any): string | undefined {
+    if (!t) return undefined;
+    if (typeof t === 'string') return t.trim();
+    if (typeof t?.Name === 'string') return t.Name.trim();
+    return undefined;
+  }
+
+  // stable key for dedupe/show
+  function keyNameType(c: {Name: string; Type?: string}) {
+    return `${c.Name.trim().toLowerCase()}|${(c.Type||'').trim().toLowerCase()}`;
+  }
+
+  // 2) collapse alt-arts: keep the LOWEST Number per (Name + Type)
+  function baseOnly(cards: Card[]): Card[] {
+    const byKey = new Map<string, Card>();
+    for (const c of cards) {
+      const k = keyNameType(c);
+      const prev = byKey.get(k);
+      if (!prev || c.Number < prev.Number) byKey.set(k, c);
+    }
+    return Array.from(byKey.values()).sort((a,b)=>a.Number - b.Number);
+  }
+
+  // 3) Build alt maps for search display and number→base resolution
+  function buildAltMaps(allCards: Card[]) {
+    // name+type → sorted numbers
+    const ntToNums = new Map<string, number[]>();
+    for (const c of allCards) {
+      const k = keyNameType(c);
+      const arr = ntToNums.get(k) || [];
+      arr.push(c.Number);
+      ntToNums.set(k, arr);
+    }
+    for (const arr of ntToNums.values()) arr.sort((a,b)=>a - b);
+
+    // baseNum → all numbers (base first), altNum → baseNum
+    const baseToAll = new Map<number, number[]>();
+    const altToBase = new Map<number, number>();
+    const nameTypeToBase = new Map<string, number>();
+
+    for (const [k, nums] of ntToNums) {
+      const base = nums[0];
+      baseToAll.set(base, nums);
+      nameTypeToBase.set(k, base);
+      for (const n of nums) {
+        if (n !== base) altToBase.set(n, base);
+      }
+    }
+    return { baseToAll, altToBase, nameTypeToBase };
+  }
+
   // Quick lookups
-  const byNumber = useMemo(() => new Map(cardsAll.map(c => [c.Number, c])), [cardsAll]);
+  const byNumber = useMemo(() => new Map(cardsBase.map(c => [c.Number, c])), [cardsBase]);
   const baseByName = useMemo(() => new Map(cardsBase.map(c => [c.Name, c])), [cardsBase]);
 
   // Inventory
@@ -116,7 +174,7 @@ export default function App() {
   const [active, setActive] = useState<{ card: Card; page: number; row: number; column: number } | null>(null);
 
   // Spreads (instead of pages)
-  const maxNumber = useMemo(() => cardsAll.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsAll]);
+  const maxNumber = useMemo(() => cardsBase.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsBase]);
   const totalPages = Math.max(1, Math.ceil(maxNumber / 12));
   const totalSpreads = 1 + Math.ceil(Math.max(0, totalPages - 1) / 2);
   const [viewSpread, setViewSpread] = useState<number>(0); // 0 => Page 1; >=1 => 2/3, 4/5, ...
@@ -148,7 +206,7 @@ export default function App() {
         Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
       })).filter((c: Card) => !!c.Name && Number.isFinite(c.Number));
 
-      // unique by Number (prefer entries that have an Aspect)
+      // 1) unique by Number (keep the version that has Aspects if duped)
       const byNum = new Map<number, Card>();
       for (const c of mapped.sort((a,b) => {
         const hasA = (a.Aspects?.length ?? 0) > 0 ? 1 : 0;
@@ -157,29 +215,31 @@ export default function App() {
       })) {
         if (!byNum.has(c.Number)) byNum.set(c.Number, c);
       }
-      setCardsAll(Array.from(byNum.values()).sort((a,b)=>a.Number-b.Number));
+      const allCards = Array.from(byNum.values()).sort((a,b)=>a.Number-b.Number);
+      setCardsAll(allCards);
 
-      // base printing per Name (lowest Number)
-      const best = new Map<string, Card>();
-      for (const c of mapped) {
-        const prev = best.get(c.Name);
-        if (!prev || c.Number < prev.Number) best.set(c.Name, c);
-      }
-      setCardsBase(Array.from(best.values()).sort((a,b)=>a.Number-b.Number));
+      // 2) base-only view = dedupe by (Name + Type), keep lowest Number
+      const baseCards = baseOnly(allCards);
+      setCardsBase(baseCards);
+
+      // 3) build alt maps for search display & alt→base resolve
+      const { baseToAll, altToBase } = buildAltMaps(allCards);
+      setBaseToAll(baseToAll);
+      setAltToBase(altToBase);
     }
     load().catch(() => setError('Failed to load set data.'));
   }, [setKey]);
 
   // Build coloring map + presence
-  const presentNumbers = useMemo(() => new Set(cardsAll.map(c => c.Number)), [cardsAll]);
+  const presentNumbers = useMemo(() => new Set(cardsBase.map(c => c.Number)), [cardsBase]);
   const numToColor = useMemo(() => {
     const m = new Map<number, string>();
-    for (const c of cardsAll) {
+    for (const c of cardsBase) {
       const a = c.Aspects?.[0];
       if (a && ASPECT_HEX[a]) m.set(c.Number, ASPECT_HEX[a]);
     }
     return m;
-  }, [cardsAll]);
+  }, [cardsBase]);
 
   // Suggestions (name or number)
   type Suggestion = { kind: 'name' | 'number'; label: string; number: number; name: string };
@@ -189,14 +249,51 @@ export default function App() {
     const isDigits = /^[0-9]+$/.test(raw);
 
     if (isDigits) {
-      const qnorm = raw.replace(/^0+/, '') || '0';   // <-- new
-      return cardsAll
-        .filter(c => {
-          const s = String(c.Number);
-          return s.startsWith(raw) || s.startsWith(qnorm);   // <-- new
-        })
+      const qnorm = raw.replace(/^0+/, '') || '0';
+
+      // ---- NUM hits (numbers starting with the query), grouped alt→base
+      const matchedNums = cardsAll.filter(c => {
+        const s = String(c.Number);
+        return s.startsWith(raw) || s.startsWith(qnorm);
+      });
+
+      const byBase = new Map<number, Card>();
+      for (const c of matchedNums) {
+        const base = altToBase.get(c.Number) ?? c.Number;
+        const baseCard = byNumber.get(base);           // baseCards map
+        if (baseCard) byBase.set(base, baseCard);
+      }
+      const numSugs = Array.from(byBase.values())
+        .sort((a,b)=>a.Number-b.Number)
         .slice(0, 10)
-        .map(c => ({ kind: 'number', label: `#${c.Number} — ${c.Name}`, number: c.Number, name: c.Name }));
+        .map(card => ({
+          kind: 'number' as const,
+          name: card.Name,
+          number: card.Number,
+          type: card.Type || '',
+          label: `${card.Name} — #${card.Number}`,
+        }));
+
+      // ---- NAME hits (names that contain the digits, e.g., "HK-47")
+      const qName = norm(raw);                          // "47"
+      const nameHits = cardsBase.filter(c => norm(c.Name).includes(qName));
+      const nameSugsRaw = nameHits
+        .sort((a,b)=>a.Number-b.Number)
+        .slice(0, 10)
+        .map(card => ({
+          kind: 'name' as const,
+          name: card.Name,
+          number: card.Number,
+          type: card.Type || '',
+          label: `${card.Name} — #${card.Number}`,
+        }));
+
+      // Dedupe: don't show the SAME base number twice; prefer [num] row
+      const numSet = new Set(numSugs.map(s => s.number));
+      const nameSugs = nameSugsRaw.filter(s => !numSet.has(s.number));
+
+      // Merge: numeric first, then name
+      return [...numSugs, ...nameSugs].slice(0, 10);
     }
 
     // (name path unchanged)
@@ -207,7 +304,7 @@ export default function App() {
       .sort((a,b) => a.idx - b.idx || a.c.Name.localeCompare(b.c.Name))
       .slice(0, 10)
       .map(o => ({ kind: 'name', label: `${o.c.Name} — #${o.c.Number}`, number: o.c.Number, name: o.c.Name }));
-  }, [query, cardsAll, cardsBase]);
+  }, [query, cardsAll, cardsBase, altToBase, byNumber]);
 
   // Click outside to close dropdown
   useEffect(() => {
@@ -230,12 +327,13 @@ export default function App() {
   function goFromNumberString(nStr: string) {
     const n = Number(nStr.replace(/^0+/, '') || '0');
     if (!Number.isFinite(n) || n < 1) { setError('Invalid number.'); return; }
-    const baseCard = resolveToBase(n);
-    if (!baseCard) { setError('Number not found in this set.'); return; }
-    const { page, row, column } = binderLayout(baseCard.Number);
-    setActive({ card: baseCard, page, row, column });
+    const baseNum = altToBase.get(n) ?? n;          // alt → base
+    const card = byNumber.get(baseNum);
+    if (!card) { setError('Number not found in this set.'); return; }
+    const { page, row, column } = binderLayout(baseNum);
+    setActive({ card, page, row, column });
     setError('');
-    setViewSpread(pageToSpread(page)); // jump to spread
+    setViewSpread(pageToSpread(page));
   }
   function goFromName(name: string) {
     const base = baseByName.get(name);
@@ -449,18 +547,32 @@ export default function App() {
             />
             {openSug && suggestions.length > 0 && (
               <div className="sug">
-                {suggestions.map((s, i) => (
-                  <div
-                    key={s.label}
-                    className={`sug-item ${i === highlightIdx ? 'active' : ''}`}
-                    onMouseEnter={() => setHighlightIdx(i)}
-                    onMouseDown={(e) => { e.preventDefault(); onChoose(s); }}
-                  >
-                    <span className="sug-name">{s.name}</span>
-                    <span className="sug-num">#{s.number}</span>
-                    <span className="sug-kind">{s.kind === 'number' ? 'num' : 'name'}</span>
-                  </div>
-                ))}
+                {suggestions.map((s, i) => {
+                  const card = byNumber.get(s.number);
+                  const typeText = card?.Type ? card.Type : '';
+
+                  // show base + alt numbers for BOTH kinds
+                  const nums = baseToAll.get(s.number) || [s.number];
+                  const numsLabel = nums.map((n) => `#${n}`).join(', ');
+
+                  return (
+                    <div
+                      key={`${s.kind}:${s.number}`}
+                      className={`sug-item ${i === highlightIdx ? 'active' : ''}`}
+                      onMouseEnter={() => setHighlightIdx(i)}
+                      onMouseDown={(e) => { e.preventDefault(); onChoose(s); }}
+                      role="option"
+                      aria-selected={i === highlightIdx}
+                    >
+                      <span className="sug-name">
+                        {s.name}
+                        {typeText && <span className="sug-type">{typeText}</span>}
+                      </span>
+                      <span className="sug-num mono">{numsLabel}</span>
+                      <span className="sug-kind">{s.kind === 'number' ? 'num' : 'name'}</span>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -532,12 +644,6 @@ export default function App() {
           presentNumbers={presentNumbers}
           numToColor={numToColor}
           byNumber={byNumber}
-          resolveToBase={(n:number)=>{
-            const found = byNumber.get(n);
-            if (!found) return null;
-            const base = baseByName.get(found.Name);
-            return base || found;
-          }}
           inventory={inventory}
           inc={inc}
           dec={dec}
@@ -605,7 +711,6 @@ function Binder({
   presentNumbers,
   numToColor,
   byNumber,
-  resolveToBase,
   inventory,
   inc,
   dec,
@@ -728,13 +833,14 @@ function Binder({
                     key={`${r}-${c}`}
                     className="cell"
                     onClick={() => {
-                      if (hidden) return;
-                      if (!presentNumbers.has(n)) return;
-                      const base = resolveToBase(n);
-                      if (!base) return;
-                      const { page: bp, row: br, column: bc } = binderLayout(base.Number);
-                      setActive({ card: base, page: bp, row: br, column: bc });
-                      setViewSpread(pageToSpread(bp)); // jump to spread
+                      if (hidden || !presentNumbers.has(n)) return;
+
+                      const card = byNumber.get(n);      // exact card in this set
+                      if (!card) return;
+
+                      const { page: bp, row: br, column: bc } = binderLayout(n);
+                      setActive({ card, page: bp, row: br, column: bc });
+                      setViewSpread(pageToSpread(bp));
                     }}
                   >
                     {/* the card rectangle */}
