@@ -2,6 +2,8 @@
 
 A fast, local-first web app to organize **Star Wars: Unlimited** binders. Pick a set, search by name or number, and see the card’s **Page / Row / Column** on a visual 8×3 spread (two 4×3 pages) with aspect colors. Track inventory, filter for missing cards, and export/import your counts. Docker-ready.
 
+You can check it out at: [https://swu.mattyflix.com/](https://swu.mattyflix.com/)
+
 ---
 
 ## Features
