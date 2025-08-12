@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-type Card = { Name: string; Number: number; Aspects?: string[]; Type?: string };
+type Card = { Name: string; Number: number; Aspects?: string[]; Type?: string; Rarity?: string };
 type SetKey = 'SOR' | 'SHD' | 'TWI' | 'JTL' | 'LOF';
 type Inventory = Record<number, number>;
 
@@ -23,6 +23,28 @@ const ASPECT_HEX: Record<string, string> = {
   Villainy:  '#0b0b0b', // black
 };
 const NEUTRAL = '#2f3545'; // for numbers that exist but have no aspect
+
+const NAME_MAX_LINES = 2;
+const QTY_FONT = 22;      // size of the centered "1/3"
+const QTY_Y_OFFSET = 4;   // nudge up/down if needed
+
+const RARITY_STYLE: Record<string, {letter: string; color: string}> = {
+  Common:    { letter: 'C',  color: '#8B5E3C' }, // brown
+  Uncommon:  { letter: 'U',  color: '#9AA0B4' }, // gray
+  Rare:      { letter: 'R',  color: '#7DD3FC' }, // light blue
+  Legendary: { letter: 'L',  color: '#FACC15' }, // yellow
+  'Starter Deck Exclusive': { letter: 'S', color: '#000000' }, // black
+  Starter:   { letter: 'S',  color: '#000000' }, // (just in case)
+  // LOF also uses “Special”. If you prefer something else, change here:
+  Special:   { letter: 'Sp', color: '#A78BFA' }, // violet “Sp”
+};
+
+function rarityGlyph(r?: string) {
+  if (!r) return null;
+  return RARITY_STYLE[r] ?? null;
+}
+
+const TOPLINE_Y = 18; // was ~16; bump as needed (18–20 looks good)
 
 function binderLayout(n: number) {
   const page = Math.floor((n - 1) / 12) + 1;
@@ -52,6 +74,25 @@ export default function App() {
   // Data variants
   const [cardsAll, setCardsAll] = useState<Card[]>([]);     // unique by Number (used to color pages)
   const [cardsBase, setCardsBase] = useState<Card[]>([]);   // base printing per Name (lowest Number)
+
+  // Rarity normalization
+  function normalizeRarity(r: any): string | undefined {
+    if (!r) return undefined;
+    const v = String(r).trim();
+    const k = v.toLowerCase();
+    const map: Record<string,string> = {
+      c: 'Common', common: 'Common',
+      u: 'Uncommon', uncommon: 'Uncommon',
+      r: 'Rare', rare: 'Rare',
+      l: 'Legendary', legendary: 'Legendary',
+      s: 'Starter Deck Exclusive',
+      starter: 'Starter Deck Exclusive',
+      'starter deck exclusive': 'Starter Deck Exclusive',
+      'starter deck-exclusive': 'Starter Deck Exclusive',
+      special: 'Special'
+    };
+    return map[k] ?? v; // fall back to the original string
+  }
 
   // Quick lookups
   const byNumber = useMemo(() => new Map(cardsAll.map(c => [c.Number, c])), [cardsAll]);
@@ -100,7 +141,11 @@ export default function App() {
         Name: String(c.Name || '').trim(),
         Number: Number(c.Number),
         Aspects: Array.isArray(c.Aspects) ? c.Aspects : [],
-        Type: typeof c.Type === 'string' ? c.Type : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined)
+        Type:
+          typeof c.Type === 'string'
+            ? c.Type
+            : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined),
+        Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
       })).filter((c: Card) => !!c.Name && Number.isFinite(c.Number));
 
       // unique by Number (prefer entries that have an Aspect)
@@ -508,24 +553,41 @@ export default function App() {
         {invRows.length ? (
           <table className="table">
             <thead>
-              <tr><th>#</th><th>Name</th><th>Type</th><th>Qty</th><th>Max</th><th>Adjust</th></tr>
+              <tr><th className="mono">#</th><th style={{ width: 20 }} /><th>Name</th><th>Type</th><th>Qty</th><th>Max</th><th>Adjust</th></tr>
             </thead>
             <tbody>
-              {invRows.map(r => (
-                <tr key={r.Number}>
-                  <td className="mono">#{r.Number}</td>
-                  <td>{r.Name}</td>
-                  <td>{r.Type || ''}</td>
-                  <td className="mono">{r.Qty}</td>
-                  <td className="mono">{r.Max}</td>
-                  <td>
-                    <div className="qtybtns small">
-                      <button onClick={()=>dec(r.Number)}>-</button>
-                      <button onClick={()=>inc(r.Number)}>+</button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {invRows.map(r => {
+                const dot = numToColor.get(r.Number); // color from first aspect
+                return (
+                  <tr key={r.Number}>
+                    <td className="mono">#{r.Number}</td>
+                    <td>
+                      {dot && (
+                        <span
+                          title="Aspect color"
+                          aria-label="Aspect color"
+                          style={{
+                            display: 'inline-block',
+                            width: 12, height: 12, borderRadius: 3,
+                            background: dot,
+                            boxShadow: '0 0 0 2px #2b2d3d inset', // ring to keep white visible
+                          }}
+                        />
+                      )}
+                    </td>
+                    <td>{r.Name}</td>
+                    <td>{r.Type || ''}</td>
+                    <td className="mono">{r.Qty}</td>
+                    <td className="mono">{r.Max}</td>
+                    <td>
+                      <div className="qtybtns small">
+                        <button onClick={()=>dec(r.Number)}>-</button>
+                        <button onClick={()=>inc(r.Number)}>+</button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         ) : <div className="muted">No entries yet. Click any slot’s +/− or use this table once you add cards.</div>}
@@ -682,100 +744,102 @@ function Binder({
                       stroke={stroke} strokeWidth={strokeWidth}
                     />
 
-                    {(() => {
-                      // pick label color; invert on Heroism white (#e5e7eb)
-                      const labelColor =
-                        String(fill).toLowerCase() === '#e5e7eb' ? '#11121a' : '#eaeaf0';
+                  {(() => {
+                    if (hidden || !presentNumbers.has(n)) return null;
 
-                      return (
-                        <>
-                          {/* Name + Type label (top-left), truncated */}
-                          {cardAt && !hidden && presentNumbers.has(n) && (
-                            <g transform={`translate(${x + 10}, ${y + 28})`} style={{ pointerEvents: 'none' }}>
-                              <foreignObject width={cellW - 20} height={50}>
-                                <div
-                                  xmlns="http://www.w3.org/1999/xhtml"
-                                  style={{
-                                    fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    gap: 2,
-                                    lineHeight: 1.18,
-                                    paddingBottom: 4,                            // extra breathing room for descenders
-                                    color: (String(fill).toLowerCase() === '#e5e7eb') ? '#11121a' : '#eaeaf0', // invert on white
-                                  }}
-                                >
-                                  <div
-                                    style={{
-                                      fontSize: 12,
-                                      fontWeight: 600,
-                                      whiteSpace: 'nowrap',
-                                      overflow: 'hidden',
-                                      textOverflow: 'ellipsis',
-                                    }}
-                                  >
-                                    {cardAt.Name}
-                                  </div>
-                                  <div
-                                    style={{
-                                      fontSize: 10,
-                                      opacity: 0.85,
-                                      whiteSpace: 'nowrap',
-                                      overflow: 'hidden',
-                                      textOverflow: 'ellipsis',
-                                      marginTop: 3,                               // nudge type down
-                                      transform: 'translateY(1px)',               // guard against clipping on some browsers
-                                    }}
-                                  >
-                                    {cardAt.Type || ''}
-                                  </div>
-                                </div>
-                              </foreignObject>
-                            </g>
-                          )}
+                    // label color; invert on Heroism white
+                    const labelColor = String(fill).toLowerCase() === '#e5e7eb' ? '#11121a' : '#eaeaf0';
 
-                          {/* Card number (top-right) */}
-                          {!hidden && presentNumbers.has(n) && (
-                            <text
-                              x={x + cellW - 10}
-                              y={y + 18}
-                              textAnchor="end"
-                              fontSize="12"
-                              fill={labelColor}
-                              style={{ pointerEvents: 'none' }}
+                    // data for this slot
+                    const qty = inventory[n] || 0;
+                    const max = quotaForType(cardAt?.Type);
+                    const qtyText = `${qty}/${max}`;
+
+                    // rarity + outline (will render bottom-right)
+                    const sty = cardAt?.Rarity ? rarityGlyph(cardAt.Rarity) : null;
+                    const rarityOutline = String(fill).toLowerCase() === '#e5e7eb' ? '#11121a' : '#ffffff';
+
+                    return (
+                      <>
+                        {/* TOP-LEFT: Type then Name (Name clamped to 2 lines) */}
+                        <g transform={`translate(${x + 10}, ${y + 10})`} style={{ pointerEvents: 'none' }}>
+                          <foreignObject width={cellW - 20} height={48}>
+                            <div xmlns="http://www.w3.org/1999/xhtml"
+                                style={{
+                                  fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial',
+                                  color: labelColor,
+                                  lineHeight: 1.18,
+                                  display: 'flex', flexDirection: 'column', gap: 2,
+                                }}>
+                              <div style={{ fontSize: 10, opacity: 0.85 }}>{cardAt?.Type || ''}</div>
+                              <div style={{
+                                fontSize: 12, fontWeight: 600,
+                                overflow: 'hidden',
+                                display: '-webkit-box',
+                                WebkitLineClamp: NAME_MAX_LINES,
+                                WebkitBoxOrient: 'vertical',
+                              }}>
+                                {cardAt?.Name}
+                              </div>
+                            </div>
+                          </foreignObject>
+                        </g>
+
+                        {/* CENTER: big quantity, centered */}
+                        <text
+                          x={x + cellW / 2}
+                          y={y + cellH / 2 - QTY_Y_OFFSET}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          fontSize={QTY_FONT}
+                          fontWeight={700}
+                          fill={labelColor}
+                          style={{ pointerEvents: 'none' }}
+                        >
+                          {qtyText}
+                        </text>
+
+                        {/* CENTER-BOTTOM: +/- controls under qty (clicks don't bubble) */}
+                        <g
+                          transform={`translate(${x + (cellW - 64) / 2}, ${y + cellH / 2 + 10})`}
+                          onClick={(e)=>e.stopPropagation()}
+                        >
+                          <foreignObject width="64" height="26">
+                            <div xmlns="http://www.w3.org/1999/xhtml" className="qtybtns">
+                              <button onClick={()=>dec(n)}>-</button>
+                              <button onClick={()=>inc(n)}>+</button>
+                            </div>
+                          </foreignObject>
+                        </g>
+
+                        {/* BOTTOM-RIGHT: rarity + card number on one line */}
+                        <text
+                          x={x + cellW - 10}
+                          y={y + cellH - 10}
+                          textAnchor="end"
+                          dominantBaseline="alphabetic"
+                          fontSize="12"
+                          style={{ pointerEvents: 'none' }}
+                        >
+                          {sty && (
+                            <tspan
+                              fontWeight={800}
+                              fill={sty.color}
+                              stroke={rarityOutline}
+                              strokeWidth={2}
+                              paintOrder="stroke"
                             >
-                              #{n}
-                            </text>
+                              {sty.letter}
+                            </tspan>
                           )}
+                          <tspan dx={sty ? 6 : 0} fill={labelColor} fontWeight={600}>
+                            #{n}
+                          </tspan>
+                        </text>
+                      </>
+                    );
+                  })()}
 
-                          {/* Qty text (bottom-right) */}
-                          {!hidden && presentNumbers.has(n) && (
-                            <>
-                              <text
-                                x={x + cellW - 10}
-                                y={y + cellH - 12}
-                                textAnchor="end"
-                                fontSize="16"
-                                fill={labelColor}
-                                style={{ pointerEvents: 'none' }}
-                              >
-                                {qtyText}
-                              </text>
-
-                              {/* +/- controls (don’t let clicks bubble) */}
-                              <g transform={`translate(${x + 10}, ${y + cellH - 36})`} onClick={(e)=>e.stopPropagation()}>
-                                <foreignObject width="64" height="26">
-                                  <div xmlns="http://www.w3.org/1999/xhtml" className="qtybtns">
-                                    <button onClick={()=>dec(n)}>-</button>
-                                    <button onClick={()=>inc(n)}>+</button>
-                                  </div>
-                                </foreignObject>
-                              </g>
-                            </>
-                          )}
-                        </>
-                      );
-                    })()}
                   </g>
                 );
               })
