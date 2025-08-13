@@ -1,0 +1,57 @@
+# .github/workflows/update-sets.yml
+name: Update SWU set data
+
+on:
+  workflow_dispatch: {}         # allow manual run
+  schedule:
+    - cron: "0 2 1 * *"
+
+permissions:
+  contents: write               # needed to push a branch
+  pull-requests: write          # needed to open the PR
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: update-sets        # never run two of these at the same time
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Fetch latest sets (writes /public/sets/*.json + manifest.json)
+        run: npm run update:sets
+
+      # Optional but keeps diffs tidy/consistent
+      - name: Prettify JSON
+        run: npx prettier -w "public/sets/*.json" "public/sets/manifest.json"
+        continue-on-error: true
+
+      # Create a PR only if files changed
+      - name: Open Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: ci/update-sets
+          base: main
+          title: "chore(data): refresh SWU set data"
+          commit-message: "chore(data): refresh SWU set data"
+          body: |
+            Automated refresh of SWU set JSON files and manifest.
+            - Source: https://api.swu-db.com/cards/{setKey}
+            - Script: `scripts/fetch-sets.mjs`
+          labels: data, automation
+          add-paths: |
+            public/sets/*.json
+            public/sets/manifest.json
+          delete-branch: true
