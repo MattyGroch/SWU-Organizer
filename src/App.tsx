@@ -656,47 +656,60 @@ export default function App() {
           <div className="title" style={{ margin: 0 }}>Inventory</div>
           <div className="muted">Tip: counts auto-save per set to your browser, and you can export/import JSON.</div>
         </div>
+
         {invRows.length ? (
-          <table className="table">
-            <thead>
-              <tr><th className="mono">#</th><th style={{ width: 20 }} /><th>Name</th><th>Type</th><th>Qty</th><th>Max</th><th>Adjust</th></tr>
-            </thead>
-            <tbody>
-              {invRows.map(r => {
-                const dot = numToColor.get(r.Number); // color from first aspect
-                return (
-                  <tr key={r.Number}>
-                    <td className="mono">#{r.Number}</td>
-                    <td>
-                      {dot && (
-                        <span
-                          title="Aspect color"
-                          aria-label="Aspect color"
-                          style={{
-                            display: 'inline-block',
-                            width: 12, height: 12, borderRadius: 3,
-                            background: dot,
-                            boxShadow: '0 0 0 2px #2b2d3d inset', // ring to keep white visible
-                          }}
-                        />
-                      )}
-                    </td>
-                    <td>{r.Name}</td>
-                    <td>{r.Type || ''}</td>
-                    <td className="mono">{r.Qty}</td>
-                    <td className="mono">{r.Max}</td>
-                    <td>
-                      <div className="qtybtns small">
-                        <button onClick={()=>dec(r.Number)}>-</button>
-                        <button onClick={()=>inc(r.Number)}>+</button>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ) : <div className="muted">No entries yet. Click any slot’s +/− or use this table once you add cards.</div>}
+          <div className="inventory-scroll">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th className="mono">#</th>
+                  <th style={{ width: 20 }} />
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th className="mono">Qty</th>
+                  <th className="mono">Max</th>
+                  <th>Adjust</th>
+                </tr>
+              </thead>
+              <tbody>
+                {invRows.map(r => {
+                  const dot = numToColor.get(r.Number);
+                  return (
+                    <tr key={r.Number}>
+                      <td className="mono">#{r.Number}</td>
+                      <td>
+                        {dot && (
+                          <span
+                            title="Aspect color"
+                            aria-label="Aspect color"
+                            style={{
+                              display: 'inline-block',
+                              width: 12, height: 12, borderRadius: 3,
+                              background: dot,
+                              boxShadow: '0 0 0 2px #2b2d3d inset',
+                            }}
+                          />
+                        )}
+                      </td>
+                      <td>{r.Name}</td>
+                      <td>{r.Type || ''}</td>
+                      <td className="mono">{r.Qty}</td>
+                      <td className="mono">{r.Max}</td>
+                      <td>
+                        <div className="qtybtns small">
+                          <button onClick={()=>dec(r.Number)}>-</button>
+                          <button onClick={()=>inc(r.Number)}>+</button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="muted">No entries yet. Click any slot’s +/− or use this table once you add cards.</div>
+        )}
       </div>
     </div>
   );
@@ -716,14 +729,13 @@ function Binder({
   dec,
 }: {
   viewSpread: number;
-  setViewSpread: (s:number)=>void;
+  setViewSpread: React.Dispatch<React.SetStateAction<number>>;
   totalSpreads: number;
   active: { card: Card; page: number; row: number; column: number } | null;
   setActive: (v: { card: Card; page: number; row: number; column: number } | null)=>void;
   presentNumbers: Set<number>;
   numToColor: Map<number, string>;
   byNumber: Map<number, Card>;
-  resolveToBase: (n:number)=>Card|null;
   inventory: Inventory;
   inc: (n:number)=>void;
   dec: (n:number)=>void;
@@ -870,7 +882,7 @@ function Binder({
                         {/* TOP-LEFT: Type then Name (Name clamped to 2 lines) */}
                         <g transform={`translate(${x + 10}, ${y + 10})`} style={{ pointerEvents: 'none' }}>
                           <foreignObject width={cellW - 20} height={48}>
-                            <div xmlns="http://www.w3.org/1999/xhtml"
+                            <div
                                 style={{
                                   fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial',
                                   color: labelColor,
@@ -911,7 +923,7 @@ function Binder({
                           onClick={(e)=>e.stopPropagation()}
                         >
                           <foreignObject width="64" height="26">
-                            <div xmlns="http://www.w3.org/1999/xhtml" className="qtybtns">
+                            <div className="qtybtns">
                               <button onClick={()=>dec(n)}>-</button>
                               <button onClick={()=>inc(n)}>+</button>
                             </div>

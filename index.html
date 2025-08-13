@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SWU Binder Organizer</title>
     <style>
-      :root { color-scheme: dark; }
-      body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:#0b0b0f; color:#eaeaf0; }
+      :root { color-scheme: dark; --gh-badge-space: 88px;}
+      body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:#0b0b0f; color:#eaeaf0; padding-bottom: var(--gh-badge-space); }
       .container { max-width: 960px; margin: 24px auto; padding: 0 16px; }
       .card { background:#11121a; border: 1px solid #232433; border-radius: 16px; padding: 16px; }
       .row { display:flex; gap:12px; flex-wrap:wrap; align-items: center; }
@@ -108,16 +108,77 @@
         box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
         pointer-events: none; /* don’t block clicks */
       }
+      .gh-badge {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 50;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border: 1px solid #2b2d3d;
+        border-radius: 999px;
+        background: #11121a;
+        color: #eaeaf0;
+        text-decoration: none;
+        font-size: 14px;
+        line-height: 1;
+        box-shadow: 0 6px 16px rgba(0,0,0,.35);
+        transition: background .15s ease, border-color .15s ease, transform .05s ease;
+      }
+      .gh-badge:hover { background: #171826; border-color: #3a3d52; }
+      .gh-badge:active { transform: translateY(1px); }
+      .gh-badge svg { width: 16px; height: 16px; display: block; fill: currentColor; }
+      .inventory-scroll {
+        max-height: 48vh;                         /* how tall the scroll area can get */
+        min-height: 200px;                        /* optional: don’t get too tiny */
+        overflow: auto;
+        background: #0f1017;
+        border: 1px solid #232433;
+        border-radius: 12px;
+        padding: 6px 0;                           /* breathing room inside the panel */
+        scrollbar-gutter: stable;                 /* avoids layout shift on scrollbars */
+      }
 
-      /* Hide the hint on touch devices where the hotkey isn’t useful */
-      @media (hover: none) and (pointer: coarse) {
-        .search-kbd { display: none; }
-        .autocomplete.search input { padding-left: 12px; }
+      /* table tweaks inside the scroll area */
+      .inventory-scroll .table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin: 0;                                /* no extra bottom gap */
+      }
+      .inventory-scroll .table th {
+        position: sticky;                         /* keep headers visible while scrolling */
+        top: 0;
+        background: #11121a;
+        z-index: 1;
+      }
+      .inventory-scroll .table th,
+      .inventory-scroll .table td {
+        padding: 10px 12px;
       }
     </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <a class="gh-badge"
+      href="https://github.com/MattyGroch/SWU-Organizer"
+      target="_blank" rel="noopener noreferrer"
+      title="Follow this project on GitHub">
+      <!-- GitHub mark -->
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38
+                0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+                -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+                .07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
+                -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 2-.27
+                c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12
+                .51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48
+                0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+      </svg>
+      <span>Follow this project on GitHub</span>
+    </a>
   </body>
 </html>
