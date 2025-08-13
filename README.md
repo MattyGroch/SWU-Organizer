@@ -66,8 +66,7 @@ services:
 2. **Search** by name or number (press `/` to focus; **Enter** to go).  
 3. View the card’s **Page / Row / Column** and see it highlighted on the binder spread.  
 4. Adjust **quantities** with +/− on any filled slot.  
-5. Toggle **Missing only** to focus on unfilled cards.  
-6. **Export** your inventory (all sets) to JSON; **Import** it later to restore.
+5. **Export** your inventory (all sets) to JSON; **Import** it later to restore.
 
 **Spread navigation:**  
 - Pager shows `Page 1` and then spreads `Page 2/3`, `Page 4/5`, …  
@@ -151,22 +150,7 @@ If you are a rights holder and have concerns, please contact: **matt.grochocinsk
 
 ## License
 
-- **Code:** **Polyform Noncommercial 1.0.0** — non-commercial use, modification, and redistribution allowed **with attribution**. Commercial use requires prior permission.  
-  Include the full text in `/LICENSE`.
-
-- **Assets (images/data, if any):** **CC BY-NC 4.0**.  
-  Include the full text in `/LICENSE-ASSETS`.
-
-Add a `NOTICE` file:
-
-```
-SWU Organizer
-Copyright (c) 2025 Matt Grochocinski
-
-Code licensed under Polyform Noncommercial 1.0.0.
-Assets licensed under CC BY-NC 4.0.
-Attribution required. Commercial use requires prior written permission.
-```
+- **Code:** **Polyform Noncommercial 1.0.0** — non-commercial use, modification, and redistribution allowed **with attribution**. Commercial use requires prior permission.
 
 For commercial licensing or questions, email **matt.grochocinski@gmail.com**.
 
