@@ -27,6 +27,10 @@ const NEUTRAL = '#2f3545'; // for numbers that exist but have no aspect
 const NAME_MAX_LINES = 2;
 const QTY_FONT = 22;      // size of the centered "1/3"
 const QTY_Y_OFFSET = 4;   // nudge up/down if needed
+const BTN = 32;          // button diameter
+const GAP = 8;           // CSS gap between buttons
+const GROUP_W = BTN * 2 + GAP;  // 72
+const GROUP_H = BTN;             // 32
 
 const RARITY_STYLE: Record<string, {letter: string; color: string}> = {
   Common:    { letter: 'C',  color: '#8B5E3C' }, // brown
@@ -150,6 +154,19 @@ export default function App() {
       }
     }
     return { baseToAll, altToBase, nameTypeToBase };
+  }
+
+  // Datetime
+  function tsStamp(utc = false) {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const Y = utc ? d.getUTCFullYear() : d.getFullYear();
+    const M = pad((utc ? d.getUTCMonth() : d.getMonth()) + 1);
+    const D = pad(utc ? d.getUTCDate() : d.getDate());
+    const h = pad(utc ? d.getUTCHours() : d.getHours());
+    const m = pad(utc ? d.getUTCMinutes() : d.getMinutes());
+    // add seconds if you want: const s = pad(utc ? d.getUTCSeconds() : d.getSeconds());
+    return `${Y}${M}${D}-${h}${m}`; // e.g. 20250813-0031
   }
 
   // Quick lookups
@@ -384,14 +401,24 @@ export default function App() {
   function exportAllInv() {
     const payload: InventoryAll = {
       version: 1,
-            sets: Object.fromEntries(SET_KEYS.map(k => [k, readSetInv(k)])) as Record<SetKey, Inventory>
+      sets: Object.fromEntries(SET_KEYS.map(k => [k, readSetInv(k)])) as Record<SetKey, Inventory>
     };
+
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'swu-inventory-all-sets.json';
+    a.href = url;
+    a.download = `SWU-Inventory-${tsStamp()}.json`;
+    a.style.display = 'none';
+    document.body.appendChild(a);
     a.click();
-    URL.revokeObjectURL(a.href);
+
+    // cleanup
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+      a.remove();
+    }, 0);
   }
 
   function importAllInv(file: File) {
@@ -491,9 +518,9 @@ export default function App() {
       {/* Top bar (no page control here anymore) */}
       <div className="card" style={{ marginBottom: 16 }}>
         <h1 className="title">SWU Binder Organizer</h1>
-        <div className="row" style={{ marginTop: 8 }} ref={boxRef}>
+        <div className="row controls-row" style={{ marginTop: 8 }} ref={boxRef}>
           <label className="pill">
-            <span style={{ opacity: .7, marginRight: 8 }}>Set</span>
+            <span className="set-label">Set</span>
             <select value={setKey} onChange={e => { setSetKey(e.target.value as SetKey); }}>
               {Object.entries(SETS).map(([k, v]) => (
                 <option key={k} value={k}>{v.label}</option>
@@ -545,6 +572,15 @@ export default function App() {
               onFocus={() => suggestions.length && setOpenSug(true)}
               aria-label="Search cards"
             />
+            <button
+              type="button"
+              className="search-icon"
+              onClick={() => onEnter()}
+              title="Search"
+              aria-label="Search"
+            >
+              <span className="icon" aria-hidden="true">search</span>
+            </button>
             {openSug && suggestions.length > 0 && (
               <div className="sug">
                 {suggestions.map((s, i) => {
@@ -577,20 +613,18 @@ export default function App() {
             )}
           </div>
 
-          <a href="#" className="btn" onClick={(e) => { e.preventDefault(); onEnter(); }}>Go</a>
-
-          <div style={{ marginLeft: 'auto' }}>
+          {/* Right side controls */}
+          <div className="toolbar-block">
+            <div className="toolbar-label">Inventory Controls</div>
             <div className="toolbar-group">
-              {/* Import (button triggers hidden input) */}
+              {/* Import (uses your hidden file input via ref) */}
               <button
                 className="tbtn"
-                title="Import all-set inventory JSON"
                 onClick={() => importRef.current?.click()}
-                type="button"
+                title="Import inventory JSON"
+                aria-label="Import inventory JSON"
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 3l4 4h-3v8h-2V7H8l4-4z"/><path d="M5 19h14v2H5z"/>
-                </svg>
+                <span className="icon" aria-hidden="true">upload</span>
                 <span>Import…</span>
               </button>
               <input
@@ -601,30 +635,26 @@ export default function App() {
                 onChange={(e) => e.target.files && importAllInv(e.target.files[0])}
               />
 
-              {/* Export */}
+              {/* Save / Export */}
               <button
                 className="tbtn"
-                title="Export all sets to JSON"
                 onClick={() => exportAllInv()}
-                type="button"
+                title="Save inventory to JSON"
+                aria-label="Save inventory to JSON"
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 21l-4-4h3V5h2v12h3l-4 4z"/><path d="M5 3h14v2H5z"/>
-                </svg>
-                <span>Download</span>
+                <span className="icon" aria-hidden="true">save</span>
+                <span>Save</span>
               </button>
 
               {/* Reset */}
               <button
                 className="tbtn tbtn-danger"
-                title="Reset inventory for current set"
                 onClick={() => resetInv()}
-                type="button"
+                title="Reset all inventory"
+                aria-label="Reset all inventory"
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M9 3h6l1 2h3v2h-1l-1 12a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2L7 7H6V5h3l1-2z"/>
-                </svg>
-                <span>Reset Inventory</span>
+                <span className="icon" aria-hidden="true">delete</span>
+                <span>Reset</span>
               </button>
             </div>
           </div>
@@ -662,22 +692,23 @@ export default function App() {
             <table className="table">
               <thead>
                 <tr>
-                  <th className="mono">#</th>
-                  <th style={{ width: 20 }} />
+                  <th className="mono numcol">#</th>
+                  <th className="dotcol"></th>
                   <th>Name</th>
                   <th>Type</th>
-                  <th className="mono">Qty</th>
-                  <th className="mono">Max</th>
-                  <th>Adjust</th>
+                  <th className="mono qtycol">Qty</th>
+                  <th className="compcol">Complete</th>
+                  <th className="adjcol">Adjust</th>
                 </tr>
               </thead>
               <tbody>
                 {invRows.map(r => {
                   const dot = numToColor.get(r.Number);
+                  const complete = r.Qty >= r.Max;
                   return (
                     <tr key={r.Number}>
-                      <td className="mono">#{r.Number}</td>
-                      <td>
+                      <td className="mono numcol">#{r.Number}</td>
+                      <td className="dotcol">
                         {dot && (
                           <span
                             title="Aspect color"
@@ -693,12 +724,14 @@ export default function App() {
                       </td>
                       <td>{r.Name}</td>
                       <td>{r.Type || ''}</td>
-                      <td className="mono">{r.Qty}</td>
-                      <td className="mono">{r.Max}</td>
-                      <td>
-                        <div className="qtybtns small">
-                          <button onClick={()=>dec(r.Number)}>-</button>
-                          <button onClick={()=>inc(r.Number)}>+</button>
+                      <td className="mono qtycol">{r.Qty}</td>
+                      <td className="compcol">
+                        {complete ? <span className="check" title="Complete" aria-label="Complete">✓</span> : null}
+                      </td>
+                      <td className="adjcol">
+                        <div className="qtybtns circle">
+                          <button className="minus" aria-label="Decrease" onClick={()=>dec(r.Number)}>−</button>
+                          <button className="plus" aria-label="Increase" onClick={()=>inc(r.Number)}>+</button>
                         </div>
                       </td>
                     </tr>
@@ -919,13 +952,13 @@ function Binder({
 
                         {/* CENTER-BOTTOM: +/- controls under qty (clicks don't bubble) */}
                         <g
-                          transform={`translate(${x + (cellW - 64) / 2}, ${y + cellH / 2 + 10})`}
+                          transform={`translate(${x + (cellW - GROUP_W) / 2}, ${y + cellH / 2 + 10})`}
                           onClick={(e)=>e.stopPropagation()}
                         >
-                          <foreignObject width="64" height="26">
-                            <div className="qtybtns">
-                              <button onClick={()=>dec(n)}>-</button>
-                              <button onClick={()=>inc(n)}>+</button>
+                          <foreignObject width={GROUP_W} height={GROUP_H + 4}>
+                            <div className="qtybtns circle">
+                              <button className="minus" aria-label="Decrease" onClick={()=>dec(n)}>−</button>
+                              <button className="plus" aria-label="Increase" onClick={()=>inc(n)}>+</button>
                             </div>
                           </foreignObject>
                         </g>
@@ -968,11 +1001,12 @@ function Binder({
               y1={-8}
               x2={(cellW + gap) * 4 - gap / 2}
               y2={vbH - 32 + 8}
-              stroke="#c8ccd9"            // a bit lighter
-              strokeWidth={5}             // thicker
-              strokeDasharray="0 18"      // dotted pattern
-              strokeLinecap="round"       // make dots round
-              vectorEffect="non-scaling-stroke" // keep thickness consistent when SVG scales
+              stroke="#424452ff"
+              strokeOpacity={0.75}
+              strokeWidth={4}
+              strokeDasharray="0 12"
+              strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
             />
           </g>
         </svg>

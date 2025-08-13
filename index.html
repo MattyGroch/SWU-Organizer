@@ -4,10 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SWU Binder Organizer</title>
+    <link rel="preload" href="/fonts/MaterialSymbolsRounded.woff2"
+      as="font" type="font/woff2" crossorigin>
     <style>
-      :root { color-scheme: dark; --gh-badge-space: 88px;}
+      @font-face{
+        font-family: 'Material Symbols Rounded';
+        src: url('/fonts/MaterialSymbolsRounded.woff2') format('woff2');
+        font-weight: 100 700;     /* variable range */
+        font-style: normal;
+        font-display: block;
+      }
+      :root { color-scheme: dark; --gh-badge-space: 88px; --ctl-h: 34px; }
+      :root { --keycap-left: 12px; }        /* distance from input's left edge */
+      :root { --keycap-gap: 10px; }         /* gap between keycap and text */
+      :root { --keycap-h-pad: 6px; }        /* keycap horizontal padding */
+      :root { --keycap-border: 1px; }       /* keycap border width */
       body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:#0b0b0f; color:#eaeaf0; padding-bottom: var(--gh-badge-space); }
-      .container { max-width: 960px; margin: 24px auto; padding: 0 16px; }
+      .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
       .card { background:#11121a; border: 1px solid #232433; border-radius: 16px; padding: 16px; }
       .row { display:flex; gap:12px; flex-wrap:wrap; align-items: center; }
       .row > * { flex: none; }
@@ -22,9 +35,7 @@
       .legend .dot { width:10px; height:10px; border-radius:2px; display:inline-block; margin-right:6px; vertical-align:middle; }
       .err { color:#ff8a8a; }
       a.btn { color:#eaeaf0; text-decoration:none; border:1px solid #2b2d3d; padding:8px 12px; border-radius:10px; }
-      .container { max-width: 1200px; }
       .autocomplete { position: relative; }
-      .autocomplete input { width: 340px; }
       .sug {
         position: absolute; top: calc(100% + 6px); left: 0; right: 0;
         background: #0f1017; border: 1px solid #2b2d3d; border-radius: 10px;
@@ -44,11 +55,43 @@
           color: #848896;
           font-weight: 500;
         }
-      .qtybtns { display:flex; gap:6px; }
-      .qtybtns button { background:#11121a; color:#eaeaf0; border:1px solid #2b2d3d;
-        border-radius:8px; padding:2px 8px; line-height:20px; cursor:pointer; }
-      .qtybtns button:hover { background:#171826; }
-      .qtybtns.small button { padding:2px 6px; }
+      .qtybtns { display: inline-flex; gap: 8px; }
+      .qtybtns.circle { display: inline-flex; gap: 8px; }
+      .qtybtns.circle > button{
+        --btn-size: 32px;      /* binder size */
+        --btn-border: 2px;     /* <-- was 1px */
+        width: var(--btn-size);
+        height: var(--btn-size);
+        border-radius: 999px;
+        box-sizing: border-box;                 /* keep the visual size constant */
+        border: var(--btn-border) solid #3a3d52;/* a touch brighter than #2b2d3d; adjust to taste */
+        background:#11121a;
+        color:#eaeaf0;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        font-weight:700;
+        line-height:1;
+        font-size: 0;                    /* hide the text glyphs */
+        position: relative;              /* <-- REQUIRED so pseudo-elements stay inside */
+        cursor:pointer;
+        transition: background .15s, border-color .15s, transform .05s;
+      }
+      .qtybtns.circle > button:hover{ background:#171826; border-color:#4c4f66; }
+      .qtybtns.circle > button:active{ transform: translateY(1px); }
+      .qtybtns.circle button:focus-visible{ outline:2px solid #8b5cf6; outline-offset:2px; }
+      .qtybtns.circle > button::before{
+        content:"";
+        position:absolute; left:8px; right:8px; top:50%;
+        height:2px; background:currentColor; transform:translateY(-50%);
+        border-radius:1px;
+      }
+      .qtybtns.circle > button.plus::after{
+        content:"";
+        position:absolute; top:8px; bottom:8px; left:50%;
+        width:2px; background:currentColor; transform:translateX(-50%);
+        border-radius:1px;
+      }
       .table { width:100%; border-collapse: collapse; margin-top: 8px; }
       .table th, .table td { text-align:left; padding:10px 12px; border-bottom:1px solid #232433; }
       .table th { color:#c8ccd9; font-weight:600; }
@@ -64,6 +107,7 @@
         overflow: hidden;
         background: #14161f;
       }
+      .toolbar-group .tbtn .icon{ margin-right: 8px; }
 
       .tbtn {
         -webkit-appearance: none;
@@ -72,7 +116,7 @@
         align-items: center;
         gap: 8px;
         padding: 8px 12px;
-        height: 36px;
+        height: var(--ctl-h);
         border: 0;
         background: transparent;
         color: #eaeaf0;
@@ -86,28 +130,12 @@
       .tbtn:focus-visible { outline: 2px solid #8b5cf6; outline-offset: -2px; }
 
       .tbtn svg { width: 16px; height: 16px; fill: currentColor; }
-      .tbtn span { font: inherit; }
 
       .tbtn-danger { color: #fca5a5; }
       .tbtn-danger:hover { background: rgba(127,29,29,0.25); }
       /* slash key hint inside the search input */
       .autocomplete.search { position: relative; }
-      .autocomplete.search input { padding-left: 44px; }  /* make room for the key */
 
-      .search-kbd {
-        position: absolute;
-        left: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        padding: 2px 6px;
-        border: 1px solid #2b2d3d;
-        border-radius: 6px;
-        background: #0f1017;
-        color: #c8ccd9;
-        font: 500 12px/18px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-        pointer-events: none; /* don’t block clicks */
-      }
       .gh-badge {
         position: fixed;
         right: 16px;
@@ -131,13 +159,14 @@
       .gh-badge:active { transform: translateY(1px); }
       .gh-badge svg { width: 16px; height: 16px; display: block; fill: currentColor; }
       .inventory-scroll {
+        margin-top: 10px;                        /* space above the scroll area */
+        padding: 0 0 6px;                        /* padding bottom to avoid scrollbar overlap */
         max-height: 48vh;                         /* how tall the scroll area can get */
-        min-height: 200px;                        /* optional: don’t get too tiny */
+        min-height: 200px;                        /* don’t get too tiny */
         overflow: auto;
         background: #0f1017;
         border: 1px solid #232433;
         border-radius: 12px;
-        padding: 6px 0;                           /* breathing room inside the panel */
         scrollbar-gutter: stable;                 /* avoids layout shift on scrollbars */
       }
 
@@ -147,6 +176,7 @@
         border-collapse: separate;
         border-spacing: 0;
         margin: 0;                                /* no extra bottom gap */
+        table-layout: fixed;
       }
       .inventory-scroll .table th {
         position: sticky;                         /* keep headers visible while scrolling */
@@ -157,6 +187,187 @@
       .inventory-scroll .table th,
       .inventory-scroll .table td {
         padding: 10px 12px;
+      }
+      .inventory-scroll thead th{
+        position: sticky;
+        top: -1px;                /* was 0; the -1px hides any sliver */
+        z-index: 3;
+        background: #11121a;      /* must have a solid bg */
+        border-bottom: 1px solid #232433;
+      }
+      /* column widths/align for the inventory table */
+      .inventory-scroll .table th.numcol,
+      .inventory-scroll .table td.numcol { width: 56px; }
+
+      .inventory-scroll .table th.dotcol,
+      .inventory-scroll .table td.dotcol { width: 18px; }
+
+      .inventory-scroll .table th.qtycol,
+      .inventory-scroll .table td.qtycol {
+        width: 56px;
+        text-align: right;
+      }
+
+      .inventory-scroll .table th.compcol,
+      .inventory-scroll .table td.compcol {
+        width: 90px;
+        text-align: center;
+      }
+
+      .inventory-scroll .table th.adjcol,
+      .inventory-scroll .table td.adjcol {
+        width: 96px;
+        text-align: right;
+      }
+
+      /* bigger, round +/- buttons just for the inventory table */
+      .inventory-scroll .qtybtns.circle { display: inline-flex; gap: 8px; }
+      .inventory-scroll .qtybtns.circle > button{
+        --btn-size: 28px;
+      }
+
+      /* green check badge for Complete column */
+      .check {
+        display:inline-flex; align-items:center; justify-content:center;
+        width: 20px; height: 20px; border-radius: 999px;
+        background: #093c2d; color: #34d399; border: 1px solid #1f3d33;
+        font-size: 12px; font-weight: 800;
+      }
+      /* Icon glyphs (Material Symbols Rounded) */
+      .icon{
+        font-family: 'Material Symbols Rounded', sans-serif;
+        font-weight: 400;       /* usable range 100–700 */
+        font-style: normal;
+        /* turn the glyph words (e.g., "upload") into the icons */
+        font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 20;
+        display: inline-block;
+        line-height: 1;
+        font-size: 18px;        /* tweak per spot if needed */
+        -webkit-font-smoothing: antialiased;
+      }
+      .controls-row .autocomplete .search-icon .icon{
+        font-family: 'Material Symbols Rounded';
+        font-weight: 400;
+        font-style: normal;
+        font-size: 18px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        direction: ltr;
+        -webkit-font-smoothing: antialiased;
+      }
+      .controls-row .autocomplete .search-kbd{
+        position:absolute;
+        left:var(--keycap-left);
+        top:50%; transform:translateY(-50%);
+        height:calc(var(--ctl-h) - 8px);
+        line-height:calc(var(--ctl-h) - 8px);
+        display:inline-flex; align-items:center; justify-content:center;
+        padding:0 var(--keycap-h-pad);
+        border:var(--keycap-border) solid #2b2d3d; border-radius:6px;
+        background:#0f1017; color:#c8ccd9;
+        font:500 12px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+        pointer-events:none;
+      }
+      /* small label above the button group */
+      .toolbar-block{
+        display:flex; flex-direction:column; gap:6px; align-items:flex-end;
+      }
+      .toolbar-label{
+        font-size:12px; color:#c8ccd9; opacity:.9;
+        text-transform:uppercase; letter-spacing:.04em;
+      }
+
+      /* --- Top controls row (one source of truth) --- */
+      .controls-row{
+        /* layout */
+        display:flex;
+        align-items:flex-end;           /* keeps select + input + button aligned */
+        gap:12px;
+
+        /* shared sizing */
+        --ctl-h: 34px;                /* adjust 30–32px to taste */
+        --keycap-left: 12px;          /* position of the "/" keycap */
+        --keycap-gap: 10px;
+        --keycap-h-pad: 6px;
+        --keycap-border: 1px;
+        --search-max: 560px; 
+      }
+
+      /* “Set” label — no pill look */
+      .controls-row .pill{
+        display:flex; align-items:center; gap:8px;
+        background:transparent; border:0; border-radius:0; padding:0; margin:0;
+      }
+      .controls-row .pill > span{
+        text-transform:uppercase; letter-spacing:.04em;
+        font-size:12px; color:#c8ccd9; opacity:.85;
+      }
+
+      /* Select, search input, and Go share the exact same height */
+      .controls-row select,
+      .controls-row .autocomplete input{
+          width: 100% !important;        /* ← kills the old 340px cap */
+          height: var(--ctl-h);
+          box-sizing: border-box;
+        }
+      .controls-row .btn{
+        height:var(--ctl-h);
+        display: inline-flex;
+        align-items: center;
+        padding: 0 12px;
+        line-height: 1;
+      }
+
+      /* Normalize select look across browsers */
+      .controls-row select{ appearance:none; }
+
+      /* Search with left “/” keycap */
+      .controls-row .autocomplete {
+        position: relative;
+        /* Flexible but capped so the toolbar on the right always has room */
+        flex: 0 1 var(--search-max);
+        max-width: var(--search-max);
+        min-width: 260px;
+      }
+      .controls-row .autocomplete input{
+        width: 100% !important;
+        height: var(--ctl-h);
+        padding: 6px 12px;
+        padding-left: calc(
+          var(--keycap-left)
+          + (var(--keycap-border)*2 + var(--keycap-h-pad)*2 + 12px)
+          + var(--keycap-gap)
+        );
+        padding-right: calc(var(--ctl-h) + 10px); /* room for the icon button */
+      }
+
+      .controls-row .autocomplete .search-icon{
+        position:absolute; right:8px; top:50%; transform:translateY(-50%);
+        width: calc(var(--ctl-h) - 8px); height: calc(var(--ctl-h) - 8px);
+        border:1px solid #2b2d3d; border-radius:6px;
+        background:#0f1017; color:#c8ccd9;
+        display:inline-flex; align-items:center; justify-content:center;
+        cursor:pointer;
+      }
+      .controls-row .autocomplete .search-icon:hover{
+        background:#171826;
+      }
+      .controls-row .autocomplete .search-icon:focus-visible{
+        outline: 2px solid #8b5cf6;
+        outline-offset: 2px;
+      }
+
+      /* Right-side controls group sits at the end */
+      .controls-row .toolbar-block{ margin-left:auto; }
+
+      /* Make the “Go” button height match exactly */
+      .controls-row .btn{
+        display:inline-flex; align-items:center; line-height:1;
+        padding-block:0;               /* remove extra vertical padding */
       }
     </style>
   </head>
