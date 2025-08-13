@@ -184,6 +184,20 @@ export default function App() {
   }, [inventory, setKey]);
   const pruneZeros = (inv: Inventory) =>
     Object.fromEntries(Object.entries(inv).filter(([,q]) => (q as number) > 0)) as Inventory;
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const el = e.target as HTMLElement;
+      const typing = el?.tagName === 'INPUT' || el?.tagName === 'TEXTAREA' || el?.isContentEditable;
+      if (typing) return;
+
+      if (e.key === 'Escape') {
+        setActive(null);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
 
   // UI state
   const [query, setQuery] = useState('');
@@ -802,39 +816,64 @@ function Binder({
 
   return (
     <>
-      {/* Selected card row (small) */}
-      {active && (
-        <div className="row" style={{ marginBottom: 6, alignItems: 'center', gap: 10 }}>
-          {(() => {
-            const dot = numToColor.get(active.card.Number);
-            return dot ? (
-              <span
-                style={{
-                  width: 12, height: 12, borderRadius: 3, background: dot,
-                  boxShadow: '0 0 0 2px #2b2d3d inset', display: 'inline-block'
-                }}
-              />
-            ) : null;
-          })()}
-          <div className="big" style={{ fontSize: 20 }}>{active.card.Name}</div>
-          <span className="pill">Page {active.page}</span>
-          <span className="pill">Row {active.row}</span>
-          <span className="pill">Column {active.column}</span>
+      {/* Row 1: selection header + tip (right) */}
+      <div
+        className="row"
+        style={{
+          marginBottom: 6,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 12,
+        }}
+      >
+        {/* left: selected card (or placeholder) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {active ? (
+            <>
+              {(() => {
+                const dot = numToColor.get(active.card.Number);
+                return dot ? (
+                  <span
+                    style={{
+                      width: 12, height: 12, borderRadius: 3, background: dot,
+                      boxShadow: '0 0 0 2px #2b2d3d inset', display: 'inline-block'
+                    }}
+                  />
+                ) : null;
+              })()}
+              <div className="big" style={{ fontSize: 20 }}>{active.card.Name}</div>
+              <span className="pill">Page {active.page}</span>
+              <span className="pill">Row {active.row}</span>
+              <span className="pill">Column {active.column}</span>
+            </>
+          ) : (
+            <div className="muted" style={{ fontSize: 25 }}>No card selected</div>
+          )}
         </div>
-      )}
 
-      {/* Binder header with small subtitle + spread controls */}
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:6 }}>
+        {/* right: tip */}
+        <div className="muted" style={{ whiteSpace: 'nowrap' }}>
+          Tip: Click a card, then press <b>+</b>/<b>&minus;</b> to adjust quantity. Press <b>Esc</b> to clear.
+        </div>
+      </div>
+
+      {/* Row 2: binder subtitle + pager */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 6,
+          gap: 12,
+        }}
+      >
         <div className="binder-subtitle">Binder — {spreadLabel}</div>
         <div className="pager">
-          <button className="btn" onClick={()=>setViewSpread(s=>Math.max(0, s-1))}>‹ Prev</button>
-          <select
-            value={viewSpread}
-            onChange={(e)=>setViewSpread(Number(e.target.value))}
-          >
+          <button className="btn" onClick={() => setViewSpread(s => Math.max(0, s - 1))}>‹ Prev</button>
+          <select value={viewSpread} onChange={e => setViewSpread(Number(e.target.value))}>
             {spreadOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
-          <button className="btn" onClick={()=>setViewSpread(s=>Math.min(totalSpreads-1, s+1))}>Next ›</button>
+          <button className="btn" onClick={() => setViewSpread(s => Math.min(totalSpreads - 1, s + 1))}>Next ›</button>
         </div>
       </div>
 
