@@ -1,18 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 type Card = { Name: string; Number: number; Aspects?: string[]; Type?: string; Rarity?: string };
-type SetKey = 'SOR' | 'SHD' | 'TWI' | 'JTL' | 'LOF';
 type Inventory = Record<number, number>;
-
-const SETS: Record<SetKey, { label: string; file: string }> = {
-  SOR: { label: 'Spark of Rebellion (SOR)', file: '/sets/SWU-SOR.json' },
-  SHD: { label: 'Shadows of the Galaxy (SHD)', file: '/sets/SWU-SHD.json' },
-  TWI: { label: 'Twilight of the Republic (TWI)', file: '/sets/SWU-TWI.json' },
-  JTL: { label: 'Jump to Lightspeed (JTL)', file: '/sets/SWU-JTL.json' },
-  LOF: { label: 'Legacy of the Force (LOF)', file: '/sets/SWU-LOF.json' },
-};
-
-const SET_KEYS: SetKey[] = ['SOR','SHD','TWI','JTL','LOF'];
+type SetKey = string;
+type SetMeta = { key: string; label: string; file: string };
 
 const ASPECT_HEX: Record<string, string> = {
   Vigilance: '#3b82f6', // blue
@@ -71,9 +62,31 @@ function pageToSpread(p: number) { return p <= 1 ? 0 : Math.floor((p - 2) / 2) +
 function spreadToPrimaryPage(s: number) { return s <= 0 ? 1 : 2 + (s - 1) * 2; } // even page
 
 export default function App() {
-  const [setKey, setSetKey] = useState<SetKey>('LOF');
+  const [sets, setSets] = useState<SetMeta[]>([]);
+  const [setKey, setSetKey] = useState<SetKey>('LOF'); // default/fallback
   const searchRef = useRef<HTMLInputElement | null>(null);
   const importRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    fetch('/sets/manifest.json')
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('no manifest')))
+      .then((m: { sets: SetMeta[] }) => {
+        const list = Array.isArray(m?.sets) ? m.sets : [];
+        setSets(list);
+        if (!list.find(s => s.key === setKey)) setSetKey(list[0]?.key ?? 'LOF');
+      })
+      .catch(() => {
+        // fallback (optional) if manifest missing in dev
+        setSets([
+          { key:'SOR', label:'Spark of Rebellion (SOR)', file:'SWU-SOR.json' },
+          { key:'SHD', label:'Shadows of the Galaxy (SHD)', file:'SWU-SHD.json' },
+          { key:'TWI', label:'Twilight of the Republic (TWI)', file:'SWU-TWI.json' },
+          { key:'JTL', label:'Jump to Lightspeed (JTL)', file:'SWU-JTL.json' },
+          { key:'LOF', label:'Legacy of the Force (LOF)', file:'SWU-LOF.json' },
+        ]);
+        if (setKey !== 'LOF') setSetKey('LOF');
+      });
+  }, []);
 
   // Data variants
   const [cardsAll, setCardsAll] = useState<Card[]>([]);     // unique by Number (used to color pages)
@@ -221,8 +234,11 @@ export default function App() {
       setError(''); setQuery(''); setActive(null);
       setCardsAll([]); setCardsBase([]); setViewSpread(0);
 
-      const meta = SETS[setKey];
-      const res = await fetch(meta.file);
+      const meta = sets.find(s => s.key === setKey);
+      if (!meta) return;                         // nothing to load yet
+
+      const url = meta.file.startsWith('/') ? meta.file : `/sets/${meta.file}`;
+      const res = await fetch(url);
       const obj = await res.json();
       const data = Array.isArray(obj) ? obj : obj.data;
 
@@ -259,7 +275,7 @@ export default function App() {
       setAltToBase(altToBase);
     }
     load().catch(() => setError('Failed to load set data.'));
-  }, [setKey]);
+  }, [setKey, sets]);
 
   // Build coloring map + presence
   const presentNumbers = useMemo(() => new Set(cardsBase.map(c => c.Number)), [cardsBase]);
@@ -387,6 +403,8 @@ export default function App() {
     setQuery(''); setOpenSug(false);
   }
 
+  const setKeys = useMemo(() => sets.map(s => s.key as SetKey), [sets]);
+
   // Inventory helpers
   type InventoryAll = { version: 1; sets: Record<SetKey, Inventory> };
 
@@ -413,40 +431,31 @@ export default function App() {
     });
   }
   function exportAllInv() {
-    const payload: InventoryAll = {
-      version: 1,
-      sets: Object.fromEntries(SET_KEYS.map(k => [k, readSetInv(k)])) as Record<SetKey, Inventory>
+    const payload = {
+      version: 1 as const,
+      sets: Object.fromEntries(setKeys.map(k => [k, readSetInv(k)])) as Record<SetKey, Inventory>,
     };
-
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement('a');
     a.href = url;
     a.download = `SWU-Inventory-${tsStamp()}.json`;
-    a.style.display = 'none';
-    document.body.appendChild(a);
     a.click();
-
-    // cleanup
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-      a.remove();
-    }, 0);
+    URL.revokeObjectURL(url);
   }
 
   function importAllInv(file: File) {
     file.text().then(txt => {
       try {
         const raw = JSON.parse(txt);
-        const sets: Partial<Record<SetKey, Inventory>> =
-          raw?.version === 1 && raw?.sets ? raw.sets :
-          Object.fromEntries(SET_KEYS.map(k => [k, raw?.[k] || {}]));
+        const setsFromFile: Partial<Record<SetKey, Inventory>> =
+          raw?.version === 1 && raw?.sets ? raw.sets : {};
 
-        SET_KEYS.forEach(k => {
-          if (sets[k]) writeSetInv(k, pruneZeros(sets[k]!));
+        setKeys.forEach(k => {
+          const inv = setsFromFile[k] ?? {};
+          writeSetInv(k, pruneZeros(inv));
         });
-        if (sets[setKey]) setInventory(pruneZeros(sets[setKey]!));
+        if (setsFromFile[setKey]) setInventory(pruneZeros(setsFromFile[setKey]!));
       } catch {
         alert('Import failed: invalid JSON format.');
       }
@@ -536,8 +545,8 @@ export default function App() {
           <label className="pill">
             <span className="set-label">Set</span>
             <select value={setKey} onChange={e => { setSetKey(e.target.value as SetKey); }}>
-              {Object.entries(SETS).map(([k, v]) => (
-                <option key={k} value={k}>{v.label}</option>
+              {sets.map(s => (
+                <option key={s.key} value={s.key}>{s.label}</option>
               ))}
             </select>
           </label>

@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "update:sets": "node scripts/fetch-sets.mjs",
+    "update:sets:slim": "node scripts/fetch-sets.mjs --slim"
   },
   "dependencies": {
     "react": "^18.2.0",

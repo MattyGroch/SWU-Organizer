@@ -1,0 +1,34 @@
+{
+  "sets": [
+    {
+      "key": "SOR",
+      "label": "Spark of Rebellion (SOR)",
+      "file": "SWU-SOR.json"
+    },
+    {
+      "key": "SHD",
+      "label": "Shadows of the Galaxy (SHD)",
+      "file": "SWU-SHD.json"
+    },
+    {
+      "key": "TWI",
+      "label": "Twilight of the Republic (TWI)",
+      "file": "SWU-TWI.json"
+    },
+    {
+      "key": "JTL",
+      "label": "Jump to Lightspeed (JTL)",
+      "file": "SWU-JTL.json"
+    },
+    {
+      "key": "LOF",
+      "label": "Legacy of the Force (LOF)",
+      "file": "SWU-LOF.json"
+    },
+    {
+      "key": "SEC",
+      "label": "Secrets of Power (SEC)",
+      "file": "SWU-SEC.json"
+    }
+  ]
+}
