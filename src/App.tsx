@@ -39,8 +39,6 @@ function rarityGlyph(r?: string) {
   return RARITY_STYLE[r] ?? null;
 }
 
-const TOPLINE_Y = 18; // was ~16; bump as needed (18–20 looks good)
-
 function binderLayout(n: number) {
   const page = Math.floor((n - 1) / 12) + 1;
   const row = Math.floor(((n - 1) % 12) / 4) + 1;
@@ -66,6 +64,21 @@ export default function App() {
   const [setKey, setSetKey] = useState<SetKey>('LOF'); // default/fallback
   const searchRef = useRef<HTMLInputElement | null>(null);
   const importRef = useRef<HTMLInputElement>(null);
+
+  // toggle: search only current set vs all sets
+  const [searchAll, setSearchAll] = useState(false);
+
+  // cache parsed data for sets (so we don't refetch repeatedly)
+  type ParsedSet = {
+    key: string;
+    byNumber: Map<number, Card>;
+    baseToAll: Map<number, number[]>;
+    nameRows: Array<{ key: string; number: number; name: string; type?: string }>;
+  };
+  const parsedCacheRef = useRef<Map<string, ParsedSet>>(new Map());
+
+  // global index built when searchAll = true
+  const [globalNames, setGlobalNames] = useState<ParsedSet["nameRows"]>([]);
 
   useEffect(() => {
     fetch('/sets/manifest.json')
@@ -501,6 +514,11 @@ export default function App() {
 
       // Spread navigation + qty adjust (only when not typing)
       if (!typing) {
+            if (e.key === 'Escape') {
+          e.preventDefault();
+          setActive(null);
+          return;
+        }
         if (e.key === 'ArrowLeft') {
           e.preventDefault();
           setViewSpread(s => Math.max(0, s - 1));
