@@ -6,12 +6,8 @@
       "Number": "222",
       "Name": "A Precarious Predicament",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "TRICK"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["TRICK"],
       "Cost": "2",
       "FrontText": "Return an enemy non-leader unit to its owner's hand unless its controller says, \"It could be worse.\" If they do, you may play a card named It's Worse from your hand or resources for free.",
       "DoubleSided": false,
@@ -28,18 +24,9 @@
       "Number": "106",
       "Name": "Acclamator Assault Ship",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Command"
-      ],
-      "Traits": [
-        "REPUBLIC",
-        "VEHICLE",
-        "CAPITAL SHIP"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command", "Command"],
+      "Traits": ["REPUBLIC", "VEHICLE", "CAPITAL SHIP"],
+      "Arenas": ["Space"],
       "Cost": "7",
       "Power": "5",
       "HP": "8",
@@ -58,16 +45,9 @@
       "Number": "129",
       "Name": "Acolyte of the Beyond",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "SITH"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["SITH"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "3",
@@ -86,17 +66,9 @@
       "Number": "178",
       "Name": "Adept of Anger",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "1",
       "Power": "1",
       "HP": "3",
@@ -116,18 +88,9 @@
       "Name": "Adi Gallia",
       "Subtitle": "Stern and Focused",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "4",
@@ -147,17 +110,9 @@
       "Name": "Ahsoka Tano",
       "Subtitle": "Fighting For Peace",
       "Type": "Leader",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "5",
       "HP": "6",
@@ -168,9 +123,7 @@
       "BackText": "On Attack: You may give a friendly unit Sentinel for this phase.",
       "Rarity": "Common",
       "Unique": true,
-      "Keywords": [
-        "Sentinel"
-      ],
+      "Keywords": ["Sentinel"],
       "Artist": "Reno",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -182,13 +135,8 @@
       "Number": "042",
       "Name": "Always Two",
       "Type": "Event",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "SITH"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["SITH"],
       "Cost": "4",
       "FrontText": "Choose 2 friendly unique Sith units. If you do, give 2 Shield tokens and 2 Experience tokens to each chosen unit. Defeat all other friendly units.",
       "DoubleSided": false,
@@ -206,17 +154,9 @@
       "Name": "Anakin Skywalker",
       "Subtitle": "Tempted by the Dark Side",
       "Type": "Leader",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "4",
       "HP": "6",
@@ -239,17 +179,9 @@
       "Name": "Anakin Skywalker",
       "Subtitle": "Champion of Mortis",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "5",
       "HP": "7",
@@ -269,17 +201,9 @@
       "Name": "Anakin Skywalker",
       "Subtitle": "Force Prodigy",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "1",
       "Power": "1",
       "HP": "1",
@@ -287,10 +211,7 @@
       "DoubleSided": false,
       "Rarity": "Special",
       "Unique": true,
-      "Keywords": [
-        "Hidden",
-        "Shielded"
-      ],
+      "Keywords": ["Hidden", "Shielded"],
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -302,16 +223,9 @@
       "Number": "236",
       "Name": "Army of the Dead",
       "Type": "Unit",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "NIGHT",
-        "UNDEAD"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["NIGHT", "UNDEAD"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "7",
       "HP": "6",
@@ -330,13 +244,8 @@
       "Number": "188",
       "Name": "As I Have Foreseen",
       "Type": "Event",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "Look at the top card of your deck. You may use the Force (lose your Force token). If you do, play that card. It costs 4 less.",
       "DoubleSided": false,
@@ -354,17 +263,9 @@
       "Name": "Asajj Ventress",
       "Subtitle": "Harden Your Heart",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE",
-        "NIGHT",
-        "BOUNTY HUNTER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE", "NIGHT", "BOUNTY HUNTER"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "5",
       "HP": "6",
@@ -383,20 +284,14 @@
       "Number": "215",
       "Name": "Ascension Cable",
       "Type": "Upgrade",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "ITEM"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["ITEM"],
       "Cost": "2",
       "FrontText": "Attach to a non-Vehicle unit.\nAttached unit gains Saboteur. (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Saboteur"
-      ],
+      "Keywords": ["Saboteur"],
       "Artist": "Eslam AboShady",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -408,12 +303,8 @@
       "Number": "174",
       "Name": "Ataru Onslaught",
       "Type": "Event",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "LEARNED"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["LEARNED"],
       "Cost": "2",
       "FrontText": "Ready a Force unit with 4 or less power.",
       "DoubleSided": false,
@@ -430,16 +321,9 @@
       "Number": "143",
       "Name": "Attuned Fyrnock",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "4",
       "HP": "1",
@@ -447,9 +331,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -462,17 +344,9 @@
       "Name": "Aurra Sing",
       "Subtitle": "Patient and Deadly",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "UNDERWORLD",
-        "BOUNTY HUNTER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["UNDERWORLD", "BOUNTY HUNTER"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "1",
       "HP": "4",
@@ -480,10 +354,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Hidden",
-        "Raid"
-      ],
+      "Keywords": ["Hidden", "Raid"],
       "Artist": "Gabriel Gómez Almenzar",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -496,18 +367,9 @@
       "Name": "Avar Kriss",
       "Subtitle": "Marshal of Starlight",
       "Type": "Leader",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "9",
       "Power": "4",
       "HP": "10",
@@ -518,9 +380,7 @@
       "BackText": "While the Force is with you, this unit gets +4/+0 and gains Overwhelm.",
       "Rarity": "Rare",
       "Unique": true,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Robynn Frauhn",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -532,16 +392,9 @@
       "Number": "066",
       "Name": "Awakened Specters",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "NIGHT",
-        "UNDEAD"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["NIGHT", "UNDEAD"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "4",
       "HP": "5",
@@ -561,16 +414,9 @@
       "Name": "Axe Woves",
       "Subtitle": "Accomplished Warrior",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "MANDALORIAN",
-        "TROOPER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["MANDALORIAN", "TROOPER"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "2",
       "HP": "2",
@@ -578,9 +424,7 @@
       "DoubleSided": false,
       "Rarity": "Rare",
       "Unique": true,
-      "Keywords": [
-        "Shielded"
-      ],
+      "Keywords": ["Shielded"],
       "Artist": "Eslam AboShady",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -593,17 +437,9 @@
       "Name": "BD-1",
       "Subtitle": "Beep Boo Boo Bweep",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FRINGE",
-        "DROID"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FRINGE", "DROID"],
+      "Arenas": ["Ground"],
       "Cost": "1",
       "Power": "1",
       "HP": "3",
@@ -611,10 +447,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Hidden",
-        "Saboteur"
-      ],
+      "Keywords": ["Hidden", "Saboteur"],
       "Artist": "Kyle Petchock",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -627,15 +460,9 @@
       "Name": "Babu Frik",
       "Subtitle": "Heyyy!",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "UNDERWORLD"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["UNDERWORLD"],
+      "Arenas": ["Ground"],
       "Cost": "1",
       "Power": "1",
       "HP": "4",
@@ -654,18 +481,9 @@
       "Number": "181",
       "Name": "Banking Clan Shuttle",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "SEPARATIST",
-        "VEHICLE",
-        "TRANSPORT"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["SEPARATIST", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
       "Cost": "3",
       "Power": "3",
       "HP": "3",
@@ -673,9 +491,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Shane Molina",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -688,18 +504,9 @@
       "Name": "Barriss Offee",
       "Subtitle": "We Have Become Villains",
       "Type": "Leader",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "4",
       "HP": "7",
@@ -721,13 +528,8 @@
       "Number": "139",
       "Name": "Battle Fury",
       "Type": "Upgrade",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "INNATE"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["INNATE"],
       "Cost": "2",
       "FrontText": "Attached unit gains: “On Attack: Discard a card from your hand.”",
       "DoubleSided": false,
@@ -745,17 +547,9 @@
       "Name": "Baylan Skoll",
       "Subtitle": "Enigmatic Master",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "5",
       "HP": "5",
@@ -763,9 +557,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "David Buisan",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -778,16 +570,9 @@
       "Name": "Bendu",
       "Subtitle": "Do You Fear the Storm?",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE",
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE", "CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "8",
       "Power": "10",
       "HP": "10",
@@ -806,17 +591,9 @@
       "Number": "166",
       "Name": "Blockade Runner",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "REBEL",
-        "VEHICLE",
-        "CAPITAL SHIP"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["REBEL", "VEHICLE", "CAPITAL SHIP"],
+      "Arenas": ["Space"],
       "Cost": "5",
       "Power": "4",
       "HP": "4",
@@ -824,9 +601,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": false,
-      "Keywords": [
-        "Saboteur"
-      ],
+      "Keywords": ["Saboteur"],
       "Artist": "Francois Cannels",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -838,17 +613,9 @@
       "Number": "251",
       "Name": "Blue Squadron Assault Wing",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "REPUBLIC",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["REPUBLIC", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "5",
       "Power": "5",
       "HP": "5",
@@ -856,9 +623,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Raid"
-      ],
+      "Keywords": ["Raid"],
       "Artist": "Kursad Karatas",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -870,12 +635,8 @@
       "Number": "074",
       "Name": "Bolstered Endurance",
       "Type": "Upgrade",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "Attach to a Force unit.",
       "DoubleSided": false,
@@ -893,17 +654,9 @@
       "Name": "Cal Kestis",
       "Subtitle": "I Can't Keep Hiding",
       "Type": "Leader",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "3",
       "HP": "4",
@@ -925,13 +678,8 @@
       "Number": "054",
       "Name": "Calm in the Storm",
       "Type": "Event",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["FORCE"],
       "Cost": "2",
       "FrontText": "Exhaust a friendly unit. If you do, give a Shield token and 2 Experience tokens to it.",
       "DoubleSided": false,
@@ -949,17 +697,9 @@
       "Name": "Captain Enoch",
       "Subtitle": "Captain of the Guard",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "IMPERIAL",
-        "TROOPER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["IMPERIAL", "TROOPER"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "1",
       "HP": "5",
@@ -978,15 +718,9 @@
       "Number": "243",
       "Name": "Caretaker Matron",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "0",
       "HP": "4",
@@ -1005,17 +739,9 @@
       "Number": "157",
       "Name": "Cartel Interceptor",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "UNDERWORLD",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["UNDERWORLD", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "3",
       "Power": "2",
       "HP": "3",
@@ -1023,9 +749,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Raid"
-      ],
+      "Keywords": ["Raid"],
       "Artist": "Space Goose",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1037,15 +761,9 @@
       "Number": "210",
       "Name": "Charging Phillak",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "3",
       "HP": "4",
@@ -1053,10 +771,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Ambush",
-        "Hidden"
-      ],
+      "Keywords": ["Ambush", "Hidden"],
       "Artist": "Kyle Petchock",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1069,16 +784,9 @@
       "Name": "Chirrut Îmwe",
       "Subtitle": "Blind, but not Deaf",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "3",
       "HP": "5",
@@ -1086,9 +794,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Sentinel"
-      ],
+      "Keywords": ["Sentinel"],
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1101,18 +807,9 @@
       "Name": "Cin Drallig",
       "Subtitle": "Esteemed Blademaster",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "8",
       "Power": "5",
       "HP": "6",
@@ -1132,11 +829,7 @@
       "Name": "Constructed Lightsaber",
       "Type": "Upgrade",
       "Aspects": [],
-      "Traits": [
-        "ITEM",
-        "WEAPON",
-        "LIGHTSABER"
-      ],
+      "Traits": ["ITEM", "WEAPON", "LIGHTSABER"],
       "Cost": "3",
       "FrontText": "Attach to a Force unit. \nIf attached unit is a Heroism unit, it gains Restore 2. \nIf attached unit is a Villainy unit, it gains Raid 2. \nIf attached unit is a non-Heroism, non-Villainy unit, it gains Sentinel.",
       "DoubleSided": false,
@@ -1153,12 +846,8 @@
       "Number": "239",
       "Name": "Consumed by the Dark Side",
       "Type": "Event",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["FORCE"],
       "Cost": "2",
       "FrontText": "Give 2 Experience tokens to a unit, then deal 2 damage to it.",
       "DoubleSided": false,
@@ -1175,15 +864,8 @@
       "Number": "187",
       "Name": "Corrupted Saber",
       "Type": "Upgrade",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "ITEM",
-        "WEAPON",
-        "LIGHTSABER"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["ITEM", "WEAPON", "LIGHTSABER"],
       "Cost": "2",
       "FrontText": "Attach to a non-Vehicle unit.\nIf attached unit is a Force unit, it gains: “On Attack: The defender gets –2/–0 for this attack.”",
       "DoubleSided": false,
@@ -1200,13 +882,8 @@
       "Number": "091",
       "Name": "Craving Power",
       "Type": "Upgrade",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "INNATE"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["INNATE"],
       "Cost": "5",
       "FrontText": "Attach to a friendly unit.\nWhen Played: Deal damage to an enemy unit equal to attached unit's power.",
       "DoubleSided": false,
@@ -1223,12 +900,8 @@
       "Number": "077",
       "Name": "Crushing Blow",
       "Type": "Event",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "TACTIC"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["TACTIC"],
       "Cost": "3",
       "FrontText": "Defeat a non-leader unit that costs 2 or less.",
       "DoubleSided": false,
@@ -1246,9 +919,7 @@
       "Name": "Crystal Caves",
       "Subtitle": "Ilum",
       "Type": "Base",
-      "Aspects": [
-        "Cunning"
-      ],
+      "Aspects": ["Cunning"],
       "HP": "28",
       "FrontText": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -1265,12 +936,8 @@
       "Number": "075",
       "Name": "Cure Wounds",
       "Type": "Event",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "Use the Force (lose your Force token). If you do, heal 6 damage from a unit.",
       "DoubleSided": false,
@@ -1288,12 +955,8 @@
       "Name": "Curious Flock",
       "Type": "Unit",
       "Aspects": [],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "1",
       "Power": "1",
       "HP": "1",
@@ -1312,15 +975,9 @@
       "Number": "155",
       "Name": "DRK-1 Probe Droid",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "DROID"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["DROID"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "3",
@@ -1339,15 +996,9 @@
       "Number": "115",
       "Name": "Dagoyan Master",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["FORCE"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "5",
       "HP": "5",
@@ -1367,16 +1018,9 @@
       "Name": "Darth Malak",
       "Subtitle": "Covetous Apprentice",
       "Type": "Unit",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "SITH"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["FORCE", "SITH"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "4",
       "HP": "7",
@@ -1384,9 +1028,7 @@
       "DoubleSided": false,
       "Rarity": "Legendary",
       "Unique": true,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1399,17 +1041,9 @@
       "Name": "Darth Maul",
       "Subtitle": "Sith Revealed",
       "Type": "Leader",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "SITH"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["FORCE", "SITH"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "5",
       "HP": "6",
@@ -1431,15 +1065,8 @@
       "Number": "140",
       "Name": "Darth Maul's Lightsaber",
       "Type": "Upgrade",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "ITEM",
-        "WEAPON",
-        "LIGHTSABER"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["ITEM", "WEAPON", "LIGHTSABER"],
       "Cost": "3",
       "FrontText": "Attach to a friendly non-Vehicle unit.\nWhen Played: If attached unit is Darth Maul, you may attack with him. For this attack, he gains Overwhelm and can't attack bases.",
       "DoubleSided": false,
@@ -1457,16 +1084,9 @@
       "Name": "Darth Revan",
       "Subtitle": "Scourge of the Old Republic",
       "Type": "Leader",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "SITH"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["FORCE", "SITH"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "3",
       "HP": "6",
@@ -1477,9 +1097,7 @@
       "BackText": "Restore 1 \nWhen a friendly unit attacks and defeats a unit: You may give an Experience token to that friendly unit.",
       "Rarity": "Rare",
       "Unique": true,
-      "Keywords": [
-        "Restore"
-      ],
+      "Keywords": ["Restore"],
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1491,22 +1109,14 @@
       "Number": "238",
       "Name": "Darth Revan's Lightsaber",
       "Type": "Upgrade",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "ITEM",
-        "WEAPON",
-        "LIGHTSABER"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["ITEM", "WEAPON", "LIGHTSABER"],
       "Cost": "2",
       "FrontText": "Attach to a non-Vehicle unit. \nIf attached unit is a Sith, it gains Grit.",
       "DoubleSided": false,
       "Rarity": "Rare",
       "Unique": true,
-      "Keywords": [
-        "Grit"
-      ],
+      "Keywords": ["Grit"],
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1519,18 +1129,9 @@
       "Name": "Darth Sidious",
       "Subtitle": "The Phantom Menace",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "SEPARATIST",
-        "SITH"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["FORCE", "SEPARATIST", "SITH"],
+      "Arenas": ["Ground"],
       "Cost": "8",
       "Power": "6",
       "HP": "8",
@@ -1538,9 +1139,7 @@
       "DoubleSided": false,
       "Rarity": "Special",
       "Unique": true,
-      "Keywords": [
-        "Restore"
-      ],
+      "Keywords": ["Restore"],
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1553,17 +1152,9 @@
       "Name": "Darth Tyranus",
       "Subtitle": "Servant of Sidious",
       "Type": "Unit",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "SEPARATIST",
-        "SITH"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["FORCE", "SEPARATIST", "SITH"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "4",
       "HP": "3",
@@ -1571,10 +1162,7 @@
       "DoubleSided": false,
       "Rarity": "Special",
       "Unique": true,
-      "Keywords": [
-        "Ambush",
-        "Shielded"
-      ],
+      "Keywords": ["Ambush", "Shielded"],
       "Artist": "Pius Bak",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1587,18 +1175,9 @@
       "Name": "Darth Vader",
       "Subtitle": "Twilight of the Apprentice",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "IMPERIAL",
-        "SITH"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["FORCE", "IMPERIAL", "SITH"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "5",
       "HP": "6",
@@ -1617,13 +1196,8 @@
       "Number": "141",
       "Name": "Death Field",
       "Type": "Event",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["FORCE"],
       "Cost": "4",
       "FrontText": "Deal 2 damage to each non-Vehicle enemy unit. If you control a Force unit, draw a card.",
       "DoubleSided": false,
@@ -1640,17 +1214,9 @@
       "Number": "180",
       "Name": "Deceptive Shade",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "SITH",
-        "UNDEAD"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["SITH", "UNDEAD"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "3",
@@ -1658,9 +1224,7 @@
       "DoubleSided": false,
       "Rarity": "Rare",
       "Unique": false,
-      "Keywords": [
-        "Ambush"
-      ],
+      "Keywords": ["Ambush"],
       "Artist": "Jakub Rebelka",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1673,18 +1237,9 @@
       "Name": "Depa Billaba",
       "Subtitle": "A Higher Purpose",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "5",
       "HP": "7",
@@ -1692,10 +1247,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Ambush",
-        "Saboteur"
-      ],
+      "Keywords": ["Ambush", "Saboteur"],
       "Artist": "Mali Vasanserekul",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1707,12 +1259,8 @@
       "Number": "123",
       "Name": "Directed by the Force",
       "Type": "Event",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "The Force is with you (create your Force token). You may play a unit from your hand (paying its cost).",
       "DoubleSided": false,
@@ -1729,12 +1277,8 @@
       "Number": "216",
       "Name": "Disturbance in the Force",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "If a friendly unit left play this phase, the Force is with you (create your Force token) and you may give a Shield token to a unit.",
       "DoubleSided": false,
@@ -1751,12 +1295,8 @@
       "Number": "175",
       "Name": "Do or Do Not",
       "Type": "Event",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE"],
       "Cost": "2",
       "FrontText": "You may use the Force (lose your Force token). If you do, draw 2 cards. If you do not, draw a card.",
       "DoubleSided": false,
@@ -1774,16 +1314,9 @@
       "Name": "Dooku",
       "Subtitle": "It is Too Late",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "5",
       "HP": "4",
@@ -1791,9 +1324,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1805,13 +1336,8 @@
       "Number": "041",
       "Name": "Drain Essence",
       "Type": "Event",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["FORCE"],
       "Cost": "2",
       "FrontText": "Deal 2 damage to a unit. The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -1828,16 +1354,9 @@
       "Number": "086",
       "Name": "Drengir Spawn",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "3",
       "HP": "3",
@@ -1845,9 +1364,7 @@
       "DoubleSided": false,
       "Rarity": "Rare",
       "Unique": false,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1860,17 +1377,9 @@
       "Name": "Dume",
       "Subtitle": "Redeem the Future",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE",
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Vigilance"],
+      "Traits": ["FORCE", "CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "2",
       "HP": "7",
@@ -1890,18 +1399,9 @@
       "Name": "Eeth Koth",
       "Subtitle": "Spiritual Warrior",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "5",
       "HP": "4",
@@ -1921,18 +1421,9 @@
       "Name": "Eighth Brother",
       "Subtitle": "Hunt Together",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "IMPERIAL",
-        "INQUISITOR"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["FORCE", "IMPERIAL", "INQUISITOR"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "5",
       "HP": "7",
@@ -1940,9 +1431,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Ambush"
-      ],
+      "Keywords": ["Ambush"],
       "Artist": "Baldemar Rivas",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1954,19 +1443,9 @@
       "Number": "080",
       "Name": "Exegol Patroller",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "FIRST ORDER",
-        "SITH",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["FIRST ORDER", "SITH", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "2",
       "Power": "3",
       "HP": "1",
@@ -1974,9 +1453,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -1989,18 +1466,9 @@
       "Name": "Eye of Sion",
       "Subtitle": "To Peridea",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "IMPERIAL",
-        "VEHICLE",
-        "TRANSPORT"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["IMPERIAL", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
       "Cost": "6",
       "Power": "4",
       "HP": "7",
@@ -2008,12 +1476,7 @@
       "DoubleSided": false,
       "Rarity": "Rare",
       "Unique": true,
-      "Keywords": [
-        "Ambush",
-        "Hidden",
-        "Overwhelm",
-        "Restore"
-      ],
+      "Keywords": ["Ambush", "Hidden", "Overwhelm", "Restore"],
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2026,19 +1489,9 @@
       "Name": "Ezra Bridger",
       "Subtitle": "Attuned With Life",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REBEL",
-        "SPECTRE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REBEL", "SPECTRE"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "5",
@@ -2057,16 +1510,9 @@
       "Number": "230",
       "Name": "Fallen Jedi",
       "Type": "Unit",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "4",
@@ -2085,12 +1531,8 @@
       "Number": "240",
       "Name": "Flight of the Inquisitor",
       "Type": "Event",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "TACTIC"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["TACTIC"],
       "Cost": "2",
       "FrontText": "You may return a Force unit and a Lightsaber upgrade from your discard pile to your hand.",
       "DoubleSided": false,
@@ -2107,22 +1549,14 @@
       "Number": "152",
       "Name": "Focus Determines Reality",
       "Type": "Event",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["FORCE"],
       "Cost": "2",
       "FrontText": "Each friendly Force unit gains Raid 1 and Saboteur for this phase.",
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": false,
-      "Keywords": [
-        "Raid",
-        "Saboteur"
-      ],
+      "Keywords": ["Raid", "Saboteur"],
       "Artist": "Milos Slavkovic",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2134,13 +1568,8 @@
       "Number": "103",
       "Name": "Following the Path",
       "Type": "Event",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "PLAN"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["PLAN"],
       "Cost": "1",
       "FrontText": "Search the top 8 cards of your deck for up to 2 Force units, reveal them, and put them on top of your deck in any order. (Put the other cards on the bottom of your deck in a random order.)",
       "DoubleSided": false,
@@ -2157,21 +1586,14 @@
       "Number": "223",
       "Name": "Force Illusion",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE",
-        "TRICK"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE", "TRICK"],
       "Cost": "2",
       "FrontText": "Exhaust an enemy unit. A friendly unit gains Sentinel for this phase.",
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": false,
-      "Keywords": [
-        "Sentinel"
-      ],
+      "Keywords": ["Sentinel"],
       "Artist": "Reno",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2183,12 +1605,8 @@
       "Number": "217",
       "Name": "Force Slow",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "Give an exhausted unit -8/-0 for this phase.",
       "DoubleSided": false,
@@ -2205,13 +1623,8 @@
       "Number": "205",
       "Name": "Force Speed",
       "Type": "Event",
-      "Aspects": [
-        "Cunning",
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Cunning", "Cunning"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "Attack with a unit. For this attack, it gains: “On Attack: Return any number of non-unique (non-unique) upgrades attached to the defender to their owners' hands.”",
       "DoubleSided": false,
@@ -2228,17 +1641,9 @@
       "Number": "228",
       "Name": "Forged Starfighter",
       "Type": "Unit",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "SITH",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["SITH", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "1",
       "Power": "1",
       "HP": "1",
@@ -2246,10 +1651,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Hidden",
-        "Raid"
-      ],
+      "Keywords": ["Hidden", "Raid"],
       "Artist": "Kyle Petchock",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2262,9 +1664,7 @@
       "Name": "Fortress Vader",
       "Subtitle": "Mustafar",
       "Type": "Base",
-      "Aspects": [
-        "Aggression"
-      ],
+      "Aspects": ["Aggression"],
       "HP": "28",
       "FrontText": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -2282,13 +1682,8 @@
       "Name": "Gifted Urchin",
       "Type": "Unit",
       "Aspects": [],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "1",
       "HP": "4",
@@ -2308,9 +1703,7 @@
       "Name": "Go Into Hiding",
       "Type": "Event",
       "Aspects": [],
-      "Traits": [
-        "LEARNED"
-      ],
+      "Traits": ["LEARNED"],
       "Cost": "2",
       "FrontText": "Choose a unit. It can't be attacked this phase (unless it has Sentinel).",
       "DoubleSided": false,
@@ -2327,15 +1720,9 @@
       "Number": "069",
       "Name": "Graceful Purrgil",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Space"],
       "Cost": "5",
       "Power": "2",
       "HP": "7",
@@ -2343,9 +1730,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Sentinel"
-      ],
+      "Keywords": ["Sentinel"],
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2358,18 +1743,9 @@
       "Name": "Grand Inquisitor",
       "Subtitle": "Stories Travel Quickly",
       "Type": "Leader",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "IMPERIAL",
-        "INQUISITOR"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["FORCE", "IMPERIAL", "INQUISITOR"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "3",
       "HP": "5",
@@ -2380,9 +1756,7 @@
       "BackText": "Shielded (When you deploy this leader, give a Shield token to him.)\nOn Attack: The defender gets -2/-0 for this attack.",
       "Rarity": "Common",
       "Unique": true,
-      "Keywords": [
-        "Shielded"
-      ],
+      "Keywords": ["Shielded"],
       "Artist": "Gabriel Gómez Almenzar",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2395,18 +1769,9 @@
       "Name": "Grand Inquisitor",
       "Subtitle": "You're Right to Be Afraid",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "IMPERIAL",
-        "INQUISITOR"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["FORCE", "IMPERIAL", "INQUISITOR"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "4",
@@ -2414,10 +1779,7 @@
       "DoubleSided": false,
       "Rarity": "Legendary",
       "Unique": true,
-      "Keywords": [
-        "Hidden",
-        "Raid"
-      ],
+      "Keywords": ["Hidden", "Raid"],
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2429,15 +1791,9 @@
       "Number": "071",
       "Name": "Grappling Guardian",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Space"],
       "Cost": "7",
       "Power": "3",
       "HP": "9",
@@ -2457,15 +1813,9 @@
       "Name": "Grogu",
       "Subtitle": "Mysterious Child",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["FORCE"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "1",
       "HP": "6",
@@ -2473,9 +1823,7 @@
       "DoubleSided": false,
       "Rarity": "Legendary",
       "Unique": true,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Joshua Carson",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2487,16 +1835,9 @@
       "Number": "058",
       "Name": "Guardian of the Whills",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "2",
@@ -2515,16 +1856,9 @@
       "Number": "247",
       "Name": "Gungan Warrior",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "GUNGAN",
-        "TROOPER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["GUNGAN", "TROOPER"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "2",
@@ -2532,10 +1866,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Restore",
-        "Shielded"
-      ],
+      "Keywords": ["Restore", "Shielded"],
       "Artist": "Ivan Shavrin",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2548,18 +1879,9 @@
       "Name": "Gungi",
       "Subtitle": "Finding Himself",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "WOOKIEE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "WOOKIEE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "5",
@@ -2579,17 +1901,9 @@
       "Name": "HK-47",
       "Subtitle": "Exclamation: Die, Meatbag!",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "SITH",
-        "DROID"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["SITH", "DROID"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "4",
@@ -2608,16 +1922,9 @@
       "Number": "235",
       "Name": "HK-87 Assassin Droid",
       "Type": "Unit",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "IMPERIAL",
-        "DROID"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["IMPERIAL", "DROID"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "4",
       "HP": "4",
@@ -2636,13 +1943,8 @@
       "Number": "171",
       "Name": "Heavy Blaster Cannon",
       "Type": "Upgrade",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "ITEM",
-        "WEAPON"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["ITEM", "WEAPON"],
       "Cost": "4",
       "FrontText": "Attach to a non-Vehicle unit.\nWhen Played: You may deal 1 damage to a ground unit. Then, deal 1 damage to the same unit. Then, deal 1 damage to the same unit.",
       "DoubleSided": false,
@@ -2659,19 +1961,9 @@
       "Number": "134",
       "Name": "Heavy Missile Gunship",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "SEPARATIST",
-        "DROID",
-        "VEHICLE",
-        "TRANSPORT"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["SEPARATIST", "DROID", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
       "Cost": "4",
       "Power": "4",
       "HP": "3",
@@ -2690,23 +1982,14 @@
       "Number": "053",
       "Name": "Heirloom Lightsaber",
       "Type": "Upgrade",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "ITEM",
-        "WEAPON",
-        "LIGHTSABER"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["ITEM", "WEAPON", "LIGHTSABER"],
       "Cost": "2",
       "FrontText": "Attach to a non-Vehicle unit. \nIf attached unit is a Force unit, it gains Restore 1. (When this unit attacks, heal 1 damage from your base.)",
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Restore"
-      ],
+      "Keywords": ["Restore"],
       "Artist": "Amad Mir",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2718,17 +2001,9 @@
       "Number": "110",
       "Name": "Hive Defense Wing",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "SEPARATIST",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["SEPARATIST", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "3",
       "Power": "2",
       "HP": "4",
@@ -2736,9 +2011,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Restore"
-      ],
+      "Keywords": ["Restore"],
       "Artist": "Aarnoud De Rycker",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2750,15 +2023,9 @@
       "Number": "162",
       "Name": "Hunting Nexu",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "4",
       "HP": "4",
@@ -2766,9 +2033,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Raid"
-      ],
+      "Keywords": ["Raid"],
       "Artist": "Leonardo Giammichele",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2780,18 +2045,9 @@
       "Number": "158",
       "Name": "Hyena Bomber",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "SEPARATIST",
-        "DROID",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["SEPARATIST", "DROID", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "3",
       "Power": "2",
       "HP": "2",
@@ -2810,15 +2066,9 @@
       "Number": "119",
       "Name": "Hyperspace Wayfarer",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Space"],
       "Cost": "6",
       "Power": "4",
       "HP": "10",
@@ -2837,12 +2087,8 @@
       "Number": "218",
       "Name": "Impossible Escape",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "You may either exhaust a friendly unit or use the Force (lose your Force token). If you do either, exhaust an enemy unit and draw a card.",
       "DoubleSided": false,
@@ -2859,20 +2105,14 @@
       "Number": "241",
       "Name": "In the Shadows",
       "Type": "Event",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "PLAN"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["PLAN"],
       "Cost": "2",
       "FrontText": "Give an Experience token to each of up to 3 friendly units with Hidden.",
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2884,16 +2124,9 @@
       "Number": "156",
       "Name": "Infused Brawler ",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE",
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE", "NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "2",
@@ -2912,15 +2145,8 @@
       "Number": "090",
       "Name": "Inquisitor's Lightsaber",
       "Type": "Upgrade",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "ITEM",
-        "WEAPON",
-        "LIGHTSABER"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["ITEM", "WEAPON", "LIGHTSABER"],
       "Cost": "2",
       "FrontText": "Attach to a non-Vehicle unit.\nAttached unit gains: “While attacking a Force unit, this unit gets +2/+0.”",
       "DoubleSided": false,
@@ -2937,17 +2163,9 @@
       "Number": "169",
       "Name": "Invasion Control Ship",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "SEPARATIST",
-        "VEHICLE",
-        "CAPITAL SHIP"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["SEPARATIST", "VEHICLE", "CAPITAL SHIP"],
+      "Arenas": ["Space"],
       "Cost": "7",
       "Power": "5",
       "HP": "9",
@@ -2955,9 +2173,7 @@
       "DoubleSided": false,
       "Rarity": "Rare",
       "Unique": false,
-      "Keywords": [
-        "Raid"
-      ],
+      "Keywords": ["Raid"],
       "Artist": "Marko Fiedler",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -2970,9 +2186,7 @@
       "Name": "It's Worse",
       "Type": "Event",
       "Aspects": [],
-      "Traits": [
-        "TRICK"
-      ],
+      "Traits": ["TRICK"],
       "Cost": "7",
       "FrontText": "Defeat a non-leader unit.",
       "DoubleSided": false,
@@ -2989,17 +2203,9 @@
       "Number": "048",
       "Name": "Itinerant Warrior",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "4",
       "HP": "4",
@@ -3007,9 +2213,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Shielded"
-      ],
+      "Keywords": ["Shielded"],
       "Artist": "Mali Vasanserekul",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3021,18 +2225,9 @@
       "Number": "194",
       "Name": "J-Type Nubian Starship",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "NABOO",
-        "VEHICLE",
-        "TRANSPORT"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["NABOO", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
       "Cost": "3",
       "Power": "2",
       "HP": "4",
@@ -3051,17 +2246,9 @@
       "Number": "094",
       "Name": "Jedi Consular",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "1",
       "HP": "4",
@@ -3080,17 +2267,9 @@
       "Number": "049",
       "Name": "Jedi Guardian",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "4",
       "HP": "8",
@@ -3109,14 +2288,8 @@
       "Number": "051",
       "Name": "Jedi Holocron",
       "Type": "Upgrade",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "JEDI",
-        "ITEM"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["JEDI", "ITEM"],
       "Cost": "1",
       "FrontText": "Attach to a Force unit.\nAttached unit gains: “On Attack: You may heal 3 damage from another unit.”",
       "DoubleSided": false,
@@ -3133,16 +2306,9 @@
       "Number": "159",
       "Name": "Jedi In Hiding",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "3",
@@ -3150,9 +2316,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3164,17 +2328,9 @@
       "Number": "145",
       "Name": "Jedi Knight",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "3",
@@ -3193,17 +2349,9 @@
       "Number": "196",
       "Name": "Jedi Sentinel",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "5",
       "HP": "4",
@@ -3211,9 +2359,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Sentinel"
-      ],
+      "Keywords": ["Sentinel"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3225,19 +2371,9 @@
       "Number": "144",
       "Name": "Jedi Starfighter",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "JEDI",
-        "REPUBLIC",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["JEDI", "REPUBLIC", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "2",
       "Power": "1",
       "HP": "4",
@@ -3257,9 +2393,7 @@
       "Name": "Jedi Temple",
       "Subtitle": "Coruscant",
       "Type": "Base",
-      "Aspects": [
-        "Command"
-      ],
+      "Aspects": ["Command"],
       "HP": "28",
       "FrontText": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -3276,16 +2410,9 @@
       "Number": "113",
       "Name": "Jedi Temple Guards",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "2",
       "HP": "4",
@@ -3293,10 +2420,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Ambush",
-        "Restore"
-      ],
+      "Keywords": ["Ambush", "Restore"],
       "Artist": "Salomé Goré",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3308,14 +2432,8 @@
       "Number": "052",
       "Name": "Jedi Trials",
       "Type": "Upgrade",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "JEDI",
-        "LEARNED"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["JEDI", "LEARNED"],
       "Cost": "1",
       "FrontText": "Attach to a Force unit.\nAttached unit gains: “On Attack: Give an Experience token to this unit.”\nWhile attached unit has 4 or more upgrades on it, it gains the Jedi trait.",
       "DoubleSided": false,
@@ -3332,17 +2450,9 @@
       "Number": "244",
       "Name": "Jedi Vector",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "JEDI",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["JEDI", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "2",
       "Power": "1",
       "HP": "3",
@@ -3362,17 +2472,9 @@
       "Name": "Jocasta Nu",
       "Subtitle": "The Gift of Knowledge",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "4",
@@ -3391,15 +2493,9 @@
       "Number": "114",
       "Name": "Kaadu",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "4",
       "HP": "4",
@@ -3407,9 +2503,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3422,19 +2516,9 @@
       "Name": "Kanan Jarrus",
       "Subtitle": "Help Us Survive",
       "Type": "Leader",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REBEL",
-        "SPECTRE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REBEL", "SPECTRE"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "3",
       "HP": "6",
@@ -3445,9 +2529,7 @@
       "BackText": "Shielded (When you deploy this leader, give a Shield token to him.)\nWhile you control another Creature or Spectre unit, this unit gets +2/+2.",
       "Rarity": "Rare",
       "Unique": true,
-      "Keywords": [
-        "Shielded"
-      ],
+      "Keywords": ["Shielded"],
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3460,17 +2542,9 @@
       "Name": "Karis",
       "Subtitle": "We Don't Like Strangers",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["FORCE", "NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "4",
@@ -3490,18 +2564,9 @@
       "Name": "Kelleran Beq",
       "Subtitle": "The Sabered Hand",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "7",
       "Power": "7",
       "HP": "7",
@@ -3521,18 +2586,9 @@
       "Name": "Ki-Adi-Mundi",
       "Subtitle": "We Must Push On",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "4",
       "HP": "4",
@@ -3552,18 +2608,9 @@
       "Name": "Kit Fisto",
       "Subtitle": "Focused Jedi Master",
       "Type": "Leader",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "1",
       "HP": "6",
@@ -3574,9 +2621,7 @@
       "BackText": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)\nThis unit gets +1/+0 for each other friendly Jedi unit.",
       "Rarity": "Common",
       "Unique": true,
-      "Keywords": [
-        "Saboteur"
-      ],
+      "Keywords": ["Saboteur"],
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3589,19 +2634,9 @@
       "Name": "Kit Fisto's Aethersprite",
       "Subtitle": "Good Hunting",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "JEDI",
-        "REPUBLIC",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["JEDI", "REPUBLIC", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "5",
       "Power": "4",
       "HP": "5",
@@ -3609,9 +2644,7 @@
       "DoubleSided": false,
       "Rarity": "Rare",
       "Unique": true,
-      "Keywords": [
-        "Saboteur"
-      ],
+      "Keywords": ["Saboteur"],
       "Artist": "Francois Cannels",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3623,16 +2656,9 @@
       "Number": "084",
       "Name": "Knight of Ren",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "FIRST ORDER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["FIRST ORDER"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "4",
       "HP": "4",
@@ -3651,15 +2677,8 @@
       "Number": "151",
       "Name": "Knight's Saber",
       "Type": "Upgrade",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "ITEM",
-        "WEAPON",
-        "LIGHTSABER"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["ITEM", "WEAPON", "LIGHTSABER"],
       "Cost": "2",
       "FrontText": "Attach to a Jedi non-Vehicle unit.",
       "DoubleSided": false,
@@ -3677,12 +2696,8 @@
       "Name": "Kowakian Monkey-Lizard",
       "Type": "Unit",
       "Aspects": [],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "1",
@@ -3690,9 +2705,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Ambush"
-      ],
+      "Keywords": ["Ambush"],
       "Artist": "Ivan Shavrin",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3705,17 +2718,9 @@
       "Name": "Kylo Ren",
       "Subtitle": "We're Not Done Yet",
       "Type": "Leader",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "FIRST ORDER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["FORCE", "FIRST ORDER"],
+      "Arenas": ["Ground"],
       "Cost": "7",
       "Power": "5",
       "HP": "5",
@@ -3738,16 +2743,9 @@
       "Name": "Kylo Ren",
       "Subtitle": "I Know Your Story",
       "Type": "Unit",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "FIRST ORDER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["FORCE", "FIRST ORDER"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "3",
@@ -3755,9 +2753,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3769,15 +2765,8 @@
       "Number": "040",
       "Name": "Kylo Ren's Lightsaber",
       "Type": "Upgrade",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "ITEM",
-        "WEAPON",
-        "LIGHTSABER"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["ITEM", "WEAPON", "LIGHTSABER"],
       "Cost": "2",
       "FrontText": "Attach to a non-Vehicle unit.\nIf attached unit is a Force unit, it gains: “This unit can't be exhausted by enemy card abilities.”",
       "DoubleSided": false,
@@ -3795,9 +2784,7 @@
       "Name": "Last Words",
       "Type": "Event",
       "Aspects": [],
-      "Traits": [
-        "LEARNED"
-      ],
+      "Traits": ["LEARNED"],
       "Cost": "2",
       "FrontText": "If a friendly unit was defeated this phase, give 2 Experience tokens to a unit.",
       "DoubleSided": false,
@@ -3815,18 +2802,9 @@
       "Name": "Leia Organa",
       "Subtitle": "Extraordinary",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "RESISTANCE",
-        "OFFICIAL"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["FORCE", "RESISTANCE", "OFFICIAL"],
+      "Arenas": ["Space"],
       "Cost": "5",
       "Power": "5",
       "HP": "5",
@@ -3845,13 +2823,8 @@
       "Number": "189",
       "Name": "Liberated by Darkness",
       "Type": "Event",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["FORCE"],
       "Cost": "5",
       "FrontText": "Use the Force (lose your Force token). If you do, take control of a non-leader unit. At the start of the regroup phase, its owner takes control of it.",
       "DoubleSided": false,
@@ -3868,15 +2841,9 @@
       "Number": "212",
       "Name": "Life Wind Sage",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "3",
       "HP": "5",
@@ -3884,9 +2851,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Raid"
-      ],
+      "Keywords": ["Raid"],
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3898,12 +2863,8 @@
       "Number": "176",
       "Name": "Lightsaber Throw",
       "Type": "Event",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "TACTIC"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["TACTIC"],
       "Cost": "2",
       "FrontText": "Discard a Lightsaber card from your hand. If you do, deal 4 damage to a ground unit and draw a card.",
       "DoubleSided": false,
@@ -3920,17 +2881,9 @@
       "Number": "253",
       "Name": "Longbeam Cruiser",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "REPUBLIC",
-        "VEHICLE",
-        "CAPITAL SHIP"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["REPUBLIC", "VEHICLE", "CAPITAL SHIP"],
+      "Arenas": ["Space"],
       "Cost": "6",
       "Power": "6",
       "HP": "6",
@@ -3938,9 +2891,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Restore"
-      ],
+      "Keywords": ["Restore"],
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -3953,16 +2904,9 @@
       "Name": "Lor San Tekka",
       "Subtitle": "Secret Keeper",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "RESISTANCE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["RESISTANCE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "3",
       "HP": "2",
@@ -3981,15 +2925,9 @@
       "Number": "207",
       "Name": "Loth-Cat",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "4",
@@ -4008,16 +2946,9 @@
       "Number": "044",
       "Name": "Loth-Wolf",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "3",
       "HP": "3",
@@ -4025,9 +2956,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Sentinel"
-      ],
+      "Keywords": ["Sentinel"],
       "Artist": "Leonardo Giammichele",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4040,16 +2969,9 @@
       "Name": "Luke Skywalker",
       "Subtitle": "A Hero's Beginning",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "3",
       "HP": "5",
@@ -4068,13 +2990,8 @@
       "Number": "104",
       "Name": "Luminous Beings",
       "Type": "Event",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["FORCE"],
       "Cost": "6",
       "FrontText": "Put up to 3 Force units from your discard pile on the bottom of your deck in a random order. Give that many units +4/+4 for this phase.",
       "DoubleSided": false,
@@ -4092,15 +3009,9 @@
       "Name": "Luthen Rael",
       "Subtitle": "Masquerading Antiquarian",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "REBEL"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["REBEL"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "4",
       "HP": "5",
@@ -4120,18 +3031,9 @@
       "Name": "Mace Windu",
       "Subtitle": "Leaping into Action",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "6",
       "HP": "6",
@@ -4139,9 +3041,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Eduardo Mello - Nikola Righi",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4153,17 +3053,9 @@
       "Number": "032",
       "Name": "Magistrate's Scout",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "IMPERIAL",
-        "TROOPER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["IMPERIAL", "TROOPER"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "2",
       "HP": "4",
@@ -4171,9 +3063,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Restore"
-      ],
+      "Keywords": ["Restore"],
       "Artist": "Kyle Petchock",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4186,15 +3076,9 @@
       "Name": "Malakili",
       "Subtitle": "Loving Rancor Keeper",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "UNDERWORLD"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["UNDERWORLD"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "1",
       "HP": "4",
@@ -4214,17 +3098,9 @@
       "Name": "Marchion Ro",
       "Subtitle": "Eye of the Nihil",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "UNDERWORLD",
-        "NIHIL"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["UNDERWORLD", "NIHIL"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "6",
       "HP": "7",
@@ -4232,9 +3108,7 @@
       "DoubleSided": false,
       "Rarity": "Legendary",
       "Unique": true,
-      "Keywords": [
-        "Raid"
-      ],
+      "Keywords": ["Raid"],
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4247,15 +3121,9 @@
       "Name": "Maz Kanata",
       "Subtitle": "The Light Guides",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "UNDERWORLD"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["UNDERWORLD"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "4",
@@ -4274,17 +3142,9 @@
       "Number": "250",
       "Name": "Medical Frigate",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "REPUBLIC",
-        "VEHICLE",
-        "CAPITAL SHIP"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["REPUBLIC", "VEHICLE", "CAPITAL SHIP"],
+      "Arenas": ["Space"],
       "Cost": "4",
       "Power": "3",
       "HP": "6",
@@ -4304,16 +3164,9 @@
       "Name": "Merrin",
       "Subtitle": "Alone with the Dead",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE",
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE", "NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "2",
       "HP": "5",
@@ -4332,14 +3185,8 @@
       "Number": "202",
       "Name": "Mind Trick",
       "Type": "Event",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "TRICK"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE", "TRICK"],
       "Cost": "2",
       "FrontText": "Exhaust any number of units with a combined power of 4 or less. If you control a Force unit, those units lose all abilities and can't gain abilities for this phase.",
       "DoubleSided": false,
@@ -4357,18 +3204,9 @@
       "Name": "Morgan Elsbeth",
       "Subtitle": "Following the Call",
       "Type": "Leader",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "IMPERIAL",
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["FORCE", "IMPERIAL", "NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "3",
       "HP": "6",
@@ -4391,17 +3229,9 @@
       "Name": "Mother Talzin",
       "Subtitle": "Power Through Magick",
       "Type": "Leader",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["FORCE", "NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "3",
       "HP": "7",
@@ -4423,15 +3253,9 @@
       "Number": "109",
       "Name": "Mynock",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Space"],
       "Cost": "2",
       "Power": "2",
       "HP": "3",
@@ -4439,9 +3263,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Agus Setiawan",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4453,16 +3275,9 @@
       "Number": "208",
       "Name": "Mysterious Hermit",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "1",
       "HP": "4",
@@ -4470,9 +3285,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Ambush"
-      ],
+      "Keywords": ["Ambush"],
       "Artist": "Nabetse Zitro",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4485,9 +3298,7 @@
       "Name": "Mystic Monastery",
       "Subtitle": "Mortis",
       "Type": "Base",
-      "Aspects": [
-        "Command"
-      ],
+      "Aspects": ["Command"],
       "HP": "25",
       "FrontText": "Action: The Force is with you (create your Force token). Use this ability no more than 3 times each game.",
       "DoubleSided": false,
@@ -4505,16 +3316,9 @@
       "Name": "Mythosaur",
       "Subtitle": "Folklore Awakened",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "MANDALORIAN",
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["MANDALORIAN", "CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "9",
       "Power": "10",
       "HP": "10",
@@ -4522,9 +3326,7 @@
       "DoubleSided": false,
       "Rarity": "Legendary",
       "Unique": true,
-      "Keywords": [
-        "Shielded"
-      ],
+      "Keywords": ["Shielded"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4536,18 +3338,9 @@
       "Number": "192",
       "Name": "N-1 Starfighter",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "NABOO",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["NABOO", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "2",
       "Power": "3",
       "HP": "2",
@@ -4566,16 +3359,9 @@
       "Number": "033",
       "Name": "Nameless Terror",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "3",
@@ -4595,9 +3381,7 @@
       "Name": "Nightsister Lair",
       "Subtitle": "Dathomir",
       "Type": "Base",
-      "Aspects": [
-        "Vigilance"
-      ],
+      "Aspects": ["Vigilance"],
       "HP": "28",
       "FrontText": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -4614,16 +3398,9 @@
       "Number": "059",
       "Name": "Nightsister Warrior",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE",
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FORCE", "NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "2",
@@ -4642,18 +3419,9 @@
       "Number": "182",
       "Name": "Nihil Marauder",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "UNDERWORLD",
-        "TROOPER",
-        "NIHIL"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["UNDERWORLD", "TROOPER", "NIHIL"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "1",
       "HP": "5",
@@ -4661,9 +3429,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Raid"
-      ],
+      "Keywords": ["Raid"],
       "Artist": "Facundo Moyano",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4675,12 +3441,8 @@
       "Number": "124",
       "Name": "Niman Strike",
       "Type": "Event",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "LEARNED"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["LEARNED"],
       "Cost": "1",
       "FrontText": "Attack with a Force unit, even if it's exhausted. It gets +1/+0 and can't attack bases for this attack.",
       "DoubleSided": false,
@@ -4698,18 +3460,9 @@
       "Name": "Obi-Wan Kenobi",
       "Subtitle": "Courage Makes Heroes",
       "Type": "Leader",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "3",
       "HP": "6",
@@ -4732,18 +3485,9 @@
       "Name": "Obi-Wan Kenobi",
       "Subtitle": "Protective Padawan",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "5",
@@ -4751,9 +3495,7 @@
       "DoubleSided": false,
       "Rarity": "Special",
       "Unique": true,
-      "Keywords": [
-        "Sentinel"
-      ],
+      "Keywords": ["Sentinel"],
       "Artist": "Sandra Chlewińska",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4766,15 +3508,9 @@
       "Name": "Oggdo Bogdo",
       "Subtitle": "Bogano Brute",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "5",
       "HP": "5",
@@ -4794,17 +3530,9 @@
       "Name": "Old Daka",
       "Subtitle": "Oldest and Wisest",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["FORCE", "NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "6",
       "HP": "6",
@@ -4824,18 +3552,9 @@
       "Name": "Oppo Rancisis",
       "Subtitle": "Ancient Councilor",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Command"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Command"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "5",
@@ -4865,16 +3584,9 @@
       "Number": "112",
       "Name": "Outer Rim Mystic",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "2",
       "HP": "6",
@@ -4893,20 +3605,14 @@
       "Number": "126",
       "Name": "Overpower",
       "Type": "Event",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "INNATE"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["INNATE"],
       "Cost": "3",
       "FrontText": "Give a unit +3/+3 and Overwhelm for this phase. (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Stefano Landini",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4919,15 +3625,9 @@
       "Name": "Owen Lars",
       "Subtitle": "Devoted Uncle",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "1",
       "Power": "0",
       "HP": "3",
@@ -4935,9 +3635,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Restore"
-      ],
+      "Keywords": ["Restore"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -4949,18 +3647,9 @@
       "Number": "060",
       "Name": "Padawan Starfighter",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "JEDI",
-        "REPUBLIC",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["JEDI", "REPUBLIC", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "2",
       "Power": "1",
       "HP": "3",
@@ -4979,19 +3668,9 @@
       "Number": "099",
       "Name": "Paladin Training Corvette",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "JEDI",
-        "REPUBLIC",
-        "VEHICLE",
-        "CAPITAL SHIP"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["JEDI", "REPUBLIC", "VEHICLE", "CAPITAL SHIP"],
+      "Arenas": ["Space"],
       "Cost": "5",
       "Power": "3",
       "HP": "5",
@@ -5011,16 +3690,9 @@
       "Name": "Paz Vizsla",
       "Subtitle": "Unyielding Warrior",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Aggression"
-      ],
-      "Traits": [
-        "MANDALORIAN"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Aggression"],
+      "Traits": ["MANDALORIAN"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "3",
       "HP": "6",
@@ -5041,12 +3713,8 @@
       "Subtitle": "I Should Charge You More",
       "Type": "Unit",
       "Aspects": [],
-      "Traits": [
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Traits": ["FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "1",
       "HP": "4",
@@ -5065,12 +3733,8 @@
       "Number": "122",
       "Name": "Pillio Star Compass",
       "Type": "Upgrade",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "ITEM"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["ITEM"],
       "Cost": "2",
       "FrontText": "Attach to a non-Vehicle unit.\nWhen Played: Search the top 3 cards of your deck for a unit, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order).",
       "DoubleSided": false,
@@ -5088,18 +3752,9 @@
       "Name": "Plo Koon",
       "Subtitle": "I Don't Believe in Chance",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "6",
       "HP": "8",
@@ -5107,9 +3762,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Grit"
-      ],
+      "Keywords": ["Grit"],
       "Artist": "Gabriel Gómez Almenzar",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -5121,18 +3774,9 @@
       "Number": "092",
       "Name": "Point Rain Reclaimer",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "REPUBLIC",
-        "CLONE",
-        "TROOPER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["REPUBLIC", "CLONE", "TROOPER"],
+      "Arenas": ["Ground"],
       "Cost": "1",
       "Power": "1",
       "HP": "2",
@@ -5152,18 +3796,9 @@
       "Name": "Pong Krell",
       "Subtitle": "It's Treason, Then",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "7",
       "Power": "2",
       "HP": "9",
@@ -5171,9 +3806,7 @@
       "DoubleSided": false,
       "Rarity": "Rare",
       "Unique": true,
-      "Keywords": [
-        "Grit"
-      ],
+      "Keywords": ["Grit"],
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -5186,12 +3819,8 @@
       "Name": "Porg",
       "Type": "Unit",
       "Aspects": [],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "0",
       "Power": "1",
       "HP": "1",
@@ -5210,12 +3839,8 @@
       "Number": "224",
       "Name": "Pounce",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "TRICK"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["TRICK"],
       "Cost": "2",
       "FrontText": "Attack with a Creature unit. It gets +4/+0 for this attack.",
       "DoubleSided": false,
@@ -5232,16 +3857,9 @@
       "Number": "085",
       "Name": "Praetorian Guard",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "FIRST ORDER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["FIRST ORDER"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "2",
       "HP": "5",
@@ -5249,9 +3867,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Sentinel"
-      ],
+      "Keywords": ["Sentinel"],
       "Artist": "Eslam AboShady",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -5263,13 +3879,8 @@
       "Number": "203",
       "Name": "Premonition of Doom",
       "Type": "Event",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE"],
       "Cost": "3",
       "FrontText": "The next time you take the initiative this phase, exhaust all units.",
       "DoubleSided": false,
@@ -5287,15 +3898,9 @@
       "Name": "Priestesses of the Force",
       "Subtitle": "Eternal",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FORCE"],
+      "Arenas": ["Ground"],
       "Cost": "7",
       "Power": "6",
       "HP": "8",
@@ -5314,12 +3919,8 @@
       "Number": "128",
       "Name": "Protect the Pod",
       "Type": "Event",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "TACTIC"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["TACTIC"],
       "Cost": "4",
       "FrontText": "A friendly non-Vehicle unit deals damage equal to its remaining HP to an enemy unit.",
       "DoubleSided": false,
@@ -5336,12 +3937,8 @@
       "Number": "219",
       "Name": "Psychometry",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "Choose another card in your discard pile. Search the top 5 cards of your deck for a card that shares a Trait with the chosen card, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order.)",
       "DoubleSided": false,
@@ -5358,17 +3955,9 @@
       "Number": "133",
       "Name": "Purge Trooper",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "IMPERIAL",
-        "TROOPER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["IMPERIAL", "TROOPER"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "4",
       "HP": "2",
@@ -5388,18 +3977,9 @@
       "Name": "Qui-Gon Jinn",
       "Subtitle": "Student of the Living Force",
       "Type": "Leader",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "4",
       "HP": "7",
@@ -5422,18 +4002,9 @@
       "Name": "Qui-Gon Jinn",
       "Subtitle": "The Negotiations will be Short",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "7",
       "Power": "7",
       "HP": "5",
@@ -5441,9 +4012,7 @@
       "DoubleSided": false,
       "Rarity": "Legendary",
       "Unique": true,
-      "Keywords": [
-        "Ambush"
-      ],
+      "Keywords": ["Ambush"],
       "Artist": "Gustavo Pelissari",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -5456,19 +4025,9 @@
       "Name": "Qui-Gon Jinn's Aethersprite",
       "Subtitle": "Guided by the Force",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "JEDI",
-        "REPUBLIC",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["JEDI", "REPUBLIC", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "5",
       "Power": "3",
       "HP": "6",
@@ -5487,15 +4046,8 @@
       "Number": "201",
       "Name": "Qui-Gon Jinn's Lightsaber",
       "Type": "Upgrade",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "ITEM",
-        "WEAPON",
-        "LIGHTSABER"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["ITEM", "WEAPON", "LIGHTSABER"],
       "Cost": "2",
       "FrontText": "Attach to a friendly non-Vehicle unit. \nWhen Played: If attached unit is Qui-Gon Jinn, you may exhaust any number of units with combined cost 6 or less.",
       "DoubleSided": false,
@@ -5513,17 +4065,9 @@
       "Name": "Quinlan Vos",
       "Subtitle": "Dark Disciple",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "4",
       "HP": "5",
@@ -5542,12 +4086,8 @@
       "Number": "127",
       "Name": "Rampage",
       "Type": "Event",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "INNATE"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["INNATE"],
       "Cost": "3",
       "FrontText": "Each friendly Creature unit gets +2/+2 for this phase.",
       "DoubleSided": false,
@@ -5565,12 +4105,8 @@
       "Name": "Ravening Gundark",
       "Type": "Unit",
       "Aspects": [],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "5",
       "HP": "4",
@@ -5589,15 +4125,9 @@
       "Number": "168",
       "Name": "Ravenous Rathtar",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "8",
       "HP": "5",
@@ -5616,16 +4146,9 @@
       "Number": "242",
       "Name": "Refugee of The Path",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "1",
       "Power": "0",
       "HP": "3",
@@ -5633,9 +4156,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Sentinel"
-      ],
+      "Keywords": ["Sentinel"],
       "Artist": "Salomé Goré",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -5647,15 +4168,9 @@
       "Number": "116",
       "Name": "Relic Scavenger",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "4",
       "HP": "6",
@@ -5663,9 +4178,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Restore"
-      ],
+      "Keywords": ["Restore"],
       "Artist": "Kaihound Studios",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -5678,17 +4191,9 @@
       "Name": "Rey",
       "Subtitle": "Nobody",
       "Type": "Leader",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "RESISTANCE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["FORCE", "RESISTANCE"],
+      "Arenas": ["Ground"],
       "Cost": "7",
       "Power": "6",
       "HP": "8",
@@ -5711,18 +4216,9 @@
       "Name": "Rey",
       "Subtitle": "With Palpatine's Power",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "RESISTANCE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "RESISTANCE"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "5",
       "HP": "5",
@@ -5742,17 +4238,9 @@
       "Name": "Saesee Tiin",
       "Subtitle": "Courageous Warrior",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "4",
       "HP": "6",
@@ -5771,17 +4259,9 @@
       "Number": "232",
       "Name": "Sandtrooper Cavalry",
       "Type": "Unit",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "IMPERIAL",
-        "CREATURE",
-        "TROOPER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["IMPERIAL", "CREATURE", "TROOPER"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "2",
       "HP": "6",
@@ -5789,9 +4269,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Grit"
-      ],
+      "Keywords": ["Grit"],
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -5804,17 +4282,9 @@
       "Name": "Savage Opress",
       "Subtitle": "Imbued With Hate",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["FORCE", "NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "9",
       "HP": "6",
@@ -5822,9 +4292,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -5837,17 +4305,9 @@
       "Name": "Scimitar",
       "Subtitle": "Sith Infiltrator",
       "Type": "Unit",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "SITH",
-        "VEHICLE",
-        "TRANSPORT"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["SITH", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
       "Cost": "4",
       "Power": "3",
       "HP": "4",
@@ -5867,19 +4327,9 @@
       "Name": "Scythe",
       "Subtitle": "Intimidating Silhouette",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "IMPERIAL",
-        "VEHICLE",
-        "TRANSPORT",
-        "INQUISITOR"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["IMPERIAL", "VEHICLE", "TRANSPORT", "INQUISITOR"],
+      "Arenas": ["Space"],
       "Cost": "4",
       "Power": "3",
       "HP": "5",
@@ -5899,18 +4349,9 @@
       "Name": "Second Sister",
       "Subtitle": "Seeking the Holocron",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "IMPERIAL",
-        "INQUISITOR"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["FORCE", "IMPERIAL", "INQUISITOR"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "3",
       "HP": "6",
@@ -5929,16 +4370,9 @@
       "Number": "061",
       "Name": "Secretive Sage",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "2",
@@ -5946,9 +4380,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Shielded"
-      ],
+      "Keywords": ["Shielded"],
       "Artist": "Jakub Rebelka",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -5961,9 +4393,7 @@
       "Name": "Shadowed Undercity",
       "Subtitle": "Coruscant",
       "Type": "Base",
-      "Aspects": [
-        "Vigilance"
-      ],
+      "Aspects": ["Vigilance"],
       "HP": "28",
       "FrontText": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -5980,12 +4410,8 @@
       "Number": "079",
       "Name": "Shatterpoint",
       "Type": "Event",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FORCE"],
       "Cost": "4",
       "FrontText": "Choose one: \nDefeat a non-leader unit with 3 or less remaining HP. \nUse the Force (lose your Force token). If you do, defeat a non-leader unit.",
       "DoubleSided": false,
@@ -6002,20 +4428,14 @@
       "Number": "220",
       "Name": "Shien Flurry",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "LEARNED"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["LEARNED"],
       "Cost": "1",
       "FrontText": "Play a Force unit from your hand (paying its cost). It gains Ambush for this phase. The next time it would be dealt damage this phase, prevent 2 of that damage.",
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": false,
-      "Keywords": [
-        "Ambush"
-      ],
+      "Keywords": ["Ambush"],
       "Artist": "Patrick Brown",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6028,17 +4448,9 @@
       "Name": "Shin Hati",
       "Subtitle": "Overeager Apprentice",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Villainy"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "4",
       "HP": "2",
@@ -6046,10 +4458,7 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": true,
-      "Keywords": [
-        "Hidden",
-        "Shielded"
-      ],
+      "Keywords": ["Hidden", "Shielded"],
       "Artist": "David Buisan",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6061,17 +4470,9 @@
       "Number": "117",
       "Name": "Sifo-Dyas",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "4",
       "HP": "4",
@@ -6090,14 +4491,8 @@
       "Number": "138",
       "Name": "Sith Holocron",
       "Type": "Upgrade",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "SITH",
-        "ITEM"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["SITH", "ITEM"],
       "Cost": "1",
       "FrontText": "Attach to a Force unit. \nAttached unit gains: \"On Attack: You may deal 2 damage to a friendly unit. If you do, this unit gets +2/+0 for this attack.\"",
       "DoubleSided": false,
@@ -6114,17 +4509,9 @@
       "Number": "081",
       "Name": "Sith Legionnaire",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "SITH",
-        "TROOPER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["SITH", "TROOPER"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "2",
@@ -6143,13 +4530,8 @@
       "Number": "056",
       "Name": "Size Matters Not",
       "Type": "Upgrade",
-      "Aspects": [
-        "Vigilance",
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Vigilance", "Vigilance"],
+      "Traits": ["FORCE"],
       "Cost": "3",
       "FrontText": "If you control a Force unit, this upgrade costs 1 less to play.\nAttached unit's printed power is considered to be 5 and its printed HP is considered to be 5.",
       "DoubleSided": false,
@@ -6166,16 +4548,9 @@
       "Number": "214",
       "Name": "Sorcerers of Tund",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE",
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE", "FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "6",
       "HP": "6",
@@ -6183,9 +4558,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Shielded"
-      ],
+      "Keywords": ["Shielded"],
       "Artist": "Monika Palosz",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6197,12 +4570,8 @@
       "Number": "172",
       "Name": "Sorcerous Blast",
       "Type": "Event",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "Use the Force (lose your Force token). If you do, deal 3 damage to a unit.",
       "DoubleSided": false,
@@ -6219,12 +4588,8 @@
       "Number": "076",
       "Name": "Soresu Stance",
       "Type": "Event",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "LEARNED"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["LEARNED"],
       "Cost": "1",
       "FrontText": "Play a Force unit from your hand (paying its cost) and give a Shield token to it.",
       "DoubleSided": false,
@@ -6242,9 +4607,7 @@
       "Name": "Starlight Temple",
       "Subtitle": "Starlight Beacon",
       "Type": "Base",
-      "Aspects": [
-        "Command"
-      ],
+      "Aspects": ["Command"],
       "HP": "28",
       "FrontText": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -6262,18 +4625,9 @@
       "Name": "Stinger Mantis",
       "Subtitle": "Where Are We Going?",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FRINGE",
-        "VEHICLE",
-        "TRANSPORT"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FRINGE", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
       "Cost": "5",
       "Power": "4",
       "HP": "6",
@@ -6293,9 +4647,7 @@
       "Name": "Strangled Cliffs",
       "Subtitle": "Dathomir",
       "Type": "Base",
-      "Aspects": [
-        "Aggression"
-      ],
+      "Aspects": ["Aggression"],
       "HP": "28",
       "FrontText": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -6312,19 +4664,9 @@
       "Number": "131",
       "Name": "Strikeship",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "UNDERWORLD",
-        "VEHICLE",
-        "FIGHTER",
-        "NIHIL"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["UNDERWORLD", "VEHICLE", "FIGHTER", "NIHIL"],
+      "Arenas": ["Space"],
       "Cost": "2",
       "Power": "0",
       "HP": "3",
@@ -6332,10 +4674,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Overwhelm",
-        "Raid"
-      ],
+      "Keywords": ["Overwhelm", "Raid"],
       "Artist": "Space Goose",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6348,18 +4687,9 @@
       "Name": "Supremacy",
       "Subtitle": "Of Unimaginable Size",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "FIRST ORDER",
-        "VEHICLE",
-        "CAPITAL SHIP"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["FIRST ORDER", "VEHICLE", "CAPITAL SHIP"],
+      "Arenas": ["Space"],
       "Cost": "12",
       "Power": "12",
       "HP": "12",
@@ -6367,9 +4697,7 @@
       "DoubleSided": false,
       "Rarity": "Legendary",
       "Unique": true,
-      "Keywords": [
-        "Ambush"
-      ],
+      "Keywords": ["Ambush"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6381,18 +4709,9 @@
       "Number": "034",
       "Name": "Supremacy TIE/sf",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "FIRST ORDER",
-        "VEHICLE",
-        "FIGHTER"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["FIRST ORDER", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
       "Cost": "3",
       "Power": "3",
       "HP": "3",
@@ -6400,9 +4719,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Sentinel"
-      ],
+      "Keywords": ["Sentinel"],
       "Artist": "Robert Bonchune",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6415,18 +4732,9 @@
       "Name": "Supreme Leader Snoke",
       "Subtitle": "In the Seat of Power",
       "Type": "Leader",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "FIRST ORDER",
-        "OFFICIAL"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["FORCE", "FIRST ORDER", "OFFICIAL"],
+      "Arenas": ["Ground"],
       "Cost": "6",
       "Power": "4",
       "HP": "7",
@@ -6449,18 +4757,9 @@
       "Name": "T-6 Shuttle 1974",
       "Subtitle": "Stay Close",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "FRINGE",
-        "VEHICLE",
-        "TRANSPORT"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["FRINGE", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
       "Cost": "3",
       "Power": "3",
       "HP": "4",
@@ -6479,17 +4778,9 @@
       "Number": "035",
       "Name": "Talzin's Assassin",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["FORCE", "NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "4",
       "HP": "4",
@@ -6508,15 +4799,9 @@
       "Number": "064",
       "Name": "Tauntaun",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "3",
@@ -6536,9 +4821,7 @@
       "Name": "Temple of Destruction",
       "Subtitle": "Malachor",
       "Type": "Base",
-      "Aspects": [
-        "Aggression"
-      ],
+      "Aspects": ["Aggression"],
       "HP": "25",
       "FrontText": "When a friendly unit deals 3 or more combat damage to an enemy base: The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -6555,15 +4838,9 @@
       "Number": "118",
       "Name": "Terentatek",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "5",
       "HP": "5",
@@ -6571,9 +4848,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Ambush"
-      ],
+      "Keywords": ["Ambush"],
       "Artist": "Joshua Carson",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6585,12 +4860,8 @@
       "Number": "125",
       "Name": "The Burden of Masters",
       "Type": "Event",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "LEARNED"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["LEARNED"],
       "Cost": "1",
       "FrontText": "Put a Force unit from your discard pile on the bottom of your deck. If you do, play a unit from your hand and give 2 Experience tokens to it.",
       "DoubleSided": false,
@@ -6608,15 +4879,9 @@
       "Name": "The Daughter",
       "Subtitle": "Embodiment of Light",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["FORCE"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "4",
       "HP": "6",
@@ -6637,12 +4902,8 @@
       "Subtitle": "Maintaining Balance",
       "Type": "Unit",
       "Aspects": [],
-      "Traits": [
-        "FORCE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Traits": ["FORCE"],
+      "Arenas": ["Ground"],
       "Cost": "8",
       "Power": "5",
       "HP": "10",
@@ -6662,9 +4923,7 @@
       "Name": "The Holy City",
       "Subtitle": "Jedha",
       "Type": "Base",
-      "Aspects": [
-        "Cunning"
-      ],
+      "Aspects": ["Cunning"],
       "HP": "28",
       "FrontText": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -6682,17 +4941,9 @@
       "Name": "The Legacy Run",
       "Subtitle": "Doomed Debris",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "REPUBLIC",
-        "VEHICLE",
-        "TRANSPORT"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["REPUBLIC", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
       "Cost": "5",
       "Power": "3",
       "HP": "3",
@@ -6712,15 +4963,9 @@
       "Name": "The Purrgil King",
       "Subtitle": "Leading the Journey",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Space"],
       "Cost": "8",
       "Power": "4",
       "HP": "12",
@@ -6728,9 +4973,7 @@
       "DoubleSided": false,
       "Rarity": "Rare",
       "Unique": true,
-      "Keywords": [
-        "Restore"
-      ],
+      "Keywords": ["Restore"],
       "Artist": "Joshua Carson",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6743,15 +4986,9 @@
       "Name": "The Son",
       "Subtitle": "Embodiment of Darkness",
       "Type": "Unit",
-      "Aspects": [
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Villainy"],
+      "Traits": ["FORCE"],
+      "Arenas": ["Ground"],
       "Cost": "7",
       "Power": "6",
       "HP": "8",
@@ -6770,13 +5007,8 @@
       "Number": "043",
       "Name": "The Tragedy of Plagueis",
       "Type": "Event",
-      "Aspects": [
-        "Vigilance",
-        "Villainy"
-      ],
-      "Traits": [
-        "LEARNED"
-      ],
+      "Aspects": ["Vigilance", "Villainy"],
+      "Traits": ["LEARNED"],
       "Cost": "5",
       "FrontText": "Choose a friendly unit. For this phase, it can't be defeated by having no remaining HP.\nAn opponent chooses a unit they control. Defeat that unit.",
       "DoubleSided": false,
@@ -6793,12 +5025,8 @@
       "Number": "227",
       "Name": "The Will of the Force",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE"],
       "Cost": "4",
       "FrontText": "Return a non-leader unit to its owner's hand. You may use the Force (lose your Force token). If you do, that player discards a random card from their hand.",
       "DoubleSided": false,
@@ -6816,18 +5044,9 @@
       "Name": "Third Sister",
       "Subtitle": "Seething With Ambition",
       "Type": "Leader",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "FORCE",
-        "IMPERIAL",
-        "INQUISITOR"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["FORCE", "IMPERIAL", "INQUISITOR"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "5",
       "HP": "4",
@@ -6838,9 +5057,7 @@
       "BackText": "Hidden (This unit can't be attacked if she was deployed this phase.)\nOn Attack: The next unit you play this phase gains Hidden.",
       "Rarity": "Common",
       "Unique": true,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6852,16 +5069,9 @@
       "Number": "136",
       "Name": "Thralls of the Coven",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression",
-        "Villainy"
-      ],
-      "Traits": [
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression", "Villainy"],
+      "Traits": ["NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "3",
       "HP": "7",
@@ -6869,9 +5079,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Raid"
-      ],
+      "Keywords": ["Raid"],
       "Artist": "Eslam AboShady",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6883,20 +5091,14 @@
       "Number": "225",
       "Name": "Three Lessons",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "LEARNED"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["LEARNED"],
       "Cost": "2",
       "FrontText": "Play a unit from your hand (paying its cost). It gains Hidden for this phase. Give an Experience token and a Shield token to it.",
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": false,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -6908,12 +5110,8 @@
       "Number": "177",
       "Name": "Time of Crisis",
       "Type": "Event",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "DISASTER"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["DISASTER"],
       "Cost": "4",
       "FrontText": "Each player chooses a unit they control. Deal 3 damage to each unit not chosen this way.",
       "DoubleSided": false,
@@ -6930,13 +5128,8 @@
       "Number": "226",
       "Name": "Tip the Scale",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE",
-        "TRICK"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE", "TRICK"],
       "Cost": "2",
       "FrontText": "Look at an opponent's hand and discard a non-unit card from it.",
       "DoubleSided": false,
@@ -6954,9 +5147,7 @@
       "Name": "Tomb of Eilram",
       "Subtitle": "Zeffo",
       "Type": "Base",
-      "Aspects": [
-        "Cunning"
-      ],
+      "Aspects": ["Cunning"],
       "HP": "25",
       "FrontText": "Action [exhaust a friendly unit]: The Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -6973,17 +5164,9 @@
       "Number": "120",
       "Name": "Trident Assault Ship",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "SEPARATIST",
-        "VEHICLE",
-        "TRANSPORT"
-      ],
-      "Arenas": [
-        "Space"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["SEPARATIST", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
       "Cost": "6",
       "Power": "6",
       "HP": "6",
@@ -6991,9 +5174,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Shane Molina",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -7005,12 +5186,8 @@
       "Number": "221",
       "Name": "Trust Your Instincts",
       "Type": "Event",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "Use the Force. If you do, attack with a unit. It gets +2/+0 for this attack and deals its combat damage before the defender. (If the defender is defeated, it deals no combat damage.)",
       "DoubleSided": false,
@@ -7027,15 +5204,9 @@
       "Number": "161",
       "Name": "Tuk'ata",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "4",
       "HP": "2",
@@ -7043,9 +5214,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -7057,15 +5226,9 @@
       "Number": "209",
       "Name": "Tusken Tracker",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning"
-      ],
-      "Traits": [
-        "TUSKEN"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning"],
+      "Traits": ["TUSKEN"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "2",
       "HP": "4",
@@ -7073,10 +5236,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Hidden",
-        "Raid"
-      ],
+      "Keywords": ["Hidden", "Raid"],
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -7088,12 +5248,8 @@
       "Number": "173",
       "Name": "Unleash Rage",
       "Type": "Event",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE"],
       "Cost": "1",
       "FrontText": "Use the Force (lose your Force token). If you do, give a friendly unit +3/+0 for this phase.",
       "DoubleSided": false,
@@ -7111,18 +5267,9 @@
       "Name": "Vaneé",
       "Subtitle": "I Live to Serve",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Villainy"
-      ],
-      "Traits": [
-        "IMPERIAL",
-        "SITH",
-        "OFFICIAL"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Villainy"],
+      "Traits": ["IMPERIAL", "SITH", "OFFICIAL"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "4",
@@ -7142,9 +5289,7 @@
       "Name": "Vergence Temple",
       "Subtitle": "Lothal",
       "Type": "Base",
-      "Aspects": [
-        "Vigilance"
-      ],
+      "Aspects": ["Vigilance"],
       "HP": "25",
       "FrontText": "When the regroup phase starts: If you control a unit with 4 or more remaining HP, the Force is with you (create your Force token).",
       "DoubleSided": false,
@@ -7162,17 +5307,9 @@
       "Name": "Vernestra Rwoh",
       "Subtitle": "Precocious Knight",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "3",
       "HP": "4",
@@ -7191,15 +5328,9 @@
       "Number": "107",
       "Name": "Village Tender",
       "Type": "Unit",
-      "Aspects": [
-        "Command"
-      ],
-      "Traits": [
-        "EWOK"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command"],
+      "Traits": ["EWOK"],
+      "Arenas": ["Ground"],
       "Cost": "1",
       "Power": "1",
       "HP": "3",
@@ -7207,10 +5338,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Hidden",
-        "Restore"
-      ],
+      "Keywords": ["Hidden", "Restore"],
       "Artist": "Reno",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -7222,15 +5350,9 @@
       "Number": "245",
       "Name": "Vulptex",
       "Type": "Unit",
-      "Aspects": [
-        "Heroism"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Heroism"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "3",
       "HP": "2",
@@ -7238,9 +5360,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -7252,15 +5372,9 @@
       "Number": "164",
       "Name": "Wampa",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "CREATURE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["CREATURE"],
+      "Arenas": ["Ground"],
       "Cost": "4",
       "Power": "4",
       "HP": "5",
@@ -7268,9 +5382,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Overwhelm"
-      ],
+      "Keywords": ["Overwhelm"],
       "Artist": "Luke Harrington",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -7282,15 +5394,9 @@
       "Number": "065",
       "Name": "Watto",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FRINGE"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FRINGE"],
+      "Arenas": ["Ground"],
       "Cost": "3",
       "Power": "1",
       "HP": "6",
@@ -7309,12 +5415,8 @@
       "Number": "078",
       "Name": "Whirlwind of Power",
       "Type": "Event",
-      "Aspects": [
-        "Vigilance"
-      ],
-      "Traits": [
-        "FORCE"
-      ],
+      "Aspects": ["Vigilance"],
+      "Traits": ["FORCE"],
       "Cost": "3",
       "FrontText": "Give a unit –2/–2 for this phase. If you control a Force unit, give it –3/–3 instead.",
       "DoubleSided": false,
@@ -7331,16 +5433,9 @@
       "Number": "154",
       "Name": "Witch of the Mist",
       "Type": "Unit",
-      "Aspects": [
-        "Aggression"
-      ],
-      "Traits": [
-        "FORCE",
-        "NIGHT"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Aggression"],
+      "Traits": ["FORCE", "NIGHT"],
+      "Arenas": ["Ground"],
       "Cost": "1",
       "Power": "1",
       "HP": "3",
@@ -7348,9 +5443,7 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Keywords": [
-        "Hidden"
-      ],
+      "Keywords": ["Hidden"],
       "Artist": "Kyle Petchock",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -7363,18 +5456,9 @@
       "Name": "Yaddle",
       "Subtitle": "A Chance to Make Things Right",
       "Type": "Unit",
-      "Aspects": [
-        "Vigilance",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Vigilance", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "4",
@@ -7382,9 +5466,7 @@
       "DoubleSided": false,
       "Rarity": "Rare",
       "Unique": true,
-      "Keywords": [
-        "Restore"
-      ],
+      "Keywords": ["Restore"],
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
       "MarketPrice": "0.00",
@@ -7397,18 +5479,9 @@
       "Name": "Yoda",
       "Subtitle": "My Ally is the Force",
       "Type": "Unit",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI",
-        "REPUBLIC"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
       "Cost": "8",
       "Power": "5",
       "HP": "9",
@@ -7427,15 +5500,8 @@
       "Number": "102",
       "Name": "Yoda's Lightsaber",
       "Type": "Upgrade",
-      "Aspects": [
-        "Command",
-        "Heroism"
-      ],
-      "Traits": [
-        "ITEM",
-        "WEAPON",
-        "LIGHTSABER"
-      ],
+      "Aspects": ["Command", "Heroism"],
+      "Traits": ["ITEM", "WEAPON", "LIGHTSABER"],
       "Cost": "2",
       "FrontText": "Attach to a non-Vehicle unit.\nWhen Played: You may use the Force (lose your Force token). If you do, heal 3 damage from a base.",
       "DoubleSided": false,
@@ -7452,17 +5518,9 @@
       "Number": "193",
       "Name": "Youngling Padawan",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Heroism"
-      ],
-      "Traits": [
-        "FORCE",
-        "JEDI"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE", "JEDI"],
+      "Arenas": ["Ground"],
       "Cost": "2",
       "Power": "2",
       "HP": "3",
@@ -7482,17 +5540,9 @@
       "Name": "Zuckuss",
       "Subtitle": "The Findsman",
       "Type": "Unit",
-      "Aspects": [
-        "Cunning",
-        "Cunning"
-      ],
-      "Traits": [
-        "FORCE",
-        "BOUNTY HUNTER"
-      ],
-      "Arenas": [
-        "Ground"
-      ],
+      "Aspects": ["Cunning", "Cunning"],
+      "Traits": ["FORCE", "BOUNTY HUNTER"],
+      "Arenas": ["Ground"],
       "Cost": "5",
       "Power": "4",
       "HP": "7",
