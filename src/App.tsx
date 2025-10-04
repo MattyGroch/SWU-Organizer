@@ -1045,7 +1045,14 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                         <td className="rarcol">
                           <RarityBadge rarity={card?.Rarity} />
                         </td>
-                        <td>{r.Name}</td>
+                        <td>
+                          {r.Name}
+                          {card?.Subtitle && (
+                            <span style={{ opacity: 0.7, fontSize: '0.9em', display: 'block', lineHeight: 1 }}>
+                              {card.Subtitle}
+                            </span>
+                          )}
+                        </td>
                         <td>{r.Type || ''}</td>
                         <td className="mono qtycol">{r.Qty}</td>
                         <td className="compcol">
@@ -1111,7 +1118,14 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                         <td className="rarcol">
                           <RarityBadge rarity={card?.Rarity} />
                         </td>
-                        <td>{r.Name}</td>
+                        <td>
+                          {r.Name}
+                          {card?.Subtitle && (
+                            <span style={{ opacity: 0.7, fontSize: '0.9em', display: 'block', lineHeight: 1 }}>
+                              {card.Subtitle}
+                            </span>
+                          )}
+                        </td>
                         <td>{r.Type || ''}</td>
                         <td className="compcol">
                           {r.Have >= r.Max ? (
@@ -1232,7 +1246,14 @@ function Binder({
                   />
                 ) : null;
               })()}
-              <div className="big" style={{ fontSize: 20 }}>{active.card.Name}</div>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-end' }}>
+                <div className="big" style={{ fontSize: 20 }}>{active.card.Name}</div>
+                {active.card.Subtitle && (
+                  <span className="muted" style={{ opacity: 0.7, fontSize: '1rem', fontWeight: 500, paddingBottom: 2 }}>
+                    — {active.card.Subtitle}
+                  </span>
+                )}
+              </div>
               <span className="pill">Page {active.page}</span>
               <span className="pill">Row {active.row}</span>
               <span className="pill">Column {active.column}</span>
@@ -1353,15 +1374,26 @@ function Binder({
                                   display: 'flex', flexDirection: 'column', gap: 2,
                                 }}>
                               <div style={{ fontSize: 10, opacity: 0.85 }}>{cardAt?.Type || ''}</div>
+                              
+                              {/* Main Name: Removed clamping to allow subtitle space */}
                               <div style={{
                                 fontSize: 12, fontWeight: 600,
-                                overflow: 'hidden',
-                                display: '-webkit-box',
-                                WebkitLineClamp: NAME_MAX_LINES,
-                                WebkitBoxOrient: 'vertical',
                               }}>
                                 {cardAt?.Name}
                               </div>
+                              
+                              {/* Subtitle with smaller font */}
+                              {cardAt?.Subtitle && (
+                                <div style={{
+                                  fontSize: 10, // Smaller font size
+                                  opacity: 0.8,
+                                  fontWeight: 500,
+                                  lineHeight: 1,
+                                  marginTop: 1,
+                                }}>
+                                  {cardAt.Subtitle}
+                                </div>
+                              )}
                             </div>
                           </foreignObject>
                         </g>
