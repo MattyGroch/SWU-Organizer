@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 type Card = {
   Name: string;
+  Subtitle?: string;
   Number: number;
   Aspects?: string[];
   Type?: string;
@@ -44,6 +45,13 @@ const RARITY_STYLE: Record<string, {letter: string; color: string}> = {
 function rarityGlyph(r?: string) {
   if (!r) return null;
   return RARITY_STYLE[r] ?? null;
+}
+
+function cardKey(c: Card) {
+  const name = (c.Name || '').trim().toLowerCase();
+  const sub  = (c.Subtitle || '').trim().toLowerCase();
+  const type = (c.Type || '').trim().toLowerCase();
+  return `${name}||${sub}||${type}`;
 }
 
 function binderLayout(n: number) {
@@ -146,8 +154,12 @@ export default function App() {
   }
 
   // stable key for dedupe/show
-  function keyNameType(c: {Name: string; Type?: string}) {
-    return `${c.Name.trim().toLowerCase()}|${(c.Type||'').trim().toLowerCase()}`;
+  function keyNameType(c: { Name: string; Subtitle?: string; Type?: string }) {
+    return `${c.Name.trim().toLowerCase()}|${(c.Subtitle || '').trim().toLowerCase()}|${(c.Type || '').trim().toLowerCase()}`;
+  }
+
+  function fullTitle(c: { Name: string; Subtitle?: string }) {
+    return c.Subtitle ? `${c.Name} - ${c.Subtitle}` : c.Name; // hyphen per your example
   }
 
   // 2) collapse alt-arts: keep the LOWEST Number per (Name + Type)
@@ -264,6 +276,7 @@ export default function App() {
 
       const mapped: Card[] = data.map((c: any) => ({
         Name: String(c.Name || '').trim(),
+        Subtitle: typeof c.Subtitle === 'string' ? c.Subtitle.trim() : undefined,
         Number: Number(c.Number),
         Aspects: Array.isArray(c.Aspects) ? c.Aspects : [],
         Type:
@@ -1076,7 +1089,11 @@ function Binder({
                   />
                 ) : null;
               })()}
-              <div className="big" style={{ fontSize: 20 }}>{active.card.Name}</div>
+              <div className="big" style={{ fontSize: 20 }}>
+                {active.card.Subtitle
+                  ? `${active.card.Name} - ${active.card.Subtitle}`
+                  : active.card.Name}
+              </div>
               <span className="pill">Page {active.page}</span>
               <span className="pill">Row {active.row}</span>
               <span className="pill">Column {active.column}</span>
@@ -1204,7 +1221,14 @@ function Binder({
                                 WebkitLineClamp: NAME_MAX_LINES,
                                 WebkitBoxOrient: 'vertical',
                               }}>
-                                {cardAt?.Name}
+                                {cardAt?.Subtitle ? (
+                                  <>
+                                    {cardAt.Name}
+                                    <span style={{ opacity: 0.8, fontSize: 9 }}> - {cardAt.Subtitle}</span>
+                                  </>
+                                ) : (
+                                  cardAt?.Name
+                                )}
                               </div>
                             </div>
                           </foreignObject>
