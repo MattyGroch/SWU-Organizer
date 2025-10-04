@@ -1,6 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
-type Card = { Name: string; Number: number; Aspects?: string[]; Type?: string; Rarity?: string };
+type Card = {
+  Name: string;
+  Number: number;
+  Aspects?: string[];
+  Type?: string;
+  Rarity?: string;
+  MarketPrice?: number;
+};
 type Inventory = Record<number, number>;
 type SetKey = string;
 type SetMeta = { key: string; label: string; file: string };
@@ -26,8 +33,8 @@ const GROUP_H = BTN;             // 32
 const RARITY_STYLE: Record<string, {letter: string; color: string}> = {
   Common:    { letter: 'C',  color: '#8B5E3C' }, // brown
   Uncommon:  { letter: 'U',  color: '#9AA0B4' }, // gray
-  Rare:      { letter: 'R',  color: '#7DD3FC' }, // light blue
-  Legendary: { letter: 'L',  color: '#FACC15' }, // yellow
+  Rare:      { letter: 'R',  color: '#FACC15' }, // yellow
+  Legendary: { letter: 'L',  color: '#7DD3FC' }, // light blue
   'Starter Deck Exclusive': { letter: 'S', color: '#000000' }, // black
   Starter:   { letter: 'S',  color: '#000000' }, // (just in case)
   // LOF also uses “Special”. If you prefer something else, change here:
@@ -264,6 +271,7 @@ export default function App() {
             ? c.Type
             : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined),
         Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
+        MarketPrice: Number(c.MarketPrice ?? c.Price ?? 0), 
       })).filter((c: Card) => !!c.Name && Number.isFinite(c.Number));
 
       // 1) unique by Number (keep the version that has Aspects if duped)
@@ -475,6 +483,33 @@ export default function App() {
     });
   }
 
+function RarityBadge({ rarity }: { rarity?: string }) {
+    const sty = rarityGlyph(rarity);
+    if (!sty) return null;
+    // SVG text with stroke matches the binder’s corner glyph look
+    return (
+      <svg
+        width="30" height="26" viewBox="0 0 22 20"
+        role="img" aria-label={`Rarity ${rarity}`}
+        style={{ display: 'block' }}
+      >
+        <text
+          x="50%" y="60%"
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fontSize="14"
+          fontWeight={900}
+          fill={sty.color}
+          stroke="#11121a"
+          strokeWidth={2}
+          paintOrder="stroke"
+        >
+          {sty.letter}
+        </text>
+      </svg>
+    );
+  }
+
   function resetInv() { if (confirm('Reset inventory for this set?')) setInventory({}); }
 
   useEffect(() => {
@@ -567,6 +602,8 @@ export default function App() {
       Have: number;
       Max: number;
       Needed: number;
+      Price: number;     // unit price (MarketPrice)
+      RowTotal: number;  // Needed * Price
     }[] = [];
 
     for (const baseCard of cardsBase) {
@@ -574,6 +611,8 @@ export default function App() {
       const nums = baseToAll.get(baseNum) || [baseNum];       // base + alts
       const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
       const max = quotaForType(baseCard.Type);
+      const needed = Math.max(0, max - have);
+      const price = Number(baseCard?.MarketPrice ?? 0);
       if (have < max) {
         rows.push({
           Number: baseNum,
@@ -582,12 +621,18 @@ export default function App() {
           Have: have,
           Max: max,
           Needed: Math.max(0, max - have),
+          Price: price,
+          RowTotal: needed * price,
         });
       }
     }
 
     return rows.sort((a, b) => a.Number - b.Number);
   }, [cardsBase, baseToAll, inventory]);
+
+  const fmtUSD = (n: number) =>
+    n.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
+  const missingCost = useMemo( () => missingRows.reduce((sum, r) => sum + r.RowTotal, 0), [missingRows] );
 
   return (
     <div className="container">
@@ -783,7 +828,23 @@ export default function App() {
                 Missing
               </button>
             </div>
-            <div className="muted">Tip: counts auto-save, and you can export/import JSON.</div>
+            <div className="muted"
+              style={{
+                width: '300px',        // ← choose a width wide enough for longest string
+                textAlign: 'right',    // keeps text tidy
+                whiteSpace: 'nowrap',  // prevents wrapping
+              }}
+            >
+            {listView === 'missing' ? (
+              <div className="muted" aria-live="polite">
+                Cost to Complete: {fmtUSD(missingCost)}
+              </div>
+            ) : (
+              <div className="muted">
+                Tip: counts auto-save, and you can export/import JSON.
+              </div>
+            )}
+            </div>
           </div>
         </div>
 
@@ -795,6 +856,7 @@ export default function App() {
                   <tr>
                     <th className="mono numcol">#</th>
                     <th className="dotcol"></th>
+                    <th className="rarcol"></th>
                     <th>Name</th>
                     <th>Type</th>
                     <th className="mono qtycol">Qty</th>
@@ -805,6 +867,7 @@ export default function App() {
                 <tbody>
                   {invRows.map(r => {
                     const dot = numToColor.get(r.Number);
+                    const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
                     const complete = r.Qty >= r.Max;
                     return (
                       <tr key={r.Number}>
@@ -822,6 +885,9 @@ export default function App() {
                               }}
                             />
                           )}
+                        </td>
+                        <td className="rarcol">
+                          <RarityBadge rarity={card?.Rarity} />
                         </td>
                         <td>{r.Name}</td>
                         <td>{r.Type || ''}</td>
@@ -856,16 +922,19 @@ export default function App() {
                   <tr>
                     <th className="mono numcol">#</th>
                     <th className="dotcol"></th>
+                    <th className="rarcol"></th>
                     <th>Name</th>
                     <th>Type</th>
                     <th className="compcol">Status</th>
                     <th className="mono qtycol">Needed</th>
+                    <th className="mono moneycol">Cost</th>
                     <th className="adjcol">Add</th>
                   </tr>
                 </thead>
                 <tbody>
                   {missingRows.map(r => {
                     const dot = numToColor.get(r.Number);
+                    const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
                     return (
                       <tr key={r.Number}>
                         <td className="mono numcol">#{r.Number}</td>
@@ -883,6 +952,9 @@ export default function App() {
                             />
                           )}
                         </td>
+                        <td className="rarcol">
+                          <RarityBadge rarity={card?.Rarity} />
+                        </td>
                         <td>{r.Name}</td>
                         <td>{r.Type || ''}</td>
                         <td className="compcol">
@@ -895,6 +967,7 @@ export default function App() {
                           )}
                         </td>
                         <td className="mono qtycol">{r.Needed}</td>
+                        <td className="mono moneycol">{fmtUSD(r.RowTotal)}</td>
                         <td className="adjcol">
                           <div className="qtybtns circle">
                             {/* Adds to the base number; if you prefer to pick a specific printing, we can add a chooser later */}
@@ -1175,6 +1248,7 @@ function Binder({
                         >
                           {sty && (
                             <tspan
+                              fontSize="14"
                               fontWeight={800}
                               fill={sty.color}
                               stroke={rarityOutline}
