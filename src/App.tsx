@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 type Card = {
   Name: string;
+  Subtitle?: string;
   Number: number;
   Aspects?: string[];
   Type?: string;
@@ -36,9 +37,8 @@ const RARITY_STYLE: Record<string, {letter: string; color: string}> = {
   Rare:      { letter: 'R',  color: '#FACC15' }, // yellow
   Legendary: { letter: 'L',  color: '#7DD3FC' }, // light blue
   'Starter Deck Exclusive': { letter: 'S', color: '#000000' }, // black
-  Starter:   { letter: 'S',  color: '#000000' }, // (just in case)
-  // LOF also uses “Special”. If you prefer something else, change here:
-  Special:   { letter: 'Sp', color: '#A78BFA' }, // violet “Sp”
+  Starter:   { letter: 'S',  color: '#000000' },
+  Special:   { letter: 'S', color: '#000000' },
 };
 
 function rarityGlyph(r?: string) {
@@ -262,17 +262,29 @@ export default function App() {
       const obj = await res.json();
       const data = Array.isArray(obj) ? obj : obj.data;
 
-      const mapped: Card[] = data.map((c: any) => ({
-        Name: String(c.Name || '').trim(),
-        Number: Number(c.Number),
-        Aspects: Array.isArray(c.Aspects) ? c.Aspects : [],
-        Type:
-          typeof c.Type === 'string'
-            ? c.Type
-            : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined),
-        Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
-        MarketPrice: Number(c.MarketPrice ?? c.Price ?? 0), 
-      })).filter((c: Card) => !!c.Name && Number.isFinite(c.Number));
+      const mapped: Card[] = data.map((c: any) => {
+        const rawName = String(c.Name || '').trim();
+        // Assuming 'Subtitle' is the field name in your JSON data
+        const rawSubtitle = String(c.Subtitle || '').trim();
+        
+        // Construct the full card name: "Name - Subtitle"
+        const cardName = rawSubtitle
+          ? `${rawName} - ${rawSubtitle}`
+          : rawName;
+          
+        return {
+          Name: cardName, // Use the constructed name here
+          Number: Number(c.Number),
+          Aspects: Array.isArray(c.Aspects) ? c.Aspects : [],
+          Type:
+            typeof c.Type === 'string'
+              ? c.Type
+              : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined),
+          Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
+          MarketPrice: Number(c.MarketPrice ?? c.Price ?? 0), 
+          Subtitle: rawSubtitle || undefined, // Storing the raw subtitle as well
+        };
+      }).filter((c: Card) => !!c.Name && Number.isFinite(c.Number));
 
       // 1) unique by Number (keep the version that has Aspects if duped)
       const byNum = new Map<number, Card>();
@@ -486,6 +498,8 @@ export default function App() {
 function RarityBadge({ rarity }: { rarity?: string }) {
     const sty = rarityGlyph(rarity);
     if (!sty) return null;
+
+    const strokeColor = (sty.color === '#000000') ? '#ffffff' : '#11121a';
     // SVG text with stroke matches the binder’s corner glyph look
     return (
       <svg
@@ -500,7 +514,7 @@ function RarityBadge({ rarity }: { rarity?: string }) {
           fontSize="14"
           fontWeight={900}
           fill={sty.color}
-          stroke="#11121a"
+          stroke={strokeColor}
           strokeWidth={2}
           paintOrder="stroke"
         >
