@@ -798,7 +798,7 @@ export default function App() {
                     <th>Name</th>
                     <th>Type</th>
                     <th className="mono qtycol">Qty</th>
-                    <th className="compcol">Complete</th>
+                    <th className="compcol">Status</th>
                     <th className="adjcol">Adjust</th>
                   </tr>
                 </thead>
@@ -827,7 +827,11 @@ export default function App() {
                         <td>{r.Type || ''}</td>
                         <td className="mono qtycol">{r.Qty}</td>
                         <td className="compcol">
-                          {complete ? <span className="check" title="Complete" aria-label="Complete">✓</span> : null}
+                          {r.Qty >= r.Max ? (
+                            <span className="check" title="Complete" aria-label="Complete">✓</span>
+                          ) : (
+                            <span className="warn" title="Partially collected" aria-label="Partially collected">!</span>
+                          )}
                         </td>
                         <td className="adjcol">
                           <div className="qtybtns circle">
@@ -854,6 +858,7 @@ export default function App() {
                     <th className="dotcol"></th>
                     <th>Name</th>
                     <th>Type</th>
+                    <th className="compcol">Status</th>
                     <th className="mono qtycol">Needed</th>
                     <th className="adjcol">Add</th>
                   </tr>
@@ -880,6 +885,15 @@ export default function App() {
                         </td>
                         <td>{r.Name}</td>
                         <td>{r.Type || ''}</td>
+                        <td className="compcol">
+                          {r.Have >= r.Max ? (
+                            <span className="check" title="Complete" aria-label="Complete">✓</span>
+                          ) : r.Have > 0 ? (
+                            <span className="warn" title="Partially collected" aria-label="Partially collected">!</span>
+                          ) : (
+                            <span className="x" title="Not collected" aria-label="Not collected">✕</span>
+                          )}
+                        </td>
                         <td className="mono qtycol">{r.Needed}</td>
                         <td className="adjcol">
                           <div className="qtybtns circle">
