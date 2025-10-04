@@ -399,23 +399,32 @@ export default function App() {
       const qnorm = raw.replace(/^0+/, '') || '0';
       const lower = norm(raw);
       
-      // 1. Collect all Number Matches (Exact Base Number Match)
+      // 1. Collect all Number Matches (Exact Base Number Match OR Alt-Art Match)
       const qNum = Number(qnorm);
       // Change to track uniqueness by "SetKey:Number"
       const uniqueNumMatches = new Set<string>(); 
       const numberMatches: Suggestion[] = [];
       
       if (isDigits) {
-          // Iterate over all sets to find exact Base Number matches
+          // Iterate over all sets to find exact Base Number or Alt-Art matches
           for (const [key, parsed] of parsedCacheRef.current.entries()) {
             
-            // Find base card by exact number
-            const baseCard = parsed.byNumber.get(qNum); 
-            
-            if (baseCard) {
+            let targetBaseNum = 0;
+
+            // Check 1: Exact Base Number Match
+            if (parsed.byNumber.has(qNum)) {
+                targetBaseNum = qNum;
+            } 
+            // Check 2: Alt-Art Number Match
+            else if (parsed.altToBase.has(qNum)) {
+                targetBaseNum = parsed.altToBase.get(qNum)!;
+            }
+
+            if (targetBaseNum > 0) {
+                const baseCard = parsed.byNumber.get(targetBaseNum)!; // Card must exist if the number was found
                 const uniqueKey = `${key}:${baseCard.Number}`;
                 
-                // Check if this card from this set has already been processed
+                // Ensure we haven't already added this base card from this set
                 if (!uniqueNumMatches.has(uniqueKey)) {
                     uniqueNumMatches.add(uniqueKey);
 
