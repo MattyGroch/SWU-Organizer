@@ -954,6 +954,7 @@ function RarityBadge({ rarity }: { rarity?: string }) {
           inventory={inventory}
           inc={inc}
           dec={dec}
+          setKey={setKey}
         />
       </div>
 
@@ -1179,6 +1180,7 @@ function Binder({
   inventory,
   inc,
   dec,
+  setKey
 }: {
   viewSpread: number;
   setViewSpread: React.Dispatch<React.SetStateAction<number>>;
@@ -1191,6 +1193,7 @@ function Binder({
   inventory: Inventory;
   inc: (n:number)=>void;
   dec: (n:number)=>void;
+  setKey: SetKey;
 }) {
   const page = spreadToPrimaryPage(viewSpread);     // 1, 2, 4, 6, ...
   const leftPage = page % 2 === 0 ? page : page - 1;
@@ -1279,7 +1282,23 @@ function Binder({
           gap: 12,
         }}
       >
-        <div className="binder-subtitle">Binder — {spreadLabel}</div>
+        <div className="binder-subtitle" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span
+            style={{
+              fontSize: '14px',
+              fontWeight: 700,
+              padding: '2px 8px',
+              borderRadius: '6px',
+              border: '1px solid #ffffff', 
+              color: '#ffffff', 
+              backgroundColor: '#0b0b0b',
+              flexShrink: 0,
+            }}
+          >
+            {setKey}
+          </span>
+          <span style={{ fontWeight: 600 }}>Binder</span> — {spreadLabel}
+        </div>
         <div className="pager">
           <button className="btn" onClick={() => setViewSpread(s => Math.max(0, s - 1))}>‹ Prev</button>
           <select value={viewSpread} onChange={e => setViewSpread(Number(e.target.value))}>
