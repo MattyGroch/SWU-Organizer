@@ -554,6 +554,41 @@ export default function App() {
     return rows.sort((a,b)=>a.Number-b.Number);
   }, [inventory, byNumber, cardsAll]);
 
+  // --- Missing-cards tab state ---
+  const [listView, setListView] = useState<'inventory' | 'missing'>('inventory');
+
+  // Build rows of cards that are below max (include 0s and partials)
+  // Counts across base + all alt printings
+  const missingRows = useMemo(() => {
+    const rows: {
+      Number: number;
+      Name: string;
+      Type?: string;
+      Have: number;
+      Max: number;
+      Needed: number;
+    }[] = [];
+
+    for (const baseCard of cardsBase) {
+      const baseNum = baseCard.Number;
+      const nums = baseToAll.get(baseNum) || [baseNum];       // base + alts
+      const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
+      const max = quotaForType(baseCard.Type);
+      if (have < max) {
+        rows.push({
+          Number: baseNum,
+          Name: baseCard.Name,
+          Type: baseCard.Type,
+          Have: have,
+          Max: max,
+          Needed: Math.max(0, max - have),
+        });
+      }
+    }
+
+    return rows.sort((a, b) => a.Number - b.Number);
+  }, [cardsBase, baseToAll, inventory]);
+
   return (
     <div className="container">
       {/* Top bar (no page control here anymore) */}
@@ -723,66 +758,152 @@ export default function App() {
 
       {/* Inventory table */}
       <div className="card" style={{ marginTop: 16 }}>
-        <div className="row" style={{ justifyContent:'space-between' }}>
-          <div className="title" style={{ margin: 0 }}>Inventory</div>
-          <div className="muted">Tip: counts auto-save per set to your browser, and you can export/import JSON.</div>
+        <div className="row" style={{ justifyContent:'space-between', alignItems: 'center' }}>
+          <div className="title" style={{ margin: 0 }}>
+            {listView === 'inventory' ? 'Inventory' : 'Missing Cards'}
+          </div>
+          <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+            <div className="toolbar-group" role="tablist" aria-label="Inventory view">
+              <button
+                className="tbtn"
+                role="tab"
+                aria-selected={listView === 'inventory'}
+                onClick={() => setListView('inventory')}
+                title="Show your current inventory"
+              >
+                Inventory
+              </button>
+              <button
+                className="tbtn"
+                role="tab"
+                aria-selected={listView === 'missing'}
+                onClick={() => setListView('missing')}
+                title="Show cards you don’t have yet"
+              >
+                Missing
+              </button>
+            </div>
+            <div className="muted">Tip: counts auto-save, and you can export/import JSON.</div>
+          </div>
         </div>
 
-        {invRows.length ? (
-          <div className="inventory-scroll">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th className="mono numcol">#</th>
-                  <th className="dotcol"></th>
-                  <th>Name</th>
-                  <th>Type</th>
-                  <th className="mono qtycol">Qty</th>
-                  <th className="compcol">Complete</th>
-                  <th className="adjcol">Adjust</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invRows.map(r => {
-                  const dot = numToColor.get(r.Number);
-                  const complete = r.Qty >= r.Max;
-                  return (
-                    <tr key={r.Number}>
-                      <td className="mono numcol">#{r.Number}</td>
-                      <td className="dotcol">
-                        {dot && (
-                          <span
-                            title="Aspect color"
-                            aria-label="Aspect color"
-                            style={{
-                              display: 'inline-block',
-                              width: 12, height: 12, borderRadius: 3,
-                              background: dot,
-                              boxShadow: '0 0 0 2px #2b2d3d inset',
-                            }}
-                          />
-                        )}
-                      </td>
-                      <td>{r.Name}</td>
-                      <td>{r.Type || ''}</td>
-                      <td className="mono qtycol">{r.Qty}</td>
-                      <td className="compcol">
-                        {complete ? <span className="check" title="Complete" aria-label="Complete">✓</span> : null}
-                      </td>
-                      <td className="adjcol">
-                        <div className="qtybtns circle">
-                          <button className="minus" aria-label="Decrease" onClick={()=>dec(r.Number)}>−</button>
-                          <button className="plus" aria-label="Increase" onClick={()=>inc(r.Number)}>+</button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+        {listView === 'inventory' ? (
+          invRows.length ? (
+            <div className="inventory-scroll">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th className="mono numcol">#</th>
+                    <th className="dotcol"></th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th className="mono qtycol">Qty</th>
+                    <th className="compcol">Complete</th>
+                    <th className="adjcol">Adjust</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {invRows.map(r => {
+                    const dot = numToColor.get(r.Number);
+                    const complete = r.Qty >= r.Max;
+                    return (
+                      <tr key={r.Number}>
+                        <td className="mono numcol">#{r.Number}</td>
+                        <td className="dotcol">
+                          {dot && (
+                            <span
+                              title="Aspect color"
+                              aria-label="Aspect color"
+                              style={{
+                                display: 'inline-block',
+                                width: 12, height: 12, borderRadius: 3,
+                                background: dot,
+                                boxShadow: '0 0 0 2px #2b2d3d inset',
+                              }}
+                            />
+                          )}
+                        </td>
+                        <td>{r.Name}</td>
+                        <td>{r.Type || ''}</td>
+                        <td className="mono qtycol">{r.Qty}</td>
+                        <td className="compcol">
+                          {complete ? <span className="check" title="Complete" aria-label="Complete">✓</span> : null}
+                        </td>
+                        <td className="adjcol">
+                          <div className="qtybtns circle">
+                            <button className="minus" aria-label="Decrease" onClick={()=>dec(r.Number)}>−</button>
+                            <button className="plus" aria-label="Increase" onClick={()=>inc(r.Number)}>+</button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="muted">No entries yet. Click any slot’s +/− or use this table once you add cards.</div>
+          )
         ) : (
-          <div className="muted">No entries yet. Click any slot’s +/− or use this table once you add cards.</div>
+          <div className="inventory-scroll">
+            {missingRows.length ? (
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th className="mono numcol">#</th>
+                    <th className="dotcol"></th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th className="mono qtycol">Needed</th>
+                    <th className="adjcol">Add</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {missingRows.map(r => {
+                    const dot = numToColor.get(r.Number);
+                    return (
+                      <tr key={r.Number}>
+                        <td className="mono numcol">#{r.Number}</td>
+                        <td className="dotcol">
+                          {dot && (
+                            <span
+                              title="Aspect color"
+                              aria-label="Aspect color"
+                              style={{
+                                display: 'inline-block',
+                                width: 12, height: 12, borderRadius: 3,
+                                background: dot,
+                                boxShadow: '0 0 0 2px #2b2d3d inset',
+                              }}
+                            />
+                          )}
+                        </td>
+                        <td>{r.Name}</td>
+                        <td>{r.Type || ''}</td>
+                        <td className="mono qtycol">{r.Needed}</td>
+                        <td className="adjcol">
+                          <div className="qtybtns circle">
+                            {/* Adds to the base number; if you prefer to pick a specific printing, we can add a chooser later */}
+                            <button
+                              className="plus"
+                              aria-label={`Add one ${r.Name}`}
+                              onClick={()=>inc(r.Number)}
+                              disabled={r.Have >= r.Max}
+                              title={r.Have >= r.Max ? 'Complete' : 'Add one'}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              <div className="muted">Nothing missing — nice!</div>
+            )}
+          </div>
         )}
       </div>
     </div>
