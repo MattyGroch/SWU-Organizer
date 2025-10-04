@@ -77,15 +77,14 @@ export default function App() {
 
   // cache parsed data for sets (so we don't refetch repeatedly)
   type ParsedSet = {
-    key: string;
-    byNumber: Map<number, Card>;
+    key: SetKey;
+    allCards: Card[];                // All cards (unique by Number)
+    baseCards: Card[];               // Base cards (unique by Name+Subtitle+Type)
+    byNumber: Map<number, Card>;     // Map<BaseNumber, BaseCard>
     baseToAll: Map<number, number[]>;
-    nameRows: Array<{ key: string; number: number; name: string; type?: string }>;
+    altToBase: Map<number, number>;
   };
   const parsedCacheRef = useRef<Map<string, ParsedSet>>(new Map());
-
-  // global index built when searchAll = true
-  const [globalNames, setGlobalNames] = useState<ParsedSet["nameRows"]>([]);
 
   useEffect(() => {
     fetch('/sets/manifest.json')
@@ -146,8 +145,9 @@ export default function App() {
   }
 
   // stable key for dedupe/show
-  function keyNameType(c: {Name: string; Type?: string}) {
-    return `${c.Name.trim().toLowerCase()}|${(c.Type||'').trim().toLowerCase()}`;
+  function keyNameType(c: {Name: string; Subtitle?: string; Type?: string}) {
+    const sub = (c.Subtitle || '').trim().toLowerCase();
+    return `${c.Name.trim().toLowerCase()}|${sub}|${(c.Type||'').trim().toLowerCase()}`;
   }
 
   // 2) collapse alt-arts: keep the LOWEST Number per (Name + Type)
@@ -237,6 +237,9 @@ export default function App() {
   const [error, setError] = useState('');
   const [active, setActive] = useState<{ card: Card; page: number; row: number; column: number } | null>(null);
 
+  // NEW: State to hold card details for selection after a set switch
+  const [pendingSelection, setPendingSelection] = useState<{ name: string; number: number } | null>(null);
+
   // Spreads (instead of pages)
   const maxNumber = useMemo(() => cardsBase.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsBase]);
   const totalPages = Math.max(1, Math.ceil(maxNumber / 12));
@@ -249,67 +252,124 @@ export default function App() {
   const boxRef = useRef<HTMLDivElement | null>(null);
 
   // Load set JSON
-  useEffect(() => {
-    async function load() {
-      setError(''); setQuery(''); setActive(null);
-      setCardsAll([]); setCardsBase([]); setViewSpread(0);
-
-      const meta = sets.find(s => s.key === setKey);
-      if (!meta) return;                         // nothing to load yet
-
-      const url = meta.file.startsWith('/') ? meta.file : `/sets/${meta.file}`;
-      const res = await fetch(url);
-      const obj = await res.json();
-      const data = Array.isArray(obj) ? obj : obj.data;
-
-      const mapped: Card[] = data.map((c: any) => {
-        const rawName = String(c.Name || '').trim();
-        // Assuming 'Subtitle' is the field name in your JSON data
-        const rawSubtitle = String(c.Subtitle || '').trim();
+    useEffect(() => {
+      // Helper function defined inside useEffect to access local scope functions (like baseOnly)
+      const parseAndCache = async (meta: SetMeta): Promise<ParsedSet> => {
+        // Check cache first
+        if (parsedCacheRef.current.has(meta.key)) {
+            return parsedCacheRef.current.get(meta.key)!;
+        }
         
-        // Construct the full card name: "Name - Subtitle"
-        const cardName = rawSubtitle
-          ? `${rawName} - ${rawSubtitle}`
-          : rawName;
+        const url = meta.file.startsWith('/') ? meta.file : `/sets/${meta.file}`;
+        const res = await fetch(url);
+        const obj = await res.json();
+        const data = Array.isArray(obj) ? obj : obj.data;
+
+        const mapped: Card[] = data.map((c: any) => {
+          const rawName = String(c.Name || '').trim();
+          const rawSubtitle = String(c.Subtitle || '').trim();
+          const cardName = rawName;
           
-        return {
-          Name: cardName, // Use the constructed name here
-          Number: Number(c.Number),
-          Aspects: Array.isArray(c.Aspects) ? c.Aspects : [],
-          Type:
-            typeof c.Type === 'string'
-              ? c.Type
-              : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined),
-          Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
-          MarketPrice: Number(c.MarketPrice ?? c.Price ?? 0), 
-          Subtitle: rawSubtitle || undefined, // Storing the raw subtitle as well
+          return {
+            Name: cardName,
+            Subtitle: rawSubtitle || undefined,
+            Number: Number(c.Number),
+            Aspects: Array.isArray(c.Aspects) ? c.Aspects : [],
+            Type:
+              typeof c.Type === 'string'
+                ? c.Type
+                : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined),
+            Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
+            MarketPrice: Number(c.MarketPrice ?? c.Price ?? 0), 
+          };
+        }).filter((c: Card) => !!c.Name && Number.isFinite(c.Number));
+
+        // 1) unique by Number
+        const byNum = new Map<number, Card>();
+        for (const c of mapped.sort((a,b) => {
+            const hasA = (a.Aspects?.length ?? 0) > 0 ? 1 : 0;
+            const hasB = (b.Aspects?.length ?? 0) > 0 ? 1 : 0;
+            return hasB - hasA || a.Number - b.Number;
+        })) {
+            if (!byNum.has(c.Number)) byNum.set(c.Number, c);
+        }
+        const allCards = Array.from(byNum.values()).sort((a,b)=>a.Number-b.Number);
+
+        // 2) base-only view = dedupe by (Name + Subtitle + Type), keep lowest Number
+        const baseCards = baseOnly(allCards);
+
+        // 3) build alt maps
+        const { baseToAll, altToBase } = buildAltMaps(allCards);
+
+        const parsed: ParsedSet = {
+            key: meta.key,
+            allCards: allCards,
+            baseCards: baseCards,
+            byNumber: new Map(baseCards.map(c => [c.Number, c])),
+            baseToAll: baseToAll,
+            altToBase: altToBase,
         };
-      }).filter((c: Card) => !!c.Name && Number.isFinite(c.Number));
+        parsedCacheRef.current.set(meta.key, parsed);
+        return parsed;
+      }; // end parseAndCache
 
-      // 1) unique by Number (keep the version that has Aspects if duped)
-      const byNum = new Map<number, Card>();
-      for (const c of mapped.sort((a,b) => {
-        const hasA = (a.Aspects?.length ?? 0) > 0 ? 1 : 0;
-        const hasB = (b.Aspects?.length ?? 0) > 0 ? 1 : 0;
-        return hasB - hasA || a.Number - b.Number;
-      })) {
-        if (!byNum.has(c.Number)) byNum.set(c.Number, c);
+      async function load() {
+        setError(''); 
+        setActive(null); 
+        setViewSpread(0); 
+
+        const meta = sets.find(s => s.key === setKey);
+        if (!meta) return;
+
+        // 1. Load and cache data for the current set
+        const currentSetData = await parseAndCache(meta);
+        
+        // 2. Load and cache data for ALL other sets concurrently
+        await Promise.all(
+          sets
+            .filter(s => s.key !== setKey)
+            .map(parseAndCache)
+        );
+
+        // 3. Update the state for the current view
+        setCardsAll(currentSetData.allCards);
+        setCardsBase(currentSetData.baseCards);
+        setBaseToAll(currentSetData.baseToAll);
+        setAltToBase(currentSetData.altToBase);
+
+        // REMOVED: Deferred navigation logic (moved to a new hook below)
       }
-      const allCards = Array.from(byNum.values()).sort((a,b)=>a.Number-b.Number);
-      setCardsAll(allCards);
+      load().catch(() => setError('Failed to load set data.'));
+    // Dependencies only include set changes (NO pendingSelection)
+    }, [setKey, sets]);
 
-      // 2) base-only view = dedupe by (Name + Type), keep lowest Number
-      const baseCards = baseOnly(allCards);
-      setCardsBase(baseCards);
+    // Deferred Navigation Hook: Runs after new set data is loaded
+    useEffect(() => {
+      // Only run if there is a pending card AND the current set data has loaded cards
+      if (pendingSelection && cardsBase.length > 0) {
+          // IMPORTANT: Clear any previous error before attempting the new lookup
+          setError(''); 
 
-      // 3) build alt maps for search display & alt→base resolve
-      const { baseToAll, altToBase } = buildAltMaps(allCards);
-      setBaseToAll(baseToAll);
-      setAltToBase(altToBase);
-    }
-    load().catch(() => setError('Failed to load set data.'));
-  }, [setKey, sets]);
+          // Find the base card in the newly loaded set
+          const card = cardsBase.find(c => 
+              c.Number === pendingSelection.number && c.Name === pendingSelection.name
+          );
 
+          if (card) {
+              const { page, row, column } = binderLayout(card.Number);
+              setActive({ card, page, row, column });
+              setViewSpread(pageToSpread(page));
+              // Clear query so search bar looks clean after selection
+              setQuery('');
+          } else {
+              // Only set an error if the card truly cannot be found in the loaded set
+              setError(`Failed to find card #${pendingSelection.number} in set ${setKey}.`);
+          }
+          
+          // Always clear the pending state after attempting selection
+          setPendingSelection(null); 
+      }
+    }, [pendingSelection, cardsBase, setKey, binderLayout, pageToSpread, setActive, setViewSpread, setError, setPendingSelection, setQuery]);
   // Build coloring map + presence
   const presentNumbers = useMemo(() => new Set(cardsBase.map(c => c.Number)), [cardsBase]);
   const numToColor = useMemo(() => {
@@ -322,69 +382,108 @@ export default function App() {
   }, [cardsBase]);
 
   // Suggestions (name or number)
-  type Suggestion = { kind: 'name' | 'number'; label: string; number: number; name: string };
-  const suggestions: Suggestion[] = useMemo(() => {
-    const raw = query.trim();
-    if (!raw) return [];
-    const isDigits = /^[0-9]+$/.test(raw);
-
-    if (isDigits) {
+    type Suggestion = { 
+      kind: 'name' | 'number'; 
+      label: string; 
+      number: number; 
+      name: string; 
+      setKey: SetKey;
+      subtitle?: string;
+      type?: string;
+    };
+    const suggestions: Suggestion[] = useMemo(() => {
+      const raw = query.trim();
+      if (!raw) return [];
+      
+      const isDigits = /^[0-9]+$/.test(raw);
       const qnorm = raw.replace(/^0+/, '') || '0';
+      const lower = norm(raw);
+      
+      // 1. Collect all Number Matches (Exact Base Number Match)
+      const qNum = Number(qnorm);
+      // Change to track uniqueness by "SetKey:Number"
+      const uniqueNumMatches = new Set<string>(); 
+      const numberMatches: Suggestion[] = [];
+      
+      if (isDigits) {
+          // Iterate over all sets to find exact Base Number matches
+          for (const [key, parsed] of parsedCacheRef.current.entries()) {
+            
+            // Find base card by exact number
+            const baseCard = parsed.byNumber.get(qNum); 
+            
+            if (baseCard) {
+                const uniqueKey = `${key}:${baseCard.Number}`;
+                
+                // Check if this card from this set has already been processed
+                if (!uniqueNumMatches.has(uniqueKey)) {
+                    uniqueNumMatches.add(uniqueKey);
 
-      // ---- NUM hits (numbers starting with the query), grouped alt→base
-      const matchedNums = cardsAll.filter(c => {
-        const s = String(c.Number);
-        return s.startsWith(raw) || s.startsWith(qnorm);
-      });
+                    const suggestion: Suggestion = {
+                        kind: 'number' as const,
+                        name: baseCard.Name,
+                        number: baseCard.Number,
+                        type: baseCard.Type || '',
+                        setKey: key, 
+                        subtitle: baseCard.Subtitle,
+                        label: `${baseCard.Name}${baseCard.Subtitle ? ` - ${baseCard.Subtitle}` : ''} — #${baseCard.Number} (${key})`,
+                    };
 
-      const byBase = new Map<number, Card>();
-      for (const c of matchedNums) {
-        const base = altToBase.get(c.Number) ?? c.Number;
-        const baseCard = byNumber.get(base);           // baseCards map
-        if (baseCard) byBase.set(base, baseCard);
+                    // Prioritize current set by putting its match at the front of the list
+                    if (key === setKey) {
+                        numberMatches.unshift(suggestion);
+                    } else {
+                        numberMatches.push(suggestion);
+                    }
+                }
+            }
+          }
       }
-      const numSugs = Array.from(byBase.values())
-        .sort((a,b)=>a.Number-b.Number)
-        .slice(0, 10)
-        .map(card => ({
-          kind: 'number' as const,
-          name: card.Name,
-          number: card.Number,
-          type: card.Type || '',
-          label: `${card.Name} — #${card.Number}`,
-        }));
+      
+      // 2. Collect all Name Matches (for both numeric and non-numeric queries)
+      // This handles "HK-47" and general name searches.
+      const nameMatches: Suggestion[] = [];
+      const nameMatchBaseNums = new Set<number>(numberMatches.map(s => s.number)); // Exclude cards already found by exact number match
 
-      // ---- NAME hits (names that contain the digits, e.g., "HK-47")
-      const qName = norm(raw);                          // "47"
-      const nameHits = cardsBase.filter(c => norm(c.Name).includes(qName));
-      const nameSugsRaw = nameHits
-        .sort((a,b)=>a.Number-b.Number)
-        .slice(0, 10)
-        .map(card => ({
-          kind: 'name' as const,
-          name: card.Name,
-          number: card.Number,
-          type: card.Type || '',
-          label: `${card.Name} — #${card.Number}`,
-        }));
+      // Search all sets for name matches
+      for (const [key, parsed] of parsedCacheRef.current.entries()) {
+        const hits = parsed.baseCards
+          .map(c => ({ 
+            c, 
+            // Check if name or subtitle contains the query (using normalized strings)
+            idx: norm(c.Name).indexOf(lower),
+            subIdx: c.Subtitle ? norm(c.Subtitle).indexOf(lower) : -1,
+          }))
+          // Filter: at least one name/subtitle match AND card number not already added by exact number match
+          .filter(o => (o.idx >= 0 || o.subIdx >= 0) && !nameMatchBaseNums.has(o.c.Number))
+          // Sort: by earliest match index (Name before Subtitle) then by Name
+          .sort((a,b) => {
+              const aIdx = a.idx >= 0 ? a.idx : a.subIdx;
+              const bIdx = b.idx >= 0 ? b.idx : b.subIdx;
+              return aIdx - bIdx || a.c.Name.localeCompare(b.c.Name);
+          })
+          .map(o => ({ 
+            kind: 'name' as const, 
+            name: o.c.Name, 
+            number: o.c.Number, 
+            type: o.c.Type,
+            setKey: key,
+            subtitle: o.c.Subtitle,
+            label: `${o.c.Name}${o.c.Subtitle ? ` - ${o.c.Subtitle}` : ''} — #${o.c.Number} (${key})`,
+          }));
+          
+          // Prioritize current set's name matches over others
+          if (key === setKey) {
+            nameMatches.unshift(...hits);
+          } else {
+            nameMatches.push(...hits);
+          }
+      }
+      
+      // 3. Merge: Exact Number matches first, then Name matches
+      return [...numberMatches, ...nameMatches].slice(0, 10);
 
-      // Dedupe: don't show the SAME base number twice; prefer [num] row
-      const numSet = new Set(numSugs.map(s => s.number));
-      const nameSugs = nameSugsRaw.filter(s => !numSet.has(s.number));
-
-      // Merge: numeric first, then name
-      return [...numSugs, ...nameSugs].slice(0, 10);
-    }
-
-    // (name path unchanged)
-    const lower = raw.toLowerCase();
-    return cardsBase
-      .map(c => ({ c, idx: c.Name.toLowerCase().indexOf(lower) }))
-      .filter(o => o.idx >= 0)
-      .sort((a,b) => a.idx - b.idx || a.c.Name.localeCompare(b.c.Name))
-      .slice(0, 10)
-      .map(o => ({ kind: 'name', label: `${o.c.Name} — #${o.c.Number}`, number: o.c.Number, name: o.c.Name }));
-  }, [query, cardsAll, cardsBase, altToBase, byNumber]);
+    }, [query, setKey, norm]);
 
   // Click outside to close dropdown
   useEffect(() => {
@@ -431,8 +530,18 @@ export default function App() {
     setOpenSug(false);
   }
   function onChoose(s: Suggestion) {
+    if (s.setKey !== setKey) {
+      // If the card is from a different set, store the target and switch sets.
+      setPendingSelection({ name: s.name, number: s.number });
+      setSetKey(s.setKey);
+      setQuery(''); setOpenSug(false);
+      return;
+    }
+
+    // If it's the current set, navigate as before.
     if (s.kind === 'number') goFromNumberString(String(s.number));
     else goFromName(s.name);
+    
     setQuery(''); setOpenSug(false);
   }
 
@@ -719,24 +828,48 @@ function RarityBadge({ rarity }: { rarity?: string }) {
             {openSug && suggestions.length > 0 && (
               <div className="sug">
                 {suggestions.map((s, i) => {
-                  const card = byNumber.get(s.number);
-                  const typeText = card?.Type ? card.Type : '';
+                  const typeText = s.type ? s.type : ''; 
 
+                  // NEW LOGIC: Access the correct set's alt-art map from the cache
+                  const targetSetData = parsedCacheRef.current.get(s.setKey);
+                  
                   // show base + alt numbers for BOTH kinds
-                  const nums = baseToAll.get(s.number) || [s.number];
+                  // Use the target set's baseToAll map, falling back to just the base number if data is missing
+                  const nums = targetSetData?.baseToAll.get(s.number) || [s.number];
                   const numsLabel = nums.map((n) => `#${n}`).join(', ');
 
                   return (
                     <div
-                      key={`${s.kind}:${s.number}`}
+                      key={`${s.setKey}:${s.number}`} // Ensure unique key across sets
                       className={`sug-item ${i === highlightIdx ? 'active' : ''}`}
                       onMouseEnter={() => setHighlightIdx(i)}
                       onMouseDown={(e) => { e.preventDefault(); onChoose(s); }}
                       role="option"
                       aria-selected={i === highlightIdx}
+                      // Apply flex styling to arrange items horizontally
+                      style={{ display: 'flex', alignItems: 'center', gap: 8 }} 
                     >
-                      <span className="sug-name">
+                      {/* NEW: Set Key Pill at the beginning */}
+                      <span
+                        style={{
+                          fontSize: '10px',
+                          fontWeight: 700,
+                          padding: '2px 6px',
+                          borderRadius: '4px',
+                          // Highlight the current set
+                          border: '1px solid currentColor', 
+                          opacity: s.setKey === setKey ? 1 : 0.6,
+                          color: s.setKey === setKey ? '#ffffff' : '#999', 
+                          backgroundColor: s.setKey === setKey ? '#0b0b0b' : 'transparent',
+                          flexShrink: 0,
+                        }}
+                      >
+                        {s.setKey}
+                      </span>
+
+                      <span className="sug-name" style={{ flexGrow: 1, minWidth: 0 }}>
                         {s.name}
+                        {s.subtitle && <span className="sug-subtitle muted" style={{ opacity: 0.7, fontSize: '0.9em' }}> - {s.subtitle}</span>}
                         {typeText && <span className="sug-type">{typeText}</span>}
                       </span>
                       <span className="sug-num mono">{numsLabel}</span>
