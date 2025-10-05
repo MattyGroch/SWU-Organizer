@@ -1974,7 +1974,7 @@ function Binder({
                     return (
                       <>
                         {/* TOP-LEFT: Type then Name/Subtitle */}
-                        <g transform={`translate(${x + 10}, ${y + 5})`} style={{ pointerEvents: 'none' }}>
+                        <g transform={`translate(${x + 10}, ${y + 8})`} style={{ pointerEvents: 'none' }}>
                           <foreignObject width={cellW - 20} height={60}>
                             <div
                                 style={{
