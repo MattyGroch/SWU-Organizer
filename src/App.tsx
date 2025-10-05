@@ -26,6 +26,7 @@ const NEUTRAL = '#2f3545'; // for numbers that exist but have no aspect
 const NAME_MAX_LINES = 2;
 const QTY_FONT = 22;      // size of the centered "1/3"
 const QTY_Y_OFFSET = 4;   // nudge up/down if needed
+const QTY_SHIFT_DOWN = 14; // NEW: Shift QTY and buttons down by 20px
 const BTN = 32;          // button diameter
 const GAP = 8;           // CSS gap between buttons
 const GROUP_W = BTN * 2 + GAP;  // 72
@@ -258,6 +259,8 @@ export default function App() {
 
   const [highlightedRowNumber, setHighlightedRowNumber] = useState<number | null>(null);
 
+  const [showBulkActionsModal, setShowBulkActionsModal] = useState(false); // NEW STATE
+
   // Spreads (instead of pages)
   const maxNumber = useMemo(() => cardsBase.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsBase]);
   const totalPages = Math.max(1, Math.ceil(maxNumber / 12));
@@ -401,6 +404,33 @@ export default function App() {
     }
     return m;
   }, [cardsBase]);
+
+  // Inventory Status Counts (Complete, Incomplete, Missing)
+  const inventoryStatus = useMemo(() => {
+    let complete = 0;
+    let incomplete = 0;
+    let missing = 0;
+    let totalCards = cardsBase.length; // Total unique cards in the set
+
+    for (const baseCard of cardsBase) {
+      const baseNum = baseCard.Number;
+      const nums = baseToAll.get(baseNum) || [baseNum];
+      const max = quotaForType(baseCard.Type);
+      
+      // Calculate total quantity across all printings (base + alts)
+      const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
+
+      if (have >= max) {
+        complete++;
+      } else if (have > 0) {
+        incomplete++;
+      } else {
+        missing++;
+      }
+    }
+
+    return { complete, incomplete, missing, totalCards };
+  }, [cardsBase, baseToAll, inventory]);
 
   // Suggestions (name or number)
     type Suggestion = { 
@@ -961,6 +991,67 @@ function RarityBadge({ rarity }: { rarity?: string }) {
     return rows.sort((a, b) => a.Number - b.Number);
   }, [cardsBase, baseToAll, inventory]);
 
+  // NOTE: RARITIES_FOR_BULK is for internal logic only; UI uses a simplified list.
+  const RARITIES_FOR_BULK = ['Common', 'Uncommon', 'Rare', 'Legendary', 'Special', 'Starter Deck Exclusive', 'Starter'];
+  const CORE_RARITIES = ['Common', 'Uncommon', 'Rare', 'Legendary']; // NEW: List of non-special core rarities
+
+  function performBulkAction(
+    action: 'add' | 'remove' | 'add_max' | 'remove_all',
+    target: 'all' | string, // string means Rarity or Type key
+    qty: number = 1
+  ) {
+    // REMOVED BROWSER CONFIRMATION for all actions per user request.
+    
+    setInventory(prevInv => {
+      const nextInv: Inventory = { ...prevInv };
+
+      for (const card of cardsBase) {
+        let processCard = false;
+
+        if (target === 'all') {
+          processCard = true;
+        } else if (CORE_RARITIES.includes(target)) {
+          // Check for core Rarity targets
+          if (card.Rarity === target) {
+            processCard = true;
+          }
+        } else if (target === 'Special') {
+          // Check for Special rarity group
+          const cardRarity = card.Rarity;
+          if (cardRarity === 'Starter' || cardRarity === 'Starter Deck Exclusive' || cardRarity === 'Special') {
+            processCard = true;
+          }
+        } else {
+          // Assume target is a Card Type (Leader, Unit, Event, Upgrade, etc.)
+          if (card.Type === target) {
+            processCard = true;
+          }
+        }
+
+        if (processCard) {
+          const max = quotaForType(card.Type);
+          const currentQty = nextInv[card.Number] || 0;
+
+          if (action === 'add' || action === 'add_max') {
+            const amount = action === 'add' ? qty : max;
+            nextInv[card.Number] = Math.min(currentQty + amount, max);
+          } else if (action === 'remove') {
+            const nextQty = Math.max(currentQty - qty, 0);
+            if (nextQty === 0) {
+              delete nextInv[card.Number];
+            } else {
+              nextInv[card.Number] = nextQty;
+            }
+          } else if (action === 'remove_all') {
+             delete nextInv[card.Number];
+          }
+        }
+      }
+      return pruneZeros(nextInv);
+    });
+    setShowBulkActionsModal(false);
+  }
+
   const fmtUSD = (n: number) =>
     n.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
   const missingCost = useMemo( () => missingRows.reduce((sum, r) => sum + r.RowTotal, 0), [missingRows] );
@@ -1002,7 +1093,10 @@ function RarityBadge({ rarity }: { rarity?: string }) {
         <div className="row controls-row" style={{ marginTop: 8 }} ref={boxRef}>
           <label className="pill">
             <span className="set-label">Set</span>
-            <select value={setKey} onChange={e => { setSetKey(e.target.value as SetKey); }}>
+            <select value={setKey} onChange={e => {
+              setSetKey(e.target.value as SetKey);
+              setQuery('');
+            }}>
               {sets.map(s => (
                 <option key={s.key} value={s.key}>{s.label}</option>
               ))}
@@ -1191,60 +1285,122 @@ function RarityBadge({ rarity }: { rarity?: string }) {
       {/* Inventory table */}
       <div className="card" style={{ marginTop: 16 }}>
         <div className="row" style={{ justifyContent:'space-between', alignItems: 'center' }}>
-          <div className="title" style={{ margin: 0 }}>
-            {listView === 'inventory' ? 'Inventory' : 'Missing Cards'}
-          </div>
-          <div className="row" style={{ gap: 8, alignItems: 'center' }}>
-            {listView === 'missing' && missingRows.length > 0 && (
-              <button
-                className="tbtn tbtn-primary" 
-                onClick={copyMissingToClipboard}
-                title="Copy list in TCGPlayer Mass Entry format: QTY Name - Subtitle [setKey]"
-                aria-label="Copy missing cards list for TCGPlayer"
-              >
-                <span className="icon" aria-hidden="true">content_paste</span>
-                <span>Copy TCG List</span>
-              </button>
-            )}
-            <div className="toolbar-group" role="tablist" aria-label="Inventory view"></div>
-            <div className="toolbar-group" role="tablist" aria-label="Inventory view">
-              <button
-                className="tbtn"
-                role="tab"
-                aria-selected={listView === 'inventory'}
-                onClick={() => setListView('inventory')}
-                title="Show your current inventory"
-              >
-                Inventory
-              </button>
-              <button
-                className="tbtn"
-                role="tab"
-                aria-selected={listView === 'missing'}
-                onClick={() => setListView('missing')}
-                title="Show cards you don’t have yet"
-              >
-                Missing
-              </button>
-            </div>
-            <div className="muted"
-              style={{
-                width: '300px',        // ← choose a width wide enough for longest string
-                textAlign: 'right',    // keeps text tidy
-                whiteSpace: 'nowrap',  // prevents wrapping
-              }}
+          
+          {/* LEFT SIDE: Toggles (New Header) + Copy Button */}
+    <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+      
+      {/* 1. Inventory/Missing Toggles (Tab Selector - Anchor Left) */}
+      <div className="toolbar-group" role="tablist" aria-label="Inventory view">
+        {/* ... (Toggles JSX remains the same) ... */}
+        <button
+          className="tbtn"
+          role="tab"
+          aria-selected={listView === 'inventory'}
+          onClick={() => setListView('inventory')}
+          title="Show your current inventory"
+          style={{
+            fontSize: 16,
+            fontWeight: 900,
+            padding: '10px 16px',
+            ...(listView === 'inventory' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : {})
+          }}
+        >
+          Inventory
+        </button>
+        <button
+          className="tbtn"
+          role="tab"
+          aria-selected={listView === 'missing'}
+          onClick={() => setListView('missing')}
+          title="Show cards you don’t have yet"
+          style={{
+            fontSize: 16,
+            fontWeight: 900,
+            padding: '10px 16px',
+            ...(listView === 'missing' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : {})
+          }}
+        >
+          Missing
+        </button>
+      </div>
+      
+      {/* 2. Action Button (Conditional: Copy TCG or Bulk Actions) */}
+      {listView === 'missing' && missingRows.length > 0 ? (
+        <button
+          className="tbtn tbtn-primary" 
+          onClick={copyMissingToClipboard}
+          title="Copy list in TCGPlayer Mass Entry format: QTY Name - Subtitle [setKey]"
+          aria-label="Copy missing cards list for TCGPlayer"
+        >
+          <span className="icon" aria-hidden="true">content_paste</span>
+          <span>Copy TCG List</span>
+        </button>
+      ) : listView === 'inventory' ? (
+        <button
+          className="tbtn tbtn-primary" 
+          onClick={() => setShowBulkActionsModal(true)} // Opens the new modal
+          title="Perform bulk operations on inventory"
+          aria-label="Open bulk inventory actions modal"
+        >
+          <span className="icon" aria-hidden="true">layers</span>
+          <span>Bulk Actions</span>
+        </button>
+      ) : null}
+      
+    </div> {/* End LEFT SIDE */}
+          
+          {/* RIGHT SIDE: Status/Cost Display (Pinned Right) */}
+          <div className="muted"
+            style={{
+              width: '500px',
+              textAlign: 'right',
+              whiteSpace: 'nowrap',
+            }}
+          >
+          {listView === 'missing' ? (
+            <div 
+              className="muted" 
+              aria-live="polite"
+              // Preserving custom styles for Cost to Complete
+              style={{ paddingTop: 18, paddingBottom: 16, fontSize: 14, fontWeight: 600 }} 
             >
-            {listView === 'missing' ? (
-              <div className="muted" aria-live="polite">
-                Cost to Complete: {fmtUSD(missingCost)}
-              </div>
-            ) : (
-              <div className="muted">
-                Tip: counts auto-save, and you can export/import JSON.
-              </div>
-            )}
+              Cost to Complete: {fmtUSD(missingCost)}
             </div>
-          </div>
+          ) : (
+            // Inventory Progress Bar and Status
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
+              <div style={{ fontSize: 14, fontWeight: 600 }}>
+                Collection Status ({inventoryStatus.totalCards} Unique Cards)
+              </div>
+              {/* Progress Bar Container */}
+              <div 
+                title={`Complete: ${inventoryStatus.complete}, In Progress: ${inventoryStatus.incomplete}, Missing: ${inventoryStatus.missing}`}
+                style={{ 
+                  width: '100%', height: 10, borderRadius: 5, 
+                  backgroundColor: '#ef4444', // Progress Bar Background preserved
+                  display: 'flex', overflow: 'hidden' 
+                }}
+              >
+                {/* Green: Complete Playsets (Preserving #22c55e fill) */}
+                <div style={{ 
+                  width: `${(inventoryStatus.complete / inventoryStatus.totalCards) * 100}%`, 
+                  backgroundColor: '#22c55e'
+                }} />
+                {/* Yellow: Incomplete Playsets (Preserving #f59e0b fill) */}
+                <div style={{ 
+                  width: `${(inventoryStatus.incomplete / inventoryStatus.totalCards) * 100}%`, 
+                  backgroundColor: '#f59e0b'
+                }} />
+              </div>
+              {/* Status Counts (Preserving custom colors for counts) */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', fontSize: 12, opacity: 0.8 }}>
+                <span style={{ color: '#34d399' }}>✓ {inventoryStatus.complete}</span>
+                <span style={{ color: '#fcd34d' }}>! {inventoryStatus.incomplete}</span>
+                <span style={{ color: '#f87171' }}>✕ {inventoryStatus.missing}</span>
+              </div>
+            </div>
+          )}
+          </div> {/* End RIGHT SIDE content */}
         </div>
 
         {listView === 'inventory' ? (
@@ -1427,6 +1583,127 @@ function RarityBadge({ rarity }: { rarity?: string }) {
           )
         )}
       </div>
+      {/* NEW: Bulk Actions Modal JSX */}
+      {showBulkActionsModal && (
+        <div 
+          style={{
+            position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', 
+            display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000,
+          }}
+          onClick={() => setShowBulkActionsModal(false)}
+        >
+          <div 
+            style={{ 
+              backgroundColor: '#2b2d3d', padding: 30, borderRadius: 12, 
+              maxWidth: 600, width: '90%', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', 
+              color: '#e5e7eb',
+            }}
+            onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
+          >
+            <h2 style={{ marginTop: 0, color: '#e5e7eb' }}>Bulk Inventory Actions</h2>
+            <p style={{ opacity: 0.8, marginBottom: 10 }}>
+              Apply actions to all cards or filter by rarity. Action applies to <strong>Base Cards</strong>.
+            </p>
+            
+            {/* NEW: DESTRUCTIVE ACTION WARNING */}
+            <div style={{ 
+              color: '#ef4444', // Aggression Red
+              fontWeight: 400,
+              padding: '8px 16px',
+              marginBottom: 10,
+              border: '2px solid #ef4444',
+              borderRadius: 8,
+              textAlign: 'center',
+              backgroundColor: 'rgba(239, 68, 68, 0.23)'
+            }}>
+              WARNING: These actions are destructive. Please use the 'Save' button to download a JSON backup before proceeding.
+            </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 10, alignItems: 'center' }}>
+              <div style={{ fontWeight: 700 }}>Target</div>
+              <div style={{ fontWeight: 700 }}>Add 1 / Add Max</div>
+              <div style={{ fontWeight: 700 }}>Remove 1</div>
+              <div style={{ fontWeight: 700 }}>Remove All</div>
+              
+              {/* Define a base style for the modal's buttons */}
+              <style
+                dangerouslySetInnerHTML={{
+                  __html: `
+                    .modal-btn {
+                      border: none;
+                      border-radius: 4px;
+                      padding: 6px 10px;
+                      color: #fff;
+                      font-weight: 600;
+                      cursor: pointer;
+                      transition: background-color 0.15s;
+                      width: 100%;
+                    }
+                    .modal-btn:hover { opacity: 0.9; }
+                  `,
+                }}
+              />
+
+              {/* ROW: All Cards */}
+              <div style={{ fontWeight: 600 }}>All Cards</div>
+              <div style={{ display: 'flex', gap: 4 }}>
+                <button className="modal-btn" style={{ backgroundColor: '#185434' }} onClick={() => performBulkAction('add', 'all')}>+1</button>
+                <button className="modal-btn" style={{ backgroundColor: '#185434' }} onClick={() => performBulkAction('add_max', 'all')}>Max</button>
+              </div>
+              <button className="modal-btn" style={{ backgroundColor: '#63252a' }} onClick={() => performBulkAction('remove', 'all')}>-1</button>
+              <button className="modal-btn" style={{ backgroundColor: '#424452' }} onClick={() => performBulkAction('remove_all', 'all')}>Clear</button>
+
+              <div style={{ gridColumn: '1 / span 4', height: 1, backgroundColor: '#424452', margin: '10px 0' }} />
+
+              <div style={{ gridColumn: '1 / span 4', fontWeight: 700, marginTop: 10 }}>Card Rarities</div>
+
+              {/* Rarity Rows */}
+              {['Common', 'Uncommon', 'Rare', 'Legendary', 'Special'].map(rarity => (
+                <React.Fragment key={rarity}>
+                  <div style={{ fontWeight: 600 }}>{rarity}</div>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button className="modal-btn" style={{ backgroundColor: '#185434' }} onClick={() => performBulkAction('add', rarity)}>{`+1`}</button>
+                    <button className="modal-btn" style={{ backgroundColor: '#185434' }} onClick={() => performBulkAction('add_max', rarity)}>{`Max`}</button>
+                  </div>
+                  <button className="modal-btn" style={{ backgroundColor: '#63252a' }} onClick={() => performBulkAction('remove', rarity)}>{`-1`}</button>
+                  <button className="modal-btn" style={{ backgroundColor: '#424452' }} onClick={() => performBulkAction('remove_all', rarity)}>{`Clear`}</button>
+                </React.Fragment>
+              ))}
+
+              <div style={{ gridColumn: '1 / span 4', height: 1, backgroundColor: '#424452', margin: '10px 0' }} />
+
+              <div style={{ gridColumn: '1 / span 4', fontWeight: 700, marginTop: 10 }}>Card Types</div>
+              
+              {/* Card Type Rows (Leader, Base, Unit, Event, Upgrade) */}
+              {['Leader', 'Base', 'Unit', 'Event', 'Upgrade'].map(type => (
+                <React.Fragment key={type}>
+                  <div style={{ fontWeight: 600 }}>{type}</div>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button className="modal-btn" style={{ backgroundColor: '#185434' }} onClick={() => performBulkAction('add', type)}>{`+1`}</button>
+                    <button className="modal-btn" style={{ backgroundColor: '#185434' }} onClick={() => performBulkAction('add_max', type)}>{`Max`}</button>
+                  </div>
+                  <button className="modal-btn" style={{ backgroundColor: '#63252a' }} onClick={() => performBulkAction('remove', type)}>{`-1`}</button>
+                  <button className="modal-btn" style={{ backgroundColor: '#424452' }} onClick={() => performBulkAction('remove_all', type)}>{`Clear`}</button>
+                </React.Fragment>
+              ))}
+
+
+            </div>
+            
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
+                <button 
+                    onClick={() => setShowBulkActionsModal(false)}
+                    style={{ 
+                        padding: '8px 16px', borderRadius: 6, 
+                        backgroundColor: '#424452', color: '#e5e7eb', border: 'none', cursor: 'pointer' 
+                    }}
+                >
+                    Close
+                </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1696,9 +1973,9 @@ function Binder({
 
                     return (
                       <>
-                        {/* TOP-LEFT: Type then Name (Name clamped to 2 lines) */}
-                        <g transform={`translate(${x + 10}, ${y + 10})`} style={{ pointerEvents: 'none' }}>
-                          <foreignObject width={cellW - 20} height={48}>
+                        {/* TOP-LEFT: Type then Name/Subtitle */}
+                        <g transform={`translate(${x + 10}, ${y + 5})`} style={{ pointerEvents: 'none' }}>
+                          <foreignObject width={cellW - 20} height={60}>
                             <div
                                 style={{
                                   fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial',
@@ -1708,7 +1985,7 @@ function Binder({
                                 }}>
                               <div style={{ fontSize: 10, opacity: 0.85 }}>{cardAt?.Type || ''}</div>
                               
-                              {/* Main Name: Removed clamping to allow subtitle space */}
+                              {/* Main Name */}
                               <div style={{
                                 fontSize: 12, fontWeight: 600,
                               }}>
@@ -1734,7 +2011,7 @@ function Binder({
                         {/* CENTER: big quantity, centered */}
                         <text
                           x={x + cellW / 2}
-                          y={y + cellH / 2 - QTY_Y_OFFSET}
+                          y={y + cellH / 2 + QTY_SHIFT_DOWN - QTY_Y_OFFSET}
                           textAnchor="middle"
                           dominantBaseline="middle"
                           fontSize={QTY_FONT}
@@ -1747,7 +2024,7 @@ function Binder({
 
                         {/* CENTER-BOTTOM: +/- controls under qty (clicks don't bubble) */}
                         <g
-                          transform={`translate(${x + (cellW - GROUP_W) / 2}, ${y + cellH / 2 + 10})`}
+                          transform={`translate(${x + (cellW - GROUP_W) / 2}, ${y + cellH / 2 + QTY_SHIFT_DOWN + 10})`} // ADDED QTY_SHIFT_DOWN
                           onClick={(e)=>e.stopPropagation()}
                         >
                           <foreignObject width={GROUP_W} height={GROUP_H + 4}>
