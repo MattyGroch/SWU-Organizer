@@ -1331,8 +1331,9 @@ function RarityBadge({ rarity }: { rarity?: string }) {
             <div className="muted">No entries yet. Click any slot’s +/− or use this table once you add cards.</div>
           )
         ) : (
-          <div className="inventory-scroll">
-            {missingRows.length ? (
+          // Check if there are any missing rows BEFORE rendering the inventory-scroll div
+          missingRows.length ? (
+            <div className="inventory-scroll">
               <table className="table">
                 <thead>
                   <tr>
@@ -1351,17 +1352,16 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                   {missingRows.map(r => {
                     const dot = numToColor.get(r.Number);
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
-                    const isHighlighted = r.Number === highlightedRowNumber; // NEW
+                    const isHighlighted = r.Number === highlightedRowNumber; 
                     return (
                       <tr 
                         key={r.Number}
                         style={{ 
                           cursor: 'pointer',
-                          // Conditional inline styling for the highlight
                           transition: 'background-color 0.5s ease',
                           backgroundColor: isHighlighted ? '#424452' : 'transparent',
                         }}
-                        onClick={() => selectCardByNumber(r.Number)} // Added click handler
+                        onClick={() => selectCardByNumber(r.Number)} 
                       >
                         <td className="mono numcol">#{r.Number}</td>
                         <td className="dotcol">
@@ -1420,10 +1420,11 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                   })}
                 </tbody>
               </table>
-            ) : (
-              <div className="muted">Nothing missing — nice!</div>
-            )}
-          </div>
+            </div>
+          ) : (
+            // Simple muted message matching the Inventory tab's empty look
+            <div className="muted">Nothing missing — nice!</div>
+          )
         )}
       </div>
     </div>
