@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 
 type Card = {
   Name: string;
@@ -51,6 +51,13 @@ function binderLayout(n: number) {
   const row = Math.floor(((n - 1) % 12) / 4) + 1;
   const column = ((n - 1) % 4) + 1;
   return { page, row, column };
+}
+function getSpreadCoords(page: number, row: number, column: number) {
+  const isOddPage = page % 2 !== 0;
+  return {
+    spreadCol: isOddPage ? column + 4 : column,
+    spreadRow: row,
+  };
 }
 function numberFromPRC(page: number, row: number, col: number) {
   return (page - 1) * 12 + (row - 1) * 4 + col;
@@ -235,10 +242,19 @@ export default function App() {
   // UI state
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
-  const [active, setActive] = useState<{ card: Card; page: number; row: number; column: number } | null>(null);
+  const [active, setActive] = useState<{ 
+    card: Card; 
+    page: number; 
+    row: number; 
+    column: number; 
+    spreadCol: number; 
+    spreadRow: number; 
+  } | null>(null);
 
   // NEW: State to hold card details for selection after a set switch
   const [pendingSelection, setPendingSelection] = useState<{ name: string; number: number } | null>(null);
+
+  const [showHelpModal, setShowHelpModal] = useState(false); 
 
   // Spreads (instead of pages)
   const maxNumber = useMemo(() => cardsBase.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsBase]);
@@ -357,7 +373,8 @@ export default function App() {
 
           if (card) {
               const { page, row, column } = binderLayout(card.Number);
-              setActive({ card, page, row, column });
+              const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
+              setActive({ card, page, row, column, spreadCol, spreadRow });
               setViewSpread(pageToSpread(page));
               // Clear query so search bar looks clean after selection
               setQuery('');
@@ -515,11 +532,18 @@ export default function App() {
   function goFromNumberString(nStr: string) {
     const n = Number(nStr.replace(/^0+/, '') || '0');
     if (!Number.isFinite(n) || n < 1) { setError('Invalid number.'); return; }
+    
+    // 1. Resolve to the base number (this defines baseNum)
     const baseNum = altToBase.get(n) ?? n;          // alt → base
+    
+    // 2. Look up the card using the base number
     const card = byNumber.get(baseNum);
     if (!card) { setError('Number not found in this set.'); return; }
+    
+    // 3. Set the active state with all required properties
     const { page, row, column } = binderLayout(baseNum);
-    setActive({ card, page, row, column });
+    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
+    setActive({ card, page, row, column, spreadCol, spreadRow });
     setError('');
     setViewSpread(pageToSpread(page));
   }
@@ -527,7 +551,8 @@ export default function App() {
     const base = baseByName.get(name);
     if (!base) { setError('Name not found in this set.'); return; }
     const { page, row, column } = binderLayout(base.Number);
-    setActive({ card: base, page, row, column });
+    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
+    setActive({ card: base, page, row, column, spreadCol, spreadRow });
     setError('');
     setViewSpread(pageToSpread(page));
   }
@@ -554,6 +579,98 @@ export default function App() {
     setQuery(''); setOpenSug(false);
   }
 
+  function selectCardByNumber(baseNum: number) {
+    const card = byNumber.get(baseNum);
+    if (!card) { 
+      setError('Card not found in current set data.');
+      return; 
+    }
+    const { page, row, column } = binderLayout(baseNum);
+    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
+    setActive({ card, page, row, column, spreadCol, spreadRow });
+    setError('');
+    setViewSpread(pageToSpread(page));
+  }
+
+  // Function to move the card selection based on visual coordinates (8 columns, 3 rows)
+  const updateActivePosition = useCallback((deltaCol: number, deltaRow: number) => {
+    if (!active) return;
+    
+    const currentNum = active.card.Number;
+    const { page } = binderLayout(currentNum);
+
+    // 1. Get current visual coordinates
+    let newSpreadCol = active.spreadCol + deltaCol;
+    let newSpreadRow = active.spreadRow + deltaRow;
+    let targetSpread = pageToSpread(page);
+
+    // 2. Implement Movement/Wrap Logic
+
+    // --- Horizontal Movement/Spread Wrap (X-axis) ---
+    if (deltaCol !== 0) {
+        if (newSpreadCol > 8) {
+            newSpreadCol = 1; 
+            targetSpread += 1; // Jumps to next spread
+        } else if (newSpreadCol < 1) {
+            newSpreadCol = 8; 
+            targetSpread -= 1; // Jumps to previous spread
+        }
+    }
+    
+    // --- Vertical Movement/Spread Wrap (Y-axis) ---
+    if (deltaRow !== 0) {
+        if (newSpreadRow > 3) {
+            newSpreadRow = 1;
+            targetSpread += 1; // Jumps to next spread
+        } else if (newSpreadRow < 1) {
+            newSpreadRow = 3;
+            targetSpread -= 1; // Jumps to previous spread
+        }
+    }
+    
+    // 3. Constraint Checks
+    if (targetSpread < 0 || targetSpread > totalSpreads - 1) return;
+
+    // 4. Convert Spread Coordinate back to Card Number
+    let targetPage = spreadToPrimaryPage(targetSpread);
+    let targetColOnPage = 0;
+
+    if (newSpreadCol <= 4) {
+      // Target is Left Page (SpreadCol 1-4)
+      targetColOnPage = newSpreadCol;
+      // If we landed on the left side of the spread, the page number must be even (P2, P4, P6...)
+      if (targetPage % 2 !== 0 && targetPage > 1) targetPage -= 1;
+      // Handle P1 edge case (Spread 0 is right-page only)
+      if (targetPage === 1 && newSpreadCol <= 4) return;
+    } else {
+      // Target is Right Page (SpreadCol 5-8)
+      targetColOnPage = newSpreadCol - 4;
+      // If we landed on the right side of the spread, the page number must be odd (P3, P5, P7...)
+      if (targetPage % 2 === 0) targetPage += 1;
+    }
+    
+    const newNumCandidate = numberFromPRC(targetPage, newSpreadRow, targetColOnPage);
+    
+    // Final boundary check against total card slots
+    if (newNumCandidate > totalPages * 12) return;
+
+    // 5. Apply Position
+    const newCard = byNumber.get(newNumCandidate);
+    
+    const newActiveState = {
+        card: newCard || { ...active.card, Number: newNumCandidate },
+        page: targetPage,
+        row: newSpreadRow,
+        column: targetColOnPage,
+        spreadCol: newSpreadCol,
+        spreadRow: newSpreadRow,
+    };
+
+    setActive(newActiveState);
+    setViewSpread(targetSpread);
+    
+  }, [active, totalPages, totalSpreads, byNumber, setActive, setViewSpread]);
+  
   const setKeys = useMemo(() => sets.map(s => s.key as SetKey), [sets]);
 
   // Inventory helpers
@@ -679,32 +796,101 @@ function RarityBadge({ rarity }: { rarity?: string }) {
         return;
       }
 
-      // Spread navigation + qty adjust (only when not typing)
+      // Key bindings (selection movement + page flipping)
       if (!typing) {
-            if (e.key === 'Escape') {
+        if (e.key === 'Escape') {
           e.preventDefault();
           setActive(null);
           return;
         }
-        if (e.key === 'ArrowLeft') {
+        
+        let deltaSpread = 0;
+        
+        // NEW: Page flipping shortcuts ("," and ".")
+        if (e.key === ',' || e.key === '<') { // Comma
           e.preventDefault();
-          setViewSpread(s => Math.max(0, s - 1));
-        } else if (e.key === 'ArrowRight') {
+          deltaSpread = -1;
+        } else if (e.key === '.' || e.key === '>') { // Period
           e.preventDefault();
-          setViewSpread(s => Math.min(totalSpreads - 1, s + 1));
-        } else if (active && (e.key === '+' || e.key === '=' || e.code === 'NumpadAdd')) {
-          e.preventDefault();
-          inc(active.card.Number);
-        } else if (active && (e.key === '-' || e.code === 'NumpadSubtract')) {
-          e.preventDefault();
-          dec(active.card.Number);
+          deltaSpread = 1;
+        }
+        
+        // Handle Page Flip (if active, anchor the selection)
+        if (deltaSpread !== 0) {
+            const currentSpread = viewSpread;
+            const newSpread = Math.max(0, Math.min(totalSpreads - 1, currentSpread + deltaSpread));
+
+            if (newSpread !== currentSpread) {
+                // If a card is active, calculate its new position
+                if (active) {
+                    // 24 slots per spread (12 cards per page * 2 pages)
+                    const deltaNum = deltaSpread * 24;
+                    const currentNum = active.card.Number;
+                    let newNum = currentNum + deltaNum;
+
+                    // Edge Case: Page 1 (Spread 0) only has 12 slots.
+                    // If moving to spread 0, the minimum number is #1
+                    if (newSpread === 0) {
+                        newNum = Math.max(1, newNum);
+                    }
+                    
+                    // Constrain the number to the set's bounds
+                    const maxSetNum = totalPages * 12;
+                    newNum = Math.min(maxSetNum, newNum);
+
+                    // Find the nearest existing card near the new position (using the number itself is simplest)
+                    const newCard = byNumber.get(newNum) || byNumber.get(Math.max(1, newNum)); // Fallback to #1
+
+                    if (newCard) {
+                        const { page, row, column } = binderLayout(newCard.Number);
+                        const { spreadCol, spreadRow } = getSpreadCoords(page, row, column); // CALCULATE SPREAD COORDS
+                        setActive({ card: newCard, page, row, column, spreadCol, spreadRow }); // PASS SPREAD COORDS
+                    } else {
+                        // If no card exists at the new relative position, select the first card on the new spread
+                        const firstNumOnSpread = newSpread * 24 + 1;
+                        const firstCardOnSpread = byNumber.get(firstNumOnSpread) || byNumber.get(Math.max(1, firstNumOnSpread));
+                        if(firstCardOnSpread) {
+                           const { page, row, column } = binderLayout(firstCardOnSpread.Number);
+                           const { spreadCol, spreadRow } = getSpreadCoords(page, row, column); // CALCULATE SPREAD COORDS
+                           setActive({ card: firstCardOnSpread, page, row, column, spreadCol, spreadRow }); // PASS SPREAD COORDS
+                        } else {
+                           setActive(null); // Clear selection if no card is found
+                        }
+                    }
+                }
+                setViewSpread(newSpread);
+            }
+            return;
+        } // End Page Flip Logic
+
+        // Card selection movement (Arrow keys) and Qty Adjust
+        if (active) {
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            updateActivePosition(-1, 0); // Move 1 column left (literal)
+          } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            updateActivePosition(1, 0); // Move 1 column right (literal)
+          } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            updateActivePosition(0, -1); // Move 1 row up (literal)
+          } else if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            updateActivePosition(0, 1); // Move 1 row down (literal)
+          } else if (e.key === '+' || e.key === '=' || e.code === 'NumpadAdd') {
+            e.preventDefault();
+            inc(active.card.Number);
+          } else if (e.key === '-' || e.code === 'NumpadSubtract') {
+            e.preventDefault();
+            dec(active.card.Number);
+          }
         }
       }
     };
 
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [active, query, setViewSpread, totalSpreads]);
+  }, [active, query, setViewSpread, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages]);
 
   // Inventory table rows
   const invRows = useMemo(() => {
@@ -984,6 +1170,8 @@ function RarityBadge({ rarity }: { rarity?: string }) {
           inc={inc}
           dec={dec}
           setKey={setKey}
+          showHelpModal={showHelpModal}
+          setShowHelpModal={setShowHelpModal}
         />
       </div>
 
@@ -1068,7 +1256,11 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
                     const complete = r.Qty >= r.Max;
                     return (
-                      <tr key={r.Number}>
+                      <tr 
+                        key={r.Number}
+                        style={{ cursor: 'pointer' }} // Added to indicate interactivity
+                        onClick={() => selectCardByNumber(r.Number)} // Added click handler
+                      >
                         <td className="mono numcol">#{r.Number}</td>
                         <td className="dotcol">
                           {dot && (
@@ -1141,7 +1333,11 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                     const dot = numToColor.get(r.Number);
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
                     return (
-                      <tr key={r.Number}>
+                      <tr 
+                        key={r.Number}
+                        style={{ cursor: 'pointer' }} // Added to indicate interactivity
+                        onClick={() => selectCardByNumber(r.Number)} // Added click handler
+                      >
                         <td className="mono numcol">#{r.Number}</td>
                         <td className="dotcol">
                           {dot && (
@@ -1221,13 +1417,29 @@ function Binder({
   inventory,
   inc,
   dec,
-  setKey
+  setKey,
+  showHelpModal,
+  setShowHelpModal,
 }: {
   viewSpread: number;
   setViewSpread: React.Dispatch<React.SetStateAction<number>>;
   totalSpreads: number;
-  active: { card: Card; page: number; row: number; column: number } | null;
-  setActive: (v: { card: Card; page: number; row: number; column: number } | null)=>void;
+  active: { 
+    card: Card; 
+    page: number; 
+    row: number; 
+    column: number; 
+    spreadCol: number; 
+    spreadRow: number; 
+  } | null;
+  setActive: (v: { 
+    card: Card; 
+    page: number; 
+    row: number; 
+    column: number; 
+    spreadCol: number; 
+    spreadRow: number; 
+  } | null)=>void;
   presentNumbers: Set<number>;
   numToColor: Map<number, string>;
   byNumber: Map<number, Card>;
@@ -1235,6 +1447,8 @@ function Binder({
   inc: (n:number)=>void;
   dec: (n:number)=>void;
   setKey: SetKey;
+  showHelpModal: boolean;
+  setShowHelpModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const page = spreadToPrimaryPage(viewSpread);     // 1, 2, 4, 6, ...
   const leftPage = page % 2 === 0 ? page : page - 1;
@@ -1299,17 +1513,38 @@ function Binder({
                 )}
               </div>
               <span className="pill">Page {active.page}</span>
-              <span className="pill">Row {active.row}</span>
-              <span className="pill">Column {active.column}</span>
+              <span className="pill">Column {active.spreadCol}</span>
+              <span className="pill">Row {active.spreadRow}</span>
             </>
           ) : (
             <div className="muted" style={{ fontSize: 25 }}>No card selected</div>
           )}
         </div>
 
-        {/* right: tip */}
-        <div className="muted" style={{ whiteSpace: 'nowrap' }}>
-          Tip: Click a card, then press <b>+</b>/<b>&minus;</b> to adjust quantity. Press <b>Esc</b> to clear.
+         {/* right: tip / Help Button */}
+        <div style={{ whiteSpace: 'nowrap' }}>
+          <button
+            onClick={() => setShowHelpModal(true)}
+            title="Show Keyboard Shortcuts"
+            style={{
+              padding: '6px 12px',
+              borderRadius: '50%', // Circle shape
+              backgroundColor: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontSize: '1.2em',
+              width: '32px',
+              height: '32px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            }}
+          >
+            ?
+          </button>
         </div>
       </div>
 
@@ -1395,7 +1630,15 @@ function Binder({
                       if (!card) return;
 
                       const { page: bp, row: br, column: bc } = binderLayout(n);
-                      setActive({ card, page: bp, row: br, column: bc });
+                      // FIX: Added spreadCol (c) and spreadRow (r) to complete the active state
+                      setActive({ 
+                        card, 
+                        page: bp, 
+                        row: br, 
+                        column: bc, 
+                        spreadCol: c, 
+                        spreadRow: r 
+                      });
                       setViewSpread(pageToSpread(bp));
                     }}
                   >
@@ -1533,6 +1776,93 @@ function Binder({
             />
           </g>
         </svg>
+        {/* NEW: Help Modal JSX */}
+      {showHelpModal && (
+        <div 
+          style={{
+            position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', 
+            display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000,
+          }}
+          onClick={() => setShowHelpModal(false)}
+        >
+          <div 
+            style={{ 
+              backgroundColor: '#2b2d3d', padding: 30, borderRadius: 12, 
+              maxWidth: 500, width: '90%', boxShadow: '0 10px 25px rgba(0,0,0,0.5)' 
+            }}
+            onClick={(e) => e.stopPropagation()} // Prevent click from closing modal
+          >
+            <h2 style={{ marginTop: 0, color: '#e5e7eb' }}>Keyboard Controls</h2>
+            <p style={{ color: '#e5e7eb', marginBottom: 20 }}>
+              The binder view is optimized for keyboard navigation.
+            </p>
+            <table style={{ width: '100%', color: '#e5e7eb', borderCollapse: 'collapse' }}>
+                <thead>
+                    <tr>
+                        <th style={{ textAlign: 'left', padding: '8px 0', borderBottom: '1px solid #424452' }}>Action</th>
+                        <th style={{ textAlign: 'left', padding: '8px 0', borderBottom: '1px solid #424452' }}>Key(s)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style={{ borderBottom: '1px dotted #424452' }}>
+                        <td style={{ padding: '8px 0' }}>Deselect Card / Close Popups</td>
+                        <td style={{ padding: '8px 0' }}><span className="key-pill">Esc</span></td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px dotted #424452' }}>
+                        <td style={{ padding: '8px 0' }}>Focus Search Bar</td>
+                        <td style={{ padding: '8px 0' }}><span className="key-pill">/</span></td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px dotted #424452' }}>
+                        <td style={{ padding: '8px 0' }}>Flip Page Left/Right</td>
+                        <td style={{ padding: '8px 0' }}>
+                          <span className="key-pill">,</span> / <span className="key-pill">.</span>
+                        </td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px dotted #424452' }}>
+                        <td style={{ padding: '8px 0' }}>Move Selection (Literal)</td>
+                        <td style={{ padding: '8px 0' }}>
+                          <span className="key-pill">↑</span><span className="key-pill">↓</span><span className="key-pill">←</span><span className="key-pill">→</span>
+                        </td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px dotted #424452' }}>
+                        <td style={{ padding: '8px 0' }}>Increase/Decrease Quantity</td>
+                        <td style={{ padding: '8px 0' }}><span className="key-pill">+</span> / <span className="key-pill">&minus;</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button 
+                onClick={() => setShowHelpModal(false)}
+                style={{ 
+                    marginTop: 20, padding: '8px 16px', borderRadius: 6, 
+                    backgroundColor: '#3b82f6', color: 'white', border: 'none', cursor: 'pointer' 
+                }}
+            >
+                Close
+            </button>
+          </div>
+        </div>
+      )}
+      
+      {/* Ensure key-pill style is available globally */}
+      <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              .key-pill {
+                display: inline-block;
+                padding: 2px 5px;
+                margin: 0 3px;
+                border-radius: 4px;
+                border: 1px solid #424452;
+                background-color: #1a1b26;
+                color: #e5e7eb;
+                font-weight: 700;
+                font-size: 0.85em;
+                line-height: 1.2;
+                font-family: monospace;
+              }
+            `,
+          }}
+        />
       </div>
     </>
   );
