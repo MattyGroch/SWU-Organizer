@@ -766,6 +766,35 @@ function RarityBadge({ rarity }: { rarity?: string }) {
     n.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
   const missingCost = useMemo( () => missingRows.reduce((sum, r) => sum + r.RowTotal, 0), [missingRows] );
 
+  function copyMissingToClipboard() {
+    const list = missingRows.map(r => {
+        // r.Number is the base number for this row
+        // Use byNumber to retrieve the Card object which contains Subtitle
+        const card = byNumber.get(r.Number);
+        
+        // Construct the card name part: "Name - Subtitle"
+        const cardNamePart = card?.Subtitle 
+            ? `${r.Name} - ${card.Subtitle}` 
+            : r.Name;
+        
+        // Final format: QTY Name - Subtitle [setKey]
+        return `${r.Needed} ${cardNamePart} [${setKey}]`;
+    }).join('\n');
+
+    if (list.length === 0) {
+        alert('No missing cards to copy!');
+        return;
+    }
+
+    // Use modern clipboard API
+    navigator.clipboard.writeText(list).then(() => {
+        alert(`Successfully copied ${missingRows.length} card lines to clipboard for TCGPlayer Mass Entry.`);
+    }).catch(err => {
+        alert('Failed to copy to clipboard. Check browser permissions.');
+        console.error('Copy error:', err);
+    });
+  }
+
   return (
     <div className="container">
       {/* Top bar (no page control here anymore) */}
@@ -965,6 +994,18 @@ function RarityBadge({ rarity }: { rarity?: string }) {
             {listView === 'inventory' ? 'Inventory' : 'Missing Cards'}
           </div>
           <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+            {listView === 'missing' && missingRows.length > 0 && (
+              <button
+                className="tbtn tbtn-primary" 
+                onClick={copyMissingToClipboard}
+                title="Copy list in TCGPlayer Mass Entry format: QTY Name - Subtitle [setKey]"
+                aria-label="Copy missing cards list for TCGPlayer"
+              >
+                <span className="icon" aria-hidden="true">content_paste</span>
+                <span>Copy TCG List</span>
+              </button>
+            )}
+            <div className="toolbar-group" role="tablist" aria-label="Inventory view"></div>
             <div className="toolbar-group" role="tablist" aria-label="Inventory view">
               <button
                 className="tbtn"
