@@ -256,11 +256,15 @@ export default function App() {
 
   const [showHelpModal, setShowHelpModal] = useState(false); 
 
+  const [highlightedRowNumber, setHighlightedRowNumber] = useState<number | null>(null);
+
   // Spreads (instead of pages)
   const maxNumber = useMemo(() => cardsBase.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsBase]);
   const totalPages = Math.max(1, Math.ceil(maxNumber / 12));
   const totalSpreads = 1 + Math.ceil(Math.max(0, totalPages - 1) / 2);
   const [viewSpread, setViewSpread] = useState<number>(0); // 0 => Page 1; >=1 => 2/3, 4/5, ...
+
+  const binderRef = useRef<HTMLDivElement>(null); 
 
   // Suggestions dropdown
   const [openSug, setOpenSug] = useState(false);
@@ -590,6 +594,15 @@ export default function App() {
     setActive({ card, page, row, column, spreadCol, spreadRow });
     setError('');
     setViewSpread(pageToSpread(page));
+    setHighlightedRowNumber(baseNum);
+    
+    // Clear highlight after 500ms
+    setTimeout(() => setHighlightedRowNumber(null), 500);
+
+    // Scroll the binder into view if it's not fully visible
+    if (binderRef.current) {
+        binderRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   // Function to move the card selection based on visual coordinates (8 columns, 3 rows)
@@ -1156,7 +1169,7 @@ function RarityBadge({ rarity }: { rarity?: string }) {
       </div>
       
       {/* Binder (with spread pager + dropdown) */}
-      <div className="card">
+      <div className="card" ref={binderRef}>
         <Binder
           viewSpread={viewSpread}
           setViewSpread={setViewSpread}
@@ -1255,10 +1268,16 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                     const dot = numToColor.get(r.Number);
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
                     const complete = r.Qty >= r.Max;
+                    const isHighlighted = r.Number === highlightedRowNumber; // NEW
                     return (
                       <tr 
                         key={r.Number}
-                        style={{ cursor: 'pointer' }} // Added to indicate interactivity
+                        style={{ 
+                          cursor: 'pointer',
+                          // Conditional inline styling for the highlight
+                          transition: 'background-color 0.5s ease',
+                          backgroundColor: isHighlighted ? '#424452' : 'transparent',
+                        }}
                         onClick={() => selectCardByNumber(r.Number)} // Added click handler
                       >
                         <td className="mono numcol">#{r.Number}</td>
@@ -1332,10 +1351,16 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                   {missingRows.map(r => {
                     const dot = numToColor.get(r.Number);
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
+                    const isHighlighted = r.Number === highlightedRowNumber; // NEW
                     return (
                       <tr 
                         key={r.Number}
-                        style={{ cursor: 'pointer' }} // Added to indicate interactivity
+                        style={{ 
+                          cursor: 'pointer',
+                          // Conditional inline styling for the highlight
+                          transition: 'background-color 0.5s ease',
+                          backgroundColor: isHighlighted ? '#424452' : 'transparent',
+                        }}
                         onClick={() => selectCardByNumber(r.Number)} // Added click handler
                       >
                         <td className="mono numcol">#{r.Number}</td>
@@ -1529,7 +1554,7 @@ function Binder({
             style={{
               padding: '6px 12px',
               borderRadius: '50%', // Circle shape
-              backgroundColor: '#3b82f6',
+              backgroundColor: '#213c6a',
               color: 'white',
               border: 'none',
               cursor: 'pointer',
@@ -1834,7 +1859,7 @@ function Binder({
                 onClick={() => setShowHelpModal(false)}
                 style={{ 
                     marginTop: 20, padding: '8px 16px', borderRadius: 6, 
-                    backgroundColor: '#3b82f6', color: 'white', border: 'none', cursor: 'pointer' 
+                    backgroundColor: '#213c6a', color: 'white', border: 'none', cursor: 'pointer' 
                 }}
             >
                 Close
