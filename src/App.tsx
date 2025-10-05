@@ -1601,11 +1601,15 @@ function Binder({
           <span style={{ fontWeight: 600 }}>Binder</span> — {spreadLabel}
         </div>
         <div className="pager">
-          <button className="btn" onClick={() => setViewSpread(s => Math.max(0, s - 1))}>‹ Prev</button>
+          <button className="btn" onClick={() => setViewSpread(s => Math.max(0, s - 1))}>
+            ‹ Prev <span className="key-pill">,</span>
+          </button>
           <select value={viewSpread} onChange={e => setViewSpread(Number(e.target.value))}>
             {spreadOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
-          <button className="btn" onClick={() => setViewSpread(s => Math.min(totalSpreads - 1, s + 1))}>Next ›</button>
+          <button className="btn" onClick={() => setViewSpread(s => Math.min(totalSpreads - 1, s + 1))}>
+            <span className="key-pill">.</span> Next ›
+          </button>
         </div>
       </div>
 
