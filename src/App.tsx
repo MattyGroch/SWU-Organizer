@@ -1288,6 +1288,21 @@ function RarityBadge({ rarity }: { rarity?: string }) {
           
           {/* LEFT SIDE: Toggles (New Header) + Copy Button */}
     <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+      {/* NEW: Set Key Pill Badge (Matching the Binder's badge style) */}
+      <span
+        style={{
+          fontSize: '14px',
+          fontWeight: 700,
+          padding: '2px 8px',
+          borderRadius: '6px',
+          border: '1px solid #ffffff', 
+          color: '#ffffff', 
+          backgroundColor: '#0b0b0b',
+          flexShrink: 0,
+        }}
+      >
+        {setKey}
+      </span>
       
       {/* 1. Inventory/Missing Toggles (Tab Selector - Anchor Left) */}
       <div className="toolbar-group" role="tablist" aria-label="Inventory view">
