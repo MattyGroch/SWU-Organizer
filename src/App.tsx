@@ -26,7 +26,7 @@ const NEUTRAL = '#2f3545'; // for numbers that exist but have no aspect
 const NAME_MAX_LINES = 2;
 const QTY_FONT = 22;      // size of the centered "1/3"
 const QTY_Y_OFFSET = 4;   // nudge up/down if needed
-const QTY_SHIFT_DOWN = 14; // NEW: Shift QTY and buttons down by 20px
+const QTY_SHIFT_DOWN = 14; // Shift QTY and buttons down by 20px
 const BTN = 32;          // button diameter
 const GAP = 8;           // CSS gap between buttons
 const GROUP_W = BTN * 2 + GAP;  // 72
@@ -41,6 +41,11 @@ const RARITY_STYLE: Record<string, {letter: string; color: string}> = {
   Starter:   { letter: 'S',  color: '#000000' },
   Special:   { letter: 'S', color: '#000000' },
 };
+
+// Global constants for filter lists
+const ALL_RARITIES = ['Common', 'Uncommon', 'Rare', 'Legendary', 'Special_Group'];
+const ALL_ASPECTS = ['Vigilance', 'Command', 'Aggression', 'Cunning', 'Heroism', 'Villainy', 'NEUTRAL'];
+const ALL_TYPES = ['Leader', 'Base', 'Unit', 'Event', 'Upgrade']; 
 
 function rarityGlyph(r?: string) {
   if (!r) return null;
@@ -73,6 +78,150 @@ function quotaForType(type?: string) {
 // spread 1 -> Pages 2/3, spread 2 -> 4/5, ...
 function pageToSpread(p: number) { return p <= 1 ? 0 : Math.floor((p - 2) / 2) + 1; }
 function spreadToPrimaryPage(s: number) { return s <= 0 ? 1 : 2 + (s - 1) * 2; } // even page
+
+type Filters = {
+  aspect: string[];
+  rarity: string[];
+  type: string[];
+};
+
+type FilterControlsProps = {
+  filters: Filters;
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+};
+
+// --- FilterControls Component Definition (Used outside App function) ---
+function FilterControls({ filters, setFilters }: FilterControlsProps) {
+  const handleFilterChange = (category: keyof Filters, value: string) => {
+    setFilters(prev => {
+      const currentFilters = prev[category];
+      const newFilters = currentFilters.includes(value)
+        ? currentFilters.filter(item => item !== value)
+        : [...currentFilters, value];
+
+      return { ...prev, [category]: newFilters };
+    });
+  };
+
+  const handleClearFilters = () => {
+    setFilters({ aspect: [], rarity: [], type: [] });
+  };
+
+  // ---- Color helpers ----
+  const hexToRgb = (hex: string) => {
+    const h = hex.replace('#', '');
+    const bigint = parseInt(h.length === 3 ? h.split('').map(c => c + c).join('') : h, 16);
+    return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 };
+  };
+
+  const relLuminance = ({ r, g, b }: { r: number; g: number; b: number }) => {
+    const srgb = [r, g, b].map(v => v / 255).map(v =>
+      v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
+    );
+    return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
+  };
+
+  const contrast = (bg: string, fg: string) => {
+    const L1 = relLuminance(hexToRgb(bg));
+    const L2 = relLuminance(hexToRgb(fg));
+    const [a, b] = L1 > L2 ? [L1, L2] : [L2, L1];
+    return (a + 0.05) / (b + 0.05);
+  };
+
+  // Choose the better text color for readability, prefer ≥ 4.5:1 if possible
+  const bestTextOn = (bg: string, light = '#ffffff', dark = '#0e1117') => {
+    const cw = contrast(bg, light);
+    const cb = contrast(bg, dark);
+    if (cw >= 4.5 || cb >= 4.5) return cw >= cb ? light : dark;
+    return cw >= cb ? light : dark;
+  };
+
+  // For very dark backgrounds, add a subtle outline so it doesn't blend in
+  const needsDarkOutline = (bg: string) => relLuminance(hexToRgb(bg)) < 0.12;
+
+
+  const renderFilterGroup = (category: keyof Filters, items: readonly string[]) => (
+  <div className="toolbar-group" role="group" style={{ marginRight: 12 }}>
+    {items.map(item => {
+      const isActive = filters[category].includes(item);
+      const label = item.replace('Special_Group', 'Special/Starter').replace('NEUTRAL', 'Neutral');
+
+      // Determine highlight color from your maps
+      let highlightColor = '#213c6a';
+      if (category === 'aspect') {
+        highlightColor = ASPECT_HEX[item as keyof typeof ASPECT_HEX] || highlightColor;
+      } else if (category === 'rarity') {
+        const rarityStyle = RARITY_STYLE[item as keyof typeof RARITY_STYLE];
+        // If your map stores { color } or { backgroundColor }, support both:
+        highlightColor = (rarityStyle?.color || (rarityStyle as any)?.backgroundColor) || highlightColor;
+      }
+
+      // Compute legible text color and outline for very dark backgrounds
+      const activeText = bestTextOn(highlightColor);
+      const outline =
+        isActive && needsDarkOutline(highlightColor)
+          ? '1px solid rgba(255,255,255,0.22)'
+          : isActive
+          ? '1px solid rgba(0,0,0,0.25)'
+          : 'none';
+
+      return (
+        <button
+          key={category + item}
+          className="tbtn"
+          onClick={() => handleFilterChange(category, item)}
+          style={{
+            fontSize: 14,
+            padding: '6px 10px',
+            backgroundColor: isActive ? highlightColor : 'transparent',
+            color: isActive ? activeText : '#eaeaf0',
+            border: isActive
+              ? outline
+              : '1px solid transparent',
+            fontWeight: 600,
+            borderRadius: 12,
+            boxShadow:
+              isActive && needsDarkOutline(highlightColor)
+                ? '0 0 0 2px rgba(255,255,255,0.08) inset'
+                : undefined,
+            textShadow: isActive && activeText === '#ffffff' ? '0 1px 0 rgba(0,0,0,0.30)' : undefined,
+            transition: 'background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+          }}
+          aria-pressed={isActive}
+        >
+          {label}
+        </button>
+      );
+    })}
+  </div>
+);
+
+  return (
+    <div className="card" style={{ padding: '12px 16px', marginTop: 16, marginBottom: 16 }}>
+      <div style={{ fontSize: 16, fontWeight: 600, margin: '0 0 10px', color: '#c8ccd9' }}>
+        Card Filters
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
+        {renderFilterGroup('aspect', ALL_ASPECTS)}
+        {renderFilterGroup('rarity', ALL_RARITIES)}
+        {renderFilterGroup('type', ALL_TYPES)}
+        <button
+          className="tbtn tbtn-danger"
+          onClick={handleClearFilters}
+          style={{
+            fontSize: 14,
+            padding: '6px 10px',
+            border: '1px solid #424452',
+            borderRadius: 8,
+            marginLeft: 'auto',
+          }}
+        >
+          Clear Filters
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function App() {
   const [sets, setSets] = useState<SetMeta[]>([]);
@@ -257,9 +406,16 @@ export default function App() {
 
   const [showHelpModal, setShowHelpModal] = useState(false); 
 
-  const [highlightedRowNumber, setHighlightedRowNumber] = useState<number | null>(null);
+  const [highlightedRowNumber, setHighlightedRowNumber] = useState<number | null>(null); 
 
-  const [showBulkActionsModal, setShowBulkActionsModal] = useState(false); // NEW STATE
+  const [showBulkActionsModal, setShowBulkActionsModal] = useState(false); 
+  
+  // Global Filter State
+  const [filters, setFilters] = useState({
+    aspect: [] as string[],
+    rarity: [] as string[],
+    type: [] as string[], 
+  });
 
   // Spreads (instead of pages)
   const maxNumber = useMemo(() => cardsBase.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsBase]);
@@ -404,33 +560,6 @@ export default function App() {
     }
     return m;
   }, [cardsBase]);
-
-  // Inventory Status Counts (Complete, Incomplete, Missing)
-  const inventoryStatus = useMemo(() => {
-    let complete = 0;
-    let incomplete = 0;
-    let missing = 0;
-    let totalCards = cardsBase.length; // Total unique cards in the set
-
-    for (const baseCard of cardsBase) {
-      const baseNum = baseCard.Number;
-      const nums = baseToAll.get(baseNum) || [baseNum];
-      const max = quotaForType(baseCard.Type);
-      
-      // Calculate total quantity across all printings (base + alts)
-      const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
-
-      if (have >= max) {
-        complete++;
-      } else if (have > 0) {
-        incomplete++;
-      } else {
-        missing++;
-      }
-    }
-
-    return { complete, incomplete, missing, totalCards };
-  }, [cardsBase, baseToAll, inventory]);
 
   // Suggestions (name or number)
     type Suggestion = { 
@@ -773,7 +902,7 @@ export default function App() {
     });
   }
 
-function RarityBadge({ rarity }: { rarity?: string }) {
+  function RarityBadge({ rarity }: { rarity?: string }) {
     const sty = rarityGlyph(rarity);
     if (!sty) return null;
 
@@ -800,6 +929,65 @@ function RarityBadge({ rarity }: { rarity?: string }) {
         </text>
       </svg>
     );
+  }
+
+  const CORE_RARITIES = ['Common', 'Uncommon', 'Rare', 'Legendary']; // List of non-special core rarities
+
+  function performBulkAction(
+    action: 'add' | 'remove' | 'add_max' | 'remove_all',
+    target: 'all' | string, // string means Rarity or Type key
+    qty: number = 1
+  ) {
+    // REMOVED BROWSER CONFIRMATION for all actions per user request.
+    
+    setInventory(prevInv => {
+      const nextInv: Inventory = { ...prevInv };
+
+      for (const card of cardsBase) {
+        let processCard = false;
+
+        if (target === 'all') {
+          processCard = true;
+        } else if (CORE_RARITIES.includes(target)) {
+          // Check for core Rarity targets
+          if (card.Rarity === target) {
+            processCard = true;
+          }
+        } else if (target === 'Special') {
+          // Check for Special rarity group
+          const cardRarity = card.Rarity;
+          if (cardRarity === 'Starter' || cardRarity === 'Starter Deck Exclusive' || cardRarity === 'Special') {
+            processCard = true;
+          }
+        } else {
+          // Assume target is a Card Type (Leader, Unit, Event, Upgrade, etc.)
+          if (card.Type === target) {
+            processCard = true;
+          }
+        }
+
+        if (processCard) {
+          const max = quotaForType(card.Type);
+          const currentQty = nextInv[card.Number] || 0;
+
+          if (action === 'add' || action === 'add_max') {
+            const amount = action === 'add' ? qty : max;
+            nextInv[card.Number] = Math.min(currentQty + amount, max);
+          } else if (action === 'remove') {
+            const nextQty = Math.max(currentQty - qty, 0);
+            if (nextQty === 0) {
+              delete nextInv[card.Number];
+            } else {
+              nextInv[card.Number] = nextQty;
+            }
+          } else if (action === 'remove_all') {
+             delete nextInv[card.Number];
+          }
+        }
+      }
+      return pruneZeros(nextInv);
+    });
+    setShowBulkActionsModal(false);
   }
 
   function resetInv() { if (confirm('Reset inventory for this set?')) setInventory({}); }
@@ -935,7 +1123,7 @@ function RarityBadge({ rarity }: { rarity?: string }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [active, query, setViewSpread, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages]);
 
-  // Inventory table rows
+  // Inventory table rows (UNFILTERED)
   const invRows = useMemo(() => {
     const rows: {Number:number, Name:string, Type?:string, Qty:number, Max:number}[] = [];
     for (const [nStr, qty] of Object.entries(inventory)) {
@@ -949,12 +1137,58 @@ function RarityBadge({ rarity }: { rarity?: string }) {
     }
     return rows.sort((a,b)=>a.Number-b.Number);
   }, [inventory, byNumber, cardsAll]);
+  
+  // Filtered Inventory Rows
+  const filteredInvRows = useMemo(() => {
+    return invRows.filter(r => {
+      const card = byNumber.get(r.Number);
+      if (!card) return false;
+      
+      const activeAspects = filters.aspect;
+      const activeRarities = filters.rarity;
+      const activeTypes = filters.type;
+
+      // 1. Filter by Aspect (Only filter if array is NOT empty)
+      if (activeAspects.length > 0) {
+        const primaryAspect = card.Aspects?.[0] || 'NEUTRAL';
+        if (!activeAspects.includes(primaryAspect)) {
+          return false;
+        }
+      }
+
+      // 2. Filter by Rarity (Only filter if array is NOT empty)
+      if (activeRarities.length > 0) {
+        let cardRarityMatch = false;
+        
+        for (const filterRarity of activeRarities) {
+          if (filterRarity === 'Special_Group') {
+            if (card.Rarity === 'Starter Deck Exclusive' || card.Rarity === 'Starter' || card.Rarity === 'Special') {
+              cardRarityMatch = true;
+              break;
+            }
+          } else if (card.Rarity === filterRarity) {
+            cardRarityMatch = true;
+            break;
+          }
+        }
+        if (!cardRarityMatch) return false;
+      }
+
+      // 3. Filter by Type (Only filter if array is NOT empty)
+      if (activeTypes.length > 0) {
+        if (!activeTypes.includes(card.Type || '')) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [invRows, filters, byNumber]);
 
   // --- Missing-cards tab state ---
   const [listView, setListView] = useState<'inventory' | 'missing'>('inventory');
 
-  // Build rows of cards that are below max (include 0s and partials)
-  // Counts across base + all alt printings
+  // Build rows of cards that are below max (include 0s and partials) (UNFILTERED)
   const missingRows = useMemo(() => {
     const rows: {
       Number: number;
@@ -991,73 +1225,87 @@ function RarityBadge({ rarity }: { rarity?: string }) {
     return rows.sort((a, b) => a.Number - b.Number);
   }, [cardsBase, baseToAll, inventory]);
 
-  // NOTE: RARITIES_FOR_BULK is for internal logic only; UI uses a simplified list.
-  const RARITIES_FOR_BULK = ['Common', 'Uncommon', 'Rare', 'Legendary', 'Special', 'Starter Deck Exclusive', 'Starter'];
-  const CORE_RARITIES = ['Common', 'Uncommon', 'Rare', 'Legendary']; // NEW: List of non-special core rarities
+  // Filtered Missing Rows
+  const filteredMissingRows = useMemo(() => {
+    return missingRows.filter(r => {
+      const card = byNumber.get(r.Number);
+      if (!card) return false;
 
-  function performBulkAction(
-    action: 'add' | 'remove' | 'add_max' | 'remove_all',
-    target: 'all' | string, // string means Rarity or Type key
-    qty: number = 1
-  ) {
-    // REMOVED BROWSER CONFIRMATION for all actions per user request.
-    
-    setInventory(prevInv => {
-      const nextInv: Inventory = { ...prevInv };
+      const activeAspects = filters.aspect;
+      const activeRarities = filters.rarity;
+      const activeTypes = filters.type;
 
-      for (const card of cardsBase) {
-        let processCard = false;
-
-        if (target === 'all') {
-          processCard = true;
-        } else if (CORE_RARITIES.includes(target)) {
-          // Check for core Rarity targets
-          if (card.Rarity === target) {
-            processCard = true;
-          }
-        } else if (target === 'Special') {
-          // Check for Special rarity group
-          const cardRarity = card.Rarity;
-          if (cardRarity === 'Starter' || cardRarity === 'Starter Deck Exclusive' || cardRarity === 'Special') {
-            processCard = true;
-          }
-        } else {
-          // Assume target is a Card Type (Leader, Unit, Event, Upgrade, etc.)
-          if (card.Type === target) {
-            processCard = true;
-          }
-        }
-
-        if (processCard) {
-          const max = quotaForType(card.Type);
-          const currentQty = nextInv[card.Number] || 0;
-
-          if (action === 'add' || action === 'add_max') {
-            const amount = action === 'add' ? qty : max;
-            nextInv[card.Number] = Math.min(currentQty + amount, max);
-          } else if (action === 'remove') {
-            const nextQty = Math.max(currentQty - qty, 0);
-            if (nextQty === 0) {
-              delete nextInv[card.Number];
-            } else {
-              nextInv[card.Number] = nextQty;
-            }
-          } else if (action === 'remove_all') {
-             delete nextInv[card.Number];
-          }
+      // 1. Filter by Aspect (Only filter if array is NOT empty)
+      if (activeAspects.length > 0) {
+        const primaryAspect = card.Aspects?.[0] || 'NEUTRAL';
+        if (!activeAspects.includes(primaryAspect)) {
+          return false;
         }
       }
-      return pruneZeros(nextInv);
+
+      // 2. Filter by Rarity (Only filter if array is NOT empty)
+      if (activeRarities.length > 0) {
+        let cardRarityMatch = false;
+        
+        for (const filterRarity of activeRarities) {
+          if (filterRarity === 'Special_Group') {
+            if (card.Rarity === 'Starter Deck Exclusive' || card.Rarity === 'Starter' || card.Rarity === 'Special') {
+              cardRarityMatch = true;
+              break;
+            }
+          } else if (card.Rarity === filterRarity) {
+            cardRarityMatch = true;
+            break;
+          }
+        }
+        if (!cardRarityMatch) return false;
+      }
+
+      // 3. Filter by Type (Only filter if array is NOT empty)
+      if (activeTypes.length > 0) {
+        if (!activeTypes.includes(card.Type || '')) {
+          return false;
+        }
+      }
+
+      return true;
     });
-    setShowBulkActionsModal(false);
-  }
+  }, [missingRows, filters, byNumber]);
 
   const fmtUSD = (n: number) =>
     n.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
-  const missingCost = useMemo( () => missingRows.reduce((sum, r) => sum + r.RowTotal, 0), [missingRows] );
+
+  // Inventory Status Counts (Complete, Incomplete, Missing)
+  const inventoryStatus = useMemo(() => {
+    let complete = 0;
+    let incomplete = 0;
+    
+    for (const cardRow of filteredInvRows) {
+      const max = cardRow.Max;
+      const have = cardRow.Qty;
+
+      if (have >= max) {
+        complete++;
+      } else if (have > 0) {
+        incomplete++;
+      }
+    }
+    
+    const missing = filteredMissingRows.length; 
+    const totalFilteredUniqueCards = complete + incomplete + missing;
+
+    return { 
+      complete, 
+      incomplete, 
+      missing, 
+      totalCards: totalFilteredUniqueCards 
+    };
+  }, [filteredInvRows, filteredMissingRows]);
+  
+  const missingCost = useMemo( () => filteredMissingRows.reduce((sum, r) => sum + r.RowTotal, 0), [filteredMissingRows] );
 
   function copyMissingToClipboard() {
-    const list = missingRows.map(r => {
+    const list = filteredMissingRows.map(r => {
         // r.Number is the base number for this row
         // Use byNumber to retrieve the Card object which contains Subtitle
         const card = byNumber.get(r.Number);
@@ -1072,13 +1320,13 @@ function RarityBadge({ rarity }: { rarity?: string }) {
     }).join('\n');
 
     if (list.length === 0) {
-        alert('No missing cards to copy!');
+        alert('No missing cards matching current filters to copy!');
         return;
     }
 
     // Use modern clipboard API
     navigator.clipboard.writeText(list).then(() => {
-        alert(`Successfully copied ${missingRows.length} card lines to clipboard for TCGPlayer Mass Entry.`);
+        alert(`Successfully copied ${filteredMissingRows.length} filtered card lines to clipboard for TCGPlayer Mass Entry.`);
     }).catch(err => {
         alert('Failed to copy to clipboard. Check browser permissions.');
         console.error('Copy error:', err);
@@ -1261,7 +1509,7 @@ function RarityBadge({ rarity }: { rarity?: string }) {
           {error && <span className="err">{error}</span>}
         </div>
       </div>
-      
+
       {/* Binder (with spread pager + dropdown) */}
       <div className="card" ref={binderRef}>
         <Binder
@@ -1287,82 +1535,80 @@ function RarityBadge({ rarity }: { rarity?: string }) {
         <div className="row" style={{ justifyContent:'space-between', alignItems: 'center' }}>
           
           {/* LEFT SIDE: Toggles (New Header) + Copy Button */}
-    <div className="row" style={{ gap: 8, alignItems: 'center' }}>
-      {/* NEW: Set Key Pill Badge (Matching the Binder's badge style) */}
-      <span
-        style={{
-          fontSize: '14px',
-          fontWeight: 700,
-          padding: '2px 8px',
-          borderRadius: '6px',
-          border: '1px solid #ffffff', 
-          color: '#ffffff', 
-          backgroundColor: '#0b0b0b',
-          flexShrink: 0,
-        }}
-      >
-        {setKey}
-      </span>
-      
-      {/* 1. Inventory/Missing Toggles (Tab Selector - Anchor Left) */}
-      <div className="toolbar-group" role="tablist" aria-label="Inventory view">
-        {/* ... (Toggles JSX remains the same) ... */}
-        <button
-          className="tbtn"
-          role="tab"
-          aria-selected={listView === 'inventory'}
-          onClick={() => setListView('inventory')}
-          title="Show your current inventory"
-          style={{
-            fontSize: 16,
-            fontWeight: 900,
-            padding: '10px 16px',
-            ...(listView === 'inventory' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : {})
-          }}
-        >
-          Inventory
-        </button>
-        <button
-          className="tbtn"
-          role="tab"
-          aria-selected={listView === 'missing'}
-          onClick={() => setListView('missing')}
-          title="Show cards you don’t have yet"
-          style={{
-            fontSize: 16,
-            fontWeight: 900,
-            padding: '10px 16px',
-            ...(listView === 'missing' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : {})
-          }}
-        >
-          Missing
-        </button>
-      </div>
-      
-      {/* 2. Action Button (Conditional: Copy TCG or Bulk Actions) */}
-      {listView === 'missing' && missingRows.length > 0 ? (
-        <button
-          className="tbtn tbtn-primary" 
-          onClick={copyMissingToClipboard}
-          title="Copy list in TCGPlayer Mass Entry format: QTY Name - Subtitle [setKey]"
-          aria-label="Copy missing cards list for TCGPlayer"
-        >
-          <span className="icon" aria-hidden="true">content_paste</span>
-          <span>Copy TCG List</span>
-        </button>
-      ) : listView === 'inventory' ? (
-        <button
-          className="tbtn tbtn-primary" 
-          onClick={() => setShowBulkActionsModal(true)} // Opens the new modal
-          title="Perform bulk operations on inventory"
-          aria-label="Open bulk inventory actions modal"
-        >
-          <span className="icon" aria-hidden="true">layers</span>
-          <span>Bulk Actions</span>
-        </button>
-      ) : null}
-      
-    </div> {/* End LEFT SIDE */}
+          <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+            {/* Set Key Pill Badge (Matching the Binder's badge style) */}
+            <span
+              style={{
+                fontSize: '14px',
+                fontWeight: 700,
+                padding: '2px 8px',
+                borderRadius: '6px',
+                border: '1px solid #ffffff', 
+                color: '#ffffff', 
+                backgroundColor: '#0b0b0b',
+                flexShrink: 0,
+              }}
+            >
+              {setKey}
+            </span>
+            
+            {/* 1. Inventory/Missing Toggles (Tab Selector - Anchor Left) */}
+            <div className="toolbar-group" role="tablist" aria-label="Inventory view">
+              <button
+                className="tbtn"
+                role="tab"
+                aria-selected={listView === 'inventory'}
+                onClick={() => setListView('inventory')}
+                title="Show your current inventory"
+                style={{
+                  fontSize: 16,
+                  fontWeight: 900,
+                  padding: '10px 16px',
+                  ...(listView === 'inventory' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : {})
+                }}
+              >
+                Inventory
+              </button>
+              <button
+                className="tbtn"
+                role="tab"
+                aria-selected={listView === 'missing'}
+                onClick={() => setListView('missing')}
+                title="Show cards you don’t have yet"
+                style={{
+                  fontSize: 16,
+                  fontWeight: 900,
+                  padding: '10px 16px',
+                  ...(listView === 'missing' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : {})
+                }}
+              >
+                Missing
+              </button>
+            </div>
+            
+            {/* 2. Action Button (Conditional: Copy TCG or Bulk Actions) */}
+            {listView === 'missing' && missingRows.length > 0 ? (
+              <button
+                className="tbtn tbtn-primary" 
+                onClick={copyMissingToClipboard}
+                title="Copy list in TCGPlayer Mass Entry format: QTY Name - Subtitle [setKey]"
+                aria-label="Copy missing cards list for TCGPlayer"
+              >
+                <span className="icon" aria-hidden="true">content_paste</span>
+                <span>Copy TCG List ({filteredMissingRows.length})</span>
+              </button>
+            ) : listView === 'inventory' ? (
+              <button
+                className="tbtn tbtn-primary" 
+                onClick={() => setShowBulkActionsModal(true)} // Opens the new modal
+                title="Perform bulk operations on inventory"
+                aria-label="Open bulk inventory actions modal"
+              >
+                <span className="icon" aria-hidden="true">layers</span>
+                <span>Bulk Actions</span>
+              </button>
+            ) : null}
+          </div> {/* End LEFT SIDE */}
           
           {/* RIGHT SIDE: Status/Cost Display (Pinned Right) */}
           <div className="muted"
@@ -1376,7 +1622,6 @@ function RarityBadge({ rarity }: { rarity?: string }) {
             <div 
               className="muted" 
               aria-live="polite"
-              // Preserving custom styles for Cost to Complete
               style={{ paddingTop: 18, paddingBottom: 16, fontSize: 14, fontWeight: 600 }} 
             >
               Cost to Complete: {fmtUSD(missingCost)}
@@ -1392,22 +1637,22 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                 title={`Complete: ${inventoryStatus.complete}, In Progress: ${inventoryStatus.incomplete}, Missing: ${inventoryStatus.missing}`}
                 style={{ 
                   width: '100%', height: 10, borderRadius: 5, 
-                  backgroundColor: '#ef4444', // Progress Bar Background preserved
+                  backgroundColor: '#ef4444', 
                   display: 'flex', overflow: 'hidden' 
                 }}
               >
-                {/* Green: Complete Playsets (Preserving #22c55e fill) */}
+                {/* Green: Complete Playsets */}
                 <div style={{ 
                   width: `${(inventoryStatus.complete / inventoryStatus.totalCards) * 100}%`, 
                   backgroundColor: '#22c55e'
                 }} />
-                {/* Yellow: Incomplete Playsets (Preserving #f59e0b fill) */}
+                {/* Yellow: Incomplete Playsets */}
                 <div style={{ 
                   width: `${(inventoryStatus.incomplete / inventoryStatus.totalCards) * 100}%`, 
                   backgroundColor: '#f59e0b'
                 }} />
               </div>
-              {/* Status Counts (Preserving custom colors for counts) */}
+              {/* Status Counts */}
               <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', fontSize: 12, opacity: 0.8 }}>
                 <span style={{ color: '#34d399' }}>✓ {inventoryStatus.complete}</span>
                 <span style={{ color: '#fcd34d' }}>! {inventoryStatus.incomplete}</span>
@@ -1418,9 +1663,12 @@ function RarityBadge({ rarity }: { rarity?: string }) {
           </div> {/* End RIGHT SIDE content */}
         </div>
 
+        {/* Global Filter Controls */}
+        <FilterControls filters={filters} setFilters={setFilters} />
+
         {listView === 'inventory' ? (
-          invRows.length ? (
-            <div className="inventory-scroll">
+          filteredInvRows.length ? (
+            <div className="inventory-scroll" style={{ maxHeight: '500px' }}>
               <table className="table">
                 <thead>
                   <tr>
@@ -1435,11 +1683,11 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {invRows.map(r => {
+                  {filteredInvRows.map(r => {
                     const dot = numToColor.get(r.Number);
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
                     const complete = r.Qty >= r.Max;
-                    const isHighlighted = r.Number === highlightedRowNumber; // NEW
+                    const isHighlighted = r.Number === highlightedRowNumber; 
                     return (
                       <tr 
                         key={r.Number}
@@ -1499,11 +1747,16 @@ function RarityBadge({ rarity }: { rarity?: string }) {
               </table>
             </div>
           ) : (
-            <div className="muted">No entries yet. Click any slot’s +/− or use this table once you add cards.</div>
+            <div className="muted">
+              {invRows.length ? 
+                'No inventory entries match current filters.' : // NEW: Filtered empty message
+                'No entries yet. Click any slot’s +/− or use this table once you add cards.'
+              }
+            </div>
           )
         ) : (
           // Check if there are any missing rows BEFORE rendering the inventory-scroll div
-          missingRows.length ? (
+          filteredMissingRows.length ? (
             <div className="inventory-scroll">
               <table className="table">
                 <thead>
@@ -1520,7 +1773,7 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {missingRows.map(r => {
+                  {filteredMissingRows.map(r => {
                     const dot = numToColor.get(r.Number);
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
                     const isHighlighted = r.Number === highlightedRowNumber; 
@@ -1574,11 +1827,10 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                         <td className="mono moneycol">{fmtUSD(r.RowTotal)}</td>
                         <td className="adjcol">
                           <div className="qtybtns circle">
-                            {/* Adds to the base number; if you prefer to pick a specific printing, we can add a chooser later */}
                             <button
                               className="plus"
                               aria-label={`Add one ${r.Name}`}
-                              onClick={()=>inc(r.Number)}
+                              onClick={(e) => { e.stopPropagation(); inc(r.Number); }} 
                               disabled={r.Have >= r.Max}
                               title={r.Have >= r.Max ? 'Complete' : 'Add one'}
                             >
@@ -1594,10 +1846,16 @@ function RarityBadge({ rarity }: { rarity?: string }) {
             </div>
           ) : (
             // Simple muted message matching the Inventory tab's empty look
-            <div className="muted">Nothing missing — nice!</div>
+            <div className="muted" style={{ marginTop: 20 }}>
+              {missingRows.length ?
+                'No missing cards match current filters.' : // NEW: Filtered empty message
+                'Nothing missing — nice!'
+              }
+            </div>
           )
         )}
       </div>
+      
       {/* NEW: Bulk Actions Modal JSX */}
       {showBulkActionsModal && (
         <div 
@@ -1633,7 +1891,7 @@ function RarityBadge({ rarity }: { rarity?: string }) {
             }}>
               WARNING: These actions are destructive. Please use the 'Save' button to download a JSON backup before proceeding.
             </div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 10, alignItems: 'center' }}>
               <div style={{ fontWeight: 700 }}>Target</div>
               <div style={{ fontWeight: 700 }}>Add 1 / Add Max</div>
@@ -1670,8 +1928,6 @@ function RarityBadge({ rarity }: { rarity?: string }) {
 
               <div style={{ gridColumn: '1 / span 4', height: 1, backgroundColor: '#424452', margin: '10px 0' }} />
 
-              <div style={{ gridColumn: '1 / span 4', fontWeight: 700, marginTop: 10 }}>Card Rarities</div>
-
               {/* Rarity Rows */}
               {['Common', 'Uncommon', 'Rare', 'Legendary', 'Special'].map(rarity => (
                 <React.Fragment key={rarity}>
@@ -1701,8 +1957,6 @@ function RarityBadge({ rarity }: { rarity?: string }) {
                   <button className="modal-btn" style={{ backgroundColor: '#424452' }} onClick={() => performBulkAction('remove_all', type)}>{`Clear`}</button>
                 </React.Fragment>
               ))}
-
-
             </div>
             
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
@@ -2039,7 +2293,7 @@ function Binder({
 
                         {/* CENTER-BOTTOM: +/- controls under qty (clicks don't bubble) */}
                         <g
-                          transform={`translate(${x + (cellW - GROUP_W) / 2}, ${y + cellH / 2 + QTY_SHIFT_DOWN + 10})`} // ADDED QTY_SHIFT_DOWN
+                          transform={`translate(${x + (cellW - GROUP_W) / 2}, ${y + cellH / 2 + QTY_SHIFT_DOWN + 10})`}
                           onClick={(e)=>e.stopPropagation()}
                         >
                           <foreignObject width={GROUP_W} height={GROUP_H + 4}>
