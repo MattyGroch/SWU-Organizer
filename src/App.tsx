@@ -1573,7 +1573,7 @@ export default function App() {
   }, [active, query, setViewSpread, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages]);
 
   const fmtUSD = (n: number) =>
-    n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+    n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
 
   const passesAllFilters = useCallback((card: Card) => {
     const activeAspects = filters.aspect;
