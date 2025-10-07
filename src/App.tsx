@@ -39,13 +39,11 @@ const RARITY_STYLE: Record<string, {letter: string; color: string}> = {
   Uncommon:  { letter: 'U',  color: '#9AA0B4' }, // gray
   Rare:      { letter: 'R',  color: '#FACC15' }, // yellow
   Legendary: { letter: 'L',  color: '#7DD3FC' }, // light blue
-  'Starter Deck Exclusive': { letter: 'S', color: '#000000' }, // black
-  Starter:   { letter: 'S',  color: '#000000' },
-  Special:   { letter: 'S', color: '#000000' },
+  Special:   { letter: 'S', color: '#000000' }, // black
 };
 
 // Global constants for filter lists
-const ALL_RARITIES = ['Common', 'Uncommon', 'Rare', 'Legendary', 'Special_Group'];
+const ALL_RARITIES = ['Common', 'Uncommon', 'Rare', 'Legendary', 'Special'] as const;
 const ALL_ASPECTS = ['Vigilance', 'Command', 'Aggression', 'Cunning', 'Heroism', 'Villainy', 'NEUTRAL'];
 const ALL_TYPES = ['Leader', 'Base', 'Unit', 'Event', 'Upgrade']; 
 
@@ -146,7 +144,7 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
   <div className="toolbar-group" role="group" style={{ marginRight: 12 }}>
     {items.map(item => {
       const isActive = filters[category].includes(item);
-      const label = item.replace('Special_Group', 'Special/Starter').replace('NEUTRAL', 'Neutral');
+      const label = item.replace('NEUTRAL', 'Neutral');
 
       // Determine highlight color from your maps
       let highlightColor = '#213c6a';
@@ -547,10 +545,10 @@ export default function App() {
       u: 'Uncommon', uncommon: 'Uncommon',
       r: 'Rare', rare: 'Rare',
       l: 'Legendary', legendary: 'Legendary',
-      s: 'Starter Deck Exclusive',
-      starter: 'Starter Deck Exclusive',
-      'starter deck exclusive': 'Starter Deck Exclusive',
-      'starter deck-exclusive': 'Starter Deck Exclusive',
+      s: 'Special',
+      starter: 'Special',
+      'starter deck exclusive': 'Special',
+      'starter deck-exclusive': 'Special',
       special: 'Special'
     };
     return map[k] ?? v; // fall back to the original string
@@ -1290,9 +1288,8 @@ export default function App() {
             processCard = true;
           }
         } else if (target === 'Special') {
-          // Check for Special rarity group
           const cardRarity = card.Rarity;
-          if (cardRarity === 'Starter' || cardRarity === 'Starter Deck Exclusive' || cardRarity === 'Special') {
+          if (cardRarity === 'Special') {
             processCard = true;
           }
         } else {
@@ -1607,20 +1604,7 @@ export default function App() {
 
       // 2. Filter by Rarity (Only filter if array is NOT empty)
       if (activeRarities.length > 0) {
-        let cardRarityMatch = false;
-        
-        for (const filterRarity of activeRarities) {
-          if (filterRarity === 'Special_Group') {
-            if (card.Rarity === 'Starter Deck Exclusive' || card.Rarity === 'Starter' || card.Rarity === 'Special') {
-              cardRarityMatch = true;
-              break;
-            }
-          } else if (card.Rarity === filterRarity) {
-            cardRarityMatch = true;
-            break;
-          }
-        }
-        if (!cardRarityMatch) return false;
+        if (!activeRarities.includes(card.Rarity || '')) return false;
       }
 
       // 3. Filter by Type (Only filter if array is NOT empty)
