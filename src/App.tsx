@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
+import * as XLSX from 'xlsx';
 
 type Card = {
   Name: string;
@@ -8,6 +9,7 @@ type Card = {
   Type?: string;
   Rarity?: string;
   MarketPrice?: number;
+  Set: string
 };
 type Inventory = Record<number, number>;
 type SetKey = string;
@@ -223,14 +225,275 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
   );
 }
 
+type CardUtilities = {
+    quotaForType: (type?: string) => number;
+    fullCardIndex: Map<string, { baseNumber: number, type?: string, name: string }>;
+};
+
+function parseCsvContent(fileContent: string): { headers: string[]; rows: string[][] } {
+    // FIX 1: Normalize line endings to ensure correct line splitting regardless of OS/source.
+    const normalizedContent = fileContent.trim()
+        .replace(/\r\n/g, '\n') // Normalize CRLF to LF
+        .replace(/\r/g, '');    // Handle stray CR (for older Mac files)
+
+    const lines = normalizedContent.split('\n').filter(l => l.trim() !== '');
+    if (lines.length < 1) throw new Error("File is empty or contains no lines.");
+
+    // Simple header parsing (first line)
+    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+    
+    const rows = lines.slice(1).map(line => {
+      // Regex to capture fields, respecting quotes.
+      const parts = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
+      const row = parts.map(p => p.trim().replace(/^"|"$/g, '')); // Trim and remove quotes
+      
+      // FIX 2: Ensure rows are padded to match header length for trailing empty fields.
+      while (row.length < headers.length) {
+          row.push('');
+      }
+
+      return row;
+    });
+
+    return { headers, rows };
+}
+
+async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<Record<SetKey, Inventory>> {
+  const { quotaForType, fullCardIndex } = cardUtilities;
+  const aggregatedData: Record<SetKey, Inventory> = {};
+
+  const buf = await file.arrayBuffer();
+  const wb = XLSX.read(buf, { type: 'array' });
+  const sheet = wb.Sheets[wb.SheetNames[0]];
+  if (!sheet) throw new Error('XLSX has no sheets.');
+
+  // Read as rows with header row
+  const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet, { defval: '' });
+  if (!rows.length) return aggregatedData;
+
+  // Normalize header names once
+  const norm = (s: string) => s.toLowerCase().replace(/[\s_]+/g, '');
+  const headerSet = new Set(Object.keys(rows[0]).map(norm));
+
+  // Required columns
+  if (!(headerSet.has('set') && (headerSet.has('basecardid') || headerSet.has('basecardid')) && headerSet.has('normal'))) {
+    throw new Error('Invalid XLSX format (need Set, Base card id, Normal).');
+  }
+
+  // Construct column name resolvers (case/space tolerant)
+  const col = (wanted: string, obj: Record<string, any>) => {
+    const k = Object.keys(obj).find(h => norm(h) === norm(wanted));
+    return k ?? wanted; // fall back, but usually found
+  };
+
+  for (const r of rows) {
+    const setKey = String(r[col('Set', r)] ?? '').trim().toUpperCase() as SetKey;
+    const baseIdNum = Number(r[col('Base card id', r)]);
+    if (!setKey || !Number.isFinite(baseIdNum) || baseIdNum <= 0) continue;
+
+    // Sum all variant columns starting at "Normal" through the end of the row.
+    // We’ll include common known alt headers if present.
+    const ALT_HEADERS = [
+      'Normal','Foil','Hyperspace','Foil & Hyperspace','Showcase','Organized Play',
+      'Event Exclusive','Prerelease Promo','Organized Play Foil','Standard Prestige',
+      'Foil Prestige','Serialized Prestige'
+    ];
+    let totalCount = 0;
+    for (const h of ALT_HEADERS) {
+      const key = col(h, r);
+      if (key in r) {
+        const n = Number(r[key]);
+        if (Number.isFinite(n)) totalCount += n;
+      }
+    }
+    if (totalCount <= 0) continue;
+
+    // Lookup index uses <SET>:<non-padded-number>
+    const normalizedKey = `${setKey}:${String(baseIdNum)}`;
+    const cardInfo = fullCardIndex.get(normalizedKey);
+    if (!cardInfo) continue;
+
+    const { baseNumber, type } = cardInfo;
+    const max = quotaForType(type);
+
+    if (!aggregatedData[setKey]) aggregatedData[setKey] = {};
+    const current = aggregatedData[setKey][baseNumber] ?? 0;
+    aggregatedData[setKey][baseNumber] = Math.min(current + totalCount, max);
+  }
+
+  return aggregatedData;
+}
+
+function detectImportFormat(headers: string[]): "swudb" | "swunlimiteddb" | "unknown" {
+  const lower = headers.map(h => h.trim().toLowerCase());
+  const has = (name: string) => lower.includes(name);
+
+  // swudb CSV: Set, CardNumber, Count
+  if (has("set") && has("cardnumber") && has("count")) {
+    return "swudb";
+  }
+
+  // sw-unlimited: Set, Base card id, Normal (plus the alt-art columns)
+  if (has("set") && (has("base card id") || has("basecardid")) && has("normal")) {
+    return "swunlimiteddb";
+  }
+
+  return "unknown";
+}
+
+function parseCsvData(
+  fileName: string, // kept for signature compatibility; not used for detection
+  fileContent: string,
+  cardUtilities: CardUtilities
+): Record<SetKey, Inventory> {
+  const { quotaForType, fullCardIndex } = cardUtilities;
+  const aggregatedData: Record<SetKey, Inventory> = {};
+
+  // Parse CSV into headers + rows (rows are string[]; access via indices)
+  const { headers, rows } = parseCsvContent(fileContent);
+
+  // -------- Header-based format detection (no filename reliance) --------
+  type ImportFormat = "swudb" | "swunlimiteddb" | "unknown";
+
+  // Normalize header for robust matching (lowercase + strip spaces/underscores)
+  const norm = (s: string) => s.toLowerCase().replace(/[\s_]+/g, "");
+  const headersNorm = headers.map(norm);
+
+  const has = (name: string) => headersNorm.includes(norm(name));
+  const detectImportFormat = (hdrs: string[]): ImportFormat => {
+    const h = hdrs.map(norm);
+
+    // swudb: Set, CardNumber, Count
+    if (h.includes(norm("Set")) && h.includes(norm("CardNumber")) && h.includes(norm("Count"))) {
+      return "swudb";
+    }
+    // sw-unlimited: Set, Base card id, Normal
+    if (h.includes(norm("Set")) && (h.includes(norm("Base card id")) || h.includes(norm("BaseCardId"))) && h.includes(norm("Normal"))) {
+      return "swunlimiteddb";
+    }
+    return "unknown";
+  };
+
+  const format = detectImportFormat(headers);
+
+  // Helper: find column index by any of the provided header names
+  const findColAny = (...names: string[]) => {
+    for (const n of names) {
+      const idx = headersNorm.indexOf(norm(n));
+      if (idx !== -1) return idx;
+    }
+    return -1;
+  };
+
+  if (format === "swunlimiteddb") {
+    // --- sw-unlimited-db export (CSV or XLSX->CSV) ---
+    const setCol = findColAny("Set");
+    const idCol = findColAny("Base card id", "BaseCardId", "Base cardid", "Basecardid");
+    const normalCol = findColAny("Normal");
+
+    if (setCol === -1 || idCol === -1 || normalCol === -1) {
+      throw new Error("Invalid format for SW-Unlimited export (missing Set, Base card id, or Normal column).");
+    }
+
+    // Variant columns start at "Normal" and run to the end; sum them all
+    for (const row of rows) {
+      const rawSet = (row[setCol] ?? "").toString().trim();
+      const setKey = rawSet.toUpperCase() as SetKey;
+
+      const baseIdNum = Number(row[idCol]);
+      if (!setKey || !Number.isFinite(baseIdNum) || baseIdNum <= 0) continue;
+
+      let totalCount = 0;
+      for (let i = normalCol; i < row.length; i++) {
+        const v = Number(row[i]);
+        if (Number.isFinite(v)) totalCount += v;
+      }
+      if (totalCount <= 0) continue;
+
+      // Lookup uses normalized "<SET>:<number>" where number is non-padded
+      const normalizedKey = `${setKey}:${String(baseIdNum)}`;
+      const cardInfo = fullCardIndex.get(normalizedKey);
+      if (!cardInfo) continue;
+
+      const { baseNumber, type } = cardInfo;
+      const max = quotaForType(type);
+
+      if (!aggregatedData[setKey]) aggregatedData[setKey] = {};
+      const current = aggregatedData[setKey][baseNumber] ?? 0;
+      aggregatedData[setKey][baseNumber] = Math.min(current + totalCount, max);
+    }
+
+  } else if (format === "swudb") {
+    // --- swudb.com CSV export ---
+    const setCol = findColAny("Set");
+    const numCol = findColAny("CardNumber");
+    const countCol = findColAny("Count");
+
+    if (setCol === -1 || numCol === -1 || countCol === -1) {
+      throw new Error("Invalid format for SWUDB export (missing Set, CardNumber, or Count column).");
+    }
+
+    for (const row of rows) {
+      const setKey = (row[setCol] ?? "").toString().trim().toUpperCase() as SetKey;
+
+      const cardNumRaw = (row[numCol] ?? "").toString().trim();
+      const count = Number(row[countCol]) || 0;
+      if (!setKey || cardNumRaw === "" || count <= 0) continue;
+
+      // Strip leading zeros so keys match your index (e.g., "079" -> "79")
+      const numericId = Number(cardNumRaw);
+      if (!Number.isFinite(numericId) || numericId <= 0) continue;
+
+      const normalizedKey = `${setKey}:${String(numericId)}`;
+      const cardInfo = fullCardIndex.get(normalizedKey);
+      if (!cardInfo) continue;
+
+      const { baseNumber, type } = cardInfo;
+      const max = quotaForType(type);
+
+      if (!aggregatedData[setKey]) aggregatedData[setKey] = {};
+      const current = aggregatedData[setKey][baseNumber] ?? 0;
+      aggregatedData[setKey][baseNumber] = Math.min(current + count, max);
+    }
+
+  } else {
+    // Fallback: try your existing JSON format
+    try {
+      const raw = JSON.parse(fileContent);
+      if (raw?.version === 1 && raw?.sets) {
+        const jsonSets = raw.sets as Record<SetKey, Record<string, number>>;
+        for (const k of Object.keys(jsonSets) as SetKey[]) {
+          if (!aggregatedData[k]) aggregatedData[k] = {};
+          for (const [numStr, count] of Object.entries(jsonSets[k])) {
+            const baseNumber = Number(numStr);
+            if (!Number.isFinite(baseNumber)) continue;
+
+            const card = fullCardIndex.get(`${k}:${numStr}`);
+            const max = card ? quotaForType(card.type) : 3;
+            aggregatedData[k][baseNumber] = Math.min(Number(count) || 0, max);
+          }
+        }
+        return aggregatedData;
+      }
+    } catch {
+      // not JSON; fall through
+    }
+
+    throw new Error("File format not recognized. Expected a SWUDB or SW-Unlimited CSV (or a valid app JSON export).");
+  }
+
+  return aggregatedData;
+}
+
 export default function App() {
   const [sets, setSets] = useState<SetMeta[]>([]);
   const [setKey, setSetKey] = useState<SetKey>('LOF'); // default/fallback
   const searchRef = useRef<HTMLInputElement | null>(null);
   const importRef = useRef<HTMLInputElement>(null);
-
-  // toggle: search only current set vs all sets
-  const [searchAll, setSearchAll] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importData, setImportData] = useState<Record<SetKey, Inventory>>({});
+  const [importingFileName, setImportingFileName] = useState('');
+  const [showResetModal, setShowResetModal] = useState(false); 
 
   // cache parsed data for sets (so we don't refetch repeatedly)
   type ParsedSet = {
@@ -430,6 +693,46 @@ export default function App() {
   const [highlightIdx, setHighlightIdx] = useState(0);
   const boxRef = useRef<HTMLDivElement | null>(null);
 
+  const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`;
+
+  // Build an overview of what will be imported per set
+  const importOverview = React.useMemo(() => {
+    const lines: Array<{ set: SetKey; counts: Record<string, number> }> = [];
+
+    for (const [set, inv] of Object.entries(importData)) {
+      const parsed = parsedCacheRef.current.get(set);
+      const counts: Record<string, number> = {
+        Leader: 0, Base: 0, Unit: 0, Event: 0, Upgrade: 0, Other: 0
+      };
+
+      for (const numStr of Object.keys(inv)) {
+        const baseNum = Number(numStr);
+        if (!Number.isFinite(baseNum)) continue;
+
+        // Prefer byNumber (base-only list), fall back to allCards if needed
+        const card =
+          parsed?.byNumber.get(baseNum) ??
+          parsed?.allCards.find(c => c.Number === baseNum);
+
+        const t = (card?.Type || '').trim();
+        if (t === 'Leader' || t === 'Base' || t === 'Unit' || t === 'Event' || t === 'Upgrade') {
+          counts[t] += 1;
+        } else {
+          counts.Other += 1;
+        }
+      }
+
+      // Only push if the set has any entries
+      if (Object.values(counts).some(v => v > 0)) {
+        lines.push({ set: set as SetKey, counts });
+      }
+    }
+
+    // Optional: sort by set key for stable display
+    lines.sort((a, b) => a.set.localeCompare(b.set));
+    return lines;
+  }, [importData]);
+
   // Load set JSON
     useEffect(() => {
       // Helper function defined inside useEffect to access local scope functions (like baseOnly)
@@ -460,6 +763,7 @@ export default function App() {
                 : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined),
             Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
             MarketPrice: Number(c.MarketPrice ?? c.Price ?? 0), 
+            Set: meta.key,
           };
         }).filter((c: Card) => !!c.Name && Number.isFinite(c.Number));
 
@@ -990,7 +1294,120 @@ export default function App() {
     setShowBulkActionsModal(false);
   }
 
-  function resetInv() { if (confirm('Reset inventory for this set?')) setInventory({}); }
+  const handleResetInventory = (scope: 'current' | 'all') => {
+      if (scope === 'current') {
+          localStorage.removeItem(`inv:${setKey}`);
+          setInventory({});
+          alert(`Inventory for the current set (${setKey}) has been cleared.`);
+      } else if (scope === 'all') {
+          // Iterate over all keys in localStorage and remove those that start with 'inv:'
+          if (!sets.length) {
+              for (const key of Object.keys(localStorage)) {
+                  if (key.startsWith('inv:')) {
+                      localStorage.removeItem(key);
+                  }
+              }
+          } else {
+              // Clear based on loaded set keys
+              for (const set of sets) {
+                  localStorage.removeItem(`inv:${set.key}`);
+              }
+          }
+          setInventory({}); // Reset current view as well
+          alert('Inventory for ALL sets has been cleared.');
+      }
+      setShowResetModal(false);
+  };
+
+  function resetInv() {
+      setShowResetModal(true);
+  }
+
+  const applyImport = (mode: 'merge' | 'replace') => {
+      let importedCount = 0;
+      
+      for (const [key, importedInv] of Object.entries(importData)) {
+          if (!key || Object.keys(importedInv).length === 0) continue;
+
+          const currentInv = readSetInv(key);
+          const newInv: Inventory = {};
+
+          // Start with current inventory if merging
+          if (mode === 'merge') {
+              Object.assign(newInv, currentInv);
+          }
+
+          // Apply imported counts (already capped to max in parseCsvData)
+          for (const [baseNumberStr, newCount] of Object.entries(importedInv)) {
+              const baseNumber = Number(baseNumberStr);
+              const currentCount = newInv[baseNumber] || 0;
+              
+              // Get max quota for final cap check (necessary because the card type needs context)
+              const card = cardsAll.find(c => c.Number === baseNumber && c.Set === key);
+              const max = quotaForType(card?.Type);
+              
+              const updatedCount = mode === 'merge' 
+                  ? Math.min(newCount + currentCount, max) 
+                  : Math.min(newCount, max);
+
+              if (updatedCount > 0) {
+                  newInv[baseNumber] = updatedCount;
+                  importedCount++;
+              } else if (newInv[baseNumber]) {
+                  delete newInv[baseNumber];
+              }
+          }
+          
+          writeSetInv(key, pruneZeros(newInv));
+
+          if (key === setKey) {
+              setInventory(pruneZeros(newInv));
+          }
+      }
+      
+      setShowImportModal(false);
+      setImportData({});
+      alert(`Successfully applied import of ${importedCount} card entries in ${mode} mode.`);
+  };
+  
+  // File change handler to parse the file and open the modal
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      setImportingFileName(file.name);
+      setError('');
+
+      try {
+          const ext = file.name.split('.').pop()?.toLowerCase();
+          
+          const fullCardIndex = new Map<string, { baseNumber: number, type?: string, name: string }>();
+          const allSetCards: Card[] = Array.from(parsedCacheRef.current.values()).flatMap(p => p.allCards);
+
+          // Populate the lookup map with normalized data needed for parsing/capping
+          for (const card of allSetCards) {
+              const baseNum = card.Number; 
+              fullCardIndex.set(`${card.Set}:${card.Number}`, {
+                  baseNumber: baseNum,
+                  type: card.Type,
+                  name: card.Name
+              });
+          }
+          
+          const cardUtilities: CardUtilities = { quotaForType, fullCardIndex };
+          
+          const parsedInventory =
+            ext === 'xlsx'
+              ? await parseXlsxData(file, cardUtilities)  // ← new XLSX path
+              : parseCsvData(file.name, await file.text(), cardUtilities); // existing CSV/JSON path
+          setImportData(parsedInventory);
+          setShowImportModal(true);
+      } catch (e) {
+          setError(`Import failed: ${e instanceof Error ? e.message : 'Invalid file format.'}`);
+      } finally {
+          e.target.value = '';
+      }
+  };
 
   useEffect(() => {
     const isTyping = (el: EventTarget | null) => {
@@ -1464,24 +1881,17 @@ export default function App() {
           <div className="toolbar-block">
             <div className="toolbar-label">Inventory Controls</div>
             <div className="toolbar-group">
-              {/* Import (uses your hidden file input via ref) */}
-              <button
-                className="tbtn"
-                onClick={() => importRef.current?.click()}
-                title="Import inventory JSON"
-                aria-label="Import inventory JSON"
-              >
-                <span className="icon" aria-hidden="true">upload</span>
-                <span>Import…</span>
+              {/* Import button points to the hidden file input */}
+              <button className="tbtn" onClick={() => importRef.current?.click()} title="Import inventory data (JSON / CSV / XLSX)" aria-label="Import inventory data">
+                  <span className="icon" aria-hidden="true">upload</span> <span>Import…</span>
               </button>
-              <input
-                ref={importRef}
-                type="file"
-                accept="application/json"
-                style={{ display: 'none' }}
-                onChange={(e) => e.target.files && importAllInv(e.target.files[0])}
+              <input 
+                  ref={importRef} 
+                  type="file" 
+                  accept=".json,.csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                  style={{ display: 'none' }} 
+                  onChange={handleFileChange}
               />
-
               {/* Save / Export */}
               <button
                 className="tbtn"
@@ -1494,14 +1904,13 @@ export default function App() {
               </button>
 
               {/* Reset */}
-              <button
-                className="tbtn tbtn-danger"
-                onClick={() => resetInv()}
-                title="Reset all inventory"
-                aria-label="Reset all inventory"
-              >
-                <span className="icon" aria-hidden="true">delete</span>
-                <span>Reset</span>
+              <button 
+                  className="tbtn tbtn-danger" 
+                  onClick={resetInv} 
+                  title="Reset inventory" 
+                  aria-label="Reset inventory" 
+              > 
+                  <span className="icon" aria-hidden="true">delete</span> <span>Reset</span> 
               </button>
             </div>
           </div>
@@ -1855,8 +2264,159 @@ export default function App() {
           )
         )}
       </div>
+
+      {/* NEW: Reset Confirmation Modal JSX */}
+      {showResetModal && (
+          <div 
+              style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }} 
+              onClick={() => setShowResetModal(false)}
+          >
+              <div 
+                  style={{ backgroundColor: '#2b2d3d', padding: 30, borderRadius: 12, maxWidth: 450, width: '90%', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', color: '#e5e7eb' }} 
+                  onClick={(e) => e.stopPropagation()}
+              >
+                  <h2 style={{ marginTop: 0, color: '#e5e7eb' }}>Confirm Inventory Reset</h2>
+                  <p style={{ opacity: 0.8, marginBottom: 20 }}>
+                      Please choose the scope of the inventory data you wish to clear.
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
+                    <button
+                        className="modal-btn"
+                        onClick={() => {
+                            if (window.confirm(`Are you sure you want to clear inventory for the current set (${setKey})?`)) {
+                                handleResetInventory('current');
+                            } else {
+                                setShowResetModal(false);
+                            }
+                        }}
+                        style={{
+                            padding: '12px 24px', 
+                            borderRadius: 8, 
+                            backgroundColor: '#63252a', 
+                            color: '#fff', 
+                            border: 'none', 
+                            cursor: 'pointer', 
+                            fontWeight: 600, 
+                            fontSize: '1em',
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            alignItems: 'center',
+                            gap: '8px',
+                        }}
+                    >
+                        <span>Clear Current Set:</span>
+                        <span
+                            style={{
+                                fontSize: '14px',
+                                fontWeight: 700,
+                                padding: '2px 8px',
+                                borderRadius: '6px',
+                                border: '1px solid #ffffff', 
+                                color: '#ffffff', 
+                                backgroundColor: '#0b0b0ba4',
+                                flexShrink: 0,
+                            }}
+                        >
+                            {setKey}
+                        </span>
+                    </button>
+                    <button
+                        className="modal-btn"
+                        style={{ padding: '12px 24px', borderRadius: 8, backgroundColor: '#8a1d29', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '1em' }}
+                        onClick={() => {
+                            if (window.confirm("WARNING: This will clear inventory data for ALL sets stored locally. Are you absolutely sure?")) {
+                                handleResetInventory('all');
+                            } else {
+                                setShowResetModal(false);
+                            }
+                        }}
+                    >
+                        Clear ALL Set Data
+                    </button>
+                </div>
+              </div>
+          </div>
+      )}
+
+      {/* NEW: Import Modal JSX */}
+      {showImportModal && (
+          <div 
+              style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }} 
+              onClick={() => setShowImportModal(false)}
+          >
+              <div 
+                  style={{ backgroundColor: '#2b2d3d', padding: 30, borderRadius: 12, maxWidth: 600, width: '90%', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', color: '#e5e7eb' }} 
+                  onClick={(e) => e.stopPropagation()}
+              >
+                  <h2 style={{ marginTop: 0, color: '#e5e7eb' }}>Import Options</h2>
+                  <p style={{ opacity: 0.8, marginBottom: 20 }}>
+                      You are importing data from <strong>{importingFileName}</strong>, which contains entries for {Object.keys(importData).length} set(s).
+                  </p>
+                  {/* Overview of what will be imported per set */}
+                  {importOverview.length > 0 ? (
+                    <div style={{ 
+                      background: '#1f2333', border: '1px solid #424452', borderRadius: 8,
+                      padding: '10px 12px', marginBottom: 16, fontSize: 14 
+                    }}>
+                      <div style={{ fontWeight: 700, marginBottom: 6 }}>Overview</div>
+                      <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.6 }}>
+                        {importOverview.map(({ set, counts }) => {
+                          const parts: string[] = [];
+                          if (counts.Leader)  parts.push(plural(counts.Leader, 'Leader'));
+                          if (counts.Base)    parts.push(plural(counts.Base, 'Base'));
+                          if (counts.Unit)    parts.push(plural(counts.Unit, 'Unit'));
+                          if (counts.Event)   parts.push(plural(counts.Event, 'Event'));
+                          if (counts.Upgrade) parts.push(plural(counts.Upgrade, 'Upgrade'));
+                          if (counts.Other)   parts.push(plural(counts.Other, 'Other'));
+                          return (
+                            <li key={set}>
+                              <strong>{set}:</strong> {parts.join(', ')}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  ) : (
+                    <div className="muted" style={{ marginBottom: 16 }}>
+                      No recognizable card entries found in this import.
+                    </div>
+                  )}
+                  <p style={{ fontWeight: 700, marginBottom: 15 }}>
+                      How would you like to process this imported data?
+                  </p>
+                  <div style={{ display: 'flex', gap: 20, justifyContent: 'center' }}>
+                      <button
+                          className="modal-btn"
+                          style={{ padding: '12px 24px', borderRadius: 8, backgroundColor: '#185434', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}
+                          onClick={() => applyImport('merge')}
+                      >
+                          Merge into Current Data (Add counts)
+                      </button>
+                      <button
+                          className="modal-btn"
+                          style={{ padding: '12px 24px', borderRadius: 8, backgroundColor: '#63252a', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}
+                          onClick={() => {
+                              if (window.confirm("WARNING: Replacing will delete all existing inventory data and replace it with the imported data. Are you sure?")) {
+                                  applyImport('replace');
+                              }
+                          }}
+                      >
+                          Replace Current Data
+                      </button>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 20 }}>
+                      <button 
+                          onClick={() => setShowImportModal(false)} 
+                          style={{ padding: '8px 16px', borderRadius: 6, backgroundColor: '#424452', color: '#e5e7eb', border: 'none', cursor: 'pointer' }}
+                      >
+                          Cancel
+                      </button>
+                  </div>
+              </div>
+          </div>
+      )}
       
-      {/* NEW: Bulk Actions Modal JSX */}
+      {/* Bulk Actions Modal JSX */}
       {showBulkActionsModal && (
         <div 
           style={{
