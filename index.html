@@ -397,6 +397,18 @@
         display:inline-flex; align-items:center; line-height:1;
         padding-block:0;               /* remove extra vertical padding */
       }
+
+      .set-nav-arrow {
+          transition: all 0.15s ease-out;
+      }
+      .set-nav-arrow:hover {
+          background-color: #22242c !important; 
+          box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      }
+      .set-nav-arrow:active {
+          transform: translateY(-50%) scale(0.95) !important;
+          box-shadow: 0 0 5px rgba(0,0,0,0.8);
+      }
     </style>
   </head>
   <body>

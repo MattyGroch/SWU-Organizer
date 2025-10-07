@@ -1798,6 +1798,7 @@ export default function App() {
                     pointerEvents: 'auto',
                 }}
             >
+                <span style={{ fontSize: '0.45em', fontWeight: 600 }}>Prev. Set</span>
                 <span style={{ fontSize: '2em' }}>‹</span>
                 <span
                   style={{
@@ -1845,6 +1846,7 @@ export default function App() {
                     pointerEvents: 'auto',
                 }}
             >
+                <span style={{ fontSize: '0.45em', fontWeight: 600 }}>Next Set</span>
                 <span style={{ fontSize: '2em' }}>›</span>
                 <span
                   style={{
