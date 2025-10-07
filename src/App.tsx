@@ -492,6 +492,9 @@ export default function App() {
   const [importData, setImportData] = useState<Record<SetKey, Inventory>>({});
   const [importingFileName, setImportingFileName] = useState('');
   const [showResetModal, setShowResetModal] = useState(false); 
+  const [listView, setListView] = React.useState<'inventory' | 'missing'>('inventory');
+  
+
 
   // cache parsed data for sets (so we don't refetch repeatedly)
   type ParsedSet = {
@@ -1569,173 +1572,123 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKey);
   }, [active, query, setViewSpread, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages]);
 
-  // Inventory table rows (UNFILTERED)
-  const invRows = useMemo(() => {
-    const rows: {Number:number, Name:string, Type?:string, Qty:number, Max:number}[] = [];
-    for (const [nStr, qty] of Object.entries(inventory)) {
-      if ((qty as number) <= 0) continue;           // <-- guard
-      const n = Number(nStr);
-      if (!Number.isFinite(n)) continue;
-      const c = byNumber.get(n) || cardsAll.find(x => x.Number === n);
-      if (!c) continue;
-      const max = quotaForType(c.Type);
-      rows.push({ Number: n, Name: c.Name, Type: c.Type, Qty: qty as number, Max: max });
+  const fmtUSD = (n: number) =>
+    n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+
+  const passesAllFilters = useCallback((card: Card) => {
+    const activeAspects = filters.aspect;
+    const activeRarities = filters.rarity;
+    const activeTypes = filters.type;
+
+    // 1) Aspect
+    if (activeAspects.length > 0) {
+      const primaryAspect = card.Aspects?.[0] || 'NEUTRAL';
+      if (!activeAspects.includes(primaryAspect)) return false;
     }
-    return rows.sort((a,b)=>a.Number-b.Number);
-  }, [inventory, byNumber, cardsAll]);
-  
-  // Filtered Inventory Rows
-  const filteredInvRows = useMemo(() => {
-    return invRows.filter(r => {
-      const card = byNumber.get(r.Number);
-      if (!card) return false;
-      
-      const activeAspects = filters.aspect;
-      const activeRarities = filters.rarity;
-      const activeTypes = filters.type;
 
-      // 1. Filter by Aspect (Only filter if array is NOT empty)
-      if (activeAspects.length > 0) {
-        const primaryAspect = card.Aspects?.[0] || 'NEUTRAL';
-        if (!activeAspects.includes(primaryAspect)) {
-          return false;
-        }
-      }
+    // 2) Rarity
+    if (activeRarities.length > 0) {
+      if (!activeRarities.includes(card.Rarity || '')) return false;
+    }
 
-      // 2. Filter by Rarity (Only filter if array is NOT empty)
-      if (activeRarities.length > 0) {
-        if (!activeRarities.includes(card.Rarity || '')) return false;
-      }
+    // 3) Type
+    if (activeTypes.length > 0) {
+      if (!activeTypes.includes(card.Type || '')) return false;
+    }
 
-      // 3. Filter by Type (Only filter if array is NOT empty)
-      if (activeTypes.length > 0) {
-        if (!activeTypes.includes(card.Type || '')) {
-          return false;
-        }
-      }
+    return true;
+  }, [filters.aspect, filters.rarity, filters.type]);
 
-      return true;
-    });
-  }, [invRows, filters, byNumber]);
-
-  // --- Missing-cards tab state ---
-  const [listView, setListView] = useState<'inventory' | 'missing'>('inventory');
-
-  // Build rows of cards that are below max (include 0s and partials) (UNFILTERED)
-  const missingRows = useMemo(() => {
-    const rows: {
+  // Build ONE list over base cards, then partition.
+  // Each row has Qty (across base + alts), Max, Needed, and other fields you already use.
+  const filteredAllRows = useMemo(() => {
+    const rows: Array<{
       Number: number;
       Name: string;
+      Subtitle?: string;
       Type?: string;
-      Have: number;
+      Rarity?: string;
+      Price: number;    // MarketPrice (unit)
+      Qty: number;      // have across base+alts
       Max: number;
-      Needed: number;
-      Price: number;     // unit price (MarketPrice)
-      RowTotal: number;  // Needed * Price
-    }[] = [];
+      Needed: number;   // Max - Qty
+    }> = [];
 
     for (const baseCard of cardsBase) {
+      if (!passesAllFilters(baseCard)) continue;
+
       const baseNum = baseCard.Number;
-      const nums = baseToAll.get(baseNum) || [baseNum];       // base + alts
+      const nums = baseToAll.get(baseNum) || [baseNum]; // base + alts
       const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
       const max = quotaForType(baseCard.Type);
       const needed = Math.max(0, max - have);
-      const price = Number(baseCard?.MarketPrice ?? 0);
-      if (have < max) {
-        rows.push({
-          Number: baseNum,
-          Name: baseCard.Name,
-          Type: baseCard.Type,
-          Have: have,
-          Max: max,
-          Needed: Math.max(0, max - have),
-          Price: price,
-          RowTotal: needed * price,
-        });
-      }
+
+      rows.push({
+        Number: baseNum,
+        Name: baseCard.Name,
+        Subtitle: baseCard.Subtitle,
+        Type: baseCard.Type,
+        Rarity: baseCard.Rarity,
+        Price: Number(baseCard?.MarketPrice ?? 0),
+        Qty: have,
+        Max: max,
+        Needed: needed,
+      });
     }
 
     return rows.sort((a, b) => a.Number - b.Number);
-  }, [cardsBase, baseToAll, inventory]);
+  }, [cardsBase, baseToAll, inventory, passesAllFilters]);
 
-  // Filtered Missing Rows
+  // Projections for the two tabs (shape-compatible with your tables)
+  const filteredInvRows = useMemo(() => {
+    // rows with Qty > 0
+    return filteredAllRows
+      .filter(r => r.Qty > 0)
+      .map(r => ({ Number: r.Number, Name: r.Name, Type: r.Type, Qty: r.Qty, Max: r.Max }));
+  }, [filteredAllRows]);
+
   const filteredMissingRows = useMemo(() => {
-    return missingRows.filter(r => {
-      const card = byNumber.get(r.Number);
-      if (!card) return false;
+    // rows with Qty < Max
+    return filteredAllRows
+      .filter(r => r.Qty < r.Max)
+      .map(r => ({
+        Number: r.Number,
+        Name: r.Name,
+        Type: r.Type,
+        Have: r.Qty,
+        Max: r.Max,
+        Needed: r.Needed,
+        Price: r.Price,
+        RowTotal: r.Needed * r.Price,
+      }));
+  }, [filteredAllRows]);
 
-      const activeAspects = filters.aspect;
-      const activeRarities = filters.rarity;
-      const activeTypes = filters.type;
+  const invRows = filteredInvRows;
+  const missingRows = filteredMissingRows;
 
-      // 1. Filter by Aspect (Only filter if array is NOT empty)
-      if (activeAspects.length > 0) {
-        const primaryAspect = card.Aspects?.[0] || 'NEUTRAL';
-        if (!activeAspects.includes(primaryAspect)) {
-          return false;
-        }
-      }
-
-      // 2. Filter by Rarity (Only filter if array is NOT empty)
-      if (activeRarities.length > 0) {
-        let cardRarityMatch = false;
-        
-        for (const filterRarity of activeRarities) {
-          if (filterRarity === 'Special_Group') {
-            if (card.Rarity === 'Starter Deck Exclusive' || card.Rarity === 'Starter' || card.Rarity === 'Special') {
-              cardRarityMatch = true;
-              break;
-            }
-          } else if (card.Rarity === filterRarity) {
-            cardRarityMatch = true;
-            break;
-          }
-        }
-        if (!cardRarityMatch) return false;
-      }
-
-      // 3. Filter by Type (Only filter if array is NOT empty)
-      if (activeTypes.length > 0) {
-        if (!activeTypes.includes(card.Type || '')) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  }, [missingRows, filters, byNumber]);
-
-  const fmtUSD = (n: number) =>
-    n.toLocaleString(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
-
-  // Inventory Status Counts (Complete, Incomplete, Missing)
+  // Inventory Status Counts (Complete, Incomplete, Missing) from the single list
   const inventoryStatus = useMemo(() => {
-    let complete = 0;
-    let incomplete = 0;
-    
-    for (const cardRow of filteredInvRows) {
-      const max = cardRow.Max;
-      const have = cardRow.Qty;
+    let complete = 0, incomplete = 0, missing = 0;
 
-      if (have >= max) {
-        complete++;
-      } else if (have > 0) {
-        incomplete++;
-      }
+    for (const r of filteredAllRows) {
+      if (r.Qty >= r.Max) complete++;
+      else if (r.Qty > 0) incomplete++;
+      else missing++;
     }
-    
-    const missing = filteredMissingRows.length; 
-    const totalFilteredUniqueCards = complete + incomplete + missing;
 
-    return { 
-      complete, 
-      incomplete, 
-      missing, 
-      totalCards: totalFilteredUniqueCards 
+    return {
+      complete,
+      incomplete,
+      missing,
+      totalCards: filteredAllRows.length, // <- single source of truth
     };
-  }, [filteredInvRows, filteredMissingRows]);
-  
-  const missingCost = useMemo( () => filteredMissingRows.reduce((sum, r) => sum + r.RowTotal, 0), [filteredMissingRows] );
+  }, [filteredAllRows]);
+
+  // Cost to complete uses the canonical missing projection
+  const missingCost = useMemo(
+    () => filteredMissingRows.reduce((sum, r) => sum + r.RowTotal, 0),
+    [filteredMissingRows]
+  );
 
   function copyMissingToClipboard() {
     const list = filteredMissingRows.map(r => {
