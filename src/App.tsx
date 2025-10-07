@@ -1149,6 +1149,38 @@ export default function App() {
   
   const setKeys = useMemo(() => sets.map(s => s.key as SetKey), [sets]);
 
+  const [prevSetKey, nextSetKey] = useMemo(() => {
+      const currentIndex = sets.findIndex(s => s.key === setKey);
+      if (currentIndex === -1) return [null, null];
+
+      const prevIndex = (currentIndex - 1 + sets.length) % sets.length;
+      const nextIndex = (currentIndex + 1) % sets.length;
+
+      // Only return prev/next if there's more than one set
+      if (sets.length <= 1) return [null, null];
+      
+      // Check if the wrap-around is needed; if so, return the correct key.
+      const prevKey = (currentIndex === 0) ? sets[prevIndex].key : sets[prevIndex].key;
+      const nextKey = (currentIndex === sets.length - 1) ? sets[nextIndex].key : sets[nextIndex].key;
+
+      // Use null if they wrap to the same key (should only happen if length <= 1, but added check)
+      if (prevKey === setKey) return [null, nextKey];
+      if (nextKey === setKey) return [prevKey, null];
+
+      return [prevKey, nextKey];
+  }, [setKey, sets]);
+
+  const changeSet = useCallback((direction: 'prev' | 'next') => {
+      const targetKey = direction === 'prev' ? prevSetKey : nextSetKey;
+      if (targetKey) {
+          setSetKey(targetKey as SetKey);
+          // Reset view/search state upon set change
+          setQuery('');
+          setActive(null);
+          setViewSpread(0);
+      }
+  }, [prevSetKey, nextSetKey, setSetKey, setQuery, setActive, setViewSpread]);
+
   // Inventory helpers
   type InventoryAll = { version: 1; sets: Record<SetKey, Inventory> };
 
@@ -1751,7 +1783,111 @@ export default function App() {
   }
 
   return (
-    <div className="container">
+    <>
+        {prevSetKey && (
+            <button 
+                className="set-nav-arrow"
+                onClick={() => changeSet('prev')}
+                title={`Switch to ${prevSetKey}`}
+                style={{
+                    // CRITICAL CHANGE: Use fixed position to anchor to the viewport
+                    position: 'fixed', 
+                    // Calculate left position: Viewport center minus half content width (1400px) minus button width/gap (e.g., 80px)
+                    // max(0px, ...) prevents the button from getting cut off screen on small viewports
+                    left: 'max(0px, calc((100vw - 1400px) / 2 - 100px))', 
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    padding: '20px 10px 20px 10px',
+                    backgroundColor: '#11121a',
+                    color: '#e5e7eb',
+                    border: '1px solid #2b2d3d',
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    zIndex: 100, 
+                    fontSize: '28px',
+                    fontWeight: 700,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '8px',
+                    width: '90px', 
+                    pointerEvents: 'auto',
+                }}
+            >
+                <span style={{ fontSize: '2em' }}>‹</span>
+                <span
+                  style={{
+                    fontSize: '26px',
+                    fontWeight: 700,
+                    padding: '2px 8px',
+                    borderRadius: '6px',
+                    border: '1px solid #ffffff', 
+                    color: '#ffffff', 
+                    backgroundColor: '#0b0b0b',
+                    flexShrink: 0,
+                  }}
+                >
+                  {prevSetKey}
+                </span>
+            </button>
+        )}
+
+        {nextSetKey && (
+            <button
+                className="set-nav-arrow"
+                onClick={() => changeSet('next')}
+                title={`Switch to ${nextSetKey}`}
+                style={{
+                    // CRITICAL CHANGE: Use fixed position to anchor to the viewport
+                    position: 'fixed',
+                    // Calculate right position: Viewport center minus half content width (1400px) minus button width/gap (e.g., 80px)
+                    right: 'max(0px, calc((100vw - 1400px) / 2 - 100px))',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    padding: '20px 10px 20px 10px',
+                    backgroundColor: '#11121a',
+                    color: '#e5e7eb',
+                    border: '1px solid #2b2d3d',
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    zIndex: 100, 
+                    fontSize: '28px',
+                    fontWeight: 700,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '8px',
+                    width: '90px', 
+                    pointerEvents: 'auto',
+                }}
+            >
+                <span style={{ fontSize: '2em' }}>›</span>
+                <span
+                  style={{
+                    fontSize: '26px',
+                    fontWeight: 700,
+                    padding: '2px 8px',
+                    borderRadius: '6px',
+                    border: '1px solid #ffffff', 
+                    color: '#ffffff', 
+                    backgroundColor: '#0b0b0b',
+                    flexShrink: 0,
+                  }}
+                >
+                  {nextSetKey}
+                </span>
+            </button>
+        )}
+    <div 
+            className="container"
+            style={{
+                // IMPORTANT: The `position: relative` should be removed here and kept on the arrow wrapper 
+                // to allow the arrows to anchor to the viewport width. Removing it here simplifies the layout.
+                maxWidth: '1400px',
+                padding: '20px 16px',
+                margin: '0 auto',
+            }}
+        >
       {/* Top bar (no page control here anymore) */}
       <div className="card" style={{ marginBottom: 16 }}>
         <h1 className="title">SWU Binder Organizer</h1>
@@ -2534,6 +2670,7 @@ export default function App() {
         </div>
       )}
     </div>
+    </>
   );
 }
 
