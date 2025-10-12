@@ -4,7 +4,7 @@ name: Update SWU set data
 on:
   workflow_dispatch: {}         # allow manual run
   schedule:
-    - cron: "0 2 1 * *"
+    - cron: "0 12 ∗ ∗ 1"
 
 permissions:
   contents: write               # needed to push a branch
