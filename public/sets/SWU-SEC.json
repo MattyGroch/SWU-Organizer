@@ -1,6 +1,29 @@
 {
-  "total_cards": 204,
+  "total_cards": 264,
   "data": [
+    {
+      "Set": "SEC",
+      "Number": "213",
+      "Name": "A-Wing",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
+      "Cost": "1",
+      "Power": "1",
+      "HP": "2",
+      "FrontText": "Raid 1 (This unit gets +1/+0 while attacking.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Raid"],
+      "Artist": "Kursad Karatas",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/213.png",
+      "LowPrice": "0.20"
+    },
     {
       "Set": "SEC",
       "Number": "169",
@@ -18,9 +41,33 @@
       "Unique": false,
       "Artist": "Ivan Shavrin",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/169.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/169.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "259",
+      "Name": "ASP Laborer",
+      "Type": "Unit",
+      "Aspects": [],
+      "Traits": ["DROID"],
+      "Arenas": ["Ground"],
+      "Cost": "2",
+      "Power": "1",
+      "HP": "4",
+      "FrontText": "Restore 1 (When this unit attacks, heal 1 damage from your base.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Restore"],
+      "Artist": "French Carlomago",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/259.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -39,9 +86,29 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/165.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/165.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "228",
+      "Name": "Accelerate Our Plans",
+      "Type": "Event",
+      "Aspects": ["Cunning"],
+      "Traits": ["PLAN"],
+      "Cost": "1",
+      "FrontText": "Exhaust a friendly unit. If you do, attack with another unit. It gets +3/+0 for this attack.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Gabriel Gómez Almenzar",
+      "VariantType": "Normal",
+      "MarketPrice": "0.10",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/228.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -57,9 +124,10 @@
       "Unique": false,
       "Artist": "Kevin Libranda",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.50",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/179.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/179.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -79,7 +147,7 @@
       "Unique": true,
       "Artist": "Envar Entertainment",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/096.png"
     },
@@ -101,9 +169,10 @@
       "Keywords": ["Restore"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/066.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/066.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -124,9 +193,10 @@
       "Keywords": ["Raid"],
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.14",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/155.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/155.png",
+      "LowPrice": "0.75"
     },
     {
       "Set": "SEC",
@@ -142,9 +212,10 @@
       "Unique": false,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/175.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/175.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -160,9 +231,10 @@
       "Unique": false,
       "Artist": "Rocío Espín",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.23",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/025.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/025.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -183,9 +255,32 @@
       "Keywords": ["Hidden", "Raid"],
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/201.png"
+    },
+    {
+      "Set": "SEC",
+      "Number": "262",
+      "Name": "Ando Commission",
+      "Type": "Unit",
+      "Aspects": [],
+      "Traits": ["SEPARATIST", "OFFICIAL"],
+      "Arenas": ["Ground"],
+      "Cost": "4",
+      "Power": "4",
+      "HP": "3",
+      "FrontText": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Sentinel"],
+      "Artist": "Aitor Prieto",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/262.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -205,9 +300,10 @@
       "Unique": true,
       "Artist": "Envar Entertainment",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.95",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/136.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/136.png",
+      "LowPrice": "1.92"
     },
     {
       "Set": "SEC",
@@ -224,9 +320,10 @@
       "Keywords": ["Plot"],
       "Artist": "Konstantin Porubov",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/070.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/070.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -242,9 +339,56 @@
       "Unique": false,
       "Artist": "Kaihound Studios",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.95",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/195.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/195.png",
+      "LowPrice": "2.92"
+    },
+    {
+      "Set": "SEC",
+      "Number": "263",
+      "Name": "Assassin Probe",
+      "Type": "Unit",
+      "Aspects": [],
+      "Traits": ["SEPARATIST", "DROID"],
+      "Arenas": ["Ground"],
+      "Cost": "5",
+      "Power": "4",
+      "HP": "4",
+      "FrontText": "When Defeated: Deal 1 damage to each exhausted enemy ground unit.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Jessi Ochse",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/263.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "248",
+      "Name": "B2EM0",
+      "Subtitle": "That's Two Lies",
+      "Type": "Unit",
+      "Aspects": ["Heroism"],
+      "Traits": ["FRINGE", "DROID"],
+      "Arenas": ["Ground"],
+      "Cost": "1",
+      "Power": "0",
+      "HP": "4",
+      "FrontText": "Restore 1\nOn Attack: You may disclose Heroism Heroism (reveal cards from your hand with these aspect icons among them). If you do, give a unit Sentinel for this phase.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": true,
+      "Keywords": ["Restore", "Sentinel"],
+      "Artist": "Kory Lynn Hubbell",
+      "VariantType": "Normal",
+      "MarketPrice": "0.10",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/248.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -267,9 +411,10 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.25",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/008.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/008.png",
+      "LowPrice": "0.25"
     },
     {
       "Set": "SEC",
@@ -289,9 +434,10 @@
       "Unique": true,
       "Artist": "Kevin Libranda",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.23",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/198.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/198.png",
+      "LowPrice": "0.23"
     },
     {
       "Set": "SEC",
@@ -310,9 +456,29 @@
       "Unique": false,
       "Artist": "French Carlomagno",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/062.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/062.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "233",
+      "Name": "Beguile",
+      "Type": "Event",
+      "Aspects": ["Cunning"],
+      "Traits": ["TRICK"],
+      "Cost": "3",
+      "FrontText": "Look at an opponent's hand. Then, choose a non-leader unit that opponent controls that costs 6 or less and return it to its owner's hand.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Envar Entertainment",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/233.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -331,9 +497,10 @@
       "Unique": false,
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/097.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/097.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -354,9 +521,10 @@
       "Keywords": ["Ambush"],
       "Artist": "Kyle Petchock",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.96",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/204.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/204.png",
+      "LowPrice": "0.49"
     },
     {
       "Set": "SEC",
@@ -376,9 +544,29 @@
       "Unique": true,
       "Artist": "Monika Pałosz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.99",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/051.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/051.png",
+      "LowPrice": "2.92"
+    },
+    {
+      "Set": "SEC",
+      "Number": "234",
+      "Name": "Bog Down in Procedure",
+      "Type": "Event",
+      "Aspects": ["Cunning"],
+      "Traits": ["LAW"],
+      "Cost": "3",
+      "FrontText": "Exhaust a unit.\nYou may disclose Cunning (reveal a card from your hand with this aspect icon). If you do, exhaust another unit.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Aitor Prieto",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/234.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -398,9 +586,10 @@
       "Keywords": ["Saboteur"],
       "Artist": "Aaron Dhanda",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/199.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/199.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -416,9 +605,10 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/124.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/124.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -441,9 +631,10 @@
       "Unique": true,
       "Artist": "Kyle Petchock",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/015.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/015.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -463,9 +654,10 @@
       "Unique": true,
       "Artist": "French Carlomago",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/093.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/093.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -486,9 +678,10 @@
       "Keywords": ["Plot"],
       "Artist": "Gabriel Gómez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "10.00",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/034.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/034.png",
+      "LowPrice": "10.00"
     },
     {
       "Set": "SEC",
@@ -507,9 +700,10 @@
       "Unique": false,
       "Artist": "Stephen Zavala\n",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/037.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/037.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -530,9 +724,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "6.49",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/048.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/048.png",
+      "LowPrice": "3.99"
     },
     {
       "Set": "SEC",
@@ -553,7 +748,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/098.png"
     },
@@ -579,9 +774,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "5.00",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/012.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/012.png",
+      "LowPrice": "0.99"
     },
     {
       "Set": "SEC",
@@ -601,9 +797,29 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "7.77",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/042.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/042.png",
+      "LowPrice": "7.75"
+    },
+    {
+      "Set": "SEC",
+      "Number": "229",
+      "Name": "Catch Unawares",
+      "Type": "Event",
+      "Aspects": ["Cunning"],
+      "Traits": ["TACTIC"],
+      "Cost": "2",
+      "FrontText": "Attack with a unit. The defender gets -4/-0 for this attack.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Ario Murti",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/229.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -623,9 +839,10 @@
       "Unique": true,
       "Artist": "Gabriel Gómez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.95",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/159.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/159.png",
+      "LowPrice": "1.99"
     },
     {
       "Set": "SEC",
@@ -648,7 +865,7 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/001.png"
     },
@@ -671,9 +888,10 @@
       "Keywords": ["Plot", "Sentinel"],
       "Artist": "Gabriel Gómez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "6.32",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/082.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/082.png",
+      "LowPrice": "5.96"
     },
     {
       "Set": "SEC",
@@ -693,9 +911,10 @@
       "Unique": true,
       "Artist": "Milos Slavkovic",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.96",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/107.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/107.png",
+      "LowPrice": "0.99"
     },
     {
       "Set": "SEC",
@@ -715,9 +934,10 @@
       "Keywords": ["Restore"],
       "Artist": "Vincent Dutrait",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/043.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/043.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -733,9 +953,29 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/127.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/127.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "230",
+      "Name": "Charged with Espionage",
+      "Type": "Event",
+      "Aspects": ["Cunning"],
+      "Traits": ["LAW"],
+      "Cost": "2",
+      "FrontText": "You may disclose Cunning Cunning (reveal cards from your hand with these aspect icons among them). If you do, look at an opponent's hand and discard a unit from it.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": false,
+      "Artist": "Kaihound Studios",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/230.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -751,9 +991,10 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/076.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/076.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -769,9 +1010,10 @@
       "Unique": false,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/182.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/182.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -791,9 +1033,33 @@
       "Unique": true,
       "Artist": "Luke Harrington",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "11.97",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/147.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/147.png",
+      "LowPrice": "9.99"
+    },
+    {
+      "Set": "SEC",
+      "Number": "218",
+      "Name": "Cikatro Vizago",
+      "Subtitle": "Business is What Matters",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["UNDERWORLD"],
+      "Arenas": ["Ground"],
+      "Cost": "3",
+      "Power": "3",
+      "HP": "4",
+      "FrontText": "On Attack: Reveal the top card of your deck. An opponent may pay 1. If they don't, draw that card.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": true,
+      "Artist": "Joshua Carson",
+      "VariantType": "Normal",
+      "MarketPrice": "0.23",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/218.png",
+      "LowPrice": "0.23"
     },
     {
       "Set": "SEC",
@@ -814,9 +1080,29 @@
       "Keywords": ["Plot"],
       "Artist": "Mali Vasanserekul",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.13",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/172.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/172.png",
+      "LowPrice": "0.34"
+    },
+    {
+      "Set": "SEC",
+      "Number": "264",
+      "Name": "Clandestine Connections",
+      "Type": "Upgrade",
+      "Aspects": [],
+      "Traits": ["SUPPLY"],
+      "Cost": "2",
+      "FrontText": "Attached unit gains: “On Attack: You may pay 2. If you do, deal 2 damage to a base.”",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Hoan Nguyen",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/264.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -839,9 +1125,10 @@
       "Unique": true,
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/006.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/006.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -857,9 +1144,10 @@
       "Unique": false,
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.95",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/038.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/038.png",
+      "LowPrice": "1.49"
     },
     {
       "Set": "SEC",
@@ -875,9 +1163,10 @@
       "Unique": false,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "12.80",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/145.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/145.png",
+      "LowPrice": "9.99"
     },
     {
       "Set": "SEC",
@@ -896,9 +1185,10 @@
       "Unique": false,
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/064.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/064.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -918,9 +1208,29 @@
       "Keywords": ["Sentinel"],
       "Artist": "Francois Cannels",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/117.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/117.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "246",
+      "Name": "Contempt for Culture",
+      "Type": "Event",
+      "Aspects": ["Villainy"],
+      "Traits": ["INNATE"],
+      "Cost": "2",
+      "FrontText": "Deal 2 damage to a non-Vehicle unit.\nCreate a Spy token.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Reno",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/246.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -937,11 +1247,12 @@
       "DoubleSided": false,
       "Rarity": "Common",
       "Unique": false,
-      "Artist": "Space Goose",
+      "Artist": "Space Gooose",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/161.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/161.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -957,9 +1268,10 @@
       "Unique": false,
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/128.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/128.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -978,9 +1290,10 @@
       "Unique": false,
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/170.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/170.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1001,9 +1314,10 @@
       "Keywords": ["Restore"],
       "Artist": "Vincent Dutrait",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/047.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/047.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1019,9 +1333,10 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/091.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/091.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1041,9 +1356,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Steve Morris",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "30.00",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/079.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/079.png",
+      "LowPrice": "10.00"
     },
     {
       "Set": "SEC",
@@ -1062,9 +1378,54 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/167.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/167.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "253",
+      "Name": "Covert Operative",
+      "Type": "Unit",
+      "Aspects": ["Heroism"],
+      "Traits": ["REBEL"],
+      "Arenas": ["Ground"],
+      "Cost": "4",
+      "Power": "2",
+      "HP": "4",
+      "FrontText": "When Played: This unit captures an enemy non-leader unit that costs 2 or less. (Put the captured card facedown under this unit until this unit leaves play.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Kyle Petchock",
+      "VariantType": "Normal",
+      "MarketPrice": "1.00",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/253.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "251",
+      "Name": "Crait Veteran",
+      "Type": "Unit",
+      "Aspects": ["Heroism"],
+      "Traits": ["RESISTANCE", "TROOPER"],
+      "Arenas": ["Ground"],
+      "Cost": "3",
+      "Power": "4",
+      "HP": "3",
+      "FrontText": "",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Derek Laufman",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/251.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1080,9 +1441,10 @@
       "Unique": false,
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/039.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/039.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1102,9 +1464,10 @@
       "Unique": true,
       "Artist": "Guillaume Ospital",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/162.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/162.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1124,9 +1487,10 @@
       "Unique": true,
       "Artist": "Kursad Karatas",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/119.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/119.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1146,9 +1510,10 @@
       "Keywords": ["Overwhelm", "Sentinel"],
       "Artist": "Kevin Libranda",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/086.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/086.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1172,9 +1537,10 @@
       "Keywords": ["Saboteur"],
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.25",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/018.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/018.png",
+      "LowPrice": "0.25"
     },
     {
       "Set": "SEC",
@@ -1194,9 +1560,33 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Kaihound Studios",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/113.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/113.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "244",
+      "Name": "Darth Nihilus",
+      "Subtitle": "Lord of Hunger",
+      "Type": "Unit",
+      "Aspects": ["Villainy"],
+      "Traits": ["FORCE", "SITH"],
+      "Arenas": ["Ground"],
+      "Cost": "7",
+      "Power": "6",
+      "HP": "6",
+      "FrontText": "When Played/On Attack: Deal 3 damage to the unit with the least remaining HP among other units. (If multiple units are tied, choose one.). If it's a non-Vehicle unit, give an Experience token to this unit.",
+      "DoubleSided": false,
+      "Rarity": "Legendary",
+      "Unique": true,
+      "Artist": "Joey Vazquez",
+      "VariantType": "Normal",
+      "MarketPrice": "30.00",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/244.png",
+      "LowPrice": "19.99"
     },
     {
       "Set": "SEC",
@@ -1216,9 +1606,10 @@
       "Unique": true,
       "Artist": "Jakub Rebelka",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "7.98",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/035.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/035.png",
+      "LowPrice": "7.97"
     },
     {
       "Set": "SEC",
@@ -1238,9 +1629,10 @@
       "Unique": true,
       "Artist": "Jessi Ochse",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "13.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/188.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/188.png",
+      "LowPrice": "9.99"
     },
     {
       "Set": "SEC",
@@ -1259,9 +1651,10 @@
       "Unique": false,
       "Artist": "Borja Pindado",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/030.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/030.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1285,9 +1678,10 @@
       "Keywords": ["Raid"],
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/010.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/010.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -1308,9 +1702,10 @@
       "Keywords": ["Ambush"],
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/087.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/087.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1330,9 +1725,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/060.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/060.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1351,9 +1747,10 @@
       "Unique": false,
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/055.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/055.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1373,9 +1770,10 @@
       "Keywords": ["Ambush"],
       "Artist": "Robert Bonchune",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/109.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/109.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1391,9 +1789,10 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/052.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/052.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1414,9 +1813,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "19.94",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/090.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/090.png",
+      "LowPrice": "11.99"
     },
     {
       "Set": "SEC",
@@ -1433,9 +1833,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/071.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/071.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1451,9 +1852,10 @@
       "Unique": false,
       "Artist": "Envar Entertainment",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.96",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/106.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/106.png",
+      "LowPrice": "0.49"
     },
     {
       "Set": "SEC",
@@ -1473,9 +1875,10 @@
       "Keywords": ["Plot", "Sentinel"],
       "Artist": "Facundo Moyano",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/036.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/036.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1495,9 +1898,10 @@
       "Keywords": ["Ambush", "Plot"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/100.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/100.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1521,9 +1925,10 @@
       "Keywords": ["Ambush", "Overwhelm"],
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.95",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/007.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/007.png",
+      "LowPrice": "0.25"
     },
     {
       "Set": "SEC",
@@ -1543,9 +1948,79 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "18.98",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/137.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/137.png",
+      "LowPrice": "11.99"
+    },
+    {
+      "Set": "SEC",
+      "Number": "223",
+      "Name": "Duchess's Investigators",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["MANDALORIAN"],
+      "Arenas": ["Ground"],
+      "Cost": "5",
+      "Power": "4",
+      "HP": "4",
+      "FrontText": "When Played: You may disclose Cunning (reveal a card from your hand with this aspect icon). If you do, each opponent discards a random card from their hand.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Ario Anindito",
+      "VariantType": "Normal",
+      "MarketPrice": "0.10",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/223.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "219",
+      "Name": "Ebon Hawk",
+      "Subtitle": "Cause and Effect",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["FRINGE", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
+      "Cost": "3",
+      "Power": "3",
+      "HP": "3",
+      "FrontText": "On Attack: You may disclose Heroism and/or Villainy. If you disclosed Heroism, this unit gets +2/+0 for this attack. If you disclosed Villainy, give the defender -4/-0 for this attack.",
+      "DoubleSided": false,
+      "Rarity": "Rare",
+      "Unique": true,
+      "Artist": "Vincent Dutrait",
+      "VariantType": "Normal",
+      "MarketPrice": "2.96",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/219.png",
+      "LowPrice": "1.99"
+    },
+    {
+      "Set": "SEC",
+      "Number": "242",
+      "Name": "Elia Kane",
+      "Subtitle": "False Convert",
+      "Type": "Unit",
+      "Aspects": ["Villainy"],
+      "Traits": ["IMPERIAL", "NEW REPUBLIC"],
+      "Arenas": ["Ground"],
+      "Cost": "4",
+      "Power": "3",
+      "HP": "6",
+      "FrontText": "Raid 1 (This unit gets +1/+0 while attacking.)\nWhen Played: Look at 3 enemy resources. You may defeat 1 of them. If you do, its controller puts the top card of their deck into play as a resource and readies it.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": true,
+      "Keywords": ["Raid"],
+      "Artist": "Envar Entertainment",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/242.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1561,9 +2036,54 @@
       "Unique": false,
       "Artist": "Natcha Ngamtweerat",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.95",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/040.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/040.png",
+      "LowPrice": "1.94"
+    },
+    {
+      "Set": "SEC",
+      "Number": "206",
+      "Name": "Emissaries from Ryloth",
+      "Type": "Unit",
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["REPUBLIC", "TWI'LEK", "OFFICIAL"],
+      "Arenas": ["Ground"],
+      "Cost": "5",
+      "Power": "4",
+      "HP": "6",
+      "FrontText": "When Played: You may give a unit -3/-0 for this phase.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Gabriel Gómez Almenzar",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/206.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "215",
+      "Name": "Emissary's Sheathipede",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["SEPARATIST", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
+      "Cost": "2",
+      "Power": "2",
+      "HP": "4",
+      "FrontText": "When Defeated: Each opponent may ready a resource.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Shane Molina",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/215.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1583,9 +2103,10 @@
       "Keywords": ["Hidden"],
       "Artist": "Robert Bonchune",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/138.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/138.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1604,9 +2125,29 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "5.27",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/056.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/056.png",
+      "LowPrice": "4.00"
+    },
+    {
+      "Set": "SEC",
+      "Number": "247",
+      "Name": "Evil is Everywhere",
+      "Type": "Event",
+      "Aspects": ["Villainy"],
+      "Traits": ["DISASTER"],
+      "Cost": "3",
+      "FrontText": "Defeat a unit with cost equal to or less than the number of Villainy aspect icons among friendly units.",
+      "DoubleSided": false,
+      "Rarity": "Rare",
+      "Unique": false,
+      "Artist": "Vincent Dutrait",
+      "VariantType": "Normal",
+      "MarketPrice": "1.95",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/247.png",
+      "LowPrice": "1.93"
     },
     {
       "Set": "SEC",
@@ -1623,9 +2164,52 @@
       "Keywords": ["Grit"],
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.95",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/054.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/054.png",
+      "LowPrice": "0.93"
+    },
+    {
+      "Set": "SEC",
+      "Number": "243",
+      "Name": "FN Trooper Corps",
+      "Type": "Unit",
+      "Aspects": ["Villainy"],
+      "Traits": ["FIRST ORDER", "TROOPER"],
+      "Arenas": ["Ground"],
+      "Cost": "5",
+      "Power": "4",
+      "HP": "5",
+      "FrontText": "When Played: Give an Experience token to another friendly unit.\nPlot (When you deploy a leader, you may play this card from your resources, paying its cost. Replace it with the top card of your deck.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Plot"],
+      "Artist": "Derek Laufman",
+      "VariantType": "Normal",
+      "MarketPrice": "1.00",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/243.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "211",
+      "Name": "Faith in Your Friends",
+      "Type": "Event",
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["GAMBIT"],
+      "Cost": "2",
+      "FrontText": "Search the top 3 cards of your deck for a card and draw it. Then, you may disclose Cunning Cunning Cunning Heroism Heroism (reveal cards from your hand with these aspect icons among them). If you do, create 2 Spy tokens.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": false,
+      "Artist": "David Buisan",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/211.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -1641,9 +2225,10 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/130.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/130.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1660,9 +2245,10 @@
       "Keywords": ["Overwhelm", "Raid", "Restore"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "7.48",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/104.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/104.png",
+      "LowPrice": "6.80"
     },
     {
       "Set": "SEC",
@@ -1683,9 +2269,10 @@
       "Keywords": ["Ambush", "Plot"],
       "Artist": "Christian Papazoglakis",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.95",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/088.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/088.png",
+      "LowPrice": "1.93"
     },
     {
       "Set": "SEC",
@@ -1702,9 +2289,10 @@
       "Keywords": ["Ambush", "Plot"],
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.96",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/194.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/194.png",
+      "LowPrice": "2.93"
     },
     {
       "Set": "SEC",
@@ -1724,9 +2312,10 @@
       "Unique": true,
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "6.98",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/142.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/142.png",
+      "LowPrice": "6.95"
     },
     {
       "Set": "SEC",
@@ -1745,9 +2334,10 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "50.00",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/197.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/197.png",
+      "LowPrice": "50.00"
     },
     {
       "Set": "SEC",
@@ -1766,9 +2356,10 @@
       "Unique": false,
       "Artist": "Hoan Nguyen",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/110.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/110.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1789,9 +2380,10 @@
       "Keywords": ["Plot"],
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.96",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/046.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/046.png",
+      "LowPrice": "0.94"
     },
     {
       "Set": "SEC",
@@ -1812,9 +2404,10 @@
       "Keywords": ["Plot"],
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.93",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/186.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/186.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -1835,9 +2428,10 @@
       "Keywords": ["Hidden"],
       "Artist": "Derek Laufman",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.95",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/187.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/187.png",
+      "LowPrice": "2.93"
     },
     {
       "Set": "SEC",
@@ -1860,9 +2454,10 @@
       "Unique": true,
       "Artist": "Kaihound Studios",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.25",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/011.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/011.png",
+      "LowPrice": "0.25"
     },
     {
       "Set": "SEC",
@@ -1882,9 +2477,10 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "8.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/193.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/193.png",
+      "LowPrice": "7.75"
     },
     {
       "Set": "SEC",
@@ -1904,9 +2500,96 @@
       "Unique": true,
       "Artist": "Gabriel Gómez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.95",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/192.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/192.png",
+      "LowPrice": "0.93"
+    },
+    {
+      "Set": "SEC",
+      "Number": "258",
+      "Name": "Grassroots Resistance",
+      "Type": "Event",
+      "Aspects": ["Heroism"],
+      "Traits": ["TACTIC"],
+      "Cost": "4",
+      "FrontText": "Deal 3 damage to a unit.\nHeal 3 damage from your base.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Reno",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/258.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "254",
+      "Name": "Heroic ARC-170",
+      "Type": "Unit",
+      "Aspects": ["Heroism"],
+      "Traits": ["REPUBLIC", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
+      "Cost": "4",
+      "Power": "4",
+      "HP": "3",
+      "FrontText": "When Played: If you control a damaged unit, you may deal 2 damage to an enemy unit.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Stephen Zavala",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/254.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "249",
+      "Name": "High Command Councilor",
+      "Type": "Unit",
+      "Aspects": ["Heroism"],
+      "Traits": ["REBEL", "OFFICIAL"],
+      "Arenas": ["Ground"],
+      "Cost": "2",
+      "Power": "1",
+      "HP": "4",
+      "FrontText": "While you control another Official unit, this unit gains Raid 2. (It gets +2/+0 while attacking.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Raid"],
+      "Artist": "Ivan Fiorelli",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/249.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "220",
+      "Name": "Hired Splicer",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["FRINGE"],
+      "Arenas": ["Ground"],
+      "Cost": "3",
+      "Power": "3",
+      "HP": "4",
+      "FrontText": "On Attack: Reveal the top 2 cards of a deck. If you do, you may exhaust a unit that shares a Trait with one of those cards. Put those cards on the bottom of that deck in a random order.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": false,
+      "Artist": "Gabriel Gómez Almenzar",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/220.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1927,9 +2610,34 @@
       "Keywords": ["Plot", "Raid"],
       "Artist": "James Daly",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.50",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/140.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/140.png",
+      "LowPrice": "0.34"
+    },
+    {
+      "Set": "SEC",
+      "Number": "208",
+      "Name": "Hunter",
+      "Subtitle": "Extraordinary Tracker",
+      "Type": "Unit",
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FRINGE", "CLONE"],
+      "Arenas": ["Ground"],
+      "Cost": "6",
+      "Power": "7",
+      "HP": "6",
+      "FrontText": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)\nOn Attack: If the defender is exhausted, it gets -4/-0 for this attack.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": true,
+      "Keywords": ["Saboteur"],
+      "Artist": "Christophe Swal",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/208.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1949,9 +2657,32 @@
       "Keywords": ["Raid"],
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/134.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/134.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "240",
+      "Name": "Hutt Cartel Starfighter",
+      "Type": "Unit",
+      "Aspects": ["Villainy"],
+      "Traits": ["UNDERWORLD", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
+      "Cost": "3",
+      "Power": "3",
+      "HP": "5",
+      "FrontText": "When Played: Deal 2 damage to this unit.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Space Gooose",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/240.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -1967,9 +2698,10 @@
       "Unique": false,
       "Artist": "Pandu Mahardika",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.96",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/078.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/078.png",
+      "LowPrice": "1.94"
     },
     {
       "Set": "SEC",
@@ -1985,9 +2717,10 @@
       "Unique": false,
       "Artist": "Vincent Dutrait",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "10.00",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/092.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/092.png",
+      "LowPrice": "10.00"
     },
     {
       "Set": "SEC",
@@ -2006,9 +2739,10 @@
       "Unique": false,
       "Artist": "Yvette Chua",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/184.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/184.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2027,9 +2761,10 @@
       "Unique": false,
       "Artist": "Kaihound Studios",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/083.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/083.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2048,9 +2783,10 @@
       "Unique": false,
       "Artist": "Afif Khaled",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.18",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/080.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/080.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2069,9 +2805,10 @@
       "Unique": false,
       "Artist": "Christophe Swal",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/132.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/132.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2087,9 +2824,30 @@
       "Unique": false,
       "Artist": "Henning Ludvigsen",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/023.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/023.png",
+      "LowPrice": "0.34"
+    },
+    {
+      "Set": "SEC",
+      "Number": "231",
+      "Name": "Implicate",
+      "Type": "Event",
+      "Aspects": ["Cunning"],
+      "Traits": ["TRICK"],
+      "Cost": "2",
+      "FrontText": "Choose a unit. For this phase, it gains Sentinel and: “When this unit is attacked: Create a Spy token.”",
+      "DoubleSided": false,
+      "Rarity": "Rare",
+      "Unique": false,
+      "Keywords": ["Sentinel"],
+      "Artist": "Envar Entertainment",
+      "VariantType": "Normal",
+      "MarketPrice": "0.95",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/231.png",
+      "LowPrice": "0.93"
     },
     {
       "Set": "SEC",
@@ -2108,9 +2866,54 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/154.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/154.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "260",
+      "Name": "Inspector's Shuttle",
+      "Type": "Unit",
+      "Aspects": [],
+      "Traits": ["REPUBLIC", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
+      "Cost": "2",
+      "Power": "1",
+      "HP": "3",
+      "FrontText": "When Played: Name a card, then an opponent reveals their hand. For each copy of the named card in their hand, give an Experience token to this unit.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Envar Entertainment",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/260.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "261",
+      "Name": "Inspiring Senator",
+      "Type": "Unit",
+      "Aspects": [],
+      "Traits": ["REPUBLIC", "OFFICIAL"],
+      "Arenas": ["Ground"],
+      "Cost": "3",
+      "Power": "3",
+      "HP": "3",
+      "FrontText": "When Defeated: The next Official unit you play this phase costs 1 less.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Kaihound Studios",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/261.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2126,9 +2929,10 @@
       "Unique": false,
       "Artist": "Monika Pałosz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/177.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/177.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2151,9 +2955,10 @@
       "Unique": true,
       "Artist": "Ivan Shavrin",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/002.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/002.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2173,9 +2978,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Pandu Mahardika",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/049.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/049.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2196,9 +3002,10 @@
       "Keywords": ["Plot"],
       "Artist": "Setya Wahyuga",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.21",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/111.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/111.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2217,9 +3024,10 @@
       "Unique": false,
       "Artist": "Eslam AboShady",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/200.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/200.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2240,9 +3048,10 @@
       "Keywords": ["Hidden"],
       "Artist": "Gabriel Gómez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "7.24",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/148.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/148.png",
+      "LowPrice": "7.00"
     },
     {
       "Set": "SEC",
@@ -2263,9 +3072,10 @@
       "Keywords": ["Plot"],
       "Artist": "Mali Vasanserekul",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/149.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/149.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -2286,9 +3096,10 @@
       "Keywords": ["Raid"],
       "Artist": "Milos Slavkovic",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.50",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/151.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/151.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2308,9 +3119,10 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/114.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/114.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -2326,9 +3138,29 @@
       "Unique": false,
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/075.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/075.png",
+      "LowPrice": "0.10"
+    },
+    {
+      "Set": "SEC",
+      "Number": "232",
+      "Name": "Kreia's Whispers",
+      "Type": "Event",
+      "Aspects": ["Cunning"],
+      "Traits": ["FORCE", "LEARNED"],
+      "Cost": "2",
+      "FrontText": "Draw 3 cards, then put a card from your hand on the top of your deck and another card from your hand on the bottom of your deck.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Jessi Ochse",
+      "VariantType": "Normal",
+      "MarketPrice": "0.28",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/232.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -2349,9 +3181,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "9.80",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/032.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/032.png",
+      "LowPrice": "4.99"
     },
     {
       "Set": "SEC",
@@ -2374,9 +3207,10 @@
       "Unique": true,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.96",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/003.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/003.png",
+      "LowPrice": "0.25"
     },
     {
       "Set": "SEC",
@@ -2397,9 +3231,10 @@
       "Keywords": ["Grit"],
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "14.96",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/068.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/068.png",
+      "LowPrice": "9.99"
     },
     {
       "Set": "SEC",
@@ -2422,9 +3257,10 @@
       "Unique": true,
       "Artist": "Jessi Ochse",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.34",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/004.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/004.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2440,9 +3276,10 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/180.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/180.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2458,9 +3295,80 @@
       "Unique": false,
       "Artist": "Milos Slavkovic",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "13.76",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/131.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/131.png",
+      "LowPrice": "9.99"
+    },
+    {
+      "Set": "SEC",
+      "Number": "212",
+      "Name": "Libertine",
+      "Subtitle": "Under New Ownership",
+      "Type": "Unit",
+      "Aspects": ["Cunning", "Cunning"],
+      "Traits": ["UNDERWORLD", "VEHICLE", "TRANSPORT"],
+      "Arenas": ["Space"],
+      "Cost": "4",
+      "Power": "3",
+      "HP": "7",
+      "FrontText": "This unit gets +1/+0 for each captured card it's guarding.\nWhen Played: Choose an enemy unit and a non-leader friendly unit. The enemy unit captures the friendly unit.",
+      "DoubleSided": false,
+      "Rarity": "Rare",
+      "Unique": true,
+      "Artist": "Christian Papazoglakis",
+      "VariantType": "Normal",
+      "MarketPrice": "0.95",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/212.png",
+      "LowPrice": "0.93"
+    },
+    {
+      "Set": "SEC",
+      "Number": "207",
+      "Name": "Lightmaker",
+      "Subtitle": "I Have An Idea",
+      "Type": "Unit",
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["REBEL", "VEHICLE", "CAPITAL SHIP"],
+      "Arenas": ["Space"],
+      "Cost": "5",
+      "Power": "3",
+      "HP": "4",
+      "FrontText": "Raid 4\nWhen Defeated: Choose an arena. Exhaust each enemy unit in that arena.",
+      "DoubleSided": false,
+      "Rarity": "Legendary",
+      "Unique": true,
+      "Keywords": ["Raid"],
+      "Artist": "Marko Fiedler",
+      "VariantType": "Normal",
+      "MarketPrice": "19.97",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/207.png",
+      "LowPrice": "14.99"
+    },
+    {
+      "Set": "SEC",
+      "Number": "222",
+      "Name": "Loan Shark",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["OFFICIAL"],
+      "Arenas": ["Ground"],
+      "Cost": "4",
+      "Power": "2",
+      "HP": "5",
+      "FrontText": "Ambush (When you play this unit, it may attack an enemy unit.)\nRaid 1 (This unit gets +1/+0 while attacking.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Ambush", "Raid"],
+      "Artist": "Marc Escachx",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/222.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2481,9 +3389,10 @@
       "Keywords": ["Grit", "Sentinel"],
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/057.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/057.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2503,9 +3412,10 @@
       "Keywords": ["Grit"],
       "Artist": "Kaihound Studios",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/058.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/058.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2524,9 +3434,10 @@
       "Unique": false,
       "Artist": "Ignacio Bazan-Lazcano",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/189.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/189.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2549,9 +3460,10 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/013.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/013.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2571,9 +3483,33 @@
       "Unique": true,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.96",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/153.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/153.png",
+      "LowPrice": "1.93"
+    },
+    {
+      "Set": "SEC",
+      "Number": "252",
+      "Name": "Maarva Andor",
+      "Subtitle": "We've Been Sleeping",
+      "Type": "Unit",
+      "Aspects": ["Heroism"],
+      "Traits": ["REBEL"],
+      "Arenas": ["Ground"],
+      "Cost": "3",
+      "Power": "3",
+      "HP": "4",
+      "FrontText": "When Defeated: Give an Experience token to each friendly Rebel unit.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": true,
+      "Artist": "Reno",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/252.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2594,9 +3530,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.95",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/081.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/081.png",
+      "LowPrice": "0.93"
     },
     {
       "Set": "SEC",
@@ -2617,9 +3554,10 @@
       "Keywords": ["Plot"],
       "Artist": "Steve Morris",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/084.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/084.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2640,9 +3578,10 @@
       "Keywords": ["Restore"],
       "Artist": "Salomé Goré",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.50",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/094.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/094.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2663,9 +3602,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Lenka Šimečková",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "4.42",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/139.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/139.png",
+      "LowPrice": "3.99"
     },
     {
       "Set": "SEC",
@@ -2688,9 +3628,10 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.34",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/009.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/009.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2711,9 +3652,29 @@
       "Keywords": ["Restore"],
       "Artist": "Afif Khaled",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.99",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/103.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/103.png",
+      "LowPrice": "2.93"
+    },
+    {
+      "Set": "SEC",
+      "Number": "256",
+      "Name": "Moral Authority",
+      "Type": "Upgrade",
+      "Aspects": ["Heroism"],
+      "Traits": ["INNATE"],
+      "Cost": "3",
+      "FrontText": "Attach to a friendly Unique unit.\nWhen Played: Attached unit captures an enemy non-leader unit with less remaining HP than it.",
+      "DoubleSided": false,
+      "Rarity": "Rare",
+      "Unique": false,
+      "Artist": "David Buisan",
+      "VariantType": "Normal",
+      "MarketPrice": "0.94",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/256.png",
+      "LowPrice": "0.93"
     },
     {
       "Set": "SEC",
@@ -2729,9 +3690,10 @@
       "Unique": false,
       "Artist": "Tyler Edlin",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/026.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/026.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2750,9 +3712,10 @@
       "Unique": false,
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/135.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/135.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2773,9 +3736,10 @@
       "Keywords": ["Overwhelm", "Plot", "Raid"],
       "Artist": "Francois Cannels",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.94",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/099.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/099.png",
+      "LowPrice": "0.93"
     },
     {
       "Set": "SEC",
@@ -2795,9 +3759,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Eslam AboShady",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/120.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/120.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2817,9 +3782,10 @@
       "Unique": true,
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/065.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/065.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2835,9 +3801,10 @@
       "Unique": false,
       "Artist": "Henning Ludvigsen",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/024.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/024.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2853,9 +3820,10 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "30.00",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/156.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/156.png",
+      "LowPrice": "29.78"
     },
     {
       "Set": "SEC",
@@ -2871,9 +3839,10 @@
       "Unique": false,
       "Artist": "Sandra Chlewińska",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/069.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/069.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2889,9 +3858,10 @@
       "Unique": false,
       "Artist": "Kaihound Studios",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/196.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/196.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -2911,9 +3881,10 @@
       "Keywords": ["Restore"],
       "Artist": "Aarnoud De Rycker",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/116.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/116.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -2934,9 +3905,33 @@
       "Keywords": ["Grit", "Sentinel"],
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.50",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/031.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/031.png",
+      "LowPrice": "0.93"
+    },
+    {
+      "Set": "SEC",
+      "Number": "205",
+      "Name": "Obi-Wan Kenobi",
+      "Subtitle": "Finding What Doesn't Exist",
+      "Type": "Unit",
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["FORCE", "JEDI", "REPUBLIC"],
+      "Arenas": ["Ground"],
+      "Cost": "4",
+      "Power": "4",
+      "HP": "5",
+      "FrontText": "When this unit deals combat damage to a base: Discard a card from the defending player's deck. For this phase, you may play that card from their discard pile, ignoring its aspect penalties.",
+      "DoubleSided": false,
+      "Rarity": "Legendary",
+      "Unique": true,
+      "Artist": "David Buisan",
+      "VariantType": "Normal",
+      "MarketPrice": "30.00",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/205.png",
+      "LowPrice": "29.78"
     },
     {
       "Set": "SEC",
@@ -2953,9 +3948,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Derek Laufman",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.08",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/157.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/157.png",
+      "LowPrice": "0.93"
     },
     {
       "Set": "SEC",
@@ -2972,9 +3968,10 @@
       "Keywords": ["Plot"],
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.95",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/053.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/053.png",
+      "LowPrice": "1.93"
     },
     {
       "Set": "SEC",
@@ -2990,9 +3987,10 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/158.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/158.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -3012,9 +4010,10 @@
       "Unique": true,
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.94",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/112.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/112.png",
+      "LowPrice": "2.94"
     },
     {
       "Set": "SEC",
@@ -3033,9 +4032,10 @@
       "Unique": false,
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/163.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/163.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -3058,9 +4058,31 @@
       "Unique": true,
       "Artist": "Kaihound Studios",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/016.png"
+    },
+    {
+      "Set": "SEC",
+      "Number": "241",
+      "Name": "Political Bully",
+      "Type": "Unit",
+      "Aspects": ["Villainy"],
+      "Traits": ["REPUBLIC", "OFFICIAL"],
+      "Arenas": ["Ground"],
+      "Cost": "3",
+      "Power": "2",
+      "HP": "3",
+      "FrontText": "When Played: If you control another Official unit, you may deal 2 damage to a ground unit.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Omercan Cirit",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/241.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3080,9 +4102,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Afif Khaled",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/041.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/041.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3101,9 +4124,10 @@
       "Unique": false,
       "Artist": "Mali Vasanserekul",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/044.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/044.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3123,9 +4147,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Shane Molina",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/089.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/089.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3146,9 +4171,10 @@
       "Keywords": ["Raid"],
       "Artist": "Axel Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "4.63",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/171.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/171.png",
+      "LowPrice": "3.99"
     },
     {
       "Set": "SEC",
@@ -3164,9 +4190,10 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/178.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/178.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3186,9 +4213,10 @@
       "Unique": true,
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "23.75",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/101.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/101.png",
+      "LowPrice": "19.99"
     },
     {
       "Set": "SEC",
@@ -3207,9 +4235,33 @@
       "Unique": false,
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/118.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/118.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "250",
+      "Name": "Rebel Pathfinder",
+      "Type": "Unit",
+      "Aspects": ["Heroism"],
+      "Traits": ["REBEL", "TROOPER"],
+      "Arenas": ["Ground"],
+      "Cost": "2",
+      "Power": "2",
+      "HP": "3",
+      "FrontText": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Saboteur"],
+      "Artist": "Joshua Carson",
+      "VariantType": "Normal",
+      "MarketPrice": "1.00",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/250.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3229,9 +4281,10 @@
       "Keywords": ["Saboteur"],
       "Artist": "Gabriel Gómez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/202.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/202.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3251,9 +4304,10 @@
       "Keywords": ["Hidden"],
       "Artist": "Sandra Chlewińska",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/146.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/146.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3273,9 +4327,10 @@
       "Keywords": ["Saboteur"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/160.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/160.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3291,9 +4346,32 @@
       "Unique": false,
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/125.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/125.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "216",
+      "Name": "Regulations Bureaucrat",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["IMPERIAL", "OFFICIAL"],
+      "Arenas": ["Ground"],
+      "Cost": "2",
+      "Power": "0",
+      "HP": "5",
+      "FrontText": "Action [Exhaust]: Exhaust a resource.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "EJ Dela Cruz",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/216.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3309,9 +4387,33 @@
       "Unique": false,
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/074.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/074.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "255",
+      "Name": "Remote Escort Tank",
+      "Type": "Unit",
+      "Aspects": ["Heroism"],
+      "Traits": ["REPUBLIC", "VEHICLE", "TANK"],
+      "Arenas": ["Ground"],
+      "Cost": "6",
+      "Power": "5",
+      "HP": "5",
+      "FrontText": "When Played: Give a unit Sentinel for this phase.\nPlot (When you deploy a leader, you may play this card from your resources, paying its cost. Replace it with the top card of your deck.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Plot", "Sentinel"],
+      "Artist": "EJ Dela Cruz",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/255.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3327,9 +4429,10 @@
       "Unique": false,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/105.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/105.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3349,9 +4452,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.23",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/102.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/102.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3371,9 +4475,10 @@
       "Keywords": ["Grit"],
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/166.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/166.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3389,9 +4494,10 @@
       "Unique": false,
       "Artist": "Henning Ludvigsen",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/021.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/021.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3411,9 +4517,29 @@
       "Keywords": ["Overwhelm"],
       "Artist": "French Carlomagno",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/173.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/173.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "257",
+      "Name": "Restore Freedom",
+      "Type": "Event",
+      "Aspects": ["Heroism"],
+      "Traits": ["GAMBIT"],
+      "Cost": "2",
+      "FrontText": "Play a unit from your hand. It costs 1 less for each Heroism aspect icon among friendly units.",
+      "DoubleSided": false,
+      "Rarity": "Rare",
+      "Unique": false,
+      "Artist": "EJ Dela Cruz",
+      "VariantType": "Normal",
+      "MarketPrice": "0.95",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/257.png",
+      "LowPrice": "0.93"
     },
     {
       "Set": "SEC",
@@ -3429,9 +4555,10 @@
       "Unique": false,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/077.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/077.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3447,9 +4574,10 @@
       "Unique": false,
       "Artist": "Henning Ludvigsen",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/019.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/019.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3469,9 +4597,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/063.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/063.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3495,9 +4624,10 @@
       "Keywords": ["Raid"],
       "Artist": "Jessi Ochse",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "8.99",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/017.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/017.png",
+      "LowPrice": "0.49"
     },
     {
       "Set": "SEC",
@@ -3544,9 +4674,10 @@
       "Keywords": ["Saboteur"],
       "Artist": "Shane Molina",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.97",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/174.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/174.png",
+      "LowPrice": "0.49"
     },
     {
       "Set": "SEC",
@@ -3562,9 +4693,10 @@
       "Unique": false,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/072.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/072.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3583,9 +4715,10 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.12",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/185.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/185.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3601,9 +4734,10 @@
       "Unique": false,
       "Artist": "Adrien Girod",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/022.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/022.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3622,9 +4756,10 @@
       "Unique": false,
       "Artist": "Ario Anindito",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/059.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/059.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3645,9 +4780,10 @@
       "Keywords": ["Restore"],
       "Artist": "Mali Vasanserekul",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.23",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/045.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/045.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3666,9 +4802,10 @@
       "Unique": false,
       "Artist": "Nabetse Zitro",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/108.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/108.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3688,9 +4825,55 @@
       "Keywords": ["Ambush"],
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/121.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/121.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "238",
+      "Name": "Sith Assassin",
+      "Type": "Unit",
+      "Aspects": ["Villainy"],
+      "Traits": ["FORCE", "SITH"],
+      "Arenas": ["Ground"],
+      "Cost": "2",
+      "Power": "3",
+      "HP": "2",
+      "FrontText": "Hidden (This unit can't be attacked if it was played this phase.)\n",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Hidden"],
+      "Artist": "Jakub Rebelka",
+      "VariantType": "Normal",
+      "MarketPrice": "1.00",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/238.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "214",
+      "Name": "Skyhopper Canyon Runner",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["FRINGE", "VEHICLE", "SPEEDER"],
+      "Arenas": ["Ground"],
+      "Cost": "1",
+      "Power": "1",
+      "HP": "4",
+      "FrontText": "",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Omercan Cirit",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/214.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3713,9 +4896,10 @@
       "Unique": true,
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/014.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/014.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3736,9 +4920,30 @@
       "Keywords": ["Plot"],
       "Artist": "Denis Medri",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/033.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/033.png",
+      "LowPrice": "0.34"
+    },
+    {
+      "Set": "SEC",
+      "Number": "226",
+      "Name": "Sneaking Suspicion",
+      "Type": "Upgrade",
+      "Aspects": ["Cunning"],
+      "Traits": ["INNATE"],
+      "Cost": "2",
+      "FrontText": "Plot (When you deploy a leader, you may play this card from your resources, paying its cost. Replace it with the top card of your deck.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Plot"],
+      "Artist": "David Buisan",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/226.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3758,9 +4963,48 @@
       "Unique": true,
       "Artist": "Ignacio Bazan-Lazcano",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.34",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/190.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/190.png",
+      "LowPrice": "0.34"
+    },
+    {
+      "Set": "SEC",
+      "Number": "227",
+      "Name": "Special Modifications",
+      "Type": "Upgrade",
+      "Aspects": ["Cunning"],
+      "Traits": ["MODIFICATION"],
+      "Cost": "2",
+      "FrontText": "Attach to a Vehicle unit.\nWhen Played: If attached unit is a Transport, you may create a Spy token.",
+      "DoubleSided": false,
+      "Rarity": "Rare",
+      "Unique": false,
+      "Artist": "Fernando Correa",
+      "VariantType": "Normal",
+      "MarketPrice": "0.95",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/227.png",
+      "LowPrice": "0.93"
+    },
+    {
+      "Set": "SEC",
+      "Number": "210",
+      "Name": "Stolen Starpath Unit",
+      "Type": "Upgrade",
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["ITEM", "MODIFICATION"],
+      "Cost": "1",
+      "FrontText": "Attached unit gains: “On Attack: Name a card. The defending player reveals their hand. For each card in their hand with that name, create a Spy token.”",
+      "DoubleSided": false,
+      "Rarity": "Rare",
+      "Unique": false,
+      "Artist": "Fernando Correa",
+      "VariantType": "Normal",
+      "MarketPrice": "1.15",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/210.png",
+      "LowPrice": "0.93"
     },
     {
       "Set": "SEC",
@@ -3780,9 +5024,10 @@
       "Keywords": ["Plot"],
       "Artist": "Envar Entertainment",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/152.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/152.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -3799,9 +5044,56 @@
       "Keywords": ["Plot"],
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/176.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/176.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "237",
+      "Name": "Supreme Council Aide",
+      "Type": "Unit",
+      "Aspects": ["Villainy"],
+      "Traits": ["FIRST ORDER", "OFFICIAL"],
+      "Arenas": ["Ground"],
+      "Cost": "1",
+      "Power": "2",
+      "HP": "2",
+      "FrontText": "",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "David Buisan",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/237.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "225",
+      "Name": "Synara San",
+      "Subtitle": "Harboring a Secret",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["UNDERWORLD"],
+      "Arenas": ["Ground"],
+      "Cost": "7",
+      "Power": "7",
+      "HP": "7",
+      "FrontText": "Hidden\nOn Attack: For each friendly unit, ready a friendly resource.",
+      "DoubleSided": false,
+      "Rarity": "Legendary",
+      "Unique": true,
+      "Keywords": ["Hidden"],
+      "Artist": "Kaihound Studios",
+      "VariantType": "Normal",
+      "MarketPrice": "10.98",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/225.png",
+      "LowPrice": "10.96"
     },
     {
       "Set": "SEC",
@@ -3821,9 +5113,10 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.98",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/133.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/133.png",
+      "LowPrice": "1.93"
     },
     {
       "Set": "SEC",
@@ -3844,9 +5137,10 @@
       "Keywords": ["Hidden", "Plot"],
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.95",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/203.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/203.png",
+      "LowPrice": "2.93"
     },
     {
       "Set": "SEC",
@@ -3863,11 +5157,12 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": false,
-      "Artist": "Space Goose",
+      "Artist": "Space Gooose",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/115.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/115.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3881,11 +5176,12 @@
       "DoubleSided": false,
       "Rarity": "Uncommon",
       "Unique": false,
-      "Artist": "Space Goose",
+      "Artist": "Space Gooose",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/144.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/144.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -3906,9 +5202,10 @@
       "Keywords": ["Restore"],
       "Artist": "Christian Papazoglakis",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "10.00",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/027.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/027.png",
+      "LowPrice": "10.00"
     },
     {
       "Set": "SEC",
@@ -3929,9 +5226,10 @@
       "Keywords": ["Grit"],
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.23",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/143.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/143.png",
+      "LowPrice": "0.93"
     },
     {
       "Set": "SEC",
@@ -3947,9 +5245,10 @@
       "Unique": false,
       "Artist": "Natcha Ngamtweerat",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.97",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/073.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/073.png",
+      "LowPrice": "0.94"
     },
     {
       "Set": "SEC",
@@ -3969,9 +5268,54 @@
       "Unique": true,
       "Artist": "Adrien Girod",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/141.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/141.png",
+      "LowPrice": "0.34"
+    },
+    {
+      "Set": "SEC",
+      "Number": "209",
+      "Name": "The Mandalorian",
+      "Subtitle": "Cleaning Up Nevarro",
+      "Type": "Unit",
+      "Aspects": ["Cunning", "Heroism"],
+      "Traits": ["MANDALORIAN", "BOUNTY HUNTER"],
+      "Arenas": ["Ground"],
+      "Cost": "8",
+      "Power": "6",
+      "HP": "8",
+      "FrontText": "Ambush\nWhen this unit attacks and defeats a unit: You may choose an enemy non-leader unit. This unit captures it.",
+      "DoubleSided": false,
+      "Rarity": "Rare",
+      "Unique": true,
+      "Keywords": ["Ambush"],
+      "Artist": "Gabriel Gómez Almenzar",
+      "VariantType": "Normal",
+      "MarketPrice": "5.27",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/209.png",
+      "LowPrice": "2.49"
+    },
+    {
+      "Set": "SEC",
+      "Number": "235",
+      "Name": "The Wrong Ride",
+      "Type": "Event",
+      "Aspects": ["Cunning"],
+      "Traits": ["DISASTER"],
+      "Cost": "3",
+      "FrontText": "Exhaust 2 enemy resources.\nPlot (When you deploy a leader, you may play this card from your resources, paying its cost. Replace it with the top card of your deck.)",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": false,
+      "Keywords": ["Plot"],
+      "Artist": "Reno",
+      "VariantType": "Normal",
+      "MarketPrice": "0.10",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/235.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -3990,9 +5334,10 @@
       "Unique": false,
       "Artist": "Sandra Chlewińska",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/095.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/095.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -4009,9 +5354,10 @@
       "Keywords": ["Plot"],
       "Artist": "Adrien Girod",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "6.32",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/183.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/183.png",
+      "LowPrice": "5.96"
     },
     {
       "Set": "SEC",
@@ -4030,9 +5376,10 @@
       "Unique": false,
       "Artist": "Ivan Shavrin",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.28",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/191.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/191.png",
+      "LowPrice": "0.10"
     },
     {
       "Set": "SEC",
@@ -4049,9 +5396,10 @@
       "Keywords": ["Plot"],
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.99",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/126.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/126.png",
+      "LowPrice": "0.99"
     },
     {
       "Set": "SEC",
@@ -4070,9 +5418,10 @@
       "Unique": false,
       "Artist": "Jakub Rebelka",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/028.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/028.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -4091,9 +5440,10 @@
       "Unique": false,
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/067.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/067.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -4109,9 +5459,52 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/181.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/181.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "236",
+      "Name": "Undercover Operation",
+      "Type": "Event",
+      "Aspects": ["Cunning"],
+      "Traits": ["TACTIC"],
+      "Cost": "3",
+      "FrontText": "Ready a unit that was played this phase. If it costs 3 or less, create a Spy token.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": false,
+      "Artist": "Kyle Petchock",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/236.png",
+      "LowPrice": "0.34"
+    },
+    {
+      "Set": "SEC",
+      "Number": "221",
+      "Name": "Unruly Astromech",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["DROID"],
+      "Arenas": ["Ground"],
+      "Cost": "3",
+      "Power": "3",
+      "HP": "2",
+      "FrontText": "Hidden (This unit can't be attacked if it was played this phase.)\nWhen Defeated: Exhaust an enemy unit.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Hidden"],
+      "Artist": "Aitor Prieto",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/221.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -4128,9 +5521,10 @@
       "Keywords": ["Plot"],
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/123.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/123.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -4146,9 +5540,10 @@
       "Unique": false,
       "Artist": "Henning Ludvigsen",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/020.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/020.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -4167,9 +5562,34 @@
       "Unique": false,
       "Artist": "Baldemar Rivas",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.50",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/150.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/150.png",
+      "LowPrice": "0.34"
+    },
+    {
+      "Set": "SEC",
+      "Number": "224",
+      "Name": "Vel Sartha",
+      "Subtitle": "One Path, One Choice",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["REBEL"],
+      "Arenas": ["Ground"],
+      "Cost": "5",
+      "Power": "4",
+      "HP": "6",
+      "FrontText": "Raid 2 (This unit gets +2/+0 while attacking.)\nEach exhausted enemy unit gets -2/-0 while defending.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": true,
+      "Keywords": ["Raid"],
+      "Artist": "Baldemar Rivas",
+      "VariantType": "Normal",
+      "MarketPrice": "0.10",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/224.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -4189,9 +5609,10 @@
       "Unique": true,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.97",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/085.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/085.png",
+      "LowPrice": "0.99"
     },
     {
       "Set": "SEC",
@@ -4212,9 +5633,32 @@
       "Keywords": ["Plot"],
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "18.76",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/050.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/050.png",
+      "LowPrice": "11.99"
+    },
+    {
+      "Set": "SEC",
+      "Number": "239",
+      "Name": "Viper Probe Droid",
+      "Type": "Unit",
+      "Aspects": ["Villainy"],
+      "Traits": ["IMPERIAL", "DROID"],
+      "Arenas": ["Ground"],
+      "Cost": "2",
+      "Power": "3",
+      "HP": "2",
+      "FrontText": "When Played: Look at an opponent's hand.",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Artist": "Amad Mir",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/239.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -4234,9 +5678,10 @@
       "Unique": true,
       "Artist": "Shane Molina",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "18.98",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/122.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/122.png",
+      "LowPrice": "11.99"
     },
     {
       "Set": "SEC",
@@ -4255,9 +5700,30 @@
       "Unique": false,
       "Artist": "Kevin Libranda",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/164.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/164.png",
+      "LowPrice": "0.20"
+    },
+    {
+      "Set": "SEC",
+      "Number": "245",
+      "Name": "When Has Become Now",
+      "Type": "Event",
+      "Aspects": ["Villainy"],
+      "Traits": ["TRICK"],
+      "Cost": "1",
+      "FrontText": "Play a card with Plot from your resources (paying its cost). Put the top card of your deck into play as a resource.",
+      "DoubleSided": false,
+      "Rarity": "Uncommon",
+      "Unique": false,
+      "Keywords": ["Plot"],
+      "Artist": "David Buisan",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "0.00",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/245.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -4277,9 +5743,10 @@
       "Unique": true,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/061.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/061.png",
+      "LowPrice": "0.34"
     },
     {
       "Set": "SEC",
@@ -4295,9 +5762,10 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "1.00",
       "FoilPrice": "0.00",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/129.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/129.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -4318,9 +5786,33 @@
       "Keywords": ["Grit"],
       "Artist": "Sandra Chlewińska",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/029.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/029.png",
+      "LowPrice": "0.34"
+    },
+    {
+      "Set": "SEC",
+      "Number": "217",
+      "Name": "Zenuas Shadow Fighter",
+      "Type": "Unit",
+      "Aspects": ["Cunning"],
+      "Traits": ["SEPARATIST", "VEHICLE", "FIGHTER"],
+      "Arenas": ["Space"],
+      "Cost": "2",
+      "Power": "2",
+      "HP": "2",
+      "FrontText": "Hidden (This unit can't be attacked if it was played this phase.)",
+      "DoubleSided": false,
+      "Rarity": "Common",
+      "Unique": false,
+      "Keywords": ["Hidden"],
+      "Artist": "Shane Molina",
+      "VariantType": "Normal",
+      "MarketPrice": "0.35",
+      "FoilPrice": "",
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/217.png",
+      "LowPrice": "0.20"
     },
     {
       "Set": "SEC",
@@ -4340,9 +5832,10 @@
       "Unique": true,
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
-      "MarketPrice": "0.00",
+      "MarketPrice": "2.96",
       "FoilPrice": "",
-      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/168.png"
+      "FrontArt": "https://cdn.swu-db.com/images/cards/SEC/168.png",
+      "LowPrice": "2.93"
     }
   ]
 }
