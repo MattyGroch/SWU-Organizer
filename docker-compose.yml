@@ -1,5 +1,27 @@
 services:
-  scanner-lite:
+  swu-organizer:
     build: .
-    ports:
-      - "5173:8080"   # host:container
+    container_name: swu-organizer
+    labels:
+      - "traefik.docker.network=proxy"
+      - "traefik.enable=true"
+      # Middleware: HTTP to HTTPS Redirect
+      - "traefik.http.middlewares.swu-organizer-https-redirect.redirectscheme.scheme=https"
+      # Router: Secure (HTTPS)
+      - "traefik.http.routers.swu-organizer-secure.entrypoints=https"
+      - "traefik.http.routers.swu-organizer-secure.rule=Host(`swu.mattyflix.com`)"
+      - "traefik.http.routers.swu-organizer-secure.service=swu-organizer"
+      - "traefik.http.routers.swu-organizer-secure.tls=true"
+      - "traefik.http.routers.swu-organizer-secure.tls.certresolver=http"
+      # Router: Insecure (HTTP)
+      - "traefik.http.routers.swu-organizer.entrypoints=http"
+      - "traefik.http.routers.swu-organizer.middlewares=swu-organizer-https-redirect"
+      - "traefik.http.routers.swu-organizer.rule=Host(`swu.mattyflix.com`)"
+      # Service: Port Configuration (Internal Container Port)
+      - "traefik.http.services.swu-organizer.loadbalancer.server.port=8080"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
