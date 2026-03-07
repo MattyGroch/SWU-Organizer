@@ -111,7 +111,7 @@
       "Keywords": ["Piloting", "Sentinel"],
       "Artist": "Facundo Moyano",
       "VariantType": "Normal",
-      "MarketPrice": "0.07",
+      "MarketPrice": "0.08",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/058.png",
       "LowPrice": "0.03"
@@ -157,7 +157,7 @@
       "Keywords": ["Piloting", "Sentinel"],
       "Artist": "Facundo Moyano",
       "VariantType": "Foil",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.49",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/556.png",
       "LowFoilPrice": "0.08"
@@ -226,7 +226,7 @@
       "Keywords": ["Restore"],
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/376.png",
       "LowPrice": "0.02"
@@ -249,7 +249,7 @@
       "Keywords": ["Restore"],
       "Artist": "French Carlomagno",
       "VariantType": "Foil",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.13",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/612.png",
       "LowFoilPrice": "0.07"
@@ -272,7 +272,7 @@
       "Keywords": ["Restore"],
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.33",
+      "MarketPrice": "0.31",
       "FoilPrice": "3.59",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/848.png",
       "LowFoilPrice": "0.12"
@@ -324,10 +324,10 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Showcase",
-      "MarketPrice": "36.70",
+      "MarketPrice": "37.09",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1012.png",
-      "LowPrice": "39.00"
+      "LowPrice": "42.00"
     },
     {
       "Set": "JTL",
@@ -402,7 +402,7 @@
       "Unique": true,
       "Artist": "Robynn Frauhn",
       "VariantType": "Showcase",
-      "MarketPrice": "23.69",
+      "MarketPrice": "23.57",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1003.png",
       "LowPrice": "24.99"
@@ -428,7 +428,7 @@
       "Unique": true,
       "Artist": "Robynn Frauhn",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.20",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/269.png",
       "LowPrice": "0.06"
@@ -480,7 +480,7 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Showcase",
-      "MarketPrice": "124.23",
+      "MarketPrice": "125.29",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1001.png",
       "LowPrice": "125.44"
@@ -506,10 +506,10 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.35",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/267.png",
-      "LowPrice": "0.10"
+      "LowPrice": "0.14"
     },
     {
       "Set": "JTL",
@@ -632,7 +632,7 @@
       "Keywords": ["Grit", "Keyword", "Restore", "Sentinel", "Shielded"],
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.89",
+      "MarketPrice": "0.88",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/309.png",
       "LowPrice": "0.39"
@@ -656,7 +656,7 @@
       "Keywords": ["Grit", "Keyword", "Restore", "Sentinel", "Shielded"],
       "Artist": "Ario Murti",
       "VariantType": "Foil",
-      "MarketPrice": "0.37",
+      "MarketPrice": "0.38",
       "FoilPrice": "2.90",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/545.png",
       "LowFoilPrice": "0.15"
@@ -680,7 +680,7 @@
       "Keywords": ["Grit", "Keyword", "Restore", "Sentinel", "Shielded"],
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.96",
+      "MarketPrice": "1.93",
       "FoilPrice": "10.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/781.png",
       "LowFoilPrice": "1.25"
@@ -703,7 +703,7 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "1.66",
+      "MarketPrice": "1.76",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/201.png",
       "LowPrice": "1.21"
@@ -726,7 +726,7 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Hyperspace",
-      "MarketPrice": "3.86",
+      "MarketPrice": "3.87",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/463.png",
       "LowPrice": "3.70"
@@ -749,7 +749,7 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Foil",
-      "MarketPrice": "1.41",
+      "MarketPrice": "1.33",
       "FoilPrice": "4.61",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/699.png",
       "LowFoilPrice": "0.81"
@@ -775,7 +775,7 @@
       "MarketPrice": "10.69",
       "FoilPrice": "8.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/935.png",
-      "LowFoilPrice": "7.26"
+      "LowFoilPrice": "7.64"
     },
     {
       "Set": "JTL",
@@ -810,7 +810,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.25",
+      "MarketPrice": "0.24",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/387.png",
       "LowPrice": "0.10"
@@ -829,7 +829,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Foil",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.15",
       "FoilPrice": "0.79",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/623.png",
       "LowFoilPrice": "0.04"
@@ -848,7 +848,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.46",
       "FoilPrice": "3.60",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/859.png",
       "LowFoilPrice": "0.10"
@@ -886,7 +886,7 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/384.png",
       "LowPrice": "0.04"
@@ -947,7 +947,7 @@
       "Unique": true,
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Normal",
-      "MarketPrice": "1.01",
+      "MarketPrice": "0.98",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/133.png",
       "LowPrice": "0.69"
@@ -970,7 +970,7 @@
       "Unique": true,
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Hyperspace",
-      "MarketPrice": "2.40",
+      "MarketPrice": "2.39",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/395.png",
       "LowPrice": "1.99"
@@ -1016,7 +1016,7 @@
       "Unique": true,
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "4.41",
+      "MarketPrice": "4.68",
       "FoilPrice": "10.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/867.png",
       "LowFoilPrice": "2.64"
@@ -1040,7 +1040,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Normal",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/197.png",
       "LowPrice": "0.03"
@@ -1088,7 +1088,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Foil",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.16",
       "FoilPrice": "3.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/695.png",
       "LowFoilPrice": "0.08"
@@ -1112,7 +1112,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.38",
+      "MarketPrice": "0.37",
       "FoilPrice": "9.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/931.png",
       "LowFoilPrice": "0.25"
@@ -1135,10 +1135,10 @@
       "Unique": true,
       "Artist": "Marko Fiedler",
       "VariantType": "Normal",
-      "MarketPrice": "1.58",
+      "MarketPrice": "1.76",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/041.png",
-      "LowPrice": "1.20"
+      "LowPrice": "1.10"
     },
     {
       "Set": "JTL",
@@ -1158,7 +1158,7 @@
       "Unique": true,
       "Artist": "Marko Fiedler",
       "VariantType": "Prestige",
-      "MarketPrice": "5.10",
+      "MarketPrice": "5.34",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1018.png",
       "LowPrice": "4.89"
@@ -1184,7 +1184,7 @@
       "MarketPrice": "9.91",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1054.png",
-      "LowFoilPrice": "9.59"
+      "LowFoilPrice": "9.01"
     },
     {
       "Set": "JTL",
@@ -1204,7 +1204,7 @@
       "Unique": true,
       "Artist": "Marko Fiedler",
       "VariantType": "Prestige Serialized",
-      "MarketPrice": "457.69",
+      "MarketPrice": "459.99",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1090.png",
       "LowFoilPrice": "455.39"
@@ -1227,7 +1227,7 @@
       "Unique": true,
       "Artist": "Marko Fiedler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.87",
+      "MarketPrice": "1.93",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/303.png",
       "LowPrice": "1.39"
@@ -1250,10 +1250,10 @@
       "Unique": true,
       "Artist": "Marko Fiedler",
       "VariantType": "Foil",
-      "MarketPrice": "1.45",
+      "MarketPrice": "1.44",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/539.png",
-      "LowFoilPrice": "1.19"
+      "LowFoilPrice": "1.25"
     },
     {
       "Set": "JTL",
@@ -1273,7 +1273,7 @@
       "Unique": true,
       "Artist": "Marko Fiedler",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "2.78",
+      "MarketPrice": "2.76",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/775.png",
       "LowFoilPrice": "1.96"
@@ -1330,7 +1330,7 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Foil",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.18",
       "FoilPrice": "5.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/589.png",
       "LowFoilPrice": "0.09"
@@ -1376,7 +1376,7 @@
       "Keywords": ["Grit"],
       "Artist": "Guillaume Ospital",
       "VariantType": "Normal",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.12",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/001.png",
       "LowPrice": "0.01"
@@ -1403,7 +1403,7 @@
       "Keywords": ["Grit"],
       "Artist": "Guillaume Ospital",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.30",
+      "MarketPrice": "0.29",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/263.png",
       "LowPrice": "0.10"
@@ -1430,10 +1430,10 @@
       "Keywords": ["Grit"],
       "Artist": "Guillaume Ospital",
       "VariantType": "Showcase",
-      "MarketPrice": "41.43",
+      "MarketPrice": "41.70",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/997.png",
-      "LowPrice": "45.57"
+      "LowPrice": "48.30"
     },
     {
       "Set": "JTL",
@@ -1522,7 +1522,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Arthur Mougne",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.41",
+      "MarketPrice": "0.40",
       "FoilPrice": "9.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/791.png",
       "LowFoilPrice": "0.08"
@@ -1541,7 +1541,7 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Normal",
-      "MarketPrice": "0.10",
+      "MarketPrice": "0.11",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/261.png",
       "LowPrice": "0.03"
@@ -1560,7 +1560,7 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/523.png",
       "LowPrice": "0.05"
@@ -1598,7 +1598,7 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.29",
+      "MarketPrice": "0.31",
       "FoilPrice": "9.89",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/995.png",
       "LowFoilPrice": "0.10"
@@ -1670,7 +1670,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Arthur Mougne",
       "VariantType": "Foil",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.18",
       "FoilPrice": "3.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/643.png",
       "LowFoilPrice": "0.02"
@@ -1697,7 +1697,7 @@
       "MarketPrice": "0.43",
       "FoilPrice": "9.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/879.png",
-      "LowFoilPrice": "0.24"
+      "LowFoilPrice": "0.20"
     },
     {
       "Set": "JTL",
@@ -1717,7 +1717,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.11",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/037.png",
       "LowPrice": "0.05"
@@ -1763,7 +1763,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "2.29",
+      "MarketPrice": "2.19",
       "FoilPrice": "19.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1051.png",
       "LowFoilPrice": "1.40"
@@ -1789,7 +1789,7 @@
       "MarketPrice": "100.92",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1087.png",
-      "LowFoilPrice": "91.23"
+      "LowFoilPrice": "84.97"
     },
     {
       "Set": "JTL",
@@ -1832,7 +1832,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Foil",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.78",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/535.png",
       "LowFoilPrice": "0.07"
@@ -1855,7 +1855,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.41",
+      "MarketPrice": "0.42",
       "FoilPrice": "4.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/771.png",
       "LowFoilPrice": "0.13"
@@ -1955,7 +1955,7 @@
       "Keywords": ["Grit", "Overwhelm", "Piloting"],
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/150.png",
       "LowPrice": "0.07"
@@ -1979,7 +1979,7 @@
       "Keywords": ["Grit", "Overwhelm", "Piloting"],
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.53",
+      "MarketPrice": "0.52",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/412.png",
       "LowPrice": "0.25"
@@ -2003,7 +2003,7 @@
       "Keywords": ["Grit", "Overwhelm", "Piloting"],
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Foil",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.21",
       "FoilPrice": "5.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/648.png",
       "LowFoilPrice": "0.09"
@@ -2027,7 +2027,7 @@
       "Keywords": ["Grit", "Overwhelm", "Piloting"],
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.80",
+      "MarketPrice": "0.79",
       "FoilPrice": "9.93",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/884.png",
       "LowFoilPrice": "0.57"
@@ -2050,7 +2050,7 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Prestige",
-      "MarketPrice": "4.38",
+      "MarketPrice": "4.43",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1033.png",
       "LowPrice": "3.00"
@@ -2073,10 +2073,10 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "7.33",
+      "MarketPrice": "7.28",
       "FoilPrice": "30.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1069.png",
-      "LowFoilPrice": "6.00"
+      "LowFoilPrice": "6.50"
     },
     {
       "Set": "JTL",
@@ -2099,7 +2099,7 @@
       "MarketPrice": "115.00",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1105.png",
-      "LowFoilPrice": "125.00"
+      "LowFoilPrice": "120.00"
     },
     {
       "Set": "JTL",
@@ -2119,10 +2119,10 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "1.43",
+      "MarketPrice": "1.73",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/147.png",
-      "LowPrice": "0.90"
+      "LowPrice": "0.85"
     },
     {
       "Set": "JTL",
@@ -2142,10 +2142,10 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.67",
+      "MarketPrice": "1.56",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/409.png",
-      "LowPrice": "0.97"
+      "LowPrice": "1.20"
     },
     {
       "Set": "JTL",
@@ -2165,10 +2165,10 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Foil",
-      "MarketPrice": "0.78",
+      "MarketPrice": "0.80",
       "FoilPrice": "5.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/645.png",
-      "LowFoilPrice": "0.57"
+      "LowFoilPrice": "0.50"
     },
     {
       "Set": "JTL",
@@ -2188,7 +2188,7 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "3.37",
+      "MarketPrice": "3.35",
       "FoilPrice": "25.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/881.png",
       "LowFoilPrice": "2.79"
@@ -2210,7 +2210,7 @@
       "Unique": false,
       "Artist": "Timo Peter",
       "VariantType": "Normal",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.13",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/202.png",
       "LowPrice": "0.03"
@@ -2276,10 +2276,10 @@
       "Unique": false,
       "Artist": "Timo Peter",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.40",
+      "MarketPrice": "0.39",
       "FoilPrice": "3.60",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/936.png",
-      "LowFoilPrice": "0.18"
+      "LowFoilPrice": "0.15"
     },
     {
       "Set": "JTL",
@@ -2298,7 +2298,7 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Normal",
-      "MarketPrice": "0.08",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/199.png",
       "LowPrice": "0.02"
@@ -2320,7 +2320,7 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/461.png",
       "LowPrice": "0.05"
@@ -2364,7 +2364,7 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.30",
+      "MarketPrice": "0.29",
       "FoilPrice": "3.63",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/933.png",
       "LowFoilPrice": "0.10"
@@ -2388,7 +2388,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Shane Molina",
       "VariantType": "Normal",
-      "MarketPrice": "1.46",
+      "MarketPrice": "1.43",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/096.png",
       "LowPrice": "1.00"
@@ -2436,10 +2436,10 @@
       "Keywords": ["Ambush"],
       "Artist": "Shane Molina",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "17.68",
+      "MarketPrice": "18.10",
       "FoilPrice": "35.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1062.png",
-      "LowFoilPrice": "20.00"
+      "LowFoilPrice": "19.00"
     },
     {
       "Set": "JTL",
@@ -2484,7 +2484,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Shane Molina",
       "VariantType": "Hyperspace",
-      "MarketPrice": "2.05",
+      "MarketPrice": "2.11",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/358.png",
       "LowPrice": "1.75"
@@ -2508,7 +2508,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Shane Molina",
       "VariantType": "Foil",
-      "MarketPrice": "1.49",
+      "MarketPrice": "1.51",
       "FoilPrice": "0.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/594.png",
       "LowFoilPrice": "1.00"
@@ -2532,7 +2532,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Shane Molina",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "3.03",
+      "MarketPrice": "3.05",
       "FoilPrice": "9.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/830.png",
       "LowFoilPrice": "2.59"
@@ -2580,7 +2580,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.24",
+      "MarketPrice": "0.26",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/477.png",
       "LowPrice": "0.10"
@@ -2628,7 +2628,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.60",
+      "MarketPrice": "0.63",
       "FoilPrice": "9.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/949.png",
       "LowFoilPrice": "0.49"
@@ -2654,10 +2654,10 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "2.83",
+      "MarketPrice": "2.86",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/009.png",
-      "LowPrice": "2.15"
+      "LowPrice": "2.44"
     },
     {
       "Set": "JTL",
@@ -2683,7 +2683,7 @@
       "MarketPrice": "147.85",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1005.png",
-      "LowPrice": "177.83"
+      "LowPrice": "176.39"
     },
     {
       "Set": "JTL",
@@ -2704,7 +2704,7 @@
       "Keywords": ["Piloting", "Shielded"],
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.48",
+      "MarketPrice": "0.43",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/189.png",
       "LowPrice": "0.25"
@@ -2754,7 +2754,7 @@
       "Keywords": ["Piloting", "Shielded"],
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.35",
+      "MarketPrice": "1.34",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/451.png",
       "LowPrice": "0.68"
@@ -2826,7 +2826,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.50",
+      "MarketPrice": "0.51",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/187.png",
       "LowPrice": "0.39"
@@ -2850,7 +2850,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.79",
+      "MarketPrice": "0.74",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/449.png",
       "LowPrice": "0.28"
@@ -2874,7 +2874,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Foil",
-      "MarketPrice": "0.24",
+      "MarketPrice": "0.22",
       "FoilPrice": "7.67",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/685.png",
       "LowFoilPrice": "0.07"
@@ -2898,7 +2898,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.55",
+      "MarketPrice": "1.49",
       "FoilPrice": "15.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/921.png",
       "LowFoilPrice": "0.25"
@@ -2944,7 +2944,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/369.png",
       "LowPrice": "0.04"
@@ -2967,7 +2967,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "JB Casacop",
       "VariantType": "Foil",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/605.png",
       "LowFoilPrice": "0.01"
@@ -3013,7 +3013,7 @@
       "Keywords": ["Restore"],
       "Artist": "Ario Anindito",
       "VariantType": "Normal",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/071.png",
       "LowPrice": "0.05"
@@ -3059,7 +3059,7 @@
       "Keywords": ["Restore"],
       "Artist": "Ario Anindito",
       "VariantType": "Foil",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.13",
       "FoilPrice": "0.49",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/569.png",
       "LowFoilPrice": "0.04"
@@ -3082,7 +3082,7 @@
       "Keywords": ["Restore"],
       "Artist": "Ario Anindito",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.88",
+      "MarketPrice": "0.87",
       "FoilPrice": "3.60",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/805.png",
       "LowFoilPrice": "0.50"
@@ -3183,7 +3183,7 @@
       "Unique": true,
       "Artist": "Guillaume Ospital",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.21",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/272.png",
       "LowPrice": "0.05"
@@ -3252,7 +3252,7 @@
       "Unique": true,
       "Artist": "Hoan Nguyen",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.85",
+      "MarketPrice": "0.86",
       "FoilPrice": "9.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/822.png",
       "LowFoilPrice": "0.46"
@@ -3324,7 +3324,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Afif Khaled",
       "VariantType": "Foil",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.17",
       "FoilPrice": "1.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/659.png",
       "LowFoilPrice": "0.05"
@@ -3348,7 +3348,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Afif Khaled",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.66",
+      "MarketPrice": "0.67",
       "FoilPrice": "9.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/895.png",
       "LowFoilPrice": "0.47"
@@ -3372,7 +3372,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.32",
+      "MarketPrice": "0.36",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/048.png",
       "LowPrice": "0.10"
@@ -3396,7 +3396,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.62",
+      "MarketPrice": "0.61",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/310.png",
       "LowPrice": "0.20"
@@ -3420,7 +3420,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Ario Murti",
       "VariantType": "Foil",
-      "MarketPrice": "0.39",
+      "MarketPrice": "0.38",
       "FoilPrice": "2.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/546.png",
       "LowFoilPrice": "0.10"
@@ -3444,7 +3444,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.10",
+      "MarketPrice": "1.13",
       "FoilPrice": "5.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/782.png",
       "LowFoilPrice": "0.99"
@@ -3482,7 +3482,7 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.41",
+      "MarketPrice": "0.45",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/457.png",
       "LowPrice": "0.25"
@@ -3501,7 +3501,7 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Foil",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.19",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/693.png",
       "LowFoilPrice": "0.05"
@@ -3520,7 +3520,7 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.60",
+      "MarketPrice": "0.62",
       "FoilPrice": "14.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/929.png",
       "LowFoilPrice": "0.20"
@@ -3543,10 +3543,10 @@
       "Unique": true,
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.28",
+      "MarketPrice": "0.29",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/164.png",
-      "LowPrice": "0.20"
+      "LowPrice": "0.15"
     },
     {
       "Set": "JTL",
@@ -3612,7 +3612,7 @@
       "Unique": true,
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.25",
+      "MarketPrice": "1.27",
       "FoilPrice": "9.80",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/898.png",
       "LowFoilPrice": "0.81"
@@ -3639,7 +3639,7 @@
       "MarketPrice": "2.74",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/103.png",
-      "LowPrice": "2.33"
+      "LowPrice": "2.29"
     },
     {
       "Set": "JTL",
@@ -3660,7 +3660,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Aitor Prieto",
       "VariantType": "Hyperspace",
-      "MarketPrice": "3.20",
+      "MarketPrice": "3.22",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/365.png",
       "LowPrice": "2.86"
@@ -3684,10 +3684,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Aitor Prieto",
       "VariantType": "Foil",
-      "MarketPrice": "0.41",
+      "MarketPrice": "0.56",
       "FoilPrice": "9.79",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/601.png",
-      "LowFoilPrice": "0.27"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -3708,7 +3708,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Aitor Prieto",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "3.32",
+      "MarketPrice": "3.38",
       "FoilPrice": "29.91",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/837.png",
       "LowFoilPrice": "2.99"
@@ -3731,7 +3731,7 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/039.png",
       "LowPrice": "0.10"
@@ -3754,7 +3754,7 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Prestige",
-      "MarketPrice": "5.20",
+      "MarketPrice": "5.39",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1017.png",
       "LowPrice": "3.70"
@@ -3777,7 +3777,7 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "10.64",
+      "MarketPrice": "10.55",
       "FoilPrice": "30.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1053.png",
       "LowFoilPrice": "9.00"
@@ -3869,7 +3869,7 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.11",
+      "MarketPrice": "1.10",
       "FoilPrice": "9.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/773.png",
       "LowFoilPrice": "1.00"
@@ -3888,7 +3888,7 @@
       "Unique": false,
       "Artist": "Tyler Edlin",
       "VariantType": "Normal",
-      "MarketPrice": "0.05",
+      "MarketPrice": "0.04",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/029.png",
       "LowPrice": "0.03"
@@ -4011,7 +4011,7 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Foil",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.11",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/565.png",
       "LowFoilPrice": "0.05"
@@ -4055,7 +4055,7 @@
       "Unique": false,
       "Artist": "Timo Peter",
       "VariantType": "Normal",
-      "MarketPrice": "0.38",
+      "MarketPrice": "0.36",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/115.png",
       "LowPrice": "0.18"
@@ -4077,10 +4077,10 @@
       "Unique": false,
       "Artist": "Timo Peter",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.99",
+      "MarketPrice": "1.03",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/377.png",
-      "LowPrice": "0.90"
+      "LowPrice": "0.55"
     },
     {
       "Set": "JTL",
@@ -4099,10 +4099,10 @@
       "Unique": false,
       "Artist": "Timo Peter",
       "VariantType": "Foil",
-      "MarketPrice": "0.24",
+      "MarketPrice": "0.25",
       "FoilPrice": "0.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/613.png",
-      "LowFoilPrice": "0.08"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -4124,7 +4124,7 @@
       "MarketPrice": "1.36",
       "FoilPrice": "14.88",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/849.png",
-      "LowFoilPrice": "1.25"
+      "LowFoilPrice": "1.20"
     },
     {
       "Set": "JTL",
@@ -4232,7 +4232,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "0.27",
+      "MarketPrice": "0.26",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/074.png",
       "LowPrice": "0.10"
@@ -4289,7 +4289,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.55",
+      "MarketPrice": "1.61",
       "FoilPrice": "15.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/808.png",
       "LowFoilPrice": "1.49"
@@ -4308,7 +4308,7 @@
       "Unique": false,
       "Artist": "Adrien Girod",
       "VariantType": "Normal",
-      "MarketPrice": "0.38",
+      "MarketPrice": "0.36",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/021.png",
       "LowPrice": "0.20"
@@ -4327,7 +4327,7 @@
       "Unique": false,
       "Artist": "Adrien Girod",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.63",
+      "MarketPrice": "1.64",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/283.png",
       "LowPrice": "1.20"
@@ -4346,10 +4346,10 @@
       "Unique": false,
       "Artist": "Adrien Girod",
       "VariantType": "Foil",
-      "MarketPrice": "0.38",
+      "MarketPrice": "0.36",
       "FoilPrice": "3.92",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/525.png",
-      "LowFoilPrice": "0.07"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -4365,10 +4365,10 @@
       "Unique": false,
       "Artist": "Adrien Girod",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "9.18",
+      "MarketPrice": "8.92",
       "FoilPrice": "20.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/761.png",
-      "LowFoilPrice": "7.99"
+      "LowFoilPrice": "8.00"
     },
     {
       "Set": "JTL",
@@ -4384,7 +4384,7 @@
       "Unique": false,
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.26",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/235.png",
       "LowPrice": "0.14"
@@ -4403,7 +4403,7 @@
       "Unique": false,
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.50",
+      "MarketPrice": "0.55",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/497.png",
       "LowPrice": "0.34"
@@ -4422,7 +4422,7 @@
       "Unique": false,
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Foil",
-      "MarketPrice": "0.32",
+      "MarketPrice": "0.29",
       "FoilPrice": "4.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/733.png",
       "LowFoilPrice": "0.10"
@@ -4441,10 +4441,10 @@
       "Unique": false,
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "2.06",
+      "MarketPrice": "1.98",
       "FoilPrice": "16.75",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/969.png",
-      "LowFoilPrice": "1.05"
+      "LowFoilPrice": "1.12"
     },
     {
       "Set": "JTL",
@@ -4482,7 +4482,7 @@
       "MarketPrice": "0.19",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/467.png",
-      "LowPrice": "0.10"
+      "LowPrice": "0.08"
     },
     {
       "Set": "JTL",
@@ -4517,7 +4517,7 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.49",
+      "MarketPrice": "0.47",
       "FoilPrice": "9.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/939.png",
       "LowFoilPrice": "0.30"
@@ -4563,7 +4563,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Marc Escachx",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.30",
+      "MarketPrice": "0.33",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/478.png",
       "LowPrice": "0.08"
@@ -4701,10 +4701,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Space Goose",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.46",
+      "MarketPrice": "0.47",
       "FoilPrice": "3.60",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/918.png",
-      "LowFoilPrice": "0.29"
+      "LowFoilPrice": "0.35"
     },
     {
       "Set": "JTL",
@@ -4846,7 +4846,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Francois Cannels",
       "VariantType": "Foil",
-      "MarketPrice": "0.11",
+      "MarketPrice": "0.09",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/756.png",
       "LowFoilPrice": "0.04"
@@ -4913,7 +4913,7 @@
       "Unique": false,
       "Artist": "Erik Frobom",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.52",
+      "MarketPrice": "0.54",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/321.png",
       "LowPrice": "0.23"
@@ -4957,7 +4957,7 @@
       "Unique": false,
       "Artist": "Erik Frobom",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.65",
+      "MarketPrice": "0.66",
       "FoilPrice": "5.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/793.png",
       "LowFoilPrice": "0.50"
@@ -5052,7 +5052,7 @@
       "MarketPrice": "0.22",
       "FoilPrice": "9.89",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/959.png",
-      "LowFoilPrice": "0.04"
+      "LowFoilPrice": "0.03"
     },
     {
       "Set": "JTL",
@@ -5073,10 +5073,10 @@
       "Keywords": ["Restore"],
       "Artist": "French Carlomagno",
       "VariantType": "Normal",
-      "MarketPrice": "0.30",
+      "MarketPrice": "0.29",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/038.png",
-      "LowPrice": "0.10"
+      "LowPrice": "0.07"
     },
     {
       "Set": "JTL",
@@ -5097,7 +5097,7 @@
       "Keywords": ["Restore"],
       "Artist": "French Carlomagno",
       "VariantType": "Prestige",
-      "MarketPrice": "2.41",
+      "MarketPrice": "2.48",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1016.png",
       "LowPrice": "1.99"
@@ -5121,7 +5121,7 @@
       "Keywords": ["Restore"],
       "Artist": "French Carlomagno",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "3.63",
+      "MarketPrice": "3.70",
       "FoilPrice": "30.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1052.png",
       "LowFoilPrice": "3.25"
@@ -5148,7 +5148,7 @@
       "MarketPrice": "125.00",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1088.png",
-      "LowFoilPrice": "50.00"
+      "LowFoilPrice": "99.00"
     },
     {
       "Set": "JTL",
@@ -5169,7 +5169,7 @@
       "Keywords": ["Restore"],
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.84",
+      "MarketPrice": "0.85",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/300.png",
       "LowPrice": "0.40"
@@ -5193,7 +5193,7 @@
       "Keywords": ["Restore"],
       "Artist": "French Carlomagno",
       "VariantType": "Foil",
-      "MarketPrice": "0.30",
+      "MarketPrice": "0.29",
       "FoilPrice": "2.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/536.png",
       "LowFoilPrice": "0.05"
@@ -5217,7 +5217,7 @@
       "Keywords": ["Restore"],
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.43",
+      "MarketPrice": "1.45",
       "FoilPrice": "15.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/772.png",
       "LowFoilPrice": "1.30"
@@ -5255,7 +5255,7 @@
       "Unique": false,
       "Artist": "Erik Frobom",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.27",
+      "MarketPrice": "0.26",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/338.png",
       "LowPrice": "0.17"
@@ -5274,7 +5274,7 @@
       "Unique": false,
       "Artist": "Erik Frobom",
       "VariantType": "Foil",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.15",
       "FoilPrice": "0.79",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/574.png",
       "LowFoilPrice": "0.02"
@@ -5381,7 +5381,7 @@
       "Unique": false,
       "Artist": "Thomas Wievegg",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.49",
+      "MarketPrice": "0.50",
       "FoilPrice": "3.60",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/892.png",
       "LowFoilPrice": "0.20"
@@ -5403,7 +5403,7 @@
       "Unique": false,
       "Artist": "Kursad Karatas",
       "VariantType": "Normal",
-      "MarketPrice": "0.07",
+      "MarketPrice": "0.08",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/052.png",
       "LowPrice": "0.02"
@@ -5447,7 +5447,7 @@
       "Unique": false,
       "Artist": "Kursad Karatas",
       "VariantType": "Foil",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/550.png",
       "LowFoilPrice": "0.05"
@@ -5515,7 +5515,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.15",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/458.png",
       "LowPrice": "0.05"
@@ -5564,7 +5564,7 @@
       "MarketPrice": "0.27",
       "FoilPrice": "5.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/930.png",
-      "LowFoilPrice": "0.14"
+      "LowFoilPrice": "0.10"
     },
     {
       "Set": "JTL",
@@ -5613,10 +5613,10 @@
       "Unique": true,
       "Artist": "Borja Pindado",
       "VariantType": "Showcase",
-      "MarketPrice": "129.80",
+      "MarketPrice": "131.00",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1002.png",
-      "LowPrice": "154.00"
+      "LowPrice": "151.22"
     },
     {
       "Set": "JTL",
@@ -5637,10 +5637,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Normal",
-      "MarketPrice": "12.10",
+      "MarketPrice": "12.18",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/142.png",
-      "LowPrice": "11.35"
+      "LowPrice": "11.91"
     },
     {
       "Set": "JTL",
@@ -5687,10 +5687,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Hyperspace",
-      "MarketPrice": "13.25",
+      "MarketPrice": "13.73",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/404.png",
-      "LowPrice": "12.00"
+      "LowPrice": "13.35"
     },
     {
       "Set": "JTL",
@@ -5711,10 +5711,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Foil",
-      "MarketPrice": "10.47",
+      "MarketPrice": "10.56",
       "FoilPrice": "49.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/640.png",
-      "LowFoilPrice": "9.25"
+      "LowFoilPrice": "6.68"
     },
     {
       "Set": "JTL",
@@ -5735,7 +5735,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "17.47",
+      "MarketPrice": "17.16",
       "FoilPrice": "60.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/876.png",
       "LowFoilPrice": "14.01"
@@ -5754,10 +5754,10 @@
       "Unique": false,
       "Artist": "Marko Fiedler",
       "VariantType": "Normal",
-      "MarketPrice": "2.09",
+      "MarketPrice": "2.13",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/024.png",
-      "LowPrice": "1.15"
+      "LowPrice": "1.18"
     },
     {
       "Set": "JTL",
@@ -5773,10 +5773,10 @@
       "Unique": false,
       "Artist": "Marko Fiedler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "6.32",
+      "MarketPrice": "5.54",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/286.png",
-      "LowPrice": "4.00"
+      "LowPrice": "4.05"
     },
     {
       "Set": "JTL",
@@ -5792,7 +5792,7 @@
       "Unique": false,
       "Artist": "Marko Fiedler",
       "VariantType": "Foil",
-      "MarketPrice": "1.24",
+      "MarketPrice": "1.31",
       "FoilPrice": "5.87",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/526.png",
       "LowFoilPrice": "0.58"
@@ -5814,7 +5814,7 @@
       "MarketPrice": "29.11",
       "FoilPrice": "21.90",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/762.png",
-      "LowFoilPrice": "26.68"
+      "LowFoilPrice": "26.48"
     },
     {
       "Set": "JTL",
@@ -5855,10 +5855,10 @@
       "Unique": false,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.25",
+      "MarketPrice": "0.26",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/479.png",
-      "LowPrice": "0.09"
+      "LowPrice": "0.10"
     },
     {
       "Set": "JTL",
@@ -5918,7 +5918,7 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.96",
+      "MarketPrice": "0.95",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/260.png",
       "LowPrice": "0.50"
@@ -5975,10 +5975,10 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "3.38",
+      "MarketPrice": "3.29",
       "FoilPrice": "30.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/994.png",
-      "LowFoilPrice": "2.42"
+      "LowFoilPrice": "2.81"
     },
     {
       "Set": "JTL",
@@ -5998,7 +5998,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
-      "MarketPrice": "0.08",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/138.png",
       "LowPrice": "0.03"
@@ -6044,7 +6044,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Fernando Correa",
       "VariantType": "Foil",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.14",
       "FoilPrice": "3.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/636.png",
       "LowFoilPrice": "0.05"
@@ -6167,7 +6167,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.10",
+      "MarketPrice": "0.11",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/139.png",
       "LowPrice": "0.03"
@@ -6191,7 +6191,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Reno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.43",
+      "MarketPrice": "0.42",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/401.png",
       "LowPrice": "0.20"
@@ -6215,10 +6215,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Reno",
       "VariantType": "Foil",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.20",
       "FoilPrice": "2.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/637.png",
-      "LowFoilPrice": "0.08"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -6242,7 +6242,7 @@
       "MarketPrice": "0.62",
       "FoilPrice": "9.92",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/873.png",
-      "LowFoilPrice": "0.47"
+      "LowFoilPrice": "0.45"
     },
     {
       "Set": "JTL",
@@ -6305,7 +6305,7 @@
       "Unique": false,
       "Artist": "Nabetse Zitro",
       "VariantType": "Foil",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.12",
       "FoilPrice": "1.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/558.png",
       "LowFoilPrice": "0.04"
@@ -6442,7 +6442,7 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Prestige",
-      "MarketPrice": "11.91",
+      "MarketPrice": "11.88",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1032.png",
       "LowPrice": "11.15"
@@ -6465,7 +6465,7 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "18.03",
+      "MarketPrice": "18.10",
       "FoilPrice": "99.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1068.png",
       "LowFoilPrice": "16.66"
@@ -6488,7 +6488,7 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Prestige Serialized",
-      "MarketPrice": "199.99",
+      "MarketPrice": "200.00",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1104.png",
       "LowFoilPrice": "199.99"
@@ -6511,10 +6511,10 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Normal",
-      "MarketPrice": "8.20",
+      "MarketPrice": "8.10",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/143.png",
-      "LowPrice": "6.37"
+      "LowPrice": "7.75"
     },
     {
       "Set": "JTL",
@@ -6534,7 +6534,7 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace",
-      "MarketPrice": "8.41",
+      "MarketPrice": "8.51",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/405.png",
       "LowPrice": "8.00"
@@ -6557,10 +6557,10 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Foil",
-      "MarketPrice": "7.65",
+      "MarketPrice": "7.53",
       "FoilPrice": "15.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/641.png",
-      "LowFoilPrice": "5.50"
+      "LowFoilPrice": "4.93"
     },
     {
       "Set": "JTL",
@@ -6580,10 +6580,10 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "10.22",
+      "MarketPrice": "10.09",
       "FoilPrice": "59.52",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/877.png",
-      "LowFoilPrice": "9.04"
+      "LowFoilPrice": "9.10"
     },
     {
       "Set": "JTL",
@@ -6687,7 +6687,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "0.09",
+      "MarketPrice": "0.08",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/078.png",
       "LowPrice": "0.03"
@@ -6706,7 +6706,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.22",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/340.png",
       "LowPrice": "0.10"
@@ -6725,7 +6725,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Foil",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.13",
       "FoilPrice": "1.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/576.png",
       "LowFoilPrice": "0.04"
@@ -6747,7 +6747,7 @@
       "MarketPrice": "0.59",
       "FoilPrice": "3.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/812.png",
-      "LowFoilPrice": "0.39"
+      "LowFoilPrice": "0.40"
     },
     {
       "Set": "JTL",
@@ -6768,7 +6768,7 @@
       "Keywords": ["Shielded"],
       "Artist": "Afif Khaled",
       "VariantType": "Normal",
-      "MarketPrice": "0.32",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/032.png",
       "LowPrice": "0.15"
@@ -6792,10 +6792,10 @@
       "Keywords": ["Shielded"],
       "Artist": "Afif Khaled",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.80",
+      "MarketPrice": "0.81",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/294.png",
-      "LowPrice": "0.60"
+      "LowPrice": "0.50"
     },
     {
       "Set": "JTL",
@@ -6816,7 +6816,7 @@
       "Keywords": ["Shielded"],
       "Artist": "Afif Khaled",
       "VariantType": "Foil",
-      "MarketPrice": "0.41",
+      "MarketPrice": "0.40",
       "FoilPrice": "1.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/530.png",
       "LowFoilPrice": "0.10"
@@ -6840,7 +6840,7 @@
       "Keywords": ["Shielded"],
       "Artist": "Afif Khaled",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.31",
+      "MarketPrice": "1.32",
       "FoilPrice": "9.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/766.png",
       "LowFoilPrice": "1.15"
@@ -6996,7 +6996,7 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.41",
+      "MarketPrice": "0.42",
       "FoilPrice": "9.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/857.png",
       "LowFoilPrice": "0.30"
@@ -7062,7 +7062,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Foil",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.23",
       "FoilPrice": "2.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/614.png",
       "LowFoilPrice": "0.07"
@@ -7248,7 +7248,7 @@
       "Unique": false,
       "Artist": "Eslam Aboshady",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.89",
+      "MarketPrice": "0.90",
       "FoilPrice": "3.45",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/896.png",
       "LowFoilPrice": "0.55"
@@ -7340,10 +7340,10 @@
       "Keywords": ["Ambush"],
       "Artist": "David Buisan",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.28",
+      "MarketPrice": "1.25",
       "FoilPrice": "3.49",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/846.png",
-      "LowFoilPrice": "0.99"
+      "LowFoilPrice": "0.50"
     },
     {
       "Set": "JTL",
@@ -7447,7 +7447,7 @@
       "Unique": false,
       "Artist": "French Carlomagno",
       "VariantType": "Normal",
-      "MarketPrice": "0.34",
+      "MarketPrice": "0.32",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/126.png",
       "LowPrice": "0.07"
@@ -7488,7 +7488,7 @@
       "MarketPrice": "0.34",
       "FoilPrice": "5.89",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/624.png",
-      "LowFoilPrice": "0.10"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -7504,10 +7504,10 @@
       "Unique": false,
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.86",
+      "MarketPrice": "1.82",
       "FoilPrice": "9.89",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/860.png",
-      "LowFoilPrice": "1.53"
+      "LowFoilPrice": "1.50"
     },
     {
       "Set": "JTL",
@@ -7580,7 +7580,7 @@
       "Unique": false,
       "Artist": "Agus Setiawan",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.46",
+      "MarketPrice": "0.44",
       "FoilPrice": "3.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/964.png",
       "LowFoilPrice": "0.16"
@@ -7680,7 +7680,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "French Carlomagno",
       "VariantType": "Normal",
-      "MarketPrice": "1.05",
+      "MarketPrice": "1.07",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/090.png",
       "LowPrice": "0.25"
@@ -7704,10 +7704,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "French Carlomagno",
       "VariantType": "Prestige",
-      "MarketPrice": "2.88",
+      "MarketPrice": "3.03",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1025.png",
-      "LowPrice": "2.41"
+      "LowPrice": "0.01"
     },
     {
       "Set": "JTL",
@@ -7728,10 +7728,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "French Carlomagno",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "7.37",
+      "MarketPrice": "7.29",
       "FoilPrice": "80.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1061.png",
-      "LowFoilPrice": "6.68"
+      "LowFoilPrice": "6.18"
     },
     {
       "Set": "JTL",
@@ -7776,7 +7776,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.12",
+      "MarketPrice": "1.16",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/352.png",
       "LowPrice": "0.80"
@@ -7800,7 +7800,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "French Carlomagno",
       "VariantType": "Foil",
-      "MarketPrice": "1.07",
+      "MarketPrice": "1.09",
       "FoilPrice": "39.72",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/588.png",
       "LowFoilPrice": "0.74"
@@ -7824,10 +7824,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "2.08",
+      "MarketPrice": "2.09",
       "FoilPrice": "35.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/824.png",
-      "LowFoilPrice": "1.60"
+      "LowFoilPrice": "1.61"
     },
     {
       "Set": "JTL",
@@ -7923,10 +7923,10 @@
       "Unique": true,
       "Artist": "Shane Molina",
       "VariantType": "Prestige",
-      "MarketPrice": "4.40",
+      "MarketPrice": "4.34",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1046.png",
-      "LowPrice": "3.30"
+      "LowPrice": "3.40"
     },
     {
       "Set": "JTL",
@@ -7946,10 +7946,10 @@
       "Unique": true,
       "Artist": "Shane Molina",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "9.72",
+      "MarketPrice": "9.80",
       "FoilPrice": "74.69",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1082.png",
-      "LowFoilPrice": "7.86"
+      "LowFoilPrice": "8.50"
     },
     {
       "Set": "JTL",
@@ -7969,10 +7969,10 @@
       "Unique": true,
       "Artist": "Shane Molina",
       "VariantType": "Prestige Serialized",
-      "MarketPrice": "299.00",
+      "MarketPrice": "286.00",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1118.png",
-      "LowFoilPrice": "299.00"
+      "LowFoilPrice": "273.00"
     },
     {
       "Set": "JTL",
@@ -7995,7 +7995,7 @@
       "MarketPrice": "0.85",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/240.png",
-      "LowPrice": "0.48"
+      "LowPrice": "0.49"
     },
     {
       "Set": "JTL",
@@ -8015,10 +8015,10 @@
       "Unique": true,
       "Artist": "Shane Molina",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.38",
+      "MarketPrice": "1.39",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/502.png",
-      "LowPrice": "0.65"
+      "LowPrice": "0.68"
     },
     {
       "Set": "JTL",
@@ -8038,7 +8038,7 @@
       "Unique": true,
       "Artist": "Shane Molina",
       "VariantType": "Foil",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.18",
       "FoilPrice": "7.65",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/738.png",
       "LowFoilPrice": "0.08"
@@ -8061,7 +8061,7 @@
       "Unique": true,
       "Artist": "Shane Molina",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "2.62",
+      "MarketPrice": "2.64",
       "FoilPrice": "211.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/974.png",
       "LowFoilPrice": "2.44"
@@ -8099,7 +8099,7 @@
       "Unique": false,
       "Artist": "Aitor Prieto",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/435.png",
       "LowPrice": "0.05"
@@ -8118,7 +8118,7 @@
       "Unique": false,
       "Artist": "Aitor Prieto",
       "VariantType": "Foil",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/671.png",
       "LowFoilPrice": "0.04"
@@ -8161,10 +8161,10 @@
       "Keywords": ["Ambush"],
       "Artist": "Amad Mir",
       "VariantType": "Prestige",
-      "MarketPrice": "1.65",
+      "MarketPrice": "1.66",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1041.png",
-      "LowPrice": "1.00"
+      "LowPrice": "1.25"
     },
     {
       "Set": "JTL",
@@ -8185,7 +8185,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Amad Mir",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "4.19",
+      "MarketPrice": "4.22",
       "FoilPrice": "25.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1077.png",
       "LowFoilPrice": "3.76"
@@ -8233,7 +8233,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/198.png",
       "LowPrice": "0.05"
@@ -8257,7 +8257,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.38",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/460.png",
       "LowPrice": "0.10"
@@ -8327,7 +8327,7 @@
       "Unique": false,
       "Artist": "Shane Molina",
       "VariantType": "Normal",
-      "MarketPrice": "0.11",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/132.png",
       "LowPrice": "0.02"
@@ -8439,10 +8439,10 @@
       "Keywords": ["Raid"],
       "Artist": "Shane Molina",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.34",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/343.png",
-      "LowPrice": "0.12"
+      "LowPrice": "0.10"
     },
     {
       "Set": "JTL",
@@ -8485,7 +8485,7 @@
       "Keywords": ["Raid"],
       "Artist": "Shane Molina",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.74",
+      "MarketPrice": "0.73",
       "FoilPrice": "4.31",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/815.png",
       "LowFoilPrice": "0.54"
@@ -8508,7 +8508,7 @@
       "Keywords": ["Raid"],
       "Artist": "French Carlomagno",
       "VariantType": "Normal",
-      "MarketPrice": "0.09",
+      "MarketPrice": "0.08",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/257.png",
       "LowPrice": "0.03"
@@ -8554,7 +8554,7 @@
       "Keywords": ["Raid"],
       "Artist": "French Carlomagno",
       "VariantType": "Foil",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.13",
       "FoilPrice": "1.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/755.png",
       "LowFoilPrice": "0.05"
@@ -8646,7 +8646,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Foil",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/538.png",
       "LowFoilPrice": "0.06"
@@ -8729,7 +8729,7 @@
       "MarketPrice": "0.10",
       "FoilPrice": "1.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/704.png",
-      "LowFoilPrice": "0.03"
+      "LowFoilPrice": "0.01"
     },
     {
       "Set": "JTL",
@@ -8764,7 +8764,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "0.07",
+      "MarketPrice": "0.06",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/129.png",
       "LowPrice": "0.02"
@@ -8845,7 +8845,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.10",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/148.png",
       "LowPrice": "0.03"
@@ -8940,7 +8940,7 @@
       "Unique": true,
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "0.25",
+      "MarketPrice": "0.27",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/117.png",
       "LowPrice": "0.10"
@@ -8963,7 +8963,7 @@
       "Unique": true,
       "Artist": "Johnny Morrow",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.46",
+      "MarketPrice": "0.45",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/379.png",
       "LowPrice": "0.15"
@@ -8986,7 +8986,7 @@
       "Unique": true,
       "Artist": "Johnny Morrow",
       "VariantType": "Foil",
-      "MarketPrice": "0.30",
+      "MarketPrice": "0.29",
       "FoilPrice": "1.91",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/615.png",
       "LowFoilPrice": "0.10"
@@ -9012,7 +9012,7 @@
       "MarketPrice": "0.89",
       "FoilPrice": "4.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/851.png",
-      "LowFoilPrice": "0.63"
+      "LowFoilPrice": "0.60"
     },
     {
       "Set": "JTL",
@@ -9105,7 +9105,7 @@
       "Keywords": ["Raid"],
       "Artist": "David Buisan",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.27",
+      "MarketPrice": "0.28",
       "FoilPrice": "9.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/868.png",
       "LowFoilPrice": "0.16"
@@ -9151,7 +9151,7 @@
       "Unique": true,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Prestige",
-      "MarketPrice": "1.13",
+      "MarketPrice": "1.07",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1021.png",
       "LowPrice": "0.25"
@@ -9174,7 +9174,7 @@
       "Unique": true,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "2.97",
+      "MarketPrice": "3.00",
       "FoilPrice": "20.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1057.png",
       "LowFoilPrice": "2.85"
@@ -9220,7 +9220,7 @@
       "Unique": true,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.23",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/316.png",
       "LowPrice": "0.05"
@@ -9243,7 +9243,7 @@
       "Unique": true,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Foil",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.17",
       "FoilPrice": "1.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/552.png",
       "LowFoilPrice": "0.05"
@@ -9347,7 +9347,7 @@
       "MarketPrice": "117.90",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/998.png",
-      "LowPrice": "120.00"
+      "LowPrice": "117.90"
     },
     {
       "Set": "JTL",
@@ -9382,7 +9382,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/335.png",
       "LowPrice": "0.07"
@@ -9401,7 +9401,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Foil",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.16",
       "FoilPrice": "2.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/571.png",
       "LowFoilPrice": "0.08"
@@ -9464,7 +9464,7 @@
       "Unique": false,
       "Artist": "Salomé Goré",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.33",
+      "MarketPrice": "0.34",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/480.png",
       "LowPrice": "0.22"
@@ -9489,7 +9489,7 @@
       "MarketPrice": "0.17",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/716.png",
-      "LowFoilPrice": "0.07"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -9508,10 +9508,10 @@
       "Unique": false,
       "Artist": "Salomé Goré",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.74",
+      "MarketPrice": "0.73",
       "FoilPrice": "3.75",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/952.png",
-      "LowFoilPrice": "0.25"
+      "LowFoilPrice": "0.20"
     },
     {
       "Set": "JTL",
@@ -9534,7 +9534,7 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "2.46",
+      "MarketPrice": "2.35",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/017.png",
       "LowPrice": "1.86"
@@ -9560,7 +9560,7 @@
       "Unique": true,
       "Artist": "David Buisan",
       "VariantType": "Showcase",
-      "MarketPrice": "77.10",
+      "MarketPrice": "74.58",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1013.png",
       "LowPrice": "69.99"
@@ -9584,7 +9584,7 @@
       "Keywords": ["Ambush", "Piloting"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Normal",
-      "MarketPrice": "7.90",
+      "MarketPrice": "7.92",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/203.png",
       "LowPrice": "6.75"
@@ -9634,10 +9634,10 @@
       "Keywords": ["Ambush", "Piloting"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "7.64",
+      "MarketPrice": "7.72",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/465.png",
-      "LowPrice": "6.61"
+      "LowPrice": "7.10"
     },
     {
       "Set": "JTL",
@@ -9658,7 +9658,7 @@
       "Keywords": ["Ambush", "Piloting"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Foil",
-      "MarketPrice": "5.83",
+      "MarketPrice": "5.95",
       "FoilPrice": "15.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/701.png",
       "LowFoilPrice": "5.00"
@@ -9682,7 +9682,7 @@
       "Keywords": ["Ambush", "Piloting"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "7.58",
+      "MarketPrice": "7.81",
       "FoilPrice": "42.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/937.png",
       "LowFoilPrice": "7.20"
@@ -9723,7 +9723,7 @@
       "MarketPrice": "0.18",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/456.png",
-      "LowPrice": "0.08"
+      "LowPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -9758,7 +9758,7 @@
       "Unique": false,
       "Artist": "Benjamin Paulus",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.28",
+      "MarketPrice": "0.29",
       "FoilPrice": "19.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/928.png",
       "LowFoilPrice": "0.15"
@@ -9806,10 +9806,10 @@
       "Keywords": ["Piloting", "Restore"],
       "Artist": "David Buisan",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.34",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/307.png",
-      "LowPrice": "0.20"
+      "LowPrice": "0.15"
     },
     {
       "Set": "JTL",
@@ -9878,10 +9878,10 @@
       "Keywords": ["Ambush"],
       "Artist": "Francois Cannels",
       "VariantType": "Prestige",
-      "MarketPrice": "1.50",
+      "MarketPrice": "1.52",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1043.png",
-      "LowPrice": "1.00"
+      "LowPrice": "0.99"
     },
     {
       "Set": "JTL",
@@ -9902,10 +9902,10 @@
       "Keywords": ["Ambush"],
       "Artist": "Francois Cannels",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "3.18",
+      "MarketPrice": "3.23",
       "FoilPrice": "120.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1079.png",
-      "LowFoilPrice": "2.29"
+      "LowFoilPrice": "2.85"
     },
     {
       "Set": "JTL",
@@ -9950,7 +9950,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Francois Cannels",
       "VariantType": "Normal",
-      "MarketPrice": "0.64",
+      "MarketPrice": "0.63",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/204.png",
       "LowPrice": "0.25"
@@ -9974,7 +9974,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.83",
+      "MarketPrice": "0.93",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/466.png",
       "LowPrice": "0.69"
@@ -9998,10 +9998,10 @@
       "Keywords": ["Ambush"],
       "Artist": "Francois Cannels",
       "VariantType": "Foil",
-      "MarketPrice": "0.72",
+      "MarketPrice": "0.73",
       "FoilPrice": "42.45",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/702.png",
-      "LowFoilPrice": "0.45"
+      "LowFoilPrice": "0.44"
     },
     {
       "Set": "JTL",
@@ -10022,7 +10022,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "2.42",
+      "MarketPrice": "2.44",
       "FoilPrice": "40.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/938.png",
       "LowFoilPrice": "1.93"
@@ -10091,7 +10091,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Joshua Carson",
       "VariantType": "Foil",
-      "MarketPrice": "0.11",
+      "MarketPrice": "0.08",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/611.png",
       "LowFoilPrice": "0.02"
@@ -10138,7 +10138,7 @@
       "Keywords": ["Shielded"],
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.48",
+      "MarketPrice": "0.51",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/056.png",
       "LowPrice": "0.25"
@@ -10162,10 +10162,10 @@
       "Keywords": ["Shielded"],
       "Artist": "Marc Escachx",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.51",
+      "MarketPrice": "1.54",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/318.png",
-      "LowPrice": "1.00"
+      "LowPrice": "0.99"
     },
     {
       "Set": "JTL",
@@ -10186,7 +10186,7 @@
       "Keywords": ["Shielded"],
       "Artist": "Marc Escachx",
       "VariantType": "Foil",
-      "MarketPrice": "0.75",
+      "MarketPrice": "0.77",
       "FoilPrice": "49.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/554.png",
       "LowFoilPrice": "0.28"
@@ -10210,7 +10210,7 @@
       "Keywords": ["Shielded"],
       "Artist": "Marc Escachx",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.95",
+      "MarketPrice": "1.80",
       "FoilPrice": "59.53",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/790.png",
       "LowFoilPrice": "0.99"
@@ -10259,7 +10259,7 @@
       "MarketPrice": "0.15",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/508.png",
-      "LowPrice": "0.04"
+      "LowPrice": "0.02"
     },
     {
       "Set": "JTL",
@@ -10321,10 +10321,10 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Normal",
-      "MarketPrice": "0.47",
+      "MarketPrice": "0.46",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/174.png",
-      "LowPrice": "0.20"
+      "LowPrice": "0.24"
     },
     {
       "Set": "JTL",
@@ -10340,10 +10340,10 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.02",
+      "MarketPrice": "0.97",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/436.png",
-      "LowPrice": "0.91"
+      "LowPrice": "0.87"
     },
     {
       "Set": "JTL",
@@ -10362,7 +10362,7 @@
       "MarketPrice": "0.25",
       "FoilPrice": "2.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/672.png",
-      "LowFoilPrice": "0.06"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -10378,7 +10378,7 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.06",
+      "MarketPrice": "1.16",
       "FoilPrice": "11.90",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/908.png",
       "LowFoilPrice": "0.92"
@@ -10401,7 +10401,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Prestige",
-      "MarketPrice": "1.65",
+      "MarketPrice": "1.66",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1038.png",
       "LowPrice": "0.94"
@@ -10424,7 +10424,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "4.15",
+      "MarketPrice": "4.14",
       "FoilPrice": "19.93",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1074.png",
       "LowFoilPrice": "3.72"
@@ -10450,7 +10450,7 @@
       "MarketPrice": "61.99",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1110.png",
-      "LowFoilPrice": "55.03"
+      "LowFoilPrice": "51.23"
     },
     {
       "Set": "JTL",
@@ -10473,7 +10473,7 @@
       "MarketPrice": "1.23",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/185.png",
-      "LowPrice": "0.90"
+      "LowPrice": "0.75"
     },
     {
       "Set": "JTL",
@@ -10493,7 +10493,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.74",
+      "MarketPrice": "0.71",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/447.png",
       "LowPrice": "0.50"
@@ -10539,10 +10539,10 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.02",
+      "MarketPrice": "1.03",
       "FoilPrice": "29.89",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/919.png",
-      "LowFoilPrice": "0.85"
+      "LowFoilPrice": "0.89"
     },
     {
       "Set": "JTL",
@@ -10561,7 +10561,7 @@
       "Unique": false,
       "Artist": "Timo Peter",
       "VariantType": "Normal",
-      "MarketPrice": "0.10",
+      "MarketPrice": "0.11",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/165.png",
       "LowPrice": "0.03"
@@ -10605,7 +10605,7 @@
       "Unique": false,
       "Artist": "Timo Peter",
       "VariantType": "Foil",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "2.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/663.png",
       "LowFoilPrice": "0.05"
@@ -10627,7 +10627,7 @@
       "Unique": false,
       "Artist": "Timo Peter",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.51",
+      "MarketPrice": "0.55",
       "FoilPrice": "9.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/899.png",
       "LowFoilPrice": "0.19"
@@ -10665,7 +10665,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.25",
+      "MarketPrice": "0.24",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/455.png",
       "LowPrice": "0.14"
@@ -10703,7 +10703,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.50",
+      "MarketPrice": "0.49",
       "FoilPrice": "9.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/927.png",
       "LowFoilPrice": "0.18"
@@ -10727,7 +10727,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Prestige",
-      "MarketPrice": "2.87",
+      "MarketPrice": "2.82",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1031.png",
       "LowPrice": "1.99"
@@ -10754,7 +10754,7 @@
       "MarketPrice": "5.28",
       "FoilPrice": "32.90",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1067.png",
-      "LowFoilPrice": "3.81"
+      "LowFoilPrice": "4.01"
     },
     {
       "Set": "JTL",
@@ -10775,10 +10775,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Prestige Serialized",
-      "MarketPrice": "120.13",
+      "MarketPrice": "114.10",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1103.png",
-      "LowFoilPrice": "115.17"
+      "LowFoilPrice": "112.96"
     },
     {
       "Set": "JTL",
@@ -10799,10 +10799,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Normal",
-      "MarketPrice": "0.75",
+      "MarketPrice": "0.71",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/140.png",
-      "LowPrice": "0.30"
+      "LowPrice": "0.50"
     },
     {
       "Set": "JTL",
@@ -10826,7 +10826,7 @@
       "MarketPrice": "1.18",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/402.png",
-      "LowPrice": "0.39"
+      "LowPrice": "0.40"
     },
     {
       "Set": "JTL",
@@ -10847,7 +10847,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Foil",
-      "MarketPrice": "0.77",
+      "MarketPrice": "0.73",
       "FoilPrice": "3.62",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/638.png",
       "LowFoilPrice": "0.20"
@@ -10874,7 +10874,7 @@
       "MarketPrice": "2.36",
       "FoilPrice": "16.77",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/874.png",
-      "LowFoilPrice": "1.99"
+      "LowFoilPrice": "2.00"
     },
     {
       "Set": "JTL",
@@ -10895,7 +10895,7 @@
       "Keywords": ["Piloting"],
       "Artist": "JB Casacop",
       "VariantType": "Normal",
-      "MarketPrice": "0.24",
+      "MarketPrice": "0.23",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/141.png",
       "LowPrice": "0.10"
@@ -10919,7 +10919,7 @@
       "Keywords": ["Piloting"],
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.54",
+      "MarketPrice": "0.52",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/403.png",
       "LowPrice": "0.25"
@@ -10991,10 +10991,10 @@
       "Keywords": ["Piloting", "Shielded"],
       "Artist": "Sandra Chewliñska",
       "VariantType": "Normal",
-      "MarketPrice": "1.26",
+      "MarketPrice": "1.29",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/036.png",
-      "LowPrice": "0.40"
+      "LowPrice": "0.35"
     },
     {
       "Set": "JTL",
@@ -11018,7 +11018,7 @@
       "MarketPrice": "3.38",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/298.png",
-      "LowPrice": "2.05"
+      "LowPrice": "1.97"
     },
     {
       "Set": "JTL",
@@ -11039,10 +11039,10 @@
       "Keywords": ["Piloting", "Shielded"],
       "Artist": "Sandra Chewliñska",
       "VariantType": "Foil",
-      "MarketPrice": "1.23",
+      "MarketPrice": "1.25",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/534.png",
-      "LowFoilPrice": "0.86"
+      "LowFoilPrice": "0.69"
     },
     {
       "Set": "JTL",
@@ -11063,10 +11063,10 @@
       "Keywords": ["Piloting", "Shielded"],
       "Artist": "Sandra Chewliñska",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "4.33",
+      "MarketPrice": "4.38",
       "FoilPrice": "29.92",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/770.png",
-      "LowFoilPrice": "3.50"
+      "LowFoilPrice": "3.90"
     },
     {
       "Set": "JTL",
@@ -11159,7 +11159,7 @@
       "Keywords": ["Saboteur", "Sentinel"],
       "Artist": "Eslam AboShady",
       "VariantType": "Normal",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.20",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/077.png",
       "LowPrice": "0.05"
@@ -11179,7 +11179,7 @@
       "Keywords": ["Saboteur", "Sentinel"],
       "Artist": "Eslam AboShady",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.33",
+      "MarketPrice": "0.34",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/339.png",
       "LowPrice": "0.10"
@@ -11222,7 +11222,7 @@
       "MarketPrice": "0.86",
       "FoilPrice": "17.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/811.png",
-      "LowFoilPrice": "0.72"
+      "LowFoilPrice": "0.65"
     },
     {
       "Set": "JTL",
@@ -11518,7 +11518,7 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Prestige",
-      "MarketPrice": "1.55",
+      "MarketPrice": "1.59",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1040.png",
       "LowPrice": "0.85"
@@ -11541,10 +11541,10 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "2.92",
+      "MarketPrice": "2.84",
       "FoilPrice": "75.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1076.png",
-      "LowFoilPrice": "2.20"
+      "LowFoilPrice": "2.50"
     },
     {
       "Set": "JTL",
@@ -11587,7 +11587,7 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Normal",
-      "MarketPrice": "0.56",
+      "MarketPrice": "0.64",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/191.png",
       "LowPrice": "0.20"
@@ -11610,7 +11610,7 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.87",
+      "MarketPrice": "0.91",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/453.png",
       "LowPrice": "0.48"
@@ -11633,7 +11633,7 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Foil",
-      "MarketPrice": "0.79",
+      "MarketPrice": "0.76",
       "FoilPrice": "23.75",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/689.png",
       "LowFoilPrice": "0.15"
@@ -11656,7 +11656,7 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.97",
+      "MarketPrice": "1.91",
       "FoilPrice": "20.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/925.png",
       "LowFoilPrice": "1.00"
@@ -11675,7 +11675,7 @@
       "Unique": false,
       "Artist": "Aitor Prieto",
       "VariantType": "Normal",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.22",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/209.png",
       "LowPrice": "0.04"
@@ -11694,7 +11694,7 @@
       "Unique": false,
       "Artist": "Aitor Prieto",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.51",
+      "MarketPrice": "0.50",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/471.png",
       "LowPrice": "0.25"
@@ -11751,10 +11751,10 @@
       "Unique": false,
       "Artist": "Denis Medri",
       "VariantType": "Normal",
-      "MarketPrice": "0.95",
+      "MarketPrice": "0.97",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/207.png",
-      "LowPrice": "0.40"
+      "LowPrice": "0.50"
     },
     {
       "Set": "JTL",
@@ -11770,7 +11770,7 @@
       "Unique": false,
       "Artist": "Denis Medri",
       "VariantType": "Hyperspace",
-      "MarketPrice": "2.32",
+      "MarketPrice": "2.38",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/469.png",
       "LowPrice": "1.50"
@@ -11789,7 +11789,7 @@
       "Unique": false,
       "Artist": "Denis Medri",
       "VariantType": "Foil",
-      "MarketPrice": "0.72",
+      "MarketPrice": "0.68",
       "FoilPrice": "4.62",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/705.png",
       "LowFoilPrice": "0.40"
@@ -11808,10 +11808,10 @@
       "Unique": false,
       "Artist": "Denis Medri",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "2.84",
+      "MarketPrice": "3.17",
       "FoilPrice": "16.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/941.png",
-      "LowFoilPrice": "2.56"
+      "LowFoilPrice": "2.69"
     },
     {
       "Set": "JTL",
@@ -11926,7 +11926,7 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.06",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/251.png",
       "LowPrice": "0.02"
@@ -11948,7 +11948,7 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.13",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/513.png",
       "LowPrice": "0.03"
@@ -11970,7 +11970,7 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Foil",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.13",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/749.png",
       "LowFoilPrice": "0.05"
@@ -12011,7 +12011,7 @@
       "Unique": false,
       "Artist": "Ario Anindito",
       "VariantType": "Normal",
-      "MarketPrice": "0.28",
+      "MarketPrice": "0.26",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/232.png",
       "LowPrice": "0.10"
@@ -12030,7 +12030,7 @@
       "Unique": false,
       "Artist": "Ario Anindito",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.59",
+      "MarketPrice": "0.61",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/494.png",
       "LowPrice": "0.40"
@@ -12049,7 +12049,7 @@
       "Unique": false,
       "Artist": "Ario Anindito",
       "VariantType": "Foil",
-      "MarketPrice": "0.27",
+      "MarketPrice": "0.26",
       "FoilPrice": "3.93",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/730.png",
       "LowFoilPrice": "0.05"
@@ -12120,10 +12120,10 @@
       "Unique": true,
       "Artist": "Sebastian Guidobono",
       "VariantType": "Showcase",
-      "MarketPrice": "61.99",
+      "MarketPrice": "61.51",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1014.png",
-      "LowPrice": "53.99"
+      "LowPrice": "59.35"
     },
     {
       "Set": "JTL",
@@ -12146,7 +12146,7 @@
       "Unique": true,
       "Artist": "Sebastian Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.20",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/280.png",
       "LowPrice": "0.05"
@@ -12190,7 +12190,7 @@
       "Unique": false,
       "Artist": "Christian Papazoglakis",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.30",
+      "MarketPrice": "0.29",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/344.png",
       "LowPrice": "0.08"
@@ -12212,7 +12212,7 @@
       "Unique": false,
       "Artist": "Christian Papazoglakis",
       "VariantType": "Foil",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/580.png",
       "LowFoilPrice": "0.05"
@@ -12234,7 +12234,7 @@
       "Unique": false,
       "Artist": "Christian Papazoglakis",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.55",
+      "MarketPrice": "0.57",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/816.png",
       "LowFoilPrice": "0.29"
@@ -12300,7 +12300,7 @@
       "Unique": false,
       "Artist": "Aarnoud De Rycker",
       "VariantType": "Foil",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/720.png",
       "LowFoilPrice": "0.07"
@@ -12322,10 +12322,10 @@
       "Unique": false,
       "Artist": "Aarnoud De Rycker",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.34",
+      "MarketPrice": "0.36",
       "FoilPrice": "9.90",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/956.png",
-      "LowFoilPrice": "0.12"
+      "LowFoilPrice": "0.10"
     },
     {
       "Set": "JTL",
@@ -12422,7 +12422,7 @@
       "Keywords": ["Piloting"],
       "Artist": "David Nash",
       "VariantType": "Normal",
-      "MarketPrice": "0.38",
+      "MarketPrice": "0.32",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/049.png",
       "LowPrice": "0.15"
@@ -12446,7 +12446,7 @@
       "Keywords": ["Piloting"],
       "Artist": "David Nash",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.69",
+      "MarketPrice": "0.70",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/311.png",
       "LowPrice": "0.49"
@@ -12494,7 +12494,7 @@
       "Keywords": ["Piloting"],
       "Artist": "David Nash",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "2.02",
+      "MarketPrice": "1.97",
       "FoilPrice": "16.90",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/783.png",
       "LowFoilPrice": "0.75"
@@ -12513,7 +12513,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/031.png",
       "LowPrice": "0.03"
@@ -12570,7 +12570,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "4.34",
+      "MarketPrice": "4.28",
       "FoilPrice": "26.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/765.png",
       "LowFoilPrice": "3.75"
@@ -12614,7 +12614,7 @@
       "Unique": false,
       "Artist": "Eslam Aboshady",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.22",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/325.png",
       "LowPrice": "0.07"
@@ -12636,7 +12636,7 @@
       "Unique": false,
       "Artist": "Eslam Aboshady",
       "VariantType": "Foil",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/561.png",
       "LowFoilPrice": "0.07"
@@ -12658,7 +12658,7 @@
       "Unique": false,
       "Artist": "Eslam Aboshady",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.41",
+      "MarketPrice": "0.40",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/797.png",
       "LowFoilPrice": "0.25"
@@ -12712,7 +12712,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.23",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/265.png",
       "LowPrice": "0.08"
@@ -12739,7 +12739,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Showcase",
-      "MarketPrice": "26.87",
+      "MarketPrice": "28.55",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/999.png",
       "LowPrice": "41.00"
@@ -12787,7 +12787,7 @@
       "Keywords": ["Restore"],
       "Artist": "Nabetse Zitro",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.31",
+      "MarketPrice": "0.27",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/359.png",
       "LowPrice": "0.10"
@@ -12811,10 +12811,10 @@
       "Keywords": ["Restore"],
       "Artist": "Nabetse Zitro",
       "VariantType": "Foil",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.18",
       "FoilPrice": "3.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/595.png",
-      "LowFoilPrice": "0.08"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -12854,7 +12854,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "0.25",
+      "MarketPrice": "0.26",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/127.png",
       "LowPrice": "0.10"
@@ -12911,7 +12911,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.29",
+      "MarketPrice": "1.28",
       "FoilPrice": "4.83",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/861.png",
       "LowFoilPrice": "1.17"
@@ -12961,10 +12961,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "4.57",
+      "MarketPrice": "4.45",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/094.png",
-      "LowPrice": "3.49"
+      "LowPrice": "3.99"
     },
     {
       "Set": "JTL",
@@ -12987,10 +12987,10 @@
       "Unique": true,
       "Artist": "Renaud Scheidt",
       "VariantType": "Showcase",
-      "MarketPrice": "71.52",
+      "MarketPrice": "73.52",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1008.png",
-      "LowPrice": "129.49"
+      "LowPrice": "139.98"
     },
     {
       "Set": "JTL",
@@ -13037,7 +13037,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Johnny Morrow",
       "VariantType": "Hyperspace",
-      "MarketPrice": "6.55",
+      "MarketPrice": "6.60",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/356.png",
       "LowPrice": "6.00"
@@ -13061,10 +13061,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Johnny Morrow",
       "VariantType": "Foil",
-      "MarketPrice": "2.82",
+      "MarketPrice": "3.02",
       "FoilPrice": "2.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/592.png",
-      "LowFoilPrice": "2.00"
+      "LowFoilPrice": "2.55"
     },
     {
       "Set": "JTL",
@@ -13154,7 +13154,7 @@
       "Keywords": ["Overwhelm", "Raid"],
       "Artist": "Kursad Karatas",
       "VariantType": "Foil",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/616.png",
       "LowFoilPrice": "0.07"
@@ -13229,10 +13229,10 @@
       "Unique": true,
       "Artist": "Amélie Hutt",
       "VariantType": "Showcase",
-      "MarketPrice": "37.01",
+      "MarketPrice": "40.88",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1007.png",
-      "LowPrice": "59.99"
+      "LowPrice": "99.90"
     },
     {
       "Set": "JTL",
@@ -13404,7 +13404,7 @@
       "Unique": true,
       "Artist": "Robert Bonchune",
       "VariantType": "Prestige",
-      "MarketPrice": "4.90",
+      "MarketPrice": "5.13",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1048.png",
       "LowPrice": "3.99"
@@ -13427,10 +13427,10 @@
       "Unique": true,
       "Artist": "Robert Bonchune",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "9.83",
+      "MarketPrice": "10.08",
       "FoilPrice": "40.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1084.png",
-      "LowFoilPrice": "11.96"
+      "LowFoilPrice": "8.96"
     },
     {
       "Set": "JTL",
@@ -13473,7 +13473,7 @@
       "Unique": true,
       "Artist": "Robert Bonchune",
       "VariantType": "Normal",
-      "MarketPrice": "1.65",
+      "MarketPrice": "1.61",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/249.png",
       "LowPrice": "1.32"
@@ -13496,7 +13496,7 @@
       "Unique": true,
       "Artist": "Robert Bonchune",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.43",
+      "MarketPrice": "1.44",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/511.png",
       "LowPrice": "1.00"
@@ -13519,7 +13519,7 @@
       "Unique": true,
       "Artist": "Robert Bonchune",
       "VariantType": "Foil",
-      "MarketPrice": "0.41",
+      "MarketPrice": "0.37",
       "FoilPrice": "9.92",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/747.png",
       "LowFoilPrice": "0.08"
@@ -13542,7 +13542,7 @@
       "Unique": true,
       "Artist": "Robert Bonchune",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.89",
+      "MarketPrice": "1.94",
       "FoilPrice": "24.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/983.png",
       "LowFoilPrice": "1.25"
@@ -13565,7 +13565,7 @@
       "Unique": true,
       "Artist": "Aarnoud De Rycker",
       "VariantType": "Prestige",
-      "MarketPrice": "1.66",
+      "MarketPrice": "1.69",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1039.png",
       "LowPrice": "0.99"
@@ -13588,10 +13588,10 @@
       "Unique": true,
       "Artist": "Aarnoud De Rycker",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "3.60",
+      "MarketPrice": "3.62",
       "FoilPrice": "19.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1075.png",
-      "LowFoilPrice": "3.06"
+      "LowFoilPrice": "3.08"
     },
     {
       "Set": "JTL",
@@ -13634,7 +13634,7 @@
       "Unique": true,
       "Artist": "Aarnoud De Rycker",
       "VariantType": "Normal",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/186.png",
       "LowPrice": "0.05"
@@ -13703,7 +13703,7 @@
       "Unique": true,
       "Artist": "Aarnoud De Rycker",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.50",
+      "MarketPrice": "0.47",
       "FoilPrice": "9.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/920.png",
       "LowFoilPrice": "0.36"
@@ -13726,7 +13726,7 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Normal",
-      "MarketPrice": "0.35",
+      "MarketPrice": "0.33",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/188.png",
       "LowPrice": "0.15"
@@ -13795,7 +13795,7 @@
       "Unique": true,
       "Artist": "Afif Khaled",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.25",
+      "MarketPrice": "1.28",
       "FoilPrice": "16.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/922.png",
       "LowFoilPrice": "0.97"
@@ -13877,7 +13877,7 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/331.png",
       "LowPrice": "0.05"
@@ -13899,7 +13899,7 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Foil",
-      "MarketPrice": "0.10",
+      "MarketPrice": "0.11",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/567.png",
       "LowFoilPrice": "0.05"
@@ -13940,10 +13940,10 @@
       "Unique": false,
       "Artist": "Marko Fiedler",
       "VariantType": "Normal",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/028.png",
-      "LowPrice": "0.02"
+      "LowPrice": "0.03"
     },
     {
       "Set": "JTL",
@@ -13959,10 +13959,10 @@
       "Unique": false,
       "Artist": "Marko Fiedler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.44",
+      "MarketPrice": "0.43",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/290.png",
-      "LowPrice": "0.35"
+      "LowPrice": "0.36"
     },
     {
       "Set": "JTL",
@@ -13997,7 +13997,7 @@
       "Unique": false,
       "Artist": "Marko Fiedler",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "3.25",
+      "MarketPrice": "3.23",
       "FoilPrice": "20.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/764.png",
       "LowFoilPrice": "2.25"
@@ -14053,7 +14053,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "1.21",
+      "MarketPrice": "1.23",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/080.png",
       "LowPrice": "0.63"
@@ -14072,10 +14072,10 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.50",
+      "MarketPrice": "1.48",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/342.png",
-      "LowPrice": "1.16"
+      "LowPrice": "0.99"
     },
     {
       "Set": "JTL",
@@ -14091,7 +14091,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Foil",
-      "MarketPrice": "1.02",
+      "MarketPrice": "0.99",
       "FoilPrice": "19.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/578.png",
       "LowFoilPrice": "0.65"
@@ -14110,7 +14110,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "3.43",
+      "MarketPrice": "3.44",
       "FoilPrice": "25.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/814.png",
       "LowFoilPrice": "2.75"
@@ -14148,7 +14148,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.89",
+      "MarketPrice": "0.88",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/470.png",
       "LowPrice": "0.60"
@@ -14170,7 +14170,7 @@
       "MarketPrice": "0.22",
       "FoilPrice": "9.56",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/706.png",
-      "LowFoilPrice": "0.01"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -14186,10 +14186,10 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.97",
+      "MarketPrice": "0.95",
       "FoilPrice": "29.70",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/942.png",
-      "LowFoilPrice": "0.29"
+      "LowFoilPrice": "0.65"
     },
     {
       "Set": "JTL",
@@ -14210,7 +14210,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.38",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/093.png",
       "LowPrice": "0.14"
@@ -14234,7 +14234,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Marc Escachx",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.69",
+      "MarketPrice": "0.71",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/355.png",
       "LowPrice": "0.66"
@@ -14285,7 +14285,7 @@
       "MarketPrice": "2.14",
       "FoilPrice": "9.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/827.png",
-      "LowFoilPrice": "1.44"
+      "LowFoilPrice": "1.40"
     },
     {
       "Set": "JTL",
@@ -14301,10 +14301,10 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "1.88",
+      "MarketPrice": "2.31",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/144.png",
-      "LowPrice": "1.25"
+      "LowPrice": "6.20"
     },
     {
       "Set": "JTL",
@@ -14320,10 +14320,10 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace",
-      "MarketPrice": "3.85",
+      "MarketPrice": "5.06",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/406.png",
-      "LowPrice": "9.48"
+      "LowPrice": "9.00"
     },
     {
       "Set": "JTL",
@@ -14339,7 +14339,7 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Foil",
-      "MarketPrice": "0.42",
+      "MarketPrice": "0.56",
       "FoilPrice": "9.93",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/642.png",
       "LowFoilPrice": "0.10"
@@ -14358,10 +14358,10 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "2.99",
+      "MarketPrice": "3.01",
       "FoilPrice": "29.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/878.png",
-      "LowFoilPrice": "2.85"
+      "LowFoilPrice": "3.15"
     },
     {
       "Set": "JTL",
@@ -14377,10 +14377,10 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Normal",
-      "MarketPrice": "9.46",
+      "MarketPrice": "9.19",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/043.png",
-      "LowPrice": "7.41"
+      "LowPrice": "8.82"
     },
     {
       "Set": "JTL",
@@ -14396,7 +14396,7 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace",
-      "MarketPrice": "10.89",
+      "MarketPrice": "11.08",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/305.png",
       "LowPrice": "9.00"
@@ -14415,7 +14415,7 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Foil",
-      "MarketPrice": "7.53",
+      "MarketPrice": "7.89",
       "FoilPrice": "3.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/541.png",
       "LowFoilPrice": "7.20"
@@ -14434,10 +14434,10 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "12.59",
+      "MarketPrice": "12.81",
       "FoilPrice": "10.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/777.png",
-      "LowFoilPrice": "12.35"
+      "LowFoilPrice": "11.68"
     },
     {
       "Set": "JTL",
@@ -14526,7 +14526,7 @@
       "Keywords": ["Grit"],
       "Artist": "Christian Papazoglakis",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.18",
       "FoilPrice": "5.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/901.png",
       "LowFoilPrice": "0.09"
@@ -14549,7 +14549,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
-      "MarketPrice": "0.08",
+      "MarketPrice": "0.09",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/064.png",
       "LowPrice": "0.02"
@@ -14595,7 +14595,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Fernando Correa",
       "VariantType": "Foil",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/562.png",
       "LowFoilPrice": "0.04"
@@ -14684,7 +14684,7 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Foil",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/531.png",
       "LowFoilPrice": "0.03"
@@ -14706,10 +14706,10 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.63",
+      "MarketPrice": "0.62",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/767.png",
-      "LowFoilPrice": "0.40"
+      "LowFoilPrice": "0.29"
     },
     {
       "Set": "JTL",
@@ -14755,7 +14755,7 @@
       "MarketPrice": "0.17",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/428.png",
-      "LowPrice": "0.03"
+      "LowPrice": "0.02"
     },
     {
       "Set": "JTL",
@@ -14836,7 +14836,7 @@
       "Unique": false,
       "Artist": "Denis Medri",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/341.png",
       "LowPrice": "0.14"
@@ -14923,7 +14923,7 @@
       "MarketPrice": "0.21",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/327.png",
-      "LowPrice": "0.03"
+      "LowPrice": "0.02"
     },
     {
       "Set": "JTL",
@@ -14943,10 +14943,10 @@
       "Keywords": ["Shielded"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Foil",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/563.png",
-      "LowFoilPrice": "0.06"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -15128,7 +15128,7 @@
       "Unique": false,
       "Artist": "Eric Hibbeler",
       "VariantType": "Foil",
-      "MarketPrice": "0.39",
+      "MarketPrice": "0.38",
       "FoilPrice": "5.78",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/581.png",
       "LowFoilPrice": "0.10"
@@ -15150,7 +15150,7 @@
       "Unique": false,
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.25",
+      "MarketPrice": "1.23",
       "FoilPrice": "30.88",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/817.png",
       "LowFoilPrice": "0.70"
@@ -15196,7 +15196,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/330.png",
       "LowPrice": "0.05"
@@ -15242,10 +15242,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.34",
+      "MarketPrice": "0.33",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/802.png",
-      "LowFoilPrice": "0.24"
+      "LowFoilPrice": "0.20"
     },
     {
       "Set": "JTL",
@@ -15266,7 +15266,7 @@
       "Keywords": ["Grit"],
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.47",
+      "MarketPrice": "0.48",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/050.png",
       "LowPrice": "0.20"
@@ -15290,10 +15290,10 @@
       "Keywords": ["Grit"],
       "Artist": "David Buisan",
       "VariantType": "Prestige",
-      "MarketPrice": "1.97",
+      "MarketPrice": "2.08",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1019.png",
-      "LowPrice": "1.81"
+      "LowPrice": "1.75"
     },
     {
       "Set": "JTL",
@@ -15314,7 +15314,7 @@
       "Keywords": ["Grit"],
       "Artist": "David Buisan",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "4.38",
+      "MarketPrice": "4.34",
       "FoilPrice": "32.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1055.png",
       "LowFoilPrice": "3.01"
@@ -15362,7 +15362,7 @@
       "Keywords": ["Grit"],
       "Artist": "David Buisan",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.10",
+      "MarketPrice": "1.14",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/312.png",
       "LowPrice": "0.60"
@@ -15386,7 +15386,7 @@
       "Keywords": ["Grit"],
       "Artist": "David Buisan",
       "VariantType": "Foil",
-      "MarketPrice": "0.53",
+      "MarketPrice": "0.52",
       "FoilPrice": "5.58",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/548.png",
       "LowFoilPrice": "0.25"
@@ -15479,7 +15479,7 @@
       "MarketPrice": "0.21",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/593.png",
-      "LowFoilPrice": "0.08"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -15498,7 +15498,7 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.56",
+      "MarketPrice": "1.55",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/829.png",
       "LowFoilPrice": "1.19"
@@ -15536,7 +15536,7 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/442.png",
       "LowPrice": "0.05"
@@ -15555,7 +15555,7 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Foil",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/678.png",
       "LowFoilPrice": "0.03"
@@ -15593,10 +15593,10 @@
       "Unique": false,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Normal",
-      "MarketPrice": "16.64",
+      "MarketPrice": "16.57",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/181.png",
-      "LowPrice": "14.49"
+      "LowPrice": "16.50"
     },
     {
       "Set": "JTL",
@@ -15612,10 +15612,10 @@
       "Unique": false,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Hyperspace",
-      "MarketPrice": "18.86",
+      "MarketPrice": "18.58",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/443.png",
-      "LowPrice": "15.49"
+      "LowPrice": "15.00"
     },
     {
       "Set": "JTL",
@@ -15631,10 +15631,10 @@
       "Unique": false,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Foil",
-      "MarketPrice": "17.03",
+      "MarketPrice": "17.13",
       "FoilPrice": "20.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/679.png",
-      "LowFoilPrice": "14.00"
+      "LowFoilPrice": "13.00"
     },
     {
       "Set": "JTL",
@@ -15653,7 +15653,7 @@
       "MarketPrice": "25.52",
       "FoilPrice": "49.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/915.png",
-      "LowFoilPrice": "15.99"
+      "LowFoilPrice": "15.95"
     },
     {
       "Set": "JTL",
@@ -15676,7 +15676,7 @@
       "Unique": true,
       "Artist": "Renaud Scheidt",
       "VariantType": "Normal",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/013.png",
       "LowPrice": "0.03"
@@ -15726,10 +15726,10 @@
       "Unique": true,
       "Artist": "Renaud Scheidt",
       "VariantType": "Showcase",
-      "MarketPrice": "76.76",
+      "MarketPrice": "76.36",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1009.png",
-      "LowPrice": "69.29"
+      "LowPrice": "70.00"
     },
     {
       "Set": "JTL",
@@ -15776,7 +15776,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.54",
+      "MarketPrice": "0.55",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/362.png",
       "LowPrice": "0.25"
@@ -15800,7 +15800,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Amélie Hutt",
       "VariantType": "Foil",
-      "MarketPrice": "0.25",
+      "MarketPrice": "0.21",
       "FoilPrice": "3.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/598.png",
       "LowFoilPrice": "0.09"
@@ -15824,10 +15824,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.76",
+      "MarketPrice": "0.75",
       "FoilPrice": "9.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/834.png",
-      "LowFoilPrice": "0.60"
+      "LowFoilPrice": "0.63"
     },
     {
       "Set": "JTL",
@@ -15843,7 +15843,7 @@
       "Unique": false,
       "Artist": "Lenka Šimečková",
       "VariantType": "Normal",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.13",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/042.png",
       "LowPrice": "0.02"
@@ -15862,7 +15862,7 @@
       "Unique": false,
       "Artist": "Lenka Šimečková",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.18",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/304.png",
       "LowPrice": "0.04"
@@ -15976,7 +15976,7 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.39",
+      "MarketPrice": "0.34",
       "FoilPrice": "3.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/862.png",
       "LowFoilPrice": "0.20"
@@ -16000,7 +16000,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Sebastian Guidobono",
       "VariantType": "Prestige",
-      "MarketPrice": "1.05",
+      "MarketPrice": "1.10",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1035.png",
       "LowPrice": "0.73"
@@ -16024,10 +16024,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Sebastian Guidobono",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "2.80",
+      "MarketPrice": "2.79",
       "FoilPrice": "87.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1071.png",
-      "LowFoilPrice": "1.90"
+      "LowFoilPrice": "1.92"
     },
     {
       "Set": "JTL",
@@ -16072,7 +16072,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Sebastian Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.30",
+      "MarketPrice": "0.40",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/154.png",
       "LowPrice": "0.11"
@@ -16096,7 +16096,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Sebastian Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.67",
+      "MarketPrice": "0.68",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/416.png",
       "LowPrice": "0.30"
@@ -16120,7 +16120,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Sebastian Guidobono",
       "VariantType": "Foil",
-      "MarketPrice": "0.66",
+      "MarketPrice": "0.64",
       "FoilPrice": "24.89",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/652.png",
       "LowFoilPrice": "0.20"
@@ -16144,7 +16144,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Sebastian Guidobono",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.97",
+      "MarketPrice": "0.99",
       "FoilPrice": "39.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/888.png",
       "LowFoilPrice": "0.69"
@@ -16210,7 +16210,7 @@
       "Unique": false,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Foil",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.15",
       "FoilPrice": "1.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/634.png",
       "LowFoilPrice": "0.07"
@@ -16251,7 +16251,7 @@
       "Unique": false,
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Normal",
-      "MarketPrice": "0.07",
+      "MarketPrice": "0.08",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/231.png",
       "LowPrice": "0.02"
@@ -16289,7 +16289,7 @@
       "Unique": false,
       "Artist": "Gabriel Gomez Almenzar",
       "VariantType": "Foil",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/729.png",
       "LowFoilPrice": "0.04"
@@ -16420,7 +16420,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Stephen Zavala",
       "VariantType": "Normal",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/245.png",
       "LowPrice": "0.10"
@@ -16468,10 +16468,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Stephen Zavala",
       "VariantType": "Foil",
-      "MarketPrice": "0.26",
+      "MarketPrice": "0.27",
       "FoilPrice": "5.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/743.png",
-      "LowFoilPrice": "0.23"
+      "LowFoilPrice": "0.24"
     },
     {
       "Set": "JTL",
@@ -16492,10 +16492,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Stephen Zavala",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.43",
+      "MarketPrice": "1.51",
       "FoilPrice": "9.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/979.png",
-      "LowFoilPrice": "1.00"
+      "LowFoilPrice": "0.99"
     },
     {
       "Set": "JTL",
@@ -16516,7 +16516,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "French Carlomagno",
       "VariantType": "Prestige",
-      "MarketPrice": "1.50",
+      "MarketPrice": "1.51",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1028.png",
       "LowPrice": "0.60"
@@ -16540,7 +16540,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "French Carlomagno",
       "VariantType": "Normal",
-      "MarketPrice": "0.23",
+      "MarketPrice": "0.22",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/104.png",
       "LowPrice": "0.08"
@@ -16564,7 +16564,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "French Carlomagno",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "2.28",
+      "MarketPrice": "2.29",
       "FoilPrice": "58.72",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1064.png",
       "LowFoilPrice": "0.29"
@@ -16612,7 +16612,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.74",
+      "MarketPrice": "0.73",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/366.png",
       "LowPrice": "0.41"
@@ -16636,7 +16636,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "French Carlomagno",
       "VariantType": "Foil",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.34",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/602.png",
       "LowFoilPrice": "0.10"
@@ -16660,7 +16660,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.11",
+      "MarketPrice": "1.08",
       "FoilPrice": "11.89",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/838.png",
       "LowFoilPrice": "0.70"
@@ -16683,7 +16683,7 @@
       "Unique": true,
       "Artist": "Ario Anindito",
       "VariantType": "Prestige",
-      "MarketPrice": "2.46",
+      "MarketPrice": "2.56",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1045.png",
       "LowPrice": "1.75"
@@ -16709,7 +16709,7 @@
       "MarketPrice": "3.94",
       "FoilPrice": "84.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1081.png",
-      "LowFoilPrice": "3.40"
+      "LowFoilPrice": "2.86"
     },
     {
       "Set": "JTL",
@@ -16729,10 +16729,10 @@
       "Unique": true,
       "Artist": "Ario Anindito",
       "VariantType": "Prestige Serialized",
-      "MarketPrice": "115.00",
+      "MarketPrice": "110.00",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1117.png",
-      "LowFoilPrice": "107.98"
+      "LowFoilPrice": "100.99"
     },
     {
       "Set": "JTL",
@@ -16752,10 +16752,10 @@
       "Unique": true,
       "Artist": "Ario Anindito",
       "VariantType": "Normal",
-      "MarketPrice": "1.12",
+      "MarketPrice": "1.11",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/226.png",
-      "LowPrice": "0.69"
+      "LowPrice": "0.75"
     },
     {
       "Set": "JTL",
@@ -16775,10 +16775,10 @@
       "Unique": true,
       "Artist": "Ario Anindito",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.38",
+      "MarketPrice": "1.45",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/488.png",
-      "LowPrice": "0.50"
+      "LowPrice": "0.91"
     },
     {
       "Set": "JTL",
@@ -16798,10 +16798,10 @@
       "Unique": true,
       "Artist": "Ario Anindito",
       "VariantType": "Foil",
-      "MarketPrice": "1.35",
+      "MarketPrice": "1.33",
       "FoilPrice": "23.69",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/724.png",
-      "LowFoilPrice": "0.99"
+      "LowFoilPrice": "0.80"
     },
     {
       "Set": "JTL",
@@ -16821,7 +16821,7 @@
       "Unique": true,
       "Artist": "Ario Anindito",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "2.08",
+      "MarketPrice": "2.11",
       "FoilPrice": "39.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/960.png",
       "LowFoilPrice": "1.71"
@@ -16913,7 +16913,7 @@
       "Unique": true,
       "Artist": "Salomé Goré",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.58",
+      "MarketPrice": "0.55",
       "FoilPrice": "9.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/953.png",
       "LowFoilPrice": "0.14"
@@ -16936,7 +16936,7 @@
       "Unique": true,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Prestige",
-      "MarketPrice": "0.71",
+      "MarketPrice": "0.76",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1037.png",
       "LowPrice": "0.50"
@@ -16959,7 +16959,7 @@
       "Unique": true,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "1.65",
+      "MarketPrice": "1.64",
       "FoilPrice": "12.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1073.png",
       "LowFoilPrice": "1.00"
@@ -17005,7 +17005,7 @@
       "Unique": true,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Normal",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/182.png",
       "LowPrice": "0.10"
@@ -17074,10 +17074,10 @@
       "Unique": true,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.67",
+      "MarketPrice": "0.68",
       "FoilPrice": "16.72",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/916.png",
-      "LowFoilPrice": "0.28"
+      "LowFoilPrice": "0.35"
     },
     {
       "Set": "JTL",
@@ -17097,7 +17097,7 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Prestige",
-      "MarketPrice": "1.38",
+      "MarketPrice": "1.53",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1044.png",
       "LowPrice": "0.99"
@@ -17120,10 +17120,10 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "2.22",
+      "MarketPrice": "2.27",
       "FoilPrice": "50.75",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1080.png",
-      "LowFoilPrice": "2.19"
+      "LowFoilPrice": "2.21"
     },
     {
       "Set": "JTL",
@@ -17189,7 +17189,7 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.35",
+      "MarketPrice": "0.32",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/485.png",
       "LowPrice": "0.15"
@@ -17235,7 +17235,7 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.55",
+      "MarketPrice": "0.57",
       "FoilPrice": "9.93",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/957.png",
       "LowFoilPrice": "0.20"
@@ -17257,7 +17257,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Normal",
-      "MarketPrice": "0.11",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/153.png",
       "LowPrice": "0.03"
@@ -17279,7 +17279,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.28",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/415.png",
       "LowPrice": "0.10"
@@ -17323,7 +17323,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.39",
+      "MarketPrice": "0.41",
       "FoilPrice": "3.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/887.png",
       "LowFoilPrice": "0.26"
@@ -17346,7 +17346,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Prestige",
-      "MarketPrice": "8.68",
+      "MarketPrice": "8.88",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1034.png",
       "LowPrice": "9.32"
@@ -17369,10 +17369,10 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "12.94",
+      "MarketPrice": "14.18",
       "FoilPrice": "29.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1070.png",
-      "LowFoilPrice": "13.96"
+      "LowFoilPrice": "9.99"
     },
     {
       "Set": "JTL",
@@ -17392,10 +17392,10 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Prestige Serialized",
-      "MarketPrice": "289.98",
+      "MarketPrice": "294.49",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1106.png",
-      "LowFoilPrice": "289.00"
+      "LowFoilPrice": "289.97"
     },
     {
       "Set": "JTL",
@@ -17415,7 +17415,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.39",
+      "MarketPrice": "0.40",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/151.png",
       "LowPrice": "0.15"
@@ -17438,10 +17438,10 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.68",
+      "MarketPrice": "0.65",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/413.png",
-      "LowPrice": "0.39"
+      "LowPrice": "0.25"
     },
     {
       "Set": "JTL",
@@ -17484,10 +17484,10 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.98",
+      "MarketPrice": "0.97",
       "FoilPrice": "9.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/885.png",
-      "LowFoilPrice": "0.77"
+      "LowFoilPrice": "0.62"
     },
     {
       "Set": "JTL",
@@ -17507,7 +17507,7 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.15",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/101.png",
       "LowPrice": "0.05"
@@ -17530,10 +17530,10 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Prestige",
-      "MarketPrice": "2.47",
+      "MarketPrice": "2.46",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1027.png",
-      "LowPrice": "1.63"
+      "LowPrice": "1.75"
     },
     {
       "Set": "JTL",
@@ -17553,7 +17553,7 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "3.71",
+      "MarketPrice": "3.69",
       "FoilPrice": "25.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1063.png",
       "LowFoilPrice": "3.50"
@@ -17599,7 +17599,7 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.28",
+      "MarketPrice": "0.27",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/363.png",
       "LowPrice": "0.08"
@@ -17625,7 +17625,7 @@
       "MarketPrice": "0.21",
       "FoilPrice": "3.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/599.png",
-      "LowFoilPrice": "0.08"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -17645,10 +17645,10 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.50",
+      "MarketPrice": "0.47",
       "FoilPrice": "9.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/835.png",
-      "LowFoilPrice": "0.20"
+      "LowFoilPrice": "0.15"
     },
     {
       "Set": "JTL",
@@ -17667,7 +17667,7 @@
       "Unique": false,
       "Artist": "Robert Bonchune",
       "VariantType": "Normal",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/051.png",
       "LowPrice": "0.04"
@@ -17689,7 +17689,7 @@
       "Unique": false,
       "Artist": "Robert Bonchune",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.35",
+      "MarketPrice": "0.34",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/313.png",
       "LowPrice": "0.04"
@@ -17736,7 +17736,7 @@
       "MarketPrice": "0.48",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/785.png",
-      "LowFoilPrice": "0.25"
+      "LowFoilPrice": "0.35"
     },
     {
       "Set": "JTL",
@@ -17755,7 +17755,7 @@
       "Unique": false,
       "Artist": "Robert Bonchune",
       "VariantType": "Normal",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.11",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/149.png",
       "LowPrice": "0.06"
@@ -17777,7 +17777,7 @@
       "Unique": false,
       "Artist": "Robert Bonchune",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.30",
+      "MarketPrice": "0.31",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/411.png",
       "LowPrice": "0.10"
@@ -17821,7 +17821,7 @@
       "Unique": false,
       "Artist": "Robert Bonchune",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.48",
+      "MarketPrice": "0.47",
       "FoilPrice": "3.49",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/883.png",
       "LowFoilPrice": "0.37"
@@ -17865,7 +17865,7 @@
       "Unique": false,
       "Artist": "Space Goose",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.69",
+      "MarketPrice": "0.68",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/419.png",
       "LowPrice": "0.43"
@@ -17887,7 +17887,7 @@
       "Unique": false,
       "Artist": "Space Goose",
       "VariantType": "Foil",
-      "MarketPrice": "0.26",
+      "MarketPrice": "0.27",
       "FoilPrice": "2.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/655.png",
       "LowFoilPrice": "0.05"
@@ -17909,7 +17909,7 @@
       "Unique": false,
       "Artist": "Space Goose",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.24",
+      "MarketPrice": "1.23",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/891.png",
       "LowFoilPrice": "0.80"
@@ -17928,7 +17928,7 @@
       "Unique": false,
       "Artist": "Joshua Carson",
       "VariantType": "Normal",
-      "MarketPrice": "0.07",
+      "MarketPrice": "0.06",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/075.png",
       "LowPrice": "0.01"
@@ -17966,7 +17966,7 @@
       "Unique": false,
       "Artist": "Joshua Carson",
       "VariantType": "Foil",
-      "MarketPrice": "0.11",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/573.png",
       "LowFoilPrice": "0.04"
@@ -18029,7 +18029,7 @@
       "Unique": false,
       "Artist": "Fernando Correa",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.28",
+      "MarketPrice": "0.29",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/474.png",
       "LowPrice": "0.15"
@@ -18221,7 +18221,7 @@
       "Unique": false,
       "Artist": "Aaron Dhanda",
       "VariantType": "Normal",
-      "MarketPrice": "0.11",
+      "MarketPrice": "0.09",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/247.png",
       "LowPrice": "0.03"
@@ -18243,7 +18243,7 @@
       "Unique": false,
       "Artist": "Aaron Dhanda",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.27",
+      "MarketPrice": "0.28",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/509.png",
       "LowPrice": "0.05"
@@ -18287,10 +18287,10 @@
       "Unique": false,
       "Artist": "Aaron Dhanda",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.34",
+      "MarketPrice": "0.35",
       "FoilPrice": "5.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/981.png",
-      "LowFoilPrice": "0.20"
+      "LowFoilPrice": "0.15"
     },
     {
       "Set": "JTL",
@@ -18331,7 +18331,7 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.39",
+      "MarketPrice": "0.40",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/381.png",
       "LowPrice": "0.15"
@@ -18398,7 +18398,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.10",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/259.png",
       "LowPrice": "0.03"
@@ -18421,7 +18421,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/521.png",
       "LowPrice": "0.03"
@@ -18444,7 +18444,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Amad Mir",
       "VariantType": "Foil",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.11",
       "FoilPrice": "2.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/757.png",
       "LowFoilPrice": "0.04"
@@ -18470,7 +18470,7 @@
       "MarketPrice": "0.45",
       "FoilPrice": "10.39",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/993.png",
-      "LowFoilPrice": "0.15"
+      "LowFoilPrice": "0.12"
     },
     {
       "Set": "JTL",
@@ -18524,7 +18524,7 @@
       "MarketPrice": "28.16",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1011.png",
-      "LowPrice": "50.00"
+      "LowPrice": "41.16"
     },
     {
       "Set": "JTL",
@@ -18620,7 +18620,7 @@
       "MarketPrice": "0.11",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/739.png",
-      "LowFoilPrice": "0.05"
+      "LowFoilPrice": "0.02"
     },
     {
       "Set": "JTL",
@@ -18692,7 +18692,7 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Showcase",
-      "MarketPrice": "24.41",
+      "MarketPrice": "24.70",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1000.png",
       "LowPrice": "23.00"
@@ -18718,7 +18718,7 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.14",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/266.png",
       "LowPrice": "0.05"
@@ -18790,7 +18790,7 @@
       "MarketPrice": "0.10",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/559.png",
-      "LowFoilPrice": "0.05"
+      "LowFoilPrice": "0.03"
     },
     {
       "Set": "JTL",
@@ -18813,7 +18813,7 @@
       "MarketPrice": "0.20",
       "FoilPrice": "3.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/795.png",
-      "LowFoilPrice": "0.14"
+      "LowFoilPrice": "0.13"
     },
     {
       "Set": "JTL",
@@ -18833,10 +18833,10 @@
       "Unique": true,
       "Artist": "Kyle Petchock",
       "VariantType": "Prestige",
-      "MarketPrice": "14.40",
+      "MarketPrice": "15.33",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1049.png",
-      "LowPrice": "15.34"
+      "LowPrice": "13.26"
     },
     {
       "Set": "JTL",
@@ -18856,10 +18856,10 @@
       "Unique": true,
       "Artist": "Kyle Petchock",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "21.55",
+      "MarketPrice": "22.75",
       "FoilPrice": "50.70",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1085.png",
-      "LowFoilPrice": "17.39"
+      "LowFoilPrice": "29.99"
     },
     {
       "Set": "JTL",
@@ -18905,7 +18905,7 @@
       "MarketPrice": "8.71",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/250.png",
-      "LowPrice": "6.99"
+      "LowPrice": "8.63"
     },
     {
       "Set": "JTL",
@@ -18925,7 +18925,7 @@
       "Unique": true,
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace",
-      "MarketPrice": "9.05",
+      "MarketPrice": "8.97",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/512.png",
       "LowPrice": "8.73"
@@ -18948,10 +18948,10 @@
       "Unique": true,
       "Artist": "Kyle Petchock",
       "VariantType": "Foil",
-      "MarketPrice": "8.01",
+      "MarketPrice": "8.09",
       "FoilPrice": "3.65",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/748.png",
-      "LowFoilPrice": "7.00"
+      "LowFoilPrice": "7.64"
     },
     {
       "Set": "JTL",
@@ -18971,10 +18971,10 @@
       "Unique": true,
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "10.47",
+      "MarketPrice": "10.44",
       "FoilPrice": "24.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/984.png",
-      "LowFoilPrice": "10.47"
+      "LowFoilPrice": "10.99"
     },
     {
       "Set": "JTL",
@@ -19093,7 +19093,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Ario Anindito",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/372.png",
       "LowPrice": "0.05"
@@ -19116,7 +19116,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Ario Anindito",
       "VariantType": "Foil",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/608.png",
       "LowFoilPrice": "0.07"
@@ -19158,7 +19158,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "1.66",
+      "MarketPrice": "1.97",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/092.png",
       "LowPrice": "0.99"
@@ -19177,7 +19177,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.78",
+      "MarketPrice": "1.76",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/354.png",
       "LowPrice": "1.50"
@@ -19199,7 +19199,7 @@
       "MarketPrice": "1.26",
       "FoilPrice": "14.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/590.png",
-      "LowFoilPrice": "0.88"
+      "LowFoilPrice": "0.90"
     },
     {
       "Set": "JTL",
@@ -19215,7 +19215,7 @@
       "Unique": false,
       "Artist": "Johnny Morrow",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "2.35",
+      "MarketPrice": "2.28",
       "FoilPrice": "26.88",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/826.png",
       "LowFoilPrice": "1.75"
@@ -19241,7 +19241,7 @@
       "MarketPrice": "0.29",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/111.png",
-      "LowPrice": "0.20"
+      "LowPrice": "0.19"
     },
     {
       "Set": "JTL",
@@ -19261,7 +19261,7 @@
       "Keywords": ["Raid"],
       "Artist": "EJ Dela Cruz",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.20",
+      "MarketPrice": "1.30",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/373.png",
       "LowPrice": "0.75"
@@ -19284,7 +19284,7 @@
       "Keywords": ["Raid"],
       "Artist": "EJ Dela Cruz",
       "VariantType": "Foil",
-      "MarketPrice": "0.26",
+      "MarketPrice": "0.29",
       "FoilPrice": "3.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/609.png",
       "LowFoilPrice": "0.05"
@@ -19353,7 +19353,7 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "2.08",
+      "MarketPrice": "2.10",
       "FoilPrice": "48.69",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1072.png",
       "LowFoilPrice": "1.89"
@@ -19376,10 +19376,10 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Prestige Serialized",
-      "MarketPrice": "114.25",
+      "MarketPrice": "108.99",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1108.png",
-      "LowFoilPrice": "108.99"
+      "LowFoilPrice": "106.82"
     },
     {
       "Set": "JTL",
@@ -19399,7 +19399,7 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Normal",
-      "MarketPrice": "0.66",
+      "MarketPrice": "0.65",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/169.png",
       "LowPrice": "0.45"
@@ -19422,7 +19422,7 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.85",
+      "MarketPrice": "0.86",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/431.png",
       "LowPrice": "0.55"
@@ -19468,7 +19468,7 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.58",
+      "MarketPrice": "1.56",
       "FoilPrice": "29.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/903.png",
       "LowFoilPrice": "1.30"
@@ -19655,7 +19655,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Foil",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.18",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/674.png",
       "LowFoilPrice": "0.03"
@@ -19698,7 +19698,7 @@
       "Keywords": ["Shielded"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Prestige",
-      "MarketPrice": "3.62",
+      "MarketPrice": "3.69",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1047.png",
       "LowPrice": "2.71"
@@ -19722,10 +19722,10 @@
       "Keywords": ["Shielded"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "7.01",
+      "MarketPrice": "7.21",
       "FoilPrice": "23.75",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1083.png",
-      "LowFoilPrice": "6.94"
+      "LowFoilPrice": "7.00"
     },
     {
       "Set": "JTL",
@@ -19770,7 +19770,7 @@
       "Keywords": ["Shielded"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Normal",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.35",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/242.png",
       "LowPrice": "0.20"
@@ -19797,7 +19797,7 @@
       "MarketPrice": "0.73",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/504.png",
-      "LowPrice": "0.50"
+      "LowPrice": "0.41"
     },
     {
       "Set": "JTL",
@@ -19818,7 +19818,7 @@
       "Keywords": ["Shielded"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Foil",
-      "MarketPrice": "0.31",
+      "MarketPrice": "0.32",
       "FoilPrice": "2.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/740.png",
       "LowFoilPrice": "0.05"
@@ -19842,7 +19842,7 @@
       "Keywords": ["Shielded"],
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.88",
+      "MarketPrice": "0.89",
       "FoilPrice": "9.74",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/976.png",
       "LowFoilPrice": "0.79"
@@ -19865,7 +19865,7 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Prestige",
-      "MarketPrice": "0.96",
+      "MarketPrice": "1.00",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1042.png",
       "LowPrice": "0.65"
@@ -19888,10 +19888,10 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "2.41",
+      "MarketPrice": "2.36",
       "FoilPrice": "29.82",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1078.png",
-      "LowFoilPrice": "2.05"
+      "LowFoilPrice": "2.01"
     },
     {
       "Set": "JTL",
@@ -19911,10 +19911,10 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Prestige Serialized",
-      "MarketPrice": "75.00",
+      "MarketPrice": "66.95",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1114.png",
-      "LowFoilPrice": "58.98"
+      "LowFoilPrice": "58.89"
     },
     {
       "Set": "JTL",
@@ -19980,7 +19980,7 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Foil",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.18",
       "FoilPrice": "9.60",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/698.png",
       "LowFoilPrice": "0.03"
@@ -20003,10 +20003,10 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.20",
+      "MarketPrice": "1.21",
       "FoilPrice": "2.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/934.png",
-      "LowFoilPrice": "0.83"
+      "LowFoilPrice": "0.99"
     },
     {
       "Set": "JTL",
@@ -20026,7 +20026,7 @@
       "Unique": true,
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
-      "MarketPrice": "0.37",
+      "MarketPrice": "0.38",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/213.png",
       "LowPrice": "0.20"
@@ -20049,7 +20049,7 @@
       "Unique": true,
       "Artist": "Benjamin Paulus",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.76",
+      "MarketPrice": "0.77",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/475.png",
       "LowPrice": "0.30"
@@ -20075,7 +20075,7 @@
       "MarketPrice": "0.31",
       "FoilPrice": "3.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/711.png",
-      "LowFoilPrice": "0.15"
+      "LowFoilPrice": "0.20"
     },
     {
       "Set": "JTL",
@@ -20095,7 +20095,7 @@
       "Unique": true,
       "Artist": "Benjamin Paulus",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.79",
+      "MarketPrice": "1.73",
       "FoilPrice": "15.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/947.png",
       "LowFoilPrice": "1.00"
@@ -20164,7 +20164,7 @@
       "Unique": true,
       "Artist": "Fernando Correa",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "1.83",
+      "MarketPrice": "1.82",
       "FoilPrice": "24.28",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1058.png",
       "LowFoilPrice": "1.06"
@@ -20256,7 +20256,7 @@
       "Unique": true,
       "Artist": "Fernando Correa",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.26",
+      "MarketPrice": "0.27",
       "FoilPrice": "9.94",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/796.png",
       "LowFoilPrice": "0.15"
@@ -20344,7 +20344,7 @@
       "Unique": false,
       "Artist": "Omercan Cirit",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.58",
+      "MarketPrice": "0.56",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/972.png",
       "LowFoilPrice": "0.35"
@@ -20413,7 +20413,7 @@
       "MarketPrice": "0.14",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/718.png",
-      "LowFoilPrice": "0.05"
+      "LowFoilPrice": "0.02"
     },
     {
       "Set": "JTL",
@@ -20456,7 +20456,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.23",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/098.png",
       "LowPrice": "0.08"
@@ -20480,7 +20480,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.58",
+      "MarketPrice": "0.59",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/360.png",
       "LowPrice": "0.27"
@@ -20550,7 +20550,7 @@
       "Unique": false,
       "Artist": "Ario Anindito",
       "VariantType": "Normal",
-      "MarketPrice": "0.09",
+      "MarketPrice": "0.10",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/135.png",
       "LowPrice": "0.03"
@@ -20572,7 +20572,7 @@
       "Unique": false,
       "Artist": "Ario Anindito",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.29",
+      "MarketPrice": "0.28",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/397.png",
       "LowPrice": "0.09"
@@ -20594,7 +20594,7 @@
       "Unique": false,
       "Artist": "Ario Anindito",
       "VariantType": "Foil",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.18",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/633.png",
       "LowFoilPrice": "0.01"
@@ -20616,7 +20616,7 @@
       "Unique": false,
       "Artist": "Ario Anindito",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.43",
+      "MarketPrice": "0.44",
       "FoilPrice": "3.61",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/869.png",
       "LowFoilPrice": "0.27"
@@ -20635,7 +20635,7 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.22",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/177.png",
       "LowPrice": "0.09"
@@ -20654,7 +20654,7 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.44",
+      "MarketPrice": "0.43",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/439.png",
       "LowPrice": "0.20"
@@ -20695,7 +20695,7 @@
       "MarketPrice": "0.78",
       "FoilPrice": "9.80",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/911.png",
-      "LowFoilPrice": "0.45"
+      "LowFoilPrice": "0.50"
     },
     {
       "Set": "JTL",
@@ -20714,10 +20714,10 @@
       "Unique": false,
       "Artist": "Christian Papazoglakis",
       "VariantType": "Normal",
-      "MarketPrice": "15.19",
+      "MarketPrice": "16.85",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/221.png",
-      "LowPrice": "14.00"
+      "LowPrice": "15.00"
     },
     {
       "Set": "JTL",
@@ -20736,10 +20736,10 @@
       "Unique": false,
       "Artist": "Christian Papazoglakis",
       "VariantType": "Hyperspace",
-      "MarketPrice": "13.84",
+      "MarketPrice": "19.76",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/483.png",
-      "LowPrice": "18.00"
+      "LowPrice": "19.76"
     },
     {
       "Set": "JTL",
@@ -20758,10 +20758,10 @@
       "Unique": false,
       "Artist": "Christian Papazoglakis",
       "VariantType": "Foil",
-      "MarketPrice": "6.39",
+      "MarketPrice": "7.50",
       "FoilPrice": "26.91",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/719.png",
-      "LowFoilPrice": "16.00"
+      "LowFoilPrice": "13.00"
     },
     {
       "Set": "JTL",
@@ -20780,10 +20780,10 @@
       "Unique": false,
       "Artist": "Christian Papazoglakis",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "10.46",
+      "MarketPrice": "10.53",
       "FoilPrice": "89.88",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/955.png",
-      "LowFoilPrice": "39.99"
+      "LowFoilPrice": "29.99"
     },
     {
       "Set": "JTL",
@@ -20891,7 +20891,7 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Normal",
-      "MarketPrice": "0.35",
+      "MarketPrice": "0.36",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/227.png",
       "LowPrice": "0.10"
@@ -20910,7 +20910,7 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.60",
+      "MarketPrice": "0.62",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/489.png",
       "LowPrice": "0.24"
@@ -20929,7 +20929,7 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Foil",
-      "MarketPrice": "0.32",
+      "MarketPrice": "0.34",
       "FoilPrice": "5.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/725.png",
       "LowFoilPrice": "0.10"
@@ -20951,7 +20951,7 @@
       "MarketPrice": "2.22",
       "FoilPrice": "10.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/961.png",
-      "LowFoilPrice": "1.35"
+      "LowFoilPrice": "1.30"
     },
     {
       "Set": "JTL",
@@ -20992,7 +20992,7 @@
       "Unique": false,
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/422.png",
       "LowPrice": "0.10"
@@ -21017,7 +21017,7 @@
       "MarketPrice": "0.12",
       "FoilPrice": "1.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/658.png",
-      "LowFoilPrice": "0.02"
+      "LowFoilPrice": "0.01"
     },
     {
       "Set": "JTL",
@@ -21058,7 +21058,7 @@
       "Unique": false,
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.18",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/256.png",
       "LowPrice": "0.03"
@@ -21080,7 +21080,7 @@
       "Unique": false,
       "Artist": "Fernando Correa",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.23",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/518.png",
       "LowPrice": "0.05"
@@ -21181,7 +21181,7 @@
       "Unique": false,
       "Artist": "Benjamin Paulus",
       "VariantType": "Foil",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.11",
       "FoilPrice": "2.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/731.png",
       "LowFoilPrice": "0.08"
@@ -21200,7 +21200,7 @@
       "Unique": false,
       "Artist": "Benjamin Paulus",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.35",
+      "MarketPrice": "0.36",
       "FoilPrice": "9.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/967.png",
       "LowFoilPrice": "0.15"
@@ -21238,7 +21238,7 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/437.png",
       "LowPrice": "0.04"
@@ -21260,7 +21260,7 @@
       "MarketPrice": "0.11",
       "FoilPrice": "2.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/673.png",
-      "LowFoilPrice": "0.07"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -21322,7 +21322,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Shane Molina",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.39",
+      "MarketPrice": "0.38",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/349.png",
       "LowPrice": "0.15"
@@ -21345,7 +21345,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Shane Molina",
       "VariantType": "Foil",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.18",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/585.png",
       "LowFoilPrice": "0.09"
@@ -21368,7 +21368,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Shane Molina",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.60",
+      "MarketPrice": "0.59",
       "FoilPrice": "3.56",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/821.png",
       "LowFoilPrice": "0.25"
@@ -21390,7 +21390,7 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.13",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/237.png",
       "LowPrice": "0.04"
@@ -21412,7 +21412,7 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.38",
+      "MarketPrice": "0.39",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/499.png",
       "LowPrice": "0.31"
@@ -21456,10 +21456,10 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.83",
+      "MarketPrice": "1.82",
       "FoilPrice": "5.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/971.png",
-      "LowFoilPrice": "1.04"
+      "LowFoilPrice": "1.00"
     },
     {
       "Set": "JTL",
@@ -21522,10 +21522,10 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Foil",
-      "MarketPrice": "0.25",
+      "MarketPrice": "0.26",
       "FoilPrice": "1.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/737.png",
-      "LowFoilPrice": "0.03"
+      "LowFoilPrice": "0.02"
     },
     {
       "Set": "JTL",
@@ -21547,7 +21547,7 @@
       "MarketPrice": "0.38",
       "FoilPrice": "3.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/973.png",
-      "LowFoilPrice": "0.19"
+      "LowFoilPrice": "0.15"
     },
     {
       "Set": "JTL",
@@ -21566,7 +21566,7 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.51",
+      "MarketPrice": "0.59",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/152.png",
       "LowPrice": "0.20"
@@ -21588,7 +21588,7 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.88",
+      "MarketPrice": "0.91",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/414.png",
       "LowPrice": "0.25"
@@ -21632,7 +21632,7 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.79",
+      "MarketPrice": "1.85",
       "FoilPrice": "8.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/886.png",
       "LowFoilPrice": "1.00"
@@ -21784,7 +21784,7 @@
       "MarketPrice": "0.11",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/622.png",
-      "LowFoilPrice": "0.05"
+      "LowFoilPrice": "0.02"
     },
     {
       "Set": "JTL",
@@ -21800,7 +21800,7 @@
       "Unique": false,
       "Artist": "EJ Dela Cruz",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.27",
+      "MarketPrice": "0.28",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/858.png",
       "LowFoilPrice": "0.10"
@@ -21824,10 +21824,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Francois Cannels",
       "VariantType": "Prestige",
-      "MarketPrice": "1.37",
+      "MarketPrice": "1.42",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1050.png",
-      "LowPrice": "0.95"
+      "LowPrice": "0.97"
     },
     {
       "Set": "JTL",
@@ -21848,7 +21848,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Francois Cannels",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "3.84",
+      "MarketPrice": "3.92",
       "FoilPrice": "19.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1086.png",
       "LowFoilPrice": "3.00"
@@ -21875,7 +21875,7 @@
       "MarketPrice": "225.49",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1122.png",
-      "LowFoilPrice": "150.00"
+      "LowFoilPrice": "130.00"
     },
     {
       "Set": "JTL",
@@ -21947,7 +21947,7 @@
       "MarketPrice": "0.15",
       "FoilPrice": "2.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/750.png",
-      "LowFoilPrice": "0.06"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -21990,7 +21990,7 @@
       "MarketPrice": "0.37",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/171.png",
-      "LowPrice": "0.20"
+      "LowPrice": "0.19"
     },
     {
       "Set": "JTL",
@@ -22006,10 +22006,10 @@
       "Unique": false,
       "Artist": "Fernando Correa",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.67",
+      "MarketPrice": "0.69",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/433.png",
-      "LowPrice": "0.15"
+      "LowPrice": "0.19"
     },
     {
       "Set": "JTL",
@@ -22025,7 +22025,7 @@
       "Unique": false,
       "Artist": "Fernando Correa",
       "VariantType": "Foil",
-      "MarketPrice": "0.37",
+      "MarketPrice": "0.39",
       "FoilPrice": "5.91",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/669.png",
       "LowFoilPrice": "0.10"
@@ -22044,7 +22044,7 @@
       "Unique": false,
       "Artist": "Fernando Correa",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.81",
+      "MarketPrice": "0.80",
       "FoilPrice": "5.88",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/905.png",
       "LowFoilPrice": "0.50"
@@ -22093,7 +22093,7 @@
       "MarketPrice": "0.16",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/452.png",
-      "LowPrice": "0.04"
+      "LowPrice": "0.02"
     },
     {
       "Set": "JTL",
@@ -22136,7 +22136,7 @@
       "Keywords": ["Shielded"],
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.29",
+      "MarketPrice": "0.30",
       "FoilPrice": "3.49",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/924.png",
       "LowFoilPrice": "0.14"
@@ -22160,10 +22160,10 @@
       "Keywords": ["Keywords", "Sentinel"],
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "2.63",
+      "MarketPrice": "2.74",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/053.png",
-      "LowPrice": "2.25"
+      "LowPrice": "1.75"
     },
     {
       "Set": "JTL",
@@ -22184,10 +22184,10 @@
       "Keywords": ["Keywords", "Sentinel"],
       "Artist": "David Buisan",
       "VariantType": "Prestige",
-      "MarketPrice": "4.77",
+      "MarketPrice": "4.73",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1020.png",
-      "LowPrice": "3.49"
+      "LowPrice": "3.69"
     },
     {
       "Set": "JTL",
@@ -22208,10 +22208,10 @@
       "Keywords": ["Keywords", "Sentinel"],
       "Artist": "David Buisan",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "5.74",
+      "MarketPrice": "5.79",
       "FoilPrice": "77.75",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1056.png",
-      "LowFoilPrice": "4.88"
+      "LowFoilPrice": "4.92"
     },
     {
       "Set": "JTL",
@@ -22256,7 +22256,7 @@
       "Keywords": ["Keywords", "Sentinel"],
       "Artist": "David Buisan",
       "VariantType": "Hyperspace",
-      "MarketPrice": "3.10",
+      "MarketPrice": "3.00",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/315.png",
       "LowPrice": "2.50"
@@ -22280,10 +22280,10 @@
       "Keywords": ["Keywords", "Sentinel"],
       "Artist": "David Buisan",
       "VariantType": "Foil",
-      "MarketPrice": "2.24",
+      "MarketPrice": "2.29",
       "FoilPrice": "19.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/551.png",
-      "LowFoilPrice": "1.90"
+      "LowFoilPrice": "1.95"
     },
     {
       "Set": "JTL",
@@ -22304,7 +22304,7 @@
       "Keywords": ["Keywords", "Sentinel"],
       "Artist": "David Buisan",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "3.92",
+      "MarketPrice": "3.91",
       "FoilPrice": "40.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/787.png",
       "LowFoilPrice": "3.56"
@@ -22327,7 +22327,7 @@
       "Unique": true,
       "Artist": "Kursad Karatas",
       "VariantType": "Normal",
-      "MarketPrice": "1.60",
+      "MarketPrice": "1.77",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/089.png",
       "LowPrice": "1.00"
@@ -22350,10 +22350,10 @@
       "Unique": true,
       "Artist": "Kursad Karatas",
       "VariantType": "Prestige",
-      "MarketPrice": "3.77",
+      "MarketPrice": "3.80",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1024.png",
-      "LowPrice": "3.19"
+      "LowPrice": "3.20"
     },
     {
       "Set": "JTL",
@@ -22373,7 +22373,7 @@
       "Unique": true,
       "Artist": "Kursad Karatas",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "4.83",
+      "MarketPrice": "5.08",
       "FoilPrice": "30.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1060.png",
       "LowFoilPrice": "4.91"
@@ -22396,10 +22396,10 @@
       "Unique": true,
       "Artist": "Kursad Karatas",
       "VariantType": "Prestige Serialized",
-      "MarketPrice": "369.97",
+      "MarketPrice": "369.94",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1096.png",
-      "LowFoilPrice": "189.99"
+      "LowFoilPrice": "160.00"
     },
     {
       "Set": "JTL",
@@ -22419,7 +22419,7 @@
       "Unique": true,
       "Artist": "Kursad Karatas",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.60",
+      "MarketPrice": "1.62",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/351.png",
       "LowPrice": "0.60"
@@ -22442,7 +22442,7 @@
       "Unique": true,
       "Artist": "Kursad Karatas",
       "VariantType": "Foil",
-      "MarketPrice": "0.78",
+      "MarketPrice": "0.77",
       "FoilPrice": "2.93",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/587.png",
       "LowFoilPrice": "0.41"
@@ -22465,7 +22465,7 @@
       "Unique": true,
       "Artist": "Kursad Karatas",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.81",
+      "MarketPrice": "1.78",
       "FoilPrice": "10.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/823.png",
       "LowFoilPrice": "1.00"
@@ -22513,7 +22513,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Omercan Cirit",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.76",
+      "MarketPrice": "0.75",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/472.png",
       "LowPrice": "0.50"
@@ -22537,10 +22537,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Omercan Cirit",
       "VariantType": "Foil",
-      "MarketPrice": "0.23",
+      "MarketPrice": "0.24",
       "FoilPrice": "3.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/708.png",
-      "LowFoilPrice": "0.12"
+      "LowFoilPrice": "0.13"
     },
     {
       "Set": "JTL",
@@ -22585,7 +22585,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Eslam Aboshady",
       "VariantType": "Prestige",
-      "MarketPrice": "1.73",
+      "MarketPrice": "1.92",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1029.png",
       "LowPrice": "1.00"
@@ -22609,7 +22609,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Eslam Aboshady",
       "VariantType": "Normal",
-      "MarketPrice": "0.67",
+      "MarketPrice": "0.66",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/105.png",
       "LowPrice": "0.39"
@@ -22636,7 +22636,7 @@
       "MarketPrice": "2.46",
       "FoilPrice": "70.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1065.png",
-      "LowFoilPrice": "1.86"
+      "LowFoilPrice": "1.99"
     },
     {
       "Set": "JTL",
@@ -22681,7 +22681,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Eslam Aboshady",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.88",
+      "MarketPrice": "0.86",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/367.png",
       "LowPrice": "0.60"
@@ -22705,7 +22705,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Eslam Aboshady",
       "VariantType": "Foil",
-      "MarketPrice": "0.50",
+      "MarketPrice": "0.51",
       "FoilPrice": "53.31",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/603.png",
       "LowFoilPrice": "0.25"
@@ -22732,7 +22732,7 @@
       "MarketPrice": "1.28",
       "FoilPrice": "35.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/839.png",
-      "LowFoilPrice": "0.99"
+      "LowFoilPrice": "1.14"
     },
     {
       "Set": "JTL",
@@ -22785,7 +22785,7 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.24",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/244.png",
       "LowPrice": "0.15"
@@ -22842,7 +22842,7 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.96",
+      "MarketPrice": "0.95",
       "FoilPrice": "16.90",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/978.png",
       "LowFoilPrice": "0.29"
@@ -22861,7 +22861,7 @@
       "Unique": false,
       "Artist": "Rocío Espin",
       "VariantType": "Normal",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/025.png",
       "LowPrice": "0.04"
@@ -22918,10 +22918,10 @@
       "Unique": false,
       "Artist": "Rocío Espin",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.49",
+      "MarketPrice": "1.44",
       "FoilPrice": "20.96",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/763.png",
-      "LowFoilPrice": "1.45"
+      "LowFoilPrice": "1.40"
     },
     {
       "Set": "JTL",
@@ -22937,7 +22937,7 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.38",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/155.png",
       "LowPrice": "0.17"
@@ -22956,7 +22956,7 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.48",
+      "MarketPrice": "1.51",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/417.png",
       "LowPrice": "1.05"
@@ -22975,7 +22975,7 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Foil",
-      "MarketPrice": "0.53",
+      "MarketPrice": "0.54",
       "FoilPrice": "3.80",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/653.png",
       "LowFoilPrice": "0.39"
@@ -22997,7 +22997,7 @@
       "MarketPrice": "1.59",
       "FoilPrice": "29.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/889.png",
-      "LowFoilPrice": "1.23"
+      "LowFoilPrice": "1.15"
     },
     {
       "Set": "JTL",
@@ -23074,10 +23074,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.53",
+      "MarketPrice": "0.56",
       "FoilPrice": "19.74",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/864.png",
-      "LowFoilPrice": "0.29"
+      "LowFoilPrice": "0.30"
     },
     {
       "Set": "JTL",
@@ -23150,7 +23150,7 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.37",
+      "MarketPrice": "0.34",
       "FoilPrice": "3.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/968.png",
       "LowFoilPrice": "0.08"
@@ -23198,7 +23198,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Salomé Goré",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.23",
+      "MarketPrice": "0.24",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/328.png",
       "LowPrice": "0.17"
@@ -23222,10 +23222,10 @@
       "Keywords": ["Piloting"],
       "Artist": "Salomé Goré",
       "VariantType": "Foil",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/564.png",
-      "LowFoilPrice": "0.07"
+      "LowFoilPrice": "0.05"
     },
     {
       "Set": "JTL",
@@ -23265,10 +23265,10 @@
       "Unique": false,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Normal",
-      "MarketPrice": "1.08",
+      "MarketPrice": "1.09",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/156.png",
-      "LowPrice": "0.76"
+      "LowPrice": "0.75"
     },
     {
       "Set": "JTL",
@@ -23284,7 +23284,7 @@
       "Unique": false,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Hyperspace",
-      "MarketPrice": "2.34",
+      "MarketPrice": "2.40",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/418.png",
       "LowPrice": "1.50"
@@ -23303,7 +23303,7 @@
       "Unique": false,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Foil",
-      "MarketPrice": "0.76",
+      "MarketPrice": "0.86",
       "FoilPrice": "4.64",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/654.png",
       "LowFoilPrice": "0.45"
@@ -23322,10 +23322,10 @@
       "Unique": false,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "3.20",
+      "MarketPrice": "3.15",
       "FoilPrice": "5.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/890.png",
-      "LowFoilPrice": "2.35"
+      "LowFoilPrice": "3.00"
     },
     {
       "Set": "JTL",
@@ -23341,10 +23341,10 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "4.90",
+      "MarketPrice": "5.05",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/131.png",
-      "LowPrice": "3.96"
+      "LowPrice": "4.00"
     },
     {
       "Set": "JTL",
@@ -23360,10 +23360,10 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "4.58",
+      "MarketPrice": "4.70",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/393.png",
-      "LowPrice": "4.42"
+      "LowPrice": "3.99"
     },
     {
       "Set": "JTL",
@@ -23382,7 +23382,7 @@
       "MarketPrice": "3.05",
       "FoilPrice": "24.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/629.png",
-      "LowFoilPrice": "2.82"
+      "LowFoilPrice": "2.75"
     },
     {
       "Set": "JTL",
@@ -23398,7 +23398,7 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "5.31",
+      "MarketPrice": "5.33",
       "FoilPrice": "44.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/865.png",
       "LowFoilPrice": "4.99"
@@ -23417,7 +23417,7 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Normal",
-      "MarketPrice": "0.08",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/172.png",
       "LowPrice": "0.01"
@@ -23581,7 +23581,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "6.87",
+      "MarketPrice": "6.70",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/106.png",
       "LowPrice": "5.56"
@@ -23600,10 +23600,10 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace",
-      "MarketPrice": "6.56",
+      "MarketPrice": "6.87",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/368.png",
-      "LowPrice": "6.99"
+      "LowPrice": "5.50"
     },
     {
       "Set": "JTL",
@@ -23619,10 +23619,10 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Foil",
-      "MarketPrice": "4.49",
+      "MarketPrice": "4.54",
       "FoilPrice": "24.93",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/604.png",
-      "LowFoilPrice": "3.10"
+      "LowFoilPrice": "3.95"
     },
     {
       "Set": "JTL",
@@ -23638,10 +23638,10 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "7.01",
+      "MarketPrice": "7.19",
       "FoilPrice": "24.90",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/840.png",
-      "LowFoilPrice": "11.95"
+      "LowFoilPrice": "6.89"
     },
     {
       "Set": "JTL",
@@ -23749,10 +23749,10 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Normal",
-      "MarketPrice": "5.46",
+      "MarketPrice": "5.72",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/085.png",
-      "LowPrice": "4.71"
+      "LowPrice": "5.00"
     },
     {
       "Set": "JTL",
@@ -23775,7 +23775,7 @@
       "MarketPrice": "9.51",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1023.png",
-      "LowPrice": "9.00"
+      "LowPrice": "8.74"
     },
     {
       "Set": "JTL",
@@ -23795,7 +23795,7 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "15.44",
+      "MarketPrice": "15.26",
       "FoilPrice": "28.78",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1059.png",
       "LowFoilPrice": "14.00"
@@ -23841,7 +23841,7 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace",
-      "MarketPrice": "7.34",
+      "MarketPrice": "7.45",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/347.png",
       "LowPrice": "5.13"
@@ -23864,10 +23864,10 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Foil",
-      "MarketPrice": "4.75",
+      "MarketPrice": "4.72",
       "FoilPrice": "5.90",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/583.png",
-      "LowFoilPrice": "3.99"
+      "LowFoilPrice": "4.00"
     },
     {
       "Set": "JTL",
@@ -23887,7 +23887,7 @@
       "Unique": true,
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "9.18",
+      "MarketPrice": "9.11",
       "FoilPrice": "15.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/819.png",
       "LowFoilPrice": "7.50"
@@ -23911,10 +23911,10 @@
       "Keywords": ["Overwhelm", "Raid"],
       "Artist": "Stephen Zavala",
       "VariantType": "Prestige",
-      "MarketPrice": "3.35",
+      "MarketPrice": "3.33",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1030.png",
-      "LowPrice": "2.56"
+      "LowPrice": "2.99"
     },
     {
       "Set": "JTL",
@@ -23935,10 +23935,10 @@
       "Keywords": ["Overwhelm", "Raid"],
       "Artist": "Stephen Zavala",
       "VariantType": "Prestige Foil",
-      "MarketPrice": "5.73",
+      "MarketPrice": "5.72",
       "FoilPrice": "29.99",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1066.png",
-      "LowFoilPrice": "4.87"
+      "LowFoilPrice": "4.86"
     },
     {
       "Set": "JTL",
@@ -23986,7 +23986,7 @@
       "MarketPrice": "0.17",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/137.png",
-      "LowPrice": "0.05"
+      "LowPrice": "0.01"
     },
     {
       "Set": "JTL",
@@ -24099,7 +24099,7 @@
       "Unique": false,
       "Artist": "Jake Parker",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.57",
+      "MarketPrice": "0.59",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/432.png",
       "LowPrice": "0.15"
@@ -24121,7 +24121,7 @@
       "Unique": false,
       "Artist": "Jake Parker",
       "VariantType": "Foil",
-      "MarketPrice": "0.31",
+      "MarketPrice": "0.32",
       "FoilPrice": "3.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/668.png",
       "LowFoilPrice": "0.15"
@@ -24170,7 +24170,7 @@
       "Keywords": ["Piloting"],
       "Artist": "David Buisan",
       "VariantType": "Normal",
-      "MarketPrice": "0.08",
+      "MarketPrice": "0.07",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/008.png",
       "LowPrice": "0.03"
@@ -24197,10 +24197,10 @@
       "Keywords": ["Piloting"],
       "Artist": "David Buisan",
       "VariantType": "Showcase",
-      "MarketPrice": "39.31",
+      "MarketPrice": "39.74",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/1004.png",
-      "LowPrice": "38.00"
+      "LowPrice": "40.92"
     },
     {
       "Set": "JTL",
@@ -24224,7 +24224,7 @@
       "Keywords": ["Piloting"],
       "Artist": "David Buisan",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.11",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/270.png",
       "LowPrice": "0.02"
@@ -24316,7 +24316,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Omercan Cirit",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.23",
+      "MarketPrice": "0.24",
       "FoilPrice": "9.97",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/806.png",
       "LowFoilPrice": "0.10"
@@ -24415,7 +24415,7 @@
       "MarketPrice": "0.64",
       "FoilPrice": "9.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/820.png",
-      "LowFoilPrice": "0.61"
+      "LowFoilPrice": "0.62"
     },
     {
       "Set": "JTL",
@@ -24508,7 +24508,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Omercan Cirit",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "1.37",
+      "MarketPrice": "1.40",
       "FoilPrice": "9.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/818.png",
       "LowFoilPrice": "1.23"
@@ -24554,7 +24554,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Joshua Carson",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.24",
+      "MarketPrice": "0.25",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/476.png",
       "LowPrice": "0.05"
@@ -24600,7 +24600,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Joshua Carson",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.38",
+      "MarketPrice": "0.36",
       "FoilPrice": "3.45",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/948.png",
       "LowFoilPrice": "0.15"
@@ -24619,7 +24619,7 @@
       "Unique": false,
       "Artist": "Borja Pindado",
       "VariantType": "Normal",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.15",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/055.png",
       "LowPrice": "0.05"
@@ -24657,7 +24657,7 @@
       "Unique": false,
       "Artist": "Borja Pindado",
       "VariantType": "Foil",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.17",
       "FoilPrice": "1.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/553.png",
       "LowFoilPrice": "0.05"
@@ -24764,7 +24764,7 @@
       "Unique": false,
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace Foil",
-      "MarketPrice": "0.43",
+      "MarketPrice": "0.44",
       "FoilPrice": "3.49",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/917.png",
       "LowFoilPrice": "0.23"
@@ -24787,7 +24787,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/236.png",
       "LowPrice": "0.10"
@@ -24810,7 +24810,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/498.png",
       "LowPrice": "0.04"
@@ -24833,7 +24833,7 @@
       "Keywords": ["Piloting"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Foil",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/JTL/734.png",
       "LowFoilPrice": "0.07"
