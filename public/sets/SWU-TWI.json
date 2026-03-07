@@ -19,7 +19,7 @@
       "Keywords": ["Coordinate"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.70",
+      "MarketPrice": "0.69",
       "FoilPrice": "2.27",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/240.png",
       "LowPrice": "0.50"
@@ -42,7 +42,7 @@
       "Keywords": ["Coordinate"],
       "Artist": "Eslam AboShady",
       "VariantType": "Normal",
-      "MarketPrice": "0.05",
+      "MarketPrice": "0.06",
       "FoilPrice": "0.15",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/045.png",
       "LowFoilPrice": "0.04",
@@ -112,7 +112,7 @@
       "Unique": false,
       "Artist": "André Mealha",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.47",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/379.png",
       "LowFoilPrice": "0.14",
@@ -152,7 +152,7 @@
       "Unique": false,
       "Artist": "Arthur Mougne",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.31",
+      "MarketPrice": "1.28",
       "FoilPrice": "3.27",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/313.png",
       "LowFoilPrice": "2.07",
@@ -200,7 +200,7 @@
       "Keywords": ["Restore"],
       "Artist": "Eslam AboShady",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.28",
+      "MarketPrice": "0.29",
       "FoilPrice": "0.63",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/508.png",
       "LowFoilPrice": "0.37",
@@ -225,7 +225,7 @@
       "Keywords": ["Coordinate"],
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Normal",
-      "MarketPrice": "1.37",
+      "MarketPrice": "1.26",
       "FoilPrice": "3.36",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/096.png",
       "LowFoilPrice": "1.20",
@@ -275,7 +275,7 @@
       "Keywords": ["Exploit"],
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.06",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.16",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/086.png",
       "LowFoilPrice": "0.06",
@@ -353,7 +353,7 @@
       "MarketPrice": "1.69",
       "FoilPrice": "2.84",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/364.png",
-      "LowFoilPrice": "1.60",
+      "LowFoilPrice": "1.75",
       "LowPrice": "1.00"
     },
     {
@@ -398,7 +398,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Hoan Nguyen",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.22",
       "FoilPrice": "0.31",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/365.png",
       "LowFoilPrice": "0.24",
@@ -494,7 +494,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Mona Finden",
       "VariantType": "Normal",
-      "MarketPrice": "1.26",
+      "MarketPrice": "1.25",
       "FoilPrice": "2.33",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/194.png",
       "LowFoilPrice": "1.75",
@@ -522,10 +522,10 @@
       "Keywords": ["Coordinate"],
       "Artist": "David Buisan",
       "VariantType": "Showcase",
-      "MarketPrice": "70.18",
+      "MarketPrice": "70.07",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/268.png",
-      "LowPrice": "68.65"
+      "LowPrice": "68.70"
     },
     {
       "Set": "TWI",
@@ -568,7 +568,7 @@
       "Unique": true,
       "Artist": "Arthur Mougne",
       "VariantType": "Normal",
-      "MarketPrice": "0.62",
+      "MarketPrice": "0.61",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/248.png",
       "LowPrice": "0.50"
@@ -607,7 +607,7 @@
       "Unique": false,
       "Artist": "Denis Medri",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.52",
+      "MarketPrice": "0.53",
       "FoilPrice": "1.86",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/466.png",
       "LowFoilPrice": "0.78",
@@ -713,7 +713,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Kevin Libranda",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.11",
+      "MarketPrice": "0.12",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/287.png",
       "LowPrice": "0.05"
@@ -736,11 +736,11 @@
       "Unique": true,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Normal",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.23",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/142.png",
       "LowFoilPrice": "0.13",
-      "LowPrice": "0.08"
+      "LowPrice": "0.09"
     },
     {
       "Set": "TWI",
@@ -760,10 +760,10 @@
       "Unique": true,
       "Artist": "Ignacio Bazan Lazcano",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.54",
+      "MarketPrice": "1.59",
       "FoilPrice": "2.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/410.png",
-      "LowFoilPrice": "1.71",
+      "LowFoilPrice": "1.70",
       "LowPrice": "1.00"
     },
     {
@@ -808,7 +808,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Christian Papzoglakis",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.21",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/506.png",
       "LowFoilPrice": "0.11",
@@ -835,7 +835,7 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.09",
+      "MarketPrice": "0.10",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/014.png",
       "LowPrice": "0.01"
@@ -886,10 +886,10 @@
       "Unique": true,
       "Artist": "Reno",
       "VariantType": "Showcase",
-      "MarketPrice": "68.86",
+      "MarketPrice": "68.03",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/271.png",
-      "LowPrice": "59.97"
+      "LowPrice": "59.17"
     },
     {
       "Set": "TWI",
@@ -936,7 +936,7 @@
       "Keywords": ["Exploit"],
       "Artist": "Elena Skitalets",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.45",
+      "MarketPrice": "0.44",
       "FoilPrice": "1.40",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/402.png",
       "LowFoilPrice": "0.92",
@@ -1032,7 +1032,7 @@
       "Unique": false,
       "Artist": "Eslam AboShady",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.27",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/401.png",
       "LowFoilPrice": "0.15",
@@ -1104,7 +1104,7 @@
       "Keywords": ["Overwhelm", "Sentinel"],
       "Artist": "Johnny Morrow",
       "VariantType": "Normal",
-      "MarketPrice": "0.06",
+      "MarketPrice": "0.05",
       "FoilPrice": "0.11",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/113.png",
       "LowFoilPrice": "0.05",
@@ -1176,7 +1176,7 @@
       "Keywords": ["Ambush", "Exploit"],
       "Artist": "Ario Anindito",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.24",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/387.png",
       "LowFoilPrice": "0.12",
@@ -1227,7 +1227,7 @@
       "MarketPrice": "1.39",
       "FoilPrice": "1.69",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/315.png",
-      "LowFoilPrice": "1.41",
+      "LowFoilPrice": "1.42",
       "LowPrice": "0.99"
     },
     {
@@ -1293,11 +1293,11 @@
       "Unique": false,
       "Artist": "Eslam AboShady",
       "VariantType": "Normal",
-      "MarketPrice": "1.08",
+      "MarketPrice": "1.07",
       "FoilPrice": "0.03",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/229.png",
       "LowFoilPrice": "0.03",
-      "LowPrice": "0.99"
+      "LowPrice": "0.97"
     },
     {
       "Set": "TWI",
@@ -1320,7 +1320,7 @@
       "MarketPrice": "0.10",
       "FoilPrice": "0.18",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/235.png",
-      "LowFoilPrice": "0.11",
+      "LowFoilPrice": "0.10",
       "LowPrice": "0.03"
     },
     {
@@ -1519,7 +1519,7 @@
       "Unique": false,
       "Artist": "Maxine Vee",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.27",
+      "MarketPrice": "0.26",
       "FoilPrice": "0.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/420.png",
       "LowFoilPrice": "0.19",
@@ -1541,7 +1541,7 @@
       "Unique": false,
       "Artist": "David Buisán",
       "VariantType": "Normal",
-      "MarketPrice": "0.24",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.30",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/255.png",
       "LowFoilPrice": "0.07",
@@ -1629,11 +1629,11 @@
       "Unique": true,
       "Artist": "James Daly",
       "VariantType": "Normal",
-      "MarketPrice": "5.25",
+      "MarketPrice": "5.02",
       "FoilPrice": "13.03",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/187.png",
       "LowFoilPrice": "5.00",
-      "LowPrice": "5.00"
+      "LowPrice": "4.00"
     },
     {
       "Set": "TWI",
@@ -1653,7 +1653,7 @@
       "Unique": true,
       "Artist": "James Daly",
       "VariantType": "Hyperspace",
-      "MarketPrice": "9.64",
+      "MarketPrice": "9.30",
       "FoilPrice": "25.06",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/452.png",
       "LowFoilPrice": "14.25",
@@ -1751,7 +1751,7 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Normal",
-      "MarketPrice": "0.87",
+      "MarketPrice": "0.86",
       "FoilPrice": "2.27",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/097.png",
       "LowPrice": "0.50"
@@ -1892,7 +1892,7 @@
       "Unique": false,
       "Artist": "James Daly",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.09",
+      "MarketPrice": "1.10",
       "FoilPrice": "1.61",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/442.png",
       "LowFoilPrice": "1.27",
@@ -1940,11 +1940,11 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "5.50",
+      "MarketPrice": "5.62",
       "FoilPrice": "7.80",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/468.png",
       "LowFoilPrice": "5.51",
-      "LowPrice": "5.03"
+      "LowPrice": "4.99"
     },
     {
       "Set": "TWI",
@@ -1966,10 +1966,10 @@
       "Unique": true,
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.13",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.39",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/017.png",
-      "LowFoilPrice": "0.15",
+      "LowFoilPrice": "0.24",
       "LowPrice": "0.05"
     },
     {
@@ -2079,7 +2079,7 @@
       "Unique": false,
       "Artist": "Arthur Mougne",
       "VariantType": "Normal",
-      "MarketPrice": "1.27",
+      "MarketPrice": "1.19",
       "FoilPrice": "1.35",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/116.png",
       "LowFoilPrice": "0.99",
@@ -2102,7 +2102,7 @@
       "Unique": false,
       "Artist": "Arthur Mougne",
       "VariantType": "Hyperspace",
-      "MarketPrice": "2.55",
+      "MarketPrice": "2.53",
       "FoilPrice": "4.18",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/386.png",
       "LowFoilPrice": "3.31",
@@ -2125,7 +2125,7 @@
       "Keywords": ["Raid"],
       "Artist": "Felipe Goncalves",
       "VariantType": "Normal",
-      "MarketPrice": "0.08",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.13",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/169.png",
       "LowFoilPrice": "0.05",
@@ -2176,7 +2176,7 @@
       "MarketPrice": "0.17",
       "FoilPrice": "0.23",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/114.png",
-      "LowFoilPrice": "0.14",
+      "LowFoilPrice": "0.15",
       "LowPrice": "0.09"
     },
     {
@@ -2202,7 +2202,7 @@
       "FoilPrice": "2.21",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/384.png",
       "LowFoilPrice": "1.20",
-      "LowPrice": "0.99"
+      "LowPrice": "1.05"
     },
     {
       "Set": "TWI",
@@ -2222,7 +2222,7 @@
       "Keywords": ["Coordinate"],
       "Artist": "Felipe Goncalves",
       "VariantType": "Normal",
-      "MarketPrice": "0.05",
+      "MarketPrice": "0.06",
       "FoilPrice": "0.13",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/205.png",
       "LowFoilPrice": "0.04",
@@ -2246,7 +2246,7 @@
       "Keywords": ["Coordinate"],
       "Artist": "Felipe Goncalves",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.13",
       "FoilPrice": "0.23",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/470.png",
       "LowFoilPrice": "0.07",
@@ -2294,7 +2294,7 @@
       "Keywords": ["Coordinate"],
       "Artist": "Eslam AboShady",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.27",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/425.png",
       "LowFoilPrice": "0.15",
@@ -2432,7 +2432,7 @@
       "Unique": false,
       "Artist": "Facundo Moyano",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.43",
+      "MarketPrice": "0.44",
       "FoilPrice": "1.18",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/400.png",
       "LowFoilPrice": "0.81",
@@ -2472,7 +2472,7 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.38",
+      "MarketPrice": "0.37",
       "FoilPrice": "1.73",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/361.png",
       "LowFoilPrice": "1.29",
@@ -2492,7 +2492,7 @@
       "Unique": false,
       "Artist": "Benjamin Paulus",
       "VariantType": "Normal",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.29",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/139.png",
       "LowFoilPrice": "0.09",
@@ -2560,7 +2560,7 @@
       "Keywords": ["Ambush", "Coordinate"],
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.35",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/377.png",
       "LowFoilPrice": "0.19",
@@ -2640,10 +2640,10 @@
       "Keywords": ["Exploit"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Showcase",
-      "MarketPrice": "85.32",
+      "MarketPrice": "84.78",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/262.png",
-      "LowPrice": "85.00"
+      "LowPrice": "80.00"
     },
     {
       "Set": "TWI",
@@ -2667,7 +2667,7 @@
       "Keywords": ["Exploit"],
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.13",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/280.png",
       "LowPrice": "0.03"
@@ -2691,10 +2691,10 @@
       "Keywords": ["Exploit", "Overwhelm"],
       "Artist": "David Buisán",
       "VariantType": "Hyperspace",
-      "MarketPrice": "2.73",
+      "MarketPrice": "2.70",
       "FoilPrice": "6.74",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/406.png",
-      "LowFoilPrice": "4.50",
+      "LowFoilPrice": "4.00",
       "LowPrice": "1.99"
     },
     {
@@ -2731,7 +2731,7 @@
       "Unique": false,
       "Artist": "Denis Medri",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.14",
       "FoilPrice": "0.23",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/465.png",
       "LowFoilPrice": "0.14",
@@ -2795,11 +2795,11 @@
       "Unique": true,
       "Artist": "Leonardo Giammichele",
       "VariantType": "Normal",
-      "MarketPrice": "3.48",
+      "MarketPrice": "3.55",
       "FoilPrice": "5.65",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/135.png",
       "LowFoilPrice": "2.99",
-      "LowPrice": "2.70"
+      "LowPrice": "3.00"
     },
     {
       "Set": "TWI",
@@ -2819,11 +2819,11 @@
       "Unique": true,
       "Artist": "Leonardo Giammichele",
       "VariantType": "Hyperspace",
-      "MarketPrice": "6.72",
+      "MarketPrice": "6.64",
       "FoilPrice": "18.67",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/403.png",
-      "LowFoilPrice": "12.95",
-      "LowPrice": "5.50"
+      "LowFoilPrice": "12.19",
+      "LowPrice": "5.98"
     },
     {
       "Set": "TWI",
@@ -2911,7 +2911,7 @@
       "FoilPrice": "0.70",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/349.png",
       "LowFoilPrice": "0.25",
-      "LowPrice": "0.23"
+      "LowPrice": "0.25"
     },
     {
       "Set": "TWI",
@@ -3003,7 +3003,7 @@
       "Keywords": ["Grit"],
       "Artist": "Afif Khaled",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.27",
+      "MarketPrice": "0.28",
       "FoilPrice": "0.93",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/309.png",
       "LowFoilPrice": "0.67",
@@ -3069,7 +3069,7 @@
       "Unique": false,
       "Artist": "Hoan Nguyen",
       "VariantType": "Normal",
-      "MarketPrice": "0.07",
+      "MarketPrice": "0.06",
       "FoilPrice": "0.17",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/075.png",
       "LowFoilPrice": "0.07",
@@ -3241,7 +3241,7 @@
       "Unique": false,
       "Artist": "Rocío Espin",
       "VariantType": "Normal",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.35",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/022.png",
       "LowFoilPrice": "0.17",
@@ -3261,10 +3261,10 @@
       "Unique": false,
       "Artist": "Rocío Espin",
       "VariantType": "Hyperspace",
-      "MarketPrice": "3.32",
+      "MarketPrice": "3.19",
       "FoilPrice": "8.41",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/297.png",
-      "LowFoilPrice": "10.98",
+      "LowFoilPrice": "8.00",
       "LowPrice": "2.99"
     },
     {
@@ -3332,7 +3332,7 @@
       "Unique": false,
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.07",
+      "MarketPrice": "0.06",
       "FoilPrice": "0.14",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/037.png",
       "LowFoilPrice": "0.03",
@@ -3543,7 +3543,7 @@
       "FoilPrice": "1.82",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/362.png",
       "LowFoilPrice": "1.10",
-      "LowPrice": "0.56"
+      "LowPrice": "0.59"
     },
     {
       "Set": "TWI",
@@ -3562,7 +3562,7 @@
       "Unique": false,
       "Artist": "Francois Cannels",
       "VariantType": "Normal",
-      "MarketPrice": "0.06",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.21",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/181.png",
       "LowFoilPrice": "0.09",
@@ -3675,7 +3675,7 @@
       "Keywords": ["Saboteur"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Hyperspace",
-      "MarketPrice": "2.40",
+      "MarketPrice": "2.36",
       "FoilPrice": "3.54",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/463.png",
       "LowFoilPrice": "3.50",
@@ -3695,7 +3695,7 @@
       "Unique": false,
       "Artist": "Kevin Libranda",
       "VariantType": "Normal",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.30",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/055.png",
       "LowFoilPrice": "0.11",
@@ -3715,10 +3715,10 @@
       "Unique": false,
       "Artist": "Kevin Libranda",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.99",
+      "MarketPrice": "0.98",
       "FoilPrice": "2.24",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/328.png",
-      "LowFoilPrice": "1.00",
+      "LowFoilPrice": "0.99",
       "LowPrice": "0.69"
     },
     {
@@ -3739,7 +3739,7 @@
       "Keywords": ["Restore"],
       "Artist": "Stephen Zavala",
       "VariantType": "Normal",
-      "MarketPrice": "0.06",
+      "MarketPrice": "0.05",
       "FoilPrice": "0.14",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/244.png",
       "LowFoilPrice": "0.05",
@@ -3783,7 +3783,7 @@
       "Unique": false,
       "Artist": "Borja Pindado",
       "VariantType": "Normal",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.28",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/239.png",
       "LowFoilPrice": "0.15",
@@ -3803,7 +3803,7 @@
       "Unique": false,
       "Artist": "Borja Pindado",
       "VariantType": "Hyperspace",
-      "MarketPrice": "2.76",
+      "MarketPrice": "2.73",
       "FoilPrice": "3.78",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/501.png",
       "LowFoilPrice": "3.32",
@@ -3851,7 +3851,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Kyle Petchock",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.18",
       "FoilPrice": "0.20",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/338.png",
       "LowFoilPrice": "0.10",
@@ -3945,7 +3945,7 @@
       "Unique": true,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.64",
+      "MarketPrice": "0.62",
       "FoilPrice": "1.19",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/326.png",
       "LowFoilPrice": "0.95",
@@ -3974,7 +3974,7 @@
       "FoilPrice": "0.26",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/216.png",
       "LowFoilPrice": "0.09",
-      "LowPrice": "0.09"
+      "LowPrice": "0.10"
     },
     {
       "Set": "TWI",
@@ -4063,7 +4063,7 @@
       "Unique": false,
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Normal",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.15",
       "FoilPrice": "0.33",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/068.png",
       "LowFoilPrice": "0.10",
@@ -4131,7 +4131,7 @@
       "Unique": false,
       "Artist": "Omercan Cirit",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.27",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/477.png",
       "LowFoilPrice": "0.10",
@@ -4182,7 +4182,7 @@
       "Unique": true,
       "Artist": "French Carlomagno",
       "VariantType": "Normal",
-      "MarketPrice": "4.17",
+      "MarketPrice": "4.15",
       "FoilPrice": "7.26",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/034.png",
       "LowFoilPrice": "3.94",
@@ -4210,10 +4210,10 @@
       "Keywords": ["Sentinel"],
       "Artist": "David Buisan",
       "VariantType": "Showcase",
-      "MarketPrice": "93.96",
+      "MarketPrice": "93.31",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/272.png",
-      "LowPrice": "150.00"
+      "LowPrice": "103.00"
     },
     {
       "Set": "TWI",
@@ -4255,7 +4255,7 @@
       "Unique": false,
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "2.27",
+      "MarketPrice": "2.24",
       "FoilPrice": "4.21",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/121.png",
       "LowFoilPrice": "3.50",
@@ -4303,7 +4303,7 @@
       "MarketPrice": "0.30",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/083.png",
-      "LowPrice": "0.10"
+      "LowPrice": "0.25"
     },
     {
       "Set": "TWI",
@@ -4351,7 +4351,7 @@
       "FoilPrice": "0.58",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/480.png",
       "LowFoilPrice": "0.25",
-      "LowPrice": "0.17"
+      "LowPrice": "0.20"
     },
     {
       "Set": "TWI",
@@ -4401,7 +4401,7 @@
       "FoilPrice": "3.37",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/388.png",
       "LowFoilPrice": "2.19",
-      "LowPrice": "1.20"
+      "LowPrice": "1.00"
     },
     {
       "Set": "TWI",
@@ -4441,7 +4441,7 @@
       "FoilPrice": "0.65",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/438.png",
       "LowFoilPrice": "0.44",
-      "LowPrice": "0.10"
+      "LowPrice": "0.14"
     },
     {
       "Set": "TWI",
@@ -4499,7 +4499,7 @@
       "Unique": true,
       "Artist": "Jake Parker",
       "VariantType": "Normal",
-      "MarketPrice": "0.60",
+      "MarketPrice": "0.58",
       "FoilPrice": "0.00",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/236.png",
       "LowPrice": "0.25"
@@ -4762,7 +4762,7 @@
       "Keywords": ["Exploit"],
       "Artist": "Afif Khaled",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.25",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/434.png",
       "LowFoilPrice": "0.14",
@@ -4802,7 +4802,7 @@
       "Unique": false,
       "Artist": "David Nash",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.32",
+      "MarketPrice": "0.33",
       "FoilPrice": "0.88",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/325.png",
       "LowFoilPrice": "0.56",
@@ -4867,10 +4867,10 @@
       "Keywords": ["Coordinate", "Raid"],
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.13",
       "FoilPrice": "0.17",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/164.png",
-      "LowFoilPrice": "0.12",
+      "LowFoilPrice": "0.10",
       "LowPrice": "0.06"
     },
     {
@@ -4916,7 +4916,7 @@
       "Keywords": ["Ambush"],
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.34",
       "FoilPrice": "0.31",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/214.png",
       "LowFoilPrice": "0.17",
@@ -5052,11 +5052,11 @@
       "Unique": true,
       "Artist": "David Buisán",
       "VariantType": "Normal",
-      "MarketPrice": "0.24",
+      "MarketPrice": "0.25",
       "FoilPrice": "0.65",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/110.png",
       "LowFoilPrice": "0.23",
-      "LowPrice": "0.10"
+      "LowPrice": "0.14"
     },
     {
       "Set": "TWI",
@@ -5079,7 +5079,7 @@
       "MarketPrice": "2.04",
       "FoilPrice": "4.80",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/380.png",
-      "LowFoilPrice": "2.50",
+      "LowFoilPrice": "2.00",
       "LowPrice": "0.75"
     },
     {
@@ -5096,7 +5096,7 @@
       "Unique": false,
       "Artist": "James Daly",
       "VariantType": "Normal",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.28",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/072.png",
       "LowFoilPrice": "0.17",
@@ -5177,7 +5177,7 @@
       "Keywords": ["Restore"],
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.41",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/129.png",
       "LowFoilPrice": "0.20",
@@ -5201,7 +5201,7 @@
       "MarketPrice": "1.19",
       "FoilPrice": "2.32",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/397.png",
-      "LowFoilPrice": "2.00",
+      "LowFoilPrice": "1.55",
       "LowPrice": "0.89"
     },
     {
@@ -5284,7 +5284,7 @@
       "Unique": false,
       "Artist": "Denis Medri",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.20",
       "FoilPrice": "0.32",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/471.png",
       "LowFoilPrice": "0.24",
@@ -5356,7 +5356,7 @@
       "Keywords": ["Exploit", "Saboteur"],
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "0.06",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.16",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/182.png",
       "LowFoilPrice": "0.10",
@@ -5383,7 +5383,7 @@
       "MarketPrice": "0.26",
       "FoilPrice": "0.34",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/447.png",
-      "LowFoilPrice": "0.12",
+      "LowFoilPrice": "0.13",
       "LowPrice": "0.07"
     },
     {
@@ -5433,10 +5433,10 @@
       "Unique": true,
       "Artist": "Jake Parker",
       "VariantType": "Showcase",
-      "MarketPrice": "104.12",
+      "MarketPrice": "108.98",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/273.png",
-      "LowPrice": "130.00"
+      "LowPrice": "162.50"
     },
     {
       "Set": "TWI",
@@ -5459,7 +5459,7 @@
       "Unique": true,
       "Artist": "Jake Parker",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.19",
+      "MarketPrice": "0.16",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/291.png",
       "LowPrice": "0.08"
@@ -5531,7 +5531,7 @@
       "Keywords": ["Raid"],
       "Artist": "Denis Medri",
       "VariantType": "Normal",
-      "MarketPrice": "0.09",
+      "MarketPrice": "0.08",
       "FoilPrice": "0.21",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/145.png",
       "LowFoilPrice": "0.15",
@@ -5581,7 +5581,7 @@
       "Keywords": ["Saboteur"],
       "Artist": "Robynn Frauhn",
       "VariantType": "Normal",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.22",
       "FoilPrice": "0.43",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/143.png",
       "LowFoilPrice": "0.22",
@@ -5693,7 +5693,7 @@
       "MarketPrice": "0.60",
       "FoilPrice": "0.86",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/357.png",
-      "LowFoilPrice": "0.75",
+      "LowFoilPrice": "0.68",
       "LowPrice": "0.25"
     },
     {
@@ -5718,7 +5718,7 @@
       "FoilPrice": "0.15",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/044.png",
       "LowFoilPrice": "0.05",
-      "LowPrice": "0.02"
+      "LowPrice": "0.03"
     },
     {
       "Set": "TWI",
@@ -5763,10 +5763,10 @@
       "Keywords": ["Coordinate"],
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "3.42",
+      "MarketPrice": "3.26",
       "FoilPrice": "7.39",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/064.png",
-      "LowFoilPrice": "4.69",
+      "LowFoilPrice": "4.00",
       "LowPrice": "2.50"
     },
     {
@@ -5813,7 +5813,7 @@
       "Keywords": ["Coordinate", "Saboteur"],
       "Artist": "Aitor Prieto Reyes",
       "VariantType": "Normal",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.37",
       "FoilPrice": "0.62",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/165.png",
       "LowFoilPrice": "0.38",
@@ -5935,7 +5935,7 @@
       "MarketPrice": "0.46",
       "FoilPrice": "1.24",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/356.png",
-      "LowFoilPrice": "1.13",
+      "LowFoilPrice": "1.15",
       "LowPrice": "0.23"
     },
     {
@@ -6008,7 +6008,7 @@
       "Unique": false,
       "Artist": "Omercan Cirit",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.40",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/314.png",
       "LowFoilPrice": "0.14",
@@ -6045,7 +6045,7 @@
       "Unique": false,
       "Artist": "Adrien Girod",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.16",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/518.png",
       "LowPrice": "0.08"
@@ -6068,7 +6068,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Stephen Zavala",
       "VariantType": "Normal",
-      "MarketPrice": "0.10",
+      "MarketPrice": "0.09",
       "FoilPrice": "0.15",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/149.png",
       "LowFoilPrice": "0.09",
@@ -6092,11 +6092,11 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Stephen Zavala",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.31",
+      "MarketPrice": "0.32",
       "FoilPrice": "1.65",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/416.png",
       "LowFoilPrice": "0.99",
-      "LowPrice": "0.15"
+      "LowPrice": "0.19"
     },
     {
       "Set": "TWI",
@@ -6121,7 +6121,7 @@
       "FoilPrice": "0.44",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/050.png",
       "LowFoilPrice": "0.24",
-      "LowPrice": "0.12"
+      "LowPrice": "0.15"
     },
     {
       "Set": "TWI",
@@ -6142,7 +6142,7 @@
       "Keywords": ["Coordinate", "Grit"],
       "Artist": "Robynn Frauhn",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.28",
+      "MarketPrice": "1.27",
       "FoilPrice": "4.86",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/323.png",
       "LowFoilPrice": "4.00",
@@ -6243,10 +6243,10 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Showcase",
-      "MarketPrice": "102.96",
+      "MarketPrice": "98.27",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/270.png",
-      "LowPrice": "73.99"
+      "LowPrice": "76.97"
     },
     {
       "Set": "TWI",
@@ -6269,7 +6269,7 @@
       "Unique": true,
       "Artist": "Eric Hibbeler",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.47",
+      "MarketPrice": "0.48",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/288.png",
       "LowPrice": "0.20"
@@ -6383,7 +6383,7 @@
       "Keywords": ["Exploit", "Restore"],
       "Artist": "French Carlomagno",
       "VariantType": "Normal",
-      "MarketPrice": "0.28",
+      "MarketPrice": "0.27",
       "FoilPrice": "0.59",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/039.png",
       "LowFoilPrice": "0.30",
@@ -6448,7 +6448,7 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.32",
+      "MarketPrice": "0.30",
       "FoilPrice": "0.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/373.png",
       "LowFoilPrice": "0.45",
@@ -6524,7 +6524,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Omercan Cirit",
       "VariantType": "Normal",
-      "MarketPrice": "0.06",
+      "MarketPrice": "0.07",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/009.png",
       "LowPrice": "0.01"
@@ -6551,10 +6551,10 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Omercan Cirit",
       "VariantType": "Showcase",
-      "MarketPrice": "101.46",
+      "MarketPrice": "100.34",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/266.png",
-      "LowPrice": "93.75"
+      "LowPrice": "92.74"
     },
     {
       "Set": "TWI",
@@ -6578,7 +6578,7 @@
       "Keywords": ["Overwhelm"],
       "Artist": "Omercan Cirit",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.13",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/284.png",
       "LowPrice": "0.05"
@@ -6601,7 +6601,7 @@
       "FoilPrice": "0.20",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/238.png",
       "LowFoilPrice": "0.07",
-      "LowPrice": "0.02"
+      "LowPrice": "0.01"
     },
     {
       "Set": "TWI",
@@ -6641,7 +6641,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.22",
       "FoilPrice": "0.40",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/154.png",
       "LowFoilPrice": "0.20",
@@ -6665,7 +6665,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.33",
+      "MarketPrice": "1.24",
       "FoilPrice": "3.85",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/421.png",
       "LowFoilPrice": "3.48",
@@ -6816,10 +6816,10 @@
       "Unique": true,
       "Artist": "Marc Escachx",
       "VariantType": "Showcase",
-      "MarketPrice": "84.50",
+      "MarketPrice": "81.66",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/258.png",
-      "LowPrice": "60.00"
+      "LowPrice": "70.00"
     },
     {
       "Set": "TWI",
@@ -6842,7 +6842,7 @@
       "Unique": true,
       "Artist": "Marc Escachx",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.41",
+      "MarketPrice": "0.40",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/276.png",
       "LowPrice": "0.15"
@@ -6907,7 +6907,7 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Normal",
-      "MarketPrice": "2.91",
+      "MarketPrice": "2.79",
       "FoilPrice": "7.70",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/225.png",
       "LowFoilPrice": "3.00",
@@ -6927,7 +6927,7 @@
       "Unique": false,
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace",
-      "MarketPrice": "7.42",
+      "MarketPrice": "7.29",
       "FoilPrice": "9.37",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/490.png",
       "LowFoilPrice": "5.25",
@@ -6980,7 +6980,7 @@
       "Unique": true,
       "Artist": "Aitor Prieto Reyes",
       "VariantType": "Showcase",
-      "MarketPrice": "39.77",
+      "MarketPrice": "39.40",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/259.png",
       "LowPrice": "35.00"
@@ -7006,7 +7006,7 @@
       "Unique": true,
       "Artist": "Aitor Prieto Reyes",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.13",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/277.png",
       "LowPrice": "0.03"
@@ -7051,7 +7051,7 @@
       "Unique": false,
       "Artist": "Ario Anindito",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.30",
+      "MarketPrice": "0.29",
       "FoilPrice": "0.31",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/399.png",
       "LowFoilPrice": "0.10",
@@ -7228,7 +7228,7 @@
       "Unique": true,
       "Artist": "French Carlomagno",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.80",
+      "MarketPrice": "0.78",
       "FoilPrice": "2.36",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/321.png",
       "LowFoilPrice": "0.99",
@@ -7376,7 +7376,7 @@
       "Unique": false,
       "Artist": "Fernando Correa",
       "VariantType": "Normal",
-      "MarketPrice": "2.66",
+      "MarketPrice": "2.64",
       "FoilPrice": "0.33",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/174.png",
       "LowPrice": "2.44"
@@ -7425,7 +7425,7 @@
       "Keywords": ["Exploit"],
       "Artist": "Aitor Prieto Reyes",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.26",
+      "MarketPrice": "0.25",
       "FoilPrice": "0.55",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/385.png",
       "LowFoilPrice": "0.25",
@@ -7448,7 +7448,7 @@
       "MarketPrice": "0.91",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/123.png",
-      "LowPrice": "0.72"
+      "LowPrice": "0.70"
     },
     {
       "Set": "TWI",
@@ -7492,7 +7492,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Leonardo Giammichele",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.32",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/316.png",
       "LowFoilPrice": "0.13",
@@ -7538,7 +7538,7 @@
       "Unique": false,
       "Artist": "Christian Papzoglakis",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.18",
       "FoilPrice": "0.26",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/331.png",
       "LowFoilPrice": "0.16",
@@ -7618,10 +7618,10 @@
       "Keywords": ["Coordinate", "Restore"],
       "Artist": "Maxine Vee",
       "VariantType": "Showcase",
-      "MarketPrice": "70.85",
+      "MarketPrice": "70.47",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/265.png",
-      "LowPrice": "65.00"
+      "LowPrice": "69.99"
     },
     {
       "Set": "TWI",
@@ -7693,7 +7693,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "André Mealha",
       "VariantType": "Normal",
-      "MarketPrice": "0.04",
+      "MarketPrice": "0.05",
       "FoilPrice": "0.11",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/232.png",
       "LowFoilPrice": "0.04",
@@ -7782,7 +7782,7 @@
       "MarketPrice": "1.76",
       "FoilPrice": "6.14",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/294.png",
-      "LowFoilPrice": "5.81",
+      "LowFoilPrice": "5.75",
       "LowPrice": "1.59"
     },
     {
@@ -7807,7 +7807,7 @@
       "FoilPrice": "0.15",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/095.png",
       "LowFoilPrice": "0.04",
-      "LowPrice": "0.01"
+      "LowPrice": "0.02"
     },
     {
       "Set": "TWI",
@@ -7827,7 +7827,7 @@
       "Keywords": ["Coordinate"],
       "Artist": "Fernando Correa",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.18",
       "FoilPrice": "0.27",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/367.png",
       "LowFoilPrice": "0.15",
@@ -7875,7 +7875,7 @@
       "FoilPrice": "1.75",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/343.png",
       "LowFoilPrice": "0.90",
-      "LowPrice": "0.23"
+      "LowPrice": "0.24"
     },
     {
       "Set": "TWI",
@@ -7914,7 +7914,7 @@
       "MarketPrice": "0.53",
       "FoilPrice": "1.68",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/371.png",
-      "LowFoilPrice": "1.20",
+      "LowFoilPrice": "1.19",
       "LowPrice": "0.40"
     },
     {
@@ -7931,7 +7931,7 @@
       "Unique": false,
       "Artist": "Rocío Espin",
       "VariantType": "Normal",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.26",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/028.png",
       "LowFoilPrice": "0.13",
@@ -7954,7 +7954,7 @@
       "MarketPrice": "3.30",
       "FoilPrice": "10.82",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/303.png",
-      "LowFoilPrice": "9.50",
+      "LowFoilPrice": "8.18",
       "LowPrice": "2.00"
     },
     {
@@ -8049,7 +8049,7 @@
       "FoilPrice": "0.28",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/503.png",
       "LowFoilPrice": "0.15",
-      "LowPrice": "0.07"
+      "LowPrice": "0.10"
     },
     {
       "Set": "TWI",
@@ -8066,7 +8066,7 @@
       "Keywords": ["Exploit", "Overwhelm"],
       "Artist": "Afif Khaled",
       "VariantType": "Normal",
-      "MarketPrice": "0.37",
+      "MarketPrice": "0.38",
       "FoilPrice": "0.64",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/178.png",
       "LowFoilPrice": "0.28",
@@ -8112,7 +8112,7 @@
       "Keywords": ["Ambush", "Coordinate", "Raid"],
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.47",
+      "MarketPrice": "0.45",
       "FoilPrice": "0.55",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/196.png",
       "LowFoilPrice": "0.20",
@@ -8161,7 +8161,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.25",
+      "MarketPrice": "0.26",
       "FoilPrice": "0.45",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/080.png",
       "LowFoilPrice": "0.25",
@@ -8185,10 +8185,10 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Hyperspace",
-      "MarketPrice": "4.60",
+      "MarketPrice": "4.56",
       "FoilPrice": "6.23",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/353.png",
-      "LowFoilPrice": "4.00",
+      "LowFoilPrice": "3.40",
       "LowPrice": "3.00"
     },
     {
@@ -8253,7 +8253,7 @@
       "Keywords": ["Saboteur"],
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "0.12",
+      "MarketPrice": "0.13",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/010.png",
       "LowPrice": "0.03"
@@ -8280,10 +8280,10 @@
       "Keywords": ["Saboteur"],
       "Artist": "Amélie Hutt",
       "VariantType": "Showcase",
-      "MarketPrice": "43.36",
+      "MarketPrice": "43.53",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/267.png",
-      "LowPrice": "43.25"
+      "LowPrice": "43.38"
     },
     {
       "Set": "TWI",
@@ -8307,7 +8307,7 @@
       "Keywords": ["Saboteur"],
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.24",
+      "MarketPrice": "0.23",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/285.png",
       "LowPrice": "0.08"
@@ -8384,7 +8384,7 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.39",
+      "MarketPrice": "0.38",
       "FoilPrice": "0.66",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/517.png",
       "LowFoilPrice": "0.45",
@@ -8467,7 +8467,7 @@
       "Unique": false,
       "Artist": "Adrien Girod",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.16",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/519.png",
       "LowPrice": "0.03"
@@ -8489,8 +8489,8 @@
       "MarketPrice": "0.39",
       "FoilPrice": "0.70",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/103.png",
-      "LowFoilPrice": "0.15",
-      "LowPrice": "0.15"
+      "LowFoilPrice": "0.10",
+      "LowPrice": "0.20"
     },
     {
       "Set": "TWI",
@@ -8506,7 +8506,7 @@
       "Unique": false,
       "Artist": "JB Casacop",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.30",
+      "MarketPrice": "1.32",
       "FoilPrice": "2.88",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/374.png",
       "LowFoilPrice": "2.50",
@@ -8559,7 +8559,7 @@
       "Unique": true,
       "Artist": "Cristina Laviña",
       "VariantType": "Showcase",
-      "MarketPrice": "114.13",
+      "MarketPrice": "110.81",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/275.png",
       "LowPrice": "88.70"
@@ -8585,7 +8585,7 @@
       "Unique": true,
       "Artist": "Cristina Laviña",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/293.png",
       "LowPrice": "0.04"
@@ -8746,11 +8746,11 @@
       "Unique": false,
       "Artist": "Arthur Mougne",
       "VariantType": "Normal",
-      "MarketPrice": "0.08",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.20",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/088.png",
       "LowFoilPrice": "0.10",
-      "LowPrice": "0.04"
+      "LowPrice": "0.02"
     },
     {
       "Set": "TWI",
@@ -8766,11 +8766,11 @@
       "Unique": false,
       "Artist": "Arthur Mougne",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.41",
+      "MarketPrice": "0.42",
       "FoilPrice": "0.89",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/360.png",
       "LowFoilPrice": "0.39",
-      "LowPrice": "0.37"
+      "LowPrice": "0.38"
     },
     {
       "Set": "TWI",
@@ -8812,7 +8812,7 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.39",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/381.png",
       "LowFoilPrice": "0.13",
@@ -8906,7 +8906,7 @@
       "Keywords": ["Coordinate", "Saboteur"],
       "Artist": "Ario Murti",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.24",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/504.png",
       "LowFoilPrice": "0.15",
@@ -8954,7 +8954,7 @@
       "Keywords": ["Sentinel"],
       "Artist": "Francois Cannels",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.37",
+      "MarketPrice": "0.38",
       "FoilPrice": "0.46",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/369.png",
       "LowFoilPrice": "0.37",
@@ -9024,7 +9024,7 @@
       "Unique": true,
       "Artist": "Christian Papzoglakis",
       "VariantType": "Normal",
-      "MarketPrice": "0.69",
+      "MarketPrice": "0.67",
       "FoilPrice": "1.12",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/151.png",
       "LowFoilPrice": "0.89",
@@ -9072,7 +9072,7 @@
       "FoilPrice": "0.24",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/127.png",
       "LowFoilPrice": "0.10",
-      "LowPrice": "0.04"
+      "LowPrice": "0.02"
     },
     {
       "Set": "TWI",
@@ -9088,7 +9088,7 @@
       "Unique": false,
       "Artist": "Robynn Frauhn",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.37",
       "FoilPrice": "0.50",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/395.png",
       "LowFoilPrice": "0.30",
@@ -9136,7 +9136,7 @@
       "FoilPrice": "2.62",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/342.png",
       "LowFoilPrice": "1.27",
-      "LowPrice": "0.70"
+      "LowPrice": "0.69"
     },
     {
       "Set": "TWI",
@@ -9226,11 +9226,11 @@
       "Unique": true,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.33",
+      "MarketPrice": "0.31",
       "FoilPrice": "0.55",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/304.png",
       "LowFoilPrice": "0.23",
-      "LowPrice": "0.10"
+      "LowPrice": "0.15"
     },
     {
       "Set": "TWI",
@@ -9251,7 +9251,7 @@
       "Keywords": ["Raid"],
       "Artist": "Mona Finden",
       "VariantType": "Normal",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.28",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/183.png",
       "LowFoilPrice": "0.12",
@@ -9324,11 +9324,11 @@
       "Keywords": ["Raid"],
       "Artist": "Benjamin Paulus",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.26",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/378.png",
       "LowFoilPrice": "0.20",
-      "LowPrice": "0.05"
+      "LowPrice": "0.02"
     },
     {
       "Set": "TWI",
@@ -9422,11 +9422,11 @@
       "Keywords": ["Exploit"],
       "Artist": "Eslam AboShady",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.85",
+      "MarketPrice": "0.84",
       "FoilPrice": "1.63",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/451.png",
       "LowFoilPrice": "1.00",
-      "LowPrice": "0.60"
+      "LowPrice": "0.59"
     },
     {
       "Set": "TWI",
@@ -9446,7 +9446,7 @@
       "Keywords": ["Coordinate"],
       "Artist": "Randall Mackey",
       "VariantType": "Normal",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.34",
       "FoilPrice": "0.31",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/213.png",
       "LowFoilPrice": "0.17",
@@ -9494,10 +9494,10 @@
       "Unique": true,
       "Artist": "Mona Finden",
       "VariantType": "Normal",
-      "MarketPrice": "0.63",
+      "MarketPrice": "0.61",
       "FoilPrice": "1.54",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/047.png",
-      "LowFoilPrice": "0.80",
+      "LowFoilPrice": "0.75",
       "LowPrice": "0.13"
     },
     {
@@ -9521,7 +9521,7 @@
       "MarketPrice": "2.67",
       "FoilPrice": "7.29",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/320.png",
-      "LowFoilPrice": "5.41",
+      "LowFoilPrice": "5.64",
       "LowPrice": "2.00"
     },
     {
@@ -9545,8 +9545,8 @@
       "MarketPrice": "0.09",
       "FoilPrice": "0.22",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/137.png",
-      "LowFoilPrice": "0.13",
-      "LowPrice": "0.02"
+      "LowFoilPrice": "0.14",
+      "LowPrice": "0.03"
     },
     {
       "Set": "TWI",
@@ -9591,7 +9591,7 @@
       "Keywords": ["Raid"],
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "0.14",
+      "MarketPrice": "0.15",
       "FoilPrice": "0.28",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/150.png",
       "LowFoilPrice": "0.14",
@@ -9616,11 +9616,11 @@
       "Keywords": ["Raid"],
       "Artist": "Amélie Hutt",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.48",
+      "MarketPrice": "0.47",
       "FoilPrice": "2.20",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/417.png",
       "LowFoilPrice": "0.80",
-      "LowPrice": "0.14"
+      "LowPrice": "0.15"
     },
     {
       "Set": "TWI",
@@ -9636,7 +9636,7 @@
       "Unique": false,
       "Artist": "Eslam AboShady",
       "VariantType": "Normal",
-      "MarketPrice": "0.08",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.11",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/140.png",
       "LowFoilPrice": "0.04",
@@ -9656,7 +9656,7 @@
       "Unique": false,
       "Artist": "Eslam AboShady",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.36",
+      "MarketPrice": "0.37",
       "FoilPrice": "0.44",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/408.png",
       "LowFoilPrice": "0.33",
@@ -9707,7 +9707,7 @@
       "MarketPrice": "0.16",
       "FoilPrice": "0.29",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/415.png",
-      "LowFoilPrice": "0.23",
+      "LowFoilPrice": "0.22",
       "LowPrice": "0.04"
     },
     {
@@ -9728,7 +9728,7 @@
       "Keywords": ["Raid"],
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "1.35",
+      "MarketPrice": "1.31",
       "FoilPrice": "12.71",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/180.png",
       "LowPrice": "0.69"
@@ -9775,7 +9775,7 @@
       "Keywords": ["Exploit"],
       "Artist": "Jake Parker",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.22",
       "FoilPrice": "0.24",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/359.png",
       "LowFoilPrice": "0.19",
@@ -9823,7 +9823,7 @@
       "Unique": true,
       "Artist": "Tatsiana Maksimuk",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.87",
+      "MarketPrice": "0.85",
       "FoilPrice": "1.54",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/366.png",
       "LowFoilPrice": "0.99",
@@ -9885,11 +9885,11 @@
       "Unique": false,
       "Artist": "Reno",
       "VariantType": "Normal",
-      "MarketPrice": "0.21",
+      "MarketPrice": "0.22",
       "FoilPrice": "0.58",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/220.png",
       "LowFoilPrice": "0.23",
-      "LowPrice": "0.11"
+      "LowPrice": "0.10"
     },
     {
       "Set": "TWI",
@@ -9931,7 +9931,7 @@
       "Unique": true,
       "Artist": "Mona Finden",
       "VariantType": "Normal",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.12",
       "FoilPrice": "0.27",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/211.png",
       "LowFoilPrice": "0.10",
@@ -10007,7 +10007,7 @@
       "FoilPrice": "0.67",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/409.png",
       "LowFoilPrice": "0.28",
-      "LowPrice": "0.10"
+      "LowPrice": "0.14"
     },
     {
       "Set": "TWI",
@@ -10027,7 +10027,7 @@
       "Unique": true,
       "Artist": "French Carlomagno",
       "VariantType": "Normal",
-      "MarketPrice": "0.08",
+      "MarketPrice": "0.07",
       "FoilPrice": "0.16",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/179.png",
       "LowFoilPrice": "0.10",
@@ -10189,10 +10189,10 @@
       "Unique": false,
       "Artist": "Hoan Nguyen",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.20",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.64",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/376.png",
-      "LowFoilPrice": "0.45",
+      "LowFoilPrice": "0.44",
       "LowPrice": "0.14"
     },
     {
@@ -10237,11 +10237,11 @@
       "Unique": true,
       "Artist": "Ann Maulina",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.43",
+      "MarketPrice": "1.34",
       "FoilPrice": "2.88",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/414.png",
       "LowFoilPrice": "2.47",
-      "LowPrice": "0.99"
+      "LowPrice": "1.00"
     },
     {
       "Set": "TWI",
@@ -10325,7 +10325,7 @@
       "FoilPrice": "0.26",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/441.png",
       "LowFoilPrice": "0.10",
-      "LowPrice": "0.05"
+      "LowPrice": "0.08"
     },
     {
       "Set": "TWI",
@@ -10659,7 +10659,7 @@
       "Unique": false,
       "Artist": "James Daly",
       "VariantType": "Normal",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.25",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/125.png",
       "LowFoilPrice": "0.20",
@@ -10679,7 +10679,7 @@
       "Unique": false,
       "Artist": "James Daly",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.05",
+      "MarketPrice": "1.07",
       "FoilPrice": "1.95",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/393.png",
       "LowFoilPrice": "1.75",
@@ -10698,7 +10698,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "0.07",
+      "MarketPrice": "0.06",
       "FoilPrice": "0.16",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/021.png",
       "LowPrice": "0.01"
@@ -10761,7 +10761,7 @@
       "FoilPrice": "5.29",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/351.png",
       "LowFoilPrice": "2.61",
-      "LowPrice": "1.07"
+      "LowPrice": "1.16"
     },
     {
       "Set": "TWI",
@@ -10809,7 +10809,7 @@
       "FoilPrice": "4.89",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/497.png",
       "LowFoilPrice": "2.00",
-      "LowPrice": "1.50"
+      "LowPrice": "1.49"
     },
     {
       "Set": "TWI",
@@ -10842,7 +10842,7 @@
       "Unique": false,
       "Artist": "Natcha Ngamtweerat",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.32",
+      "MarketPrice": "0.24",
       "FoilPrice": "0.16",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/302.png",
       "LowPrice": "0.10"
@@ -10865,7 +10865,7 @@
       "Unique": true,
       "Artist": "Aitor Prieto Reyes",
       "VariantType": "Normal",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.39",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/067.png",
       "LowFoilPrice": "0.23",
@@ -10889,7 +10889,7 @@
       "Unique": true,
       "Artist": "Aitor Prieto Reyes",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.49",
+      "MarketPrice": "1.45",
       "FoilPrice": "3.77",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/340.png",
       "LowFoilPrice": "1.91",
@@ -10995,7 +10995,7 @@
       "Unique": true,
       "Artist": "Amad Mir",
       "VariantType": "Normal",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.17",
       "FoilPrice": "0.27",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/246.png",
       "LowFoilPrice": "0.10",
@@ -11067,7 +11067,7 @@
       "Keywords": ["Exploit"],
       "Artist": "André Mealha",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.15",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.20",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/482.png",
       "LowFoilPrice": "0.08",
@@ -11131,7 +11131,7 @@
       "Unique": false,
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.83",
+      "MarketPrice": "0.79",
       "FoilPrice": "0.98",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/156.png",
       "LowFoilPrice": "0.85",
@@ -11171,7 +11171,7 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Normal",
-      "MarketPrice": "0.16",
+      "MarketPrice": "0.15",
       "FoilPrice": "0.37",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/223.png",
       "LowFoilPrice": "0.14",
@@ -11191,11 +11191,11 @@
       "Unique": false,
       "Artist": "Sebastián Guidobono",
       "VariantType": "Hyperspace",
-      "MarketPrice": "1.07",
+      "MarketPrice": "1.05",
       "FoilPrice": "0.90",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/488.png",
       "LowFoilPrice": "0.23",
-      "LowPrice": "0.75"
+      "LowPrice": "0.50"
     },
     {
       "Set": "TWI",
@@ -11211,7 +11211,7 @@
       "Unique": false,
       "Artist": "Marc Escachx",
       "VariantType": "Normal",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.16",
       "FoilPrice": "0.26",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/189.png",
       "LowFoilPrice": "0.10",
@@ -11231,7 +11231,7 @@
       "Unique": false,
       "Artist": "Marc Escachx",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.93",
+      "MarketPrice": "0.92",
       "FoilPrice": "1.32",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/454.png",
       "LowFoilPrice": "0.47",
@@ -11363,7 +11363,7 @@
       "Unique": false,
       "Artist": "Eslam AboShady",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.22",
+      "MarketPrice": "0.21",
       "FoilPrice": "0.48",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/350.png",
       "LowFoilPrice": "0.18",
@@ -11409,7 +11409,7 @@
       "Keywords": ["Raid"],
       "Artist": "Steve Morris",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.17",
+      "MarketPrice": "0.18",
       "FoilPrice": "0.19",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/514.png",
       "LowFoilPrice": "0.10",
@@ -11478,7 +11478,7 @@
       "Unique": false,
       "Artist": "Luke Harrington",
       "VariantType": "Normal",
-      "MarketPrice": "0.05",
+      "MarketPrice": "0.04",
       "FoilPrice": "0.17",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/057.png",
       "LowFoilPrice": "0.05",
@@ -11545,7 +11545,7 @@
       "FoilPrice": "0.28",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/453.png",
       "LowFoilPrice": "0.24",
-      "LowPrice": "0.12"
+      "LowPrice": "0.13"
     },
     {
       "Set": "TWI",
@@ -11587,7 +11587,7 @@
       "Unique": false,
       "Artist": "Leonardo Giammichele",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.18",
+      "MarketPrice": "0.19",
       "FoilPrice": "0.28",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/305.png",
       "LowFoilPrice": "0.12",
@@ -11643,7 +11643,7 @@
       "MarketPrice": "47.38",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/263.png",
-      "LowPrice": "48.30"
+      "LowPrice": "47.38"
     },
     {
       "Set": "TWI",
@@ -11666,7 +11666,7 @@
       "Unique": true,
       "Artist": "Aitor Prieto Reyes",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.31",
+      "MarketPrice": "0.29",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/281.png",
       "LowPrice": "0.15"
@@ -11685,7 +11685,7 @@
       "Unique": false,
       "Artist": "Amélie Hutt",
       "VariantType": "Normal",
-      "MarketPrice": "6.51",
+      "MarketPrice": "6.37",
       "FoilPrice": "2.27",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/226.png",
       "LowPrice": "4.71"
@@ -11785,10 +11785,10 @@
       "Keywords": ["Restore"],
       "Artist": "Sandra Chlewiñska",
       "VariantType": "Showcase",
-      "MarketPrice": "223.84",
+      "MarketPrice": "224.05",
       "FoilPrice": "",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/261.png",
-      "LowPrice": "204.00"
+      "LowPrice": "199.73"
     },
     {
       "Set": "TWI",
@@ -11859,7 +11859,7 @@
       "Unique": true,
       "Artist": "Marc Escachx",
       "VariantType": "Hyperspace",
-      "MarketPrice": "0.33",
+      "MarketPrice": "0.32",
       "FoilPrice": "0.69",
       "FrontArt": "https://cdn.swu-db.com/images/cards/TWI/450.png",
       "LowFoilPrice": "0.37",
