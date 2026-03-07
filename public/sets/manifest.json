@@ -29,6 +29,11 @@
       "key": "SEC",
       "label": "Secrets of Power (SEC)",
       "file": "SWU-SEC.json"
+    },
+    {
+      "key": "LAW",
+      "label": "A Lawless Time (LAW)",
+      "file": "SWU-LAW.json"
     }
   ]
 }
