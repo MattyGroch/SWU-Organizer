@@ -10,7 +10,8 @@ RUN npm run build
 FROM node:20-alpine
 RUN apk add --no-cache nginx wget
 
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+# Alpine nginx includes conf.d at root context; server{} must live in http.d (included inside http{}).
+COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
