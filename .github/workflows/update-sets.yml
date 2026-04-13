@@ -4,7 +4,7 @@ name: Update SWU set data
 on:
   workflow_dispatch: {}         # allow manual run
   schedule:
-    - cron: '0 12 * * 1'
+    - cron: '0 12 * * *'
 
 permissions:
   contents: write               # needed to push a branch
@@ -30,12 +30,18 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      - name: Discover main sets (writes scripts/sets.config.json)
+        run: npm run discover:sets
+
       - name: Fetch latest sets (writes /public/sets/*.json + manifest.json)
         run: npm run update:sets
 
+      - name: Fetch compact price overlays (writes /public/sets/*.prices.json)
+        run: npm run fetch:prices
+
       # Optional but keeps diffs tidy/consistent
       - name: Prettify JSON
-        run: npx prettier -w "public/sets/*.json" "public/sets/manifest.json"
+        run: npx prettier -w "public/sets/*.json" "public/sets/manifest.json" "scripts/sets.config.json" "scripts/sets.discover-overrides.json"
         continue-on-error: true
 
       # Create a PR only if files changed
@@ -44,14 +50,18 @@ jobs:
         with:
           branch: ci/update-sets
           base: main
-          title: "chore(data): refresh SWU set data"
-          commit-message: "chore(data): refresh SWU set data"
+          title: "chore(data): refresh SWU set data and prices"
+          commit-message: "chore(data): refresh SWU set data and prices"
           body: |
-            Automated refresh of SWU set JSON files and manifest.
-            - Source: https://api.swu-db.com/cards/{setKey}
-            - Script: `scripts/fetch-sets.mjs`
+            Automated refresh of set catalog, manifest, price overlays, and `scripts/sets.config.json`.
+            - Sets list: `GET https://api.swu-db.com/sets` → `npm run discover:sets`
+            - Card JSON: `GET https://api.swu-db.com/cards/{setKey}` → `scripts/fetch-sets.mjs`
+            - Prices: same API, compact `*.prices.json` → `scripts/fetch-prices.mjs`
+            - Runtime (Docker) refreshes `*.prices.json` on start and every 24h without a new image build.
           labels: data, automation
           add-paths: |
             public/sets/*.json
             public/sets/manifest.json
+            scripts/sets.config.json
+            scripts/sets.discover-overrides.json
           delete-branch: true

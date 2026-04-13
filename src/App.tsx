@@ -15,6 +15,11 @@ type Inventory = Record<number, number>;
 type SetKey = string;
 type SetMeta = { key: string; label: string; file: string };
 
+/** Last entry in `manifest.json` is the newest set (release order). */
+function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
+  return list.length ? list[list.length - 1]!.key : 'SOR';
+}
+
 const ASPECT_HEX: Record<string, string> = {
   Vigilance: '#3b82f6', // blue
   Command:   '#22c55e', // green
@@ -45,7 +50,89 @@ const RARITY_STYLE: Record<string, {letter: string; color: string}> = {
 // Global constants for filter lists
 const ALL_RARITIES = ['Common', 'Uncommon', 'Rare', 'Legendary', 'Special'] as const;
 const ALL_ASPECTS = ['Vigilance', 'Command', 'Aggression', 'Cunning', 'Heroism', 'Villainy', 'NEUTRAL'];
-const ALL_TYPES = ['Leader', 'Base', 'Unit', 'Event', 'Upgrade']; 
+const ALL_TYPES = ['Leader', 'Base', 'Unit', 'Event', 'Upgrade'];
+
+/** Vigilance / Command / Aggression / Cunning only — not Heroism, Villainy, NEUTRAL (affiliation). */
+const PRIMARY_ASPECT_NAMES = new Set<string>([
+  'Vigilance',
+  'Command',
+  'Aggression',
+  'Cunning',
+]);
+
+/** Dual-primary art: mostly solid left/right; only the middle band blends (like physical cards). */
+const DUAL_ASPECT_CENTER_BLEND_PCT = 7;
+const DUAL_ASPECT_LEFT_STOP_PCT = (100 - DUAL_ASPECT_CENTER_BLEND_PCT) / 2;
+const DUAL_ASPECT_RIGHT_STOP_PCT = (100 + DUAL_ASPECT_CENTER_BLEND_PCT) / 2;
+
+/** Primary aspects only, in order; map to hex; collapse consecutive duplicates (double pip). */
+function normalizedPrimaryAspectHexes(aspects?: string[]): string[] {
+  if (!aspects?.length) return [];
+  const out: string[] = [];
+  for (const name of aspects) {
+    if (!PRIMARY_ASPECT_NAMES.has(name)) continue;
+    const h = ASPECT_HEX[name as keyof typeof ASPECT_HEX];
+    if (!h) continue;
+    if (out.length && out[out.length - 1] === h) continue;
+    out.push(h);
+  }
+  return out;
+}
+
+type AspectFillSpec =
+  | { kind: 'solid'; color: string }
+  | { kind: 'gradient'; colors: [string, string] };
+
+function aspectSpecFromCardAspects(aspects?: string[]): AspectFillSpec | null {
+  const hexes = normalizedPrimaryAspectHexes(aspects);
+  if (hexes.length === 0) return null;
+  if (hexes.length === 1) return { kind: 'solid', color: hexes[0] };
+  return { kind: 'gradient', colors: [hexes[0], hexes[1]] };
+}
+
+function aspectSpecToCssBackground(spec: AspectFillSpec | null | undefined): string | undefined {
+  if (!spec) return undefined;
+  if (spec.kind === 'solid') return spec.color;
+  const [a, b] = spec.colors;
+  const L = DUAL_ASPECT_LEFT_STOP_PCT;
+  const R = DUAL_ASPECT_RIGHT_STOP_PCT;
+  return `linear-gradient(to right, ${a} 0%, ${a} ${L}%, ${b} ${R}%, ${b} 100%)`;
+}
+
+/** Inventory table aspect square: diagonal split (primary TL, secondary BR), 1px black divider. */
+function aspectSpecToInventorySwatchBackground(spec: AspectFillSpec | null | undefined): string | undefined {
+  if (!spec) return undefined;
+  if (spec.kind === 'solid') return spec.color;
+  const [topLeft, bottomRight] = spec.colors;
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">` +
+    `<polygon points="0,0 12,0 0,12" fill="${topLeft}"/>` +
+    `<polygon points="12,12 12,0 0,12" fill="${bottomRight}"/>` +
+    `<line x1="12" y1="0" x2="0" y2="12" stroke="#000" stroke-width="1"/>` +
+    `</svg>`;
+  return `url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}")`;
+}
+
+const INVENTORY_ASPECT_SWATCH_STYLE: React.CSSProperties = {
+  display: 'inline-block',
+  width: 12,
+  height: 12,
+  borderRadius: 3,
+  backgroundSize: '100% 100%',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  boxShadow: '0 0 0 2px #2b2d3d inset',
+};
+
+function labelColorForAspectHexes(hexes: string[]): string {
+  if (hexes.length === 1 && hexes[0].toLowerCase() === '#e5e7eb') return '#11121a';
+  return '#eaeaf0';
+}
+
+function rarityOutlineForAspectHexes(hexes: string[]): string {
+  if (hexes.length === 1 && hexes[0].toLowerCase() === '#e5e7eb') return '#11121a';
+  return '#ffffff';
+}
 
 function rarityGlyph(r?: string) {
   if (!r) return null;
@@ -79,10 +166,21 @@ function quotaForType(type?: string) {
 function pageToSpread(p: number) { return p <= 1 ? 0 : Math.floor((p - 2) / 2) + 1; }
 function spreadToPrimaryPage(s: number) { return s <= 0 ? 1 : 2 + (s - 1) * 2; } // even page
 
+/** Collection status for filter pills (same semantics as the Status column: ✓ / ! / ✕). */
+type CollectionStatusKey = 'complete' | 'partial' | 'none';
+const ALL_COLLECTION_STATUSES: readonly CollectionStatusKey[] = ['complete', 'partial', 'none'];
+
+function collectionStatusFromQty(qty: number, max: number): CollectionStatusKey {
+  if (qty >= max) return 'complete';
+  if (qty > 0) return 'partial';
+  return 'none';
+}
+
 type Filters = {
   aspect: string[];
   rarity: string[];
   type: string[];
+  status: CollectionStatusKey[];
 };
 
 type FilterControlsProps = {
@@ -104,7 +202,7 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
   };
 
   const handleClearFilters = () => {
-    setFilters({ aspect: [], rarity: [], type: [] });
+    setFilters({ aspect: [], rarity: [], type: [], status: [] });
   };
 
   // ---- Color helpers ----
@@ -196,6 +294,98 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
   </div>
 );
 
+  const STATUS_PILL_BG: Record<CollectionStatusKey, string> = {
+    complete: '#22c55e',
+    partial: '#f59e0b',
+    none: '#ef4444',
+  };
+
+  /** Same colors as .check / .warn / .x in index.html — used so inactive matches table badges. */
+  const STATUS_INACTIVE_BADGE: Record<CollectionStatusKey, { background: string; color: string; border: string }> = {
+    complete: { background: '#093c2d', color: '#34d399', border: '1px solid #1f3d33' },
+    partial: { background: '#3a3000', color: '#fcd34d', border: '1px solid #4a3a00' },
+    none: { background: '#3a0a0a', color: '#f87171', border: '1px solid #4a1f1f' },
+  };
+
+  const STATUS_BADGE_BOX: React.CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 22,
+    height: 22,
+    borderRadius: 999,
+    fontSize: 12,
+    fontWeight: 800,
+    boxSizing: 'border-box',
+    flexShrink: 0,
+  };
+
+  const renderStatusFilterGroup = () => (
+    <div className="toolbar-group" role="group" aria-label="Collection status" style={{ marginRight: 12 }}>
+      {ALL_COLLECTION_STATUSES.map(key => {
+        const isActive = filters.status.includes(key);
+        const highlightColor = STATUS_PILL_BG[key];
+        const activeText = bestTextOn(highlightColor);
+        const inactive = STATUS_INACTIVE_BADGE[key];
+        const innerOutline =
+          isActive && needsDarkOutline(highlightColor)
+            ? '1px solid rgba(255,255,255,0.22)'
+            : isActive
+            ? '1px solid rgba(0,0,0,0.25)'
+            : inactive.border;
+        const aria =
+          key === 'complete'
+            ? 'Complete playset'
+            : key === 'partial'
+            ? 'In progress — not a full playset'
+            : 'Not collected';
+        const glyph = key === 'complete' ? '✓' : key === 'partial' ? '!' : '✕';
+        return (
+          <button
+            key={`status-${key}`}
+            type="button"
+            className="tbtn"
+            onClick={() => handleFilterChange('status', key)}
+            title={aria}
+            aria-label={aria}
+            aria-pressed={isActive}
+            style={{
+              width: 40,
+              height: 36,
+              padding: 0,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxSizing: 'border-box',
+              backgroundColor: 'transparent',
+              border: '1px solid #424452',
+              borderRadius: 12,
+              transition: 'background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, opacity 0.2s ease-in-out',
+              opacity: isActive ? 1 : 0.9,
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                ...STATUS_BADGE_BOX,
+                background: isActive ? highlightColor : inactive.background,
+                color: isActive ? activeText : inactive.color,
+                border: innerOutline,
+                textShadow: isActive && activeText === '#ffffff' ? '0 1px 0 rgba(0,0,0,0.30)' : undefined,
+                boxShadow:
+                  isActive && needsDarkOutline(highlightColor)
+                    ? '0 0 0 2px rgba(255,255,255,0.08) inset'
+                    : undefined,
+              }}
+            >
+              {glyph}
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div className="card" style={{ padding: '12px 16px', marginTop: 16, marginBottom: 16 }}>
       <div style={{ fontSize: 16, fontWeight: 600, margin: '0 0 10px', color: '#c8ccd9' }}>
@@ -205,6 +395,7 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
         {renderFilterGroup('aspect', ALL_ASPECTS)}
         {renderFilterGroup('rarity', ALL_RARITIES)}
         {renderFilterGroup('type', ALL_TYPES)}
+        {renderStatusFilterGroup()}
         <button
           className="tbtn tbtn-danger"
           onClick={handleClearFilters}
@@ -485,7 +676,7 @@ function parseCsvData(
 
 export default function App() {
   const [sets, setSets] = useState<SetMeta[]>([]);
-  const [setKey, setSetKey] = useState<SetKey>('LOF'); // default/fallback
+  const [setKey, setSetKey] = useState<SetKey>('SOR'); // placeholder until manifest loads (then newest set)
   const searchRef = useRef<HTMLInputElement | null>(null);
   const importRef = useRef<HTMLInputElement>(null);
   const [showImportModal, setShowImportModal] = useState(false);
@@ -513,18 +704,19 @@ export default function App() {
       .then((m: { sets: SetMeta[] }) => {
         const list = Array.isArray(m?.sets) ? m.sets : [];
         setSets(list);
-        if (!list.find(s => s.key === setKey)) setSetKey(list[0]?.key ?? 'LOF');
+        setSetKey(newestSetKeyFromManifest(list));
       })
       .catch(() => {
         // fallback (optional) if manifest missing in dev
-        setSets([
+        const fallback: SetMeta[] = [
           { key:'SOR', label:'Spark of Rebellion (SOR)', file:'SWU-SOR.json' },
           { key:'SHD', label:'Shadows of the Galaxy (SHD)', file:'SWU-SHD.json' },
           { key:'TWI', label:'Twilight of the Republic (TWI)', file:'SWU-TWI.json' },
           { key:'JTL', label:'Jump to Lightspeed (JTL)', file:'SWU-JTL.json' },
           { key:'LOF', label:'Legacy of the Force (LOF)', file:'SWU-LOF.json' },
-        ]);
-        if (setKey !== 'LOF') setSetKey('LOF');
+        ];
+        setSets(fallback);
+        setSetKey(newestSetKeyFromManifest(fallback));
       });
   }, []);
 
@@ -675,11 +867,27 @@ export default function App() {
   const [showBulkActionsModal, setShowBulkActionsModal] = useState(false); 
   
   // Global Filter State
-  const [filters, setFilters] = useState({
-    aspect: [] as string[],
-    rarity: [] as string[],
-    type: [] as string[], 
+  const [filters, setFilters] = useState<Filters>({
+    aspect: [],
+    rarity: [],
+    type: [],
+    status: [],
   });
+
+  type TcgCopyMode = 'fullNeeded' | 'oneEach';
+  const [tcgCopyMode, setTcgCopyMode] = useState<TcgCopyMode>('fullNeeded');
+  type TcgCopyFeedback = 'idle' | 'copied' | 'failed';
+  const [tcgCopyFeedback, setTcgCopyFeedback] = useState<TcgCopyFeedback>('idle');
+  const tcgCopyFeedbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function clearTcgCopyFeedbackTimer() {
+    if (tcgCopyFeedbackTimerRef.current != null) {
+      clearTimeout(tcgCopyFeedbackTimerRef.current);
+      tcgCopyFeedbackTimerRef.current = null;
+    }
+  }
+
+  useEffect(() => () => clearTcgCopyFeedbackTimer(), []);
 
   // Spreads (instead of pages)
   const maxNumber = useMemo(() => cardsBase.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsBase]);
@@ -748,22 +956,45 @@ export default function App() {
         const obj = await res.json();
         const data = Array.isArray(obj) ? obj : obj.data;
 
+        const pricesName = meta.file.replace(/\.json$/i, '.prices.json');
+        const pricesUrl = pricesName.startsWith('/') ? pricesName : `/sets/${pricesName}`;
+        let priceByNumber: Record<string, number> | null = null;
+        try {
+          const pr = await fetch(pricesUrl);
+          if (pr.ok) {
+            const pj = await pr.json();
+            if (pj && typeof pj === 'object' && pj.prices && typeof pj.prices === 'object') {
+              priceByNumber = pj.prices as Record<string, number>;
+            }
+          }
+        } catch {
+          /* optional overlay */
+        }
+
         const mapped: Card[] = data.map((c: any) => {
           const rawName = String(c.Name || '').trim();
           const rawSubtitle = String(c.Subtitle || '').trim();
           const cardName = rawName;
+          const num = Number(c.Number);
+          let marketPrice = Number(c.MarketPrice ?? c.Price ?? 0);
+          if (priceByNumber) {
+            const p = priceByNumber[String(num)];
+            if (p !== undefined && Number.isFinite(Number(p))) {
+              marketPrice = Number(p);
+            }
+          }
           
           return {
             Name: cardName,
             Subtitle: rawSubtitle || undefined,
-            Number: Number(c.Number),
+            Number: num,
             Aspects: Array.isArray(c.Aspects) ? c.Aspects : [],
             Type:
               typeof c.Type === 'string'
                 ? c.Type
                 : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined),
             Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
-            MarketPrice: Number(c.MarketPrice ?? c.Price ?? 0), 
+            MarketPrice: marketPrice,
             Set: meta.key,
           };
         }).filter((c: Card) => !!c.Name && Number.isFinite(c.Number));
@@ -857,11 +1088,11 @@ export default function App() {
     }, [pendingSelection, cardsBase, setKey, binderLayout, pageToSpread, setActive, setViewSpread, setError, setPendingSelection, setQuery]);
   // Build coloring map + presence
   const presentNumbers = useMemo(() => new Set(cardsBase.map(c => c.Number)), [cardsBase]);
-  const numToColor = useMemo(() => {
-    const m = new Map<number, string>();
+  const numToAspectSpec = useMemo(() => {
+    const m = new Map<number, AspectFillSpec>();
     for (const c of cardsBase) {
-      const a = c.Aspects?.[0];
-      if (a && ASPECT_HEX[a]) m.set(c.Number, ASPECT_HEX[a]);
+      const spec = aspectSpecFromCardAspects(c.Aspects);
+      if (spec) m.set(c.Number, spec);
     }
     return m;
   }, [cardsBase]);
@@ -1580,10 +1811,10 @@ export default function App() {
     const activeRarities = filters.rarity;
     const activeTypes = filters.type;
 
-    // 1) Aspect
+    // 1) Aspect — match if any card aspect is selected (multi-aspect cards match any listed aspect)
     if (activeAspects.length > 0) {
-      const primaryAspect = card.Aspects?.[0] || 'NEUTRAL';
-      if (!activeAspects.includes(primaryAspect)) return false;
+      const labels = card.Aspects?.length ? card.Aspects : ['NEUTRAL'];
+      if (!labels.some(a => activeAspects.includes(a))) return false;
     }
 
     // 2) Rarity
@@ -1598,6 +1829,19 @@ export default function App() {
 
     return true;
   }, [filters.aspect, filters.rarity, filters.type]);
+
+  /** True if any card passes aspect/rarity/type filters and is not a complete playset (ignores status pills). */
+  const hasIncompleteUnderCardFilters = useMemo(() => {
+    for (const baseCard of cardsBase) {
+      if (!passesAllFilters(baseCard)) continue;
+      const baseNum = baseCard.Number;
+      const nums = baseToAll.get(baseNum) || [baseNum];
+      const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
+      const max = quotaForType(baseCard.Type);
+      if (have < max) return true;
+    }
+    return false;
+  }, [cardsBase, baseToAll, inventory, passesAllFilters]);
 
   // Build ONE list over base cards, then partition.
   // Each row has Qty (across base + alts), Max, Needed, and other fields you already use.
@@ -1622,6 +1866,8 @@ export default function App() {
       const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
       const max = quotaForType(baseCard.Type);
       const needed = Math.max(0, max - have);
+      const collStatus = collectionStatusFromQty(have, max);
+      if (filters.status.length > 0 && !filters.status.includes(collStatus)) continue;
 
       rows.push({
         Number: baseNum,
@@ -1637,7 +1883,7 @@ export default function App() {
     }
 
     return rows.sort((a, b) => a.Number - b.Number);
-  }, [cardsBase, baseToAll, inventory, passesAllFilters]);
+  }, [cardsBase, baseToAll, inventory, passesAllFilters, filters.status]);
 
   // Projections for the two tabs (shape-compatible with your tables)
   const filteredInvRows = useMemo(() => {
@@ -1648,7 +1894,6 @@ export default function App() {
   }, [filteredAllRows]);
 
   const filteredMissingRows = useMemo(() => {
-    // rows with Qty < Max
     return filteredAllRows
       .filter(r => r.Qty < r.Max)
       .map(r => ({
@@ -1664,7 +1909,6 @@ export default function App() {
   }, [filteredAllRows]);
 
   const invRows = filteredInvRows;
-  const missingRows = filteredMissingRows;
 
   // Inventory Status Counts (Complete, Incomplete, Missing) from the single list
   const inventoryStatus = useMemo(() => {
@@ -1684,7 +1928,11 @@ export default function App() {
     };
   }, [filteredAllRows]);
 
-  // Cost to complete uses the canonical missing projection
+  const collectionValue = useMemo(
+    () => filteredAllRows.reduce((sum, r) => sum + r.Qty * r.Price, 0),
+    [filteredAllRows]
+  );
+
   const missingCost = useMemo(
     () => filteredMissingRows.reduce((sum, r) => sum + r.RowTotal, 0),
     [filteredMissingRows]
@@ -1701,8 +1949,9 @@ export default function App() {
             ? `${r.Name} - ${card.Subtitle}` 
             : r.Name;
         
+        const qty = tcgCopyMode === 'oneEach' ? 1 : r.Needed;
         // Final format: QTY Name - Subtitle [setKey]
-        return `${r.Needed} ${cardNamePart} [${setKey}]`;
+        return `${qty} ${cardNamePart} [${setKey}]`;
     }).join('\n');
 
     if (list.length === 0) {
@@ -1710,138 +1959,77 @@ export default function App() {
         return;
     }
 
-    // Use modern clipboard API
+    clearTcgCopyFeedbackTimer();
+
     navigator.clipboard.writeText(list).then(() => {
-        alert(`Successfully copied ${filteredMissingRows.length} filtered card lines to clipboard for TCGPlayer Mass Entry.`);
+        setTcgCopyFeedback('copied');
+        tcgCopyFeedbackTimerRef.current = window.setTimeout(() => {
+          setTcgCopyFeedback('idle');
+          tcgCopyFeedbackTimerRef.current = null;
+        }, 2200);
     }).catch(err => {
-        alert('Failed to copy to clipboard. Check browser permissions.');
+        setTcgCopyFeedback('failed');
+        tcgCopyFeedbackTimerRef.current = window.setTimeout(() => {
+          setTcgCopyFeedback('idle');
+          tcgCopyFeedbackTimerRef.current = null;
+        }, 3200);
         console.error('Copy error:', err);
     });
   }
 
   return (
-    <>
-        {prevSetKey && (
-            <button 
-                className="set-nav-arrow"
-                onClick={() => changeSet('prev')}
-                title={`Switch to ${prevSetKey}`}
-                style={{
-                    // CRITICAL CHANGE: Use fixed position to anchor to the viewport
-                    position: 'fixed', 
-                    // Calculate left position: Viewport center minus half content width (1400px) minus button width/gap (e.g., 80px)
-                    // max(0px, ...) prevents the button from getting cut off screen on small viewports
-                    left: 'max(0px, calc((100vw - 1400px) / 2 - 100px))', 
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    padding: '20px 10px 20px 10px',
-                    backgroundColor: '#11121a',
-                    color: '#e5e7eb',
-                    border: '1px solid #2b2d3d',
-                    borderRadius: '12px',
-                    cursor: 'pointer',
-                    zIndex: 100, 
-                    fontSize: '28px',
-                    fontWeight: 700,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '8px',
-                    width: '90px', 
-                    pointerEvents: 'auto',
-                }}
-            >
-                <span style={{ fontSize: '0.45em', fontWeight: 600 }}>Prev. Set</span>
-                <span style={{ fontSize: '2em' }}>‹</span>
-                <span
-                  style={{
-                    fontSize: '26px',
-                    fontWeight: 700,
-                    padding: '2px 8px',
-                    borderRadius: '6px',
-                    border: '1px solid #ffffff', 
-                    color: '#ffffff', 
-                    backgroundColor: '#0b0b0b',
-                    flexShrink: 0,
-                  }}
-                >
-                  {prevSetKey}
-                </span>
-            </button>
-        )}
-
-        {nextSetKey && (
-            <button
-                className="set-nav-arrow"
-                onClick={() => changeSet('next')}
-                title={`Switch to ${nextSetKey}`}
-                style={{
-                    // CRITICAL CHANGE: Use fixed position to anchor to the viewport
-                    position: 'fixed',
-                    // Calculate right position: Viewport center minus half content width (1400px) minus button width/gap (e.g., 80px)
-                    right: 'max(0px, calc((100vw - 1400px) / 2 - 100px))',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    padding: '20px 10px 20px 10px',
-                    backgroundColor: '#11121a',
-                    color: '#e5e7eb',
-                    border: '1px solid #2b2d3d',
-                    borderRadius: '12px',
-                    cursor: 'pointer',
-                    zIndex: 100, 
-                    fontSize: '28px',
-                    fontWeight: 700,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '8px',
-                    width: '90px', 
-                    pointerEvents: 'auto',
-                }}
-            >
-                <span style={{ fontSize: '0.45em', fontWeight: 600 }}>Next Set</span>
-                <span style={{ fontSize: '2em' }}>›</span>
-                <span
-                  style={{
-                    fontSize: '26px',
-                    fontWeight: 700,
-                    padding: '2px 8px',
-                    borderRadius: '6px',
-                    border: '1px solid #ffffff', 
-                    color: '#ffffff', 
-                    backgroundColor: '#0b0b0b',
-                    flexShrink: 0,
-                  }}
-                >
-                  {nextSetKey}
-                </span>
-            </button>
-        )}
     <div 
             className="container"
             style={{
-                // IMPORTANT: The `position: relative` should be removed here and kept on the arrow wrapper 
-                // to allow the arrows to anchor to the viewport width. Removing it here simplifies the layout.
-                maxWidth: '1400px',
-                padding: '20px 16px',
+                maxWidth: 'min(1920px, calc(100vw - 24px))',
+                width: '100%',
+                padding: '10px 12px',
                 margin: '0 auto',
+                boxSizing: 'border-box',
             }}
         >
       {/* Top bar (no page control here anymore) */}
       <div className="card" style={{ marginBottom: 16 }}>
         <h1 className="title">SWU Binder Organizer</h1>
         <div className="row controls-row" style={{ marginTop: 8 }} ref={boxRef}>
-          <label className="pill">
-            <span className="set-label">Set</span>
-            <select value={setKey} onChange={e => {
-              setSetKey(e.target.value as SetKey);
-              setQuery('');
-            }}>
-              {sets.map(s => (
-                <option key={s.key} value={s.key}>{s.label}</option>
-              ))}
-            </select>
-          </label>
+          <div
+            className="set-switch-group"
+            style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}
+            role="group"
+            aria-label="Card set"
+          >
+            <button
+              type="button"
+              className="btn set-switch-btn"
+              disabled={!prevSetKey}
+              onClick={() => changeSet('prev')}
+              title={prevSetKey ? `Switch to set ${prevSetKey}` : undefined}
+              aria-label={prevSetKey ? `Previous set: ${prevSetKey}` : 'Previous set (none)'}
+            >
+              ‹
+            </button>
+            <label className="pill">
+              <span className="set-label">Set</span>
+              <select value={setKey} onChange={e => {
+                setSetKey(e.target.value as SetKey);
+                setQuery('');
+              }}>
+                {sets.map(s => (
+                  <option key={s.key} value={s.key}>{s.label}</option>
+                ))}
+              </select>
+            </label>
+            <button
+              type="button"
+              className="btn set-switch-btn"
+              disabled={!nextSetKey}
+              onClick={() => changeSet('next')}
+              title={nextSetKey ? `Switch to set ${nextSetKey}` : undefined}
+              aria-label={nextSetKey ? `Next set: ${nextSetKey}` : 'Next set (none)'}
+            >
+              ›
+            </button>
+          </div>
 
           <div className="autocomplete search">
             <span className="search-kbd" aria-hidden="true">/</span>
@@ -1994,8 +2182,8 @@ export default function App() {
         </div>
       </div>
 
-      {/* Binder (with spread pager + dropdown) */}
-      <div className="card" ref={binderRef}>
+      {/* Binder (with spread pager + dropdown) — minimal padding so the grid can use width */}
+      <div className="card" ref={binderRef} style={{ padding: 8 }}>
         <Binder
           viewSpread={viewSpread}
           setViewSpread={setViewSpread}
@@ -2003,7 +2191,7 @@ export default function App() {
           active={active}
           setActive={setActive}
           presentNumbers={presentNumbers}
-          numToColor={numToColor}
+          numToAspectSpec={numToAspectSpec}
           byNumber={byNumber}
           inventory={inventory}
           inc={inc}
@@ -2071,16 +2259,85 @@ export default function App() {
             </div>
             
             {/* 2. Action Button (Conditional: Copy TCG or Bulk Actions) */}
-            {listView === 'missing' && missingRows.length > 0 ? (
-              <button
-                className="tbtn tbtn-primary" 
-                onClick={copyMissingToClipboard}
-                title="Copy list in TCGPlayer Mass Entry format: QTY Name - Subtitle [setKey]"
-                aria-label="Copy missing cards list for TCGPlayer"
-              >
-                <span className="icon" aria-hidden="true">content_paste</span>
-                <span>Copy TCG List ({filteredMissingRows.length})</span>
-              </button>
+            {listView === 'missing' && hasIncompleteUnderCardFilters ? (
+              <>
+                <div className="toolbar-group" role="group" aria-label="TCG copy quantity">
+                  <button
+                    type="button"
+                    className="tbtn"
+                    aria-pressed={tcgCopyMode === 'fullNeeded'}
+                    onClick={() => setTcgCopyMode('fullNeeded')}
+                    title="Copy quantities equal to copies still needed for a full playset"
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      padding: '6px 12px',
+                      ...(tcgCopyMode === 'fullNeeded'
+                        ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' }
+                        : {}),
+                    }}
+                  >
+                    Full need
+                  </button>
+                  <button
+                    type="button"
+                    className="tbtn"
+                    aria-pressed={tcgCopyMode === 'oneEach'}
+                    onClick={() => setTcgCopyMode('oneEach')}
+                    title="Copy 1 of each listed card (e.g. binder singles without a full 3× set)"
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      padding: '6px 12px',
+                      ...(tcgCopyMode === 'oneEach'
+                        ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' }
+                        : {}),
+                    }}
+                  >
+                    1 each
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  className="tbtn tbtn-primary"
+                  onClick={copyMissingToClipboard}
+                  title={
+                    tcgCopyFeedback === 'failed'
+                      ? 'Could not write to the clipboard. Check site permissions.'
+                      : tcgCopyMode === 'oneEach'
+                      ? 'Copy list with quantity 1 per line: Name - Subtitle [setKey]'
+                      : 'Copy list with quantities = copies still needed: QTY Name - Subtitle [setKey]'
+                  }
+                  aria-label={
+                    tcgCopyFeedback === 'copied'
+                      ? 'Copied list to clipboard'
+                      : tcgCopyFeedback === 'failed'
+                      ? 'Copy to clipboard failed'
+                      : tcgCopyMode === 'oneEach'
+                      ? 'Copy missing cards for TCGPlayer, one of each line'
+                      : 'Copy missing cards for TCGPlayer with full needed quantities'
+                  }
+                  style={{
+                    ...(tcgCopyFeedback === 'copied'
+                      ? { backgroundColor: '#166534', borderColor: '#166534' }
+                      : tcgCopyFeedback === 'failed'
+                      ? { backgroundColor: '#7f1d1d', borderColor: '#7f1d1d' }
+                      : {}),
+                    transition: 'background-color 0.2s ease, border-color 0.2s ease',
+                  }}
+                >
+                  <span className="icon" aria-hidden="true">
+                    {tcgCopyFeedback === 'copied' ? 'check_circle' : tcgCopyFeedback === 'failed' ? 'error' : 'content_paste'}
+                  </span>
+                  <span aria-live="polite">
+                    {tcgCopyFeedback === 'copied'
+                      ? 'Copied to clipboard'
+                      : tcgCopyFeedback === 'failed'
+                      ? 'Copy failed'
+                      : `Copy TCG List (${filteredMissingRows.length})`}
+                  </span>
+                </button>
+              </>
             ) : listView === 'inventory' ? (
               <button
                 className="tbtn tbtn-primary" 
@@ -2102,48 +2359,53 @@ export default function App() {
               whiteSpace: 'nowrap',
             }}
           >
-          {listView === 'missing' ? (
-            <div 
-              className="muted" 
-              aria-live="polite"
-              style={{ paddingTop: 18, paddingBottom: 16, fontSize: 14, fontWeight: 600 }} 
-            >
-              Cost to Complete: {fmtUSD(missingCost)}
-            </div>
-          ) : (
-            // Inventory Progress Bar and Status
+          <div
+            className="muted"
+            aria-live="polite"
+            style={{ paddingTop: 18, paddingBottom: 16 }}
+          >
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
               <div style={{ fontSize: 14, fontWeight: 600 }}>
                 Collection Status ({inventoryStatus.totalCards} Unique Cards)
               </div>
-              {/* Progress Bar Container */}
-              <div 
+              <div
                 title={`Complete: ${inventoryStatus.complete}, In Progress: ${inventoryStatus.incomplete}, Missing: ${inventoryStatus.missing}`}
-                style={{ 
-                  width: '100%', height: 10, borderRadius: 5, 
-                  backgroundColor: '#ef4444', 
-                  display: 'flex', overflow: 'hidden' 
+                style={{
+                  width: '100%',
+                  height: 10,
+                  borderRadius: 5,
+                  backgroundColor: '#ef4444',
+                  display: 'flex',
+                  overflow: 'hidden',
                 }}
               >
-                {/* Green: Complete Playsets */}
-                <div style={{ 
-                  width: `${(inventoryStatus.complete / inventoryStatus.totalCards) * 100}%`, 
-                  backgroundColor: '#22c55e'
-                }} />
-                {/* Yellow: Incomplete Playsets */}
-                <div style={{ 
-                  width: `${(inventoryStatus.incomplete / inventoryStatus.totalCards) * 100}%`, 
-                  backgroundColor: '#f59e0b'
-                }} />
+                <div
+                  style={{
+                    width: `${inventoryStatus.totalCards ? (inventoryStatus.complete / inventoryStatus.totalCards) * 100 : 0}%`,
+                    backgroundColor: '#22c55e',
+                  }}
+                />
+                <div
+                  style={{
+                    width: `${inventoryStatus.totalCards ? (inventoryStatus.incomplete / inventoryStatus.totalCards) * 100 : 0}%`,
+                    backgroundColor: '#f59e0b',
+                  }}
+                />
               </div>
-              {/* Status Counts */}
               <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', fontSize: 12, opacity: 0.8 }}>
                 <span style={{ color: '#34d399' }}>✓ {inventoryStatus.complete}</span>
                 <span style={{ color: '#fcd34d' }}>! {inventoryStatus.incomplete}</span>
                 <span style={{ color: '#f87171' }}>✕ {inventoryStatus.missing}</span>
               </div>
+              <div style={{ fontSize: 14, fontWeight: 600 }}>
+                {listView === 'inventory' ? (
+                  <>Collection value: {fmtUSD(collectionValue)}</>
+                ) : (
+                  <>Cost to Complete: {fmtUSD(missingCost)}</>
+                )}
+              </div>
             </div>
-          )}
+          </div>
           </div> {/* End RIGHT SIDE content */}
         </div>
 
@@ -2168,7 +2430,8 @@ export default function App() {
                 </thead>
                 <tbody>
                   {filteredInvRows.map(r => {
-                    const dot = numToColor.get(r.Number);
+                    const aspectSpec = numToAspectSpec.get(r.Number);
+                    const dotBg = aspectSpecToInventorySwatchBackground(aspectSpec);
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
                     const complete = r.Qty >= r.Max;
                     const isHighlighted = r.Number === highlightedRowNumber; 
@@ -2185,16 +2448,11 @@ export default function App() {
                       >
                         <td className="mono numcol">#{r.Number}</td>
                         <td className="dotcol">
-                          {dot && (
+                          {dotBg && (
                             <span
                               title="Aspect color"
                               aria-label="Aspect color"
-                              style={{
-                                display: 'inline-block',
-                                width: 12, height: 12, borderRadius: 3,
-                                background: dot,
-                                boxShadow: '0 0 0 2px #2b2d3d inset',
-                              }}
+                              style={{ ...INVENTORY_ASPECT_SWATCH_STYLE, background: dotBg }}
                             />
                           )}
                         </td>
@@ -2258,7 +2516,8 @@ export default function App() {
                 </thead>
                 <tbody>
                   {filteredMissingRows.map(r => {
-                    const dot = numToColor.get(r.Number);
+                    const aspectSpec = numToAspectSpec.get(r.Number);
+                    const dotBg = aspectSpecToInventorySwatchBackground(aspectSpec);
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
                     const isHighlighted = r.Number === highlightedRowNumber; 
                     return (
@@ -2273,16 +2532,11 @@ export default function App() {
                       >
                         <td className="mono numcol">#{r.Number}</td>
                         <td className="dotcol">
-                          {dot && (
+                          {dotBg && (
                             <span
                               title="Aspect color"
                               aria-label="Aspect color"
-                              style={{
-                                display: 'inline-block',
-                                width: 12, height: 12, borderRadius: 3,
-                                background: dot,
-                                boxShadow: '0 0 0 2px #2b2d3d inset',
-                              }}
+                              style={{ ...INVENTORY_ASPECT_SWATCH_STYLE, background: dotBg }}
                             />
                           )}
                         </td>
@@ -2331,8 +2585,8 @@ export default function App() {
           ) : (
             // Simple muted message matching the Inventory tab's empty look
             <div className="muted" style={{ marginTop: 20 }}>
-              {missingRows.length ?
-                'No missing cards match current filters.' : // NEW: Filtered empty message
+              {hasIncompleteUnderCardFilters ?
+                'No missing cards match current filters.' :
                 'Nothing missing — nice!'
               }
             </div>
@@ -2609,7 +2863,6 @@ export default function App() {
         </div>
       )}
     </div>
-    </>
   );
 }
 
@@ -2620,7 +2873,7 @@ function Binder({
   active,
   setActive,
   presentNumbers,
-  numToColor,
+  numToAspectSpec,
   byNumber,
   inventory,
   inc,
@@ -2649,7 +2902,7 @@ function Binder({
     spreadRow: number; 
   } | null)=>void;
   presentNumbers: Set<number>;
-  numToColor: Map<number, string>;
+  numToAspectSpec: Map<number, AspectFillSpec>;
   byNumber: Map<number, Card>;
   inventory: Inventory;
   inc: (n:number)=>void;
@@ -2664,9 +2917,11 @@ function Binder({
   const showLeft = leftPage >= 2;
 
   const cols = 8, rows = 3;
-  const cellW = 120, cellH = 170, gap = 16;
-  const vbW = cols * cellW + (cols - 1) * gap + 32;
-  const vbH = rows * cellH + (rows - 1) * gap + 32;
+  const cellW = 120, cellH = 170, gap = 12;
+  const vbPad = 8;
+  const vbW = cols * cellW + (cols - 1) * gap + vbPad * 2;
+  const vbH = rows * cellH + (rows - 1) * gap + vbPad * 2;
+  const gridBottom = (rows - 1) * (cellH + gap) + cellH;
 
   const spreadLabel = page === 1
     ? 'Spread: Page 1'
@@ -2685,6 +2940,15 @@ function Binder({
     });
   }, [totalSpreads]);
 
+  const binderGradientDefs = useMemo(() => {
+    const out: { n: number; spec: Extract<AspectFillSpec, { kind: 'gradient' }> }[] = [];
+    for (const n of presentNumbers) {
+      const spec = numToAspectSpec.get(n);
+      if (spec?.kind === 'gradient') out.push({ n, spec });
+    }
+    return out;
+  }, [presentNumbers, numToAspectSpec]);
+
   return (
     <>
       {/* Row 1: selection header + tip (right) */}
@@ -2702,11 +2966,12 @@ function Binder({
           {active ? (
             <>
               {(() => {
-                const dot = numToColor.get(active.card.Number);
-                return dot ? (
+                const spec = numToAspectSpec.get(active.card.Number);
+                const bg = aspectSpecToCssBackground(spec);
+                return bg ? (
                   <span
                     style={{
-                      width: 12, height: 12, borderRadius: 3, background: dot,
+                      width: 12, height: 12, borderRadius: 3, background: bg,
                       boxShadow: '0 0 0 2px #2b2d3d inset', display: 'inline-block'
                     }}
                   />
@@ -2784,21 +3049,53 @@ function Binder({
           <span style={{ fontWeight: 600 }}>Binder</span> — {spreadLabel}
         </div>
         <div className="pager">
-          <button className="btn" onClick={() => setViewSpread(s => Math.max(0, s - 1))}>
-            ‹ Prev <span className="key-pill">,</span>
-          </button>
-          <select value={viewSpread} onChange={e => setViewSpread(Number(e.target.value))}>
-            {spreadOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-          </select>
-          <button className="btn" onClick={() => setViewSpread(s => Math.min(totalSpreads - 1, s + 1))}>
-            <span className="key-pill">.</span> Next ›
-          </button>
+          <label className="spread-jump-label">
+            <span className="spread-jump-hint">Jump</span>
+            <select
+              className="spread-jump-select"
+              value={viewSpread}
+              onChange={e => setViewSpread(Number(e.target.value))}
+              aria-label="Jump to spread"
+            >
+              {spreadOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+          </label>
         </div>
       </div>
 
-      <div className="grid-wrap">
+      <div className="spread-nav-row">
+        <button
+          type="button"
+          className="spread-nav-edge"
+          disabled={totalSpreads === 0 || viewSpread <= 0}
+          onClick={() => setViewSpread(s => Math.max(0, s - 1))}
+          aria-label="Previous spread, keyboard comma"
+          title="Previous spread — keyboard ,"
+        >
+          <span className="spread-nav-chevron" aria-hidden>‹</span>
+          <span className="key-pill">,</span>
+        </button>
+        <div className="grid-wrap">
         <svg viewBox={`0 0 ${vbW} ${vbH}`} style={{ width: '100%', height: 'auto' }} preserveAspectRatio="xMidYMid meet">
-          <g transform="translate(16,16)">
+          <defs>
+            {binderGradientDefs.map(({ n, spec }) => (
+              <linearGradient
+                key={`binder-fill-${setKey}-${n}`}
+                id={`binder-fill-${setKey}-${n}`}
+                gradientUnits="objectBoundingBox"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="0"
+              >
+                <stop offset="0%" stopColor={spec.colors[0]} />
+                <stop offset={`${DUAL_ASPECT_LEFT_STOP_PCT}%`} stopColor={spec.colors[0]} />
+                <stop offset={`${DUAL_ASPECT_RIGHT_STOP_PCT}%`} stopColor={spec.colors[1]} />
+                <stop offset="100%" stopColor={spec.colors[1]} />
+              </linearGradient>
+            ))}
+          </defs>
+          <g transform={`translate(${vbPad},${vbPad})`}>
             {Array.from({ length: rows }).map((_, rIdx) =>
               Array.from({ length: cols }).map((__, cIdx) => {
                 const r = rIdx + 1;
@@ -2821,7 +3118,14 @@ function Binder({
                 let qtyText = '';
 
                 if (!hidden && presentNumbers.has(n)) {
-                  fill = numToColor.get(n) || NEUTRAL;
+                  const spec = numToAspectSpec.get(n);
+                  if (spec?.kind === 'gradient') {
+                    fill = `url(#binder-fill-${setKey}-${n})`;
+                  } else if (spec?.kind === 'solid') {
+                    fill = spec.color;
+                  } else {
+                    fill = NEUTRAL;
+                  }
                   const qty = inventory[n] || 0;
                   const max = quotaForType(cardAt?.Type);
                   qtyText = `${qty}/${max}`;
@@ -2864,8 +3168,8 @@ function Binder({
                   {(() => {
                     if (hidden || !presentNumbers.has(n)) return null;
 
-                    // label color; invert on Heroism white
-                    const labelColor = String(fill).toLowerCase() === '#e5e7eb' ? '#11121a' : '#eaeaf0';
+                    const aspectHexes = normalizedPrimaryAspectHexes(cardAt?.Aspects);
+                    const labelColor = labelColorForAspectHexes(aspectHexes);
 
                     // data for this slot
                     const qty = inventory[n] || 0;
@@ -2874,7 +3178,7 @@ function Binder({
 
                     // rarity + outline (will render bottom-right)
                     const sty = cardAt?.Rarity ? rarityGlyph(cardAt.Rarity) : null;
-                    const rarityOutline = String(fill).toLowerCase() === '#e5e7eb' ? '#11121a' : '#ffffff';
+                    const rarityOutline = rarityOutlineForAspectHexes(aspectHexes);
 
                     return (
                       <>
@@ -2978,7 +3282,7 @@ function Binder({
               x1={(cellW + gap) * 4 - gap / 2}
               y1={-8}
               x2={(cellW + gap) * 4 - gap / 2}
-              y2={vbH - 32 + 8}
+              y2={gridBottom + 8}
               stroke="#424452ff"
               strokeOpacity={0.75}
               strokeWidth={4}
@@ -3075,6 +3379,18 @@ function Binder({
             `,
           }}
         />
+      </div>
+        <button
+          type="button"
+          className="spread-nav-edge"
+          disabled={totalSpreads === 0 || viewSpread >= totalSpreads - 1}
+          onClick={() => setViewSpread(s => Math.min(totalSpreads - 1, s + 1))}
+          aria-label="Next spread, keyboard period"
+          title="Next spread — keyboard ."
+        >
+          <span className="spread-nav-chevron" aria-hidden>›</span>
+          <span className="key-pill">.</span>
+        </button>
       </div>
     </>
   );

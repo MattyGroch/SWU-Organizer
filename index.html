@@ -20,7 +20,7 @@
       :root { --keycap-h-pad: 6px; }        /* keycap horizontal padding */
       :root { --keycap-border: 1px; }       /* keycap border width */
       body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:#0b0b0f; color:#eaeaf0; padding-bottom: var(--gh-badge-space); }
-      .container { max-width: 1200px; margin: 24px auto; padding: 0 16px; }
+      .container { max-width: min(1920px, calc(100vw - 24px)); width: 100%; margin: 24px auto; padding: 0 16px; box-sizing: border-box; }
       .card { background:#11121a; border: 1px solid #232433; border-radius: 16px; padding: 16px; }
       .row { display:flex; gap:12px; flex-wrap:wrap; align-items: center; }
       .row > * { flex: none; }
@@ -97,6 +97,75 @@
       .table th { color:#c8ccd9; font-weight:600; }
       .mono { font-variant-numeric: tabular-nums; }
       .pager { display:flex; gap:8px; align-items:center; margin-left:auto; }
+      .spread-jump-label{
+        display:inline-flex; align-items:center; gap:8px;
+      }
+      .spread-jump-hint{
+        font-size:12px; font-weight:600; color:#9aa0b4; text-transform:uppercase;
+        letter-spacing:.04em;
+      }
+      .spread-jump-select{
+        min-width:10rem;
+        height:38px;
+        padding:6px 10px;
+        box-sizing:border-box;
+      }
+
+      /* Spread prev/next: tall narrow chevrons flanking the binder grid */
+      .spread-nav-row{
+        display:flex;
+        flex-direction:row;
+        align-items:center;
+        gap:2px;
+        margin-bottom:2px;
+      }
+      .spread-nav-row .grid-wrap{
+        flex:1;
+        min-width:0;
+        padding:2px 2px;
+      }
+      .spread-nav-edge{
+        flex-shrink:0;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:6px;
+        box-sizing:border-box;
+        width:36px;
+        min-width:36px;
+        padding:24px 4px;
+        border-radius:999px;
+        border:1px solid #2b2d3d;
+        background:#11121a;
+        color:#e5e7eb;
+        cursor:pointer;
+        transition:background-color 0.15s ease-out, box-shadow 0.15s ease-out;
+      }
+      .spread-nav-edge:hover:not(:disabled){
+        background:#1a1c28;
+        box-shadow:0 0 12px rgba(0,0,0,0.35);
+      }
+      .spread-nav-edge:disabled{
+        opacity:0.35;
+        cursor:not-allowed;
+        box-shadow:none;
+      }
+      .spread-nav-edge:focus-visible{
+        outline:2px solid #8b5cf6;
+        outline-offset:2px;
+      }
+      .spread-nav-edge .key-pill{
+        margin:0;
+        font-size:0.72em;
+        padding:1px 3px;
+      }
+      .spread-nav-chevron{
+        font-size:2.1rem;
+        font-weight:700;
+        line-height:1;
+        user-select:none;
+      }
       .cell { cursor: pointer; }
       .cell:hover rect { filter: brightness(1.05); }
       .binder-subtitle { font-size: 14px; color: #c8ccd9; }
@@ -398,16 +467,25 @@
         padding-block:0;               /* remove extra vertical padding */
       }
 
-      .set-nav-arrow {
-          transition: all 0.15s ease-out;
+      /* Compact prev/next set switches (not spread / page navigation) */
+      .controls-row .set-switch-btn{
+        min-width: 36px;
+        padding-inline: 8px;
+        font-size: 1.35rem;
+        font-weight: 700;
+        justify-content: center;
+        transition: background-color 0.15s ease-out;
       }
-      .set-nav-arrow:hover {
-          background-color: #22242c !important; 
-          box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      .controls-row .set-switch-btn:hover:not(:disabled){
+        background-color: #22242c;
       }
-      .set-nav-arrow:active {
-          transform: translateY(-50%) scale(0.95) !important;
-          box-shadow: 0 0 5px rgba(0,0,0,0.8);
+      .controls-row .set-switch-btn:disabled{
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+      .controls-row .set-switch-btn:focus-visible{
+        outline: 2px solid #8b5cf6;
+        outline-offset: 2px;
       }
     </style>
   </head>

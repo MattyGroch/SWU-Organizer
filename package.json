@@ -9,7 +9,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "update:sets": "node scripts/fetch-sets.mjs",
-    "update:sets:slim": "node scripts/fetch-sets.mjs --slim"
+    "update:sets:slim": "node scripts/fetch-sets.mjs --slim",
+    "fetch:prices": "node scripts/fetch-prices.mjs",
+    "discover:sets": "node scripts/discover-sets.mjs"
   },
   "dependencies": {
     "react": "^18.2.0",

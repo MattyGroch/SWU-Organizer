@@ -10,8 +10,8 @@ if (NODE_MAJOR < 18) {
   process.exit(1);
 }
 
-const CONFIG_PATH = path.resolve('scripts/sets.config.json');
-const OUT_DIR = path.resolve('public/sets');
+const CONFIG_PATH = path.resolve(process.env.SWU_SETS_CONFIG || 'scripts/sets.config.json');
+const OUT_DIR = path.resolve(process.env.SWU_SETS_DIR || 'public/sets');
 const API_BASE = process.env.SWU_DB_BASE || 'https://api.swu-db.com/cards';
 
 // CLI: node scripts/fetch-sets.mjs [KEY ...] [--slim]
