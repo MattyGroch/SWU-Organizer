@@ -61,7 +61,7 @@ const PRIMARY_ASPECT_NAMES = new Set<string>([
 ]);
 
 /** Dual-primary art: mostly solid left/right; only the middle band blends (like physical cards). */
-const DUAL_ASPECT_CENTER_BLEND_PCT = 7;
+const DUAL_ASPECT_CENTER_BLEND_PCT = 15;
 const DUAL_ASPECT_LEFT_STOP_PCT = (100 - DUAL_ASPECT_CENTER_BLEND_PCT) / 2;
 const DUAL_ASPECT_RIGHT_STOP_PCT = (100 + DUAL_ASPECT_CENTER_BLEND_PCT) / 2;
 
@@ -190,14 +190,14 @@ type FilterControlsProps = {
 
 // --- FilterControls Component Definition (Used outside App function) ---
 function FilterControls({ filters, setFilters }: FilterControlsProps) {
-  const handleFilterChange = (category: keyof Filters, value: string) => {
+  const handleFilterChange = <K extends keyof Filters>(category: K, value: Filters[K][number]) => {
     setFilters(prev => {
-      const currentFilters = prev[category];
-      const newFilters = currentFilters.includes(value)
-        ? currentFilters.filter(item => item !== value)
-        : [...currentFilters, value];
+      const cur = prev[category] as Array<Filters[K][number]>;
+      const next: Array<Filters[K][number]> = cur.includes(value)
+        ? cur.filter(item => item !== value)
+        : [...cur, value];
 
-      return { ...prev, [category]: newFilters };
+      return { ...prev, [category]: next };
     });
   };
 
@@ -238,10 +238,13 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
   const needsDarkOutline = (bg: string) => relLuminance(hexToRgb(bg)) < 0.12;
 
 
-  const renderFilterGroup = (category: keyof Filters, items: readonly string[]) => (
+  const renderFilterGroup = <K extends 'aspect' | 'rarity' | 'type'>(
+    category: K,
+    items: readonly Filters[K][number][],
+  ) => (
   <div className="toolbar-group" role="group" style={{ marginRight: 12 }}>
     {items.map(item => {
-      const isActive = filters[category].includes(item);
+      const isActive = (filters[category] as Filters[K][number][]).includes(item);
       const label = item.replace('NEUTRAL', 'Neutral');
 
       // Determine highlight color from your maps
