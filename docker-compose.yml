@@ -2,6 +2,7 @@ services:
   swu-organizer:
     build: .
     container_name: swu-organizer
+    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.swu-organizer.entrypoints=websecure"
