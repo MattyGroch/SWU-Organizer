@@ -49,3 +49,19 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Wait for Docker Hub to propagate
+        run: |
+          for i in $(seq 1 30); do
+            digest=$(curl -s "https://hub.docker.com/v2/repositories/mattygroch/swu-organizer/tags/latest" | jq -r '.digest // empty')
+            if [ -n "$digest" ]; then
+              echo "Image available: $digest"
+              exit 0
+            fi
+            echo "Waiting for image to propagate ($i/30)..."
+            sleep 10
+          done
+          echo "Timed out waiting for image" && exit 1
+
+      - name: Trigger Portainer redeploy
+        run: curl -fsS -X POST "${{ secrets.PORTAINER_WEBHOOK_URL }}"
