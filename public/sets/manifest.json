@@ -1,28 +1,23 @@
 {
   "sets": [
     {
-      "key": "SOR",
-      "label": "Spark of Rebellion (SOR)",
-      "file": "SWU-SOR.json"
-    },
-    {
-      "key": "SHD",
-      "label": "Shadows of the Galaxy (SHD)",
-      "file": "SWU-SHD.json"
-    },
-    {
-      "key": "TWI",
-      "label": "Twilight of the Republic (TWI)",
-      "file": "SWU-TWI.json"
+      "key": "ASH",
+      "label": "Ashes of the Empire (ASH)",
+      "file": "SWU-ASH.json"
     },
     {
       "key": "JTL",
-      "label": "Jump to Lightspeed (JTL)",
+      "label": "Jump To Lightspeed (JTL)",
       "file": "SWU-JTL.json"
     },
     {
+      "key": "LAW",
+      "label": "A Lawless Time (LAW)",
+      "file": "SWU-LAW.json"
+    },
+    {
       "key": "LOF",
-      "label": "Legacy of the Force (LOF)",
+      "label": "Legends of the Force (LOF)",
       "file": "SWU-LOF.json"
     },
     {
@@ -31,9 +26,19 @@
       "file": "SWU-SEC.json"
     },
     {
-      "key": "LAW",
-      "label": "A Lawless Time (LAW)",
-      "file": "SWU-LAW.json"
+      "key": "SHD",
+      "label": "Shadows of the Galaxy (SHD)",
+      "file": "SWU-SHD.json"
+    },
+    {
+      "key": "SOR",
+      "label": "Spark of Rebellion (SOR)",
+      "file": "SWU-SOR.json"
+    },
+    {
+      "key": "TWI",
+      "label": "Twilight of the Republic (TWI)",
+      "file": "SWU-TWI.json"
     }
   ]
 }
