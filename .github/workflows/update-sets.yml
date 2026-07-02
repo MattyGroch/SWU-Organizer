@@ -34,7 +34,7 @@ jobs:
         run: npm run discover:sets
 
       - name: Fetch latest sets (writes /public/sets/*.json + manifest.json)
-        run: npm run update:sets
+        run: npm run update:sets:slim
 
       - name: Fetch compact price overlays (writes /public/sets/*.prices.json)
         run: npm run fetch:prices

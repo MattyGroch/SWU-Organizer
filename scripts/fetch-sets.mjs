@@ -52,6 +52,7 @@ async function fetchJSON(url, timeoutMs = 20000) {
 function slimCard(c) {
   return {
     Name: c?.Name?.trim?.() ?? c?.name ?? '',
+    Subtitle: (c?.Subtitle ?? c?.subtitle ?? '').trim?.() || undefined,
     Number: Number(c?.Number ?? c?.number),
     Aspects: Array.isArray(c?.Aspects) ? c.Aspects : (c?.aspects ?? []),
     Type:
