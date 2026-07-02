@@ -422,6 +422,26 @@ type CardUtilities = {
     fullCardIndex: Map<string, { baseNumber: number, type?: string, name: string }>;
 };
 
+/** Shared aggregation used by every CSV/XLSX import format: look up the card, cap to its quota, and accumulate. */
+function addAggregatedCount(
+  aggregatedData: Record<SetKey, Inventory>,
+  cardUtilities: CardUtilities,
+  setKey: string,
+  cardNumber: number,
+  count: number,
+) {
+  if (!setKey || !Number.isFinite(cardNumber) || cardNumber <= 0 || count <= 0) return;
+
+  const cardInfo = cardUtilities.fullCardIndex.get(`${setKey}:${String(cardNumber)}`);
+  if (!cardInfo) return;
+
+  const { baseNumber, type } = cardInfo;
+  const max = cardUtilities.quotaForType(type);
+
+  const inv = aggregatedData[setKey as SetKey] ?? (aggregatedData[setKey as SetKey] = {});
+  inv[baseNumber] = Math.min((inv[baseNumber] ?? 0) + count, max);
+}
+
 function parseCsvContent(fileContent: string): { headers: string[]; rows: string[][] } {
     // FIX 1: Normalize line endings to ensure correct line splitting regardless of OS/source.
     const normalizedContent = fileContent.trim()
@@ -451,7 +471,6 @@ function parseCsvContent(fileContent: string): { headers: string[]; rows: string
 }
 
 async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<Record<SetKey, Inventory>> {
-  const { quotaForType, fullCardIndex } = cardUtilities;
   const aggregatedData: Record<SetKey, Inventory> = {};
 
   const buf = await file.arrayBuffer();
@@ -498,39 +517,10 @@ async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<
         if (Number.isFinite(n)) totalCount += n;
       }
     }
-    if (totalCount <= 0) continue;
-
-    // Lookup index uses <SET>:<non-padded-number>
-    const normalizedKey = `${setKey}:${String(baseIdNum)}`;
-    const cardInfo = fullCardIndex.get(normalizedKey);
-    if (!cardInfo) continue;
-
-    const { baseNumber, type } = cardInfo;
-    const max = quotaForType(type);
-
-    if (!aggregatedData[setKey]) aggregatedData[setKey] = {};
-    const current = aggregatedData[setKey][baseNumber] ?? 0;
-    aggregatedData[setKey][baseNumber] = Math.min(current + totalCount, max);
+    addAggregatedCount(aggregatedData, cardUtilities, setKey, baseIdNum, totalCount);
   }
 
   return aggregatedData;
-}
-
-function detectImportFormat(headers: string[]): "swudb" | "swunlimiteddb" | "unknown" {
-  const lower = headers.map(h => h.trim().toLowerCase());
-  const has = (name: string) => lower.includes(name);
-
-  // swudb CSV: Set, CardNumber, Count
-  if (has("set") && has("cardnumber") && has("count")) {
-    return "swudb";
-  }
-
-  // sw-unlimited: Set, Base card id, Normal (plus the alt-art columns)
-  if (has("set") && (has("base card id") || has("basecardid")) && has("normal")) {
-    return "swunlimiteddb";
-  }
-
-  return "unknown";
 }
 
 function parseCsvData(
@@ -551,7 +541,6 @@ function parseCsvData(
   const norm = (s: string) => s.toLowerCase().replace(/[\s_]+/g, "");
   const headersNorm = headers.map(norm);
 
-  const has = (name: string) => headersNorm.includes(norm(name));
   const detectImportFormat = (hdrs: string[]): ImportFormat => {
     const h = hdrs.map(norm);
 
@@ -600,19 +589,8 @@ function parseCsvData(
         const v = Number(row[i]);
         if (Number.isFinite(v)) totalCount += v;
       }
-      if (totalCount <= 0) continue;
 
-      // Lookup uses normalized "<SET>:<number>" where number is non-padded
-      const normalizedKey = `${setKey}:${String(baseIdNum)}`;
-      const cardInfo = fullCardIndex.get(normalizedKey);
-      if (!cardInfo) continue;
-
-      const { baseNumber, type } = cardInfo;
-      const max = quotaForType(type);
-
-      if (!aggregatedData[setKey]) aggregatedData[setKey] = {};
-      const current = aggregatedData[setKey][baseNumber] ?? 0;
-      aggregatedData[setKey][baseNumber] = Math.min(current + totalCount, max);
+      addAggregatedCount(aggregatedData, cardUtilities, setKey, baseIdNum, totalCount);
     }
 
   } else if (format === "swudb") {
@@ -634,18 +612,8 @@ function parseCsvData(
 
       // Strip leading zeros so keys match your index (e.g., "079" -> "79")
       const numericId = Number(cardNumRaw);
-      if (!Number.isFinite(numericId) || numericId <= 0) continue;
 
-      const normalizedKey = `${setKey}:${String(numericId)}`;
-      const cardInfo = fullCardIndex.get(normalizedKey);
-      if (!cardInfo) continue;
-
-      const { baseNumber, type } = cardInfo;
-      const max = quotaForType(type);
-
-      if (!aggregatedData[setKey]) aggregatedData[setKey] = {};
-      const current = aggregatedData[setKey][baseNumber] ?? 0;
-      aggregatedData[setKey][baseNumber] = Math.min(current + count, max);
+      addAggregatedCount(aggregatedData, cardUtilities, setKey, numericId, count);
     }
 
   } else {
@@ -792,17 +760,15 @@ export default function App() {
     // baseNum → all numbers (base first), altNum → baseNum
     const baseToAll = new Map<number, number[]>();
     const altToBase = new Map<number, number>();
-    const nameTypeToBase = new Map<string, number>();
 
-    for (const [k, nums] of ntToNums) {
+    for (const [, nums] of ntToNums) {
       const base = nums[0];
       baseToAll.set(base, nums);
-      nameTypeToBase.set(k, base);
       for (const n of nums) {
         if (n !== base) altToBase.set(n, base);
       }
     }
-    return { baseToAll, altToBase, nameTypeToBase };
+    return { baseToAll, altToBase };
   }
 
   // Datetime
@@ -1500,6 +1466,53 @@ export default function App() {
         </text>
       </svg>
     );
+  }
+
+  /** Shared leading cells (#, aspect dot, rarity, name/subtitle, type) for the Inventory and Missing tables. */
+  function CardIdentityCells({
+    number, aspectSpec, rarity, name, subtitle, type,
+  }: {
+    number: number;
+    aspectSpec: AspectFillSpec | undefined;
+    rarity?: string;
+    name: string;
+    subtitle?: string;
+    type?: string;
+  }) {
+    const dotBg = aspectSpecToInventorySwatchBackground(aspectSpec);
+    return (
+      <>
+        <td className="mono numcol">#{number}</td>
+        <td className="dotcol">
+          {dotBg && (
+            <span
+              title="Aspect color"
+              aria-label="Aspect color"
+              style={{ ...INVENTORY_ASPECT_SWATCH_STYLE, background: dotBg }}
+            />
+          )}
+        </td>
+        <td className="rarcol">
+          <RarityBadge rarity={rarity} />
+        </td>
+        <td>
+          {name}
+          {subtitle && (
+            <span style={{ opacity: 0.7, fontSize: '0.9em', display: 'block', lineHeight: 1 }}>
+              {subtitle}
+            </span>
+          )}
+        </td>
+        <td>{type || ''}</td>
+      </>
+    );
+  }
+
+  /** Shared collection-status glyph (✓ complete / ! partial / ✕ none) used by the Inventory and Missing tables. */
+  function CollectionStatusBadge({ have, max }: { have: number; max: number }) {
+    if (have >= max) return <span className="check" title="Complete" aria-label="Complete">✓</span>;
+    if (have > 0) return <span className="warn" title="Partially collected" aria-label="Partially collected">!</span>;
+    return <span className="x" title="Not collected" aria-label="Not collected">✕</span>;
   }
 
   const CORE_RARITIES = ['Common', 'Uncommon', 'Rare', 'Legendary']; // List of non-special core rarities
@@ -2434,14 +2447,12 @@ export default function App() {
                 <tbody>
                   {filteredInvRows.map(r => {
                     const aspectSpec = numToAspectSpec.get(r.Number);
-                    const dotBg = aspectSpecToInventorySwatchBackground(aspectSpec);
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
-                    const complete = r.Qty >= r.Max;
-                    const isHighlighted = r.Number === highlightedRowNumber; 
+                    const isHighlighted = r.Number === highlightedRowNumber;
                     return (
-                      <tr 
+                      <tr
                         key={r.Number}
-                        style={{ 
+                        style={{
                           cursor: 'pointer',
                           // Conditional inline styling for the highlight
                           transition: 'background-color 0.5s ease',
@@ -2449,35 +2460,17 @@ export default function App() {
                         }}
                         onClick={() => selectCardByNumber(r.Number)} // Added click handler
                       >
-                        <td className="mono numcol">#{r.Number}</td>
-                        <td className="dotcol">
-                          {dotBg && (
-                            <span
-                              title="Aspect color"
-                              aria-label="Aspect color"
-                              style={{ ...INVENTORY_ASPECT_SWATCH_STYLE, background: dotBg }}
-                            />
-                          )}
-                        </td>
-                        <td className="rarcol">
-                          <RarityBadge rarity={card?.Rarity} />
-                        </td>
-                        <td>
-                          {r.Name}
-                          {card?.Subtitle && (
-                            <span style={{ opacity: 0.7, fontSize: '0.9em', display: 'block', lineHeight: 1 }}>
-                              {card.Subtitle}
-                            </span>
-                          )}
-                        </td>
-                        <td>{r.Type || ''}</td>
+                        <CardIdentityCells
+                          number={r.Number}
+                          aspectSpec={aspectSpec}
+                          rarity={card?.Rarity}
+                          name={r.Name}
+                          subtitle={card?.Subtitle}
+                          type={r.Type}
+                        />
                         <td className="mono qtycol">{r.Qty}</td>
                         <td className="compcol">
-                          {r.Qty >= r.Max ? (
-                            <span className="check" title="Complete" aria-label="Complete">✓</span>
-                          ) : (
-                            <span className="warn" title="Partially collected" aria-label="Partially collected">!</span>
-                          )}
+                          <CollectionStatusBadge have={r.Qty} max={r.Max} />
                         </td>
                         <td className="adjcol">
                           <div className="qtybtns circle">
@@ -2520,49 +2513,28 @@ export default function App() {
                 <tbody>
                   {filteredMissingRows.map(r => {
                     const aspectSpec = numToAspectSpec.get(r.Number);
-                    const dotBg = aspectSpecToInventorySwatchBackground(aspectSpec);
                     const card = byNumber.get(r.Number) || cardsAll.find(x => x.Number === r.Number);
-                    const isHighlighted = r.Number === highlightedRowNumber; 
+                    const isHighlighted = r.Number === highlightedRowNumber;
                     return (
-                      <tr 
+                      <tr
                         key={r.Number}
-                        style={{ 
+                        style={{
                           cursor: 'pointer',
                           transition: 'background-color 0.5s ease',
                           backgroundColor: isHighlighted ? '#424452' : 'transparent',
                         }}
-                        onClick={() => selectCardByNumber(r.Number)} 
+                        onClick={() => selectCardByNumber(r.Number)}
                       >
-                        <td className="mono numcol">#{r.Number}</td>
-                        <td className="dotcol">
-                          {dotBg && (
-                            <span
-                              title="Aspect color"
-                              aria-label="Aspect color"
-                              style={{ ...INVENTORY_ASPECT_SWATCH_STYLE, background: dotBg }}
-                            />
-                          )}
-                        </td>
-                        <td className="rarcol">
-                          <RarityBadge rarity={card?.Rarity} />
-                        </td>
-                        <td>
-                          {r.Name}
-                          {card?.Subtitle && (
-                            <span style={{ opacity: 0.7, fontSize: '0.9em', display: 'block', lineHeight: 1 }}>
-                              {card.Subtitle}
-                            </span>
-                          )}
-                        </td>
-                        <td>{r.Type || ''}</td>
+                        <CardIdentityCells
+                          number={r.Number}
+                          aspectSpec={aspectSpec}
+                          rarity={card?.Rarity}
+                          name={r.Name}
+                          subtitle={card?.Subtitle}
+                          type={r.Type}
+                        />
                         <td className="compcol">
-                          {r.Have >= r.Max ? (
-                            <span className="check" title="Complete" aria-label="Complete">✓</span>
-                          ) : r.Have > 0 ? (
-                            <span className="warn" title="Partially collected" aria-label="Partially collected">!</span>
-                          ) : (
-                            <span className="x" title="Not collected" aria-label="Not collected">✕</span>
-                          )}
+                          <CollectionStatusBadge have={r.Have} max={r.Max} />
                         </td>
                         <td className="mono qtycol">{r.Needed}</td>
                         <td className="mono moneycol">{fmtUSD(r.RowTotal)}</td>
@@ -2789,25 +2761,6 @@ export default function App() {
               <div style={{ fontWeight: 700 }}>Add 1 / Add Max</div>
               <div style={{ fontWeight: 700 }}>Remove 1</div>
               <div style={{ fontWeight: 700 }}>Remove All</div>
-              
-              {/* Define a base style for the modal's buttons */}
-              <style
-                dangerouslySetInnerHTML={{
-                  __html: `
-                    .modal-btn {
-                      border: none;
-                      border-radius: 4px;
-                      padding: 6px 10px;
-                      color: #fff;
-                      font-weight: 600;
-                      cursor: pointer;
-                      transition: background-color 0.15s;
-                      width: 100%;
-                    }
-                    .modal-btn:hover { opacity: 0.9; }
-                  `,
-                }}
-              />
 
               {/* ROW: All Cards */}
               <div style={{ fontWeight: 600 }}>All Cards</div>
@@ -3361,27 +3314,6 @@ function Binder({
           </div>
         </div>
       )}
-      
-      {/* Ensure key-pill style is available globally */}
-      <style
-          dangerouslySetInnerHTML={{
-            __html: `
-              .key-pill {
-                display: inline-block;
-                padding: 2px 5px;
-                margin: 0 3px;
-                border-radius: 4px;
-                border: 1px solid #424452;
-                background-color: #1a1b26;
-                color: #e5e7eb;
-                font-weight: 700;
-                font-size: 0.85em;
-                line-height: 1.2;
-                font-family: monospace;
-              }
-            `,
-          }}
-        />
       </div>
         <button
           type="button"
