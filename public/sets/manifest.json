@@ -17,12 +17,12 @@
     },
     {
       "key": "JTL",
-      "label": "Jump to Lightspeed (JTL)",
+      "label": "Jump To Lightspeed (JTL)",
       "file": "SWU-JTL.json"
     },
     {
       "key": "LOF",
-      "label": "Legacy of the Force (LOF)",
+      "label": "Legends of the Force (LOF)",
       "file": "SWU-LOF.json"
     },
     {
