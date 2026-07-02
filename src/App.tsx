@@ -653,10 +653,24 @@ export default function App() {
   const [showImportModal, setShowImportModal] = useState(false);
   const [importData, setImportData] = useState<Record<SetKey, Inventory>>({});
   const [importingFileName, setImportingFileName] = useState('');
-  const [showResetModal, setShowResetModal] = useState(false); 
+  const [showResetModal, setShowResetModal] = useState(false);
   const [listView, setListView] = React.useState<'inventory' | 'missing'>('inventory');
-  
 
+  // In-app toast notifications (replaces window.alert)
+  type ToastKind = 'success' | 'error' | 'warning';
+  type ToastItem = { id: number; kind: ToastKind; message: string };
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+  const toastIdRef = useRef(0);
+  const showToast = useCallback((message: string, kind: ToastKind = 'success') => {
+    const id = ++toastIdRef.current;
+    setToasts(prev => [...prev, { id, kind, message }]);
+    window.setTimeout(() => {
+      setToasts(prev => prev.filter(t => t.id !== id));
+    }, 3200);
+  }, []);
+  const dismissToast = useCallback((id: number) => {
+    setToasts(prev => prev.filter(t => t.id !== id));
+  }, []);
 
   // cache parsed data for sets (so we don't refetch repeatedly)
   type ParsedSet = {
@@ -1421,24 +1435,6 @@ export default function App() {
     URL.revokeObjectURL(url);
   }
 
-  function importAllInv(file: File) {
-    file.text().then(txt => {
-      try {
-        const raw = JSON.parse(txt);
-        const setsFromFile: Partial<Record<SetKey, Inventory>> =
-          raw?.version === 1 && raw?.sets ? raw.sets : {};
-
-        setKeys.forEach(k => {
-          const inv = setsFromFile[k] ?? {};
-          writeSetInv(k, pruneZeros(inv));
-        });
-        if (setsFromFile[setKey]) setInventory(pruneZeros(setsFromFile[setKey]!));
-      } catch {
-        alert('Import failed: invalid JSON format.');
-      }
-    });
-  }
-
   function RarityBadge({ rarity }: { rarity?: string }) {
     const sty = rarityGlyph(rarity);
     if (!sty) return null;
@@ -1577,7 +1573,7 @@ export default function App() {
       if (scope === 'current') {
           localStorage.removeItem(`inv:${setKey}`);
           setInventory({});
-          alert(`Inventory for the current set (${setKey}) has been cleared.`);
+          showToast(`Inventory for the current set (${setKey}) has been cleared.`);
       } else if (scope === 'all') {
           // Iterate over all keys in localStorage and remove those that start with 'inv:'
           if (!sets.length) {
@@ -1593,7 +1589,7 @@ export default function App() {
               }
           }
           setInventory({}); // Reset current view as well
-          alert('Inventory for ALL sets has been cleared.');
+          showToast('Inventory for ALL sets has been cleared.');
       }
       setShowResetModal(false);
   };
@@ -1646,7 +1642,7 @@ export default function App() {
       
       setShowImportModal(false);
       setImportData({});
-      alert(`Successfully applied import of ${importedCount} card entries in ${mode} mode.`);
+      showToast(`Successfully applied import of ${importedCount} card entries in ${mode} mode.`);
   };
   
   // File change handler to parse the file and open the modal
@@ -1971,7 +1967,7 @@ export default function App() {
     }).join('\n');
 
     if (list.length === 0) {
-        alert('No missing cards matching current filters to copy!');
+        showToast('No missing cards matching current filters to copy!', 'warning');
         return;
     }
 
@@ -2580,19 +2576,25 @@ export default function App() {
                   onClick={(e) => e.stopPropagation()}
               >
                   <h2 style={{ marginTop: 0, color: '#e5e7eb' }}>Confirm Inventory Reset</h2>
-                  <p style={{ opacity: 0.8, marginBottom: 20 }}>
+                  <p style={{ opacity: 0.8, marginBottom: 10 }}>
                       Please choose the scope of the inventory data you wish to clear.
                   </p>
+                  <div style={{
+                      color: '#ef4444',
+                      fontWeight: 400,
+                      padding: '8px 16px',
+                      marginBottom: 20,
+                      border: '2px solid #ef4444',
+                      borderRadius: 8,
+                      textAlign: 'center',
+                      backgroundColor: 'rgba(239, 68, 68, 0.23)',
+                  }}>
+                      WARNING: This cannot be undone. Use the 'Save' button to download a JSON backup first if you want to keep a copy.
+                  </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 15 }}>
                     <button
                         className="modal-btn"
-                        onClick={() => {
-                            if (window.confirm(`Are you sure you want to clear inventory for the current set (${setKey})?`)) {
-                                handleResetInventory('current');
-                            } else {
-                                setShowResetModal(false);
-                            }
-                        }}
+                        onClick={() => handleResetInventory('current')}
                         style={{
                             padding: '12px 24px', 
                             borderRadius: 8, 
@@ -2627,13 +2629,7 @@ export default function App() {
                     <button
                         className="modal-btn"
                         style={{ padding: '12px 24px', borderRadius: 8, backgroundColor: '#8a1d29', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '1em' }}
-                        onClick={() => {
-                            if (window.confirm("WARNING: This will clear inventory data for ALL sets stored locally. Are you absolutely sure?")) {
-                                handleResetInventory('all');
-                            } else {
-                                setShowResetModal(false);
-                            }
-                        }}
+                        onClick={() => handleResetInventory('all')}
                     >
                         Clear ALL Set Data
                     </button>
@@ -2688,6 +2684,18 @@ export default function App() {
                   <p style={{ fontWeight: 700, marginBottom: 15 }}>
                       How would you like to process this imported data?
                   </p>
+                  <div style={{
+                      color: '#ef4444',
+                      fontWeight: 400,
+                      padding: '8px 16px',
+                      marginBottom: 15,
+                      border: '2px solid #ef4444',
+                      borderRadius: 8,
+                      textAlign: 'center',
+                      backgroundColor: 'rgba(239, 68, 68, 0.23)',
+                  }}>
+                      WARNING: Replace deletes all existing inventory data and cannot be undone.
+                  </div>
                   <div style={{ display: 'flex', gap: 20, justifyContent: 'center' }}>
                       <button
                           className="modal-btn"
@@ -2699,11 +2707,7 @@ export default function App() {
                       <button
                           className="modal-btn"
                           style={{ padding: '12px 24px', borderRadius: 8, backgroundColor: '#63252a', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600 }}
-                          onClick={() => {
-                              if (window.confirm("WARNING: Replacing will delete all existing inventory data and replace it with the imported data. Are you sure?")) {
-                                  applyImport('replace');
-                              }
-                          }}
+                          onClick={() => applyImport('replace')}
                       >
                           Replace Current Data
                       </button>
@@ -2816,6 +2820,46 @@ export default function App() {
                 </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Toast notifications (replaces window.alert) */}
+      {toasts.length > 0 && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 16,
+            right: 16,
+            zIndex: 2000,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 8,
+            maxWidth: 360,
+          }}
+        >
+          {toasts.map(t => (
+            <div
+              key={t.id}
+              role="status"
+              onClick={() => dismissToast(t.id)}
+              style={{
+                cursor: 'pointer',
+                padding: '12px 16px',
+                borderRadius: 10,
+                fontSize: 14,
+                fontWeight: 600,
+                color: '#eaeaf0',
+                boxShadow: '0 8px 24px rgba(0,0,0,.4)',
+                border: '1px solid',
+                borderColor:
+                  t.kind === 'error' ? '#4a1f1f' : t.kind === 'warning' ? '#4a3a00' : '#1f3d33',
+                backgroundColor:
+                  t.kind === 'error' ? '#3a0a0a' : t.kind === 'warning' ? '#3a3000' : '#093c2d',
+              }}
+            >
+              {t.message}
+            </div>
+          ))}
         </div>
       )}
     </div>
