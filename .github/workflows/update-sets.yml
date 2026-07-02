@@ -36,28 +36,29 @@ jobs:
       - name: Fetch latest sets (writes /public/sets/*.json + manifest.json)
         run: npm run update:sets:slim
 
-      - name: Fetch compact price overlays (writes /public/sets/*.prices.json)
-        run: npm run fetch:prices
+      # Prices are intentionally NOT fetched here — Docker refreshes *.prices.json
+      # at container start and every 24h independent of git, so committing price
+      # snapshots via this workflow was redundant and made it open PRs on price
+      # drift alone, even when the card catalog hadn't changed.
 
       # Optional but keeps diffs tidy/consistent
       - name: Prettify JSON
-        run: npx prettier -w "public/sets/*.json" "public/sets/manifest.json" "scripts/sets.config.json" "scripts/sets.discover-overrides.json"
+        run: npx prettier -w "public/sets/*.json" "!public/sets/*.prices.json" "scripts/sets.config.json" "scripts/sets.discover-overrides.json"
         continue-on-error: true
 
-      # Create a PR only if files changed
+      # Create a PR only if the card catalog actually changed
       - name: Open Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
           branch: ci/update-sets
           base: main
-          title: "chore(data): refresh SWU set data and prices"
-          commit-message: "chore(data): refresh SWU set data and prices"
+          title: "chore(data): refresh SWU set data"
+          commit-message: "chore(data): refresh SWU set data"
           body: |
-            Automated refresh of set catalog, manifest, price overlays, and `scripts/sets.config.json`.
+            Automated refresh of the set catalog, manifest, and `scripts/sets.config.json`.
             - Sets list: `GET https://api.swu-db.com/sets` → `npm run discover:sets`
-            - Card JSON: `GET https://api.swu-db.com/cards/{setKey}` → `scripts/fetch-sets.mjs`
-            - Prices: same API, compact `*.prices.json` → `scripts/fetch-prices.mjs`
-            - Runtime (Docker) refreshes `*.prices.json` on start and every 24h without a new image build.
+            - Card JSON: `GET https://api.swu-db.com/cards/{setKey}` → `scripts/fetch-sets.mjs` (slim)
+            - Prices are not part of this workflow — Docker refreshes `*.prices.json` on start and every 24h without a new image build or PR.
           labels: data, automation
           add-paths: |
             public/sets/*.json
