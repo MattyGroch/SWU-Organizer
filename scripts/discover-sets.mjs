@@ -43,7 +43,7 @@ function discover(rows, ov) {
   const exclude = new Set((ov.excludeSetIds || []).map(s => s.toUpperCase()));
   const include = new Set((ov.includeSetIds || []).map(s => s.toUpperCase()));
 
-  /** @type {Map<string, string>} */
+  /** @type {Map<string, { name: string, releaseDate?: string }>} */
   const out = new Map();
 
   for (const r of rows) {
@@ -58,9 +58,10 @@ function discover(rows, ov) {
     const cardsOk = Number.isFinite(n) && n >= MIN_CARDS;
     const name = String(r.fullName || '').trim();
     const nameLooksPromoSubset = name.includes(' - ');
+    const entry = { name: name || id, releaseDate: r.releaseDate };
 
     if (include.has(up)) {
-      out.set(id, name || id);
+      out.set(id, entry);
       continue;
     }
 
@@ -68,14 +69,22 @@ function discover(rows, ov) {
     if (!cardsOk) continue;
     if (nameLooksPromoSubset) continue;
 
-    out.set(id, name || id);
+    out.set(id, entry);
   }
 
   return out;
 }
 
+/** Chronological (release order) so the last manifest entry is always the newest set — see App.tsx's newestSetKeyFromManifest. */
 function sortKeys(map) {
-  return [...map.keys()].sort((a, b) => a.localeCompare(b));
+  return [...map.keys()].sort((a, b) => {
+    const da = map.get(a)?.releaseDate;
+    const db = map.get(b)?.releaseDate;
+    if (da && db) return new Date(da).getTime() - new Date(db).getTime();
+    if (da) return -1;
+    if (db) return 1;
+    return a.localeCompare(b);
+  });
 }
 
 (async () => {
@@ -100,7 +109,7 @@ function sortKeys(map) {
   /** @type {Record<string, string>} */
   const obj = {};
   for (const k of keys) {
-    obj[k] = map.get(k) ?? k;
+    obj[k] = map.get(k)?.name ?? k;
   }
 
   await fs.writeFile(OUT_PATH, JSON.stringify(obj, null, 2) + '\n');
