@@ -8,6 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "update:sets": "node scripts/fetch-sets.mjs",
     "update:sets:slim": "node scripts/fetch-sets.mjs --slim",
     "fetch:prices": "node scripts/fetch-prices.mjs",
@@ -19,6 +22,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.4",
     "@types/babel__generator": "^7.27.0",
     "@types/babel__template": "^7.4.4",
     "@types/babel__traverse": "^7.28.0",
@@ -26,7 +30,14 @@
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.2.0",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.4",
     "typescript": "^5.3.3",
+    "typescript-eslint": "^8.62.1",
     "vite": "^7.1.2"
   }
 }
