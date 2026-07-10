@@ -34,6 +34,11 @@
       "key": "LAW",
       "label": "A Lawless Time (LAW)",
       "file": "SWU-LAW.json"
+    },
+    {
+      "key": "ASH",
+      "label": "Ashes of the Empire (ASH)",
+      "file": "SWU-ASH.json"
     }
   ]
 }
