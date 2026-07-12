@@ -83,8 +83,21 @@ type AspectFillSpec =
   | { kind: 'solid'; color: string }
   | { kind: 'gradient'; colors: [string, string] };
 
+/**
+ * Hexes used for card fills: primary aspects when present; otherwise fall back
+ * to the affiliation color (mono-Heroism white / mono-Villainy black).
+ * Empty for true neutrals (callers fall back to NEUTRAL).
+ */
+function aspectFillHexes(aspects?: string[]): string[] {
+  const primary = normalizedPrimaryAspectHexes(aspects);
+  if (primary.length) return primary;
+  if (aspects?.includes('Heroism')) return [ASPECT_HEX.Heroism];
+  if (aspects?.includes('Villainy')) return [ASPECT_HEX.Villainy];
+  return [];
+}
+
 function aspectSpecFromCardAspects(aspects?: string[]): AspectFillSpec | null {
-  const hexes = normalizedPrimaryAspectHexes(aspects);
+  const hexes = aspectFillHexes(aspects);
   if (hexes.length === 0) return null;
   if (hexes.length === 1) return { kind: 'solid', color: hexes[0] };
   return { kind: 'gradient', colors: [hexes[0], hexes[1]] };
@@ -3168,7 +3181,7 @@ function Binder({
                   {(() => {
                     if (hidden || !presentNumbers.has(n)) return null;
 
-                    const aspectHexes = normalizedPrimaryAspectHexes(cardAt?.Aspects);
+                    const aspectHexes = aspectFillHexes(cardAt?.Aspects);
                     const labelColor = labelColorForAspectHexes(aspectHexes);
 
                     // data for this slot
