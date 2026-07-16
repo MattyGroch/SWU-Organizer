@@ -87,4 +87,47 @@ describe('SettingsModal', () => {
 
     expect(document.activeElement).toBe(triggerRef.current)
   })
+
+  it('traps forward and reverse Tab movement inside the dialog', () => {
+    render(
+      <SettingsModal
+        open
+        settings={{ autoOpenSinglePage: true }}
+        onChange={vi.fn()}
+        onClose={vi.fn()}
+        returnFocusRef={createRef<HTMLButtonElement>()}
+      />,
+    )
+
+    const checkbox = screen.getByRole('checkbox', {
+      name: 'Automatically open enlarged page after selecting a card',
+    })
+    const close = screen.getByRole('button', { name: 'Close' })
+
+    close.focus()
+    fireEvent.keyDown(close, { key: 'Tab' })
+    expect(document.activeElement).toBe(checkbox)
+
+    checkbox.focus()
+    fireEvent.keyDown(checkbox, { key: 'Tab', shiftKey: true })
+    expect(document.activeElement).toBe(close)
+  })
+
+  it('closes when the backdrop itself is pressed', () => {
+    const onClose = vi.fn()
+    const { container } = render(
+      <SettingsModal
+        open
+        settings={{ autoOpenSinglePage: true }}
+        onChange={vi.fn()}
+        onClose={onClose}
+        returnFocusRef={createRef<HTMLButtonElement>()}
+      />,
+    )
+
+    const backdrop = container.querySelector('.modal-backdrop')
+    expect(backdrop).toBeTruthy()
+    fireEvent.mouseDown(backdrop!)
+    expect(onClose).toHaveBeenCalledOnce()
+  })
 })

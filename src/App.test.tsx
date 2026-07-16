@@ -92,6 +92,31 @@ describe('search submission', () => {
 })
 
 describe('settings', () => {
+  it('falls back to defaults when initial local storage access is unavailable', () => {
+    stubSetFetch()
+    const availableStorage = window.localStorage
+    availableStorage.setItem('swu:settings:v1', JSON.stringify({ autoOpenSinglePage: false }))
+    let storageReads = 0
+    const storageGetter = vi.spyOn(window, 'localStorage', 'get').mockImplementation(() => {
+      storageReads += 1
+      if (storageReads === 1) throw new Error('storage access denied')
+      return availableStorage
+    })
+
+    try {
+      expect(() => render(<App />)).not.toThrow()
+      expect(storageReads).toBeGreaterThan(0)
+      fireEvent.click(screen.getByRole('button', { name: 'Open settings' }))
+      expect(
+        (screen.getByRole('checkbox', {
+          name: 'Automatically open enlarged page after selecting a card',
+        }) as HTMLInputElement).checked,
+      ).toBe(true)
+    } finally {
+      storageGetter.mockRestore()
+    }
+  })
+
   it('persists changes immediately and keeps them in component state', async () => {
     stubSetFetch()
     render(<App />)

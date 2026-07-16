@@ -26,13 +26,26 @@ import {
   type ImportResult,
 } from './core/inventory';
 import { createLoadCommitGate } from './core/loadGuard';
-import { readSettings, writeSettings, type AppSettings } from './core/settings';
+import {
+  DEFAULT_SETTINGS,
+  readSettings,
+  writeSettings,
+  type AppSettings,
+} from './core/settings';
 import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
 import { SettingsModal } from './components/SettingsModal';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
 function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
   return list.length ? list[list.length - 1]!.key : 'SOR';
+}
+
+function initialSettings(): AppSettings {
+  try {
+    return readSettings(window.localStorage);
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
 }
 
 const ASPECT_HEX: Record<string, string> = {
@@ -651,7 +664,7 @@ export default function App() {
   const submitSearchRef = useRef<() => void>(() => {});
   const importRef = useRef<HTMLInputElement>(null);
   const settingsButtonRef = useRef<HTMLButtonElement>(null);
-  const [settings, setSettings] = useState<AppSettings>(() => readSettings(localStorage));
+  const [settings, setSettings] = useState<AppSettings>(initialSettings);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const closeSettingsModal = useCallback(() => setShowSettingsModal(false), []);
   const [showImportModal, setShowImportModal] = useState(false);
