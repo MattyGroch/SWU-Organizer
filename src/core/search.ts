@@ -89,8 +89,8 @@ export function buildSearchSuggestions(
     .sort((a, b) =>
       a.score - b.score
       || a.name.localeCompare(b.name)
-      || a.baseNumber - b.baseNumber
-      || (a.subtitle ?? '').localeCompare(b.subtitle ?? ''),
+      || (a.subtitle ?? '').localeCompare(b.subtitle ?? '')
+      || a.baseNumber - b.baseNumber,
     )
     .slice(0, limit)
     .map(({ score: _score, ...suggestion }) => suggestion)

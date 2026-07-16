@@ -628,6 +628,7 @@ export default function App() {
   const [sets, setSets] = useState<SetMeta[]>([]);
   const [setKey, setSetKey] = useState<SetKey>('SOR'); // placeholder until manifest loads (then newest set)
   const searchRef = useRef<HTMLInputElement | null>(null);
+  const submitSearchRef = useRef<() => void>(() => {});
   const importRef = useRef<HTMLInputElement>(null);
   const [showImportModal, setShowImportModal] = useState(false);
   const [importData, setImportData] = useState<Record<SetKey, Inventory>>({});
@@ -1101,6 +1102,8 @@ export default function App() {
     }
     chooseSuggestion(suggestion);
   }
+  submitSearchRef.current = submitSearch;
+
   function selectCardByNumber(baseNum: number) {
     const card = byNumber.get(baseNum);
     if (!card) { 
@@ -1496,7 +1499,7 @@ export default function App() {
       if (e.key === 'Enter' && !typing) {
         if ((query || '').trim()) {
           e.preventDefault();
-          submitSearch();
+          submitSearchRef.current();
         }
         return;
       }

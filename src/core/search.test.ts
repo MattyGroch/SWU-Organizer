@@ -41,12 +41,12 @@ const catalogs = [
 describe('search suggestions', () => {
   it('keeps duplicate names as distinct stable card identities', () => {
     const results = buildSearchSuggestions('Darth Vader', catalogs, 'SOR')
-    expect(results.map(result => result.baseNumber)).toEqual([10, 87])
+    expect(results.map(result => result.baseNumber)).toEqual([87, 10])
   })
 
   it('ranks intentional word starts before incidental normalized substrings', () => {
     const results = buildSearchSuggestions('Vader', catalogs, 'SOR')
-    expect(results[0]).toMatchObject({ setKey: 'SOR', baseNumber: 10 })
+    expect(results[0]).toMatchObject({ setKey: 'SOR', name: 'Darth Vader' })
     expect(results[results.length - 1]?.name).toBe('Brain Invaders')
   })
 
@@ -59,7 +59,7 @@ describe('search suggestions', () => {
 
   it('submits the highlighted result and falls back to the first', () => {
     const results = buildSearchSuggestions('Darth Vader', catalogs, 'SOR')
-    expect(submittedSuggestion(results, 1)?.baseNumber).toBe(87)
-    expect(submittedSuggestion(results, 99)?.baseNumber).toBe(10)
+    expect(submittedSuggestion(results, 1)?.baseNumber).toBe(10)
+    expect(submittedSuggestion(results, 99)?.baseNumber).toBe(87)
   })
 })
