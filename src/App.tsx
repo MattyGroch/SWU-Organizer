@@ -32,11 +32,16 @@ import {
   writeSettings,
   type AppSettings,
 } from './core/settings';
+import {
+  focusedPageForSpread,
+  viewModeAfterSelection,
+  type BinderViewMode,
+} from './core/binderView';
 import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
 import { LocatorPanel } from './components/LocatorPanel';
 import { SettingsModal } from './components/SettingsModal';
 
-export type BinderViewMode = 'single' | 'spread';
+export type { BinderViewMode } from './core/binderView';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
 function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
@@ -889,9 +894,16 @@ export default function App() {
   const maxNumber = useMemo(() => cardsBase.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsBase]);
   const totalPages = Math.max(1, Math.ceil(maxNumber / 12));
   const totalSpreads = 1 + Math.ceil(Math.max(0, totalPages - 1) / 2);
-  const [viewSpread, setViewSpread] = useState<number>(0); // 0 => Page 1; >=1 => 2/3, 4/5, ...
   const [binderViewMode, setBinderViewMode] = useState<BinderViewMode>('spread');
   const [focusedPage, setFocusedPage] = useState(1);
+  const viewSpread = pageToSpread(focusedPage);
+  const setViewSpread = useCallback<React.Dispatch<React.SetStateAction<number>>>(next => {
+    setFocusedPage(currentPage => {
+      const currentSpread = pageToSpread(currentPage);
+      const requestedSpread = typeof next === 'function' ? next(currentSpread) : next;
+      return focusedPageForSpread(currentPage, requestedSpread, totalPages);
+    });
+  }, [totalPages]);
 
   const binderRef = useRef<HTMLDivElement>(null); 
 
@@ -900,9 +912,8 @@ export default function App() {
     const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
     setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
     setError('');
-    setViewSpread(pageToSpread(page));
     setFocusedPage(page);
-    setBinderViewMode(forceView ?? (settings.autoOpenSinglePage ? 'single' : binderViewMode));
+    setBinderViewMode(forceView ?? viewModeAfterSelection(settings, binderViewMode));
     setHighlightedRowNumber(card.Number);
 
     window.setTimeout(() => setHighlightedRowNumber(null), 500);
@@ -1218,9 +1229,8 @@ export default function App() {
       spreadCol,
       spreadRow,
     });
-    setViewSpread(pageToSpread(next.page));
     setFocusedPage(next.page);
-  }, [active, totalPages, byNumber, setActive, setViewSpread]);
+  }, [active, totalPages, byNumber, setActive]);
   
 
   const [prevSetKey, nextSetKey] = useMemo(() => {
@@ -1591,52 +1601,11 @@ export default function App() {
           deltaSpread = 1;
         }
         
-        // Handle Page Flip (if active, anchor the selection)
+        // Browsing changes the viewed anchor only; selection and locator remain stable.
         if (deltaSpread !== 0) {
-            const currentSpread = viewSpread;
-            const newSpread = Math.max(0, Math.min(totalSpreads - 1, currentSpread + deltaSpread));
-
-            if (newSpread !== currentSpread) {
-                // If a card is active, calculate its new position
-                if (active) {
-                    // 24 slots per spread (12 cards per page * 2 pages)
-                    const deltaNum = deltaSpread * 24;
-                    const currentNum = active.card.Number;
-                    let newNum = currentNum + deltaNum;
-
-                    // Edge Case: Page 1 (Spread 0) only has 12 slots.
-                    // If moving to spread 0, the minimum number is #1
-                    if (newSpread === 0) {
-                        newNum = Math.max(1, newNum);
-                    }
-                    
-                    // Constrain the number to the set's bounds
-                    const maxSetNum = totalPages * 12;
-                    newNum = Math.min(maxSetNum, newNum);
-
-                    // Find the nearest existing card near the new position (using the number itself is simplest)
-                    const newCard = byNumber.get(newNum) || byNumber.get(Math.max(1, newNum)); // Fallback to #1
-
-                    if (newCard) {
-                        const { page, row, column } = binderLayout(newCard.Number);
-                        const { spreadCol, spreadRow } = getSpreadCoords(page, row, column); // CALCULATE SPREAD COORDS
-                        setActive({ number: newCard.Number, card: newCard, page, row, column, spreadCol, spreadRow }); // PASS SPREAD COORDS
-                    } else {
-                        // If no card exists at the new relative position, select the first card on the new spread
-                        const firstNumOnSpread = newSpread * 24 + 1;
-                        const firstCardOnSpread = byNumber.get(firstNumOnSpread) || byNumber.get(Math.max(1, firstNumOnSpread));
-                        if(firstCardOnSpread) {
-                           const { page, row, column } = binderLayout(firstCardOnSpread.Number);
-                           const { spreadCol, spreadRow } = getSpreadCoords(page, row, column); // CALCULATE SPREAD COORDS
-                           setActive({ number: firstCardOnSpread.Number, card: firstCardOnSpread, page, row, column, spreadCol, spreadRow }); // PASS SPREAD COORDS
-                        } else {
-                           setActive(null); // Clear selection if no card is found
-                        }
-                    }
-                }
-                setViewSpread(newSpread);
-            }
-            return;
+          const newSpread = Math.max(0, Math.min(totalSpreads - 1, viewSpread + deltaSpread));
+          if (newSpread !== viewSpread) setViewSpread(newSpread);
+          return;
         } // End Page Flip Logic
 
         // Card selection movement (Arrow keys) and Qty Adjust
@@ -2066,12 +2035,7 @@ export default function App() {
           viewMode={binderViewMode}
           focusedPage={focusedPage}
           onFocusedPageChange={setFocusedPage}
-          onViewModeChange={mode => {
-            setBinderViewMode(mode);
-            if (mode === 'single') {
-              setFocusedPage(active?.page ?? spreadToPrimaryPage(viewSpread));
-            }
-          }}
+          onViewModeChange={setBinderViewMode}
           onActivateCard={activateCard}
           active={active}
           presentNumbers={presentNumbers}
