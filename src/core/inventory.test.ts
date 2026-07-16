@@ -4,6 +4,8 @@ import {
   INVENTORY_SCHEMA_KEY,
   applyImportedInventories,
   canonicalizeInventory,
+  collectRawImportEntry,
+  loadInventoriesForPersistence,
   migrateLegacyInventories,
   type CanonicalCatalog,
 } from './inventory'
@@ -93,6 +95,36 @@ describe('canonical inventory', () => {
     expect(result.skipped).toBe(1)
   })
 
+  it('rejects reserved and unrecognized imported set keys', () => {
+    const result = applyImportedInventories(
+      { 'schema-version': { 1: 1 }, SOR: { 87: 1 } },
+      {
+        'migration:v2:backup': { 87: 1 },
+        'schema-version': { 87: 1 },
+        ARBITRARY: { 87: 1 },
+      },
+      'replace',
+      catalog,
+    )
+
+    expect(result.inventories).toEqual({ SOR: { 87: 1 } })
+    expect(result.skipped).toBe(3)
+  })
+
+  it('counts malformed raw import entries as skipped', () => {
+    const raw: Record<string, Record<number, number>> = {}
+    let skipped = 0
+
+    skipped += collectRawImportEntry(raw, 'SOR', 'not-a-number', 2) ? 0 : 1
+    skipped += collectRawImportEntry(raw, 'SOR', 87, 'not-a-quantity') ? 0 : 1
+    skipped += collectRawImportEntry(raw, 'SOR', 87, 2) ? 0 : 1
+    const normalized = applyImportedInventories({}, raw, 'replace', catalog)
+
+    expect(raw).toEqual({ SOR: { 87: 2 } })
+    expect(normalized.recognized).toBe(1)
+    expect(normalized.skipped + skipped).toBe(2)
+  })
+
   it('backs up and migrates legacy data only once', () => {
     const storage = new MemoryStorage({
       'inv:SOR': JSON.stringify({ 87: 2, 351: 2 }),
@@ -132,5 +164,25 @@ describe('canonical inventory', () => {
     expect(() => migrateLegacyInventories(storage, ['SOR'], catalog)).toThrow('quota exceeded')
     expect(storage.getItem(INVENTORY_BACKUP_KEY)).toContain('351')
     expect(storage.getItem(INVENTORY_SCHEMA_KEY)).toBeNull()
+  })
+
+  it('does not allow persistence to overwrite legacy data when the backup write fails', () => {
+    const legacy = JSON.stringify({ 351: 2 })
+    const storage = new MemoryStorage({ 'inv:SOR': legacy })
+    const originalSetItem = storage.setItem.bind(storage)
+    storage.setItem = (key, value) => {
+      if (key === INVENTORY_BACKUP_KEY) throw new Error('storage unavailable')
+      originalSetItem(key, value)
+    }
+
+    const loaded = loadInventoriesForPersistence(storage, ['SOR'], catalog)
+    if (loaded.persistenceAllowed) {
+      storage.setItem('inv:SOR', JSON.stringify(loaded.inventories.SOR))
+    }
+
+    expect(loaded.migrationSucceeded).toBe(false)
+    expect(loaded.backupPreserved).toBe(false)
+    expect(loaded.persistenceAllowed).toBe(false)
+    expect(storage.getItem('inv:SOR')).toBe(legacy)
   })
 })

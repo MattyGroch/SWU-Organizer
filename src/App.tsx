@@ -17,11 +17,13 @@ import {
 import {
   applyImportedInventories,
   canonicalizeInventory,
-  migrateLegacyInventories,
+  collectRawImportEntry,
+  loadInventoriesForPersistence,
   quotaForType,
   type CanonicalCatalog,
   type ImportResult,
 } from './core/inventory';
+import { createLoadCommitGate } from './core/loadGuard';
 import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
@@ -402,14 +404,20 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
 /** Collect raw printing counts before all import formats use the same canonicalization path. */
 function addRawCount(
   aggregatedData: Record<SetKey, Inventory>,
-  setKey: string,
-  cardNumber: number,
-  count: number,
-) {
-  if (!setKey || !Number.isInteger(cardNumber) || cardNumber <= 0 || !Number.isFinite(count) || count <= 0) return;
+  setKey: unknown,
+  cardNumber: unknown,
+  count: unknown,
+): boolean {
+  return collectRawImportEntry(aggregatedData, setKey, cardNumber, count);
+}
 
-  const inv = aggregatedData[setKey as SetKey] ?? (aggregatedData[setKey as SetKey] = {});
-  inv[cardNumber] = (inv[cardNumber] ?? 0) + count;
+function normalizedImportResult(
+  raw: Record<SetKey, Inventory>,
+  catalog: CanonicalCatalog,
+  malformedSkipped: number,
+): ImportResult {
+  const result = applyImportedInventories({}, raw, 'replace', catalog);
+  return { ...result, skipped: result.skipped + malformedSkipped };
 }
 
 function parseCsvContent(fileContent: string): { headers: string[]; rows: string[][] } {
@@ -440,8 +448,9 @@ function parseCsvContent(fileContent: string): { headers: string[]; rows: string
     return { headers, rows };
 }
 
-async function parseXlsxData(file: File, catalog: CanonicalCatalog): Promise<ImportResult> {
+export async function parseXlsxData(file: File, catalog: CanonicalCatalog): Promise<ImportResult> {
   const aggregatedData: Record<SetKey, Inventory> = {};
+  let malformedSkipped = 0;
 
   const buf = await file.arrayBuffer();
   const wb = XLSX.read(buf, { type: 'array' });
@@ -450,7 +459,7 @@ async function parseXlsxData(file: File, catalog: CanonicalCatalog): Promise<Imp
 
   // Read as rows with header row
   const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet, { defval: '' });
-  if (!rows.length) return applyImportedInventories({}, aggregatedData, 'replace', catalog);
+  if (!rows.length) return normalizedImportResult(aggregatedData, catalog, malformedSkipped);
 
   // Normalize header names once
   const norm = (s: string) => s.toLowerCase().replace(/[\s_]+/g, '');
@@ -470,8 +479,6 @@ async function parseXlsxData(file: File, catalog: CanonicalCatalog): Promise<Imp
   for (const r of rows) {
     const setKey = String(r[col('Set', r)] ?? '').trim().toUpperCase() as SetKey;
     const baseIdNum = Number(r[col('Base card id', r)]);
-    if (!setKey || !Number.isFinite(baseIdNum) || baseIdNum <= 0) continue;
-
     // Sum all variant columns starting at "Normal" through the end of the row.
     // We’ll include common known alt headers if present.
     const ALT_HEADERS = [
@@ -487,18 +494,19 @@ async function parseXlsxData(file: File, catalog: CanonicalCatalog): Promise<Imp
         if (Number.isFinite(n)) totalCount += n;
       }
     }
-    addRawCount(aggregatedData, setKey, baseIdNum, totalCount);
+    if (!addRawCount(aggregatedData, setKey, baseIdNum, totalCount)) malformedSkipped += 1;
   }
 
-  return applyImportedInventories({}, aggregatedData, 'replace', catalog);
+  return normalizedImportResult(aggregatedData, catalog, malformedSkipped);
 }
 
-function parseCsvData(
+export function parseCsvData(
   fileName: string, // kept for signature compatibility; not used for detection
   fileContent: string,
   catalog: CanonicalCatalog
 ): ImportResult {
   const aggregatedData: Record<SetKey, Inventory> = {};
+  let malformedSkipped = 0;
 
   // Parse CSV into headers + rows (rows are string[]; access via indices)
   const { headers, rows } = parseCsvContent(fileContent);
@@ -551,15 +559,13 @@ function parseCsvData(
       const setKey = rawSet.toUpperCase() as SetKey;
 
       const baseIdNum = Number(row[idCol]);
-      if (!setKey || !Number.isFinite(baseIdNum) || baseIdNum <= 0) continue;
-
       let totalCount = 0;
       for (let i = normalCol; i < row.length; i++) {
         const v = Number(row[i]);
         if (Number.isFinite(v)) totalCount += v;
       }
 
-      addRawCount(aggregatedData, setKey, baseIdNum, totalCount);
+      if (!addRawCount(aggregatedData, setKey, baseIdNum, totalCount)) malformedSkipped += 1;
     }
 
   } else if (format === "swudb") {
@@ -576,13 +582,12 @@ function parseCsvData(
       const setKey = (row[setCol] ?? "").toString().trim().toUpperCase() as SetKey;
 
       const cardNumRaw = (row[numCol] ?? "").toString().trim();
-      const count = Number(row[countCol]) || 0;
-      if (!setKey || cardNumRaw === "" || count <= 0) continue;
+      const count = Number(row[countCol]);
 
       // Strip leading zeros so keys match your index (e.g., "079" -> "79")
       const numericId = Number(cardNumRaw);
 
-      addRawCount(aggregatedData, setKey, numericId, count);
+      if (!addRawCount(aggregatedData, setKey, numericId, count)) malformedSkipped += 1;
     }
 
   } else {
@@ -593,10 +598,10 @@ function parseCsvData(
         const jsonSets = raw.sets as Record<SetKey, Record<string, number>>;
         for (const k of Object.keys(jsonSets) as SetKey[]) {
           for (const [numStr, count] of Object.entries(jsonSets[k])) {
-            addRawCount(aggregatedData, k, Number(numStr), Number(count));
+            if (!addRawCount(aggregatedData, k, numStr, count)) malformedSkipped += 1;
           }
         }
-        return applyImportedInventories({}, aggregatedData, 'replace', catalog);
+        return normalizedImportResult(aggregatedData, catalog, malformedSkipped);
       }
     } catch {
       // not JSON; fall through
@@ -605,7 +610,7 @@ function parseCsvData(
     throw new Error("File format not recognized. Expected a SWUDB or SW-Unlimited CSV (or a valid app JSON export).");
   }
 
-  return applyImportedInventories({}, aggregatedData, 'replace', catalog);
+  return normalizedImportResult(aggregatedData, catalog, malformedSkipped);
 }
 
 type ParsedSet = {
@@ -666,6 +671,7 @@ export default function App() {
 
   // cache parsed data for sets (so we don't refetch repeatedly)
   const parsedCacheRef = useRef<Map<string, ParsedSet>>(new Map());
+  const loadCommitGateRef = useRef(createLoadCommitGate());
   const [canonicalCatalog, setCanonicalCatalog] = useState<CanonicalCatalog>(new Map());
 
   useEffect(() => {
@@ -902,6 +908,7 @@ export default function App() {
 
   // Load set JSON
     useEffect(() => {
+      const loadToken = loadCommitGateRef.current.begin();
       // Helper function defined inside useEffect to access local scope functions (like baseOnly)
       const parseAndCache = async (meta: SetMeta): Promise<ParsedSet> => {
         // Check cache first
@@ -1004,36 +1011,35 @@ export default function App() {
             .filter(s => s.key !== setKey)
             .map(parseAndCache)
         );
+        if (!loadCommitGateRef.current.canCommit(loadToken)) return;
 
         const catalog = canonicalCatalogFromParsedSets(parsedCacheRef.current.values());
-        setCanonicalCatalog(catalog);
+        const loadedInventory = loadInventoriesForPersistence(localStorage, setKeys, catalog);
+        if (!loadCommitGateRef.current.canCommit(loadToken)) return;
 
-        let migratedInventories: Record<SetKey, Inventory>;
-        try {
-          migratedInventories = migrateLegacyInventories(localStorage, setKeys, catalog);
-        } catch {
-          migratedInventories = Object.fromEntries(setKeys.map(key => {
-            let parsedInventory: Inventory = {};
-            try {
-              parsedInventory = JSON.parse(localStorage.getItem(`inv:${key}`) || '{}') as Inventory;
-            } catch {
-              // Recover the valid sets even when one stored record is malformed.
-            }
-            return [key, canonicalizeInventory(key, parsedInventory, catalog)];
-          })) as Record<SetKey, Inventory>;
-          showToast('Inventory migration could not be saved. Your original backup was preserved.', 'warning');
+        if (!loadedInventory.migrationSucceeded) {
+          showToast(
+            loadedInventory.backupPreserved
+              ? 'Inventory migration could not finish. Your original backup remains preserved.'
+              : 'Inventory migration could not create a backup. Automatic saving is disabled to protect your original data.',
+            'warning',
+          );
         }
 
         // 3. Update the state for the current view
+        setCanonicalCatalog(catalog);
         setCardsAll(currentSetData.allCards);
         setCardsBase(currentSetData.baseCards);
         setBaseToAll(currentSetData.baseToAll);
-        setInventory(migratedInventories[setKey] ?? {});
-        setInventoryReadyForSet(setKey);
+        setInventory(loadedInventory.inventories[setKey] ?? {});
+        setInventoryReadyForSet(loadedInventory.persistenceAllowed ? setKey : null);
 
         // REMOVED: Deferred navigation logic (moved to a new hook below)
       }
-      load().catch(() => setError('Failed to load set data.'));
+      load().catch(() => {
+        if (loadCommitGateRef.current.canCommit(loadToken)) setError('Failed to load set data.');
+      });
+      return () => loadCommitGateRef.current.cancel(loadToken);
     // Dependencies only include set changes (NO pendingSelection)
     }, [setKey, sets, setKeys, showToast]);
 
@@ -1433,10 +1439,15 @@ export default function App() {
 
   const applyImport = (mode: 'merge' | 'replace') => {
       const current = Object.fromEntries(setKeys.map(key => [key, readSetInv(key)])) as Record<SetKey, Inventory>;
-      const result = applyImportedInventories(current, importData, mode, canonicalCatalog);
+      const knownSetKeys = new Set(setKeys);
+      const safeImportData = Object.fromEntries(
+        Object.entries(importData).filter(([key]) => knownSetKeys.has(key)),
+      ) as Record<SetKey, Inventory>;
+      const result = applyImportedInventories(current, safeImportData, mode, canonicalCatalog);
       let importedCount = 0;
 
-      for (const key of Object.keys(importData) as SetKey[]) {
+      for (const key of Object.keys(safeImportData) as SetKey[]) {
+          if (!knownSetKeys.has(key)) continue;
           const nextInventory = pruneZeros(result.inventories[key] ?? {});
           importedCount += Object.keys(nextInventory).length;
           writeSetInv(key, nextInventory);
@@ -1466,7 +1477,11 @@ export default function App() {
             ext === 'xlsx'
               ? await parseXlsxData(file, canonicalCatalog)
               : parseCsvData(file.name, await file.text(), canonicalCatalog);
-          setImportData(parsedImport.inventories);
+          const knownSetKeys = new Set(setKeys);
+          const safeInventories = Object.fromEntries(
+            Object.entries(parsedImport.inventories).filter(([key]) => knownSetKeys.has(key)),
+          ) as Record<SetKey, Inventory>;
+          setImportData(safeInventories);
           setImportStats({ recognized: parsedImport.recognized, skipped: parsedImport.skipped });
           setShowImportModal(true);
       } catch (e) {

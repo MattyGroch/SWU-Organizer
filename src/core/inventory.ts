@@ -15,6 +15,13 @@ export type ImportResult = {
   skipped: number
 }
 
+export type InventoryLoadResult = {
+  inventories: Record<SetKey, Inventory>
+  migrationSucceeded: boolean
+  backupPreserved: boolean
+  persistenceAllowed: boolean
+}
+
 export const INVENTORY_SCHEMA_VERSION = '2'
 export const INVENTORY_SCHEMA_KEY = 'inv:schema-version'
 export const INVENTORY_BACKUP_KEY = 'inv:migration:v2:backup'
@@ -46,6 +53,34 @@ function canonicalRef(
   const printing = catalog.get(`${setKey}:${printingNumber}`)
   if (!printing || printing.setKey !== setKey) return undefined
   return catalog.get(`${setKey}:${printing.baseNumber}`) ?? printing
+}
+
+function knownSetKeys(catalog: CanonicalCatalog): Set<SetKey> {
+  return new Set([...catalog.values()].map(ref => ref.setKey))
+}
+
+export function collectRawImportEntry(
+  imported: Record<SetKey, Inventory>,
+  rawSetKey: unknown,
+  rawPrintingNumber: unknown,
+  rawQuantity: unknown,
+): boolean {
+  const setKey = typeof rawSetKey === 'string' ? rawSetKey.trim().toUpperCase() : ''
+  const printingNumber = Number(rawPrintingNumber)
+  const quantity = Number(rawQuantity)
+  if (
+    !setKey ||
+    !Number.isInteger(printingNumber) ||
+    printingNumber <= 0 ||
+    !Number.isFinite(quantity) ||
+    quantity <= 0
+  ) {
+    return false
+  }
+
+  const inventory = imported[setKey] ?? (imported[setKey] = {})
+  inventory[printingNumber] = (inventory[printingNumber] ?? 0) + quantity
+  return true
 }
 
 function normalizedEntries(
@@ -97,16 +132,23 @@ export function applyImportedInventories(
   mode: ImportMode,
   catalog: CanonicalCatalog,
 ): ImportResult {
+  const allowedSets = knownSetKeys(catalog)
   const inventories = Object.fromEntries(
-    Object.entries(current).map(([setKey, inventory]) => [
-      setKey,
-      canonicalizeInventory(setKey, inventory, catalog),
-    ]),
+    Object.entries(current)
+      .filter(([setKey]) => allowedSets.has(setKey))
+      .map(([setKey, inventory]) => [
+        setKey,
+        canonicalizeInventory(setKey, inventory, catalog),
+      ]),
   ) as Record<SetKey, Inventory>
   let recognized = 0
   let skipped = 0
 
   for (const [setKey, rawImported] of Object.entries(imported)) {
+    if (!allowedSets.has(setKey)) {
+      skipped += Object.keys(asInventory(rawImported)).length
+      continue
+    }
     const currentCanonical = canonicalizeInventory(setKey, current[setKey] ?? {}, catalog)
     const destination: Inventory = mode === 'merge' ? { ...currentCanonical } : {}
 
@@ -163,4 +205,45 @@ export function migrateLegacyInventories(
 
   storage.setItem(INVENTORY_SCHEMA_KEY, INVENTORY_SCHEMA_VERSION)
   return canonical
+}
+
+export function loadInventoriesForPersistence(
+  storage: Storage,
+  setKeys: SetKey[],
+  catalog: CanonicalCatalog,
+): InventoryLoadResult {
+  try {
+    const inventories = migrateLegacyInventories(storage, setKeys, catalog)
+    let backupPreserved = false
+    try {
+      backupPreserved = storage.getItem(INVENTORY_BACKUP_KEY) !== null
+    } catch {
+      // Migration success is sufficient to permit canonical persistence.
+    }
+    return { inventories, migrationSucceeded: true, backupPreserved, persistenceAllowed: true }
+  } catch {
+    const inventories = Object.fromEntries(setKeys.map(setKey => {
+      let inventory: Inventory = {}
+      try {
+        inventory = parseInventory(storage.getItem(`inv:${setKey}`))
+      } catch {
+        // Recover other valid set records even if one storage read fails.
+      }
+      return [setKey, canonicalizeInventory(setKey, inventory, catalog)]
+    })) as Record<SetKey, Inventory>
+
+    let backupPreserved = false
+    try {
+      backupPreserved = storage.getItem(INVENTORY_BACKUP_KEY) !== null
+    } catch {
+      // If preservation cannot be demonstrated, persistence must stay disabled.
+    }
+
+    return {
+      inventories,
+      migrationSucceeded: false,
+      backupPreserved,
+      persistenceAllowed: backupPreserved,
+    }
+  }
 }
