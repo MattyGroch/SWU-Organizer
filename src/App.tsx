@@ -14,6 +14,14 @@ import {
   type SearchCatalog,
   type SearchSuggestion,
 } from './core/search';
+import {
+  applyImportedInventories,
+  canonicalizeInventory,
+  migrateLegacyInventories,
+  quotaForType,
+  type CanonicalCatalog,
+  type ImportResult,
+} from './core/inventory';
 import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
@@ -138,11 +146,6 @@ function rarityOutlineForAspectHexes(hexes: string[]): string {
 function rarityGlyph(r?: string) {
   if (!r) return null;
   return RARITY_STYLE[r] ?? null;
-}
-
-function quotaForType(type?: string) {
-  const t = (type || '').toLowerCase();
-  return (t === 'leader' || t === 'base') ? 1 : 3;
 }
 
 /** Collection status for filter pills (same semantics as the Status column: ✓ / ! / ✕). */
@@ -396,29 +399,17 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
   );
 }
 
-type CardUtilities = {
-    quotaForType: (type?: string) => number;
-    fullCardIndex: Map<string, { baseNumber: number, type?: string, name: string }>;
-};
-
-/** Shared aggregation used by every CSV/XLSX import format: look up the card, cap to its quota, and accumulate. */
-function addAggregatedCount(
+/** Collect raw printing counts before all import formats use the same canonicalization path. */
+function addRawCount(
   aggregatedData: Record<SetKey, Inventory>,
-  cardUtilities: CardUtilities,
   setKey: string,
   cardNumber: number,
   count: number,
 ) {
-  if (!setKey || !Number.isFinite(cardNumber) || cardNumber <= 0 || count <= 0) return;
-
-  const cardInfo = cardUtilities.fullCardIndex.get(`${setKey}:${String(cardNumber)}`);
-  if (!cardInfo) return;
-
-  const { baseNumber, type } = cardInfo;
-  const max = cardUtilities.quotaForType(type);
+  if (!setKey || !Number.isInteger(cardNumber) || cardNumber <= 0 || !Number.isFinite(count) || count <= 0) return;
 
   const inv = aggregatedData[setKey as SetKey] ?? (aggregatedData[setKey as SetKey] = {});
-  inv[baseNumber] = Math.min((inv[baseNumber] ?? 0) + count, max);
+  inv[cardNumber] = (inv[cardNumber] ?? 0) + count;
 }
 
 function parseCsvContent(fileContent: string): { headers: string[]; rows: string[][] } {
@@ -449,7 +440,7 @@ function parseCsvContent(fileContent: string): { headers: string[]; rows: string
     return { headers, rows };
 }
 
-async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<Record<SetKey, Inventory>> {
+async function parseXlsxData(file: File, catalog: CanonicalCatalog): Promise<ImportResult> {
   const aggregatedData: Record<SetKey, Inventory> = {};
 
   const buf = await file.arrayBuffer();
@@ -459,7 +450,7 @@ async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<
 
   // Read as rows with header row
   const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet, { defval: '' });
-  if (!rows.length) return aggregatedData;
+  if (!rows.length) return applyImportedInventories({}, aggregatedData, 'replace', catalog);
 
   // Normalize header names once
   const norm = (s: string) => s.toLowerCase().replace(/[\s_]+/g, '');
@@ -496,18 +487,17 @@ async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<
         if (Number.isFinite(n)) totalCount += n;
       }
     }
-    addAggregatedCount(aggregatedData, cardUtilities, setKey, baseIdNum, totalCount);
+    addRawCount(aggregatedData, setKey, baseIdNum, totalCount);
   }
 
-  return aggregatedData;
+  return applyImportedInventories({}, aggregatedData, 'replace', catalog);
 }
 
 function parseCsvData(
   fileName: string, // kept for signature compatibility; not used for detection
   fileContent: string,
-  cardUtilities: CardUtilities
-): Record<SetKey, Inventory> {
-  const { quotaForType, fullCardIndex } = cardUtilities;
+  catalog: CanonicalCatalog
+): ImportResult {
   const aggregatedData: Record<SetKey, Inventory> = {};
 
   // Parse CSV into headers + rows (rows are string[]; access via indices)
@@ -569,7 +559,7 @@ function parseCsvData(
         if (Number.isFinite(v)) totalCount += v;
       }
 
-      addAggregatedCount(aggregatedData, cardUtilities, setKey, baseIdNum, totalCount);
+      addRawCount(aggregatedData, setKey, baseIdNum, totalCount);
     }
 
   } else if (format === "swudb") {
@@ -592,7 +582,7 @@ function parseCsvData(
       // Strip leading zeros so keys match your index (e.g., "079" -> "79")
       const numericId = Number(cardNumRaw);
 
-      addAggregatedCount(aggregatedData, cardUtilities, setKey, numericId, count);
+      addRawCount(aggregatedData, setKey, numericId, count);
     }
 
   } else {
@@ -602,17 +592,11 @@ function parseCsvData(
       if (raw?.version === 1 && raw?.sets) {
         const jsonSets = raw.sets as Record<SetKey, Record<string, number>>;
         for (const k of Object.keys(jsonSets) as SetKey[]) {
-          if (!aggregatedData[k]) aggregatedData[k] = {};
           for (const [numStr, count] of Object.entries(jsonSets[k])) {
-            const baseNumber = Number(numStr);
-            if (!Number.isFinite(baseNumber)) continue;
-
-            const card = fullCardIndex.get(`${k}:${numStr}`);
-            const max = card ? quotaForType(card.type) : 3;
-            aggregatedData[k][baseNumber] = Math.min(Number(count) || 0, max);
+            addRawCount(aggregatedData, k, Number(numStr), Number(count));
           }
         }
-        return aggregatedData;
+        return applyImportedInventories({}, aggregatedData, 'replace', catalog);
       }
     } catch {
       // not JSON; fall through
@@ -621,17 +605,45 @@ function parseCsvData(
     throw new Error("File format not recognized. Expected a SWUDB or SW-Unlimited CSV (or a valid app JSON export).");
   }
 
-  return aggregatedData;
+  return applyImportedInventories({}, aggregatedData, 'replace', catalog);
+}
+
+type ParsedSet = {
+  key: SetKey;
+  allCards: Card[];
+  baseCards: Card[];
+  byNumber: Map<number, Card>;
+  baseToAll: Map<number, number[]>;
+  altToBase: Map<number, number>;
+};
+
+function canonicalCatalogFromParsedSets(parsedSets: Iterable<ParsedSet>): CanonicalCatalog {
+  const catalog: CanonicalCatalog = new Map();
+  for (const parsed of parsedSets) {
+    for (const card of parsed.allCards) {
+      const baseNumber = parsed.altToBase.get(card.Number) ?? card.Number;
+      const baseCard = parsed.byNumber.get(baseNumber);
+      catalog.set(`${parsed.key}:${card.Number}`, {
+        setKey: parsed.key,
+        printingNumber: card.Number,
+        baseNumber,
+        type: baseCard?.Type ?? card.Type,
+      });
+    }
+  }
+  return catalog;
 }
 
 export default function App() {
   const [sets, setSets] = useState<SetMeta[]>([]);
   const [setKey, setSetKey] = useState<SetKey>('SOR'); // placeholder until manifest loads (then newest set)
+  const setKeys = useMemo(() => sets.map(set => set.key as SetKey), [sets]);
   const searchRef = useRef<HTMLInputElement | null>(null);
   const submitSearchRef = useRef<() => void>(() => {});
   const importRef = useRef<HTMLInputElement>(null);
   const [showImportModal, setShowImportModal] = useState(false);
   const [importData, setImportData] = useState<Record<SetKey, Inventory>>({});
+  const [importStats, setImportStats] = useState({ recognized: 0, skipped: 0 });
   const [importingFileName, setImportingFileName] = useState('');
   const [showResetModal, setShowResetModal] = useState(false);
   const [listView, setListView] = React.useState<'inventory' | 'missing'>('inventory');
@@ -653,15 +665,8 @@ export default function App() {
   }, []);
 
   // cache parsed data for sets (so we don't refetch repeatedly)
-  type ParsedSet = {
-    key: SetKey;
-    allCards: Card[];                // All cards (unique by Number)
-    baseCards: Card[];               // Base cards (unique by Name+Subtitle+Type)
-    byNumber: Map<number, Card>;     // Map<BaseNumber, BaseCard>
-    baseToAll: Map<number, number[]>;
-    altToBase: Map<number, number>;
-  };
   const parsedCacheRef = useRef<Map<string, ParsedSet>>(new Map());
+  const [canonicalCatalog, setCanonicalCatalog] = useState<CanonicalCatalog>(new Map());
 
   useEffect(() => {
     fetch('/sets/manifest.json')
@@ -779,13 +784,12 @@ export default function App() {
 
   // Inventory
   const [inventory, setInventory] = useState<Inventory>({});
+  const [inventoryReadyForSet, setInventoryReadyForSet] = useState<SetKey | null>(null);
   useEffect(() => {
-    const raw = localStorage.getItem(`inv:${setKey}`);
-    try { setInventory(raw ? JSON.parse(raw) : {}); } catch { setInventory({}); }
-  }, [setKey]);
-  useEffect(() => {
-    localStorage.setItem(`inv:${setKey}`, JSON.stringify(inventory));
-  }, [inventory, setKey]);
+    if (inventoryReadyForSet === setKey) {
+      localStorage.setItem(`inv:${setKey}`, JSON.stringify(inventory));
+    }
+  }, [inventory, inventoryReadyForSet, setKey]);
   const pruneZeros = (inv: Inventory) =>
     Object.fromEntries(Object.entries(inv).filter(([,q]) => (q as number) > 0)) as Inventory;
   useEffect(() => {
@@ -986,6 +990,7 @@ export default function App() {
         setError(''); 
         setActive(null); 
         setViewSpread(0); 
+        setInventoryReadyForSet(null);
 
         const meta = sets.find(s => s.key === setKey);
         if (!meta) return;
@@ -1000,16 +1005,37 @@ export default function App() {
             .map(parseAndCache)
         );
 
+        const catalog = canonicalCatalogFromParsedSets(parsedCacheRef.current.values());
+        setCanonicalCatalog(catalog);
+
+        let migratedInventories: Record<SetKey, Inventory>;
+        try {
+          migratedInventories = migrateLegacyInventories(localStorage, setKeys, catalog);
+        } catch {
+          migratedInventories = Object.fromEntries(setKeys.map(key => {
+            let parsedInventory: Inventory = {};
+            try {
+              parsedInventory = JSON.parse(localStorage.getItem(`inv:${key}`) || '{}') as Inventory;
+            } catch {
+              // Recover the valid sets even when one stored record is malformed.
+            }
+            return [key, canonicalizeInventory(key, parsedInventory, catalog)];
+          })) as Record<SetKey, Inventory>;
+          showToast('Inventory migration could not be saved. Your original backup was preserved.', 'warning');
+        }
+
         // 3. Update the state for the current view
         setCardsAll(currentSetData.allCards);
         setCardsBase(currentSetData.baseCards);
         setBaseToAll(currentSetData.baseToAll);
+        setInventory(migratedInventories[setKey] ?? {});
+        setInventoryReadyForSet(setKey);
 
         // REMOVED: Deferred navigation logic (moved to a new hook below)
       }
       load().catch(() => setError('Failed to load set data.'));
     // Dependencies only include set changes (NO pendingSelection)
-    }, [setKey, sets]);
+    }, [setKey, sets, setKeys, showToast]);
 
     // Deferred Navigation Hook: Runs after new set data is loaded
     useEffect(() => {
@@ -1154,7 +1180,6 @@ export default function App() {
     setViewSpread(pageToSpread(next.page));
   }, [active, totalPages, byNumber, setActive, setViewSpread]);
   
-  const setKeys = useMemo(() => sets.map(s => s.key as SetKey), [sets]);
 
   const [prevSetKey, nextSetKey] = useMemo(() => {
       const currentIndex = sets.findIndex(s => s.key === setKey);
@@ -1192,25 +1217,41 @@ export default function App() {
   type InventoryAll = { version: 1; sets: Record<SetKey, Inventory> };
 
   function readSetInv(k: SetKey): Inventory {
-    try { return JSON.parse(localStorage.getItem(`inv:${k}`) || '{}'); }
+    try {
+      return canonicalizeInventory(
+        k,
+        JSON.parse(localStorage.getItem(`inv:${k}`) || '{}') as Inventory,
+        canonicalCatalog,
+      );
+    }
     catch { return {}; }
   }
   function writeSetInv(k: SetKey, inv: Inventory) {
-    localStorage.setItem(`inv:${k}`, JSON.stringify(inv));
+    localStorage.setItem(`inv:${k}`, JSON.stringify(canonicalizeInventory(k, inv, canonicalCatalog)));
+  }
+  function canonicalBaseNumber(set: SetKey, printingNumber: number): number | null {
+    return canonicalCatalog.get(`${set}:${printingNumber}`)?.baseNumber ?? null;
   }
   function inc(n: number) {
-    const c = byNumber.get(n) || cardsAll.find(x => x.Number === n);
-    const max = quotaForType(c?.Type);
-    setInventory(prev => ({ ...prev, [n]: Math.min((prev[n] || 0) + 1, max) }));
+    const baseNumber = canonicalBaseNumber(setKey, n);
+    if (baseNumber === null) return;
+    const ref = canonicalCatalog.get(`${setKey}:${baseNumber}`);
+    const max = quotaForType(ref?.type);
+    setInventory(prev => ({
+      ...prev,
+      [baseNumber]: Math.min((prev[baseNumber] || 0) + 1, max),
+    }));
   }
   function dec(n: number) {
+    const baseNumber = canonicalBaseNumber(setKey, n);
+    if (baseNumber === null) return;
     setInventory(prev => {
-      const next = Math.max((prev[n] || 0) - 1, 0);
+      const next = Math.max((prev[baseNumber] || 0) - 1, 0);
       if (next === 0) {
-        const { [n]: _removed, ...rest } = prev; // drop the key entirely
+        const { [baseNumber]: _removed, ...rest } = prev; // drop the key entirely
         return rest;
       }
-      return { ...prev, [n]: next };
+      return { ...prev, [baseNumber]: next };
     });
   }
   function exportAllInv() {
@@ -1367,10 +1408,10 @@ export default function App() {
           setInventory({});
           showToast(`Inventory for the current set (${setKey}) has been cleared.`);
       } else if (scope === 'all') {
-          // Iterate over all keys in localStorage and remove those that start with 'inv:'
+          // Clear set inventories without deleting the migration backup or schema marker.
           if (!sets.length) {
               for (const key of Object.keys(localStorage)) {
-                  if (key.startsWith('inv:')) {
+                  if (/^inv:[A-Z0-9]+$/.test(key)) {
                       localStorage.removeItem(key);
                   }
               }
@@ -1391,50 +1432,21 @@ export default function App() {
   }
 
   const applyImport = (mode: 'merge' | 'replace') => {
+      const current = Object.fromEntries(setKeys.map(key => [key, readSetInv(key)])) as Record<SetKey, Inventory>;
+      const result = applyImportedInventories(current, importData, mode, canonicalCatalog);
       let importedCount = 0;
-      
-      for (const [key, importedInv] of Object.entries(importData)) {
-          if (!key || Object.keys(importedInv).length === 0) continue;
 
-          const currentInv = readSetInv(key);
-          const newInv: Inventory = {};
-
-          // Start with current inventory if merging
-          if (mode === 'merge') {
-              Object.assign(newInv, currentInv);
-          }
-
-          // Apply imported counts (already capped to max in parseCsvData)
-          for (const [baseNumberStr, newCount] of Object.entries(importedInv)) {
-              const baseNumber = Number(baseNumberStr);
-              const currentCount = newInv[baseNumber] || 0;
-              
-              // Get max quota for final cap check (necessary because the card type needs context)
-              const card = cardsAll.find(c => c.Number === baseNumber && c.Set === key);
-              const max = quotaForType(card?.Type);
-              
-              const updatedCount = mode === 'merge' 
-                  ? Math.min(newCount + currentCount, max) 
-                  : Math.min(newCount, max);
-
-              if (updatedCount > 0) {
-                  newInv[baseNumber] = updatedCount;
-                  importedCount++;
-              } else if (newInv[baseNumber]) {
-                  delete newInv[baseNumber];
-              }
-          }
-          
-          writeSetInv(key, pruneZeros(newInv));
-
-          if (key === setKey) {
-              setInventory(pruneZeros(newInv));
-          }
+      for (const key of Object.keys(importData) as SetKey[]) {
+          const nextInventory = pruneZeros(result.inventories[key] ?? {});
+          importedCount += Object.keys(nextInventory).length;
+          writeSetInv(key, nextInventory);
+          if (key === setKey) setInventory(nextInventory);
       }
       
       setShowImportModal(false);
       setImportData({});
-      showToast(`Successfully applied import of ${importedCount} card entries in ${mode} mode.`);
+      showToast(`Applied ${importedCount} canonical card entries in ${mode} mode (${importStats.recognized} recognized, ${importStats.skipped} skipped).`);
+      setImportStats({ recognized: 0, skipped: 0 });
   };
   
   // File change handler to parse the file and open the modal
@@ -1448,26 +1460,14 @@ export default function App() {
       try {
           const ext = file.name.split('.').pop()?.toLowerCase();
           
-          const fullCardIndex = new Map<string, { baseNumber: number, type?: string, name: string }>();
-          const allSetCards: Card[] = Array.from(parsedCacheRef.current.values()).flatMap(p => p.allCards);
-
-          // Populate the lookup map with normalized data needed for parsing/capping
-          for (const card of allSetCards) {
-              const baseNum = card.Number; 
-              fullCardIndex.set(`${card.Set}:${card.Number}`, {
-                  baseNumber: baseNum,
-                  type: card.Type,
-                  name: card.Name
-              });
-          }
+          if (canonicalCatalog.size === 0) throw new Error('Card catalog is still loading. Please try again.');
           
-          const cardUtilities: CardUtilities = { quotaForType, fullCardIndex };
-          
-          const parsedInventory =
+          const parsedImport =
             ext === 'xlsx'
-              ? await parseXlsxData(file, cardUtilities)  // ← new XLSX path
-              : parseCsvData(file.name, await file.text(), cardUtilities); // existing CSV/JSON path
-          setImportData(parsedInventory);
+              ? await parseXlsxData(file, canonicalCatalog)
+              : parseCsvData(file.name, await file.text(), canonicalCatalog);
+          setImportData(parsedImport.inventories);
+          setImportStats({ recognized: parsedImport.recognized, skipped: parsedImport.skipped });
           setShowImportModal(true);
       } catch (e) {
           setError(`Import failed: ${e instanceof Error ? e.message : 'Invalid file format.'}`);
@@ -1632,13 +1632,12 @@ export default function App() {
     for (const baseCard of cardsBase) {
       if (!passesAllFilters(baseCard)) continue;
       const baseNum = baseCard.Number;
-      const nums = baseToAll.get(baseNum) || [baseNum];
-      const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
+      const have = inventory[baseNum] || 0;
       const max = quotaForType(baseCard.Type);
       if (have < max) return true;
     }
     return false;
-  }, [cardsBase, baseToAll, inventory, passesAllFilters]);
+  }, [cardsBase, inventory, passesAllFilters]);
 
   // Build ONE list over base cards, then partition.
   // Each row has Qty (across base + alts), Max, Needed, and other fields you already use.
@@ -1659,8 +1658,7 @@ export default function App() {
       if (!passesAllFilters(baseCard)) continue;
 
       const baseNum = baseCard.Number;
-      const nums = baseToAll.get(baseNum) || [baseNum]; // base + alts
-      const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
+      const have = inventory[baseNum] || 0;
       const max = quotaForType(baseCard.Type);
       const needed = Math.max(0, max - have);
       const collStatus = collectionStatusFromQty(have, max);
@@ -1680,7 +1678,7 @@ export default function App() {
     }
 
     return rows.sort((a, b) => a.Number - b.Number);
-  }, [cardsBase, baseToAll, inventory, passesAllFilters, filters.status]);
+  }, [cardsBase, inventory, passesAllFilters, filters.status]);
 
   // Projections for the two tabs (shape-compatible with your tables)
   const filteredInvRows = useMemo(() => {
@@ -2426,6 +2424,9 @@ export default function App() {
                   <h2 style={{ marginTop: 0, color: '#e5e7eb' }}>Import Options</h2>
                   <p style={{ opacity: 0.8, marginBottom: 20 }}>
                       You are importing data from <strong>{importingFileName}</strong>, which contains entries for {Object.keys(importData).length} set(s).
+                  </p>
+                  <p className="muted" style={{ marginTop: -12, marginBottom: 16 }}>
+                    {plural(importStats.recognized, 'recognized entry')} · {plural(importStats.skipped, 'skipped entry')}
                   </p>
                   {/* Overview of what will be imported per set */}
                   {importOverview.length > 0 ? (
