@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  focusedPageForSpread,
-  viewModeAfterSelection,
-} from './binderView';
+import { focusedPageForSpread } from './binderView';
 
 describe('binder view continuity', () => {
   it('preserves the browsed physical-page side when changing spreads', () => {
@@ -15,11 +12,5 @@ describe('binder view continuity', () => {
     expect(focusedPageForSpread(1, 1, 9)).toBe(3);
     expect(focusedPageForSpread(9, 0, 9)).toBe(1);
     expect(focusedPageForSpread(7, 4, 8)).toBe(8);
-  });
-
-  it('uses the setting only for card activation mode changes', () => {
-    expect(viewModeAfterSelection({ autoOpenSinglePage: true }, 'spread')).toBe('single');
-    expect(viewModeAfterSelection({ autoOpenSinglePage: false }, 'spread')).toBe('spread');
-    expect(viewModeAfterSelection({ autoOpenSinglePage: false }, 'single')).toBe('single');
   });
 });

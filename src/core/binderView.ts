@@ -1,14 +1,4 @@
 import { pageToSpread, spreadToPrimaryPage } from './binder';
-import type { AppSettings } from './settings';
-
-export type BinderViewMode = 'single' | 'spread';
-
-export function viewModeAfterSelection(
-  settings: AppSettings,
-  currentMode: BinderViewMode,
-): BinderViewMode {
-  return settings.autoOpenSinglePage ? 'single' : currentMode;
-}
 
 export function focusedPageForSpread(
   currentPage: number,

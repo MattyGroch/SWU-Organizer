@@ -22,6 +22,7 @@ export function SettingsModal({
     if (!open) return
 
     dialogRef.current?.focus()
+    const returnFocusElement = returnFocusRef.current
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -62,7 +63,7 @@ export function SettingsModal({
     document.addEventListener('keydown', handleKeyDown, true)
     return () => {
       document.removeEventListener('keydown', handleKeyDown, true)
-      returnFocusRef.current?.focus()
+      returnFocusElement?.focus()
     }
   }, [onClose, open, returnFocusRef])
 

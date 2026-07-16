@@ -3,7 +3,6 @@ import * as XLSX from 'xlsx';
 import {
   binderLayout,
   getSpreadCoords,
-  moveBinderSelection,
   numberFromPagePosition,
   pageToSpread,
   spreadToPrimaryPage,
@@ -32,16 +31,17 @@ import {
   writeSettings,
   type AppSettings,
 } from './core/settings';
+import { focusedPageForSpread } from './core/binderView';
 import {
-  focusedPageForSpread,
+  selectionAfterMove,
   viewModeAfterSelection,
   type BinderViewMode,
-} from './core/binderView';
+} from './core/selection';
 import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
 import { LocatorPanel } from './components/LocatorPanel';
 import { SettingsModal } from './components/SettingsModal';
 
-export type { BinderViewMode } from './core/binderView';
+export type { BinderViewMode } from './core/selection';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
 function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
@@ -66,7 +66,6 @@ const ASPECT_HEX: Record<string, string> = {
 };
 const NEUTRAL = '#2f3545'; // for numbers that exist but have no aspect
 
-const NAME_MAX_LINES = 2;
 const QTY_FONT = 22;      // size of the centered "1/3"
 const QTY_Y_OFFSET = 4;   // nudge up/down if needed
 const QTY_SHIFT_DOWN = 14; // Shift QTY and buttons down by 20px
@@ -263,7 +262,7 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
       } else if (category === 'rarity') {
         const rarityStyle = RARITY_STYLE[item as keyof typeof RARITY_STYLE];
         // If your map stores { color } or { backgroundColor }, support both:
-        highlightColor = (rarityStyle?.color || (rarityStyle as any)?.backgroundColor) || highlightColor;
+        highlightColor = rarityStyle?.color || highlightColor;
       }
 
       // Compute legible text color and outline for very dark backgrounds
@@ -483,7 +482,7 @@ export async function parseXlsxData(file: File, catalog: CanonicalCatalog): Prom
   if (!sheet) throw new Error('XLSX has no sheets.');
 
   // Read as rows with header row
-  const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet, { defval: '' });
+  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: '' });
   if (!rows.length) return normalizedImportResult(aggregatedData, catalog, malformedSkipped);
 
   // Normalize header names once
@@ -496,7 +495,7 @@ export async function parseXlsxData(file: File, catalog: CanonicalCatalog): Prom
   }
 
   // Construct column name resolvers (case/space tolerant)
-  const col = (wanted: string, obj: Record<string, any>) => {
+  const col = (wanted: string, obj: Record<string, unknown>) => {
     const k = Object.keys(obj).find(h => norm(h) === norm(wanted));
     return k ?? wanted; // fall back, but usually found
   };
@@ -647,6 +646,18 @@ type ParsedSet = {
   altToBase: Map<number, number>;
 };
 
+type UnknownRecord = Record<string, unknown>;
+
+function isUnknownRecord(value: unknown): value is UnknownRecord {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function stringOrNamedValue(value: unknown): string | undefined {
+  if (typeof value === 'string') return value;
+  if (isUnknownRecord(value) && typeof value.Name === 'string') return value.Name;
+  return undefined;
+}
+
 function canonicalCatalogFromParsedSets(parsedSets: Iterable<ParsedSet>): CanonicalCatalog {
   const catalog: CanonicalCatalog = new Map();
   for (const parsed of parsedSets) {
@@ -736,11 +747,8 @@ export default function App() {
   // Data variants
   const [cardsAll, setCardsAll] = useState<Card[]>([]);     // unique by Number (used to color pages)
   const [cardsBase, setCardsBase] = useState<Card[]>([]);   // base printing per Name (lowest Number)
-  // alt maps for search: baseNumber -> all numbers (base first), altNumber -> baseNumber
-  const [baseToAll, setBaseToAll] = useState<Map<number, number[]>>(new Map());
-
   // Rarity normalization
-  function normalizeRarity(r: any): string | undefined {
+  function normalizeRarity(r: unknown): string | undefined {
     if (!r) return undefined;
     const v = String(r).trim();
     const k = v.toLowerCase();
@@ -758,14 +766,6 @@ export default function App() {
     return map[k] ?? v; // fall back to the original string
   }
 
-  //Type normalization
-  function normalizeType(t: any): string | undefined {
-    if (!t) return undefined;
-    if (typeof t === 'string') return t.trim();
-    if (typeof t?.Name === 'string') return t.Name.trim();
-    return undefined;
-  }
-
   // stable key for dedupe/show
   function keyNameType(c: {Name: string; Subtitle?: string; Type?: string}) {
     const sub = (c.Subtitle || '').trim().toLowerCase();
@@ -773,7 +773,7 @@ export default function App() {
   }
 
   // 2) collapse alt-arts: keep the LOWEST Number per (Name + Type)
-  function baseOnly(cards: Card[]): Card[] {
+  const baseOnly = useCallback((cards: Card[]): Card[] => {
     const byKey = new Map<string, Card>();
     for (const c of cards) {
       const k = keyNameType(c);
@@ -781,10 +781,10 @@ export default function App() {
       if (!prev || c.Number < prev.Number) byKey.set(k, c);
     }
     return Array.from(byKey.values()).sort((a,b)=>a.Number - b.Number);
-  }
+  }, []);
 
   // 3) Build alt maps for search display and number→base resolution
-  function buildAltMaps(allCards: Card[]) {
+  const buildAltMaps = useCallback((allCards: Card[]) => {
     // name+type → sorted numbers
     const ntToNums = new Map<string, number[]>();
     for (const c of allCards) {
@@ -807,7 +807,7 @@ export default function App() {
       }
     }
     return { baseToAll, altToBase };
-  }
+  }, []);
 
   // Datetime
   function tsStamp(utc = false) {
@@ -907,7 +907,7 @@ export default function App() {
 
   const binderRef = useRef<HTMLDivElement>(null); 
 
-  function activateCard(card: Card, forceView?: BinderViewMode) {
+  const activateCard = useCallback((card: Card, forceView?: BinderViewMode) => {
     const { page, row, column } = binderLayout(card.Number);
     const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
     setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
@@ -918,7 +918,7 @@ export default function App() {
 
     window.setTimeout(() => setHighlightedRowNumber(null), 500);
     binderRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
+  }, [binderViewMode, settings]);
 
   // Suggestions dropdown
   const [openSug, setOpenSug] = useState(false);
@@ -967,7 +967,8 @@ export default function App() {
 
   // Load set JSON
     useEffect(() => {
-      const loadToken = loadCommitGateRef.current.begin();
+      const loadCommitGate = loadCommitGateRef.current;
+      const loadToken = loadCommitGate.begin();
       // Helper function defined inside useEffect to access local scope functions (like baseOnly)
       const parseAndCache = async (meta: SetMeta): Promise<ParsedSet> => {
         // Check cache first
@@ -977,8 +978,12 @@ export default function App() {
         
         const url = meta.file.startsWith('/') ? meta.file : `/sets/${meta.file}`;
         const res = await fetch(url);
-        const obj = await res.json();
-        const data = Array.isArray(obj) ? obj : obj.data;
+        const payload: unknown = await res.json();
+        const data = Array.isArray(payload)
+          ? payload
+          : isUnknownRecord(payload) && Array.isArray(payload.data)
+            ? payload.data
+            : [];
 
         const pricesName = meta.file.replace(/\.json$/i, '.prices.json');
         const pricesUrl = pricesName.startsWith('/') ? pricesName : `/sets/${pricesName}`;
@@ -986,16 +991,21 @@ export default function App() {
         try {
           const pr = await fetch(pricesUrl);
           if (pr.ok) {
-            const pj = await pr.json();
-            if (pj && typeof pj === 'object' && pj.prices && typeof pj.prices === 'object') {
-              priceByNumber = pj.prices as Record<string, number>;
+            const pricePayload: unknown = await pr.json();
+            if (isUnknownRecord(pricePayload) && isUnknownRecord(pricePayload.prices)) {
+              priceByNumber = Object.fromEntries(
+                Object.entries(pricePayload.prices)
+                  .map(([number, price]) => [number, Number(price)] as const)
+                  .filter(([, price]) => Number.isFinite(price)),
+              );
             }
           }
         } catch {
           /* optional overlay */
         }
 
-        const mapped: Card[] = data.map((c: any) => {
+        const mapped: Card[] = data.map((value: unknown) => {
+          const c = isUnknownRecord(value) ? value : {};
           const rawName = String(c.Name || '').trim();
           const rawSubtitle = String(c.Subtitle || '').trim();
           const cardName = rawName;
@@ -1012,12 +1022,13 @@ export default function App() {
             Name: cardName,
             Subtitle: rawSubtitle || undefined,
             Number: num,
-            Aspects: Array.isArray(c.Aspects) ? c.Aspects : [],
-            Type:
-              typeof c.Type === 'string'
-                ? c.Type
-                : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined),
-            Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
+            Aspects: Array.isArray(c.Aspects)
+              ? c.Aspects.filter((aspect): aspect is string => typeof aspect === 'string')
+              : [],
+            Type: stringOrNamedValue(c.Type)?.trim(),
+            Rarity: normalizeRarity(
+              stringOrNamedValue(c.Rarity ?? c.rarity ?? c.RarityCode),
+            ),
             MarketPrice: marketPrice,
             Set: meta.key,
           };
@@ -1070,11 +1081,11 @@ export default function App() {
             .filter(s => s.key !== setKey)
             .map(parseAndCache)
         );
-        if (!loadCommitGateRef.current.canCommit(loadToken)) return;
+        if (!loadCommitGate.canCommit(loadToken)) return;
 
         const catalog = canonicalCatalogFromParsedSets(parsedCacheRef.current.values());
         const loadedInventory = loadInventoriesForPersistence(localStorage, setKeys, catalog);
-        if (!loadCommitGateRef.current.canCommit(loadToken)) return;
+        if (!loadCommitGate.canCommit(loadToken)) return;
 
         if (!loadedInventory.migrationSucceeded) {
           showToast(
@@ -1089,18 +1100,17 @@ export default function App() {
         setCanonicalCatalog(catalog);
         setCardsAll(currentSetData.allCards);
         setCardsBase(currentSetData.baseCards);
-        setBaseToAll(currentSetData.baseToAll);
         setInventory(loadedInventory.inventories[setKey] ?? {});
         setInventoryReadyForSet(loadedInventory.persistenceAllowed ? setKey : null);
 
         // REMOVED: Deferred navigation logic (moved to a new hook below)
       }
       load().catch(() => {
-        if (loadCommitGateRef.current.canCommit(loadToken)) setError('Failed to load set data.');
+        if (loadCommitGate.canCommit(loadToken)) setError('Failed to load set data.');
       });
-      return () => loadCommitGateRef.current.cancel(loadToken);
+      return () => loadCommitGate.cancel(loadToken);
     // Dependencies only include set changes (NO pendingSelection)
-    }, [setKey, sets, setKeys, showToast]);
+    }, [baseOnly, buildAltMaps, setKey, sets, setKeys, setViewSpread, showToast]);
 
     // Deferred Navigation Hook: Runs after new set data is loaded
     useEffect(() => {
@@ -1118,7 +1128,7 @@ export default function App() {
           const card = cardsBase.find(c => c.Number === pendingSelection.baseNumber);
 
           if (card) {
-              selectCardByNumber(pendingSelection.baseNumber);
+              activateCard(card);
               // Clear query so search bar looks clean after selection
               setQuery('');
           } else {
@@ -1129,7 +1139,7 @@ export default function App() {
           // Always clear the pending state after attempting selection
           setPendingSelection(null); 
       }
-    }, [pendingSelection, cardsBase, setKey, binderLayout, pageToSpread, setActive, setViewSpread, setError, setPendingSelection, setQuery]);
+    }, [activateCard, pendingSelection, cardsBase, setKey]);
   // Build coloring map + presence
   const presentNumbers = useMemo(() => new Set(cardsBase.map(c => c.Number)), [cardsBase]);
   const numToAspectSpec = useMemo(() => {
@@ -1143,8 +1153,9 @@ export default function App() {
 
   // Suggestions retain the exact set and base-card identity selected by the user.
   const searchCatalogs: SearchCatalog[] = useMemo(
-    () =>
-      Array.from(parsedCacheRef.current.entries()).map(([catalogSetKey, parsed]) => ({
+    () => {
+      if (canonicalCatalog.size === 0) return [];
+      return Array.from(parsedCacheRef.current.entries()).map(([catalogSetKey, parsed]) => ({
         setKey: catalogSetKey,
         cards: parsed.baseCards,
         printingNumbersByBase: parsed.baseToAll,
@@ -1152,8 +1163,9 @@ export default function App() {
           ...parsed.baseCards.map(card => [card.Number, card.Number] as const),
           ...parsed.altToBase.entries(),
         ]),
-      })),
-    [cardsBase, setKey],
+      }));
+    },
+    [canonicalCatalog],
   );
   const suggestions = useMemo(
     () => buildSearchSuggestions(query, searchCatalogs, setKey),
@@ -1162,7 +1174,13 @@ export default function App() {
   // Click outside to close dropdown
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
-      if (boxRef.current && !boxRef.current.contains(e.target as any)) setOpenSug(false);
+      if (
+        boxRef.current &&
+        e.target instanceof Node &&
+        !boxRef.current.contains(e.target)
+      ) {
+        setOpenSug(false);
+      }
     };
     document.addEventListener('mousedown', onDoc);
     return () => document.removeEventListener('mousedown', onDoc);
@@ -1213,24 +1231,12 @@ export default function App() {
         : deltaRow < 0
           ? 'up'
           : 'down';
-    const selection = {
-      number: active.card.Number,
-      page: active.page,
-      row: active.row,
-      column: active.column,
-    };
-    const next = moveBinderSelection(selection, direction, totalPages);
-    if (next === selection) return;
+    const next = selectionAfterMove(active, direction, totalPages, byNumber);
+    if (next === active) return;
 
-    const { spreadCol, spreadRow } = getSpreadCoords(next.page, next.row, next.column);
-    setActive({
-      ...next,
-      card: byNumber.get(next.number) || { ...active.card, Number: next.number },
-      spreadCol,
-      spreadRow,
-    });
+    setActive(next);
     setFocusedPage(next.page);
-  }, [active, totalPages, byNumber, setActive]);
+  }, [active, totalPages, byNumber]);
   
 
   const [prevSetKey, nextSetKey] = useMemo(() => {
@@ -1266,8 +1272,6 @@ export default function App() {
   }, [prevSetKey, nextSetKey, setSetKey, setQuery, setActive, setViewSpread]);
 
   // Inventory helpers
-  type InventoryAll = { version: 1; sets: Record<SetKey, Inventory> };
-
   function readSetInv(k: SetKey): Inventory {
     try {
       return canonicalizeInventory(
@@ -1281,11 +1285,8 @@ export default function App() {
   function writeSetInv(k: SetKey, inv: Inventory): boolean {
     return persistCanonicalInventory(localStorage, k, inv, canonicalCatalog);
   }
-  function canonicalBaseNumber(set: SetKey, printingNumber: number): number | null {
-    return canonicalCatalog.get(`${set}:${printingNumber}`)?.baseNumber ?? null;
-  }
-  function inc(n: number) {
-    const baseNumber = canonicalBaseNumber(setKey, n);
+  const inc = useCallback((n: number) => {
+    const baseNumber = canonicalCatalog.get(`${setKey}:${n}`)?.baseNumber ?? null;
     if (baseNumber === null) return;
     const ref = canonicalCatalog.get(`${setKey}:${baseNumber}`);
     const max = quotaForType(ref?.type);
@@ -1293,9 +1294,9 @@ export default function App() {
       ...prev,
       [baseNumber]: Math.min((prev[baseNumber] || 0) + 1, max),
     }));
-  }
-  function dec(n: number) {
-    const baseNumber = canonicalBaseNumber(setKey, n);
+  }, [canonicalCatalog, setKey]);
+  const dec = useCallback((n: number) => {
+    const baseNumber = canonicalCatalog.get(`${setKey}:${n}`)?.baseNumber ?? null;
     if (baseNumber === null) return;
     setInventory(prev => {
       const next = Math.max((prev[baseNumber] || 0) - 1, 0);
@@ -1305,7 +1306,7 @@ export default function App() {
       }
       return { ...prev, [baseNumber]: next };
     });
-  }
+  }, [canonicalCatalog, setKey]);
   function exportAllInv() {
     const payload = {
       version: 1 as const,
@@ -2999,7 +3000,6 @@ export function Binder({
                 let opacity = hidden ? 0.25 : 0.9;
                 let stroke = '#2b2d3d';
                 let strokeWidth = 2;
-                let qtyText = '';
 
                 if (!hidden && presentNumbers.has(n)) {
                   const spec = numToAspectSpec.get(n);
@@ -3010,9 +3010,6 @@ export function Binder({
                   } else {
                     fill = NEUTRAL;
                   }
-                  const qty = inventory[n] || 0;
-                  const max = quotaForType(cardAt?.Type);
-                  qtyText = `${qty}/${max}`;
                   const activeHere = isActive(pForCell, r, colOnPage);
                   opacity = activeHere ? 1.0 : 0.35;
                   stroke = activeHere ? '#ffffff' : '#2b2d3d';
