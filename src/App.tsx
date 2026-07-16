@@ -8,6 +8,12 @@ import {
   pageToSpread,
   spreadToPrimaryPage,
 } from './core/binder';
+import {
+  buildSearchSuggestions,
+  submittedSuggestion,
+  type SearchCatalog,
+  type SearchSuggestion,
+} from './core/search';
 import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
@@ -683,10 +689,6 @@ export default function App() {
   const [cardsBase, setCardsBase] = useState<Card[]>([]);   // base printing per Name (lowest Number)
   // alt maps for search: baseNumber -> all numbers (base first), altNumber -> baseNumber
   const [baseToAll, setBaseToAll] = useState<Map<number, number[]>>(new Map());
-  const [altToBase, setAltToBase] = useState<Map<number, number>>(new Map());
-
-  // Normalization function for search
-  const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
 
   // Rarity normalization
   function normalizeRarity(r: any): string | undefined {
@@ -773,7 +775,6 @@ export default function App() {
 
   // Quick lookups
   const byNumber = useMemo(() => new Map(cardsBase.map(c => [c.Number, c])), [cardsBase]);
-  const baseByName = useMemo(() => new Map(cardsBase.map(c => [c.Name, c])), [cardsBase]);
 
   // Inventory
   const [inventory, setInventory] = useState<Inventory>({});
@@ -807,7 +808,10 @@ export default function App() {
   const [active, setActive] = useState<ActiveSelection | null>(null);
 
   // NEW: State to hold card details for selection after a set switch
-  const [pendingSelection, setPendingSelection] = useState<{ name: string; number: number } | null>(null);
+  const [pendingSelection, setPendingSelection] = useState<{
+    setKey: SetKey;
+    baseNumber: number;
+  } | null>(null);
 
   const [showHelpModal, setShowHelpModal] = useState(false); 
 
@@ -999,7 +1003,6 @@ export default function App() {
         setCardsAll(currentSetData.allCards);
         setCardsBase(currentSetData.baseCards);
         setBaseToAll(currentSetData.baseToAll);
-        setAltToBase(currentSetData.altToBase);
 
         // REMOVED: Deferred navigation logic (moved to a new hook below)
       }
@@ -1010,25 +1013,25 @@ export default function App() {
     // Deferred Navigation Hook: Runs after new set data is loaded
     useEffect(() => {
       // Only run if there is a pending card AND the current set data has loaded cards
-      if (pendingSelection && cardsBase.length > 0) {
+      if (
+        pendingSelection &&
+        pendingSelection.setKey === setKey &&
+        cardsBase.length > 0 &&
+        cardsBase.some(card => card.Set === setKey)
+      ) {
           // IMPORTANT: Clear any previous error before attempting the new lookup
           setError(''); 
 
           // Find the base card in the newly loaded set
-          const card = cardsBase.find(c => 
-              c.Number === pendingSelection.number && c.Name === pendingSelection.name
-          );
+          const card = cardsBase.find(c => c.Number === pendingSelection.baseNumber);
 
           if (card) {
-              const { page, row, column } = binderLayout(card.Number);
-              const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-              setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
-              setViewSpread(pageToSpread(page));
+              selectCardByNumber(pendingSelection.baseNumber);
               // Clear query so search bar looks clean after selection
               setQuery('');
           } else {
               // Only set an error if the card truly cannot be found in the loaded set
-              setError(`Failed to find card #${pendingSelection.number} in set ${setKey}.`);
+              setError(`Failed to find card #${pendingSelection.baseNumber} in set ${setKey}.`);
           }
           
           // Always clear the pending state after attempting selection
@@ -1046,119 +1049,24 @@ export default function App() {
     return m;
   }, [cardsBase]);
 
-  // Suggestions (name or number)
-    type Suggestion = { 
-      kind: 'name' | 'number'; 
-      label: string; 
-      number: number; 
-      name: string; 
-      setKey: SetKey;
-      subtitle?: string;
-      type?: string;
-    };
-    const suggestions: Suggestion[] = useMemo(() => {
-      const raw = query.trim();
-      if (!raw) return [];
-      
-      const isDigits = /^[0-9]+$/.test(raw);
-      const qnorm = raw.replace(/^0+/, '') || '0';
-      const lower = norm(raw);
-      
-      // 1. Collect all Number Matches (Exact Base Number Match OR Alt-Art Match)
-      const qNum = Number(qnorm);
-      // Change to track uniqueness by "SetKey:Number"
-      const uniqueNumMatches = new Set<string>(); 
-      const numberMatches: Suggestion[] = [];
-      
-      if (isDigits) {
-          // Iterate over all sets to find exact Base Number or Alt-Art matches
-          for (const [key, parsed] of parsedCacheRef.current.entries()) {
-            
-            let targetBaseNum = 0;
-
-            // Check 1: Exact Base Number Match
-            if (parsed.byNumber.has(qNum)) {
-                targetBaseNum = qNum;
-            } 
-            // Check 2: Alt-Art Number Match
-            else if (parsed.altToBase.has(qNum)) {
-                targetBaseNum = parsed.altToBase.get(qNum)!;
-            }
-
-            if (targetBaseNum > 0) {
-                const baseCard = parsed.byNumber.get(targetBaseNum)!; // Card must exist if the number was found
-                const uniqueKey = `${key}:${baseCard.Number}`;
-                
-                // Ensure we haven't already added this base card from this set
-                if (!uniqueNumMatches.has(uniqueKey)) {
-                    uniqueNumMatches.add(uniqueKey);
-
-                    const suggestion: Suggestion = {
-                        kind: 'number' as const,
-                        name: baseCard.Name,
-                        number: baseCard.Number,
-                        type: baseCard.Type || '',
-                        setKey: key, 
-                        subtitle: baseCard.Subtitle,
-                        label: `${baseCard.Name}${baseCard.Subtitle ? ` - ${baseCard.Subtitle}` : ''} — #${baseCard.Number} (${key})`,
-                    };
-
-                    // Prioritize current set by putting its match at the front of the list
-                    if (key === setKey) {
-                        numberMatches.unshift(suggestion);
-                    } else {
-                        numberMatches.push(suggestion);
-                    }
-                }
-            }
-          }
-      }
-      
-      // 2. Collect all Name Matches (for both numeric and non-numeric queries)
-      // This handles "HK-47" and general name searches.
-      const nameMatches: Suggestion[] = [];
-      const nameMatchBaseNums = new Set<number>(numberMatches.map(s => s.number)); // Exclude cards already found by exact number match
-
-      // Search all sets for name matches
-      for (const [key, parsed] of parsedCacheRef.current.entries()) {
-        const hits = parsed.baseCards
-          .map(c => ({ 
-            c, 
-            // Check if name or subtitle contains the query (using normalized strings)
-            idx: norm(c.Name).indexOf(lower),
-            subIdx: c.Subtitle ? norm(c.Subtitle).indexOf(lower) : -1,
-          }))
-          // Filter: at least one name/subtitle match AND card number not already added by exact number match
-          .filter(o => (o.idx >= 0 || o.subIdx >= 0) && !nameMatchBaseNums.has(o.c.Number))
-          // Sort: by earliest match index (Name before Subtitle) then by Name
-          .sort((a,b) => {
-              const aIdx = a.idx >= 0 ? a.idx : a.subIdx;
-              const bIdx = b.idx >= 0 ? b.idx : b.subIdx;
-              return aIdx - bIdx || a.c.Name.localeCompare(b.c.Name);
-          })
-          .map(o => ({ 
-            kind: 'name' as const, 
-            name: o.c.Name, 
-            number: o.c.Number, 
-            type: o.c.Type,
-            setKey: key,
-            subtitle: o.c.Subtitle,
-            label: `${o.c.Name}${o.c.Subtitle ? ` - ${o.c.Subtitle}` : ''} — #${o.c.Number} (${key})`,
-          }));
-          
-          // Prioritize current set's name matches over others
-          if (key === setKey) {
-            nameMatches.unshift(...hits);
-          } else {
-            nameMatches.push(...hits);
-          }
-      }
-      
-      // 3. Merge: Exact Number matches first, then Name matches
-      return [...numberMatches, ...nameMatches].slice(0, 10);
-
-    }, [query, setKey, norm]);
-
+  // Suggestions retain the exact set and base-card identity selected by the user.
+  const searchCatalogs: SearchCatalog[] = useMemo(
+    () =>
+      Array.from(parsedCacheRef.current.entries()).map(([catalogSetKey, parsed]) => ({
+        setKey: catalogSetKey,
+        cards: parsed.baseCards,
+        printingNumbersByBase: parsed.baseToAll,
+        baseByPrintingNumber: new Map([
+          ...parsed.baseCards.map(card => [card.Number, card.Number] as const),
+          ...parsed.altToBase.entries(),
+        ]),
+      })),
+    [cardsBase, setKey],
+  );
+  const suggestions = useMemo(
+    () => buildSearchSuggestions(query, searchCatalogs, setKey),
+    [query, searchCatalogs, setKey],
+  );
   // Click outside to close dropdown
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
@@ -1168,65 +1076,31 @@ export default function App() {
     return () => document.removeEventListener('mousedown', onDoc);
   }, []);
 
-  // Resolve alt-art number -> base printing
-  function resolveToBase(n: number): Card | null {
-    const found = byNumber.get(n);
-    if (!found) return null;
-    const base = baseByName.get(found.Name);
-    return base || found;
-  }
-
-  // Search handlers (jump to spread immediately)
-  function goFromNumberString(nStr: string) {
-    const n = Number(nStr.replace(/^0+/, '') || '0');
-    if (!Number.isFinite(n) || n < 1) { setError('Invalid number.'); return; }
-    
-    // 1. Resolve to the base number (this defines baseNum)
-    const baseNum = altToBase.get(n) ?? n;          // alt → base
-    
-    // 2. Look up the card using the base number
-    const card = byNumber.get(baseNum);
-    if (!card) { setError('Number not found in this set.'); return; }
-    
-    // 3. Set the active state with all required properties
-    const { page, row, column } = binderLayout(baseNum);
-    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-    setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
-    setError('');
-    setViewSpread(pageToSpread(page));
-  }
-  function goFromName(name: string) {
-    const base = baseByName.get(name);
-    if (!base) { setError('Name not found in this set.'); return; }
-    const { page, row, column } = binderLayout(base.Number);
-    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-    setActive({ number: base.Number, card: base, page, row, column, spreadCol, spreadRow });
-    setError('');
-    setViewSpread(pageToSpread(page));
-  }
-  function onEnter() {
-    const q = query.trim();
-    if (!q) { setError('Enter a name or number.'); return; }
-    if (/^[0-9]+$/.test(q)) goFromNumberString(q);
-    else goFromName(q);
-    setOpenSug(false);
-  }
-  function onChoose(s: Suggestion) {
-    if (s.setKey !== setKey) {
-      // If the card is from a different set, store the target and switch sets.
-      setPendingSelection({ name: s.name, number: s.number });
-      setSetKey(s.setKey);
-      setQuery(''); setOpenSug(false);
+  function chooseSuggestion(suggestion: SearchSuggestion) {
+    if (suggestion.setKey !== setKey) {
+      setPendingSelection({
+        setKey: suggestion.setKey,
+        baseNumber: suggestion.baseNumber,
+      });
+      setSetKey(suggestion.setKey);
+      setQuery('');
+      setOpenSug(false);
       return;
     }
 
-    // If it's the current set, navigate as before.
-    if (s.kind === 'number') goFromNumberString(String(s.number));
-    else goFromName(s.name);
-    
-    setQuery(''); setOpenSug(false);
+    selectCardByNumber(suggestion.baseNumber);
+    setQuery('');
+    setOpenSug(false);
   }
 
+  function submitSearch() {
+    const suggestion = submittedSuggestion(suggestions, highlightIdx);
+    if (!suggestion) {
+      setError(query.trim() ? 'No matching card found.' : 'Enter a name or number.');
+      return;
+    }
+    chooseSuggestion(suggestion);
+  }
   function selectCardByNumber(baseNum: number) {
     const card = byNumber.get(baseNum);
     if (!card) { 
@@ -1607,13 +1481,6 @@ export default function App() {
       return tag === 'input' || tag === 'textarea' || node.isContentEditable;
     };
 
-    const callEnter = () => {
-      const q = (query || '').trim();
-      if (!q) return;
-      if (/^[0-9]+$/.test(q)) goFromNumberString(q);
-      else goFromName(q);
-    };
-
     const onKey = (e: KeyboardEvent) => {
       const typing = isTyping(e.target);
 
@@ -1629,7 +1496,7 @@ export default function App() {
       if (e.key === 'Enter' && !typing) {
         if ((query || '').trim()) {
           e.preventDefault();
-          callEnter();
+          submitSearch();
         }
         return;
       }
@@ -1987,12 +1854,7 @@ export default function App() {
                 }
                 if (e.key === 'Enter') {
                   e.preventDefault();
-                  if (openSug && suggestions.length) {
-                    const pick = suggestions[Math.min(highlightIdx, suggestions.length - 1)] || suggestions[0];
-                    onChoose(pick);
-                  } else {
-                    onEnter();
-                  }
+                  submitSearch();
                   setOpenSug(false);
                   setHighlightIdx(0);
                   (e.currentTarget as HTMLInputElement).blur();   // <-- defocus on Enter
@@ -2005,7 +1867,7 @@ export default function App() {
             <button
               type="button"
               className="search-icon"
-              onClick={() => onEnter()}
+              onClick={submitSearch}
               title="Search"
               aria-label="Search"
             >
@@ -2016,20 +1878,15 @@ export default function App() {
                 {suggestions.map((s, i) => {
                   const typeText = s.type ? s.type : ''; 
 
-                  // NEW LOGIC: Access the correct set's alt-art map from the cache
-                  const targetSetData = parsedCacheRef.current.get(s.setKey);
-                  
-                  // show base + alt numbers for BOTH kinds
-                  // Use the target set's baseToAll map, falling back to just the base number if data is missing
-                  const nums = targetSetData?.baseToAll.get(s.number) || [s.number];
+                  const nums = s.printingNumbers;
                   const numsLabel = nums.map((n) => `#${n}`).join(', ');
 
                   return (
                     <div
-                      key={`${s.setKey}:${s.number}`} // Ensure unique key across sets
+                      key={`${s.setKey}:${s.baseNumber}`} // Ensure unique key across sets
                       className={`sug-item ${i === highlightIdx ? 'active' : ''}`}
                       onMouseEnter={() => setHighlightIdx(i)}
-                      onMouseDown={(e) => { e.preventDefault(); onChoose(s); }}
+                      onMouseDown={(e) => { e.preventDefault(); chooseSuggestion(s); }}
                       role="option"
                       aria-selected={i === highlightIdx}
                       // Apply flex styling to arrange items horizontally
