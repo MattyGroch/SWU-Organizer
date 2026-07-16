@@ -247,3 +247,43 @@ export function loadInventoriesForPersistence(
     }
   }
 }
+
+export function inventoryPersistenceAuthorized(storage: Storage): boolean {
+  try {
+    return (
+      storage.getItem(INVENTORY_SCHEMA_KEY) === INVENTORY_SCHEMA_VERSION ||
+      storage.getItem(INVENTORY_BACKUP_KEY) !== null
+    )
+  } catch {
+    return false
+  }
+}
+
+export function persistCanonicalInventory(
+  storage: Storage,
+  setKey: SetKey,
+  inventory: Inventory,
+  catalog: CanonicalCatalog,
+): boolean {
+  if (!inventoryPersistenceAuthorized(storage) || !knownSetKeys(catalog).has(setKey)) return false
+  try {
+    storage.setItem(`inv:${setKey}`, JSON.stringify(canonicalizeInventory(setKey, inventory, catalog)))
+    return true
+  } catch {
+    return false
+  }
+}
+
+export function removePersistedInventory(
+  storage: Storage,
+  setKey: SetKey,
+  catalog: CanonicalCatalog,
+): boolean {
+  if (!inventoryPersistenceAuthorized(storage) || !knownSetKeys(catalog).has(setKey)) return false
+  try {
+    storage.removeItem(`inv:${setKey}`)
+    return true
+  } catch {
+    return false
+  }
+}

@@ -7,6 +7,8 @@ import {
   collectRawImportEntry,
   loadInventoriesForPersistence,
   migrateLegacyInventories,
+  persistCanonicalInventory,
+  removePersistedInventory,
   type CanonicalCatalog,
 } from './inventory'
 
@@ -184,5 +186,39 @@ describe('canonical inventory', () => {
     expect(loaded.backupPreserved).toBe(false)
     expect(loaded.persistenceAllowed).toBe(false)
     expect(storage.getItem('inv:SOR')).toBe(legacy)
+  })
+
+  it('keeps legacy inventory byte-for-byte unchanged when merge and replace imports are persistence-locked', () => {
+    const legacy = '{"351":2}'
+    const storage = new MemoryStorage({ 'inv:SOR': legacy })
+    const originalSetItem = storage.setItem.bind(storage)
+    storage.setItem = (key, value) => {
+      if (key === INVENTORY_BACKUP_KEY) throw new Error('storage unavailable')
+      originalSetItem(key, value)
+    }
+    const loaded = loadInventoriesForPersistence(storage, ['SOR'], catalog)
+
+    for (const mode of ['merge', 'replace'] as const) {
+      const applied = applyImportedInventories(
+        loaded.inventories,
+        { SOR: { 87: 1 } },
+        mode,
+        catalog,
+      )
+      expect(persistCanonicalInventory(storage, 'SOR', applied.inventories.SOR, catalog)).toBe(false)
+      expect(storage.getItem('inv:SOR')).toBe(legacy)
+    }
+  })
+
+  it('persists successful imports and authorized removals after schema migration', () => {
+    const storage = new MemoryStorage({
+      'inv:SOR': JSON.stringify({ 87: 1 }),
+      [INVENTORY_SCHEMA_KEY]: '2',
+    })
+
+    expect(persistCanonicalInventory(storage, 'SOR', { 351: 2 }, catalog)).toBe(true)
+    expect(storage.getItem('inv:SOR')).toBe(JSON.stringify({ 87: 2 }))
+    expect(removePersistedInventory(storage, 'SOR', catalog)).toBe(true)
+    expect(storage.getItem('inv:SOR')).toBeNull()
   })
 })

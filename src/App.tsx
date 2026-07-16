@@ -19,7 +19,9 @@ import {
   canonicalizeInventory,
   collectRawImportEntry,
   loadInventoriesForPersistence,
+  persistCanonicalInventory,
   quotaForType,
+  removePersistedInventory,
   type CanonicalCatalog,
   type ImportResult,
 } from './core/inventory';
@@ -793,9 +795,9 @@ export default function App() {
   const [inventoryReadyForSet, setInventoryReadyForSet] = useState<SetKey | null>(null);
   useEffect(() => {
     if (inventoryReadyForSet === setKey) {
-      localStorage.setItem(`inv:${setKey}`, JSON.stringify(inventory));
+      persistCanonicalInventory(localStorage, setKey, inventory, canonicalCatalog);
     }
-  }, [inventory, inventoryReadyForSet, setKey]);
+  }, [canonicalCatalog, inventory, inventoryReadyForSet, setKey]);
   const pruneZeros = (inv: Inventory) =>
     Object.fromEntries(Object.entries(inv).filter(([,q]) => (q as number) > 0)) as Inventory;
   useEffect(() => {
@@ -1232,8 +1234,8 @@ export default function App() {
     }
     catch { return {}; }
   }
-  function writeSetInv(k: SetKey, inv: Inventory) {
-    localStorage.setItem(`inv:${k}`, JSON.stringify(canonicalizeInventory(k, inv, canonicalCatalog)));
+  function writeSetInv(k: SetKey, inv: Inventory): boolean {
+    return persistCanonicalInventory(localStorage, k, inv, canonicalCatalog);
   }
   function canonicalBaseNumber(set: SetKey, printingNumber: number): number | null {
     return canonicalCatalog.get(`${set}:${printingNumber}`)?.baseNumber ?? null;
@@ -1410,25 +1412,33 @@ export default function App() {
 
   const handleResetInventory = (scope: 'current' | 'all') => {
       if (scope === 'current') {
-          localStorage.removeItem(`inv:${setKey}`);
-          setInventory({});
-          showToast(`Inventory for the current set (${setKey}) has been cleared.`);
+          if (removePersistedInventory(localStorage, setKey, canonicalCatalog)) {
+              setInventory({});
+              showToast(`Inventory for the current set (${setKey}) has been cleared.`);
+          } else {
+              showToast('Inventory could not be cleared while protected persistence is locked.', 'warning');
+          }
       } else if (scope === 'all') {
+          let allRemoved = true;
           // Clear set inventories without deleting the migration backup or schema marker.
           if (!sets.length) {
               for (const key of Object.keys(localStorage)) {
                   if (/^inv:[A-Z0-9]+$/.test(key)) {
-                      localStorage.removeItem(key);
+                      allRemoved = removePersistedInventory(localStorage, key.slice(4), canonicalCatalog) && allRemoved;
                   }
               }
           } else {
               // Clear based on loaded set keys
               for (const set of sets) {
-                  localStorage.removeItem(`inv:${set.key}`);
+                  allRemoved = removePersistedInventory(localStorage, set.key, canonicalCatalog) && allRemoved;
               }
           }
-          setInventory({}); // Reset current view as well
-          showToast('Inventory for ALL sets has been cleared.');
+          if (allRemoved) {
+              setInventory({}); // Reset current view as well
+              showToast('Inventory for ALL sets has been cleared.');
+          } else {
+              showToast('Inventories could not be cleared while protected persistence is locked.', 'warning');
+          }
       }
       setShowResetModal(false);
   };
@@ -1445,18 +1455,27 @@ export default function App() {
       ) as Record<SetKey, Inventory>;
       const result = applyImportedInventories(current, safeImportData, mode, canonicalCatalog);
       let importedCount = 0;
+      let persistenceBlocked = false;
 
       for (const key of Object.keys(safeImportData) as SetKey[]) {
           if (!knownSetKeys.has(key)) continue;
           const nextInventory = pruneZeros(result.inventories[key] ?? {});
-          importedCount += Object.keys(nextInventory).length;
-          writeSetInv(key, nextInventory);
-          if (key === setKey) setInventory(nextInventory);
+          if (writeSetInv(key, nextInventory)) {
+              importedCount += Object.keys(nextInventory).length;
+              if (key === setKey) setInventory(nextInventory);
+          } else {
+              persistenceBlocked = true;
+          }
       }
       
       setShowImportModal(false);
       setImportData({});
-      showToast(`Applied ${importedCount} canonical card entries in ${mode} mode (${importStats.recognized} recognized, ${importStats.skipped} skipped).`);
+      showToast(
+        persistenceBlocked
+          ? 'Import was not saved while protected persistence is locked.'
+          : `Applied ${importedCount} canonical card entries in ${mode} mode (${importStats.recognized} recognized, ${importStats.skipped} skipped).`,
+        persistenceBlocked ? 'warning' : 'success',
+      );
       setImportStats({ recognized: 0, skipped: 0 });
   };
   
