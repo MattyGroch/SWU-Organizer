@@ -1,19 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import * as XLSX from 'xlsx';
-
-type Card = {
-  Name: string;
-  Subtitle?: string;
-  Number: number;
-  Aspects?: string[];
-  Type?: string;
-  Rarity?: string;
-  MarketPrice?: number;
-  Set: string
-};
-type Inventory = Record<number, number>;
-type SetKey = string;
-type SetMeta = { key: string; label: string; file: string };
+import {
+  binderLayout,
+  getSpreadCoords,
+  moveBinderSelection,
+  numberFromPagePosition,
+  pageToSpread,
+  spreadToPrimaryPage,
+} from './core/binder';
+import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
 function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
@@ -139,32 +134,10 @@ function rarityGlyph(r?: string) {
   return RARITY_STYLE[r] ?? null;
 }
 
-function binderLayout(n: number) {
-  const page = Math.floor((n - 1) / 12) + 1;
-  const row = Math.floor(((n - 1) % 12) / 4) + 1;
-  const column = ((n - 1) % 4) + 1;
-  return { page, row, column };
-}
-function getSpreadCoords(page: number, row: number, column: number) {
-  const isOddPage = page % 2 !== 0;
-  return {
-    spreadCol: isOddPage ? column + 4 : column,
-    spreadRow: row,
-  };
-}
-function numberFromPRC(page: number, row: number, col: number) {
-  return (page - 1) * 12 + (row - 1) * 4 + col;
-}
 function quotaForType(type?: string) {
   const t = (type || '').toLowerCase();
   return (t === 'leader' || t === 'base') ? 1 : 3;
 }
-
-// Spread math ---------------------------------------------------------------
-// spread 0 -> Page 1 (right-only)
-// spread 1 -> Pages 2/3, spread 2 -> 4/5, ...
-function pageToSpread(p: number) { return p <= 1 ? 0 : Math.floor((p - 2) / 2) + 1; }
-function spreadToPrimaryPage(s: number) { return s <= 0 ? 1 : 2 + (s - 1) * 2; } // even page
 
 /** Collection status for filter pills (same semantics as the Status column: ✓ / ! / ✕). */
 type CollectionStatusKey = 'complete' | 'partial' | 'none';
@@ -831,14 +804,7 @@ export default function App() {
   // UI state
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
-  const [active, setActive] = useState<{ 
-    card: Card; 
-    page: number; 
-    row: number; 
-    column: number; 
-    spreadCol: number; 
-    spreadRow: number; 
-  } | null>(null);
+  const [active, setActive] = useState<ActiveSelection | null>(null);
 
   // NEW: State to hold card details for selection after a set switch
   const [pendingSelection, setPendingSelection] = useState<{ name: string; number: number } | null>(null);
@@ -1056,7 +1022,7 @@ export default function App() {
           if (card) {
               const { page, row, column } = binderLayout(card.Number);
               const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-              setActive({ card, page, row, column, spreadCol, spreadRow });
+              setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
               setViewSpread(pageToSpread(page));
               // Clear query so search bar looks clean after selection
               setQuery('');
@@ -1225,7 +1191,7 @@ export default function App() {
     // 3. Set the active state with all required properties
     const { page, row, column } = binderLayout(baseNum);
     const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-    setActive({ card, page, row, column, spreadCol, spreadRow });
+    setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
     setError('');
     setViewSpread(pageToSpread(page));
   }
@@ -1234,7 +1200,7 @@ export default function App() {
     if (!base) { setError('Name not found in this set.'); return; }
     const { page, row, column } = binderLayout(base.Number);
     const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-    setActive({ card: base, page, row, column, spreadCol, spreadRow });
+    setActive({ number: base.Number, card: base, page, row, column, spreadCol, spreadRow });
     setError('');
     setViewSpread(pageToSpread(page));
   }
@@ -1269,7 +1235,7 @@ export default function App() {
     }
     const { page, row, column } = binderLayout(baseNum);
     const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-    setActive({ card, page, row, column, spreadCol, spreadRow });
+    setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
     setError('');
     setViewSpread(pageToSpread(page));
     setHighlightedRowNumber(baseNum);
@@ -1283,84 +1249,33 @@ export default function App() {
     }
   }
 
-  // Function to move the card selection based on visual coordinates (8 columns, 3 rows)
   const updateActivePosition = useCallback((deltaCol: number, deltaRow: number) => {
     if (!active) return;
-    
-    const currentNum = active.card.Number;
-    const { page } = binderLayout(currentNum);
-
-    // 1. Get current visual coordinates
-    let newSpreadCol = active.spreadCol + deltaCol;
-    let newSpreadRow = active.spreadRow + deltaRow;
-    let targetSpread = pageToSpread(page);
-
-    // 2. Implement Movement/Wrap Logic
-
-    // --- Horizontal Movement/Spread Wrap (X-axis) ---
-    if (deltaCol !== 0) {
-        if (newSpreadCol > 8) {
-            newSpreadCol = 1; 
-            targetSpread += 1; // Jumps to next spread
-        } else if (newSpreadCol < 1) {
-            newSpreadCol = 8; 
-            targetSpread -= 1; // Jumps to previous spread
-        }
-    }
-    
-    // --- Vertical Movement/Spread Wrap (Y-axis) ---
-    if (deltaRow !== 0) {
-        if (newSpreadRow > 3) {
-            newSpreadRow = 1;
-            targetSpread += 1; // Jumps to next spread
-        } else if (newSpreadRow < 1) {
-            newSpreadRow = 3;
-            targetSpread -= 1; // Jumps to previous spread
-        }
-    }
-    
-    // 3. Constraint Checks
-    if (targetSpread < 0 || targetSpread > totalSpreads - 1) return;
-
-    // 4. Convert Spread Coordinate back to Card Number
-    let targetPage = spreadToPrimaryPage(targetSpread);
-    let targetColOnPage = 0;
-
-    if (newSpreadCol <= 4) {
-      // Target is Left Page (SpreadCol 1-4)
-      targetColOnPage = newSpreadCol;
-      // If we landed on the left side of the spread, the page number must be even (P2, P4, P6...)
-      if (targetPage % 2 !== 0 && targetPage > 1) targetPage -= 1;
-      // Handle P1 edge case (Spread 0 is right-page only)
-      if (targetPage === 1 && newSpreadCol <= 4) return;
-    } else {
-      // Target is Right Page (SpreadCol 5-8)
-      targetColOnPage = newSpreadCol - 4;
-      // If we landed on the right side of the spread, the page number must be odd (P3, P5, P7...)
-      if (targetPage % 2 === 0) targetPage += 1;
-    }
-    
-    const newNumCandidate = numberFromPRC(targetPage, newSpreadRow, targetColOnPage);
-    
-    // Final boundary check against total card slots
-    if (newNumCandidate > totalPages * 12) return;
-
-    // 5. Apply Position
-    const newCard = byNumber.get(newNumCandidate);
-    
-    const newActiveState = {
-        card: newCard || { ...active.card, Number: newNumCandidate },
-        page: targetPage,
-        row: newSpreadRow,
-        column: targetColOnPage,
-        spreadCol: newSpreadCol,
-        spreadRow: newSpreadRow,
+    const direction = deltaCol < 0
+      ? 'left'
+      : deltaCol > 0
+        ? 'right'
+        : deltaRow < 0
+          ? 'up'
+          : 'down';
+    const selection = {
+      number: active.card.Number,
+      page: active.page,
+      row: active.row,
+      column: active.column,
     };
+    const next = moveBinderSelection(selection, direction, totalPages);
+    if (next === selection) return;
 
-    setActive(newActiveState);
-    setViewSpread(targetSpread);
-    
-  }, [active, totalPages, totalSpreads, byNumber, setActive, setViewSpread]);
+    const { spreadCol, spreadRow } = getSpreadCoords(next.page, next.row, next.column);
+    setActive({
+      ...next,
+      card: byNumber.get(next.number) || { ...active.card, Number: next.number },
+      spreadCol,
+      spreadRow,
+    });
+    setViewSpread(pageToSpread(next.page));
+  }, [active, totalPages, byNumber, setActive, setViewSpread]);
   
   const setKeys = useMemo(() => sets.map(s => s.key as SetKey), [sets]);
 
@@ -1767,7 +1682,7 @@ export default function App() {
                     if (newCard) {
                         const { page, row, column } = binderLayout(newCard.Number);
                         const { spreadCol, spreadRow } = getSpreadCoords(page, row, column); // CALCULATE SPREAD COORDS
-                        setActive({ card: newCard, page, row, column, spreadCol, spreadRow }); // PASS SPREAD COORDS
+                        setActive({ number: newCard.Number, card: newCard, page, row, column, spreadCol, spreadRow }); // PASS SPREAD COORDS
                     } else {
                         // If no card exists at the new relative position, select the first card on the new spread
                         const firstNumOnSpread = newSpread * 24 + 1;
@@ -1775,7 +1690,7 @@ export default function App() {
                         if(firstCardOnSpread) {
                            const { page, row, column } = binderLayout(firstCardOnSpread.Number);
                            const { spreadCol, spreadRow } = getSpreadCoords(page, row, column); // CALCULATE SPREAD COORDS
-                           setActive({ card: firstCardOnSpread, page, row, column, spreadCol, spreadRow }); // PASS SPREAD COORDS
+                           setActive({ number: firstCardOnSpread.Number, card: firstCardOnSpread, page, row, column, spreadCol, spreadRow }); // PASS SPREAD COORDS
                         } else {
                            setActive(null); // Clear selection if no card is found
                         }
@@ -2885,22 +2800,8 @@ function Binder({
   viewSpread: number;
   setViewSpread: React.Dispatch<React.SetStateAction<number>>;
   totalSpreads: number;
-  active: { 
-    card: Card; 
-    page: number; 
-    row: number; 
-    column: number; 
-    spreadCol: number; 
-    spreadRow: number; 
-  } | null;
-  setActive: (v: { 
-    card: Card; 
-    page: number; 
-    row: number; 
-    column: number; 
-    spreadCol: number; 
-    spreadRow: number; 
-  } | null)=>void;
+  active: ActiveSelection | null;
+  setActive: (v: ActiveSelection | null)=>void;
   presentNumbers: Set<number>;
   numToAspectSpec: Map<number, AspectFillSpec>;
   byNumber: Map<number, Card>;
@@ -3108,7 +3009,7 @@ function Binder({
                 const colOnPage = isLeftHalf ? c : c - 4;
                 const hidden = isLeftHalf && !showLeft;
 
-                const n = numberFromPRC(pForCell, r, colOnPage);
+                const n = numberFromPagePosition(pForCell, r, colOnPage);
                 const cardAt = byNumber.get(n);
 
                 let fill = '#0f1017';
@@ -3148,6 +3049,7 @@ function Binder({
                       const { page: bp, row: br, column: bc } = binderLayout(n);
                       // FIX: Added spreadCol (c) and spreadRow (r) to complete the active state
                       setActive({ 
+                        number: card.Number,
                         card, 
                         page: bp, 
                         row: br, 
