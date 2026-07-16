@@ -1603,8 +1603,9 @@ export default function App() {
         
         // Browsing changes the viewed anchor only; selection and locator remain stable.
         if (deltaSpread !== 0) {
-          const newSpread = Math.max(0, Math.min(totalSpreads - 1, viewSpread + deltaSpread));
-          if (newSpread !== viewSpread) setViewSpread(newSpread);
+          setViewSpread(currentSpread => (
+            Math.max(0, Math.min(totalSpreads - 1, currentSpread + deltaSpread))
+          ));
           return;
         } // End Page Flip Logic
 
