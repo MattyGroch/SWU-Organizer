@@ -33,7 +33,10 @@ import {
   type AppSettings,
 } from './core/settings';
 import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
+import { LocatorPanel } from './components/LocatorPanel';
 import { SettingsModal } from './components/SettingsModal';
+
+export type BinderViewMode = 'single' | 'spread';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
 function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
@@ -887,8 +890,24 @@ export default function App() {
   const totalPages = Math.max(1, Math.ceil(maxNumber / 12));
   const totalSpreads = 1 + Math.ceil(Math.max(0, totalPages - 1) / 2);
   const [viewSpread, setViewSpread] = useState<number>(0); // 0 => Page 1; >=1 => 2/3, 4/5, ...
+  const [binderViewMode, setBinderViewMode] = useState<BinderViewMode>('spread');
+  const [focusedPage, setFocusedPage] = useState(1);
 
   const binderRef = useRef<HTMLDivElement>(null); 
+
+  function activateCard(card: Card, forceView?: BinderViewMode) {
+    const { page, row, column } = binderLayout(card.Number);
+    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
+    setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
+    setError('');
+    setViewSpread(pageToSpread(page));
+    setFocusedPage(page);
+    setBinderViewMode(forceView ?? (settings.autoOpenSinglePage ? 'single' : binderViewMode));
+    setHighlightedRowNumber(card.Number);
+
+    window.setTimeout(() => setHighlightedRowNumber(null), 500);
+    binderRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   // Suggestions dropdown
   const [openSug, setOpenSug] = useState(false);
@@ -1171,20 +1190,7 @@ export default function App() {
       setError('Card not found in current set data.');
       return; 
     }
-    const { page, row, column } = binderLayout(baseNum);
-    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-    setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
-    setError('');
-    setViewSpread(pageToSpread(page));
-    setHighlightedRowNumber(baseNum);
-    
-    // Clear highlight after 500ms
-    setTimeout(() => setHighlightedRowNumber(null), 500);
-
-    // Scroll the binder into view if it's not fully visible
-    if (binderRef.current) {
-        binderRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    activateCard(card);
   }
 
   const updateActivePosition = useCallback((deltaCol: number, deltaRow: number) => {
@@ -1213,6 +1219,7 @@ export default function App() {
       spreadRow,
     });
     setViewSpread(pageToSpread(next.page));
+    setFocusedPage(next.page);
   }, [active, totalPages, byNumber, setActive, setViewSpread]);
   
 
@@ -1576,10 +1583,10 @@ export default function App() {
         let deltaSpread = 0;
         
         // NEW: Page flipping shortcuts ("," and ".")
-        if (e.key === ',' || e.key === '<') { // Comma
+        if ((e.key === ',' || e.key === '<') && binderViewMode === 'spread') { // Comma
           e.preventDefault();
           deltaSpread = -1;
-        } else if (e.key === '.' || e.key === '>') { // Period
+        } else if ((e.key === '.' || e.key === '>') && binderViewMode === 'spread') { // Period
           e.preventDefault();
           deltaSpread = 1;
         }
@@ -1659,7 +1666,7 @@ export default function App() {
 
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [active, query, setViewSpread, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages]);
+  }, [active, query, setViewSpread, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages, binderViewMode]);
 
   const fmtUSD = (n: number) =>
     n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
@@ -2041,12 +2048,32 @@ export default function App() {
 
       {/* Binder (with spread pager + dropdown) — minimal padding so the grid can use width */}
       <div className="card" ref={binderRef} style={{ padding: 8 }}>
+        {active && (
+          <LocatorPanel
+            selection={active}
+            quantity={inventory[active.number] || 0}
+            maximum={quotaForType(active.card.Type)}
+            aspectBackground={aspectSpecToCssBackground(numToAspectSpec.get(active.number))}
+            onDecrease={() => dec(active.number)}
+            onIncrease={() => inc(active.number)}
+          />
+        )}
         <Binder
           viewSpread={viewSpread}
           setViewSpread={setViewSpread}
           totalSpreads={totalSpreads}
+          totalPages={totalPages}
+          viewMode={binderViewMode}
+          focusedPage={focusedPage}
+          onFocusedPageChange={setFocusedPage}
+          onViewModeChange={mode => {
+            setBinderViewMode(mode);
+            if (mode === 'single') {
+              setFocusedPage(active?.page ?? spreadToPrimaryPage(viewSpread));
+            }
+          }}
+          onActivateCard={activateCard}
           active={active}
-          setActive={setActive}
           presentNumbers={presentNumbers}
           numToAspectSpec={numToAspectSpec}
           byNumber={byNumber}
@@ -2721,12 +2748,17 @@ export default function App() {
   );
 }
 
-function Binder({
+export function Binder({
   viewSpread,
   setViewSpread,
   totalSpreads,
+  totalPages,
+  viewMode,
+  focusedPage,
+  onFocusedPageChange,
+  onViewModeChange,
+  onActivateCard,
   active,
-  setActive,
   presentNumbers,
   numToAspectSpec,
   byNumber,
@@ -2740,8 +2772,13 @@ function Binder({
   viewSpread: number;
   setViewSpread: React.Dispatch<React.SetStateAction<number>>;
   totalSpreads: number;
+  totalPages: number;
+  viewMode: BinderViewMode;
+  focusedPage: number;
+  onFocusedPageChange: (page: number) => void;
+  onViewModeChange: (mode: BinderViewMode) => void;
+  onActivateCard: (card: Card) => void;
   active: ActiveSelection | null;
-  setActive: (v: ActiveSelection | null)=>void;
   presentNumbers: Set<number>;
   numToAspectSpec: Map<number, AspectFillSpec>;
   byNumber: Map<number, Card>;
@@ -2752,12 +2789,13 @@ function Binder({
   showHelpModal: boolean;
   setShowHelpModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const singlePage = viewMode === 'single';
   const page = spreadToPrimaryPage(viewSpread);     // 1, 2, 4, 6, ...
   const leftPage = page % 2 === 0 ? page : page - 1;
   const rightPage = page % 2 === 1 ? page : page + 1;
   const showLeft = leftPage >= 2;
 
-  const cols = 8, rows = 3;
+  const cols = singlePage ? 4 : 8, rows = 3;
   const cellW = 120, cellH = 170, gap = 12;
   const vbPad = 8;
   const vbW = cols * cellW + (cols - 1) * gap + vbPad * 2;
@@ -2767,6 +2805,7 @@ function Binder({
   const spreadLabel = page === 1
     ? 'Spread: Page 1'
     : `Spread: Page ${leftPage} (left) | Page ${rightPage} (right)`;
+  const binderLabel = singlePage ? `Page ${focusedPage}` : spreadLabel;
 
   const isActive = (p:number, r:number, c:number) =>
     active && p === active.page && r === active.row && c === active.column;
@@ -2780,6 +2819,10 @@ function Binder({
       return { value: i, label: `Page ${left}/${right}` };
     });
   }, [totalSpreads]);
+  const pageOptions = useMemo(
+    () => Array.from({ length: totalPages }, (_, index) => index + 1),
+    [totalPages],
+  );
 
   const binderGradientDefs = useMemo(() => {
     const out: { n: number; spec: Extract<AspectFillSpec, { kind: 'gradient' }> }[] = [];
@@ -2792,6 +2835,26 @@ function Binder({
 
   return (
     <>
+      <div className="binder-toolbar">
+        <div className="toolbar-group" role="group" aria-label="Binder view">
+          <button
+            type="button"
+            className="tbtn"
+            aria-pressed={singlePage}
+            onClick={() => onViewModeChange('single')}
+          >
+            Single Page
+          </button>
+          <button
+            type="button"
+            className="tbtn"
+            aria-pressed={!singlePage}
+            onClick={() => onViewModeChange('spread')}
+          >
+            Spread
+          </button>
+        </div>
+      </div>
       {/* Row 1: selection header + tip (right) */}
       <div
         className="row"
@@ -2827,8 +2890,8 @@ function Binder({
                 )}
               </div>
               <span className="pill">Page {active.page}</span>
-              <span className="pill">Column {active.spreadCol}</span>
-              <span className="pill">Row {active.spreadRow}</span>
+              <span className="pill">Column {active.column}</span>
+              <span className="pill">Row {active.row}</span>
             </>
           ) : (
             <div className="muted" style={{ fontSize: 25 }}>No card selected</div>
@@ -2887,19 +2950,32 @@ function Binder({
           >
             {setKey}
           </span>
-          <span style={{ fontWeight: 600 }}>Binder</span> — {spreadLabel}
+          <span style={{ fontWeight: 600 }}>Binder</span> — {binderLabel}
         </div>
         <div className="pager">
           <label className="spread-jump-label">
             <span className="spread-jump-hint">Jump</span>
-            <select
-              className="spread-jump-select"
-              value={viewSpread}
-              onChange={e => setViewSpread(Number(e.target.value))}
-              aria-label="Jump to spread"
-            >
-              {spreadOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-            </select>
+            {singlePage ? (
+              <select
+                className="spread-jump-select"
+                value={focusedPage}
+                onChange={event => onFocusedPageChange(Number(event.target.value))}
+                aria-label="Jump to page"
+              >
+                {pageOptions.map(option => <option key={option} value={option}>Page {option}</option>)}
+              </select>
+            ) : (
+              <select
+                className="spread-jump-select"
+                value={viewSpread}
+                onChange={event => setViewSpread(Number(event.target.value))}
+                aria-label="Jump to spread"
+              >
+                {spreadOptions.map(option => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            )}
           </label>
         </div>
       </div>
@@ -2908,13 +2984,15 @@ function Binder({
         <button
           type="button"
           className="spread-nav-edge"
-          disabled={totalSpreads === 0 || viewSpread <= 0}
-          onClick={() => setViewSpread(s => Math.max(0, s - 1))}
-          aria-label="Previous spread, keyboard comma"
-          title="Previous spread — keyboard ,"
+          disabled={singlePage ? focusedPage <= 1 : totalSpreads === 0 || viewSpread <= 0}
+          onClick={() => singlePage
+            ? onFocusedPageChange(Math.max(1, focusedPage - 1))
+            : setViewSpread(spread => Math.max(0, spread - 1))}
+          aria-label={singlePage ? 'Previous page' : 'Previous spread, keyboard comma'}
+          title={singlePage ? 'Previous page' : 'Previous spread — keyboard ,'}
         >
           <span className="spread-nav-chevron" aria-hidden>‹</span>
-          <span className="key-pill">,</span>
+          {!singlePage && <span className="key-pill">,</span>}
         </button>
         <div className="grid-wrap">
         <svg viewBox={`0 0 ${vbW} ${vbH}`} style={{ width: '100%', height: 'auto' }} preserveAspectRatio="xMidYMid meet">
@@ -2944,10 +3022,10 @@ function Binder({
                 const x = cIdx * (cellW + gap);
                 const y = rIdx * (cellH + gap);
 
-                const isLeftHalf = c <= 4;
-                const pForCell = isLeftHalf ? leftPage : rightPage;
-                const colOnPage = isLeftHalf ? c : c - 4;
-                const hidden = isLeftHalf && !showLeft;
+                const isLeftHalf = !singlePage && c <= 4;
+                const pForCell = singlePage ? focusedPage : isLeftHalf ? leftPage : rightPage;
+                const colOnPage = singlePage ? c : isLeftHalf ? c : c - 4;
+                const hidden = !singlePage && isLeftHalf && !showLeft;
 
                 const n = numberFromPagePosition(pForCell, r, colOnPage);
                 const cardAt = byNumber.get(n);
@@ -2986,18 +3064,7 @@ function Binder({
                       const card = byNumber.get(n);      // exact card in this set
                       if (!card) return;
 
-                      const { page: bp, row: br, column: bc } = binderLayout(n);
-                      // FIX: Added spreadCol (c) and spreadRow (r) to complete the active state
-                      setActive({ 
-                        number: card.Number,
-                        card, 
-                        page: bp, 
-                        row: br, 
-                        column: bc, 
-                        spreadCol: c, 
-                        spreadRow: r 
-                      });
-                      setViewSpread(pageToSpread(bp));
+                      onActivateCard(card);
                     }}
                   >
                     {/* the card rectangle */}
@@ -3119,19 +3186,21 @@ function Binder({
                 );
               })
             )}
-            {/* dotted divider */}
-            <line
-              x1={(cellW + gap) * 4 - gap / 2}
-              y1={-8}
-              x2={(cellW + gap) * 4 - gap / 2}
-              y2={gridBottom + 8}
-              stroke="#424452ff"
-              strokeOpacity={0.75}
-              strokeWidth={4}
-              strokeDasharray="0 12"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-            />
+            {!singlePage && (
+              <line
+                className="binder-divider"
+                x1={(cellW + gap) * 4 - gap / 2}
+                y1={-8}
+                x2={(cellW + gap) * 4 - gap / 2}
+                y2={gridBottom + 8}
+                stroke="#424452ff"
+                strokeOpacity={0.75}
+                strokeWidth={4}
+                strokeDasharray="0 12"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+              />
+            )}
           </g>
         </svg>
         {/* NEW: Help Modal JSX */}
@@ -3204,13 +3273,15 @@ function Binder({
         <button
           type="button"
           className="spread-nav-edge"
-          disabled={totalSpreads === 0 || viewSpread >= totalSpreads - 1}
-          onClick={() => setViewSpread(s => Math.min(totalSpreads - 1, s + 1))}
-          aria-label="Next spread, keyboard period"
-          title="Next spread — keyboard ."
+          disabled={singlePage ? focusedPage >= totalPages : totalSpreads === 0 || viewSpread >= totalSpreads - 1}
+          onClick={() => singlePage
+            ? onFocusedPageChange(Math.min(totalPages, focusedPage + 1))
+            : setViewSpread(spread => Math.min(totalSpreads - 1, spread + 1))}
+          aria-label={singlePage ? 'Next page' : 'Next spread, keyboard period'}
+          title={singlePage ? 'Next page' : 'Next spread — keyboard .'}
         >
           <span className="spread-nav-chevron" aria-hidden>›</span>
-          <span className="key-pill">.</span>
+          {!singlePage && <span className="key-pill">.</span>}
         </button>
       </div>
     </>
