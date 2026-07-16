@@ -1,0 +1,90 @@
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { createRef } from 'react'
+import { SettingsModal } from './SettingsModal'
+
+afterEach(cleanup)
+
+describe('SettingsModal', () => {
+  it('exposes settings accessibly and reports checkbox changes', () => {
+    const onChange = vi.fn()
+
+    render(
+      <SettingsModal
+        open
+        settings={{ autoOpenSinglePage: true }}
+        onChange={onChange}
+        onClose={vi.fn()}
+        returnFocusRef={createRef<HTMLButtonElement>()}
+      />,
+    )
+
+    const dialog = screen.getByRole('dialog', { name: 'Settings' })
+    const checkbox = screen.getByRole('checkbox', {
+      name: 'Automatically open enlarged page after selecting a card',
+    })
+    expect(document.activeElement).toBe(dialog)
+    expect((checkbox as HTMLInputElement).checked).toBe(true)
+
+    fireEvent.click(checkbox)
+
+    expect(onChange).toHaveBeenCalledWith({ autoOpenSinglePage: false })
+  })
+
+  it('closes on Escape without leaking the key to global handlers', () => {
+    const onClose = vi.fn()
+    const globalKeyHandler = vi.fn()
+    window.addEventListener('keydown', globalKeyHandler)
+
+    render(
+      <SettingsModal
+        open
+        settings={{ autoOpenSinglePage: true }}
+        onChange={vi.fn()}
+        onClose={onClose}
+        returnFocusRef={createRef<HTMLButtonElement>()}
+      />,
+    )
+
+    fireEvent.keyDown(screen.getByRole('dialog', { name: 'Settings' }), { key: 'Escape' })
+
+    expect(onClose).toHaveBeenCalledOnce()
+    expect(globalKeyHandler).not.toHaveBeenCalled()
+    window.removeEventListener('keydown', globalKeyHandler)
+  })
+
+  it('closes with the button and restores focus when dismissed', () => {
+    const triggerRef = createRef<HTMLButtonElement>()
+    const onClose = vi.fn()
+    const { rerender } = render(
+      <>
+        <button ref={triggerRef}>Settings trigger</button>
+        <SettingsModal
+          open
+          settings={{ autoOpenSinglePage: true }}
+          onChange={vi.fn()}
+          onClose={onClose}
+          returnFocusRef={triggerRef}
+        />
+      </>,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+    expect(onClose).toHaveBeenCalledOnce()
+
+    rerender(
+      <>
+        <button ref={triggerRef}>Settings trigger</button>
+        <SettingsModal
+          open={false}
+          settings={{ autoOpenSinglePage: true }}
+          onChange={vi.fn()}
+          onClose={onClose}
+          returnFocusRef={triggerRef}
+        />
+      </>,
+    )
+
+    expect(document.activeElement).toBe(triggerRef.current)
+  })
+})

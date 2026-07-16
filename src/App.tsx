@@ -26,7 +26,9 @@ import {
   type ImportResult,
 } from './core/inventory';
 import { createLoadCommitGate } from './core/loadGuard';
+import { readSettings, writeSettings, type AppSettings } from './core/settings';
 import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
+import { SettingsModal } from './components/SettingsModal';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
 function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
@@ -648,6 +650,10 @@ export default function App() {
   const searchRef = useRef<HTMLInputElement | null>(null);
   const submitSearchRef = useRef<() => void>(() => {});
   const importRef = useRef<HTMLInputElement>(null);
+  const settingsButtonRef = useRef<HTMLButtonElement>(null);
+  const [settings, setSettings] = useState<AppSettings>(() => readSettings(localStorage));
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const closeSettingsModal = useCallback(() => setShowSettingsModal(false), []);
   const [showImportModal, setShowImportModal] = useState(false);
   const [importData, setImportData] = useState<Record<SetKey, Inventory>>({});
   const [importStats, setImportStats] = useState({ recognized: 0, skipped: 0 });
@@ -670,6 +676,14 @@ export default function App() {
   const dismissToast = useCallback((id: number) => {
     setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
+  const changeSettings = useCallback((nextSettings: AppSettings) => {
+    setSettings(nextSettings);
+    try {
+      writeSettings(localStorage, nextSettings);
+    } catch {
+      showToast('Settings could not be saved on this device.', 'error');
+    }
+  }, [showToast]);
 
   // cache parsed data for sets (so we don't refetch repeatedly)
   const parsedCacheRef = useRef<Map<string, ParsedSet>>(new Map());
@@ -1994,6 +2008,17 @@ export default function App() {
               > 
                   <span className="icon" aria-hidden="true">delete</span> <span>Reset</span> 
               </button>
+              <button
+                ref={settingsButtonRef}
+                type="button"
+                className="tbtn"
+                onClick={() => setShowSettingsModal(true)}
+                title="Settings"
+                aria-label="Open settings"
+              >
+                <span className="icon" aria-hidden="true">settings</span>
+                <span>Settings</span>
+              </button>
             </div>
           </div>
 
@@ -2672,6 +2697,13 @@ export default function App() {
           ))}
         </div>
       )}
+      <SettingsModal
+        open={showSettingsModal}
+        settings={settings}
+        onChange={changeSettings}
+        onClose={closeSettingsModal}
+        returnFocusRef={settingsButtonRef}
+      />
     </div>
   );
 }

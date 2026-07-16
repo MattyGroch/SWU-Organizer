@@ -90,3 +90,51 @@ describe('search submission', () => {
     })
   })
 })
+
+describe('settings', () => {
+  it('persists changes immediately and keeps them in component state', async () => {
+    stubSetFetch()
+    render(<App />)
+
+    const trigger = await screen.findByRole('button', { name: 'Open settings' })
+    fireEvent.click(trigger)
+    const checkbox = screen.getByRole('checkbox', {
+      name: 'Automatically open enlarged page after selecting a card',
+    })
+    expect((checkbox as HTMLInputElement).checked).toBe(true)
+
+    fireEvent.click(checkbox)
+
+    expect((checkbox as HTMLInputElement).checked).toBe(false)
+    expect(JSON.parse(localStorage.getItem('swu:settings:v1') ?? '{}')).toEqual({
+      autoOpenSinglePage: false,
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }))
+    fireEvent.click(trigger)
+    expect(
+      (screen.getByRole('checkbox', {
+        name: 'Automatically open enlarged page after selecting a card',
+      }) as HTMLInputElement).checked,
+    ).toBe(false)
+  })
+
+  it('keeps a changed setting and shows a toast when persistence fails', async () => {
+    stubSetFetch()
+    render(<App />)
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Open settings' }))
+    const checkbox = screen.getByRole('checkbox', {
+      name: 'Automatically open enlarged page after selecting a card',
+    })
+    const setItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('storage unavailable')
+    })
+
+    fireEvent.click(checkbox)
+
+    expect((checkbox as HTMLInputElement).checked).toBe(false)
+    expect(await screen.findByText('Settings could not be saved on this device.')).toBeTruthy()
+    setItem.mockRestore()
+  })
+})
