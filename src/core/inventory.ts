@@ -126,6 +126,56 @@ export function canonicalizeInventory(
   return canonical
 }
 
+function parseTrustedStoredInventory(
+  raw: string | null,
+  setKey: SetKey,
+  catalog: CanonicalCatalog,
+): Inventory {
+  if (raw === null) return {}
+
+  const parsed: unknown = JSON.parse(raw)
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+    throw new Error(`Inventory for ${setKey} is not an object.`)
+  }
+
+  for (const [rawNumber, rawQuantity] of Object.entries(parsed)) {
+    const printingNumber = Number(rawNumber)
+    const quantity = Number(rawQuantity)
+    if (
+      !Number.isInteger(printingNumber) ||
+      printingNumber <= 0 ||
+      !Number.isFinite(quantity) ||
+      quantity <= 0 ||
+      !canonicalRef(catalog, setKey, printingNumber)
+    ) {
+      throw new Error(`Inventory for ${setKey} contains an invalid entry.`)
+    }
+  }
+
+  return parsed as Inventory
+}
+
+export function createInventoryExportSnapshot(
+  storage: Pick<Storage, 'getItem'>,
+  setKeys: SetKey[],
+  currentSetKey: SetKey,
+  currentInventory: Inventory,
+  catalog: CanonicalCatalog,
+): Record<SetKey, Inventory> {
+  return Object.fromEntries(setKeys.map(key => {
+    if (key === currentSetKey) {
+      return [key, canonicalizeInventory(key, currentInventory, catalog)]
+    }
+
+    try {
+      const stored = parseTrustedStoredInventory(storage.getItem(`inv:${key}`), key, catalog)
+      return [key, canonicalizeInventory(key, stored, catalog)]
+    } catch {
+      throw new Error(`Inventory for ${key} could not be read for export.`)
+    }
+  })) as Record<SetKey, Inventory>
+}
+
 export function applyImportedInventories(
   current: Record<SetKey, Inventory>,
   imported: Record<SetKey, Inventory>,

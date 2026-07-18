@@ -5,6 +5,7 @@ import {
   applyImportedInventories,
   canonicalizeInventory,
   collectRawImportEntry,
+  createInventoryExportSnapshot,
   loadInventoriesForPersistence,
   migrateLegacyInventories,
   persistCanonicalInventory,
@@ -220,5 +221,30 @@ describe('canonical inventory', () => {
     expect(storage.getItem('inv:SOR')).toBe(JSON.stringify({ 87: 2 }))
     expect(removePersistedInventory(storage, 'SOR', catalog)).toBe(true)
     expect(storage.getItem('inv:SOR')).toBeNull()
+  })
+
+  it('exports the current set from memory even when its saved record is stale', () => {
+    const storage = new MemoryStorage({
+      'inv:SOR': JSON.stringify({ 87: 1 }),
+      'inv:SHD': JSON.stringify({ 1: 1 }),
+    })
+
+    expect(
+      createInventoryExportSnapshot(storage, ['SOR', 'SHD'], 'SOR', { 87: 3 }, catalog),
+    ).toEqual({
+      SOR: { 87: 3 },
+      SHD: { 1: 1 },
+    })
+  })
+
+  it('aborts export when another set record cannot be parsed', () => {
+    const storage = new MemoryStorage({
+      'inv:SOR': JSON.stringify({ 87: 1 }),
+      'inv:SHD': '{not json',
+    })
+
+    expect(() =>
+      createInventoryExportSnapshot(storage, ['SOR', 'SHD'], 'SOR', { 87: 2 }, catalog),
+    ).toThrow('SHD')
   })
 })

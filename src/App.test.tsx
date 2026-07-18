@@ -163,3 +163,45 @@ describe('settings', () => {
     setItem.mockRestore()
   })
 })
+
+describe('local inventory safety', () => {
+  it('keeps an unsaved quantity in memory and reports an autosave failure', async () => {
+    stubSetFetch()
+    render(<App />)
+
+    const search = await screen.findByRole('textbox', { name: 'Search cards' })
+    fireEvent.change(search, { target: { value: 'Alpha Card' } })
+    await waitFor(() => expect(document.querySelector('.sug-item')).toBeTruthy())
+    fireEvent.mouseDown(document.querySelector('.sug-item')!)
+
+    const originalSetItem = Storage.prototype.setItem
+    const setItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(function (
+      this: Storage,
+      key,
+      value,
+    ) {
+      if (key === 'inv:SOR') throw new Error('quota exceeded')
+      return originalSetItem.call(this, key, value)
+    })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Increase Alpha Card quantity' }))
+
+    expect((await screen.findByRole('status', { name: 'Quantity' })).textContent).toBe('1/3')
+    expect(await screen.findByText('Inventory could not be saved on this device.')).toBeTruthy()
+    setItem.mockRestore()
+  })
+
+  it('shows the set-data failure message for a 404 JSON response', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input)
+      if (url === '/sets/manifest.json') {
+        return response({ sets: [{ key: 'SOR', label: 'SOR', file: 'SWU-SOR.json' }] })
+      }
+      return response({ error: 'not found' }, false)
+    }))
+
+    render(<App />)
+
+    expect(await screen.findByText('Failed to load set data.')).toBeTruthy()
+  })
+})

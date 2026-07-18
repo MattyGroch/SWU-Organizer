@@ -17,6 +17,7 @@ import {
   applyImportedInventories,
   canonicalizeInventory,
   collectRawImportEntry,
+  createInventoryExportSnapshot,
   loadInventoriesForPersistence,
   persistCanonicalInventory,
   quotaForType,
@@ -25,6 +26,7 @@ import {
   type ImportResult,
 } from './core/inventory';
 import { createLoadCommitGate } from './core/loadGuard';
+import { fetchSetPayload } from './core/setData';
 import {
   DEFAULT_SETTINGS,
   readSettings,
@@ -833,9 +835,11 @@ export default function App() {
   const [inventoryReadyForSet, setInventoryReadyForSet] = useState<SetKey | null>(null);
   useEffect(() => {
     if (inventoryReadyForSet === setKey) {
-      persistCanonicalInventory(localStorage, setKey, inventory, canonicalCatalog);
+      if (!persistCanonicalInventory(localStorage, setKey, inventory, canonicalCatalog)) {
+        showToast('Inventory could not be saved on this device.', 'error');
+      }
     }
-  }, [canonicalCatalog, inventory, inventoryReadyForSet, setKey]);
+  }, [canonicalCatalog, inventory, inventoryReadyForSet, setKey, showToast]);
   const pruneZeros = (inv: Inventory) =>
     Object.fromEntries(Object.entries(inv).filter(([,q]) => (q as number) > 0)) as Inventory;
   useEffect(() => {
@@ -980,13 +984,7 @@ export default function App() {
         }
         
         const url = meta.file.startsWith('/') ? meta.file : `/sets/${meta.file}`;
-        const res = await fetch(url);
-        const payload: unknown = await res.json();
-        const data = Array.isArray(payload)
-          ? payload
-          : isUnknownRecord(payload) && Array.isArray(payload.data)
-            ? payload.data
-            : [];
+        const data = await fetchSetPayload(fetch, url);
 
         const pricesName = meta.file.replace(/\.json$/i, '.prices.json');
         const pricesUrl = pricesName.startsWith('/') ? pricesName : `/sets/${pricesName}`;
@@ -1311,17 +1309,27 @@ export default function App() {
     });
   }, [canonicalCatalog, setKey]);
   function exportAllInv() {
-    const payload = {
-      version: 1 as const,
-      sets: Object.fromEntries(setKeys.map(k => [k, readSetInv(k)])) as Record<SetKey, Inventory>,
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `SWU-Inventory-${tsStamp()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const payload = {
+        version: 1 as const,
+        sets: createInventoryExportSnapshot(
+          localStorage,
+          setKeys,
+          setKey,
+          inventory,
+          canonicalCatalog,
+        ),
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `SWU-Inventory-${tsStamp()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      showToast('Inventory export could not be created because saved data is unreadable.', 'error');
+    }
   }
 
   function RarityBadge({ rarity }: { rarity?: string }) {
