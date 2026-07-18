@@ -15,7 +15,7 @@ You can check it out at: [https://swu.mattyflix.com/](https://swu.mattyflix.com/
 - ➕➖ **Inventory tracking**: per-card counts with +/− controls (1× cap for Leaders/Bases; 3× default for others).
 - ⌨️ **Keyboard-first filing**: arrow keys move the selected card through the grid, while `+`/`-` adjust its quantity.
 - ⚙️ **Personal filing preference**: Settings can automatically open the selected card’s enlarged physical page; this is enabled by default and saved locally.
-- 🗂️ **All-sets import/export**: JSON, CSV, and XLSX imports normalize alternate printings to their base cards; one JSON export rolls up all eight supported sets.
+- 🗂️ **All-sets import/export**: supported app, SWUDB, and SW-Unlimited exports normalize alternate printings to their base cards; one JSON export rolls up all eight supported sets.
 - 🐳 **Docker**: build once, run anywhere.
 
 ---
@@ -38,7 +38,7 @@ npm run preview
 # visit http://localhost:4173
 ```
 
-Run the complete automated verification gate:
+Verification commands:
 
 ```bash
 npm test
@@ -47,6 +47,8 @@ npm run lint
 npm run format:check
 npm run build
 ```
+
+Tests, TypeScript, ESLint, and the production build currently pass. The repository-wide `npm run format:check` command still reports 34 committed baseline files; this iteration does not normalize or hide that existing formatting debt.
 
 ---
 
@@ -139,7 +141,8 @@ Only **Name**, **Number**, **Aspects[0]**, and **Type** are required for UI & in
 }
 ```
 
-- **Import formats:** JSON, CSV, and XLSX feed the same canonical inventory path. The import preview reports recognized and skipped entries and lets you merge counts or replace data for the imported sets.
+- **Accepted import schemas:** the app’s version-one JSON export (`version: 1` with a `sets` object); SWUDB CSV with `Set`, `CardNumber`, and `Count` columns; and SW-Unlimited CSV or XLSX with `Set`, `Base card id`, and `Normal` columns. Header matching tolerates differences in case, spaces, and underscores, but arbitrary CSV/XLSX layouts are not supported.
+- **Import preview:** supported imports feed the same canonical inventory path. The preview reports recognized and skipped entries and lets you merge counts or replace data for the imported sets.
 - **Canonical counts:** alternate printings are mapped to their base card, combined, and capped only after aggregation. Unknown or malformed entries are skipped. Exports store one quantity per base card while retaining the version-one JSON shape shown above.
 - **Silent migration:** on the first load after upgrading, existing local inventory is normalized once. Before any normalized inventory is written, the app creates a recoverable local backup of the original `inv:<set>` records. The migration does not display a notice and does not repeat after its schema marker is stored.
 - Collection data, settings, the migration backup, and schema marker remain in this browser’s local storage. They are not cloud-synchronized.
@@ -151,7 +154,7 @@ Only **Name**, **Number**, **Aspects[0]**, and **Type** are required for UI & in
 
 - Arrow keys move the selected card through the binder grid, including existing page-edge wrapping.
 - `+` / `-` adjust the selected card quantity.
-- `,` / `.` move to the previous or next spread.
+- `,` / `.` move to the previous or next spread while **Spread** mode is active; they do nothing in **Single Page** mode.
 - `/` focuses search and Enter selects the highlighted result.
 
 ---
