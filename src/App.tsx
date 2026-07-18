@@ -617,12 +617,11 @@ export function parseCsvData(
   } else {
     // Fallback: try your existing JSON format
     try {
-      const raw = JSON.parse(fileContent);
-      if (raw?.version === 1 && raw?.sets) {
-        const jsonSets = raw.sets as Record<SetKey, Record<string, number>>;
-        for (const k of Object.keys(jsonSets) as SetKey[]) {
-          for (const [numStr, count] of Object.entries(jsonSets[k])) {
-            if (!addRawCount(aggregatedData, k, numStr, count)) malformedSkipped += 1;
+      const raw: unknown = JSON.parse(fileContent);
+      if (isUnknownRecord(raw) && raw.version === 1 && isUnknownRecordMap(raw.sets)) {
+        for (const [setKey, inventory] of Object.entries(raw.sets)) {
+          for (const [numStr, count] of Object.entries(inventory)) {
+            if (!addRawCount(aggregatedData, setKey, numStr, count)) malformedSkipped += 1;
           }
         }
         return normalizedImportResult(aggregatedData, catalog, malformedSkipped);
@@ -650,6 +649,10 @@ type UnknownRecord = Record<string, unknown>;
 
 function isUnknownRecord(value: unknown): value is UnknownRecord {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isUnknownRecordMap(value: unknown): value is Record<string, UnknownRecord> {
+  return isUnknownRecord(value) && Object.values(value).every(isUnknownRecord);
 }
 
 function stringOrNamedValue(value: unknown): string | undefined {

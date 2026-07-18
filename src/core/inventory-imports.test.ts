@@ -45,6 +45,21 @@ describe('inventory import parser statistics', () => {
     expect(parsed.skipped).toBe(3)
   })
 
+  it.each([
+    ['null root', null],
+    ['array root', []],
+    ['boolean sets', { version: 1, sets: true }],
+    ['null sets', { version: 1, sets: null }],
+    ['array sets', { version: 1, sets: [] }],
+    ['boolean set inventory', { version: 1, sets: { SOR: true } }],
+    ['null set inventory', { version: 1, sets: { SOR: null } }],
+    ['array set inventory', { version: 1, sets: { SOR: [] } }],
+  ])('rejects malformed JSON structure: %s', (_label, payload) => {
+    expect(() =>
+      parseCsvData('inventory.json', JSON.stringify(payload), catalog),
+    ).toThrow('File format not recognized')
+  })
+
   it('counts malformed and reserved XLSX rows as skipped', async () => {
     const sheet = XLSX.utils.json_to_sheet([
       { Set: 'SOR', 'Base card id': 87, Normal: 1 },
