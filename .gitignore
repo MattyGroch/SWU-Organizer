@@ -32,6 +32,7 @@ coverage/
 .tmp/
 .sass-cache/
 .stylelintcache
+.superpowers/
 
 # ---- Env / secrets (commit an .env.example instead) ----
 .env

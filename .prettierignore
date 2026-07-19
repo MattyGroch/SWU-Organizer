@@ -1,3 +1,5 @@
 dist
 node_modules
 public/sets
+.claude/worktrees
+.superpowers

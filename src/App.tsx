@@ -1,23 +1,61 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import * as XLSX from 'xlsx';
+import {
+  binderLayout,
+  getSpreadCoords,
+  numberFromPagePosition,
+  pageToSpread,
+  spreadToPrimaryPage,
+} from './core/binder';
+import {
+  buildSearchSuggestions,
+  submittedSuggestion,
+  type SearchCatalog,
+  type SearchSuggestion,
+} from './core/search';
+import {
+  applyImportedInventories,
+  canonicalizeInventory,
+  collectRawImportEntry,
+  createInventoryExportSnapshot,
+  loadInventoriesForPersistence,
+  persistCanonicalInventory,
+  quotaForType,
+  removePersistedInventory,
+  type CanonicalCatalog,
+  type ImportResult,
+} from './core/inventory';
+import { createLoadCommitGate } from './core/loadGuard';
+import { fetchSetPayload } from './core/setData';
+import {
+  DEFAULT_SETTINGS,
+  readSettings,
+  writeSettings,
+  type AppSettings,
+} from './core/settings';
+import { focusedPageForSpread } from './core/binderView';
+import {
+  selectionAfterMove,
+  viewModeAfterSelection,
+  type BinderViewMode,
+} from './core/selection';
+import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
+import { LocatorPanel } from './components/LocatorPanel';
+import { SettingsModal } from './components/SettingsModal';
 
-type Card = {
-  Name: string;
-  Subtitle?: string;
-  Number: number;
-  Aspects?: string[];
-  Type?: string;
-  Rarity?: string;
-  MarketPrice?: number;
-  Set: string
-};
-type Inventory = Record<number, number>;
-type SetKey = string;
-type SetMeta = { key: string; label: string; file: string };
+export type { BinderViewMode } from './core/selection';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
 function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
   return list.length ? list[list.length - 1]!.key : 'SOR';
+}
+
+function initialSettings(): AppSettings {
+  try {
+    return readSettings(window.localStorage);
+  } catch {
+    return DEFAULT_SETTINGS;
+  }
 }
 
 const ASPECT_HEX: Record<string, string> = {
@@ -30,7 +68,6 @@ const ASPECT_HEX: Record<string, string> = {
 };
 const NEUTRAL = '#2f3545'; // for numbers that exist but have no aspect
 
-const NAME_MAX_LINES = 2;
 const QTY_FONT = 22;      // size of the centered "1/3"
 const QTY_Y_OFFSET = 4;   // nudge up/down if needed
 const QTY_SHIFT_DOWN = 14; // Shift QTY and buttons down by 20px
@@ -152,33 +189,6 @@ function rarityGlyph(r?: string) {
   return RARITY_STYLE[r] ?? null;
 }
 
-function binderLayout(n: number) {
-  const page = Math.floor((n - 1) / 12) + 1;
-  const row = Math.floor(((n - 1) % 12) / 4) + 1;
-  const column = ((n - 1) % 4) + 1;
-  return { page, row, column };
-}
-function getSpreadCoords(page: number, row: number, column: number) {
-  const isOddPage = page % 2 !== 0;
-  return {
-    spreadCol: isOddPage ? column + 4 : column,
-    spreadRow: row,
-  };
-}
-function numberFromPRC(page: number, row: number, col: number) {
-  return (page - 1) * 12 + (row - 1) * 4 + col;
-}
-function quotaForType(type?: string) {
-  const t = (type || '').toLowerCase();
-  return (t === 'leader' || t === 'base') ? 1 : 3;
-}
-
-// Spread math ---------------------------------------------------------------
-// spread 0 -> Page 1 (right-only)
-// spread 1 -> Pages 2/3, spread 2 -> 4/5, ...
-function pageToSpread(p: number) { return p <= 1 ? 0 : Math.floor((p - 2) / 2) + 1; }
-function spreadToPrimaryPage(s: number) { return s <= 0 ? 1 : 2 + (s - 1) * 2; } // even page
-
 /** Collection status for filter pills (same semantics as the Status column: ✓ / ! / ✕). */
 type CollectionStatusKey = 'complete' | 'partial' | 'none';
 const ALL_COLLECTION_STATUSES: readonly CollectionStatusKey[] = ['complete', 'partial', 'none'];
@@ -267,7 +277,7 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
       } else if (category === 'rarity') {
         const rarityStyle = RARITY_STYLE[item as keyof typeof RARITY_STYLE];
         // If your map stores { color } or { backgroundColor }, support both:
-        highlightColor = (rarityStyle?.color || (rarityStyle as any)?.backgroundColor) || highlightColor;
+        highlightColor = rarityStyle?.color || highlightColor;
       }
 
       // Compute legible text color and outline for very dark backgrounds
@@ -430,29 +440,23 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
   );
 }
 
-type CardUtilities = {
-    quotaForType: (type?: string) => number;
-    fullCardIndex: Map<string, { baseNumber: number, type?: string, name: string }>;
-};
-
-/** Shared aggregation used by every CSV/XLSX import format: look up the card, cap to its quota, and accumulate. */
-function addAggregatedCount(
+/** Collect raw printing counts before all import formats use the same canonicalization path. */
+function addRawCount(
   aggregatedData: Record<SetKey, Inventory>,
-  cardUtilities: CardUtilities,
-  setKey: string,
-  cardNumber: number,
-  count: number,
-) {
-  if (!setKey || !Number.isFinite(cardNumber) || cardNumber <= 0 || count <= 0) return;
+  setKey: unknown,
+  cardNumber: unknown,
+  count: unknown,
+): boolean {
+  return collectRawImportEntry(aggregatedData, setKey, cardNumber, count);
+}
 
-  const cardInfo = cardUtilities.fullCardIndex.get(`${setKey}:${String(cardNumber)}`);
-  if (!cardInfo) return;
-
-  const { baseNumber, type } = cardInfo;
-  const max = cardUtilities.quotaForType(type);
-
-  const inv = aggregatedData[setKey as SetKey] ?? (aggregatedData[setKey as SetKey] = {});
-  inv[baseNumber] = Math.min((inv[baseNumber] ?? 0) + count, max);
+function normalizedImportResult(
+  raw: Record<SetKey, Inventory>,
+  catalog: CanonicalCatalog,
+  malformedSkipped: number,
+): ImportResult {
+  const result = applyImportedInventories({}, raw, 'replace', catalog);
+  return { ...result, skipped: result.skipped + malformedSkipped };
 }
 
 function parseCsvContent(fileContent: string): { headers: string[]; rows: string[][] } {
@@ -483,8 +487,9 @@ function parseCsvContent(fileContent: string): { headers: string[]; rows: string
     return { headers, rows };
 }
 
-async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<Record<SetKey, Inventory>> {
+export async function parseXlsxData(file: File, catalog: CanonicalCatalog): Promise<ImportResult> {
   const aggregatedData: Record<SetKey, Inventory> = {};
+  let malformedSkipped = 0;
 
   const buf = await file.arrayBuffer();
   const wb = XLSX.read(buf, { type: 'array' });
@@ -492,8 +497,8 @@ async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<
   if (!sheet) throw new Error('XLSX has no sheets.');
 
   // Read as rows with header row
-  const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet, { defval: '' });
-  if (!rows.length) return aggregatedData;
+  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet, { defval: '' });
+  if (!rows.length) return normalizedImportResult(aggregatedData, catalog, malformedSkipped);
 
   // Normalize header names once
   const norm = (s: string) => s.toLowerCase().replace(/[\s_]+/g, '');
@@ -505,7 +510,7 @@ async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<
   }
 
   // Construct column name resolvers (case/space tolerant)
-  const col = (wanted: string, obj: Record<string, any>) => {
+  const col = (wanted: string, obj: Record<string, unknown>) => {
     const k = Object.keys(obj).find(h => norm(h) === norm(wanted));
     return k ?? wanted; // fall back, but usually found
   };
@@ -513,8 +518,6 @@ async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<
   for (const r of rows) {
     const setKey = String(r[col('Set', r)] ?? '').trim().toUpperCase() as SetKey;
     const baseIdNum = Number(r[col('Base card id', r)]);
-    if (!setKey || !Number.isFinite(baseIdNum) || baseIdNum <= 0) continue;
-
     // Sum all variant columns starting at "Normal" through the end of the row.
     // We’ll include common known alt headers if present.
     const ALT_HEADERS = [
@@ -530,19 +533,19 @@ async function parseXlsxData(file: File, cardUtilities: CardUtilities): Promise<
         if (Number.isFinite(n)) totalCount += n;
       }
     }
-    addAggregatedCount(aggregatedData, cardUtilities, setKey, baseIdNum, totalCount);
+    if (!addRawCount(aggregatedData, setKey, baseIdNum, totalCount)) malformedSkipped += 1;
   }
 
-  return aggregatedData;
+  return normalizedImportResult(aggregatedData, catalog, malformedSkipped);
 }
 
-function parseCsvData(
+export function parseCsvData(
   fileName: string, // kept for signature compatibility; not used for detection
   fileContent: string,
-  cardUtilities: CardUtilities
-): Record<SetKey, Inventory> {
-  const { quotaForType, fullCardIndex } = cardUtilities;
+  catalog: CanonicalCatalog
+): ImportResult {
   const aggregatedData: Record<SetKey, Inventory> = {};
+  let malformedSkipped = 0;
 
   // Parse CSV into headers + rows (rows are string[]; access via indices)
   const { headers, rows } = parseCsvContent(fileContent);
@@ -595,15 +598,13 @@ function parseCsvData(
       const setKey = rawSet.toUpperCase() as SetKey;
 
       const baseIdNum = Number(row[idCol]);
-      if (!setKey || !Number.isFinite(baseIdNum) || baseIdNum <= 0) continue;
-
       let totalCount = 0;
       for (let i = normalCol; i < row.length; i++) {
         const v = Number(row[i]);
         if (Number.isFinite(v)) totalCount += v;
       }
 
-      addAggregatedCount(aggregatedData, cardUtilities, setKey, baseIdNum, totalCount);
+      if (!addRawCount(aggregatedData, setKey, baseIdNum, totalCount)) malformedSkipped += 1;
     }
 
   } else if (format === "swudb") {
@@ -620,33 +621,25 @@ function parseCsvData(
       const setKey = (row[setCol] ?? "").toString().trim().toUpperCase() as SetKey;
 
       const cardNumRaw = (row[numCol] ?? "").toString().trim();
-      const count = Number(row[countCol]) || 0;
-      if (!setKey || cardNumRaw === "" || count <= 0) continue;
+      const count = Number(row[countCol]);
 
       // Strip leading zeros so keys match your index (e.g., "079" -> "79")
       const numericId = Number(cardNumRaw);
 
-      addAggregatedCount(aggregatedData, cardUtilities, setKey, numericId, count);
+      if (!addRawCount(aggregatedData, setKey, numericId, count)) malformedSkipped += 1;
     }
 
   } else {
     // Fallback: try your existing JSON format
     try {
-      const raw = JSON.parse(fileContent);
-      if (raw?.version === 1 && raw?.sets) {
-        const jsonSets = raw.sets as Record<SetKey, Record<string, number>>;
-        for (const k of Object.keys(jsonSets) as SetKey[]) {
-          if (!aggregatedData[k]) aggregatedData[k] = {};
-          for (const [numStr, count] of Object.entries(jsonSets[k])) {
-            const baseNumber = Number(numStr);
-            if (!Number.isFinite(baseNumber)) continue;
-
-            const card = fullCardIndex.get(`${k}:${numStr}`);
-            const max = card ? quotaForType(card.type) : 3;
-            aggregatedData[k][baseNumber] = Math.min(Number(count) || 0, max);
+      const raw: unknown = JSON.parse(fileContent);
+      if (isUnknownRecord(raw) && raw.version === 1 && isUnknownRecordMap(raw.sets)) {
+        for (const [setKey, inventory] of Object.entries(raw.sets)) {
+          for (const [numStr, count] of Object.entries(inventory)) {
+            if (!addRawCount(aggregatedData, setKey, numStr, count)) malformedSkipped += 1;
           }
         }
-        return aggregatedData;
+        return normalizedImportResult(aggregatedData, catalog, malformedSkipped);
       }
     } catch {
       // not JSON; fall through
@@ -655,16 +648,65 @@ function parseCsvData(
     throw new Error("File format not recognized. Expected a SWUDB or SW-Unlimited CSV (or a valid app JSON export).");
   }
 
-  return aggregatedData;
+  return normalizedImportResult(aggregatedData, catalog, malformedSkipped);
+}
+
+type ParsedSet = {
+  key: SetKey;
+  allCards: Card[];
+  baseCards: Card[];
+  byNumber: Map<number, Card>;
+  baseToAll: Map<number, number[]>;
+  altToBase: Map<number, number>;
+};
+
+type UnknownRecord = Record<string, unknown>;
+
+function isUnknownRecord(value: unknown): value is UnknownRecord {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isUnknownRecordMap(value: unknown): value is Record<string, UnknownRecord> {
+  return isUnknownRecord(value) && Object.values(value).every(isUnknownRecord);
+}
+
+function stringOrNamedValue(value: unknown): string | undefined {
+  if (typeof value === 'string') return value;
+  if (isUnknownRecord(value) && typeof value.Name === 'string') return value.Name;
+  return undefined;
+}
+
+function canonicalCatalogFromParsedSets(parsedSets: Iterable<ParsedSet>): CanonicalCatalog {
+  const catalog: CanonicalCatalog = new Map();
+  for (const parsed of parsedSets) {
+    for (const card of parsed.allCards) {
+      const baseNumber = parsed.altToBase.get(card.Number) ?? card.Number;
+      const baseCard = parsed.byNumber.get(baseNumber);
+      catalog.set(`${parsed.key}:${card.Number}`, {
+        setKey: parsed.key,
+        printingNumber: card.Number,
+        baseNumber,
+        type: baseCard?.Type ?? card.Type,
+      });
+    }
+  }
+  return catalog;
 }
 
 export default function App() {
   const [sets, setSets] = useState<SetMeta[]>([]);
   const [setKey, setSetKey] = useState<SetKey>('SOR'); // placeholder until manifest loads (then newest set)
+  const setKeys = useMemo(() => sets.map(set => set.key as SetKey), [sets]);
   const searchRef = useRef<HTMLInputElement | null>(null);
+  const submitSearchRef = useRef<() => void>(() => {});
   const importRef = useRef<HTMLInputElement>(null);
+  const settingsButtonRef = useRef<HTMLButtonElement>(null);
+  const [settings, setSettings] = useState<AppSettings>(initialSettings);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const closeSettingsModal = useCallback(() => setShowSettingsModal(false), []);
   const [showImportModal, setShowImportModal] = useState(false);
   const [importData, setImportData] = useState<Record<SetKey, Inventory>>({});
+  const [importStats, setImportStats] = useState({ recognized: 0, skipped: 0 });
   const [importingFileName, setImportingFileName] = useState('');
   const [showResetModal, setShowResetModal] = useState(false);
   const [listView, setListView] = React.useState<'inventory' | 'missing'>('inventory');
@@ -684,17 +726,19 @@ export default function App() {
   const dismissToast = useCallback((id: number) => {
     setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
+  const changeSettings = useCallback((nextSettings: AppSettings) => {
+    setSettings(nextSettings);
+    try {
+      writeSettings(localStorage, nextSettings);
+    } catch {
+      showToast('Settings could not be saved on this device.', 'error');
+    }
+  }, [showToast]);
 
   // cache parsed data for sets (so we don't refetch repeatedly)
-  type ParsedSet = {
-    key: SetKey;
-    allCards: Card[];                // All cards (unique by Number)
-    baseCards: Card[];               // Base cards (unique by Name+Subtitle+Type)
-    byNumber: Map<number, Card>;     // Map<BaseNumber, BaseCard>
-    baseToAll: Map<number, number[]>;
-    altToBase: Map<number, number>;
-  };
   const parsedCacheRef = useRef<Map<string, ParsedSet>>(new Map());
+  const loadCommitGateRef = useRef(createLoadCommitGate());
+  const [canonicalCatalog, setCanonicalCatalog] = useState<CanonicalCatalog>(new Map());
 
   useEffect(() => {
     fetch('/sets/manifest.json')
@@ -721,15 +765,8 @@ export default function App() {
   // Data variants
   const [cardsAll, setCardsAll] = useState<Card[]>([]);     // unique by Number (used to color pages)
   const [cardsBase, setCardsBase] = useState<Card[]>([]);   // base printing per Name (lowest Number)
-  // alt maps for search: baseNumber -> all numbers (base first), altNumber -> baseNumber
-  const [baseToAll, setBaseToAll] = useState<Map<number, number[]>>(new Map());
-  const [altToBase, setAltToBase] = useState<Map<number, number>>(new Map());
-
-  // Normalization function for search
-  const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
-
   // Rarity normalization
-  function normalizeRarity(r: any): string | undefined {
+  function normalizeRarity(r: unknown): string | undefined {
     if (!r) return undefined;
     const v = String(r).trim();
     const k = v.toLowerCase();
@@ -747,14 +784,6 @@ export default function App() {
     return map[k] ?? v; // fall back to the original string
   }
 
-  //Type normalization
-  function normalizeType(t: any): string | undefined {
-    if (!t) return undefined;
-    if (typeof t === 'string') return t.trim();
-    if (typeof t?.Name === 'string') return t.Name.trim();
-    return undefined;
-  }
-
   // stable key for dedupe/show
   function keyNameType(c: {Name: string; Subtitle?: string; Type?: string}) {
     const sub = (c.Subtitle || '').trim().toLowerCase();
@@ -762,7 +791,7 @@ export default function App() {
   }
 
   // 2) collapse alt-arts: keep the LOWEST Number per (Name + Type)
-  function baseOnly(cards: Card[]): Card[] {
+  const baseOnly = useCallback((cards: Card[]): Card[] => {
     const byKey = new Map<string, Card>();
     for (const c of cards) {
       const k = keyNameType(c);
@@ -770,10 +799,10 @@ export default function App() {
       if (!prev || c.Number < prev.Number) byKey.set(k, c);
     }
     return Array.from(byKey.values()).sort((a,b)=>a.Number - b.Number);
-  }
+  }, []);
 
   // 3) Build alt maps for search display and number→base resolution
-  function buildAltMaps(allCards: Card[]) {
+  const buildAltMaps = useCallback((allCards: Card[]) => {
     // name+type → sorted numbers
     const ntToNums = new Map<string, number[]>();
     for (const c of allCards) {
@@ -796,7 +825,7 @@ export default function App() {
       }
     }
     return { baseToAll, altToBase };
-  }
+  }, []);
 
   // Datetime
   function tsStamp(utc = false) {
@@ -813,17 +842,17 @@ export default function App() {
 
   // Quick lookups
   const byNumber = useMemo(() => new Map(cardsBase.map(c => [c.Number, c])), [cardsBase]);
-  const baseByName = useMemo(() => new Map(cardsBase.map(c => [c.Name, c])), [cardsBase]);
 
   // Inventory
   const [inventory, setInventory] = useState<Inventory>({});
+  const [inventoryReadyForSet, setInventoryReadyForSet] = useState<SetKey | null>(null);
   useEffect(() => {
-    const raw = localStorage.getItem(`inv:${setKey}`);
-    try { setInventory(raw ? JSON.parse(raw) : {}); } catch { setInventory({}); }
-  }, [setKey]);
-  useEffect(() => {
-    localStorage.setItem(`inv:${setKey}`, JSON.stringify(inventory));
-  }, [inventory, setKey]);
+    if (inventoryReadyForSet === setKey) {
+      if (!persistCanonicalInventory(localStorage, setKey, inventory, canonicalCatalog)) {
+        showToast('Inventory could not be saved on this device.', 'error');
+      }
+    }
+  }, [canonicalCatalog, inventory, inventoryReadyForSet, setKey, showToast]);
   const pruneZeros = (inv: Inventory) =>
     Object.fromEntries(Object.entries(inv).filter(([,q]) => (q as number) > 0)) as Inventory;
   useEffect(() => {
@@ -844,17 +873,13 @@ export default function App() {
   // UI state
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
-  const [active, setActive] = useState<{ 
-    card: Card; 
-    page: number; 
-    row: number; 
-    column: number; 
-    spreadCol: number; 
-    spreadRow: number; 
-  } | null>(null);
+  const [active, setActive] = useState<ActiveSelection | null>(null);
 
   // NEW: State to hold card details for selection after a set switch
-  const [pendingSelection, setPendingSelection] = useState<{ name: string; number: number } | null>(null);
+  const [pendingSelection, setPendingSelection] = useState<{
+    setKey: SetKey;
+    baseNumber: number;
+  } | null>(null);
 
   const [showHelpModal, setShowHelpModal] = useState(false); 
 
@@ -889,9 +914,31 @@ export default function App() {
   const maxNumber = useMemo(() => cardsBase.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsBase]);
   const totalPages = Math.max(1, Math.ceil(maxNumber / 12));
   const totalSpreads = 1 + Math.ceil(Math.max(0, totalPages - 1) / 2);
-  const [viewSpread, setViewSpread] = useState<number>(0); // 0 => Page 1; >=1 => 2/3, 4/5, ...
+  const [binderViewMode, setBinderViewMode] = useState<BinderViewMode>('spread');
+  const [focusedPage, setFocusedPage] = useState(1);
+  const viewSpread = pageToSpread(focusedPage);
+  const setViewSpread = useCallback<React.Dispatch<React.SetStateAction<number>>>(next => {
+    setFocusedPage(currentPage => {
+      const currentSpread = pageToSpread(currentPage);
+      const requestedSpread = typeof next === 'function' ? next(currentSpread) : next;
+      return focusedPageForSpread(currentPage, requestedSpread, totalPages);
+    });
+  }, [totalPages]);
 
   const binderRef = useRef<HTMLDivElement>(null); 
+
+  const activateCard = useCallback((card: Card, forceView?: BinderViewMode) => {
+    const { page, row, column } = binderLayout(card.Number);
+    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
+    setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
+    setError('');
+    setFocusedPage(page);
+    setBinderViewMode(forceView ?? viewModeAfterSelection(settings, binderViewMode));
+    setHighlightedRowNumber(card.Number);
+
+    window.setTimeout(() => setHighlightedRowNumber(null), 500);
+    binderRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [binderViewMode, settings]);
 
   // Suggestions dropdown
   const [openSug, setOpenSug] = useState(false);
@@ -940,6 +987,8 @@ export default function App() {
 
   // Load set JSON
     useEffect(() => {
+      const loadCommitGate = loadCommitGateRef.current;
+      const loadToken = loadCommitGate.begin();
       // Helper function defined inside useEffect to access local scope functions (like baseOnly)
       const parseAndCache = async (meta: SetMeta): Promise<ParsedSet> => {
         // Check cache first
@@ -948,9 +997,7 @@ export default function App() {
         }
         
         const url = meta.file.startsWith('/') ? meta.file : `/sets/${meta.file}`;
-        const res = await fetch(url);
-        const obj = await res.json();
-        const data = Array.isArray(obj) ? obj : obj.data;
+        const data = await fetchSetPayload(fetch, url);
 
         const pricesName = meta.file.replace(/\.json$/i, '.prices.json');
         const pricesUrl = pricesName.startsWith('/') ? pricesName : `/sets/${pricesName}`;
@@ -958,16 +1005,21 @@ export default function App() {
         try {
           const pr = await fetch(pricesUrl);
           if (pr.ok) {
-            const pj = await pr.json();
-            if (pj && typeof pj === 'object' && pj.prices && typeof pj.prices === 'object') {
-              priceByNumber = pj.prices as Record<string, number>;
+            const pricePayload: unknown = await pr.json();
+            if (isUnknownRecord(pricePayload) && isUnknownRecord(pricePayload.prices)) {
+              priceByNumber = Object.fromEntries(
+                Object.entries(pricePayload.prices)
+                  .map(([number, price]) => [number, Number(price)] as const)
+                  .filter(([, price]) => Number.isFinite(price)),
+              );
             }
           }
         } catch {
           /* optional overlay */
         }
 
-        const mapped: Card[] = data.map((c: any) => {
+        const mapped: Card[] = data.map((value: unknown) => {
+          const c = isUnknownRecord(value) ? value : {};
           const rawName = String(c.Name || '').trim();
           const rawSubtitle = String(c.Subtitle || '').trim();
           const cardName = rawName;
@@ -984,12 +1036,13 @@ export default function App() {
             Name: cardName,
             Subtitle: rawSubtitle || undefined,
             Number: num,
-            Aspects: Array.isArray(c.Aspects) ? c.Aspects : [],
-            Type:
-              typeof c.Type === 'string'
-                ? c.Type
-                : (typeof c.Type?.Name === 'string' ? c.Type.Name : undefined),
-            Rarity: normalizeRarity(c.Rarity ?? c.rarity ?? c.RarityCode ?? c.Rarity?.Name),
+            Aspects: Array.isArray(c.Aspects)
+              ? c.Aspects.filter((aspect): aspect is string => typeof aspect === 'string')
+              : [],
+            Type: stringOrNamedValue(c.Type)?.trim(),
+            Rarity: normalizeRarity(
+              stringOrNamedValue(c.Rarity ?? c.rarity ?? c.RarityCode),
+            ),
             MarketPrice: marketPrice,
             Set: meta.key,
           };
@@ -1028,6 +1081,7 @@ export default function App() {
         setError(''); 
         setActive(null); 
         setViewSpread(0); 
+        setInventoryReadyForSet(null);
 
         const meta = sets.find(s => s.key === setKey);
         if (!meta) return;
@@ -1041,47 +1095,65 @@ export default function App() {
             .filter(s => s.key !== setKey)
             .map(parseAndCache)
         );
+        if (!loadCommitGate.canCommit(loadToken)) return;
+
+        const catalog = canonicalCatalogFromParsedSets(parsedCacheRef.current.values());
+        const loadedInventory = loadInventoriesForPersistence(localStorage, setKeys, catalog);
+        if (!loadCommitGate.canCommit(loadToken)) return;
+
+        if (!loadedInventory.migrationSucceeded) {
+          showToast(
+            loadedInventory.backupPreserved
+              ? 'Inventory migration could not finish. Your original backup remains preserved.'
+              : 'Inventory migration could not create a backup. Automatic saving is disabled to protect your original data.',
+            'warning',
+          );
+        }
 
         // 3. Update the state for the current view
+        setCanonicalCatalog(catalog);
         setCardsAll(currentSetData.allCards);
         setCardsBase(currentSetData.baseCards);
-        setBaseToAll(currentSetData.baseToAll);
-        setAltToBase(currentSetData.altToBase);
+        setInventory(loadedInventory.inventories[setKey] ?? {});
+        setInventoryReadyForSet(loadedInventory.persistenceAllowed ? setKey : null);
 
         // REMOVED: Deferred navigation logic (moved to a new hook below)
       }
-      load().catch(() => setError('Failed to load set data.'));
+      load().catch(() => {
+        if (loadCommitGate.canCommit(loadToken)) setError('Failed to load set data.');
+      });
+      return () => loadCommitGate.cancel(loadToken);
     // Dependencies only include set changes (NO pendingSelection)
-    }, [setKey, sets]);
+    }, [baseOnly, buildAltMaps, setKey, sets, setKeys, setViewSpread, showToast]);
 
     // Deferred Navigation Hook: Runs after new set data is loaded
     useEffect(() => {
       // Only run if there is a pending card AND the current set data has loaded cards
-      if (pendingSelection && cardsBase.length > 0) {
+      if (
+        pendingSelection &&
+        pendingSelection.setKey === setKey &&
+        cardsBase.length > 0 &&
+        cardsBase.some(card => card.Set === setKey)
+      ) {
           // IMPORTANT: Clear any previous error before attempting the new lookup
           setError(''); 
 
           // Find the base card in the newly loaded set
-          const card = cardsBase.find(c => 
-              c.Number === pendingSelection.number && c.Name === pendingSelection.name
-          );
+          const card = cardsBase.find(c => c.Number === pendingSelection.baseNumber);
 
           if (card) {
-              const { page, row, column } = binderLayout(card.Number);
-              const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-              setActive({ card, page, row, column, spreadCol, spreadRow });
-              setViewSpread(pageToSpread(page));
+              activateCard(card);
               // Clear query so search bar looks clean after selection
               setQuery('');
           } else {
               // Only set an error if the card truly cannot be found in the loaded set
-              setError(`Failed to find card #${pendingSelection.number} in set ${setKey}.`);
+              setError(`Failed to find card #${pendingSelection.baseNumber} in set ${setKey}.`);
           }
           
           // Always clear the pending state after attempting selection
           setPendingSelection(null); 
       }
-    }, [pendingSelection, cardsBase, setKey, binderLayout, pageToSpread, setActive, setViewSpread, setError, setPendingSelection, setQuery]);
+    }, [activateCard, pendingSelection, cardsBase, setKey]);
   // Build coloring map + presence
   const presentNumbers = useMemo(() => new Set(cardsBase.map(c => c.Number)), [cardsBase]);
   const numToAspectSpec = useMemo(() => {
@@ -1093,186 +1165,67 @@ export default function App() {
     return m;
   }, [cardsBase]);
 
-  // Suggestions (name or number)
-    type Suggestion = { 
-      kind: 'name' | 'number'; 
-      label: string; 
-      number: number; 
-      name: string; 
-      setKey: SetKey;
-      subtitle?: string;
-      type?: string;
-    };
-    const suggestions: Suggestion[] = useMemo(() => {
-      const raw = query.trim();
-      if (!raw) return [];
-      
-      const isDigits = /^[0-9]+$/.test(raw);
-      const qnorm = raw.replace(/^0+/, '') || '0';
-      const lower = norm(raw);
-      
-      // 1. Collect all Number Matches (Exact Base Number Match OR Alt-Art Match)
-      const qNum = Number(qnorm);
-      // Change to track uniqueness by "SetKey:Number"
-      const uniqueNumMatches = new Set<string>(); 
-      const numberMatches: Suggestion[] = [];
-      
-      if (isDigits) {
-          // Iterate over all sets to find exact Base Number or Alt-Art matches
-          for (const [key, parsed] of parsedCacheRef.current.entries()) {
-            
-            let targetBaseNum = 0;
-
-            // Check 1: Exact Base Number Match
-            if (parsed.byNumber.has(qNum)) {
-                targetBaseNum = qNum;
-            } 
-            // Check 2: Alt-Art Number Match
-            else if (parsed.altToBase.has(qNum)) {
-                targetBaseNum = parsed.altToBase.get(qNum)!;
-            }
-
-            if (targetBaseNum > 0) {
-                const baseCard = parsed.byNumber.get(targetBaseNum)!; // Card must exist if the number was found
-                const uniqueKey = `${key}:${baseCard.Number}`;
-                
-                // Ensure we haven't already added this base card from this set
-                if (!uniqueNumMatches.has(uniqueKey)) {
-                    uniqueNumMatches.add(uniqueKey);
-
-                    const suggestion: Suggestion = {
-                        kind: 'number' as const,
-                        name: baseCard.Name,
-                        number: baseCard.Number,
-                        type: baseCard.Type || '',
-                        setKey: key, 
-                        subtitle: baseCard.Subtitle,
-                        label: `${baseCard.Name}${baseCard.Subtitle ? ` - ${baseCard.Subtitle}` : ''} — #${baseCard.Number} (${key})`,
-                    };
-
-                    // Prioritize current set by putting its match at the front of the list
-                    if (key === setKey) {
-                        numberMatches.unshift(suggestion);
-                    } else {
-                        numberMatches.push(suggestion);
-                    }
-                }
-            }
-          }
-      }
-      
-      // 2. Collect all Name Matches (for both numeric and non-numeric queries)
-      // This handles "HK-47" and general name searches.
-      const nameMatches: Suggestion[] = [];
-      const nameMatchBaseNums = new Set<number>(numberMatches.map(s => s.number)); // Exclude cards already found by exact number match
-
-      // Search all sets for name matches
-      for (const [key, parsed] of parsedCacheRef.current.entries()) {
-        const hits = parsed.baseCards
-          .map(c => ({ 
-            c, 
-            // Check if name or subtitle contains the query (using normalized strings)
-            idx: norm(c.Name).indexOf(lower),
-            subIdx: c.Subtitle ? norm(c.Subtitle).indexOf(lower) : -1,
-          }))
-          // Filter: at least one name/subtitle match AND card number not already added by exact number match
-          .filter(o => (o.idx >= 0 || o.subIdx >= 0) && !nameMatchBaseNums.has(o.c.Number))
-          // Sort: by earliest match index (Name before Subtitle) then by Name
-          .sort((a,b) => {
-              const aIdx = a.idx >= 0 ? a.idx : a.subIdx;
-              const bIdx = b.idx >= 0 ? b.idx : b.subIdx;
-              return aIdx - bIdx || a.c.Name.localeCompare(b.c.Name);
-          })
-          .map(o => ({ 
-            kind: 'name' as const, 
-            name: o.c.Name, 
-            number: o.c.Number, 
-            type: o.c.Type,
-            setKey: key,
-            subtitle: o.c.Subtitle,
-            label: `${o.c.Name}${o.c.Subtitle ? ` - ${o.c.Subtitle}` : ''} — #${o.c.Number} (${key})`,
-          }));
-          
-          // Prioritize current set's name matches over others
-          if (key === setKey) {
-            nameMatches.unshift(...hits);
-          } else {
-            nameMatches.push(...hits);
-          }
-      }
-      
-      // 3. Merge: Exact Number matches first, then Name matches
-      return [...numberMatches, ...nameMatches].slice(0, 10);
-
-    }, [query, setKey, norm]);
-
+  // Suggestions retain the exact set and base-card identity selected by the user.
+  const searchCatalogs: SearchCatalog[] = useMemo(
+    () => {
+      if (canonicalCatalog.size === 0) return [];
+      return Array.from(parsedCacheRef.current.entries()).map(([catalogSetKey, parsed]) => ({
+        setKey: catalogSetKey,
+        cards: parsed.baseCards,
+        printingNumbersByBase: parsed.baseToAll,
+        baseByPrintingNumber: new Map([
+          ...parsed.baseCards.map(card => [card.Number, card.Number] as const),
+          ...parsed.altToBase.entries(),
+        ]),
+      }));
+    },
+    [canonicalCatalog],
+  );
+  const suggestions = useMemo(
+    () => buildSearchSuggestions(query, searchCatalogs, setKey),
+    [query, searchCatalogs, setKey],
+  );
   // Click outside to close dropdown
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
-      if (boxRef.current && !boxRef.current.contains(e.target as any)) setOpenSug(false);
+      if (
+        boxRef.current &&
+        e.target instanceof Node &&
+        !boxRef.current.contains(e.target)
+      ) {
+        setOpenSug(false);
+      }
     };
     document.addEventListener('mousedown', onDoc);
     return () => document.removeEventListener('mousedown', onDoc);
   }, []);
 
-  // Resolve alt-art number -> base printing
-  function resolveToBase(n: number): Card | null {
-    const found = byNumber.get(n);
-    if (!found) return null;
-    const base = baseByName.get(found.Name);
-    return base || found;
-  }
-
-  // Search handlers (jump to spread immediately)
-  function goFromNumberString(nStr: string) {
-    const n = Number(nStr.replace(/^0+/, '') || '0');
-    if (!Number.isFinite(n) || n < 1) { setError('Invalid number.'); return; }
-    
-    // 1. Resolve to the base number (this defines baseNum)
-    const baseNum = altToBase.get(n) ?? n;          // alt → base
-    
-    // 2. Look up the card using the base number
-    const card = byNumber.get(baseNum);
-    if (!card) { setError('Number not found in this set.'); return; }
-    
-    // 3. Set the active state with all required properties
-    const { page, row, column } = binderLayout(baseNum);
-    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-    setActive({ card, page, row, column, spreadCol, spreadRow });
-    setError('');
-    setViewSpread(pageToSpread(page));
-  }
-  function goFromName(name: string) {
-    const base = baseByName.get(name);
-    if (!base) { setError('Name not found in this set.'); return; }
-    const { page, row, column } = binderLayout(base.Number);
-    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-    setActive({ card: base, page, row, column, spreadCol, spreadRow });
-    setError('');
-    setViewSpread(pageToSpread(page));
-  }
-  function onEnter() {
-    const q = query.trim();
-    if (!q) { setError('Enter a name or number.'); return; }
-    if (/^[0-9]+$/.test(q)) goFromNumberString(q);
-    else goFromName(q);
-    setOpenSug(false);
-  }
-  function onChoose(s: Suggestion) {
-    if (s.setKey !== setKey) {
-      // If the card is from a different set, store the target and switch sets.
-      setPendingSelection({ name: s.name, number: s.number });
-      setSetKey(s.setKey);
-      setQuery(''); setOpenSug(false);
+  function chooseSuggestion(suggestion: SearchSuggestion) {
+    if (suggestion.setKey !== setKey) {
+      setPendingSelection({
+        setKey: suggestion.setKey,
+        baseNumber: suggestion.baseNumber,
+      });
+      setSetKey(suggestion.setKey);
+      setQuery('');
+      setOpenSug(false);
       return;
     }
 
-    // If it's the current set, navigate as before.
-    if (s.kind === 'number') goFromNumberString(String(s.number));
-    else goFromName(s.name);
-    
-    setQuery(''); setOpenSug(false);
+    selectCardByNumber(suggestion.baseNumber);
+    setQuery('');
+    setOpenSug(false);
   }
+
+  function submitSearch() {
+    const suggestion = submittedSuggestion(suggestions, highlightIdx);
+    if (!suggestion) {
+      setError(query.trim() ? 'No matching card found.' : 'Enter a name or number.');
+      return;
+    }
+    chooseSuggestion(suggestion);
+  }
+  submitSearchRef.current = submitSearch;
 
   function selectCardByNumber(baseNum: number) {
     const card = byNumber.get(baseNum);
@@ -1280,102 +1233,25 @@ export default function App() {
       setError('Card not found in current set data.');
       return; 
     }
-    const { page, row, column } = binderLayout(baseNum);
-    const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
-    setActive({ card, page, row, column, spreadCol, spreadRow });
-    setError('');
-    setViewSpread(pageToSpread(page));
-    setHighlightedRowNumber(baseNum);
-    
-    // Clear highlight after 500ms
-    setTimeout(() => setHighlightedRowNumber(null), 500);
-
-    // Scroll the binder into view if it's not fully visible
-    if (binderRef.current) {
-        binderRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    activateCard(card);
   }
 
-  // Function to move the card selection based on visual coordinates (8 columns, 3 rows)
   const updateActivePosition = useCallback((deltaCol: number, deltaRow: number) => {
     if (!active) return;
-    
-    const currentNum = active.card.Number;
-    const { page } = binderLayout(currentNum);
+    const direction = deltaCol < 0
+      ? 'left'
+      : deltaCol > 0
+        ? 'right'
+        : deltaRow < 0
+          ? 'up'
+          : 'down';
+    const next = selectionAfterMove(active, direction, totalPages, byNumber);
+    if (next === active) return;
 
-    // 1. Get current visual coordinates
-    let newSpreadCol = active.spreadCol + deltaCol;
-    let newSpreadRow = active.spreadRow + deltaRow;
-    let targetSpread = pageToSpread(page);
-
-    // 2. Implement Movement/Wrap Logic
-
-    // --- Horizontal Movement/Spread Wrap (X-axis) ---
-    if (deltaCol !== 0) {
-        if (newSpreadCol > 8) {
-            newSpreadCol = 1; 
-            targetSpread += 1; // Jumps to next spread
-        } else if (newSpreadCol < 1) {
-            newSpreadCol = 8; 
-            targetSpread -= 1; // Jumps to previous spread
-        }
-    }
-    
-    // --- Vertical Movement/Spread Wrap (Y-axis) ---
-    if (deltaRow !== 0) {
-        if (newSpreadRow > 3) {
-            newSpreadRow = 1;
-            targetSpread += 1; // Jumps to next spread
-        } else if (newSpreadRow < 1) {
-            newSpreadRow = 3;
-            targetSpread -= 1; // Jumps to previous spread
-        }
-    }
-    
-    // 3. Constraint Checks
-    if (targetSpread < 0 || targetSpread > totalSpreads - 1) return;
-
-    // 4. Convert Spread Coordinate back to Card Number
-    let targetPage = spreadToPrimaryPage(targetSpread);
-    let targetColOnPage = 0;
-
-    if (newSpreadCol <= 4) {
-      // Target is Left Page (SpreadCol 1-4)
-      targetColOnPage = newSpreadCol;
-      // If we landed on the left side of the spread, the page number must be even (P2, P4, P6...)
-      if (targetPage % 2 !== 0 && targetPage > 1) targetPage -= 1;
-      // Handle P1 edge case (Spread 0 is right-page only)
-      if (targetPage === 1 && newSpreadCol <= 4) return;
-    } else {
-      // Target is Right Page (SpreadCol 5-8)
-      targetColOnPage = newSpreadCol - 4;
-      // If we landed on the right side of the spread, the page number must be odd (P3, P5, P7...)
-      if (targetPage % 2 === 0) targetPage += 1;
-    }
-    
-    const newNumCandidate = numberFromPRC(targetPage, newSpreadRow, targetColOnPage);
-    
-    // Final boundary check against total card slots
-    if (newNumCandidate > totalPages * 12) return;
-
-    // 5. Apply Position
-    const newCard = byNumber.get(newNumCandidate);
-    
-    const newActiveState = {
-        card: newCard || { ...active.card, Number: newNumCandidate },
-        page: targetPage,
-        row: newSpreadRow,
-        column: targetColOnPage,
-        spreadCol: newSpreadCol,
-        spreadRow: newSpreadRow,
-    };
-
-    setActive(newActiveState);
-    setViewSpread(targetSpread);
-    
-  }, [active, totalPages, totalSpreads, byNumber, setActive, setViewSpread]);
+    setActive(next);
+    setFocusedPage(next.page);
+  }, [active, totalPages, byNumber]);
   
-  const setKeys = useMemo(() => sets.map(s => s.key as SetKey), [sets]);
 
   const [prevSetKey, nextSetKey] = useMemo(() => {
       const currentIndex = sets.findIndex(s => s.key === setKey);
@@ -1410,42 +1286,63 @@ export default function App() {
   }, [prevSetKey, nextSetKey, setSetKey, setQuery, setActive, setViewSpread]);
 
   // Inventory helpers
-  type InventoryAll = { version: 1; sets: Record<SetKey, Inventory> };
-
   function readSetInv(k: SetKey): Inventory {
-    try { return JSON.parse(localStorage.getItem(`inv:${k}`) || '{}'); }
+    try {
+      return canonicalizeInventory(
+        k,
+        JSON.parse(localStorage.getItem(`inv:${k}`) || '{}') as Inventory,
+        canonicalCatalog,
+      );
+    }
     catch { return {}; }
   }
-  function writeSetInv(k: SetKey, inv: Inventory) {
-    localStorage.setItem(`inv:${k}`, JSON.stringify(inv));
+  function writeSetInv(k: SetKey, inv: Inventory): boolean {
+    return persistCanonicalInventory(localStorage, k, inv, canonicalCatalog);
   }
-  function inc(n: number) {
-    const c = byNumber.get(n) || cardsAll.find(x => x.Number === n);
-    const max = quotaForType(c?.Type);
-    setInventory(prev => ({ ...prev, [n]: Math.min((prev[n] || 0) + 1, max) }));
-  }
-  function dec(n: number) {
+  const inc = useCallback((n: number) => {
+    const baseNumber = canonicalCatalog.get(`${setKey}:${n}`)?.baseNumber ?? null;
+    if (baseNumber === null) return;
+    const ref = canonicalCatalog.get(`${setKey}:${baseNumber}`);
+    const max = quotaForType(ref?.type);
+    setInventory(prev => ({
+      ...prev,
+      [baseNumber]: Math.min((prev[baseNumber] || 0) + 1, max),
+    }));
+  }, [canonicalCatalog, setKey]);
+  const dec = useCallback((n: number) => {
+    const baseNumber = canonicalCatalog.get(`${setKey}:${n}`)?.baseNumber ?? null;
+    if (baseNumber === null) return;
     setInventory(prev => {
-      const next = Math.max((prev[n] || 0) - 1, 0);
+      const next = Math.max((prev[baseNumber] || 0) - 1, 0);
       if (next === 0) {
-        const { [n]: _removed, ...rest } = prev; // drop the key entirely
+        const { [baseNumber]: _removed, ...rest } = prev; // drop the key entirely
         return rest;
       }
-      return { ...prev, [n]: next };
+      return { ...prev, [baseNumber]: next };
     });
-  }
+  }, [canonicalCatalog, setKey]);
   function exportAllInv() {
-    const payload = {
-      version: 1 as const,
-      sets: Object.fromEntries(setKeys.map(k => [k, readSetInv(k)])) as Record<SetKey, Inventory>,
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `SWU-Inventory-${tsStamp()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const payload = {
+        version: 1 as const,
+        sets: createInventoryExportSnapshot(
+          localStorage,
+          setKeys,
+          setKey,
+          inventory,
+          canonicalCatalog,
+        ),
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `SWU-Inventory-${tsStamp()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      showToast('Inventory export could not be created because saved data is unreadable.', 'error');
+    }
   }
 
   function RarityBadge({ rarity }: { rarity?: string }) {
@@ -1584,25 +1481,33 @@ export default function App() {
 
   const handleResetInventory = (scope: 'current' | 'all') => {
       if (scope === 'current') {
-          localStorage.removeItem(`inv:${setKey}`);
-          setInventory({});
-          showToast(`Inventory for the current set (${setKey}) has been cleared.`);
+          if (removePersistedInventory(localStorage, setKey, canonicalCatalog)) {
+              setInventory({});
+              showToast(`Inventory for the current set (${setKey}) has been cleared.`);
+          } else {
+              showToast('Inventory could not be cleared while protected persistence is locked.', 'warning');
+          }
       } else if (scope === 'all') {
-          // Iterate over all keys in localStorage and remove those that start with 'inv:'
+          let allRemoved = true;
+          // Clear set inventories without deleting the migration backup or schema marker.
           if (!sets.length) {
               for (const key of Object.keys(localStorage)) {
-                  if (key.startsWith('inv:')) {
-                      localStorage.removeItem(key);
+                  if (/^inv:[A-Z0-9]+$/.test(key)) {
+                      allRemoved = removePersistedInventory(localStorage, key.slice(4), canonicalCatalog) && allRemoved;
                   }
               }
           } else {
               // Clear based on loaded set keys
               for (const set of sets) {
-                  localStorage.removeItem(`inv:${set.key}`);
+                  allRemoved = removePersistedInventory(localStorage, set.key, canonicalCatalog) && allRemoved;
               }
           }
-          setInventory({}); // Reset current view as well
-          showToast('Inventory for ALL sets has been cleared.');
+          if (allRemoved) {
+              setInventory({}); // Reset current view as well
+              showToast('Inventory for ALL sets has been cleared.');
+          } else {
+              showToast('Inventories could not be cleared while protected persistence is locked.', 'warning');
+          }
       }
       setShowResetModal(false);
   };
@@ -1612,50 +1517,35 @@ export default function App() {
   }
 
   const applyImport = (mode: 'merge' | 'replace') => {
+      const current = Object.fromEntries(setKeys.map(key => [key, readSetInv(key)])) as Record<SetKey, Inventory>;
+      const knownSetKeys = new Set(setKeys);
+      const safeImportData = Object.fromEntries(
+        Object.entries(importData).filter(([key]) => knownSetKeys.has(key)),
+      ) as Record<SetKey, Inventory>;
+      const result = applyImportedInventories(current, safeImportData, mode, canonicalCatalog);
       let importedCount = 0;
-      
-      for (const [key, importedInv] of Object.entries(importData)) {
-          if (!key || Object.keys(importedInv).length === 0) continue;
+      let persistenceBlocked = false;
 
-          const currentInv = readSetInv(key);
-          const newInv: Inventory = {};
-
-          // Start with current inventory if merging
-          if (mode === 'merge') {
-              Object.assign(newInv, currentInv);
-          }
-
-          // Apply imported counts (already capped to max in parseCsvData)
-          for (const [baseNumberStr, newCount] of Object.entries(importedInv)) {
-              const baseNumber = Number(baseNumberStr);
-              const currentCount = newInv[baseNumber] || 0;
-              
-              // Get max quota for final cap check (necessary because the card type needs context)
-              const card = cardsAll.find(c => c.Number === baseNumber && c.Set === key);
-              const max = quotaForType(card?.Type);
-              
-              const updatedCount = mode === 'merge' 
-                  ? Math.min(newCount + currentCount, max) 
-                  : Math.min(newCount, max);
-
-              if (updatedCount > 0) {
-                  newInv[baseNumber] = updatedCount;
-                  importedCount++;
-              } else if (newInv[baseNumber]) {
-                  delete newInv[baseNumber];
-              }
-          }
-          
-          writeSetInv(key, pruneZeros(newInv));
-
-          if (key === setKey) {
-              setInventory(pruneZeros(newInv));
+      for (const key of Object.keys(safeImportData) as SetKey[]) {
+          if (!knownSetKeys.has(key)) continue;
+          const nextInventory = pruneZeros(result.inventories[key] ?? {});
+          if (writeSetInv(key, nextInventory)) {
+              importedCount += Object.keys(nextInventory).length;
+              if (key === setKey) setInventory(nextInventory);
+          } else {
+              persistenceBlocked = true;
           }
       }
       
       setShowImportModal(false);
       setImportData({});
-      showToast(`Successfully applied import of ${importedCount} card entries in ${mode} mode.`);
+      showToast(
+        persistenceBlocked
+          ? 'Import was not saved while protected persistence is locked.'
+          : `Applied ${importedCount} canonical card entries in ${mode} mode (${importStats.recognized} recognized, ${importStats.skipped} skipped).`,
+        persistenceBlocked ? 'warning' : 'success',
+      );
+      setImportStats({ recognized: 0, skipped: 0 });
   };
   
   // File change handler to parse the file and open the modal
@@ -1669,26 +1559,18 @@ export default function App() {
       try {
           const ext = file.name.split('.').pop()?.toLowerCase();
           
-          const fullCardIndex = new Map<string, { baseNumber: number, type?: string, name: string }>();
-          const allSetCards: Card[] = Array.from(parsedCacheRef.current.values()).flatMap(p => p.allCards);
-
-          // Populate the lookup map with normalized data needed for parsing/capping
-          for (const card of allSetCards) {
-              const baseNum = card.Number; 
-              fullCardIndex.set(`${card.Set}:${card.Number}`, {
-                  baseNumber: baseNum,
-                  type: card.Type,
-                  name: card.Name
-              });
-          }
+          if (canonicalCatalog.size === 0) throw new Error('Card catalog is still loading. Please try again.');
           
-          const cardUtilities: CardUtilities = { quotaForType, fullCardIndex };
-          
-          const parsedInventory =
+          const parsedImport =
             ext === 'xlsx'
-              ? await parseXlsxData(file, cardUtilities)  // ← new XLSX path
-              : parseCsvData(file.name, await file.text(), cardUtilities); // existing CSV/JSON path
-          setImportData(parsedInventory);
+              ? await parseXlsxData(file, canonicalCatalog)
+              : parseCsvData(file.name, await file.text(), canonicalCatalog);
+          const knownSetKeys = new Set(setKeys);
+          const safeInventories = Object.fromEntries(
+            Object.entries(parsedImport.inventories).filter(([key]) => knownSetKeys.has(key)),
+          ) as Record<SetKey, Inventory>;
+          setImportData(safeInventories);
+          setImportStats({ recognized: parsedImport.recognized, skipped: parsedImport.skipped });
           setShowImportModal(true);
       } catch (e) {
           setError(`Import failed: ${e instanceof Error ? e.message : 'Invalid file format.'}`);
@@ -1703,13 +1585,6 @@ export default function App() {
       if (!node) return false;
       const tag = (node.tagName || '').toLowerCase();
       return tag === 'input' || tag === 'textarea' || node.isContentEditable;
-    };
-
-    const callEnter = () => {
-      const q = (query || '').trim();
-      if (!q) return;
-      if (/^[0-9]+$/.test(q)) goFromNumberString(q);
-      else goFromName(q);
     };
 
     const onKey = (e: KeyboardEvent) => {
@@ -1727,7 +1602,7 @@ export default function App() {
       if (e.key === 'Enter' && !typing) {
         if ((query || '').trim()) {
           e.preventDefault();
-          callEnter();
+          submitSearchRef.current();
         }
         return;
       }
@@ -1743,60 +1618,20 @@ export default function App() {
         let deltaSpread = 0;
         
         // NEW: Page flipping shortcuts ("," and ".")
-        if (e.key === ',' || e.key === '<') { // Comma
+        if ((e.key === ',' || e.key === '<') && binderViewMode === 'spread') { // Comma
           e.preventDefault();
           deltaSpread = -1;
-        } else if (e.key === '.' || e.key === '>') { // Period
+        } else if ((e.key === '.' || e.key === '>') && binderViewMode === 'spread') { // Period
           e.preventDefault();
           deltaSpread = 1;
         }
         
-        // Handle Page Flip (if active, anchor the selection)
+        // Browsing changes the viewed anchor only; selection and locator remain stable.
         if (deltaSpread !== 0) {
-            const currentSpread = viewSpread;
-            const newSpread = Math.max(0, Math.min(totalSpreads - 1, currentSpread + deltaSpread));
-
-            if (newSpread !== currentSpread) {
-                // If a card is active, calculate its new position
-                if (active) {
-                    // 24 slots per spread (12 cards per page * 2 pages)
-                    const deltaNum = deltaSpread * 24;
-                    const currentNum = active.card.Number;
-                    let newNum = currentNum + deltaNum;
-
-                    // Edge Case: Page 1 (Spread 0) only has 12 slots.
-                    // If moving to spread 0, the minimum number is #1
-                    if (newSpread === 0) {
-                        newNum = Math.max(1, newNum);
-                    }
-                    
-                    // Constrain the number to the set's bounds
-                    const maxSetNum = totalPages * 12;
-                    newNum = Math.min(maxSetNum, newNum);
-
-                    // Find the nearest existing card near the new position (using the number itself is simplest)
-                    const newCard = byNumber.get(newNum) || byNumber.get(Math.max(1, newNum)); // Fallback to #1
-
-                    if (newCard) {
-                        const { page, row, column } = binderLayout(newCard.Number);
-                        const { spreadCol, spreadRow } = getSpreadCoords(page, row, column); // CALCULATE SPREAD COORDS
-                        setActive({ card: newCard, page, row, column, spreadCol, spreadRow }); // PASS SPREAD COORDS
-                    } else {
-                        // If no card exists at the new relative position, select the first card on the new spread
-                        const firstNumOnSpread = newSpread * 24 + 1;
-                        const firstCardOnSpread = byNumber.get(firstNumOnSpread) || byNumber.get(Math.max(1, firstNumOnSpread));
-                        if(firstCardOnSpread) {
-                           const { page, row, column } = binderLayout(firstCardOnSpread.Number);
-                           const { spreadCol, spreadRow } = getSpreadCoords(page, row, column); // CALCULATE SPREAD COORDS
-                           setActive({ card: firstCardOnSpread, page, row, column, spreadCol, spreadRow }); // PASS SPREAD COORDS
-                        } else {
-                           setActive(null); // Clear selection if no card is found
-                        }
-                    }
-                }
-                setViewSpread(newSpread);
-            }
-            return;
+          setViewSpread(currentSpread => (
+            Math.max(0, Math.min(totalSpreads - 1, currentSpread + deltaSpread))
+          ));
+          return;
         } // End Page Flip Logic
 
         // Card selection movement (Arrow keys) and Qty Adjust
@@ -1826,7 +1661,7 @@ export default function App() {
 
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [active, query, setViewSpread, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages]);
+  }, [active, query, setViewSpread, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages, binderViewMode]);
 
   const fmtUSD = (n: number) =>
     n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
@@ -1860,13 +1695,12 @@ export default function App() {
     for (const baseCard of cardsBase) {
       if (!passesAllFilters(baseCard)) continue;
       const baseNum = baseCard.Number;
-      const nums = baseToAll.get(baseNum) || [baseNum];
-      const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
+      const have = inventory[baseNum] || 0;
       const max = quotaForType(baseCard.Type);
       if (have < max) return true;
     }
     return false;
-  }, [cardsBase, baseToAll, inventory, passesAllFilters]);
+  }, [cardsBase, inventory, passesAllFilters]);
 
   // Build ONE list over base cards, then partition.
   // Each row has Qty (across base + alts), Max, Needed, and other fields you already use.
@@ -1887,8 +1721,7 @@ export default function App() {
       if (!passesAllFilters(baseCard)) continue;
 
       const baseNum = baseCard.Number;
-      const nums = baseToAll.get(baseNum) || [baseNum]; // base + alts
-      const have = nums.reduce((sum, n) => sum + (inventory[n] || 0), 0);
+      const have = inventory[baseNum] || 0;
       const max = quotaForType(baseCard.Type);
       const needed = Math.max(0, max - have);
       const collStatus = collectionStatusFromQty(have, max);
@@ -1908,7 +1741,7 @@ export default function App() {
     }
 
     return rows.sort((a, b) => a.Number - b.Number);
-  }, [cardsBase, baseToAll, inventory, passesAllFilters, filters.status]);
+  }, [cardsBase, inventory, passesAllFilters, filters.status]);
 
   // Projections for the two tabs (shape-compatible with your tables)
   const filteredInvRows = useMemo(() => {
@@ -2085,12 +1918,7 @@ export default function App() {
                 }
                 if (e.key === 'Enter') {
                   e.preventDefault();
-                  if (openSug && suggestions.length) {
-                    const pick = suggestions[Math.min(highlightIdx, suggestions.length - 1)] || suggestions[0];
-                    onChoose(pick);
-                  } else {
-                    onEnter();
-                  }
+                  submitSearch();
                   setOpenSug(false);
                   setHighlightIdx(0);
                   (e.currentTarget as HTMLInputElement).blur();   // <-- defocus on Enter
@@ -2103,7 +1931,7 @@ export default function App() {
             <button
               type="button"
               className="search-icon"
-              onClick={() => onEnter()}
+              onClick={submitSearch}
               title="Search"
               aria-label="Search"
             >
@@ -2114,20 +1942,15 @@ export default function App() {
                 {suggestions.map((s, i) => {
                   const typeText = s.type ? s.type : ''; 
 
-                  // NEW LOGIC: Access the correct set's alt-art map from the cache
-                  const targetSetData = parsedCacheRef.current.get(s.setKey);
-                  
-                  // show base + alt numbers for BOTH kinds
-                  // Use the target set's baseToAll map, falling back to just the base number if data is missing
-                  const nums = targetSetData?.baseToAll.get(s.number) || [s.number];
+                  const nums = s.printingNumbers;
                   const numsLabel = nums.map((n) => `#${n}`).join(', ');
 
                   return (
                     <div
-                      key={`${s.setKey}:${s.number}`} // Ensure unique key across sets
+                      key={`${s.setKey}:${s.baseNumber}`} // Ensure unique key across sets
                       className={`sug-item ${i === highlightIdx ? 'active' : ''}`}
                       onMouseEnter={() => setHighlightIdx(i)}
-                      onMouseDown={(e) => { e.preventDefault(); onChoose(s); }}
+                      onMouseDown={(e) => { e.preventDefault(); chooseSuggestion(s); }}
                       role="option"
                       aria-selected={i === highlightIdx}
                       // Apply flex styling to arrange items horizontally
@@ -2200,6 +2023,17 @@ export default function App() {
               > 
                   <span className="icon" aria-hidden="true">delete</span> <span>Reset</span> 
               </button>
+              <button
+                ref={settingsButtonRef}
+                type="button"
+                className="tbtn"
+                onClick={() => setShowSettingsModal(true)}
+                title="Settings"
+                aria-label="Open settings"
+              >
+                <span className="icon" aria-hidden="true">settings</span>
+                <span>Settings</span>
+              </button>
             </div>
           </div>
 
@@ -2209,12 +2043,27 @@ export default function App() {
 
       {/* Binder (with spread pager + dropdown) — minimal padding so the grid can use width */}
       <div className="card" ref={binderRef} style={{ padding: 8 }}>
+        {active && (
+          <LocatorPanel
+            selection={active}
+            quantity={inventory[active.number] || 0}
+            maximum={quotaForType(active.card.Type)}
+            aspectBackground={aspectSpecToCssBackground(numToAspectSpec.get(active.number))}
+            onDecrease={() => dec(active.number)}
+            onIncrease={() => inc(active.number)}
+          />
+        )}
         <Binder
           viewSpread={viewSpread}
           setViewSpread={setViewSpread}
           totalSpreads={totalSpreads}
+          totalPages={totalPages}
+          viewMode={binderViewMode}
+          focusedPage={focusedPage}
+          onFocusedPageChange={setFocusedPage}
+          onViewModeChange={setBinderViewMode}
+          onActivateCard={activateCard}
           active={active}
-          setActive={setActive}
           presentNumbers={presentNumbers}
           numToAspectSpec={numToAspectSpec}
           byNumber={byNumber}
@@ -2665,6 +2514,9 @@ export default function App() {
                   <p style={{ opacity: 0.8, marginBottom: 20 }}>
                       You are importing data from <strong>{importingFileName}</strong>, which contains entries for {Object.keys(importData).length} set(s).
                   </p>
+                  <p className="muted" style={{ marginTop: -12, marginBottom: 16 }}>
+                    {plural(importStats.recognized, 'recognized entry')} · {plural(importStats.skipped, 'skipped entry')}
+                  </p>
                   {/* Overview of what will be imported per set */}
                   {importOverview.length > 0 ? (
                     <div style={{ 
@@ -2875,16 +2727,28 @@ export default function App() {
           ))}
         </div>
       )}
+      <SettingsModal
+        open={showSettingsModal}
+        settings={settings}
+        onChange={changeSettings}
+        onClose={closeSettingsModal}
+        returnFocusRef={settingsButtonRef}
+      />
     </div>
   );
 }
 
-function Binder({
+export function Binder({
   viewSpread,
   setViewSpread,
   totalSpreads,
+  totalPages,
+  viewMode,
+  focusedPage,
+  onFocusedPageChange,
+  onViewModeChange,
+  onActivateCard,
   active,
-  setActive,
   presentNumbers,
   numToAspectSpec,
   byNumber,
@@ -2898,22 +2762,13 @@ function Binder({
   viewSpread: number;
   setViewSpread: React.Dispatch<React.SetStateAction<number>>;
   totalSpreads: number;
-  active: { 
-    card: Card; 
-    page: number; 
-    row: number; 
-    column: number; 
-    spreadCol: number; 
-    spreadRow: number; 
-  } | null;
-  setActive: (v: { 
-    card: Card; 
-    page: number; 
-    row: number; 
-    column: number; 
-    spreadCol: number; 
-    spreadRow: number; 
-  } | null)=>void;
+  totalPages: number;
+  viewMode: BinderViewMode;
+  focusedPage: number;
+  onFocusedPageChange: (page: number) => void;
+  onViewModeChange: (mode: BinderViewMode) => void;
+  onActivateCard: (card: Card) => void;
+  active: ActiveSelection | null;
   presentNumbers: Set<number>;
   numToAspectSpec: Map<number, AspectFillSpec>;
   byNumber: Map<number, Card>;
@@ -2924,12 +2779,13 @@ function Binder({
   showHelpModal: boolean;
   setShowHelpModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
+  const singlePage = viewMode === 'single';
   const page = spreadToPrimaryPage(viewSpread);     // 1, 2, 4, 6, ...
   const leftPage = page % 2 === 0 ? page : page - 1;
   const rightPage = page % 2 === 1 ? page : page + 1;
   const showLeft = leftPage >= 2;
 
-  const cols = 8, rows = 3;
+  const cols = singlePage ? 4 : 8, rows = 3;
   const cellW = 120, cellH = 170, gap = 12;
   const vbPad = 8;
   const vbW = cols * cellW + (cols - 1) * gap + vbPad * 2;
@@ -2939,6 +2795,7 @@ function Binder({
   const spreadLabel = page === 1
     ? 'Spread: Page 1'
     : `Spread: Page ${leftPage} (left) | Page ${rightPage} (right)`;
+  const binderLabel = singlePage ? `Page ${focusedPage}` : spreadLabel;
 
   const isActive = (p:number, r:number, c:number) =>
     active && p === active.page && r === active.row && c === active.column;
@@ -2952,6 +2809,10 @@ function Binder({
       return { value: i, label: `Page ${left}/${right}` };
     });
   }, [totalSpreads]);
+  const pageOptions = useMemo(
+    () => Array.from({ length: totalPages }, (_, index) => index + 1),
+    [totalPages],
+  );
 
   const binderGradientDefs = useMemo(() => {
     const out: { n: number; spec: Extract<AspectFillSpec, { kind: 'gradient' }> }[] = [];
@@ -2964,6 +2825,26 @@ function Binder({
 
   return (
     <>
+      <div className="binder-toolbar">
+        <div className="toolbar-group" role="group" aria-label="Binder view">
+          <button
+            type="button"
+            className="tbtn"
+            aria-pressed={singlePage}
+            onClick={() => onViewModeChange('single')}
+          >
+            Single Page
+          </button>
+          <button
+            type="button"
+            className="tbtn"
+            aria-pressed={!singlePage}
+            onClick={() => onViewModeChange('spread')}
+          >
+            Spread
+          </button>
+        </div>
+      </div>
       {/* Row 1: selection header + tip (right) */}
       <div
         className="row"
@@ -2999,8 +2880,8 @@ function Binder({
                 )}
               </div>
               <span className="pill">Page {active.page}</span>
-              <span className="pill">Column {active.spreadCol}</span>
-              <span className="pill">Row {active.spreadRow}</span>
+              <span className="pill">Column {active.column}</span>
+              <span className="pill">Row {active.row}</span>
             </>
           ) : (
             <div className="muted" style={{ fontSize: 25 }}>No card selected</div>
@@ -3059,19 +2940,32 @@ function Binder({
           >
             {setKey}
           </span>
-          <span style={{ fontWeight: 600 }}>Binder</span> — {spreadLabel}
+          <span style={{ fontWeight: 600 }}>Binder</span> — {binderLabel}
         </div>
         <div className="pager">
           <label className="spread-jump-label">
             <span className="spread-jump-hint">Jump</span>
-            <select
-              className="spread-jump-select"
-              value={viewSpread}
-              onChange={e => setViewSpread(Number(e.target.value))}
-              aria-label="Jump to spread"
-            >
-              {spreadOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-            </select>
+            {singlePage ? (
+              <select
+                className="spread-jump-select"
+                value={focusedPage}
+                onChange={event => onFocusedPageChange(Number(event.target.value))}
+                aria-label="Jump to page"
+              >
+                {pageOptions.map(option => <option key={option} value={option}>Page {option}</option>)}
+              </select>
+            ) : (
+              <select
+                className="spread-jump-select"
+                value={viewSpread}
+                onChange={event => setViewSpread(Number(event.target.value))}
+                aria-label="Jump to spread"
+              >
+                {spreadOptions.map(option => (
+                  <option key={option.value} value={option.value}>{option.label}</option>
+                ))}
+              </select>
+            )}
           </label>
         </div>
       </div>
@@ -3080,13 +2974,15 @@ function Binder({
         <button
           type="button"
           className="spread-nav-edge"
-          disabled={totalSpreads === 0 || viewSpread <= 0}
-          onClick={() => setViewSpread(s => Math.max(0, s - 1))}
-          aria-label="Previous spread, keyboard comma"
-          title="Previous spread — keyboard ,"
+          disabled={singlePage ? focusedPage <= 1 : totalSpreads === 0 || viewSpread <= 0}
+          onClick={() => singlePage
+            ? onFocusedPageChange(Math.max(1, focusedPage - 1))
+            : setViewSpread(spread => Math.max(0, spread - 1))}
+          aria-label={singlePage ? 'Previous page' : 'Previous spread, keyboard comma'}
+          title={singlePage ? 'Previous page' : 'Previous spread — keyboard ,'}
         >
           <span className="spread-nav-chevron" aria-hidden>‹</span>
-          <span className="key-pill">,</span>
+          {!singlePage && <span className="key-pill">,</span>}
         </button>
         <div className="grid-wrap">
         <svg viewBox={`0 0 ${vbW} ${vbH}`} style={{ width: '100%', height: 'auto' }} preserveAspectRatio="xMidYMid meet">
@@ -3116,19 +3012,18 @@ function Binder({
                 const x = cIdx * (cellW + gap);
                 const y = rIdx * (cellH + gap);
 
-                const isLeftHalf = c <= 4;
-                const pForCell = isLeftHalf ? leftPage : rightPage;
-                const colOnPage = isLeftHalf ? c : c - 4;
-                const hidden = isLeftHalf && !showLeft;
+                const isLeftHalf = !singlePage && c <= 4;
+                const pForCell = singlePage ? focusedPage : isLeftHalf ? leftPage : rightPage;
+                const colOnPage = singlePage ? c : isLeftHalf ? c : c - 4;
+                const hidden = !singlePage && isLeftHalf && !showLeft;
 
-                const n = numberFromPRC(pForCell, r, colOnPage);
+                const n = numberFromPagePosition(pForCell, r, colOnPage);
                 const cardAt = byNumber.get(n);
 
                 let fill = '#0f1017';
                 let opacity = hidden ? 0.25 : 0.9;
                 let stroke = '#2b2d3d';
                 let strokeWidth = 2;
-                let qtyText = '';
 
                 if (!hidden && presentNumbers.has(n)) {
                   const spec = numToAspectSpec.get(n);
@@ -3139,9 +3034,6 @@ function Binder({
                   } else {
                     fill = NEUTRAL;
                   }
-                  const qty = inventory[n] || 0;
-                  const max = quotaForType(cardAt?.Type);
-                  qtyText = `${qty}/${max}`;
                   const activeHere = isActive(pForCell, r, colOnPage);
                   opacity = activeHere ? 1.0 : 0.35;
                   stroke = activeHere ? '#ffffff' : '#2b2d3d';
@@ -3158,17 +3050,7 @@ function Binder({
                       const card = byNumber.get(n);      // exact card in this set
                       if (!card) return;
 
-                      const { page: bp, row: br, column: bc } = binderLayout(n);
-                      // FIX: Added spreadCol (c) and spreadRow (r) to complete the active state
-                      setActive({ 
-                        card, 
-                        page: bp, 
-                        row: br, 
-                        column: bc, 
-                        spreadCol: c, 
-                        spreadRow: r 
-                      });
-                      setViewSpread(pageToSpread(bp));
+                      onActivateCard(card);
                     }}
                   >
                     {/* the card rectangle */}
@@ -3290,19 +3172,21 @@ function Binder({
                 );
               })
             )}
-            {/* dotted divider */}
-            <line
-              x1={(cellW + gap) * 4 - gap / 2}
-              y1={-8}
-              x2={(cellW + gap) * 4 - gap / 2}
-              y2={gridBottom + 8}
-              stroke="#424452ff"
-              strokeOpacity={0.75}
-              strokeWidth={4}
-              strokeDasharray="0 12"
-              strokeLinecap="round"
-              vectorEffect="non-scaling-stroke"
-            />
+            {!singlePage && (
+              <line
+                className="binder-divider"
+                x1={(cellW + gap) * 4 - gap / 2}
+                y1={-8}
+                x2={(cellW + gap) * 4 - gap / 2}
+                y2={gridBottom + 8}
+                stroke="#424452ff"
+                strokeOpacity={0.75}
+                strokeWidth={4}
+                strokeDasharray="0 12"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+              />
+            )}
           </g>
         </svg>
         {/* NEW: Help Modal JSX */}
@@ -3375,13 +3259,15 @@ function Binder({
         <button
           type="button"
           className="spread-nav-edge"
-          disabled={totalSpreads === 0 || viewSpread >= totalSpreads - 1}
-          onClick={() => setViewSpread(s => Math.min(totalSpreads - 1, s + 1))}
-          aria-label="Next spread, keyboard period"
-          title="Next spread — keyboard ."
+          disabled={singlePage ? focusedPage >= totalPages : totalSpreads === 0 || viewSpread >= totalSpreads - 1}
+          onClick={() => singlePage
+            ? onFocusedPageChange(Math.min(totalPages, focusedPage + 1))
+            : setViewSpread(spread => Math.min(totalSpreads - 1, spread + 1))}
+          aria-label={singlePage ? 'Next page' : 'Next spread, keyboard period'}
+          title={singlePage ? 'Next page' : 'Next spread — keyboard .'}
         >
           <span className="spread-nav-chevron" aria-hidden>›</span>
-          <span className="key-pill">.</span>
+          {!singlePage && <span className="key-pill">.</span>}
         </button>
       </div>
     </>
