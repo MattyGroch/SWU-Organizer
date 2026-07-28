@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { ActiveSelection, Card } from './types';
-import { selectionAfterMove, viewModeAfterSelection } from './selection';
+import { selectionAfterMove } from './selection';
 
 const active: ActiveSelection = {
   card: {
@@ -17,12 +17,6 @@ const active: ActiveSelection = {
 };
 
 describe('selection state', () => {
-  it('uses automatic single-page mode only when enabled', () => {
-    expect(viewModeAfterSelection({ autoOpenSinglePage: true }, 'spread')).toBe('single');
-    expect(viewModeAfterSelection({ autoOpenSinglePage: false }, 'spread')).toBe('spread');
-    expect(viewModeAfterSelection({ autoOpenSinglePage: false }, 'single')).toBe('single');
-  });
-
   it('moves right across the page boundary and follows the exact card', () => {
     const destination: Card = {
       Name: 'Page Three Card',

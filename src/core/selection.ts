@@ -1,15 +1,5 @@
 import { getSpreadCoords, moveBinderSelection, type MoveDirection } from './binder';
-import type { AppSettings } from './settings';
 import type { ActiveSelection, Card } from './types';
-
-export type BinderViewMode = 'single' | 'spread';
-
-export function viewModeAfterSelection(
-  settings: AppSettings,
-  currentMode: BinderViewMode,
-): BinderViewMode {
-  return settings.autoOpenSinglePage ? 'single' : currentMode;
-}
 
 export function selectionAfterMove(
   active: ActiveSelection,
