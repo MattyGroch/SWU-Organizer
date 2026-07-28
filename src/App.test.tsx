@@ -91,79 +91,6 @@ describe('search submission', () => {
   })
 })
 
-describe('settings', () => {
-  it('falls back to defaults when initial local storage access is unavailable', () => {
-    stubSetFetch()
-    const availableStorage = window.localStorage
-    availableStorage.setItem('swu:settings:v1', JSON.stringify({ autoOpenSinglePage: false }))
-    let storageReads = 0
-    const storageGetter = vi.spyOn(window, 'localStorage', 'get').mockImplementation(() => {
-      storageReads += 1
-      if (storageReads === 1) throw new Error('storage access denied')
-      return availableStorage
-    })
-
-    try {
-      expect(() => render(<App />)).not.toThrow()
-      expect(storageReads).toBeGreaterThan(0)
-      fireEvent.click(screen.getByRole('button', { name: 'Open settings' }))
-      expect(
-        (screen.getByRole('checkbox', {
-          name: 'Automatically open enlarged page after selecting a card',
-        }) as HTMLInputElement).checked,
-      ).toBe(true)
-    } finally {
-      storageGetter.mockRestore()
-    }
-  })
-
-  it('persists changes immediately and keeps them in component state', async () => {
-    stubSetFetch()
-    render(<App />)
-
-    const trigger = await screen.findByRole('button', { name: 'Open settings' })
-    fireEvent.click(trigger)
-    const checkbox = screen.getByRole('checkbox', {
-      name: 'Automatically open enlarged page after selecting a card',
-    })
-    expect((checkbox as HTMLInputElement).checked).toBe(true)
-
-    fireEvent.click(checkbox)
-
-    expect((checkbox as HTMLInputElement).checked).toBe(false)
-    expect(JSON.parse(localStorage.getItem('swu:settings:v1') ?? '{}')).toEqual({
-      autoOpenSinglePage: false,
-    })
-
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }))
-    fireEvent.click(trigger)
-    expect(
-      (screen.getByRole('checkbox', {
-        name: 'Automatically open enlarged page after selecting a card',
-      }) as HTMLInputElement).checked,
-    ).toBe(false)
-  })
-
-  it('keeps a changed setting and shows a toast when persistence fails', async () => {
-    stubSetFetch()
-    render(<App />)
-
-    fireEvent.click(await screen.findByRole('button', { name: 'Open settings' }))
-    const checkbox = screen.getByRole('checkbox', {
-      name: 'Automatically open enlarged page after selecting a card',
-    })
-    const setItem = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-      throw new Error('storage unavailable')
-    })
-
-    fireEvent.click(checkbox)
-
-    expect((checkbox as HTMLInputElement).checked).toBe(false)
-    expect(await screen.findByText('Settings could not be saved on this device.')).toBeTruthy()
-    setItem.mockRestore()
-  })
-})
-
 describe('local inventory safety', () => {
   it('keeps an unsaved quantity in memory and reports an autosave failure', async () => {
     stubSetFetch()
@@ -184,9 +111,9 @@ describe('local inventory safety', () => {
       return originalSetItem.call(this, key, value)
     })
 
-    fireEvent.click(screen.getByRole('button', { name: 'Increase Alpha Card quantity' }))
+    fireEvent.click(screen.getAllByRole('button', { name: 'Increase' })[0])
 
-    expect((await screen.findByRole('status', { name: 'Quantity' })).textContent).toBe('1/3')
+    expect(await screen.findByText('1/3')).toBeTruthy()
     expect(await screen.findByText('Inventory could not be saved on this device.')).toBeTruthy()
     setItem.mockRestore()
   })

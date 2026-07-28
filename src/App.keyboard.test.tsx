@@ -1,4 +1,4 @@
-import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import App from './App';
 
@@ -56,11 +56,5 @@ describe('App binder keyboard shortcuts', () => {
       window.dispatchEvent(new KeyboardEvent('keydown', { key: ',', code: 'Comma' }));
     });
     await waitFor(() => expect(subtitle()).toContain('Page 2 (left) | Page 3 (right)'));
-
-    fireEvent.click(screen.getByRole('button', { name: 'Single Page' }));
-    await waitFor(() => expect(subtitle()).toContain('Binder — Page 3'));
-    fireEvent.keyDown(window, { key: '.', code: 'Period' });
-    fireEvent.keyDown(window, { key: ',', code: 'Comma' });
-    expect(subtitle()).toContain('Binder — Page 3');
   });
 });

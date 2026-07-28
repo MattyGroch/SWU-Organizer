@@ -27,35 +27,12 @@ import {
 } from './core/inventory';
 import { createLoadCommitGate } from './core/loadGuard';
 import { fetchSetPayload } from './core/setData';
-import {
-  DEFAULT_SETTINGS,
-  readSettings,
-  writeSettings,
-  type AppSettings,
-} from './core/settings';
-import { focusedPageForSpread } from './core/binderView';
-import {
-  selectionAfterMove,
-  viewModeAfterSelection,
-  type BinderViewMode,
-} from './core/selection';
+import { selectionAfterMove } from './core/selection';
 import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
-import { LocatorPanel } from './components/LocatorPanel';
-import { SettingsModal } from './components/SettingsModal';
-
-export type { BinderViewMode } from './core/selection';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
 function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
   return list.length ? list[list.length - 1]!.key : 'SOR';
-}
-
-function initialSettings(): AppSettings {
-  try {
-    return readSettings(window.localStorage);
-  } catch {
-    return DEFAULT_SETTINGS;
-  }
 }
 
 const ASPECT_HEX: Record<string, string> = {
@@ -700,10 +677,6 @@ export default function App() {
   const searchRef = useRef<HTMLInputElement | null>(null);
   const submitSearchRef = useRef<() => void>(() => {});
   const importRef = useRef<HTMLInputElement>(null);
-  const settingsButtonRef = useRef<HTMLButtonElement>(null);
-  const [settings, setSettings] = useState<AppSettings>(initialSettings);
-  const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const closeSettingsModal = useCallback(() => setShowSettingsModal(false), []);
   const [showImportModal, setShowImportModal] = useState(false);
   const [importData, setImportData] = useState<Record<SetKey, Inventory>>({});
   const [importStats, setImportStats] = useState({ recognized: 0, skipped: 0 });
@@ -726,14 +699,6 @@ export default function App() {
   const dismissToast = useCallback((id: number) => {
     setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
-  const changeSettings = useCallback((nextSettings: AppSettings) => {
-    setSettings(nextSettings);
-    try {
-      writeSettings(localStorage, nextSettings);
-    } catch {
-      showToast('Settings could not be saved on this device.', 'error');
-    }
-  }, [showToast]);
 
   // cache parsed data for sets (so we don't refetch repeatedly)
   const parsedCacheRef = useRef<Map<string, ParsedSet>>(new Map());
@@ -914,31 +879,21 @@ export default function App() {
   const maxNumber = useMemo(() => cardsBase.reduce((m,c)=>Math.max(m,c.Number), 0), [cardsBase]);
   const totalPages = Math.max(1, Math.ceil(maxNumber / 12));
   const totalSpreads = 1 + Math.ceil(Math.max(0, totalPages - 1) / 2);
-  const [binderViewMode, setBinderViewMode] = useState<BinderViewMode>('spread');
-  const [focusedPage, setFocusedPage] = useState(1);
-  const viewSpread = pageToSpread(focusedPage);
-  const setViewSpread = useCallback<React.Dispatch<React.SetStateAction<number>>>(next => {
-    setFocusedPage(currentPage => {
-      const currentSpread = pageToSpread(currentPage);
-      const requestedSpread = typeof next === 'function' ? next(currentSpread) : next;
-      return focusedPageForSpread(currentPage, requestedSpread, totalPages);
-    });
-  }, [totalPages]);
+  const [viewSpread, setViewSpread] = useState<number>(0); // 0 => Page 1; >=1 => 2/3, 4/5, ...
 
-  const binderRef = useRef<HTMLDivElement>(null); 
+  const binderRef = useRef<HTMLDivElement>(null);
 
-  const activateCard = useCallback((card: Card, forceView?: BinderViewMode) => {
+  const activateCard = useCallback((card: Card) => {
     const { page, row, column } = binderLayout(card.Number);
     const { spreadCol, spreadRow } = getSpreadCoords(page, row, column);
     setActive({ number: card.Number, card, page, row, column, spreadCol, spreadRow });
     setError('');
-    setFocusedPage(page);
-    setBinderViewMode(forceView ?? viewModeAfterSelection(settings, binderViewMode));
+    setViewSpread(pageToSpread(page));
     setHighlightedRowNumber(card.Number);
 
     window.setTimeout(() => setHighlightedRowNumber(null), 500);
     binderRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, [binderViewMode, settings]);
+  }, []);
 
   // Suggestions dropdown
   const [openSug, setOpenSug] = useState(false);
@@ -1249,7 +1204,7 @@ export default function App() {
     if (next === active) return;
 
     setActive(next);
-    setFocusedPage(next.page);
+    setViewSpread(pageToSpread(next.page));
   }, [active, totalPages, byNumber]);
   
 
@@ -1618,15 +1573,15 @@ export default function App() {
         let deltaSpread = 0;
         
         // NEW: Page flipping shortcuts ("," and ".")
-        if ((e.key === ',' || e.key === '<') && binderViewMode === 'spread') { // Comma
+        if (e.key === ',' || e.key === '<') { // Comma
           e.preventDefault();
           deltaSpread = -1;
-        } else if ((e.key === '.' || e.key === '>') && binderViewMode === 'spread') { // Period
+        } else if (e.key === '.' || e.key === '>') { // Period
           e.preventDefault();
           deltaSpread = 1;
         }
-        
-        // Browsing changes the viewed anchor only; selection and locator remain stable.
+
+        // Browsing changes the viewed anchor only; the selection remains stable.
         if (deltaSpread !== 0) {
           setViewSpread(currentSpread => (
             Math.max(0, Math.min(totalSpreads - 1, currentSpread + deltaSpread))
@@ -1661,7 +1616,7 @@ export default function App() {
 
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [active, query, setViewSpread, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages, binderViewMode]);
+  }, [active, query, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages]);
 
   const fmtUSD = (n: number) =>
     n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
@@ -2021,18 +1976,7 @@ export default function App() {
                   title="Reset inventory" 
                   aria-label="Reset inventory" 
               > 
-                  <span className="icon" aria-hidden="true">delete</span> <span>Reset</span> 
-              </button>
-              <button
-                ref={settingsButtonRef}
-                type="button"
-                className="tbtn"
-                onClick={() => setShowSettingsModal(true)}
-                title="Settings"
-                aria-label="Open settings"
-              >
-                <span className="icon" aria-hidden="true">settings</span>
-                <span>Settings</span>
+                  <span className="icon" aria-hidden="true">delete</span> <span>Reset</span>
               </button>
             </div>
           </div>
@@ -2043,25 +1987,10 @@ export default function App() {
 
       {/* Binder (with spread pager + dropdown) — minimal padding so the grid can use width */}
       <div className="card" ref={binderRef} style={{ padding: 8 }}>
-        {active && (
-          <LocatorPanel
-            selection={active}
-            quantity={inventory[active.number] || 0}
-            maximum={quotaForType(active.card.Type)}
-            aspectBackground={aspectSpecToCssBackground(numToAspectSpec.get(active.number))}
-            onDecrease={() => dec(active.number)}
-            onIncrease={() => inc(active.number)}
-          />
-        )}
         <Binder
           viewSpread={viewSpread}
           setViewSpread={setViewSpread}
           totalSpreads={totalSpreads}
-          totalPages={totalPages}
-          viewMode={binderViewMode}
-          focusedPage={focusedPage}
-          onFocusedPageChange={setFocusedPage}
-          onViewModeChange={setBinderViewMode}
           onActivateCard={activateCard}
           active={active}
           presentNumbers={presentNumbers}
@@ -2727,13 +2656,6 @@ export default function App() {
           ))}
         </div>
       )}
-      <SettingsModal
-        open={showSettingsModal}
-        settings={settings}
-        onChange={changeSettings}
-        onClose={closeSettingsModal}
-        returnFocusRef={settingsButtonRef}
-      />
     </div>
   );
 }
@@ -2742,11 +2664,6 @@ export function Binder({
   viewSpread,
   setViewSpread,
   totalSpreads,
-  totalPages,
-  viewMode,
-  focusedPage,
-  onFocusedPageChange,
-  onViewModeChange,
   onActivateCard,
   active,
   presentNumbers,
@@ -2762,11 +2679,6 @@ export function Binder({
   viewSpread: number;
   setViewSpread: React.Dispatch<React.SetStateAction<number>>;
   totalSpreads: number;
-  totalPages: number;
-  viewMode: BinderViewMode;
-  focusedPage: number;
-  onFocusedPageChange: (page: number) => void;
-  onViewModeChange: (mode: BinderViewMode) => void;
   onActivateCard: (card: Card) => void;
   active: ActiveSelection | null;
   presentNumbers: Set<number>;
@@ -2779,23 +2691,21 @@ export function Binder({
   showHelpModal: boolean;
   setShowHelpModal: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const singlePage = viewMode === 'single';
   const page = spreadToPrimaryPage(viewSpread);     // 1, 2, 4, 6, ...
   const leftPage = page % 2 === 0 ? page : page - 1;
   const rightPage = page % 2 === 1 ? page : page + 1;
   const showLeft = leftPage >= 2;
 
-  const cols = singlePage ? 4 : 8, rows = 3;
+  const cols = 8, rows = 3;
   const cellW = 120, cellH = 170, gap = 12;
   const vbPad = 8;
   const vbW = cols * cellW + (cols - 1) * gap + vbPad * 2;
   const vbH = rows * cellH + (rows - 1) * gap + vbPad * 2;
   const gridBottom = (rows - 1) * (cellH + gap) + cellH;
 
-  const spreadLabel = page === 1
+  const binderLabel = page === 1
     ? 'Spread: Page 1'
     : `Spread: Page ${leftPage} (left) | Page ${rightPage} (right)`;
-  const binderLabel = singlePage ? `Page ${focusedPage}` : spreadLabel;
 
   const isActive = (p:number, r:number, c:number) =>
     active && p === active.page && r === active.row && c === active.column;
@@ -2809,10 +2719,6 @@ export function Binder({
       return { value: i, label: `Page ${left}/${right}` };
     });
   }, [totalSpreads]);
-  const pageOptions = useMemo(
-    () => Array.from({ length: totalPages }, (_, index) => index + 1),
-    [totalPages],
-  );
 
   const binderGradientDefs = useMemo(() => {
     const out: { n: number; spec: Extract<AspectFillSpec, { kind: 'gradient' }> }[] = [];
@@ -2825,26 +2731,6 @@ export function Binder({
 
   return (
     <>
-      <div className="binder-toolbar">
-        <div className="toolbar-group" role="group" aria-label="Binder view">
-          <button
-            type="button"
-            className="tbtn"
-            aria-pressed={singlePage}
-            onClick={() => onViewModeChange('single')}
-          >
-            Single Page
-          </button>
-          <button
-            type="button"
-            className="tbtn"
-            aria-pressed={!singlePage}
-            onClick={() => onViewModeChange('spread')}
-          >
-            Spread
-          </button>
-        </div>
-      </div>
       {/* Row 1: selection header + tip (right) */}
       <div
         className="row"
@@ -2945,27 +2831,16 @@ export function Binder({
         <div className="pager">
           <label className="spread-jump-label">
             <span className="spread-jump-hint">Jump</span>
-            {singlePage ? (
-              <select
-                className="spread-jump-select"
-                value={focusedPage}
-                onChange={event => onFocusedPageChange(Number(event.target.value))}
-                aria-label="Jump to page"
-              >
-                {pageOptions.map(option => <option key={option} value={option}>Page {option}</option>)}
-              </select>
-            ) : (
-              <select
-                className="spread-jump-select"
-                value={viewSpread}
-                onChange={event => setViewSpread(Number(event.target.value))}
-                aria-label="Jump to spread"
-              >
-                {spreadOptions.map(option => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </select>
-            )}
+            <select
+              className="spread-jump-select"
+              value={viewSpread}
+              onChange={event => setViewSpread(Number(event.target.value))}
+              aria-label="Jump to spread"
+            >
+              {spreadOptions.map(option => (
+                <option key={option.value} value={option.value}>{option.label}</option>
+              ))}
+            </select>
           </label>
         </div>
       </div>
@@ -2974,15 +2849,13 @@ export function Binder({
         <button
           type="button"
           className="spread-nav-edge"
-          disabled={singlePage ? focusedPage <= 1 : totalSpreads === 0 || viewSpread <= 0}
-          onClick={() => singlePage
-            ? onFocusedPageChange(Math.max(1, focusedPage - 1))
-            : setViewSpread(spread => Math.max(0, spread - 1))}
-          aria-label={singlePage ? 'Previous page' : 'Previous spread, keyboard comma'}
-          title={singlePage ? 'Previous page' : 'Previous spread — keyboard ,'}
+          disabled={totalSpreads === 0 || viewSpread <= 0}
+          onClick={() => setViewSpread(spread => Math.max(0, spread - 1))}
+          aria-label="Previous spread, keyboard comma"
+          title="Previous spread — keyboard ,"
         >
           <span className="spread-nav-chevron" aria-hidden>‹</span>
-          {!singlePage && <span className="key-pill">,</span>}
+          <span className="key-pill">,</span>
         </button>
         <div className="grid-wrap">
         <svg viewBox={`0 0 ${vbW} ${vbH}`} style={{ width: '100%', height: 'auto' }} preserveAspectRatio="xMidYMid meet">
@@ -3012,10 +2885,10 @@ export function Binder({
                 const x = cIdx * (cellW + gap);
                 const y = rIdx * (cellH + gap);
 
-                const isLeftHalf = !singlePage && c <= 4;
-                const pForCell = singlePage ? focusedPage : isLeftHalf ? leftPage : rightPage;
-                const colOnPage = singlePage ? c : isLeftHalf ? c : c - 4;
-                const hidden = !singlePage && isLeftHalf && !showLeft;
+                const isLeftHalf = c <= 4;
+                const pForCell = isLeftHalf ? leftPage : rightPage;
+                const colOnPage = isLeftHalf ? c : c - 4;
+                const hidden = isLeftHalf && !showLeft;
 
                 const n = numberFromPagePosition(pForCell, r, colOnPage);
                 const cardAt = byNumber.get(n);
@@ -3172,21 +3045,19 @@ export function Binder({
                 );
               })
             )}
-            {!singlePage && (
-              <line
-                className="binder-divider"
-                x1={(cellW + gap) * 4 - gap / 2}
-                y1={-8}
-                x2={(cellW + gap) * 4 - gap / 2}
-                y2={gridBottom + 8}
-                stroke="#424452ff"
-                strokeOpacity={0.75}
-                strokeWidth={4}
-                strokeDasharray="0 12"
-                strokeLinecap="round"
-                vectorEffect="non-scaling-stroke"
-              />
-            )}
+            <line
+              className="binder-divider"
+              x1={(cellW + gap) * 4 - gap / 2}
+              y1={-8}
+              x2={(cellW + gap) * 4 - gap / 2}
+              y2={gridBottom + 8}
+              stroke="#424452ff"
+              strokeOpacity={0.75}
+              strokeWidth={4}
+              strokeDasharray="0 12"
+              strokeLinecap="round"
+              vectorEffect="non-scaling-stroke"
+            />
           </g>
         </svg>
         {/* NEW: Help Modal JSX */}
@@ -3259,15 +3130,13 @@ export function Binder({
         <button
           type="button"
           className="spread-nav-edge"
-          disabled={singlePage ? focusedPage >= totalPages : totalSpreads === 0 || viewSpread >= totalSpreads - 1}
-          onClick={() => singlePage
-            ? onFocusedPageChange(Math.min(totalPages, focusedPage + 1))
-            : setViewSpread(spread => Math.min(totalSpreads - 1, spread + 1))}
-          aria-label={singlePage ? 'Next page' : 'Next spread, keyboard period'}
-          title={singlePage ? 'Next page' : 'Next spread — keyboard .'}
+          disabled={totalSpreads === 0 || viewSpread >= totalSpreads - 1}
+          onClick={() => setViewSpread(spread => Math.min(totalSpreads - 1, spread + 1))}
+          aria-label="Next spread, keyboard period"
+          title="Next spread — keyboard ."
         >
           <span className="spread-nav-chevron" aria-hidden>›</span>
-          {!singlePage && <span className="key-pill">.</span>}
+          <span className="key-pill">.</span>
         </button>
       </div>
     </>

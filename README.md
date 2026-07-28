@@ -1,6 +1,6 @@
 # SWU Organizer
 
-A fast, local-first web app for organizing a personal **Star Wars: Unlimited** collection. Pick a set, search by name or number, and use the centered locator to read the card’s physical **Page / Row / Column** before filing it. Track inventory, filter for missing cards, and export or import counts without sending collection data to a server. Docker-ready.
+A fast, local-first web app for organizing a personal **Star Wars: Unlimited** collection. Pick a set, search by name or number, and instantly see the card’s physical **Page / Row / Column** in the binder. Track inventory, filter for missing cards, and export or import counts without sending collection data to a server. Docker-ready.
 
 You can check it out at: [https://swu.mattyflix.com/](https://swu.mattyflix.com/)
 
@@ -9,12 +9,10 @@ You can check it out at: [https://swu.mattyflix.com/](https://swu.mattyflix.com/
 ## Features
 
 - 🔎 **Smart search**: search by **name** (typeahead) or **number** (handles leading zeros like `003`).
-- 🗺️ **Visual binder**: switch between a large 4×3 physical page and an 8×3 two-page spread; Page 1 stands alone, followed by spreads `2/3`, `4/5`, etc.
+- 🗺️ **Visual binder**: an 8×3 two-page spread mirrors your physical binder; Page 1 stands alone, followed by spreads `2/3`, `4/5`, etc.
 - 🎨 **Aspect colors**: cells tinted by the card’s first aspect (Vigilance/Command/Aggression/Cunning/Heroism/Villainy).
-- 🧭 **Readable filing locator**: selecting a card shows its name, number, quantity, and physical Page/Row/Column in a centered, high-readability panel.
 - ➕➖ **Inventory tracking**: per-card counts with +/− controls (1× cap for Leaders/Bases; 3× default for others).
 - ⌨️ **Keyboard-first filing**: arrow keys move the selected card through the grid, while `+`/`-` adjust its quantity.
-- ⚙️ **Personal filing preference**: Settings can automatically open the selected card’s enlarged physical page; this is enabled by default and saved locally.
 - 🗂️ **All-sets import/export**: supported app, SWUDB, and SW-Unlimited exports normalize alternate printings to their base cards; one JSON export rolls up all eight supported sets.
 - 🐳 **Docker**: build once, run anywhere.
 
@@ -78,16 +76,13 @@ services:
 
 1. **Choose a set** (SOR, SHD, TWI, JTL, LOF, SEC, LAW, or ASH).
 2. **Search** by name or number (press `/` to focus; **Enter** to go).
-3. Read the centered locator’s **Page / Row / Column** and find the highlighted slot in the binder. Columns are the four physical columns on a page (`1`–`4`), not the internal eight-column spread position.
-4. Adjust **quantities** with +/− on any filled slot or with the large controls in the locator.
+3. Read the selected card’s **Page / Row / Column** in the binder header and find the highlighted slot in the spread. Columns are the four physical columns on a page (`1`–`4`), not the internal eight-column spread position.
+4. Adjust **quantities** with +/− on any filled slot.
 5. **Export** your inventory (all sets) to JSON; **Import** it later to restore.
 
-### Filing view and Settings
+### Binder view
 
-- **Single Page** displays one enlarged four-column physical page. **Spread** displays the two-page eight-column overview.
-- Selecting a card opens its Single Page view by default. The enlarged page follows the selection when arrow-key navigation crosses a page boundary.
-- Open **Settings** to disable or re-enable **Automatically open enlarged page after selecting a card**. The preference is saved in local storage and defaults to enabled on first use.
-- Disabling the setting prevents the automatic switch; the **Single Page / Spread** control remains available at any time.
+- The binder displays a two-page eight-column spread; the view jumps to the selected card’s spread and follows the selection when arrow-key navigation crosses a page boundary.
 - Spread navigation shows `Page 1` and then `Page 2/3`, `Page 4/5`, and so on.
 
 ---
@@ -145,7 +140,7 @@ Only **Name**, **Number**, **Aspects[0]**, and **Type** are required for UI & in
 - **Import preview:** supported imports feed the same canonical inventory path. The preview reports recognized and skipped entries and lets you merge counts or replace data for the imported sets.
 - **Canonical counts:** alternate printings are mapped to their base card, combined, and capped only after aggregation. Unknown or malformed entries are skipped. Exports store one quantity per base card while retaining the version-one JSON shape shown above.
 - **Silent migration:** on the first load after upgrading, existing local inventory is normalized once. Before any normalized inventory is written, the app creates a recoverable local backup of the original `inv:<set>` records. The migration does not display a notice and does not repeat after its schema marker is stored.
-- Collection data, settings, the migration backup, and schema marker remain in this browser’s local storage. They are not cloud-synchronized.
+- Collection data, the migration backup, and schema marker remain in this browser’s local storage. They are not cloud-synchronized.
 - Setting a card back to **0** removes it from the inventory list and storage.
 
 ---
@@ -154,7 +149,7 @@ Only **Name**, **Number**, **Aspects[0]**, and **Type** are required for UI & in
 
 - Arrow keys move the selected card through the binder grid, including existing page-edge wrapping.
 - `+` / `-` adjust the selected card quantity.
-- `,` / `.` move to the previous or next spread while **Spread** mode is active; they do nothing in **Single Page** mode.
+- `,` / `.` move to the previous or next spread.
 - `/` focuses search and Enter selects the highlighted result.
 
 ---
