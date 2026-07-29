@@ -29,6 +29,20 @@ import { createLoadCommitGate } from './core/loadGuard';
 import { fetchSetPayload } from './core/setData';
 import { selectionAfterMove } from './core/selection';
 import type { ActiveSelection, Card, Inventory, SetKey, SetMeta } from './core/types';
+import {
+  createCloudSync,
+  makeBrowserBroadcast,
+  type CloudSync,
+  type SyncEvent,
+  type SyncStatus,
+} from './core/cloudSync';
+import { useAuth } from './hooks/useAuth';
+import { AuthMenu } from './components/AuthMenu';
+import {
+  CloudMigrationModal,
+  summarize,
+  type MigrationChoice,
+} from './components/CloudMigrationModal';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
 function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
@@ -705,6 +719,24 @@ export default function App() {
   const loadCommitGateRef = useRef(createLoadCommitGate());
   const [canonicalCatalog, setCanonicalCatalog] = useState<CanonicalCatalog>(new Map());
 
+  // Cloud sync (local writes remain synchronous; server pushes are debounced).
+  const auth = useAuth();
+  const cloudSyncRef = useRef<CloudSync | null>(null);
+  const applyRemoteInventoryRef = useRef<(setKey: SetKey, data: Inventory) => void>(() => {});
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('off');
+  const [migrationPrompt, setMigrationPrompt] = useState<null | {
+    local: Record<SetKey, Inventory>;
+    cloud: Record<SetKey, { data: Inventory; version: number }>;
+  }>(null);
+  if (cloudSyncRef.current == null) {
+    cloudSyncRef.current = createCloudSync({
+      storage: localStorage,
+      fetch: (input, init) => fetch(input, init),
+      broadcast: makeBrowserBroadcast(),
+      onLocalApply: (incomingKey, data) => applyRemoteInventoryRef.current(incomingKey, data),
+    });
+  }
+
   useEffect(() => {
     fetch('/sets/manifest.json')
       .then(r => r.ok ? r.json() : Promise.reject(new Error('no manifest')))
@@ -815,9 +847,121 @@ export default function App() {
     if (inventoryReadyForSet === setKey) {
       if (!persistCanonicalInventory(localStorage, setKey, inventory, canonicalCatalog)) {
         showToast('Inventory could not be saved on this device.', 'error');
+        return;
       }
+      cloudSyncRef.current?.scheduleSync(setKey, inventory);
     }
   }, [canonicalCatalog, inventory, inventoryReadyForSet, setKey, showToast]);
+
+  useEffect(() => {
+    applyRemoteInventoryRef.current = (incomingKey, data) => {
+      try {
+        persistCanonicalInventory(localStorage, incomingKey, data, canonicalCatalog);
+      } catch {
+        // Best-effort; ignore write failures on cross-tab replay.
+      }
+      if (incomingKey === setKey) setInventory(data);
+    };
+  }, [canonicalCatalog, setKey]);
+
+  useEffect(() => {
+    const sync = cloudSyncRef.current;
+    if (!sync) return;
+    const unsub = sync.subscribe((event: SyncEvent) => {
+      if (event.type === 'status') {
+        setSyncStatus(event.status);
+        return;
+      }
+      if (event.type === 'signout') {
+        window.dispatchEvent(new Event('swu:auth-signout'));
+        showToast('Signed out — cloud sync paused. Sign in again to resume.', 'warning');
+        return;
+      }
+      if (event.type === 'error' && event.consecutive >= 3) {
+        showToast(
+          `Cloud sync retrying for ${event.setKey} (${event.consecutive} failed attempts).`,
+          'warning',
+        );
+      }
+    });
+    const onOnline = () => {
+      void sync.flushDirty().catch(() => {});
+    };
+    window.addEventListener('online', onOnline);
+    return () => {
+      unsub();
+      window.removeEventListener('online', onOnline);
+    };
+  }, [showToast]);
+
+  useEffect(() => () => cloudSyncRef.current?.dispose(), []);
+
+  const bootstrappedRef = useRef(false);
+  useEffect(() => {
+    const sync = cloudSyncRef.current;
+    if (!sync) return;
+    if (auth.status === 'loading') return;
+    if (auth.status === 'signedOut') {
+      sync.setSignedIn(false);
+      bootstrappedRef.current = false;
+      setMigrationPrompt(null);
+      return;
+    }
+    if (!setKeys.length || canonicalCatalog.size === 0) return;
+    if (bootstrappedRef.current) return;
+    bootstrappedRef.current = true;
+
+    let cancelled = false;
+    sync.setSignedIn(true);
+    (async () => {
+      let cloud: Record<SetKey, { data: Inventory; version: number }> = {};
+      try {
+        cloud = await sync.pullAll();
+      } catch {
+        return;
+      }
+      if (cancelled) return;
+      const local: Record<SetKey, Inventory> = {};
+      for (const key of setKeys) {
+        try {
+          const raw = localStorage.getItem(`inv:${key}`);
+          local[key] = raw ? (JSON.parse(raw) as Inventory) : {};
+        } catch {
+          local[key] = {};
+        }
+      }
+      const state = sync.getState();
+      const anyLocal = Object.values(local).some(inv => Object.keys(inv).length > 0);
+      const anyCloud = Object.values(cloud).some(v => Object.keys(v.data).length > 0);
+
+      if (!state.migrationChoiceMade) {
+        if (!anyLocal && !anyCloud) {
+          sync.markMigrationDone();
+        } else if (!anyLocal && anyCloud) {
+          for (const [k, v] of Object.entries(cloud)) {
+            if (persistCanonicalInventory(localStorage, k, v.data, canonicalCatalog)) {
+              if (k === setKey) setInventory(v.data);
+            }
+          }
+          sync.markMigrationDone();
+        } else {
+          setMigrationPrompt({ local, cloud });
+          return;
+        }
+      } else {
+        for (const [k, v] of Object.entries(cloud)) {
+          if (persistCanonicalInventory(localStorage, k, v.data, canonicalCatalog)) {
+            if (k === setKey) setInventory(v.data);
+          }
+        }
+      }
+      if (cancelled) return;
+      await sync.flushDirty();
+    })().catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [auth.status, canonicalCatalog, setKey, setKeys]);
   const pruneZeros = (inv: Inventory) =>
     Object.fromEntries(Object.entries(inv).filter(([,q]) => (q as number) > 0)) as Inventory;
   useEffect(() => {
@@ -1438,27 +1582,37 @@ export default function App() {
       if (scope === 'current') {
           if (removePersistedInventory(localStorage, setKey, canonicalCatalog)) {
               setInventory({});
+              cloudSyncRef.current?.scheduleSync(setKey, {});
               showToast(`Inventory for the current set (${setKey}) has been cleared.`);
           } else {
               showToast('Inventory could not be cleared while protected persistence is locked.', 'warning');
           }
       } else if (scope === 'all') {
           let allRemoved = true;
+          const clearedKeys: SetKey[] = [];
           // Clear set inventories without deleting the migration backup or schema marker.
           if (!sets.length) {
               for (const key of Object.keys(localStorage)) {
                   if (/^inv:[A-Z0-9]+$/.test(key)) {
-                      allRemoved = removePersistedInventory(localStorage, key.slice(4), canonicalCatalog) && allRemoved;
+                      const setKeyToClear = key.slice(4);
+                      const ok = removePersistedInventory(localStorage, setKeyToClear, canonicalCatalog);
+                      allRemoved = ok && allRemoved;
+                      if (ok) clearedKeys.push(setKeyToClear);
                   }
               }
           } else {
               // Clear based on loaded set keys
               for (const set of sets) {
-                  allRemoved = removePersistedInventory(localStorage, set.key, canonicalCatalog) && allRemoved;
+                  const ok = removePersistedInventory(localStorage, set.key, canonicalCatalog);
+                  allRemoved = ok && allRemoved;
+                  if (ok) clearedKeys.push(set.key);
               }
           }
           if (allRemoved) {
               setInventory({}); // Reset current view as well
+              for (const key of clearedKeys) {
+                  cloudSyncRef.current?.scheduleSync(key, {});
+              }
               showToast('Inventory for ALL sets has been cleared.');
           } else {
               showToast('Inventories could not be cleared while protected persistence is locked.', 'warning');
@@ -1470,6 +1624,54 @@ export default function App() {
   function resetInv() {
       setShowResetModal(true);
   }
+
+  const handleMigrationDecision = useCallback(async (choice: MigrationChoice) => {
+    const sync = cloudSyncRef.current;
+    if (!sync || !migrationPrompt) return;
+    const { local, cloud } = migrationPrompt;
+    const cloudAsInv: Record<SetKey, Inventory> = Object.fromEntries(
+      Object.entries(cloud).map(([k, v]) => [k, v.data]),
+    );
+    try {
+      if (choice === 'upload') {
+        await sync.pushAll(local);
+      } else if (choice === 'startFresh') {
+        await sync.pushAll({});
+        for (const key of setKeys) {
+          if (removePersistedInventory(localStorage, key, canonicalCatalog) && key === setKey) {
+            setInventory({});
+          }
+        }
+      } else if (choice === 'useCloud') {
+        for (const [k, inv] of Object.entries(cloudAsInv)) {
+          if (persistCanonicalInventory(localStorage, k, inv, canonicalCatalog) && k === setKey) {
+            setInventory(inv);
+          }
+        }
+        for (const key of setKeys) {
+          if (!(key in cloudAsInv)) {
+            if (removePersistedInventory(localStorage, key, canonicalCatalog) && key === setKey) {
+              setInventory({});
+            }
+          }
+        }
+      } else if (choice === 'merge') {
+        const merged = applyImportedInventories(local, cloudAsInv, 'merge', canonicalCatalog);
+        await sync.pushAll(merged.inventories);
+        for (const [k, inv] of Object.entries(merged.inventories)) {
+          if (persistCanonicalInventory(localStorage, k, inv, canonicalCatalog) && k === setKey) {
+            setInventory(inv);
+          }
+        }
+      }
+      sync.markMigrationDone();
+      showToast('Cloud sync is now active on this device.', 'success');
+    } catch {
+      showToast('Cloud setup could not complete. Your local data is unchanged.', 'error');
+    } finally {
+      setMigrationPrompt(null);
+    }
+  }, [canonicalCatalog, migrationPrompt, setKey, setKeys, showToast]);
 
   const applyImport = (mode: 'merge' | 'replace') => {
       const current = Object.fromEntries(setKeys.map(key => [key, readSetInv(key)])) as Record<SetKey, Inventory>;
@@ -1487,6 +1689,7 @@ export default function App() {
           if (writeSetInv(key, nextInventory)) {
               importedCount += Object.keys(nextInventory).length;
               if (key === setKey) setInventory(nextInventory);
+              cloudSyncRef.current?.scheduleSync(key, nextInventory);
           } else {
               persistenceBlocked = true;
           }
@@ -1944,6 +2147,12 @@ export default function App() {
           </div>
 
           {/* Right side controls */}
+          <AuthMenu
+            authStatus={auth.status}
+            email={auth.email}
+            syncStatus={syncStatus}
+            onSignOut={auth.signOut}
+          />
           <div className="toolbar-block">
             <div className="toolbar-label">Inventory Controls</div>
             <div className="toolbar-group">
@@ -2355,6 +2564,22 @@ export default function App() {
           )
         )}
       </div>
+
+      {migrationPrompt && (
+        <CloudMigrationModal
+          localSummary={summarize(migrationPrompt.local)}
+          cloudSummary={summarize(
+            Object.fromEntries(
+              Object.entries(migrationPrompt.cloud).map(([k, v]) => [k, v.data]),
+            ),
+          )}
+          onDecision={handleMigrationDecision}
+          onDismiss={() => {
+            cloudSyncRef.current?.markMigrationDone();
+            setMigrationPrompt(null);
+          }}
+        />
+      )}
 
       {/* NEW: Reset Confirmation Modal JSX */}
       {showResetModal && (

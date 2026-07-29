@@ -7,7 +7,34 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.swu-organizer.entrypoints=websecure"
       - "traefik.http.routers.swu-organizer.rule=Host(`swu.mattyflix.com`)"
+      - "traefik.http.routers.swu-organizer.priority=1"
       - "traefik.http.services.swu-organizer.loadbalancer.server.port=8080"
+    networks:
+      - proxy
+
+  swu-api:
+    build: ./server
+    container_name: swu-api
+    restart: unless-stopped
+    environment:
+      - DB_PATH=/config/swu.db
+      - PORT=3001
+      - SESSION_SECRET=${SESSION_SECRET}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - OAUTH_REDIRECT=${OAUTH_REDIRECT}
+      - POST_LOGIN_REDIRECT=${POST_LOGIN_REDIRECT}
+      - ALLOWED_EMAILS=${ALLOWED_EMAILS}
+      - COOKIE_SECURE=true
+      - TRUST_PROXY=true
+    volumes:
+      - /var/config/swu-organizer:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.swu-api.entrypoints=websecure"
+      - "traefik.http.routers.swu-api.rule=Host(`swu.mattyflix.com`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.swu-api.priority=100"
+      - "traefik.http.services.swu-api.loadbalancer.server.port=3001"
     networks:
       - proxy
 
