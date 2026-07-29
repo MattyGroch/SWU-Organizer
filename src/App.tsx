@@ -39,6 +39,8 @@ import {
 import { useAuth } from './hooks/useAuth';
 import { AuthMenu } from './components/AuthMenu';
 import { DataMenu } from './components/DataMenu';
+import { DeckCheckModal } from './components/DeckCheckModal';
+import { formatMissingLine, type DeckLookupSet } from './core/decklist';
 import {
   CloudMigrationModal,
   summarize,
@@ -696,6 +698,7 @@ export default function App() {
   const [importStats, setImportStats] = useState({ recognized: 0, skipped: 0 });
   const [importingFileName, setImportingFileName] = useState('');
   const [showResetModal, setShowResetModal] = useState(false);
+  const [showDeckCheckModal, setShowDeckCheckModal] = useState(false);
   const [listView, setListView] = React.useState<'inventory' | 'missing'>('inventory');
 
   // In-app toast notifications (replaces window.alert)
@@ -1291,6 +1294,27 @@ export default function App() {
     () => buildSearchSuggestions(query, searchCatalogs, setKey),
     [query, searchCatalogs, setKey],
   );
+
+  // Deck Check: cross-set card lookup (byNumber + baseCards), refreshed whenever the
+  // canonical catalog is (mirrors the searchCatalogs memo above).
+  const deckCheckParsedSets: Map<SetKey, DeckLookupSet> = useMemo(
+    () => {
+      const map = new Map<SetKey, DeckLookupSet>();
+      if (canonicalCatalog.size === 0) return map;
+      for (const [catalogSetKey, parsed] of parsedCacheRef.current) {
+        map.set(catalogSetKey, { byNumber: parsed.byNumber, baseCards: parsed.baseCards });
+      }
+      return map;
+    },
+    [canonicalCatalog],
+  );
+
+  // Deck Check: owned-quantity lookup spanning every set (not just the currently displayed one).
+  const buildOwnedLookup = useCallback(() => {
+    const snapshot = createInventoryExportSnapshot(localStorage, setKeys, setKey, inventory, canonicalCatalog);
+    return (targetSetKey: SetKey, baseNumber: number) => snapshot[targetSetKey]?.[baseNumber] ?? 0;
+  }, [setKeys, setKey, inventory, canonicalCatalog]);
+
   // Click outside to close dropdown
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
@@ -1977,15 +2001,8 @@ export default function App() {
         // r.Number is the base number for this row
         // Use byNumber to retrieve the Card object which contains Subtitle
         const card = byNumber.get(r.Number);
-        
-        // Construct the card name part: "Name - Subtitle"
-        const cardNamePart = card?.Subtitle 
-            ? `${r.Name} - ${card.Subtitle}` 
-            : r.Name;
-        
         const qty = tcgCopyMode === 'oneEach' ? 1 : r.Needed;
-        // Final format: QTY Name - Subtitle [setKey]
-        return `${qty} ${cardNamePart} [${setKey}]`;
+        return formatMissingLine(r.Name, card?.Subtitle, setKey, qty);
     }).join('\n');
 
     if (list.length === 0) {
@@ -2178,6 +2195,22 @@ export default function App() {
             onExport={exportAllInv}
             onReset={resetInv}
           />
+          <div className="toolbar-block">
+            <div className="toolbar-label">Deck</div>
+            <div className="toolbar-group">
+              <button
+                type="button"
+                className="tbtn"
+                onClick={() => setShowDeckCheckModal(true)}
+                disabled={canonicalCatalog.size === 0}
+                title="Check a decklist against your collection"
+                aria-label="Deck check"
+              >
+                <span className="icon" aria-hidden="true">checklist</span>
+                <span>Deck Check</span>
+              </button>
+            </div>
+          </div>
 
           {error && <span className="err">{error}</span>}
         </div>
@@ -2553,6 +2586,17 @@ export default function App() {
           )
         )}
       </div>
+
+      {showDeckCheckModal && (
+        <DeckCheckModal
+          canonicalCatalog={canonicalCatalog}
+          parsedSets={deckCheckParsedSets}
+          trackedSetKeys={setKeys}
+          buildOwnedLookup={buildOwnedLookup}
+          showToast={showToast}
+          onClose={() => setShowDeckCheckModal(false)}
+        />
+      )}
 
       {migrationPrompt && (
         <CloudMigrationModal
