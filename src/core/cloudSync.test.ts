@@ -174,15 +174,13 @@ describe('cloudSync', () => {
     sync.setSignedIn(true)
 
     sync.scheduleSync('SOR', { 1: 1 })
-    // Debounce
+    // Debounce fires push #1 at t=1000. It returns 500 → retry scheduled at t=2000.
     await vi.advanceTimersByTimeAsync(1000)
-    await vi.runOnlyPendingTimersAsync()
-    // First backoff: 1s
+    // Retry #1 fires push #2 at t=2000. It returns 500 → retry scheduled at t=4000.
     await vi.advanceTimersByTimeAsync(1000)
-    await vi.runOnlyPendingTimersAsync()
-    // Second backoff: 2s
+    // Retry #2 fires push #3 at t=4000. Do not advance further — the next retry
+    // sits at t=9000 and would be an unwanted 4th call.
     await vi.advanceTimersByTimeAsync(2000)
-    await vi.runOnlyPendingTimersAsync()
 
     expect(fetchFn).toHaveBeenCalledTimes(3)
     expect(errors.length).toBeGreaterThanOrEqual(1)
