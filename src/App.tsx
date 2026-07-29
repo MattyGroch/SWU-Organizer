@@ -3177,32 +3177,48 @@ export function Binder({
                       <>
                         {/* TOP-LEFT: Type then Name/Subtitle */}
                         <g transform={`translate(${x + 10}, ${y + 8})`} style={{ pointerEvents: 'none' }}>
-                          <foreignObject width={cellW - 20} height={60}>
+                          <foreignObject width={cellW - 20} height={72}>
                             <div
                                 style={{
                                   fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto, Arial',
                                   color: labelColor,
-                                  lineHeight: 1.18,
-                                  display: 'flex', flexDirection: 'column', gap: 2,
+                                  lineHeight: 1.1,
+                                  display: 'flex', flexDirection: 'column', gap: 1,
                                 }}>
                               <div style={{ fontSize: 10, opacity: 0.85 }}>{cardAt?.Type || ''}</div>
-                              
+
                               {/* Main Name */}
-                              <div style={{
-                                fontSize: 12, fontWeight: 600,
-                              }}>
+                              <div
+                                title={cardAt?.Name}
+                                style={{
+                                  fontSize: 12,
+                                  fontWeight: 600,
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  overflow: 'hidden',
+                                  wordBreak: 'break-word',
+                                }}
+                              >
                                 {cardAt?.Name}
                               </div>
-                              
-                              {/* Subtitle with smaller font */}
+
+                              {/* Subtitle with smaller font, clamped with ellipsis when it overflows */}
                               {cardAt?.Subtitle && (
-                                <div style={{
-                                  fontSize: 10, // Smaller font size
-                                  opacity: 0.8,
-                                  fontWeight: 500,
-                                  lineHeight: 1,
-                                  marginTop: 1,
-                                }}>
+                                <div
+                                  title={cardAt.Subtitle}
+                                  style={{
+                                    fontSize: 10,
+                                    opacity: 0.8,
+                                    fontWeight: 500,
+                                    lineHeight: 1.05,
+                                    display: '-webkit-box',
+                                    WebkitLineClamp: 3,
+                                    WebkitBoxOrient: 'vertical',
+                                    overflow: 'hidden',
+                                    wordBreak: 'break-word',
+                                  }}
+                                >
                                   {cardAt.Subtitle}
                                 </div>
                               )}
