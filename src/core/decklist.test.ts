@@ -150,6 +150,21 @@ describe('parseDeckJson', () => {
     expect(parsed.entries).toHaveLength(2)
     expect(parsed.malformed).toHaveLength(1)
   })
+
+  it('parses a Twin Suns deck with a secondleader key as a second leader entry', () => {
+    const parsed = parseDeckJson(
+      JSON.stringify({
+        leader: { id: 'SHD_012', count: 1 },
+        secondleader: { id: 'ASH_001', count: 1 },
+        base: { id: 'SOR_030', count: 1 },
+        deck: [],
+      }),
+    )
+    expect(parsed.entries.filter(e => e.role === 'leader')).toEqual([
+      { role: 'leader', name: 'SHD_012', count: 1, exact: { setKey: 'SHD', printingNumber: 12 } },
+      { role: 'leader', name: 'ASH_001', count: 1, exact: { setKey: 'ASH', printingNumber: 1 } },
+    ])
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -551,6 +566,24 @@ describe('computeDeckRows and summarizeDeck', () => {
     const summaryNoLeaderBase = summarizeDeck(noLeaderBase, false)
     expect(summaryNoLeaderBase.leaderOwned).toBeNull()
     expect(summaryNoLeaderBase.baseOwned).toBeNull()
+  })
+
+  it('requires ALL leader rows to be owned for a Twin Suns two-leader deck', () => {
+    const twinSunsRows = [
+      ...baseRows,
+      { role: 'leader' as const, count: 1, setKey: 'SEC', baseNumber: 1, name: 'Second Leader', type: 'Leader', price: 3, ambiguous: false },
+    ]
+
+    // Only the first leader (ASH:10) is owned; the second (SEC:1) is not.
+    const ownedFirstOnly = (setKey: SetKey, baseNumber: number) => (setKey === 'ASH' && baseNumber === 10 ? 1 : 0)
+    const partial = summarizeDeck(computeDeckRows(twinSunsRows, ownedFirstOnly), false)
+    expect(partial.leaderOwned).toBe(false)
+
+    // Both leaders owned.
+    const ownedBoth = (setKey: SetKey, baseNumber: number) =>
+      (setKey === 'ASH' && baseNumber === 10) || (setKey === 'SEC' && baseNumber === 1) ? 1 : 0
+    const complete = summarizeDeck(computeDeckRows(twinSunsRows, ownedBoth), false)
+    expect(complete.leaderOwned).toBe(true)
   })
 })
 

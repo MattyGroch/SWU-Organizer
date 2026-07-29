@@ -231,7 +231,10 @@ export function DeckCheckModal({
               <span className="pill">Needed cards: {summary.totalNeededCards}</span>
               <span className="pill">Cost to complete: {money(summary.totalCost)}</span>
               {summary.leaderOwned !== null && (
-                <span className="pill">Leader: {summary.leaderOwned ? 'Owned ✓' : 'Missing'}</span>
+                <span className="pill">
+                  {rows.filter(r => r.role === 'leader').length > 1 ? 'Leaders' : 'Leader'}:{' '}
+                  {summary.leaderOwned ? 'Owned ✓' : 'Missing'}
+                </span>
               )}
               {summary.baseOwned !== null && (
                 <span className="pill">Base: {summary.baseOwned ? 'Owned ✓' : 'Missing'}</span>
