@@ -1,0 +1,116 @@
+import { describe, expect, it } from 'vitest'
+import request from 'supertest'
+import { makeTestApp, memoryDb, seedUserWithSession } from './helpers.js'
+
+describe('inventories API', () => {
+  it('rejects unauthenticated requests', async () => {
+    const db = memoryDb()
+    const app = makeTestApp(db)
+    const res = await request(app).get('/api/inventories')
+    expect(res.status).toBe(401)
+  })
+
+  it('returns empty sets for a fresh user', async () => {
+    const db = memoryDb()
+    const app = makeTestApp(db)
+    const { cookie } = seedUserWithSession(db)
+    const res = await request(app).get('/api/inventories').set('Cookie', cookie)
+    expect(res.status).toBe(200)
+    expect(res.body).toEqual({ sets: {} })
+  })
+
+  it('creates a new inventory when If-Match: 0', async () => {
+    const db = memoryDb()
+    const app = makeTestApp(db)
+    const { cookie } = seedUserWithSession(db)
+    const res = await request(app)
+      .put('/api/inventories/SOR')
+      .set('Cookie', cookie)
+      .set('If-Match', '0')
+      .send({ data: { 42: 2 } })
+    expect(res.status).toBe(200)
+    expect(res.body).toEqual({ version: 1 })
+
+    const list = await request(app).get('/api/inventories').set('Cookie', cookie)
+    expect(list.body.sets.SOR).toMatchObject({ data: { '42': 2 }, version: 1 })
+  })
+
+  it('bumps version on subsequent writes with matching If-Match', async () => {
+    const db = memoryDb()
+    const app = makeTestApp(db)
+    const { cookie } = seedUserWithSession(db)
+    await request(app)
+      .put('/api/inventories/SOR')
+      .set('Cookie', cookie)
+      .set('If-Match', '0')
+      .send({ data: { 1: 1 } })
+    const res = await request(app)
+      .put('/api/inventories/SOR')
+      .set('Cookie', cookie)
+      .set('If-Match', '1')
+      .send({ data: { 1: 2 } })
+    expect(res.status).toBe(200)
+    expect(res.body).toEqual({ version: 2 })
+  })
+
+  it('returns 409 with the current state when If-Match is stale', async () => {
+    const db = memoryDb()
+    const app = makeTestApp(db)
+    const { cookie } = seedUserWithSession(db)
+    await request(app)
+      .put('/api/inventories/SOR')
+      .set('Cookie', cookie)
+      .set('If-Match', '0')
+      .send({ data: { 1: 1 } })
+    const res = await request(app)
+      .put('/api/inventories/SOR')
+      .set('Cookie', cookie)
+      .set('If-Match', '0')
+      .send({ data: { 1: 9 } })
+    expect(res.status).toBe(409)
+    expect(res.body.error).toBe('version_conflict')
+    expect(res.body.current).toMatchObject({ data: { '1': 1 }, version: 1 })
+  })
+
+  it('requires If-Match header on PUT :setKey', async () => {
+    const db = memoryDb()
+    const app = makeTestApp(db)
+    const { cookie } = seedUserWithSession(db)
+    const res = await request(app)
+      .put('/api/inventories/SOR')
+      .set('Cookie', cookie)
+      .send({ data: { 1: 1 } })
+    expect(res.status).toBe(428)
+  })
+
+  it('bulk PUT replaces all sets atomically and resets versions to 1', async () => {
+    const db = memoryDb()
+    const app = makeTestApp(db)
+    const { cookie } = seedUserWithSession(db)
+    await request(app)
+      .put('/api/inventories/SOR')
+      .set('Cookie', cookie)
+      .set('If-Match', '0')
+      .send({ data: { 1: 3 } })
+
+    const res = await request(app)
+      .put('/api/inventories')
+      .set('Cookie', cookie)
+      .send({ sets: { SOR: { 2: 1 }, SHD: { 7: 3 } } })
+    expect(res.status).toBe(200)
+    expect(res.body.sets.SOR).toMatchObject({ data: { '2': 1 }, version: 1 })
+    expect(res.body.sets.SHD).toMatchObject({ data: { '7': 3 }, version: 1 })
+  })
+
+  it('rejects invalid set keys', async () => {
+    const db = memoryDb()
+    const app = makeTestApp(db)
+    const { cookie } = seedUserWithSession(db)
+    const res = await request(app)
+      .put('/api/inventories/bad-key')
+      .set('Cookie', cookie)
+      .set('If-Match', '0')
+      .send({ data: {} })
+    expect(res.status).toBe(400)
+  })
+})

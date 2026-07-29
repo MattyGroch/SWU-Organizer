@@ -41,3 +41,8 @@ coverage/
 
 # ---- Docker (local overrides) ----
 docker-compose.override.yml
+
+# ---- Runtime data (local-dev SQLite; prod bind mount is /var/config/swu-organizer) ----
+data/
+server/.env
+

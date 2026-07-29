@@ -24,7 +24,7 @@ export default tseslint.config(
         'warn',
         {
           allowConstantExport: true,
-          allowExportNames: ['parseCsvData', 'parseXlsxData'],
+          allowExportNames: ['parseCsvData', 'parseXlsxData', 'summarize'],
         },
       ],
       '@typescript-eslint/no-unused-vars': [
