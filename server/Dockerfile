@@ -1,20 +1,23 @@
 # ---------- build stage ----------
-FROM node:20-alpine AS build
+# Using bookworm-slim (Debian, glibc) because better-sqlite3 publishes
+# prebuilt linux-x64 binaries for glibc but NOT for Alpine's musl. On Alpine
+# we'd have to compile from source (python3/make/g++), which has been flaky
+# in Portainer builds. Debian pulls the prebuild and skips native compile.
+FROM node:20-bookworm-slim AS build
 WORKDIR /app
-RUN apk add --no-cache python3 make g++
 COPY package*.json ./
 RUN npm ci
 COPY tsconfig.json ./
 COPY src ./src
 RUN npm run build
-# Drop devDependencies here (build tools are still present, so native rebuilds
-# succeed). The runtime image reuses the resulting node_modules verbatim.
 RUN npm prune --omit=dev
 
 # ---------- runtime ----------
-FROM node:20-alpine
+FROM node:20-bookworm-slim
 WORKDIR /app
-RUN apk add --no-cache wget
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends wget \
+    && rm -rf /var/lib/apt/lists/*
 ENV NODE_ENV=production
 COPY --from=build /app/package*.json ./
 COPY --from=build /app/node_modules ./node_modules
