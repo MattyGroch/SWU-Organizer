@@ -38,6 +38,7 @@ import {
 } from './core/cloudSync';
 import { useAuth } from './hooks/useAuth';
 import { AuthMenu } from './components/AuthMenu';
+import { DataMenu } from './components/DataMenu';
 import {
   CloudMigrationModal,
   summarize,
@@ -690,7 +691,6 @@ export default function App() {
   const setKeys = useMemo(() => sets.map(set => set.key as SetKey), [sets]);
   const searchRef = useRef<HTMLInputElement | null>(null);
   const submitSearchRef = useRef<() => void>(() => {});
-  const importRef = useRef<HTMLInputElement>(null);
   const [showImportModal, setShowImportModal] = useState(false);
   const [importData, setImportData] = useState<Record<SetKey, Inventory>>({});
   const [importStats, setImportStats] = useState({ recognized: 0, skipped: 0 });
@@ -724,6 +724,7 @@ export default function App() {
   const cloudSyncRef = useRef<CloudSync | null>(null);
   const applyRemoteInventoryRef = useRef<(setKey: SetKey, data: Inventory) => void>(() => {});
   const [syncStatus, setSyncStatus] = useState<SyncStatus>('off');
+  const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null);
   const [migrationPrompt, setMigrationPrompt] = useState<null | {
     local: Record<SetKey, Inventory>;
     cloud: Record<SetKey, { data: Inventory; version: number }>;
@@ -867,9 +868,15 @@ export default function App() {
   useEffect(() => {
     const sync = cloudSyncRef.current;
     if (!sync) return;
+    const persistedLastPulledAt = sync.getState().lastPulledAt;
+    if (persistedLastPulledAt) setLastSyncedAt(persistedLastPulledAt);
     const unsub = sync.subscribe((event: SyncEvent) => {
       if (event.type === 'status') {
         setSyncStatus(event.status);
+        return;
+      }
+      if (event.type === 'pulled' || event.type === 'pushed') {
+        setLastSyncedAt(Date.now());
         return;
       }
       if (event.type === 'signout') {
@@ -1792,6 +1799,17 @@ export default function App() {
           return;
         } // End Page Flip Logic
 
+        // Set switching shortcuts ("[" and "]")
+        if (e.key === '[') {
+          e.preventDefault();
+          changeSet('prev');
+          return;
+        } else if (e.key === ']') {
+          e.preventDefault();
+          changeSet('next');
+          return;
+        }
+
         // Card selection movement (Arrow keys) and Qty Adjust
         if (active) {
           if (e.key === 'ArrowLeft') {
@@ -1819,7 +1837,7 @@ export default function App() {
 
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [active, query, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages]);
+  }, [active, query, totalSpreads, updateActivePosition, inc, dec, byNumber, totalPages, changeSet]);
 
   const fmtUSD = (n: number) =>
     n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
@@ -2005,7 +2023,7 @@ export default function App() {
             }}
         >
       {/* Top bar (no page control here anymore) */}
-      <div className="card" style={{ marginBottom: 16 }}>
+      <div className="card nav-bar" style={{ marginBottom: 16 }}>
         <h1 className="title">SWU Binder Organizer</h1>
         <div className="row controls-row" style={{ marginTop: 8 }} ref={boxRef}>
           <div
@@ -2019,10 +2037,10 @@ export default function App() {
               className="btn set-switch-btn"
               disabled={!prevSetKey}
               onClick={() => changeSet('prev')}
-              title={prevSetKey ? `Switch to set ${prevSetKey}` : undefined}
-              aria-label={prevSetKey ? `Previous set: ${prevSetKey}` : 'Previous set (none)'}
+              title={prevSetKey ? `Switch to set ${prevSetKey} — keyboard [` : undefined}
+              aria-label={prevSetKey ? `Previous set: ${prevSetKey}, keyboard [` : 'Previous set (none)'}
             >
-              ‹
+              ‹ <span className="key-pill">[</span>
             </button>
             <label className="pill">
               <span className="set-label">Set</span>
@@ -2040,10 +2058,10 @@ export default function App() {
               className="btn set-switch-btn"
               disabled={!nextSetKey}
               onClick={() => changeSet('next')}
-              title={nextSetKey ? `Switch to set ${nextSetKey}` : undefined}
-              aria-label={nextSetKey ? `Next set: ${nextSetKey}` : 'Next set (none)'}
+              title={nextSetKey ? `Switch to set ${nextSetKey} — keyboard ]` : undefined}
+              aria-label={nextSetKey ? `Next set: ${nextSetKey}, keyboard ]` : 'Next set (none)'}
             >
-              ›
+              <span className="key-pill">]</span> ›
             </button>
           </div>
 
@@ -2151,44 +2169,15 @@ export default function App() {
             authStatus={auth.status}
             email={auth.email}
             syncStatus={syncStatus}
+            lastSyncedAt={lastSyncedAt}
             onSignOut={auth.signOut}
+            onSyncNow={() => cloudSyncRef.current?.flushDirty() ?? Promise.resolve()}
           />
-          <div className="toolbar-block">
-            <div className="toolbar-label">Inventory Controls</div>
-            <div className="toolbar-group">
-              {/* Import button points to the hidden file input */}
-              <button className="tbtn" onClick={() => importRef.current?.click()} title="Import inventory data (JSON / CSV / XLSX)" aria-label="Import inventory data">
-                  <span className="icon" aria-hidden="true">upload</span> <span>Import…</span>
-              </button>
-              <input 
-                  ref={importRef} 
-                  type="file" 
-                  accept=".json,.csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                  style={{ display: 'none' }} 
-                  onChange={handleFileChange}
-              />
-              {/* Save / Export */}
-              <button
-                className="tbtn"
-                onClick={() => exportAllInv()}
-                title="Save inventory to JSON"
-                aria-label="Save inventory to JSON"
-              >
-                <span className="icon" aria-hidden="true">save</span>
-                <span>Save</span>
-              </button>
-
-              {/* Reset */}
-              <button 
-                  className="tbtn tbtn-danger" 
-                  onClick={resetInv} 
-                  title="Reset inventory" 
-                  aria-label="Reset inventory" 
-              > 
-                  <span className="icon" aria-hidden="true">delete</span> <span>Reset</span>
-              </button>
-            </div>
-          </div>
+          <DataMenu
+            onImportFile={handleFileChange}
+            onExport={exportAllInv}
+            onReset={resetInv}
+          />
 
           {error && <span className="err">{error}</span>}
         </div>
@@ -3341,6 +3330,12 @@ export function Binder({
                         <td style={{ padding: '8px 0' }}>Flip Page Left/Right</td>
                         <td style={{ padding: '8px 0' }}>
                           <span className="key-pill">,</span> / <span className="key-pill">.</span>
+                        </td>
+                    </tr>
+                    <tr style={{ borderBottom: '1px dotted #424452' }}>
+                        <td style={{ padding: '8px 0' }}>Previous/Next Set</td>
+                        <td style={{ padding: '8px 0' }}>
+                          <span className="key-pill">[</span> / <span className="key-pill">]</span>
                         </td>
                     </tr>
                     <tr style={{ borderBottom: '1px dotted #424452' }}>
