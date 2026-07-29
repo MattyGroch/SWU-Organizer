@@ -22,6 +22,7 @@
       body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background:#0b0b0f; color:#eaeaf0; padding-bottom: var(--gh-badge-space); }
       .container { max-width: min(1920px, calc(100vw - 24px)); width: 100%; margin: 24px auto; padding: 0 16px; box-sizing: border-box; }
       .card { background:#11121a; border: 1px solid #232433; border-radius: 16px; padding: 16px; }
+      .nav-bar { position: sticky; top: 0; z-index: 40; box-shadow: 0 4px 12px rgba(0,0,0,0.35); }
       .row { display:flex; gap:12px; flex-wrap:wrap; align-items: center; }
       .row > * { flex: none; }
       input, select { background:#0f1017; color:#eaeaf0; border:1px solid #2b2d3d; border-radius:10px; padding:10px 12px; outline:none; }
@@ -342,6 +343,12 @@
         font-size: 18px;        /* tweak per spot if needed */
         -webkit-font-smoothing: antialiased;
       }
+      .icon-sm{ font-size: 15px; }
+      .icon-spin{ animation: icon-spin 1.2s linear infinite; }
+      @keyframes icon-spin{
+        from{ transform: rotate(0deg); }
+        to{ transform: rotate(360deg); }
+      }
       .controls-row .autocomplete .search-icon .icon{
         font-family: 'Material Symbols Rounded';
         font-weight: 400;
@@ -486,6 +493,11 @@
       .controls-row .set-switch-btn:focus-visible{
         outline: 2px solid #8b5cf6;
         outline-offset: 2px;
+      }
+      .controls-row .set-switch-btn .key-pill{
+        font-size: 0.55em;
+        margin: 0 2px;
+        vertical-align: middle;
       }
 
       .key-pill {
