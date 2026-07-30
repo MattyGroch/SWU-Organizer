@@ -103,7 +103,7 @@ export function detectDeckFormat(text: string): DeckFormat {
   }
 
   if (/^Picklist:/m.test(trimmed)) return 'picklist'
-  if (/^(Leader|Base|MainDeck|Sideboard)\s*$/m.test(trimmed)) return 'melee'
+  if (/^(Leaders?|Bases?|Main ?Deck|Deck|Sideboards?)\s*$/im.test(trimmed)) return 'melee'
   return 'generic'
 }
 
@@ -169,10 +169,15 @@ export function parseDeckJson(text: string): ParsedDeckList {
 // ---------------------------------------------------------------------------
 
 const MELEE_HEADERS: Record<string, DeckRole> = {
-  Leader: 'leader',
-  Base: 'base',
-  MainDeck: 'deck',
-  Sideboard: 'sideboard',
+  leader: 'leader',
+  leaders: 'leader',
+  base: 'base',
+  bases: 'base',
+  maindeck: 'deck',
+  'main deck': 'deck',
+  deck: 'deck',
+  sideboard: 'sideboard',
+  sideboards: 'sideboard',
 }
 
 const MELEE_CARD_LINE = /^(\d+)\s*\|\s*([^|]+?)\s*(?:\|\s*(.+))?$/
@@ -186,8 +191,9 @@ export function parseDeckMelee(text: string): ParsedDeckList {
   for (const rawLine of lines) {
     const line = rawLine.trim()
     if (!line) continue
-    if (line in MELEE_HEADERS) {
-      currentRole = MELEE_HEADERS[line]
+    const headerRole = MELEE_HEADERS[line.toLowerCase()]
+    if (headerRole) {
+      currentRole = headerRole
       continue
     }
     if (!currentRole) continue
