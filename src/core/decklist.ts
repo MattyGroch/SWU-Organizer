@@ -146,6 +146,8 @@ export function parseDeckJson(text: string): ParsedDeckList {
   }
 
   pushRef('leader', payload.leader, 'leader')
+  // Twin Suns decks run two leaders; swudb-style exports carry the second under `secondleader`.
+  pushRef('leader', payload.secondleader, 'secondleader')
   pushRef('base', payload.base, 'base')
   if (Array.isArray(payload.deck)) {
     payload.deck.forEach((item, i) => pushRef('deck', item, `deck[${i}]`))
@@ -565,16 +567,21 @@ export function computeDeckRows(
 export function summarizeDeck(rows: DeckRowWithNeed[], includeSideboard: boolean): DeckSummary {
   let totalNeededCards = 0
   let totalCost = 0
-  let leaderOwned: boolean | null = null
-  let baseOwned: boolean | null = null
+  // Twin Suns decks run two leader rows — track all of them rather than the last one seen,
+  // so a partially-owned pair of leaders doesn't get reported as fully owned.
+  const leaderRows: DeckRowWithNeed[] = []
+  const baseRows: DeckRowWithNeed[] = []
 
   for (const row of rows) {
     if (row.role === 'sideboard' && !includeSideboard) continue
     totalNeededCards += row.needed
     totalCost += row.rowCost
-    if (row.role === 'leader') leaderOwned = row.have >= row.count
-    if (row.role === 'base') baseOwned = row.have >= row.count
+    if (row.role === 'leader') leaderRows.push(row)
+    if (row.role === 'base') baseRows.push(row)
   }
+
+  const leaderOwned = leaderRows.length ? leaderRows.every(r => r.have >= r.count) : null
+  const baseOwned = baseRows.length ? baseRows.every(r => r.have >= r.count) : null
 
   return { totalNeededCards, totalCost, leaderOwned, baseOwned }
 }

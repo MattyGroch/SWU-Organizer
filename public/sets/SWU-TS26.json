@@ -1,0 +1,858 @@
+{
+  "data": [
+    {
+      "Name": "501st Veteran",
+      "Number": 20,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Abandoned the Order",
+      "Number": 37,
+      "Aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Ahsoka Tano",
+      "Subtitle": "I Have an Idea",
+      "Number": 8,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ahsoka's Lightsabers",
+      "Number": 35,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Anakin Skywalker",
+      "Subtitle": "Protect Her At All Costs",
+      "Number": 2,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Arena Reek",
+      "Number": 44,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Arms Deal",
+      "Number": 68,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Asajj Ventress",
+      "Subtitle": "Ambitious Apprentice",
+      "Number": 7,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Assault Lander LAAT",
+      "Number": 23,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Backed by Black Sun",
+      "Number": 70,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Backed by the Pykes",
+      "Number": 58,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Barriss Offee",
+      "Subtitle": "It's Only a Matter of Time",
+      "Number": 78,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Bo-Katan Kryze",
+      "Subtitle": "The Lawless",
+      "Number": 65,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Brothers",
+      "Number": 59,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "C-3P0",
+      "Subtitle": "Die, Jedi Dogs!",
+      "Number": 15,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Captain Vaughn",
+      "Subtitle": "Search the Tunnels",
+      "Number": 39,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Champion",
+      "Number": 45,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Chaotic Diversion",
+      "Number": 31,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Coleman Trebor",
+      "Subtitle": "Jedi Rescuer",
+      "Number": 19,
+      "Aspects": [
+        "Vigilance",
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Coruscanti Spy",
+      "Number": 53,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Count Dooku",
+      "Subtitle": "Offering Aid",
+      "Number": 1,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Darth Sidious",
+      "Subtitle": "Under a Cloak of Darkness",
+      "Number": 13,
+      "Aspects": [
+        "Vigilance",
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Deployed Droideka",
+      "Number": 77,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dooku's Palace",
+      "Subtitle": "Serenno",
+      "Number": 10,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Base",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Dooku's Solar Sailer",
+      "Subtitle": "Beautiful and Expensive",
+      "Number": 38,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Encircle",
+      "Number": 61,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Evade Arrest",
+      "Number": 82,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Executioner's Arena",
+      "Subtitle": "Geonosis",
+      "Number": 11,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Base",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Fearless Attack",
+      "Number": 84,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Fervor",
+      "Number": 72,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Fiery Alliance",
+      "Number": 25,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "First Battle Memorial",
+      "Subtitle": "Coruscant",
+      "Number": 9,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Base",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Fives",
+      "Subtitle": "I Have Proof!",
+      "Number": 34,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Fortune and Glory",
+      "Subtitle": "Hondo's Luxury Yacht",
+      "Number": 27,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Galactic Escalation",
+      "Number": 56,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gar Saxon",
+      "Subtitle": "Sundari Pillager",
+      "Number": 21,
+      "Aspects": [
+        "Command",
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "General Grievous",
+      "Subtitle": "Crush Them!",
+      "Number": 50,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Jango Fett",
+      "Subtitle": "Guarding the Count",
+      "Number": 75,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Jedi General",
+      "Number": 55,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Jendirian Valley",
+      "Subtitle": "Refugee Freighter",
+      "Number": 18,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "King Katuunko",
+      "Subtitle": "Great King of Toydaria",
+      "Number": 16,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Kouhun Assassination",
+      "Number": 33,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Lom Pyke",
+      "Subtitle": "Making a Withdrawal",
+      "Number": 51,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "Collective Ambition",
+      "Number": 3,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "One Last Lesson",
+      "Number": 30,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Mechanize",
+      "Number": 57,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Mislead",
+      "Number": 81,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Moralo Eval",
+      "Subtitle": "Infamous Murderer",
+      "Number": 73,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mother Talzin",
+      "Subtitle": "Stealing the Spirit",
+      "Number": 26,
+      "Aspects": [
+        "Command",
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Obi-Wan Kenobi",
+      "Subtitle": "Steadfast Knight",
+      "Number": 40,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Padmé Amidala",
+      "Subtitle": "Follow My Lead",
+      "Number": 4,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Pre Vizsla",
+      "Subtitle": "For Mandalore!",
+      "Number": 74,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Prime Minister Almec",
+      "Subtitle": "Scheming Populist",
+      "Number": 28,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "R2-D2",
+      "Subtitle": "Getting His Chance",
+      "Number": 62,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Reckless Landing",
+      "Number": 32,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Relief Frigate",
+      "Number": 42,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Remove the Chip",
+      "Number": 69,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Reveal Intentions",
+      "Number": 80,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Rex",
+      "Subtitle": "No Other Option",
+      "Number": 6,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Rex's DC-17s",
+      "Number": 63,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ruping Rider",
+      "Number": 67,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Rush Clovis",
+      "Subtitle": "Trapped by Authority",
+      "Number": 17,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Savage Opress",
+      "Subtitle": "You Must Have Your Revenge",
+      "Number": 5,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Secret Marriage",
+      "Number": 46,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Separatist Council",
+      "Subtitle": "Quarrelsome Holdouts",
+      "Number": 49,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Sith Traditions",
+      "Number": 52,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Sundari Gauntlet",
+      "Number": 24,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Sundari Palace",
+      "Subtitle": "Mandalore",
+      "Number": 12,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Base",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Take Action",
+      "Number": 71,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Take Aim",
+      "Number": 83,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Take Charge",
+      "Number": 60,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Take Cover",
+      "Number": 47,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "The Darksaber",
+      "Subtitle": "Only the Strongest Shall Rule",
+      "Number": 22,
+      "Aspects": [
+        "Command",
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Tribunal",
+      "Subtitle": "Grave of the 332nd",
+      "Number": 36,
+      "Aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Twilight",
+      "Subtitle": "Escaping Malevolence",
+      "Number": 41,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Underestimated",
+      "Number": 79,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Urgent Mission",
+      "Number": 64,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Vanquish the Legion",
+      "Number": 48,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Wartime Mercenaries",
+      "Number": 54,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wartime Pirate",
+      "Number": 66,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wartime Profiteer",
+      "Number": 76,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wartime Refugee",
+      "Number": 43,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Yoda",
+      "Subtitle": "Begun, the Clone War Has",
+      "Number": 14,
+      "Aspects": [
+        "Vigilance",
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ziton Moj",
+      "Subtitle": "Sowing Chaos",
+      "Number": 29,
+      "Aspects": [
+        "Aggression",
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    }
+  ]
+}
