@@ -1,0 +1,140 @@
+{
+  "leader": {
+    "setKey": "JTL",
+    "baseNumber": 17,
+    "count": 1
+  },
+  "base": {
+    "setKey": "SOR",
+    "baseNumber": 24,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "JTL",
+      "baseNumber": 93,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 96,
+      "count": 2
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 97,
+      "count": 2
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 103,
+      "count": 3
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 124,
+      "count": 2
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 196,
+      "count": 3
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 200,
+      "count": 3
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 208,
+      "count": 3
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 209,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 210,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 215,
+      "count": 2
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 217,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 235,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 245,
+      "count": 2
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 249,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 95,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 195,
+      "count": 3
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 97,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 192,
+      "count": 2
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 204,
+      "count": 2
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 217,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 222,
+      "count": 3
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 110,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 114,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 191,
+      "count": 3
+    }
+  ],
+  "sideboard": []
+}

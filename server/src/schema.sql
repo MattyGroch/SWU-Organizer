@@ -25,4 +25,12 @@ CREATE TABLE IF NOT EXISTS inventories (
   PRIMARY KEY (user_id, set_key)
 );
 
-PRAGMA user_version = 1;
+-- One row per user: the whole personal deck library (precon ownership + saved decks) as one blob.
+CREATE TABLE IF NOT EXISTS deck_library (
+  user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  data_json TEXT NOT NULL,
+  version INTEGER NOT NULL,
+  updated_at INTEGER NOT NULL
+);
+
+PRAGMA user_version = 2;

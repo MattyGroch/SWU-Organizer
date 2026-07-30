@@ -1,0 +1,130 @@
+{
+  "leader": {
+    "setKey": "LOF",
+    "baseNumber": 16,
+    "count": 1
+  },
+  "base": {
+    "setKey": "LOF",
+    "baseNumber": 23,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "JTL",
+      "baseNumber": 203,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 96,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 99,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 100,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 104,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 111,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 190,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 193,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 194,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 196,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 197,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 198,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 199,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 201,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 218,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 227,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 242,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 249,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 255,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 96,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 219,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 193,
+      "count": 2
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 217,
+      "count": 2
+    }
+  ],
+  "sideboard": []
+}

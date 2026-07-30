@@ -1,0 +1,150 @@
+{
+  "leader": {
+    "setKey": "SHD",
+    "baseNumber": 7,
+    "count": 1
+  },
+  "base": {
+    "setKey": "SHD",
+    "baseNumber": 19,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "SHD",
+      "baseNumber": 31,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 93,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 238,
+      "count": 2
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 262,
+      "count": 2
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 130,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 85,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 125,
+      "count": 2
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 113,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 71,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 234,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 120,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 83,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 30,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 124,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 82,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 63,
+      "count": 2
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 89,
+      "count": 2
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 81,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 129,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 28,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 236,
+      "count": 2
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 242,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 84,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 118,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 39,
+      "count": 3
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 128,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 110,
+      "count": 2
+    }
+  ],
+  "sideboard": []
+}

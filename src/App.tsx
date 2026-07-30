@@ -40,12 +40,27 @@ import { useAuth } from './hooks/useAuth';
 import { AuthMenu } from './components/AuthMenu';
 import { DataMenu } from './components/DataMenu';
 import { DeckCheckModal } from './components/DeckCheckModal';
+import { DecksView } from './components/DecksView';
 import { formatMissingLine, type DeckLookupSet } from './core/decklist';
 import {
   CloudMigrationModal,
   summarize,
   type MigrationChoice,
 } from './components/CloudMigrationModal';
+import { fetchPreconCatalog, type PreconCatalogEntry } from './core/precons';
+import {
+  deriveOwnedTotals,
+  loadDeckLibrary,
+  persistDeckLibrary,
+  type DeckLibrary,
+  type SavedDeck,
+} from './core/decks';
+import {
+  createDeckSync,
+  makeDeckBroadcast,
+  type DeckSync,
+  type DeckSyncEvent,
+} from './core/deckSync';
 
 /** Last entry in `manifest.json` is the newest set (release order). */
 function newestSetKeyFromManifest(list: SetMeta[]): SetKey {
@@ -700,6 +715,10 @@ export default function App() {
   const [showResetModal, setShowResetModal] = useState(false);
   const [showDeckCheckModal, setShowDeckCheckModal] = useState(false);
   const [listView, setListView] = React.useState<'inventory' | 'missing'>('inventory');
+  const [view, setView] = useState<'binder' | 'decks'>('binder');
+  const [ownershipScope, setOwnershipScope] = useState<'combined' | 'bindersOnly'>('combined');
+  const [preconCatalog, setPreconCatalog] = useState<PreconCatalogEntry[]>([]);
+  const [deckLibrary, setDeckLibrary] = useState<DeckLibrary>(() => loadDeckLibrary(localStorage));
 
   // In-app toast notifications (replaces window.alert)
   type ToastKind = 'success' | 'error' | 'warning';
@@ -740,6 +759,23 @@ export default function App() {
       onLocalApply: (incomingKey, data) => applyRemoteInventoryRef.current(incomingKey, data),
     });
   }
+
+  const deckSyncRef = useRef<DeckSync | null>(null);
+  const applyRemoteDeckLibraryRef = useRef<(data: DeckLibrary) => void>(() => {});
+  if (deckSyncRef.current == null) {
+    deckSyncRef.current = createDeckSync({
+      storage: localStorage,
+      fetch: (input, init) => fetch(input, init),
+      broadcast: makeDeckBroadcast(),
+      onLocalApply: data => applyRemoteDeckLibraryRef.current(data),
+    });
+  }
+
+  useEffect(() => {
+    fetchPreconCatalog(fetch).then(setPreconCatalog).catch(() => {
+      // Precon catalog is optional/additive — a fetch failure just means no precon checklist for this load.
+    });
+  }, []);
 
   useEffect(() => {
     fetch('/sets/manifest.json')
@@ -868,6 +904,43 @@ export default function App() {
     };
   }, [canonicalCatalog, setKey]);
 
+  // Deck library (precon ownership + saved decks) — kept separate from binder inventory.
+  useEffect(() => {
+    if (!persistDeckLibrary(localStorage, deckLibrary)) {
+      showToast('Deck library could not be saved on this device.', 'error');
+      return;
+    }
+    deckSyncRef.current?.scheduleSync(deckLibrary);
+  }, [deckLibrary, showToast]);
+
+  useEffect(() => {
+    applyRemoteDeckLibraryRef.current = data => setDeckLibrary(data);
+  }, []);
+
+  useEffect(() => {
+    const sync = deckSyncRef.current;
+    if (!sync) return;
+    const unsub = sync.subscribe((event: DeckSyncEvent) => {
+      if (event.type === 'signout') {
+        showToast('Signed out — deck library sync paused. Sign in again to resume.', 'warning');
+        return;
+      }
+      if (event.type === 'error' && event.consecutive >= 3) {
+        showToast(`Deck library sync retrying (${event.consecutive} failed attempts).`, 'warning');
+      }
+    });
+    const onOnline = () => {
+      void sync.flushDirty().catch(() => {});
+    };
+    window.addEventListener('online', onOnline);
+    return () => {
+      unsub();
+      window.removeEventListener('online', onOnline);
+    };
+  }, [showToast]);
+
+  useEffect(() => () => deckSyncRef.current?.dispose(), []);
+
   useEffect(() => {
     const sync = cloudSyncRef.current;
     if (!sync) return;
@@ -972,6 +1045,51 @@ export default function App() {
       cancelled = true;
     };
   }, [auth.status, canonicalCatalog, setKey, setKeys]);
+
+  const deckBootstrappedRef = useRef(false);
+  useEffect(() => {
+    const sync = deckSyncRef.current;
+    if (!sync) return;
+    if (auth.status === 'loading') return;
+    if (auth.status === 'signedOut') {
+      sync.setSignedIn(false);
+      deckBootstrappedRef.current = false;
+      return;
+    }
+    if (deckBootstrappedRef.current) return;
+    deckBootstrappedRef.current = true;
+
+    let cancelled = false;
+    sync.setSignedIn(true);
+    (async () => {
+      let cloud: { data: DeckLibrary; version: number } | null = null;
+      try {
+        cloud = await sync.pull();
+      } catch {
+        return;
+      }
+      if (cancelled || !cloud) return;
+      // New feature, no legacy pre-migration state — union-merge local and cloud rather than
+      // prompting, unlike the inventory migration flow.
+      setDeckLibrary(local => {
+        const customById = new Map(local.customDecks.map(d => [d.id, d]));
+        for (const deck of cloud!.data.customDecks) {
+          if (!customById.has(deck.id)) customById.set(deck.id, deck);
+        }
+        const preconOwnership: Record<string, number> = { ...local.preconOwnership };
+        for (const [key, owned] of Object.entries(cloud!.data.preconOwnership)) {
+          preconOwnership[key] = Math.max(preconOwnership[key] ?? 0, owned);
+        }
+        return { customDecks: [...customById.values()], preconOwnership };
+      });
+      if (cancelled) return;
+      await sync.flushDirty();
+    })().catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [auth.status]);
+
   const pruneZeros = (inv: Inventory) =>
     Object.fromEntries(Object.entries(inv).filter(([,q]) => (q as number) > 0)) as Inventory;
   useEffect(() => {
@@ -1310,10 +1428,44 @@ export default function App() {
   );
 
   // Deck Check: owned-quantity lookup spanning every set (not just the currently displayed one).
+  // Binder quantities stay capped at the playset quota; owned precons + physical decks are added
+  // on top, uncapped, unless the user has switched to "Binders only".
+  const deckOwnedTotals = useMemo(
+    () => (ownershipScope === 'combined' ? deriveOwnedTotals(deckLibrary, preconCatalog) : {}),
+    [ownershipScope, deckLibrary, preconCatalog],
+  );
   const buildOwnedLookup = useCallback(() => {
     const snapshot = createInventoryExportSnapshot(localStorage, setKeys, setKey, inventory, canonicalCatalog);
-    return (targetSetKey: SetKey, baseNumber: number) => snapshot[targetSetKey]?.[baseNumber] ?? 0;
-  }, [setKeys, setKey, inventory, canonicalCatalog]);
+    return (targetSetKey: SetKey, baseNumber: number) =>
+      (snapshot[targetSetKey]?.[baseNumber] ?? 0) + (deckOwnedTotals[targetSetKey]?.[baseNumber] ?? 0);
+  }, [setKeys, setKey, inventory, canonicalCatalog, deckOwnedTotals]);
+
+  const togglePrecon = useCallback((key: string) => {
+    setDeckLibrary(lib => {
+      const owned = (lib.preconOwnership[key] ?? 0) > 0;
+      return { ...lib, preconOwnership: { ...lib.preconOwnership, [key]: owned ? 0 : 1 } };
+    });
+  }, []);
+
+  const saveDeck = useCallback((deck: SavedDeck) => {
+    setDeckLibrary(lib => ({ ...lib, customDecks: [...lib.customDecks, deck] }));
+  }, []);
+
+  const updateDeck = useCallback(
+    (id: string, patch: Partial<Pick<SavedDeck, 'name' | 'physical' | 'copies'>>) => {
+      setDeckLibrary(lib => ({
+        ...lib,
+        customDecks: lib.customDecks.map(d =>
+          d.id === id ? { ...d, ...patch, updatedAt: new Date().toISOString() } : d,
+        ),
+      }));
+    },
+    [],
+  );
+
+  const deleteDeck = useCallback((id: string) => {
+    setDeckLibrary(lib => ({ ...lib, customDecks: lib.customDecks.filter(d => d.id !== id) }));
+  }, []);
 
   // Click outside to close dropdown
   useEffect(() => {
@@ -2196,6 +2348,33 @@ export default function App() {
             onReset={resetInv}
           />
           <div className="toolbar-block">
+            <div className="toolbar-label">View</div>
+            <div className="toolbar-group" role="tablist" aria-label="Binders or Decks">
+              <button
+                type="button"
+                className="tbtn"
+                role="tab"
+                aria-selected={view === 'binder'}
+                onClick={() => setView('binder')}
+                title="Your card collection binders"
+                style={view === 'binder' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : undefined}
+              >
+                Binders
+              </button>
+              <button
+                type="button"
+                className="tbtn"
+                role="tab"
+                aria-selected={view === 'decks'}
+                onClick={() => setView('decks')}
+                title="Precon decks you own and your saved decklists"
+                style={view === 'decks' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : undefined}
+              >
+                Decks
+              </button>
+            </div>
+          </div>
+          <div className="toolbar-block">
             <div className="toolbar-label">Deck</div>
             <div className="toolbar-group">
               <button
@@ -2210,12 +2389,36 @@ export default function App() {
                 <span>Deck Check</span>
               </button>
             </div>
+            <div className="toolbar-group" role="group" aria-label="Ownership scope" style={{ marginTop: 4 }}>
+              <button
+                type="button"
+                className="tbtn"
+                aria-pressed={ownershipScope === 'combined'}
+                onClick={() => setOwnershipScope('combined')}
+                title="Count owned precons and physical decks as owned, on top of your binders"
+                style={ownershipScope === 'combined' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : undefined}
+              >
+                Binders + Decks
+              </button>
+              <button
+                type="button"
+                className="tbtn"
+                aria-pressed={ownershipScope === 'bindersOnly'}
+                onClick={() => setOwnershipScope('bindersOnly')}
+                title="Only count what's in your binders as owned"
+                style={ownershipScope === 'bindersOnly' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : undefined}
+              >
+                Binders only
+              </button>
+            </div>
           </div>
 
           {error && <span className="err">{error}</span>}
         </div>
       </div>
 
+      {view === 'binder' && (
+      <>
       {/* Binder (with spread pager + dropdown) — minimal padding so the grid can use width */}
       <div className="card" ref={binderRef} style={{ padding: 8 }}>
         <Binder
@@ -2586,6 +2789,24 @@ export default function App() {
           )
         )}
       </div>
+      </>
+      )}
+
+      {view === 'decks' && (
+        <DecksView
+          preconCatalog={preconCatalog}
+          deckLibrary={deckLibrary}
+          onTogglePrecon={togglePrecon}
+          onSaveDeck={saveDeck}
+          onUpdateDeck={updateDeck}
+          onDeleteDeck={deleteDeck}
+          canonicalCatalog={canonicalCatalog}
+          parsedSets={deckCheckParsedSets}
+          trackedSetKeys={setKeys}
+          buildOwnedLookup={buildOwnedLookup}
+          showToast={showToast}
+        />
+      )}
 
       {showDeckCheckModal && (
         <DeckCheckModal
@@ -2594,6 +2815,7 @@ export default function App() {
           trackedSetKeys={setKeys}
           buildOwnedLookup={buildOwnedLookup}
           showToast={showToast}
+          onSaveDeck={saveDeck}
           onClose={() => setShowDeckCheckModal(false)}
         />
       )}

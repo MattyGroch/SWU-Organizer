@@ -1,0 +1,130 @@
+{
+  "leader": {
+    "setKey": "IBH",
+    "baseNumber": 1,
+    "count": 1
+  },
+  "base": {
+    "setKey": "IBH",
+    "baseNumber": 2,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "IBH",
+      "baseNumber": 3,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 8,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 9,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 10,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 14,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 18,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 21,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 31,
+      "count": 1
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 7,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 12,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 13,
+      "count": 1
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 20,
+      "count": 1
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 4,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 5,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 6,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 11,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 15,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 16,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 19,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 22,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 23,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 37,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 52,
+      "count": 1
+    }
+  ],
+  "sideboard": []
+}

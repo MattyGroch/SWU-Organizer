@@ -316,6 +316,8 @@ export function parseDeckPicklist(text: string): ParsedDeckList {
 const TRAILING_SET = /[([]([A-Za-z0-9]{2,6})[)\]]\s*$/
 const QTY_NAME = /^(\d+)\s*x?\s+(.+)$/i
 const NAME_SUBTITLE = /^(.*?)\s[-–]\s(.*)$/
+/** Compact "3xSET_042" shorthand — no space, so it can't be confused with a "3x Card Name" line. */
+const QTY_EXACT_ID = /^(\d+)x([A-Za-z0-9]{2,6})_(\d+)$/i
 
 export function parseDeckGeneric(text: string): ParsedDeckList {
   const lines = text.split(/\r\n|\r|\n/)
@@ -325,6 +327,22 @@ export function parseDeckGeneric(text: string): ParsedDeckList {
   for (const rawLine of lines) {
     const line = rawLine.trim()
     if (!line) continue
+
+    const idMatch = QTY_EXACT_ID.exec(line)
+    if (idMatch) {
+      const count = Number(idMatch[1])
+      const setKey = idMatch[2].toUpperCase()
+      const printingNumber = Number(idMatch[3])
+      if (Number.isFinite(count) && count > 0 && Number.isInteger(printingNumber) && printingNumber > 0) {
+        entries.push({
+          role: 'deck',
+          name: `${setKey}_${idMatch[3]}`,
+          count,
+          exact: { setKey, printingNumber },
+        })
+        continue
+      }
+    }
 
     let working = line
     let setHint: SetKey | undefined
@@ -513,6 +531,11 @@ export function resolveDeckList(
       else if (cardType === 'leader') role = 'leader'
       else role = leaderBaseOrdinal === 0 ? 'leader' : 'base'
       leaderBaseOrdinal++
+    } else if (entry.role === 'deck' && parsed.format === 'generic') {
+      // The generic format has no leader/base sections at all — a plain "one card per line"
+      // list is the only place a Leader/Base card can otherwise never be recognized as such.
+      const cardType = (resolved.card.Type ?? '').trim().toLowerCase()
+      role = cardType === 'leader' ? 'leader' : cardType === 'base' ? 'base' : 'deck'
     } else {
       role = entry.role
     }
