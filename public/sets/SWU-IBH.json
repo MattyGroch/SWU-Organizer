@@ -1,0 +1,1034 @@
+{
+  "data": [
+    {
+      "Name": "Admiral Ozzel",
+      "Subtitle": "As Clumsy as He Is Stupid",
+      "Number": 82,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Admiral Ozzel",
+      "Subtitle": "As Clumsy as He Is Stupid",
+      "Number": 85,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Admiral Piett",
+      "Subtitle": "In Command Now",
+      "Number": 60,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Admiral Piett",
+      "Subtitle": "In Command Now",
+      "Number": 65,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Avenger",
+      "Subtitle": "Hunting the Rebels",
+      "Number": 72,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Blizzard Force AT-ST",
+      "Number": 103,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Blizzard Force AT-ST",
+      "Number": 70,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Blizzard Force AT-ST",
+      "Number": 89,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Blizzard One",
+      "Subtitle": "Veers at the Helm",
+      "Number": 99,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Bright Hope",
+      "Subtitle": "Narrow Escape",
+      "Number": 14,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Bright Hope",
+      "Subtitle": "Narrow Escape",
+      "Number": 26,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "C-3P0",
+      "Subtitle": "Oh Dear, Oh Dear",
+      "Number": 19,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "C-3P0",
+      "Subtitle": "Oh Dear, Oh Dear",
+      "Number": 41,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Rrruuuurrr",
+      "Number": 3,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Rrruuuurrr",
+      "Number": 46,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Darth Vader",
+      "Subtitle": "Don't Fail Me Again",
+      "Number": 53,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Death Squadron Star Destroyer",
+      "Number": 79,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Death Squadron Star Destroyer",
+      "Number": 98,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "E-Web Gunner",
+      "Number": 69,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "E-Web Gunner",
+      "Number": 83,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Echo Caverns",
+      "Subtitle": "Hoth",
+      "Number": 2,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Base",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Echo Coordinator",
+      "Number": 43,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Echo Coordinator",
+      "Number": 47,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Echo Coordinator",
+      "Number": 7,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Evacuation Escort",
+      "Number": 12,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Evacuation Escort",
+      "Number": 35,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Evacuation Escort",
+      "Number": 44,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "First Legion Trooper",
+      "Number": 101,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "First Legion Trooper",
+      "Number": 55,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "First Legion Trooper",
+      "Number": 73,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Forward Command Post",
+      "Subtitle": "Hoth",
+      "Number": 54,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Base",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "GR-75 Medium Transport",
+      "Number": 22,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "GR-75 Medium Transport",
+      "Number": 33,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "GR-75 Medium Transport",
+      "Number": 40,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "General Rieekan",
+      "Subtitle": "Stalwart Tactician",
+      "Number": 23,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "General Rieekan",
+      "Subtitle": "Stalwart Tactician",
+      "Number": 36,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "General Veers",
+      "Subtitle": "Leading the Assault",
+      "Number": 68,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "General Veers",
+      "Subtitle": "Leading the Assault",
+      "Number": 88,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Go for the Legs",
+      "Number": 18,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Go for the Legs",
+      "Number": 45,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Ground Assault AT-AT",
+      "Number": 56,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Ground Assault AT-AT",
+      "Number": 67,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Han Solo",
+      "Subtitle": "Scruffy-Looking Nerf Herder",
+      "Number": 10,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Han Solo",
+      "Subtitle": "Scruffy-Looking Nerf Herder",
+      "Number": 42,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Hoth Lieutenant",
+      "Number": 64,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Hoth Lieutenant",
+      "Number": 92,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Hoth Trooper",
+      "Number": 37,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Hoth Trooper",
+      "Number": 38,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Hoth Trooper",
+      "Number": 48,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "I Want Proof, Not Leads",
+      "Number": 102,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "I Want Proof, Not Leads",
+      "Number": 74,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "I'll Cover For You",
+      "Number": 39,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "I'll Cover For You",
+      "Number": 5,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "I've Found Them",
+      "Number": 25,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "I've Found Them",
+      "Number": 9,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Imperial Deck Officer",
+      "Number": 100,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Imperial Deck Officer",
+      "Number": 62,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Improvised Detonation",
+      "Number": 21,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Improvised Detonation",
+      "Number": 30,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Ion Cannon",
+      "Number": 16,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Ion Cannon",
+      "Number": 27,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Lambda Shuttle",
+      "Number": 58,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Lambda Shuttle",
+      "Number": 84,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Lambda Shuttle",
+      "Number": 90,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Leia Organa",
+      "Subtitle": "Get to Your Transports!",
+      "Number": 1,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Luke Skywalker",
+      "Subtitle": "Do You Read Me?",
+      "Number": 20,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Millennium Falcon",
+      "Subtitle": "Bucket of Bolts",
+      "Number": 31,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "R2-D2",
+      "Subtitle": "Known to Make Mistakes",
+      "Number": 11,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "R2-D2",
+      "Subtitle": "Known to Make Mistakes",
+      "Number": 49,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Rampaging Wampa",
+      "Number": 76,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Rebellion Y-Wing",
+      "Number": 24,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Rebellion Y-Wing",
+      "Number": 32,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Rebellion Y-Wing",
+      "Number": 6,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Recovery",
+      "Number": 13,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Rogue Squadron Speeder",
+      "Number": 17,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Rogue Squadron Speeder",
+      "Number": 34,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Rogue Squadron Speeder",
+      "Number": 4,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Scouting TIE Fighter",
+      "Number": 75,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Scouting TIE Fighter",
+      "Number": 81,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Scouting TIE Fighter",
+      "Number": 97,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Snowtrooper",
+      "Number": 63,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Snowtrooper",
+      "Number": 77,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Snowtrooper",
+      "Number": 87,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Snowtrooper Vanguard",
+      "Number": 57,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Snowtrooper Vanguard",
+      "Number": 80,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Snowtrooper Vanguard",
+      "Number": 96,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Surface Assault Bomber",
+      "Number": 78,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Surface Assault Bomber",
+      "Number": 93,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Surface Assault Bomber",
+      "Number": 94,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Target the Main Generator",
+      "Number": 59,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Target the Main Generator",
+      "Number": 71,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Tauntaun Mount",
+      "Number": 15,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Tauntaun Mount",
+      "Number": 28,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Tauntaun Mount",
+      "Number": 51,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "The Desolation of Hoth",
+      "Number": 104,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Too Strong for Blasters",
+      "Number": 66,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Too Strong for Blasters",
+      "Number": 91,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Trench Defender",
+      "Number": 29,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Trench Defender",
+      "Number": 50,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Trench Defender",
+      "Number": 8,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Watch This",
+      "Number": 52,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "We're In Trouble",
+      "Number": 61,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "We're In Trouble",
+      "Number": 86,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "You Have Failed Me",
+      "Number": 95,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Special"
+    }
+  ]
+}

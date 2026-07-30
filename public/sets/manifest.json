@@ -26,6 +26,11 @@
       "file": "SWU-LOF.json"
     },
     {
+      "key": "IBH",
+      "label": "Intro Battle: Hoth (IBH)",
+      "file": "SWU-IBH.json"
+    },
+    {
       "key": "SEC",
       "label": "Secrets of Power (SEC)",
       "file": "SWU-SEC.json"
@@ -34,6 +39,11 @@
       "key": "LAW",
       "label": "A Lawless Time (LAW)",
       "file": "SWU-LAW.json"
+    },
+    {
+      "key": "TS26",
+      "label": "Twin Suns 2026 (TS26)",
+      "file": "SWU-TS26.json"
     },
     {
       "key": "ASH",
