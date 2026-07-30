@@ -180,7 +180,7 @@ const MELEE_HEADERS: Record<string, DeckRole> = {
   sideboards: 'sideboard',
 }
 
-const MELEE_CARD_LINE = /^(\d+)\s*\|\s*([^|]+?)\s*(?:\|\s*(.+))?$/
+const MELEE_CARD_LINE = /^(\d+)\s*\|?\s*([^|]+?)\s*(?:\|\s*(.+))?$/
 
 export function parseDeckMelee(text: string): ParsedDeckList {
   const lines = text.split(/\r\n|\r|\n/)

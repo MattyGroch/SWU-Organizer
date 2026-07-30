@@ -210,6 +210,53 @@ describe('parseDeckMelee', () => {
     const parsed = parseDeckMelee(text)
     expect(parsed.entries).toHaveLength(1)
   })
+
+  it('parses the space-delimited variant (count name | subtitle, no pipe after count)', () => {
+    const text = [
+      'MainDeck',
+      '3 Covert Veteran',
+      '2 Coronet | Stately Vessel',
+      '',
+      'Leader',
+      '1 Bo-Katan Kryze | Reclaiming Mandalore',
+      '',
+      'Base',
+      '1 City in the Clouds',
+      '',
+      'Sideboard',
+      '3 Direct Hit',
+    ].join('\n')
+
+    const parsed = parseDeckMelee(text)
+    expect(parsed.malformed).toEqual([])
+    expect(parsed.entries).toEqual([
+      { role: 'deck', name: 'Covert Veteran', subtitle: undefined, count: 3 },
+      { role: 'deck', name: 'Coronet', subtitle: 'Stately Vessel', count: 2 },
+      { role: 'leader', name: 'Bo-Katan Kryze', subtitle: 'Reclaiming Mandalore', count: 1 },
+      { role: 'base', name: 'City in the Clouds', subtitle: undefined, count: 1 },
+      { role: 'sideboard', name: 'Direct Hit', subtitle: undefined, count: 3 },
+    ])
+  })
+
+  it('recognizes plural/lowercase header variants (Leaders, Deck)', () => {
+    const text = [
+      'Leaders',
+      '1 | Bo-Katan Kryze | Reclaiming Mandalore',
+      '',
+      'base',
+      '1 | City in the Clouds',
+      '',
+      'Deck',
+      '3 | Covert Veteran',
+      '',
+      'sideboards',
+      '3 | Direct Hit',
+    ].join('\n')
+
+    const parsed = parseDeckMelee(text)
+    expect(parsed.malformed).toEqual([])
+    expect(parsed.entries.map(e => e.role)).toEqual(['leader', 'base', 'deck', 'sideboard'])
+  })
 })
 
 // ---------------------------------------------------------------------------
