@@ -11,21 +11,20 @@ export function DataMenu({ onImportFile, onExport, onReset }: Props) {
   const importRef = React.useRef<HTMLInputElement>(null)
 
   return (
-    <div className="toolbar-block">
-      <div className="toolbar-label">Data</div>
-      <div className="toolbar-group" style={{ position: 'relative', overflow: 'visible' }}>
-        <button
-          type="button"
-          className="tbtn"
-          onClick={() => setMenuOpen(v => !v)}
-          aria-haspopup="menu"
-          aria-expanded={menuOpen}
-          title="Import, export, or reset inventory data"
-          aria-label="Data menu"
-        >
-          <span className="icon" aria-hidden="true">database</span>
-        </button>
-        {menuOpen && (
+    <div className="toolbar-group" style={{ position: 'relative', overflow: 'visible' }}>
+      <button
+        type="button"
+        className="tbtn"
+        onClick={() => setMenuOpen(v => !v)}
+        aria-haspopup="menu"
+        aria-expanded={menuOpen}
+        title="Import, export, or reset inventory data"
+        aria-label="Data menu"
+      >
+        <span className="icon" aria-hidden="true">database</span>
+        <span>Data</span>
+      </button>
+      {menuOpen && (
           <div
             role="menu"
             style={{
@@ -94,6 +93,5 @@ export function DataMenu({ onImportFile, onExport, onReset }: Props) {
           </div>
         )}
       </div>
-    </div>
   )
 }

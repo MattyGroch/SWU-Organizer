@@ -376,20 +376,11 @@
         box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
         pointer-events:none;
       }
-      /* small label above the button group */
-      .toolbar-block{
-        display:flex; flex-direction:column; gap:6px; align-items:flex-end;
-      }
-      .toolbar-label{
-        font-size:12px; color:#c8ccd9; opacity:.9;
-        text-transform:uppercase; letter-spacing:.04em;
-      }
-
       /* --- Top controls row (one source of truth) --- */
       .controls-row{
         /* layout */
         display:flex;
-        align-items:flex-end;           /* keeps select + input + button aligned */
+        align-items:center;
         gap:12px;
 
         /* shared sizing */
@@ -399,6 +390,16 @@
         --keycap-h-pad: 6px;
         --keycap-border: 1px;
         --search-max: 560px; 
+      }
+
+      /* Left cluster (set switcher + search) and right cluster (view/deck/account
+         buttons) each wrap as a single unit, so narrower widths drop to a clean
+         2-row layout instead of every control wrapping to its own line. */
+      .controls-row .left-controls{
+        display:flex; align-items:center; gap:12px;
+        flex: 1 1 480px;
+        flex-wrap: nowrap;   /* stay intact so right-controls wraps first, not this */
+        min-width: 630px;    /* set switcher + search floor, so it doesn't get squeezed */
       }
 
       /* “Set” label — no pill look */
@@ -465,8 +466,26 @@
         outline-offset: 2px;
       }
 
-      /* Right-side controls group sits at the end */
-      .controls-row .toolbar-block{ margin-left:auto; }
+      /* Right-side controls group sits at the end, wraps as one unit */
+      .controls-row .right-controls{
+        display:flex; align-items:center; gap:8px;
+        flex: 0 0 auto;
+        margin-left:auto;
+      }
+      .toolbar-divider{
+        width:1px; align-self:stretch;
+        background:#2b2d3d;
+        margin: 2px 2px;
+      }
+      /* Selected state for tabs/toggles, replacing ad hoc inline styles */
+      .tbtn[aria-selected="true"],
+      .tbtn[aria-pressed="true"]{
+        background:#213c6a; color:#fff;
+      }
+      .tbtn[aria-selected="true"]:hover,
+      .tbtn[aria-pressed="true"]:hover{
+        background:#264576;
+      }
 
       /* Make the “Go” button height match exactly */
       .controls-row .btn{
@@ -474,21 +493,28 @@
         padding-block:0;               /* remove extra vertical padding */
       }
 
-      /* Compact prev/next set switches (not spread / page navigation) */
+      /* Compact prev/next set switches — same dark pill look as .spread-nav-edge
+         (the binder page-turn buttons), just sized to fit the single-row toolbar. */
       .controls-row .set-switch-btn{
         min-width: 36px;
         padding-inline: 8px;
         font-size: 1.35rem;
         font-weight: 700;
         justify-content: center;
-        transition: background-color 0.15s ease-out;
+        border-radius: 999px;
+        border: 1px solid #2b2d3d;
+        background: #11121a;
+        color: #e5e7eb;
+        transition: background-color 0.15s ease-out, box-shadow 0.15s ease-out;
       }
       .controls-row .set-switch-btn:hover:not(:disabled){
-        background-color: #22242c;
+        background: #1a1c28;
+        box-shadow: 0 0 12px rgba(0,0,0,0.35);
       }
       .controls-row .set-switch-btn:disabled{
         opacity: 0.35;
         cursor: not-allowed;
+        box-shadow: none;
       }
       .controls-row .set-switch-btn:focus-visible{
         outline: 2px solid #8b5cf6;
@@ -515,6 +541,7 @@
       }
 
       @media (max-width: 760px) {
+        .controls-row .left-controls { flex-wrap: wrap; min-width: 0; }
         .controls-row .autocomplete { min-width: 100%; }
       }
 

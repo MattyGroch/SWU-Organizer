@@ -2195,6 +2195,7 @@ export default function App() {
       <div className="card nav-bar" style={{ marginBottom: 16 }}>
         <h1 className="title">SWU Binder Organizer</h1>
         <div className="row controls-row" style={{ marginTop: 8 }} ref={boxRef}>
+          <div className="left-controls">
           <div
             className="set-switch-group"
             style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}
@@ -2332,23 +2333,10 @@ export default function App() {
               </div>
             )}
           </div>
+          </div>
 
           {/* Right side controls */}
-          <AuthMenu
-            authStatus={auth.status}
-            email={auth.email}
-            syncStatus={syncStatus}
-            lastSyncedAt={lastSyncedAt}
-            onSignOut={auth.signOut}
-            onSyncNow={() => cloudSyncRef.current?.flushDirty() ?? Promise.resolve()}
-          />
-          <DataMenu
-            onImportFile={handleFileChange}
-            onExport={exportAllInv}
-            onReset={resetInv}
-          />
-          <div className="toolbar-block">
-            <div className="toolbar-label">View</div>
+          <div className="right-controls">
             <div className="toolbar-group" role="tablist" aria-label="Binders or Decks">
               <button
                 type="button"
@@ -2357,7 +2345,6 @@ export default function App() {
                 aria-selected={view === 'binder'}
                 onClick={() => setView('binder')}
                 title="Your card collection binders"
-                style={view === 'binder' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : undefined}
               >
                 Binders
               </button>
@@ -2368,14 +2355,10 @@ export default function App() {
                 aria-selected={view === 'decks'}
                 onClick={() => setView('decks')}
                 title="Precon decks you own and your saved decklists"
-                style={view === 'decks' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : undefined}
               >
                 Decks
               </button>
             </div>
-          </div>
-          <div className="toolbar-block">
-            <div className="toolbar-label">Deck</div>
             <div className="toolbar-group">
               <button
                 type="button"
@@ -2389,28 +2372,22 @@ export default function App() {
                 <span>Deck Check</span>
               </button>
             </div>
-            <div className="toolbar-group" role="group" aria-label="Ownership scope" style={{ marginTop: 4 }}>
-              <button
-                type="button"
-                className="tbtn"
-                aria-pressed={ownershipScope === 'combined'}
-                onClick={() => setOwnershipScope('combined')}
-                title="Count owned precons and physical decks as owned, on top of your binders"
-                style={ownershipScope === 'combined' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : undefined}
-              >
-                Binders + Decks
-              </button>
-              <button
-                type="button"
-                className="tbtn"
-                aria-pressed={ownershipScope === 'bindersOnly'}
-                onClick={() => setOwnershipScope('bindersOnly')}
-                title="Only count what's in your binders as owned"
-                style={ownershipScope === 'bindersOnly' ? { backgroundColor: '#213c6a', color: '#fff', border: '1px solid #213c6a' } : undefined}
-              >
-                Binders only
-              </button>
-            </div>
+
+            <div className="toolbar-divider" aria-hidden="true" />
+
+            <AuthMenu
+              authStatus={auth.status}
+              email={auth.email}
+              syncStatus={syncStatus}
+              lastSyncedAt={lastSyncedAt}
+              onSignOut={auth.signOut}
+              onSyncNow={() => cloudSyncRef.current?.flushDirty() ?? Promise.resolve()}
+            />
+            <DataMenu
+              onImportFile={handleFileChange}
+              onExport={exportAllInv}
+              onReset={resetInv}
+            />
           </div>
 
           {error && <span className="err">{error}</span>}
@@ -2695,8 +2672,8 @@ export default function App() {
                         </td>
                         <td className="adjcol">
                           <div className="qtybtns circle">
-                            <button className="minus" aria-label="Decrease" onClick={()=>dec(r.Number)}>−</button>
-                            <button className="plus" aria-label="Increase" onClick={()=>inc(r.Number)}>+</button>
+                            <button className="minus" aria-label="Decrease" onClick={(e) => { e.stopPropagation(); dec(r.Number); }}>−</button>
+                            <button className="plus" aria-label="Increase" onClick={(e) => { e.stopPropagation(); inc(r.Number); }}>+</button>
                           </div>
                         </td>
                       </tr>
@@ -2707,7 +2684,7 @@ export default function App() {
             </div>
           ) : (
             <div className="muted">
-              {invRows.length ? 
+              {invRows.length ?
                 'No inventory entries match current filters.' : // NEW: Filtered empty message
                 'No entries yet. Click any slot’s +/− or use this table once you add cards.'
               }
@@ -2817,6 +2794,8 @@ export default function App() {
           showToast={showToast}
           onSaveDeck={saveDeck}
           onClose={() => setShowDeckCheckModal(false)}
+          ownershipScope={ownershipScope}
+          onOwnershipScopeChange={setOwnershipScope}
         />
       )}
 
