@@ -1,0 +1,130 @@
+{
+  "leader": {
+    "setKey": "ASH",
+    "baseNumber": 15,
+    "count": 1
+  },
+  "base": {
+    "setKey": "ASH",
+    "baseNumber": 21,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "ASH",
+      "baseNumber": 118,
+      "count": 1
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 36,
+      "count": 1
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 101,
+      "count": 1
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 116,
+      "count": 3
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 189,
+      "count": 3
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 94,
+      "count": 3
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 218,
+      "count": 2
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 96,
+      "count": 3
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 97,
+      "count": 2
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 193,
+      "count": 3
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 243,
+      "count": 3
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 128,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 185,
+      "count": 2
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 215,
+      "count": 3
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 191,
+      "count": 2
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 221,
+      "count": 2
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 99,
+      "count": 2
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 197,
+      "count": 3
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 103,
+      "count": 2
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 139,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 91,
+      "count": 1
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 198,
+      "count": 2
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 199,
+      "count": 3
+    }
+  ],
+  "sideboard": []
+}

@@ -338,6 +338,27 @@ describe('parseDeckGeneric', () => {
     expect(parsed.entries).toEqual([])
     expect(parsed.malformed).toEqual(['no count here'])
   })
+
+  it('parses the compact "qtyxSET_NUM" id shorthand with no space', () => {
+    const parsed = parseDeckGeneric('3xASH_140')
+    expect(parsed.entries).toEqual([
+      { role: 'deck', name: 'ASH_140', count: 3, exact: { setKey: 'ASH', printingNumber: 140 } },
+    ])
+    expect(parsed.malformed).toEqual([])
+  })
+
+  it('parses several compact id lines, one per line', () => {
+    const parsed = parseDeckGeneric('1xASH_010\n2xJTL_019')
+    expect(parsed.entries).toEqual([
+      { role: 'deck', name: 'ASH_010', count: 1, exact: { setKey: 'ASH', printingNumber: 10 } },
+      { role: 'deck', name: 'JTL_019', count: 2, exact: { setKey: 'JTL', printingNumber: 19 } },
+    ])
+  })
+
+  it('does not let the compact id shorthand swallow an ordinary "3x Card Name" line', () => {
+    const parsed = parseDeckGeneric('3x Vanquish')
+    expect(parsed.entries).toEqual([{ role: 'deck', name: 'Vanquish', subtitle: undefined, count: 3, setHint: undefined }])
+  })
 })
 
 // ---------------------------------------------------------------------------
@@ -501,6 +522,45 @@ describe('resolveDeckList', () => {
     const second = resolution.rows.find(r => r.baseNumber === 501)
     expect(first?.role).toBe('leader')
     expect(second?.role).toBe('base')
+  })
+
+  it('auto-promotes Leader/Base-typed cards out of a generic plain list, since it has no sections', () => {
+    const resolution = resolveDeckList(
+      {
+        format: 'generic',
+        entries: [
+          { role: 'deck', name: 'ASH_010', count: 1, exact: { setKey: 'ASH', printingNumber: 10 } },
+          { role: 'deck', name: 'JTL_019', count: 1, exact: { setKey: 'JTL', printingNumber: 19 } },
+          { role: 'deck', name: 'ASH_140', count: 2, exact: { setKey: 'ASH', printingNumber: 140 } },
+        ],
+        malformed: [],
+      },
+      CATALOG,
+      PARSED_SETS,
+      TRACKED_SET_KEYS,
+      NO_OWNERSHIP,
+    )
+    const leader = resolution.rows.find(r => r.baseNumber === 10)
+    const base = resolution.rows.find(r => r.baseNumber === 19)
+    const unit = resolution.rows.find(r => r.baseNumber === 140)
+    expect(leader?.role).toBe('leader')
+    expect(base?.role).toBe('base')
+    expect(unit?.role).toBe('deck')
+  })
+
+  it('does not promote Leader/Base-typed cards for non-generic formats — they must use explicit sections', () => {
+    const resolution = resolveDeckList(
+      {
+        format: 'melee',
+        entries: [{ role: 'deck', name: 'ASH_010', count: 1, exact: { setKey: 'ASH', printingNumber: 10 } }],
+        malformed: [],
+      },
+      CATALOG,
+      PARSED_SETS,
+      TRACKED_SET_KEYS,
+      NO_OWNERSHIP,
+    )
+    expect(resolution.rows[0].role).toBe('deck')
   })
 
   it('surfaces malformed parser lines in the unresolved list', () => {

@@ -25,7 +25,9 @@ function bootstrap(db: Db): void {
   const currentVersion = Number(
     (db.pragma('user_version', { simple: true }) as number | bigint) ?? 0,
   )
-  if (currentVersion >= 1) return
+  // schema.sql is idempotent (CREATE TABLE IF NOT EXISTS), so re-running it against an
+  // already-bootstrapped database only adds whatever's new since its last recorded version.
+  if (currentVersion >= 2) return
   const schema = readFileSync(SCHEMA_PATH, 'utf8')
   db.exec(schema)
 }

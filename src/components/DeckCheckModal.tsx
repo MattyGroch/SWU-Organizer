@@ -12,6 +12,8 @@ import {
   type DeckResolution,
   type DeckRowWithNeed,
 } from '../core/decklist'
+import { DeckRowsTable } from './DeckRowsTable'
+import { createSavedDeck, type SavedDeck } from '../core/decks'
 
 type Props = {
   canonicalCatalog: CanonicalCatalog
@@ -19,6 +21,7 @@ type Props = {
   trackedSetKeys: SetKey[]
   buildOwnedLookup: () => (setKey: SetKey, baseNumber: number) => number
   showToast: (message: string, kind?: 'success' | 'error' | 'warning') => void
+  onSaveDeck: (deck: SavedDeck) => void
   onClose: () => void
 }
 
@@ -35,46 +38,8 @@ const REASON_LABEL: Record<'unknown-set' | 'no-name-match' | 'malformed', string
   malformed: 'Could not parse this line',
 }
 
-const ROLE_LABEL: Record<'leader' | 'base' | 'deck' | 'sideboard', string> = {
-  leader: 'Leader',
-  base: 'Base',
-  deck: 'Deck',
-  sideboard: 'Sideboard',
-}
-
 function money(value: number): string {
   return `$${value.toFixed(2)}`
-}
-
-function Row({ row }: { row: DeckRowWithNeed }) {
-  return (
-    <tr>
-      <td>{ROLE_LABEL[row.role]}</td>
-      <td>
-        {row.name}
-        {row.subtitle && <span className="muted"> - {row.subtitle}</span>}
-        {row.ambiguous && (
-          <span
-            className="muted"
-            title={
-              row.ambiguousOtherSets?.length
-                ? `Name also matches: ${row.ambiguousOtherSets.join(', ')} — guessed ${row.setKey}`
-                : 'Guessed which printing you meant'
-            }
-            style={{ marginLeft: 6 }}
-          >
-            ⚠
-          </span>
-        )}
-      </td>
-      <td className="mono">{row.setKey}</td>
-      <td className="mono">{row.have}</td>
-      <td className="mono">{row.count}</td>
-      <td className="mono">{row.needed}</td>
-      <td className="mono">{money(row.price)}</td>
-      <td className="mono">{money(row.rowCost)}</td>
-    </tr>
-  )
 }
 
 export function DeckCheckModal({
@@ -83,6 +48,7 @@ export function DeckCheckModal({
   trackedSetKeys,
   buildOwnedLookup,
   showToast,
+  onSaveDeck,
   onClose,
 }: Props) {
   const [text, setText] = React.useState('')
@@ -91,6 +57,10 @@ export function DeckCheckModal({
   const [includeSideboard, setIncludeSideboard] = React.useState(false)
   const [copyFeedback, setCopyFeedback] = React.useState<'idle' | 'copied' | 'failed'>('idle')
   const copyFeedbackTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [showSaveForm, setShowSaveForm] = React.useState(false)
+  const [saveName, setSaveName] = React.useState('')
+  const [savePhysical, setSavePhysical] = React.useState(false)
+  const [saveCopies, setSaveCopies] = React.useState(1)
 
   React.useEffect(() => {
     return () => {
@@ -112,6 +82,32 @@ export function DeckCheckModal({
     const resolved = resolveDeckList(parsed, canonicalCatalog, parsedSets, trackedSetKeys, owned)
     setResolution(resolved)
     setRows(computeDeckRows(resolved.rows, owned))
+    setShowSaveForm(false)
+    setSaveName(resolved.deckName ?? '')
+    setSavePhysical(false)
+    setSaveCopies(1)
+  }
+
+  function handleSaveDeck() {
+    if (!resolution) return
+    const result = createSavedDeck(resolution.rows, {
+      name: saveName,
+      physical: savePhysical,
+      copies: saveCopies,
+      sourceText: text,
+    })
+    if (!result.ok) {
+      showToast(
+        result.reason === 'missing-leader'
+          ? "This decklist doesn't have a leader — it can't be saved yet."
+          : "This decklist doesn't have a base — it can't be saved yet.",
+        'warning',
+      )
+      return
+    }
+    onSaveDeck(result.deck)
+    showToast('Deck saved.', 'success')
+    setShowSaveForm(false)
   }
 
   const summary = React.useMemo(() => summarizeDeck(rows, includeSideboard), [rows, includeSideboard])
@@ -241,52 +237,12 @@ export function DeckCheckModal({
               )}
             </div>
 
-            <div style={{ overflowX: 'auto' }}>
-              <table className="table" style={{ marginTop: 12 }}>
-                <thead>
-                  <tr>
-                    <th>Role</th>
-                    <th>Card</th>
-                    <th>Set</th>
-                    <th>Have</th>
-                    <th>Deck</th>
-                    <th>Needed</th>
-                    <th>Price</th>
-                    <th>Cost</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mainRows.map(row => (
-                    <Row key={`${row.role}:${row.setKey}:${row.baseNumber}`} row={row} />
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <DeckRowsTable rows={mainRows} />
 
             {sideboardRows.length > 0 && (
               <>
                 <h4 style={{ marginBottom: 4 }}>Sideboard</h4>
-                <div style={{ overflowX: 'auto' }}>
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th>Role</th>
-                        <th>Card</th>
-                        <th>Set</th>
-                        <th>Have</th>
-                        <th>Deck</th>
-                        <th>Needed</th>
-                        <th>Price</th>
-                        <th>Cost</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sideboardRows.map(row => (
-                        <Row key={`${row.role}:${row.setKey}:${row.baseNumber}`} row={row} />
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                <DeckRowsTable rows={sideboardRows} />
               </>
             )}
 
@@ -312,7 +268,7 @@ export function DeckCheckModal({
               </>
             )}
 
-            <div className="row" style={{ marginTop: 16 }}>
+            <div className="row" style={{ marginTop: 16, gap: 8 }}>
               <button type="button" className="tbtn" onClick={copyMissingDeckCards}>
                 <span className="icon" aria-hidden="true">
                   {copyFeedback === 'copied' ? 'check_circle' : copyFeedback === 'failed' ? 'error' : 'content_paste'}
@@ -325,7 +281,66 @@ export function DeckCheckModal({
                     : 'Copy missing to clipboard'}
                 </span>
               </button>
+              <button type="button" className="tbtn" onClick={() => setShowSaveForm(v => !v)}>
+                <span className="icon" aria-hidden="true">bookmark_add</span>
+                <span>Save as Deck</span>
+              </button>
             </div>
+
+            {showSaveForm && (
+              <div
+                className="row"
+                style={{ marginTop: 12, gap: 12, flexWrap: 'wrap', alignItems: 'center' }}
+              >
+                <input
+                  type="text"
+                  value={saveName}
+                  onChange={e => setSaveName(e.target.value)}
+                  placeholder="Deck name"
+                  style={{
+                    background: '#0f1017',
+                    color: '#eaeaf0',
+                    border: '1px solid #2b2d3d',
+                    borderRadius: 8,
+                    padding: '6px 10px',
+                    minWidth: 200,
+                  }}
+                />
+                <label className="row" style={{ gap: 6 }}>
+                  <input
+                    type="checkbox"
+                    checked={savePhysical}
+                    onChange={e => setSavePhysical(e.target.checked)}
+                  />
+                  <span title="Turn this on if this deck is physically built/boxed and not counted in your binder — its cards will count as owned.">
+                    Physical (owned outside my binder)
+                  </span>
+                </label>
+                {savePhysical && (
+                  <label className="row" style={{ gap: 6 }}>
+                    <span>Copies</span>
+                    <input
+                      type="number"
+                      min={1}
+                      value={saveCopies}
+                      onChange={e => setSaveCopies(Math.max(1, Number(e.target.value) || 1))}
+                      style={{
+                        width: 60,
+                        background: '#0f1017',
+                        color: '#eaeaf0',
+                        border: '1px solid #2b2d3d',
+                        borderRadius: 8,
+                        padding: '6px 10px',
+                      }}
+                    />
+                  </label>
+                )}
+                <button type="button" className="tbtn" onClick={handleSaveDeck}>
+                  <span className="icon" aria-hidden="true">save</span>
+                  <span>Save</span>
+                </button>
+              </div>
+            )}
           </>
         )}
       </div>

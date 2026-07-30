@@ -1,0 +1,135 @@
+{
+  "leader": {
+    "setKey": "IBH",
+    "baseNumber": 53,
+    "count": 1
+  },
+  "base": {
+    "setKey": "IBH",
+    "baseNumber": 54,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "IBH",
+      "baseNumber": 55,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 56,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 57,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 58,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 60,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 61,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 62,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 63,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 64,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 66,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 68,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 69,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 70,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 59,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 72,
+      "count": 1
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 74,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 75,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 76,
+      "count": 1
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 78,
+      "count": 3
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 79,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 82,
+      "count": 2
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 95,
+      "count": 1
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 99,
+      "count": 1
+    },
+    {
+      "setKey": "IBH",
+      "baseNumber": 104,
+      "count": 1
+    }
+  ],
+  "sideboard": []
+}

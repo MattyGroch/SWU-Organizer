@@ -7,6 +7,7 @@ import type { Config } from './config.js'
 import { attachSession } from './auth/session.js'
 import { makeAuthRouter } from './auth/routes.js'
 import { makeInventoryRouter } from './inventories/routes.js'
+import { makeDeckRouter } from './decks/routes.js'
 import { makeGoogleClient } from './auth/google.js'
 
 export type AppDeps = {
@@ -49,6 +50,7 @@ export function makeApp({ db, config, logger }: AppDeps): Express {
     }),
   )
   app.use('/api/inventories', makeInventoryRouter({ db }))
+  app.use('/api/decks', makeDeckRouter({ db }))
 
   return app
 }
