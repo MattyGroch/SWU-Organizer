@@ -1,4 +1,4 @@
 {
-  "includeSetIds": [],
+  "includeSetIds": ["TS26", "IBH"],
   "excludeSetIds": []
 }
