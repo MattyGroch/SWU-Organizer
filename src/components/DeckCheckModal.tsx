@@ -23,6 +23,8 @@ type Props = {
   showToast: (message: string, kind?: 'success' | 'error' | 'warning') => void
   onSaveDeck: (deck: SavedDeck) => void
   onClose: () => void
+  ownershipScope: 'combined' | 'bindersOnly'
+  onOwnershipScopeChange: (scope: 'combined' | 'bindersOnly') => void
 }
 
 const FORMAT_LABEL: Record<DeckResolution['format'], string> = {
@@ -50,6 +52,8 @@ export function DeckCheckModal({
   showToast,
   onSaveDeck,
   onClose,
+  ownershipScope,
+  onOwnershipScopeChange,
 }: Props) {
   const [text, setText] = React.useState('')
   const [resolution, setResolution] = React.useState<DeckResolution | null>(null)
@@ -67,6 +71,13 @@ export function DeckCheckModal({
       if (copyFeedbackTimerRef.current != null) clearTimeout(copyFeedbackTimerRef.current)
     }
   }, [])
+
+  // Keep already-computed rows in sync when the ownership scope changes, without
+  // requiring the user to re-click "Check Deck".
+  React.useEffect(() => {
+    if (!resolution) return
+    setRows(computeDeckRows(resolution.rows, buildOwnedLookup()))
+  }, [resolution, buildOwnedLookup])
 
   function handleParse() {
     if (!text.trim()) {
@@ -181,6 +192,15 @@ export function DeckCheckModal({
           Paste a decklist (JSON, Melee, Picklist, or a plain "3x Card Name" list) to see which cards
           you own, which are missing, and what it would cost to complete the deck.
         </p>
+
+        <label className="row" style={{ gap: 6, marginBottom: 12 }}>
+          <input
+            type="checkbox"
+            checked={ownershipScope === 'combined'}
+            onChange={e => onOwnershipScopeChange(e.target.checked ? 'combined' : 'bindersOnly')}
+          />
+          <span className="muted">Count owned precons &amp; physical decks as owned, on top of your binders</span>
+        </label>
 
         <textarea
           value={text}

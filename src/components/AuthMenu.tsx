@@ -44,32 +44,28 @@ export function AuthMenu({ authStatus, email, syncStatus, lastSyncedAt, onSignOu
 
   if (authStatus === 'loading') {
     return (
-      <div className="toolbar-block">
-        <div className="toolbar-label">Cloud</div>
-        <div className="toolbar-group">
-          <span className="tbtn" style={{ cursor: 'default' }} title="Checking sign-in…" aria-label="Checking sign-in…">
-            <span className="icon icon-spin" aria-hidden="true">sync</span>
-          </span>
-        </div>
+      <div className="toolbar-group">
+        <span className="tbtn" style={{ cursor: 'default' }} title="Checking sign-in…" aria-label="Checking sign-in…">
+          <span className="icon icon-spin" aria-hidden="true">sync</span>
+          <span>Cloud</span>
+        </span>
       </div>
     )
   }
 
   if (authStatus === 'signedOut') {
     return (
-      <div className="toolbar-block">
-        <div className="toolbar-label">Cloud</div>
-        <div className="toolbar-group">
-          <button
-            type="button"
-            className="tbtn"
-            onClick={() => beginSignIn()}
-            title="Sign in with Google to enable cloud sync"
-            aria-label="Sign in with Google"
-          >
-            <span className="icon" aria-hidden="true">login</span>
-          </button>
-        </div>
+      <div className="toolbar-group">
+        <button
+          type="button"
+          className="tbtn"
+          onClick={() => beginSignIn()}
+          title="Sign in with Google to enable cloud sync"
+          aria-label="Sign in with Google"
+        >
+          <span className="icon" aria-hidden="true">login</span>
+          <span>Cloud</span>
+        </button>
       </div>
     )
   }
@@ -77,36 +73,35 @@ export function AuthMenu({ authStatus, email, syncStatus, lastSyncedAt, onSignOu
   const meta = statusMeta(syncStatus)
 
   return (
-    <div className="toolbar-block">
-      <div className="toolbar-label">Cloud</div>
-      <div className="toolbar-group" style={{ position: 'relative', overflow: 'visible' }}>
-        <button
-          type="button"
-          className="tbtn sync-status-trigger"
-          onClick={() => setMenuOpen(v => !v)}
-          aria-haspopup="menu"
-          aria-expanded={menuOpen}
-          title={`${email ?? 'Signed in'} — ${meta.label}`}
-          aria-label={`Cloud sync: ${meta.label}`}
-        >
-          <span style={{ position: 'relative', display: 'inline-flex' }}>
-            <span className="icon" aria-hidden="true">account_circle</span>
-            <span
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                right: -2,
-                bottom: -2,
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                background: meta.color,
-                border: '1.5px solid #14161f',
-              }}
-            />
-          </span>
-        </button>
-        {menuOpen && (
+    <div className="toolbar-group" style={{ position: 'relative', overflow: 'visible' }}>
+      <button
+        type="button"
+        className="tbtn sync-status-trigger"
+        onClick={() => setMenuOpen(v => !v)}
+        aria-haspopup="menu"
+        aria-expanded={menuOpen}
+        title={`${email ?? 'Signed in'} — ${meta.label}`}
+        aria-label={`Cloud sync: ${meta.label}`}
+      >
+        <span style={{ position: 'relative', display: 'inline-flex' }}>
+          <span className="icon" aria-hidden="true">account_circle</span>
+          <span
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              right: -2,
+              bottom: -2,
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              background: meta.color,
+              border: '1.5px solid #14161f',
+            }}
+          />
+        </span>
+        <span>Cloud</span>
+      </button>
+      {menuOpen && (
           <div
             role="menu"
             style={{
@@ -167,6 +162,6 @@ export function AuthMenu({ authStatus, email, syncStatus, lastSyncedAt, onSignOu
           </div>
         )}
       </div>
-    </div>
   )
 }
+
