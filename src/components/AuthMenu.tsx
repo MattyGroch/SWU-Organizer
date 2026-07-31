@@ -42,6 +42,7 @@ function formatLastSynced(ts: number | null): string {
 
 export function AuthMenu({ authStatus, email, syncStatus, lastSyncedAt, onSignOut, onSyncNow }: Props) {
   const [menuOpen, setMenuOpen] = React.useState(false)
+  const containerRef = useClickOutside<HTMLDivElement>(menuOpen, () => setMenuOpen(false))
 
   if (authStatus === 'loading') {
     return (
@@ -72,7 +73,6 @@ export function AuthMenu({ authStatus, email, syncStatus, lastSyncedAt, onSignOu
   }
 
   const meta = statusMeta(syncStatus)
-  const containerRef = useClickOutside<HTMLDivElement>(menuOpen, () => setMenuOpen(false))
 
   return (
     <div ref={containerRef} className="toolbar-group" style={{ position: 'relative', overflow: 'visible' }}>
