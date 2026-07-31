@@ -1,4 +1,5 @@
 import React from 'react'
+import { useClickOutside } from '../hooks/useClickOutside'
 
 type Props = {
   onImportFile: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -9,9 +10,10 @@ type Props = {
 export function DataMenu({ onImportFile, onExport, onReset }: Props) {
   const [menuOpen, setMenuOpen] = React.useState(false)
   const importRef = React.useRef<HTMLInputElement>(null)
+  const containerRef = useClickOutside<HTMLDivElement>(menuOpen, () => setMenuOpen(false))
 
   return (
-    <div className="toolbar-group" style={{ position: 'relative', overflow: 'visible' }}>
+    <div ref={containerRef} className="toolbar-group" style={{ position: 'relative', overflow: 'visible' }}>
       <button
         type="button"
         className="tbtn"

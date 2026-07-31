@@ -1,6 +1,7 @@
 import React from 'react'
 import type { SyncStatus } from '../core/cloudSync'
 import { beginSignIn } from '../core/auth'
+import { useClickOutside } from '../hooks/useClickOutside'
 
 type Props = {
   authStatus: 'loading' | 'signedIn' | 'signedOut'
@@ -71,9 +72,10 @@ export function AuthMenu({ authStatus, email, syncStatus, lastSyncedAt, onSignOu
   }
 
   const meta = statusMeta(syncStatus)
+  const containerRef = useClickOutside<HTMLDivElement>(menuOpen, () => setMenuOpen(false))
 
   return (
-    <div className="toolbar-group" style={{ position: 'relative', overflow: 'visible' }}>
+    <div ref={containerRef} className="toolbar-group" style={{ position: 'relative', overflow: 'visible' }}>
       <button
         type="button"
         className="tbtn sync-status-trigger"
