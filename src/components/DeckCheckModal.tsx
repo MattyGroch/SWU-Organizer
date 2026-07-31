@@ -4,7 +4,7 @@ import type { SetKey } from '../core/types'
 import {
   computeDeckRows,
   detectDeckFormat,
-  formatMissingLine,
+  formatMissingCardsList,
   parseDeckList,
   resolveDeckList,
   summarizeDeck,
@@ -127,10 +127,7 @@ export function DeckCheckModal({
   const detectedFormat = text.trim() ? FORMAT_LABEL[detectDeckFormat(text)] : null
 
   function copyMissingDeckCards() {
-    const list = rows
-      .filter(r => (r.role !== 'sideboard' || includeSideboard) && r.needed > 0)
-      .map(r => formatMissingLine(r.name, r.subtitle, r.setKey, r.needed))
-      .join('\n')
+    const list = formatMissingCardsList(rows, includeSideboard)
 
     if (!list) {
       showToast('No missing cards to copy!', 'warning')

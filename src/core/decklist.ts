@@ -619,6 +619,13 @@ export function summarizeDeck(rows: DeckRowWithNeed[], includeSideboard: boolean
 // Shared clipboard-export line format (mirrors App.tsx's existing missing-card export)
 // ---------------------------------------------------------------------------
 
+export function formatMissingCardsList(rows: DeckRowWithNeed[], includeSideboard: boolean): string {
+  return rows
+    .filter(r => (r.role !== 'sideboard' || includeSideboard) && r.needed > 0)
+    .map(r => formatMissingLine(r.name, r.subtitle, r.setKey, r.needed))
+    .join('\n')
+}
+
 export function formatMissingLine(
   name: string,
   subtitle: string | undefined,

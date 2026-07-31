@@ -3,6 +3,7 @@ import type { CanonicalCatalog } from '../core/inventory'
 import type { SetKey } from '../core/types'
 import {
   computeDeckRows,
+  formatMissingCardsList,
   parseDeckList,
   resolveDeckList,
   type DeckLookupSet,
@@ -324,6 +325,7 @@ function SavedDeckRow({
   onUpdateDeck,
   onDeleteDeck,
   rows,
+  showToast,
 }: {
   deck: SavedDeck
   needed: number
@@ -332,7 +334,17 @@ function SavedDeckRow({
   onUpdateDeck: Props['onUpdateDeck']
   onDeleteDeck: Props['onDeleteDeck']
   rows: DeckRowWithNeed[]
+  showToast: Props['showToast']
 }) {
+  function handleCopyMissing() {
+    const list = formatMissingCardsList(rows, true)
+    if (!list) {
+      showToast('No missing cards to copy!', 'warning')
+      return
+    }
+    copyToClipboard(list, showToast, 'Missing cards')
+  }
+
   return (
     <div className="card" style={{ padding: 12, marginTop: 8 }}>
       <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
@@ -360,6 +372,10 @@ function SavedDeckRow({
               style={{ ...inputStyle, width: 56 }}
             />
           )}
+          <button type="button" className="tbtn" onClick={handleCopyMissing} aria-label={`Copy missing cards for ${deck.name}`}>
+            <span className="icon" aria-hidden="true">content_paste</span>
+            <span>Copy missing</span>
+          </button>
           <button type="button" className="tbtn" onClick={() => onDeleteDeck(deck.id)} aria-label={`Delete ${deck.name}`}>
             <span className="icon" aria-hidden="true">delete</span>
           </button>
@@ -487,6 +503,7 @@ export function DecksView({
               onUpdateDeck={onUpdateDeck}
               onDeleteDeck={onDeleteDeck}
               rows={contentsToRows(deck, parsedSets, ownedByBase)}
+              showToast={showToast}
             />
           ))
         )}
