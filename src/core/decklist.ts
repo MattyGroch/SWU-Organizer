@@ -431,7 +431,10 @@ export function resolveDeckList(
   trackedSetKeys: SetKey[],
   ownedByBase: (setKey: SetKey, baseNumber: number) => number,
 ): DeckResolution {
+  // Primary index: exact (name, subtitle) match. Secondary index: name only, used as a fallback
+  // when a source decklist omits the subtitle — Melee exports routinely do this for Base cards.
   const nameIndex = new Map<string, Array<{ setKey: SetKey; card: Card }>>()
+  const nameOnlyIndex = new Map<string, Array<{ setKey: SetKey; card: Card }>>()
   for (const setKeyIter of trackedSetKeys) {
     const set = parsedSets.get(setKeyIter)
     if (!set) continue
@@ -440,6 +443,11 @@ export function resolveDeckList(
       const arr = nameIndex.get(key) ?? []
       arr.push({ setKey: setKeyIter, card })
       nameIndex.set(key, arr)
+
+      const nameKey = normalize(card.Name)
+      const nameOnlyArr = nameOnlyIndex.get(nameKey) ?? []
+      nameOnlyArr.push({ setKey: setKeyIter, card })
+      nameOnlyIndex.set(nameKey, nameOnlyArr)
     }
   }
 
@@ -496,7 +504,11 @@ export function resolveDeckList(
       }
     } else {
       const key = cardMatchKey(entry.name, entry.subtitle)
-      const candidates = nameIndex.get(key) ?? []
+      let candidates = nameIndex.get(key) ?? []
+      if (candidates.length === 0 && !entry.subtitle) {
+        // No subtitle in the source line — fall back to matching by name alone.
+        candidates = nameOnlyIndex.get(normalize(entry.name)) ?? []
+      }
       if (candidates.length === 0) {
         unresolved.push({
           role: normalizeRoleForDisplay(entry.role),

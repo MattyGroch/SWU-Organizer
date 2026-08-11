@@ -479,6 +479,30 @@ describe('resolveDeckList', () => {
     expect(resolution.rows[0].ambiguous).toBe(false)
   })
 
+  it('falls back to a name-only match when the source line has no subtitle (e.g. Melee Base lines)', () => {
+    const resolution = resolveDeckList(
+      { format: 'melee', entries: [{ role: 'base', name: 'Coronet', count: 1 }], malformed: [] },
+      CATALOG,
+      PARSED_SETS,
+      TRACKED_SET_KEYS,
+      NO_OWNERSHIP,
+    )
+    expect(resolution.unresolved).toEqual([])
+    expect(resolution.rows[0]).toMatchObject({ setKey: 'SEC', baseNumber: 47, subtitle: 'Stately Vessel' })
+  })
+
+  it('does not fall back to name-only when a subtitle is given but wrong', () => {
+    const resolution = resolveDeckList(
+      { format: 'melee', entries: [{ role: 'base', name: 'Coronet', subtitle: 'Wrong Subtitle', count: 1 }], malformed: [] },
+      CATALOG,
+      PARSED_SETS,
+      TRACKED_SET_KEYS,
+      NO_OWNERSHIP,
+    )
+    expect(resolution.rows).toEqual([])
+    expect(resolution.unresolved[0]?.reason).toBe('no-name-match')
+  })
+
   it('disambiguates a name matching multiple sets by preferring a set the user already owns', () => {
     const owned = (setKey: SetKey, baseNumber: number) => (setKey === 'JTL' && baseNumber === 999 ? 1 : 0)
     const resolution = resolveDeckList(
