@@ -8,5 +8,10 @@
     "setKey": "ASH",
     "name": "Onyx Cinder",
     "fields": { "Subtitle": "Adventure Awaits" }
+  },
+  {
+    "setKey": "JTL",
+    "name": "Swarming Vulture Droid",
+    "fields": { "MaxCopies": 15 }
   }
 ]

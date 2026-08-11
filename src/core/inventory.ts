@@ -5,6 +5,8 @@ export type CanonicalCardRef = {
   printingNumber: number
   baseNumber: number
   type?: string
+  /** Overrides the default type-based playset quota, e.g. Swarming Vulture Droid (15). */
+  maxCopies?: number
 }
 
 export type CanonicalCatalog = Map<string, CanonicalCardRef>
@@ -29,6 +31,11 @@ export const INVENTORY_BACKUP_KEY = 'inv:migration:v2:backup'
 export function quotaForType(type?: string): number {
   const normalized = (type ?? '').trim().toLowerCase()
   return normalized === 'leader' || normalized === 'base' ? 1 : 3
+}
+
+/** Playset quota for a card: an explicit per-card override (e.g. Swarming Vulture Droid's 15) if present, else the type-based default. */
+export function resolveQuota(type?: string, maxCopies?: number): number {
+  return maxCopies ?? quotaForType(type)
 }
 
 function asInventory(value: unknown): Inventory {
@@ -119,7 +126,7 @@ export function canonicalizeInventory(
   for (const { ref, quantity } of normalizedEntries(setKey, inventory, catalog)) {
     canonical[ref.baseNumber] = Math.min(
       (canonical[ref.baseNumber] ?? 0) + quantity,
-      quotaForType(ref.type),
+      resolveQuota(ref.type, ref.maxCopies),
     )
   }
 
@@ -217,7 +224,7 @@ export function applyImportedInventories(
       recognized += 1
       destination[ref.baseNumber] = Math.min(
         (destination[ref.baseNumber] ?? 0) + quantity,
-        quotaForType(ref.type),
+        resolveQuota(ref.type, ref.maxCopies),
       )
     }
 

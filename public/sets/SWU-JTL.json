@@ -9372,28 +9372,32 @@
       "Number": 256,
       "Aspects": [],
       "Type": "Unit",
-      "Rarity": "Common"
+      "Rarity": "Common",
+      "MaxCopies": 15
     },
     {
       "Name": "Swarming Vulture Droid",
       "Number": 518,
       "Aspects": [],
       "Type": "Unit",
-      "Rarity": "Common"
+      "Rarity": "Common",
+      "MaxCopies": 15
     },
     {
       "Name": "Swarming Vulture Droid",
       "Number": 754,
       "Aspects": [],
       "Type": "Unit",
-      "Rarity": "Common"
+      "Rarity": "Common",
+      "MaxCopies": 15
     },
     {
       "Name": "Swarming Vulture Droid",
       "Number": 990,
       "Aspects": [],
       "Type": "Unit",
-      "Rarity": "Common"
+      "Rarity": "Common",
+      "MaxCopies": 15
     },
     {
       "Name": "Sweep the Area",

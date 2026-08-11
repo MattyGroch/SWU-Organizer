@@ -7,6 +7,8 @@ export type Card = {
   Rarity?: string
   MarketPrice?: number
   Set: string
+  /** Overrides the default type-based playset quota (3, or 1 for leader/base) for cards whose text allows more/fewer copies, e.g. Swarming Vulture Droid (15). */
+  MaxCopies?: number
 }
 
 export type Inventory = Record<number, number>

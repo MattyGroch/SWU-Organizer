@@ -9,7 +9,9 @@ import {
   loadInventoriesForPersistence,
   migrateLegacyInventories,
   persistCanonicalInventory,
+  quotaForType,
   removePersistedInventory,
+  resolveQuota,
   type CanonicalCatalog,
 } from './inventory'
 
@@ -50,7 +52,20 @@ const catalog: CanonicalCatalog = new Map([
   ['SOR:87', { setKey: 'SOR', printingNumber: 87, baseNumber: 87, type: 'Unit' }],
   ['SOR:351', { setKey: 'SOR', printingNumber: 351, baseNumber: 87, type: 'Unit' }],
   ['SHD:1', { setKey: 'SHD', printingNumber: 1, baseNumber: 1, type: 'Base' }],
+  ['JTL:256', { setKey: 'JTL', printingNumber: 256, baseNumber: 256, type: 'Unit', maxCopies: 15 }],
 ])
+
+describe('resolveQuota', () => {
+  it('falls back to the type-based quota when no override is given', () => {
+    expect(resolveQuota('Unit', undefined)).toBe(quotaForType('Unit'))
+    expect(resolveQuota('Leader', undefined)).toBe(1)
+  })
+
+  it('uses the maxCopies override regardless of type when given', () => {
+    expect(resolveQuota('Unit', 15)).toBe(15)
+    expect(resolveQuota('Leader', 15)).toBe(15)
+  })
+})
 
 describe('canonical inventory', () => {
   it('combines printings at the base card and caps after aggregation', () => {
@@ -77,6 +92,10 @@ describe('canonical inventory', () => {
     )
 
     expect(result.inventories.SOR).toEqual({ 87: 2 })
+  })
+
+  it('caps at a per-card maxCopies override instead of the type-based quota', () => {
+    expect(canonicalizeInventory('JTL', { 256: 20 }, catalog)).toEqual({ 256: 15 })
   })
 
   it('skips unknown and malformed entries', () => {

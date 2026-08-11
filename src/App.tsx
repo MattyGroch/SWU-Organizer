@@ -20,7 +20,7 @@ import {
   createInventoryExportSnapshot,
   loadInventoriesForPersistence,
   persistCanonicalInventory,
-  quotaForType,
+  resolveQuota,
   removePersistedInventory,
   type CanonicalCatalog,
   type ImportResult,
@@ -706,6 +706,7 @@ function canonicalCatalogFromParsedSets(parsedSets: Iterable<ParsedSet>): Canoni
         printingNumber: card.Number,
         baseNumber,
         type: baseCard?.Type ?? card.Type,
+        maxCopies: baseCard?.MaxCopies ?? card.MaxCopies,
       });
     }
   }
@@ -1269,7 +1270,8 @@ export default function App() {
               marketPrice = Number(p);
             }
           }
-          
+          const rawMaxCopies = Number(c.MaxCopies);
+
           return {
             Name: cardName,
             Subtitle: rawSubtitle || undefined,
@@ -1282,6 +1284,7 @@ export default function App() {
               stringOrNamedValue(c.Rarity ?? c.rarity ?? c.RarityCode),
             ),
             MarketPrice: marketPrice,
+            MaxCopies: Number.isFinite(rawMaxCopies) && rawMaxCopies > 0 ? rawMaxCopies : undefined,
             Set: meta.key,
           };
         }).filter((c: Card) => !!c.Name && Number.isFinite(c.Number));
@@ -1639,7 +1642,7 @@ export default function App() {
     const baseNumber = canonicalCatalog.get(`${setKey}:${n}`)?.baseNumber ?? null;
     if (baseNumber === null) return;
     const ref = canonicalCatalog.get(`${setKey}:${baseNumber}`);
-    const max = quotaForType(ref?.type);
+    const max = resolveQuota(ref?.type, ref?.maxCopies);
     setInventory(prev => ({
       ...prev,
       [baseNumber]: Math.min((prev[baseNumber] || 0) + 1, max),
@@ -1792,7 +1795,7 @@ export default function App() {
         }
 
         if (processCard) {
-          const max = quotaForType(card.Type);
+          const max = resolveQuota(card.Type, card.MaxCopies);
           const currentQty = nextInv[card.Number] || 0;
 
           if (action === 'add' || action === 'add_max') {
@@ -2104,7 +2107,7 @@ export default function App() {
       const baseNum = baseCard.Number;
       const trueOwned = inventory[baseNum] || 0;
       const qty = Math.max(0, trueOwned - (reservedForSet[baseNum] ?? 0));
-      const max = quotaForType(baseCard.Type);
+      const max = resolveQuota(baseCard.Type, baseCard.MaxCopies);
       if (qty < max) return true;
     }
     return false;
@@ -2135,7 +2138,7 @@ export default function App() {
       const trueOwned = inventory[baseNum] || 0;
       const pulledQty = reservedForSet[baseNum] ?? 0;
       const qty = Math.max(0, trueOwned - pulledQty);
-      const max = quotaForType(baseCard.Type);
+      const max = resolveQuota(baseCard.Type, baseCard.MaxCopies);
       const needed = Math.max(0, max - trueOwned);
       const collStatus = collectionStatusFromQty(qty, max);
       if (filters.status.length > 0 && !filters.status.includes(collStatus)) continue;
@@ -3498,7 +3501,7 @@ export function Binder({
                     const rawQty = inventory[n] || 0;
                     const reserved = reservedByNumber[n] ?? 0;
                     const qty = Math.max(0, rawQty - reserved);
-                    const max = quotaForType(cardAt?.Type);
+                    const max = resolveQuota(cardAt?.Type, cardAt?.MaxCopies);
                     const qtyText = `${qty}/${max}`;
 
                     // rarity + outline (will render bottom-right)
