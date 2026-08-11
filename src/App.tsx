@@ -213,6 +213,8 @@ type Filters = {
   rarity: string[];
   type: string[];
   status: CollectionStatusKey[];
+  /** Hide cards from the Missing list that are fully owned but currently pulled into a constructed deck. */
+  hidePulled: boolean;
 };
 
 type FilterControlsProps = {
@@ -222,7 +224,7 @@ type FilterControlsProps = {
 
 // --- FilterControls Component Definition (Used outside App function) ---
 function FilterControls({ filters, setFilters }: FilterControlsProps) {
-  const handleFilterChange = <K extends keyof Filters>(category: K, value: Filters[K][number]) => {
+  const handleFilterChange = <K extends 'aspect' | 'rarity' | 'type' | 'status'>(category: K, value: Filters[K][number]) => {
     setFilters(prev => {
       const cur = prev[category] as Array<Filters[K][number]>;
       const next: Array<Filters[K][number]> = cur.includes(value)
@@ -234,7 +236,7 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
   };
 
   const handleClearFilters = () => {
-    setFilters({ aspect: [], rarity: [], type: [], status: [] });
+    setFilters({ aspect: [], rarity: [], type: [], status: [], hidePulled: false });
   };
 
   // ---- Color helpers ----
@@ -431,6 +433,14 @@ function FilterControls({ filters, setFilters }: FilterControlsProps) {
         {renderFilterGroup('rarity', ALL_RARITIES)}
         {renderFilterGroup('type', ALL_TYPES)}
         {renderStatusFilterGroup()}
+        <label className="row" style={{ gap: 6, alignItems: 'center', fontSize: 14 }}>
+          <input
+            type="checkbox"
+            checked={filters.hidePulled}
+            onChange={e => setFilters(prev => ({ ...prev, hidePulled: e.target.checked }))}
+          />
+          <span>Hide cards pulled into a deck</span>
+        </label>
         <button
           className="tbtn tbtn-danger"
           onClick={handleClearFilters}
@@ -1130,6 +1140,7 @@ export default function App() {
     rarity: [],
     type: [],
     status: [],
+    hidePulled: false,
   });
 
   type TcgCopyMode = 'fullNeeded' | 'oneEach';
@@ -1440,6 +1451,49 @@ export default function App() {
       (snapshot[targetSetKey]?.[baseNumber] ?? 0) + (deckOwnedTotals[targetSetKey]?.[baseNumber] ?? 0);
   }, [setKeys, setKey, inventory, canonicalCatalog, deckOwnedTotals]);
 
+  // Binder-only ownership (no precons/physical decks) — the baseline for what's physically printed
+  // into the binder, used by Construct/Deconstruct instead of the combined buildOwnedLookup above.
+  const buildBinderOwnedLookup = useCallback(() => {
+    const snapshot = createInventoryExportSnapshot(localStorage, setKeys, setKey, inventory, canonicalCatalog);
+    return (targetSetKey: SetKey, baseNumber: number) => snapshot[targetSetKey]?.[baseNumber] ?? 0;
+  }, [setKeys, setKey, inventory, canonicalCatalog]);
+
+  // Sum of every constructed deck's pulledCards, keyed by set then base number — what's currently
+  // reserved out of the binder for a physically-built deck.
+  const constructedReservations = useMemo(() => {
+    const totals: Record<SetKey, Record<number, number>> = {};
+    for (const deck of deckLibrary.customDecks) {
+      if (!deck.constructed) continue;
+      for (const ref of deck.pulledCards) {
+        const bucket = totals[ref.setKey] ?? (totals[ref.setKey] = {});
+        bucket[ref.baseNumber] = (bucket[ref.baseNumber] ?? 0) + ref.count;
+      }
+    }
+    return totals;
+  }, [deckLibrary]);
+
+  // Which deck(s) reserved a given card — feeds the "N pulled → DeckName" badge.
+  const reservationSources = useMemo(() => {
+    const totals: Record<SetKey, Record<number, string[]>> = {};
+    for (const deck of deckLibrary.customDecks) {
+      if (!deck.constructed) continue;
+      for (const ref of deck.pulledCards) {
+        const bucket = totals[ref.setKey] ?? (totals[ref.setKey] = {});
+        (bucket[ref.baseNumber] ?? (bucket[ref.baseNumber] = [])).push(deck.name);
+      }
+    }
+    return totals;
+  }, [deckLibrary]);
+
+  // What's actually sitting in the binder right now: binder-raw minus everything reserved by
+  // already-constructed decks. Drives the binder grid, the Inventory/Missing tab, and how many
+  // copies a new deck construction can pull.
+  const buildBinderAvailableLookup = useCallback(() => {
+    const raw = buildBinderOwnedLookup();
+    return (targetSetKey: SetKey, baseNumber: number) =>
+      Math.max(0, raw(targetSetKey, baseNumber) - (constructedReservations[targetSetKey]?.[baseNumber] ?? 0));
+  }, [buildBinderOwnedLookup, constructedReservations]);
+
   const togglePrecon = useCallback((key: string) => {
     setDeckLibrary(lib => {
       const owned = (lib.preconOwnership[key] ?? 0) > 0;
@@ -1452,7 +1506,7 @@ export default function App() {
   }, []);
 
   const updateDeck = useCallback(
-    (id: string, patch: Partial<Pick<SavedDeck, 'name' | 'physical' | 'copies'>>) => {
+    (id: string, patch: Partial<Pick<SavedDeck, 'name' | 'physical' | 'copies' | 'constructed' | 'pulledCards'>>) => {
       setDeckLibrary(lib => ({
         ...lib,
         customDecks: lib.customDecks.map(d =>
@@ -2044,19 +2098,22 @@ export default function App() {
 
   /** True if any card passes aspect/rarity/type filters and is not a complete playset (ignores status pills). */
   const hasIncompleteUnderCardFilters = useMemo(() => {
+    const reservedForSet = constructedReservations[setKey] ?? {};
     for (const baseCard of cardsBase) {
       if (!passesAllFilters(baseCard)) continue;
       const baseNum = baseCard.Number;
-      const have = inventory[baseNum] || 0;
+      const trueOwned = inventory[baseNum] || 0;
+      const qty = Math.max(0, trueOwned - (reservedForSet[baseNum] ?? 0));
       const max = quotaForType(baseCard.Type);
-      if (have < max) return true;
+      if (qty < max) return true;
     }
     return false;
-  }, [cardsBase, inventory, passesAllFilters]);
+  }, [cardsBase, inventory, passesAllFilters, constructedReservations, setKey]);
 
   // Build ONE list over base cards, then partition.
   // Each row has Qty (across base + alts), Max, Needed, and other fields you already use.
   const filteredAllRows = useMemo(() => {
+    const reservedForSet = constructedReservations[setKey] ?? {};
     const rows: Array<{
       Number: number;
       Name: string;
@@ -2064,20 +2121,25 @@ export default function App() {
       Type?: string;
       Rarity?: string;
       Price: number;    // MarketPrice (unit)
-      Qty: number;      // have across base+alts
+      Qty: number;      // binder-adjusted have (true owned minus pulled-for-deck), across base+alts
+      TrueOwned: number; // raw owned, unaffected by deck construction
+      PulledQty: number; // reserved by constructed decks
       Max: number;
-      Needed: number;   // Max - Qty
+      Needed: number;   // Max - TrueOwned (unaffected by pulls — you already own it)
     }> = [];
 
     for (const baseCard of cardsBase) {
       if (!passesAllFilters(baseCard)) continue;
 
       const baseNum = baseCard.Number;
-      const have = inventory[baseNum] || 0;
+      const trueOwned = inventory[baseNum] || 0;
+      const pulledQty = reservedForSet[baseNum] ?? 0;
+      const qty = Math.max(0, trueOwned - pulledQty);
       const max = quotaForType(baseCard.Type);
-      const needed = Math.max(0, max - have);
-      const collStatus = collectionStatusFromQty(have, max);
+      const needed = Math.max(0, max - trueOwned);
+      const collStatus = collectionStatusFromQty(qty, max);
       if (filters.status.length > 0 && !filters.status.includes(collStatus)) continue;
+      if (filters.hidePulled && pulledQty > 0 && trueOwned >= max) continue;
 
       rows.push({
         Number: baseNum,
@@ -2086,21 +2148,23 @@ export default function App() {
         Type: baseCard.Type,
         Rarity: baseCard.Rarity,
         Price: Number(baseCard?.MarketPrice ?? 0),
-        Qty: have,
+        Qty: qty,
+        TrueOwned: trueOwned,
+        PulledQty: pulledQty,
         Max: max,
         Needed: needed,
       });
     }
 
     return rows.sort((a, b) => a.Number - b.Number);
-  }, [cardsBase, inventory, passesAllFilters, filters.status]);
+  }, [cardsBase, inventory, passesAllFilters, filters.status, filters.hidePulled, constructedReservations, setKey]);
 
   // Projections for the two tabs (shape-compatible with your tables)
   const filteredInvRows = useMemo(() => {
     // rows with Qty > 0
     return filteredAllRows
       .filter(r => r.Qty > 0)
-      .map(r => ({ Number: r.Number, Name: r.Name, Type: r.Type, Qty: r.Qty, Max: r.Max }));
+      .map(r => ({ Number: r.Number, Name: r.Name, Type: r.Type, Qty: r.Qty, Max: r.Max, PulledQty: r.PulledQty }));
   }, [filteredAllRows]);
 
   const filteredMissingRows = useMemo(() => {
@@ -2111,6 +2175,8 @@ export default function App() {
         Name: r.Name,
         Type: r.Type,
         Have: r.Qty,
+        TrueOwned: r.TrueOwned,
+        PulledQty: r.PulledQty,
         Max: r.Max,
         Needed: r.Needed,
         Price: r.Price,
@@ -2120,7 +2186,8 @@ export default function App() {
 
   const invRows = filteredInvRows;
 
-  // Inventory Status Counts (Complete, Incomplete, Missing) from the single list
+  // Inventory Status Counts (Complete, Incomplete, Missing) from the single list — reflects
+  // binder-adjusted quantities, i.e. what's physically in the binder pages right now.
   const inventoryStatus = useMemo(() => {
     let complete = 0, incomplete = 0, missing = 0;
 
@@ -2138,8 +2205,10 @@ export default function App() {
     };
   }, [filteredAllRows]);
 
+  // Deliberately based on TrueOwned, not the binder-adjusted Qty: the dollar value of what you own
+  // shouldn't fluctuate based on which deck box a card is currently sitting in.
   const collectionValue = useMemo(
-    () => filteredAllRows.reduce((sum, r) => sum + r.Qty * r.Price, 0),
+    () => filteredAllRows.reduce((sum, r) => sum + r.TrueOwned * r.Price, 0),
     [filteredAllRows]
   );
 
@@ -2408,6 +2477,7 @@ export default function App() {
           numToAspectSpec={numToAspectSpec}
           byNumber={byNumber}
           inventory={inventory}
+          reservedByNumber={constructedReservations[setKey] ?? {}}
           inc={inc}
           dec={dec}
           setKey={setKey}
@@ -2666,7 +2736,18 @@ export default function App() {
                           subtitle={card?.Subtitle}
                           type={r.Type}
                         />
-                        <td className="mono qtycol">{r.Qty}</td>
+                        <td className="mono qtycol">
+                          {r.Qty}
+                          {r.PulledQty > 0 && (
+                            <span
+                              className="pill"
+                              style={{ marginLeft: 6, fontSize: 11 }}
+                              title={`${r.PulledQty} pulled → ${(reservationSources[setKey]?.[r.Number] ?? []).join(', ') || 'a constructed deck'}`}
+                            >
+                              {r.PulledQty} pulled
+                            </span>
+                          )}
+                        </td>
                         <td className="compcol">
                           <CollectionStatusBadge have={r.Qty} max={r.Max} />
                         </td>
@@ -2732,7 +2813,18 @@ export default function App() {
                           type={r.Type}
                         />
                         <td className="compcol">
-                          <CollectionStatusBadge have={r.Have} max={r.Max} />
+                          <div className="row" style={{ gap: 6, alignItems: 'center' }}>
+                            <CollectionStatusBadge have={r.Have} max={r.Max} />
+                            {r.PulledQty > 0 && (
+                              <span
+                                className="pill"
+                                style={{ fontSize: 11 }}
+                                title={`${r.PulledQty} pulled → ${(reservationSources[setKey]?.[r.Number] ?? []).join(', ') || 'a constructed deck'}`}
+                              >
+                                {r.PulledQty} pulled
+                              </span>
+                            )}
+                          </div>
                         </td>
                         <td className="mono qtycol">{r.Needed}</td>
                         <td className="mono moneycol">{fmtUSD(r.RowTotal)}</td>
@@ -2741,9 +2833,9 @@ export default function App() {
                             <button
                               className="plus"
                               aria-label={`Add one ${r.Name}`}
-                              onClick={(e) => { e.stopPropagation(); inc(r.Number); }} 
-                              disabled={r.Have >= r.Max}
-                              title={r.Have >= r.Max ? 'Complete' : 'Add one'}
+                              onClick={(e) => { e.stopPropagation(); inc(r.Number); }}
+                              disabled={r.TrueOwned >= r.Max}
+                              title={r.TrueOwned >= r.Max ? 'Complete' : 'Add one'}
                             >
                               +
                             </button>
@@ -2781,6 +2873,7 @@ export default function App() {
           parsedSets={deckCheckParsedSets}
           trackedSetKeys={setKeys}
           buildOwnedLookup={buildOwnedLookup}
+          buildBinderAvailableLookup={buildBinderAvailableLookup}
           showToast={showToast}
         />
       )}
@@ -3129,6 +3222,7 @@ export function Binder({
   numToAspectSpec,
   byNumber,
   inventory,
+  reservedByNumber,
   inc,
   dec,
   setKey,
@@ -3144,6 +3238,8 @@ export function Binder({
   numToAspectSpec: Map<number, AspectFillSpec>;
   byNumber: Map<number, Card>;
   inventory: Inventory;
+  /** Copies of each card number currently reserved by constructed decks, for the current set. */
+  reservedByNumber: Record<number, number>;
   inc: (n:number)=>void;
   dec: (n:number)=>void;
   setKey: SetKey;
@@ -3399,7 +3495,9 @@ export function Binder({
                     const labelColor = labelColorForAspectHexes(aspectHexes);
 
                     // data for this slot
-                    const qty = inventory[n] || 0;
+                    const rawQty = inventory[n] || 0;
+                    const reserved = reservedByNumber[n] ?? 0;
+                    const qty = Math.max(0, rawQty - reserved);
                     const max = quotaForType(cardAt?.Type);
                     const qtyText = `${qty}/${max}`;
 
@@ -3473,6 +3571,22 @@ export function Binder({
                         >
                           {qtyText}
                         </text>
+
+                        {reserved > 0 && (
+                          <text
+                            x={x + cellW / 2}
+                            y={y + cellH / 2 + QTY_SHIFT_DOWN - QTY_Y_OFFSET - QTY_FONT / 2 - 6}
+                            textAnchor="middle"
+                            dominantBaseline="middle"
+                            fontSize={10}
+                            fontWeight={600}
+                            fill={labelColor}
+                            opacity={0.85}
+                            style={{ pointerEvents: 'none' }}
+                          >
+                            −{reserved} in deck
+                          </text>
+                        )}
 
                         {/* CENTER-BOTTOM: +/- controls under qty (clicks don't bubble) */}
                         <g

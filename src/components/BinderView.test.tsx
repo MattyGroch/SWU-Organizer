@@ -27,6 +27,7 @@ function renderBinder(viewSpread = 1, totalSpreads = 3) {
       numToAspectSpec={new Map()}
       byNumber={new Map([[25, card25]])}
       inventory={{}}
+      reservedByNumber={{}}
       inc={vi.fn()}
       dec={vi.fn()}
       setKey="SOR"

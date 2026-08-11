@@ -14,18 +14,20 @@ import { allCardRefs, deckContentsFromRows, type DeckCardRef, type DeckContents 
 import { createSavedDeck, type DeckLibrary, type SavedDeck } from '../core/decks'
 import type { PreconCatalogEntry } from '../core/precons'
 import { DeckRowsTable } from './DeckRowsTable'
+import { PickListModal } from './PickListModal'
 
 type Props = {
   preconCatalog: PreconCatalogEntry[]
   deckLibrary: DeckLibrary
   onTogglePrecon: (key: string) => void
   onSaveDeck: (deck: SavedDeck) => void
-  onUpdateDeck: (id: string, patch: Partial<Pick<SavedDeck, 'name' | 'physical' | 'copies'>>) => void
+  onUpdateDeck: (id: string, patch: Partial<Pick<SavedDeck, 'name' | 'physical' | 'copies' | 'constructed' | 'pulledCards'>>) => void
   onDeleteDeck: (id: string) => void
   canonicalCatalog: CanonicalCatalog
   parsedSets: Map<SetKey, DeckLookupSet>
   trackedSetKeys: SetKey[]
   buildOwnedLookup: () => (setKey: SetKey, baseNumber: number) => number
+  buildBinderAvailableLookup: () => (setKey: SetKey, baseNumber: number) => number
   showToast: (message: string, kind?: 'success' | 'error' | 'warning') => void
 }
 
@@ -324,6 +326,7 @@ function SavedDeckRow({
   onToggleExpand,
   onUpdateDeck,
   onDeleteDeck,
+  onOpenPickList,
   rows,
   showToast,
 }: {
@@ -333,6 +336,7 @@ function SavedDeckRow({
   onToggleExpand: () => void
   onUpdateDeck: Props['onUpdateDeck']
   onDeleteDeck: Props['onDeleteDeck']
+  onOpenPickList: (id: string) => void
   rows: DeckRowWithNeed[]
   showToast: Props['showToast']
 }) {
@@ -354,7 +358,17 @@ function SavedDeckRow({
         </button>
         <div className="row" style={{ gap: 8, alignItems: 'center' }}>
           <span className="pill">{deck.physical ? `Physical × ${deck.copies}` : 'Reference'}</span>
+          <span className="pill">{deck.constructed ? 'Constructed' : 'Not built'}</span>
           <span className="pill">Needed: {needed}</span>
+          <button
+            type="button"
+            className="tbtn"
+            onClick={() => onOpenPickList(deck.id)}
+            aria-label={`${deck.constructed ? 'Deconstruct' : 'Construct'} ${deck.name}`}
+          >
+            <span className="icon" aria-hidden="true">{deck.constructed ? 'inventory_2' : 'checklist'}</span>
+            <span>{deck.constructed ? 'Deconstruct Deck' : 'Construct Deck'}</span>
+          </button>
           <label className="row" style={{ gap: 6 }}>
             <input
               type="checkbox"
@@ -397,12 +411,15 @@ export function DecksView({
   parsedSets,
   trackedSetKeys,
   buildOwnedLookup,
+  buildBinderAvailableLookup,
   showToast,
 }: Props) {
   const ownedByBase = React.useMemo(() => buildOwnedLookup(), [buildOwnedLookup])
   const [expandedPrecon, setExpandedPrecon] = React.useState<string | null>(null)
   const [expandedDeckId, setExpandedDeckId] = React.useState<string | null>(null)
   const [showImport, setShowImport] = React.useState(false)
+  const [pickListDeckId, setPickListDeckId] = React.useState<string | null>(null)
+  const pickListDeck = deckLibrary.customDecks.find(d => d.id === pickListDeckId) ?? null
 
   const preconsBySet = React.useMemo(() => {
     const groups = new Map<SetKey, PreconCatalogEntry[]>()
@@ -502,6 +519,7 @@ export function DecksView({
               onToggleExpand={() => setExpandedDeckId(expandedDeckId === deck.id ? null : deck.id)}
               onUpdateDeck={onUpdateDeck}
               onDeleteDeck={onDeleteDeck}
+              onOpenPickList={id => setPickListDeckId(id)}
               rows={contentsToRows(deck, parsedSets, ownedByBase)}
               showToast={showToast}
             />
@@ -520,6 +538,20 @@ export function DecksView({
           />
         </div>
       </details>
+
+      {pickListDeck && (
+        <PickListModal
+          deck={pickListDeck}
+          mode={pickListDeck.constructed ? 'deconstruct' : 'construct'}
+          parsedSets={parsedSets}
+          setOrder={trackedSetKeys}
+          buildBinderAvailableLookup={buildBinderAvailableLookup}
+          dealRows={contentsToRows(pickListDeck, parsedSets, ownedByBase)}
+          deckLibrary={deckLibrary}
+          onClose={() => setPickListDeckId(null)}
+          onUpdateDeck={onUpdateDeck}
+        />
+      )}
     </div>
   )
 }

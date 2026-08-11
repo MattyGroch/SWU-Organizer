@@ -53,12 +53,22 @@ describe('createSavedDeck', () => {
       physical: true,
       copies: 2,
       sourceText: 'raw',
+      constructed: false,
+      pulledCards: [],
       leader: { setKey: 'SOR', baseNumber: 1, count: 1 },
       secondLeader: undefined,
       base: { setKey: 'SOR', baseNumber: 2, count: 1 },
       mainDeck: [{ setKey: 'SOR', baseNumber: 3, count: 3 }],
       sideboard: [],
     });
+  });
+
+  it('always starts a new deck as not constructed with no pulled cards', () => {
+    const result = createSavedDeck(validRows, { name: 'x', physical: false, copies: 1, sourceText: '' });
+    expect(result.ok).toBe(true);
+    if (!result.ok) throw new Error('expected ok');
+    expect(result.deck.constructed).toBe(false);
+    expect(result.deck.pulledCards).toEqual([]);
   });
 
   it('defaults an untitled name and floors/clamps copies to at least 1', () => {
@@ -95,6 +105,8 @@ describe('deriveOwnedTotals', () => {
     physical: true,
     copies: 1,
     sourceText: '',
+    constructed: false,
+    pulledCards: [],
     leader: { setKey: 'JTL', baseNumber: 10, count: 1 },
     base: { setKey: 'JTL', baseNumber: 11, count: 1 },
     mainDeck: [{ setKey: 'JTL', baseNumber: 12, count: 2 }],
@@ -151,6 +163,8 @@ describe('parseDeckLibrary / persistence', () => {
       physical: false,
       copies: 1,
       sourceText: '',
+      constructed: false,
+      pulledCards: [],
       leader: { setKey: 'SOR', baseNumber: 1, count: 1 },
       base: { setKey: 'SOR', baseNumber: 2, count: 1 },
       mainDeck: [],
@@ -161,6 +175,27 @@ describe('parseDeckLibrary / persistence', () => {
       preconOwnership: { 'SOR-heroism': 1, bad: 'x' },
     });
     expect(parseDeckLibrary(raw)).toEqual({ customDecks: [valid], preconOwnership: {} });
+  });
+
+  it('defaults constructed/pulledCards for saved decks from before those fields existed', () => {
+    const oldShapeDeck = {
+      id: 'd1',
+      name: 'Old deck',
+      createdAt: '',
+      updatedAt: '',
+      physical: false,
+      copies: 1,
+      sourceText: '',
+      leader: { setKey: 'SOR', baseNumber: 1, count: 1 },
+      base: { setKey: 'SOR', baseNumber: 2, count: 1 },
+      mainDeck: [],
+      sideboard: [],
+    };
+    const raw = JSON.stringify({ customDecks: [oldShapeDeck], preconOwnership: {} });
+    const library = parseDeckLibrary(raw);
+    expect(library.customDecks).toHaveLength(1);
+    expect(library.customDecks[0]!.constructed).toBe(false);
+    expect(library.customDecks[0]!.pulledCards).toEqual([]);
   });
 
   it('round-trips through loadDeckLibrary/persistDeckLibrary', () => {

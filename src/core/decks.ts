@@ -2,7 +2,9 @@ import type { ResolvedDeckRow } from './decklist'
 import {
   addDeckContentsToTotals,
   deckContentsFromRows,
+  isDeckCardRef,
   isDeckContents,
+  type DeckCardRef,
   type DeckContents,
   type OwnedTotals,
 } from './deckContents'
@@ -19,6 +21,10 @@ export type SavedDeck = DeckContents & {
   copies: number
   /** Original pasted text, kept so the deck can be re-parsed/edited later. */
   sourceText: string
+  /** True once the user has pulled this deck's cards out of the binders and physically assembled it. */
+  constructed: boolean
+  /** Snapshot of exactly what was pulled from the binder at construct time. Only meaningful while constructed=true; cleared on deconstruct. */
+  pulledCards: DeckCardRef[]
 }
 
 export type DeckLibrary = {
@@ -64,6 +70,8 @@ export function createSavedDeck(
       physical: input.physical,
       copies: Math.max(1, Math.floor(input.copies) || 1),
       sourceText: input.sourceText,
+      constructed: false,
+      pulledCards: [],
     },
   }
 }
@@ -102,7 +110,9 @@ function isSavedDeck(value: unknown): value is SavedDeck {
     typeof v.updatedAt === 'string' &&
     typeof v.physical === 'boolean' &&
     Number.isFinite(v.copies) &&
-    typeof v.sourceText === 'string'
+    typeof v.sourceText === 'string' &&
+    (v.constructed === undefined || typeof v.constructed === 'boolean') &&
+    (v.pulledCards === undefined || (Array.isArray(v.pulledCards) && v.pulledCards.every(isDeckCardRef)))
   )
 }
 
@@ -116,7 +126,9 @@ export function parseDeckLibrary(raw: string | null): DeckLibrary {
     const parsed: unknown = JSON.parse(raw)
     if (!isRecord(parsed)) return { ...emptyDeckLibrary }
     const customDecks = Array.isArray(parsed.customDecks)
-      ? parsed.customDecks.filter(isSavedDeck)
+      ? parsed.customDecks
+          .filter(isSavedDeck)
+          .map(d => ({ ...d, constructed: d.constructed ?? false, pulledCards: d.pulledCards ?? [] }))
       : []
     const preconOwnership = isPreconOwnership(parsed.preconOwnership) ? parsed.preconOwnership : {}
     return { customDecks, preconOwnership }
