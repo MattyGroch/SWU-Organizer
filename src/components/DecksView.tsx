@@ -434,51 +434,6 @@ export function DecksView({
   return (
     <div>
       <div className="card" style={{ padding: 16 }}>
-        <h3 style={{ marginTop: 0 }}>Precon decks I own</h3>
-        <p className="muted" style={{ marginTop: 0 }}>
-          Check off the preconstructed decks you own. Their cards count as "owned" in Deck Check, on top of
-          your binders — without being added to your binder inventory.
-        </p>
-        {preconCatalog.length === 0 ? (
-          <p className="muted">
-            No precon decks in the catalog yet. Use "Build precon JSON" below to add one to{' '}
-            <code>public/precons/</code>.
-          </p>
-        ) : (
-          [...preconsBySet.entries()].map(([setKey, entries]) => (
-            <div key={setKey} style={{ marginTop: 12 }}>
-              <div className="row" style={{ gap: 8, alignItems: 'center' }}>
-                <span className="pill">{setKey}</span>
-              </div>
-              {entries.map(entry => {
-                const owned = (deckLibrary.preconOwnership[entry.key] ?? 0) > 0
-                const isExpanded = expandedPrecon === entry.key
-                return (
-                  <div key={entry.key} style={{ marginTop: 6 }}>
-                    <div className="row" style={{ gap: 8, alignItems: 'center' }}>
-                      <label className="row" style={{ gap: 6 }}>
-                        <input type="checkbox" checked={owned} onChange={() => onTogglePrecon(entry.key)} />
-                        <span>{entry.label}</span>
-                      </label>
-                      <span className="pill">{entry.aspect}</span>
-                      <button
-                        type="button"
-                        className="tbtn"
-                        onClick={() => setExpandedPrecon(isExpanded ? null : entry.key)}
-                      >
-                        <span>{isExpanded ? 'Hide' : 'View'} contents</span>
-                      </button>
-                    </div>
-                    {isExpanded && <DeckRowsTable rows={contentsToRows(entry.contents, parsedSets, ownedByBase)} />}
-                  </div>
-                )
-              })}
-            </div>
-          ))
-        )}
-      </div>
-
-      <div className="card" style={{ padding: 16, marginTop: 16 }}>
         <div className="row" style={{ justifyContent: 'space-between' }}>
           <h3 style={{ margin: 0 }}>My decks</h3>
           <button type="button" className="tbtn" onClick={() => setShowImport(v => !v)}>
@@ -526,6 +481,51 @@ export function DecksView({
           ))
         )}
       </div>
+
+      <details className="card" style={{ padding: 16, marginTop: 16 }}>
+        <summary style={{ cursor: 'pointer', fontWeight: 700 }}>Precon decks I own</summary>
+        <p className="muted" style={{ marginTop: 8 }}>
+          Check off the preconstructed decks you own. Their cards count as "owned" in Deck Check, on top of
+          your binders — without being added to your binder inventory.
+        </p>
+        {preconCatalog.length === 0 ? (
+          <p className="muted">
+            No precon decks in the catalog yet. Use "Build precon JSON" below to add one to{' '}
+            <code>public/precons/</code>.
+          </p>
+        ) : (
+          [...preconsBySet.entries()].map(([setKey, entries]) => (
+            <div key={setKey} style={{ marginTop: 12 }}>
+              <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+                <span className="pill">{setKey}</span>
+              </div>
+              {entries.map(entry => {
+                const owned = (deckLibrary.preconOwnership[entry.key] ?? 0) > 0
+                const isExpanded = expandedPrecon === entry.key
+                return (
+                  <div key={entry.key} style={{ marginTop: 6 }}>
+                    <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+                      <label className="row" style={{ gap: 6 }}>
+                        <input type="checkbox" checked={owned} onChange={() => onTogglePrecon(entry.key)} />
+                        <span>{entry.label}</span>
+                      </label>
+                      <span className="pill">{entry.aspect}</span>
+                      <button
+                        type="button"
+                        className="tbtn"
+                        onClick={() => setExpandedPrecon(isExpanded ? null : entry.key)}
+                      >
+                        <span>{isExpanded ? 'Hide' : 'View'} contents</span>
+                      </button>
+                    </div>
+                    {isExpanded && <DeckRowsTable rows={contentsToRows(entry.contents, parsedSets, ownedByBase)} />}
+                  </div>
+                )
+              })}
+            </div>
+          ))
+        )}
+      </details>
 
       <details className="card" style={{ padding: 16, marginTop: 16 }}>
         <summary style={{ cursor: 'pointer', fontWeight: 700 }}>Build precon JSON (data authoring helper)</summary>
