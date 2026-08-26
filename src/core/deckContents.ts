@@ -11,9 +11,15 @@ export type DeckContents = {
   sideboard: DeckCardRef[]
 }
 
+export type DeckContentsFailureReason =
+  | 'missing-leader'
+  | 'missing-base'
+  | 'too-many-leaders'
+  | 'too-many-bases'
+
 export type DeckContentsResult =
   | { ok: true; contents: DeckContents }
-  | { ok: false; reason: 'missing-leader' | 'missing-base' }
+  | { ok: false; reason: DeckContentsFailureReason }
 
 function toRef(row: ResolvedDeckRow): DeckCardRef {
   return { setKey: row.setKey, baseNumber: row.baseNumber, count: row.count }
@@ -25,6 +31,12 @@ export function deckContentsFromRows(rows: ResolvedDeckRow[]): DeckContentsResul
   const bases = rows.filter(r => r.role === 'base')
   if (leaders.length === 0) return { ok: false, reason: 'missing-leader' }
   if (bases.length === 0) return { ok: false, reason: 'missing-base' }
+  // A deck holds at most two leaders (Twin Suns) and one base; anything more would be silently
+  // dropped by the destructuring below, so reject it instead of losing cards.
+  if (leaders.length > 2 || leaders.some(r => r.count > 1)) {
+    return { ok: false, reason: 'too-many-leaders' }
+  }
+  if (bases.length > 1 || bases[0].count > 1) return { ok: false, reason: 'too-many-bases' }
 
   const [leader, secondLeader] = leaders
   const [base] = bases

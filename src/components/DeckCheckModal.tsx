@@ -13,7 +13,9 @@ import {
   type DeckRowWithNeed,
 } from '../core/decklist'
 import { DeckRowsTable } from './DeckRowsTable'
-import { createSavedDeck, type SavedDeck } from '../core/decks'
+import { DeckLegalityPanel, FormatPicker } from './DeckLegalityPanel'
+import { checkDeckLegality, type FormatChoice } from '../core/deckLegality'
+import { createSavedDeck, deckContentsFailureMessage, type SavedDeck } from '../core/decks'
 
 type Props = {
   canonicalCatalog: CanonicalCatalog
@@ -65,6 +67,7 @@ export function DeckCheckModal({
   const [saveName, setSaveName] = React.useState('')
   const [savePhysical, setSavePhysical] = React.useState(false)
   const [saveCopies, setSaveCopies] = React.useState(1)
+  const [formatChoice, setFormatChoice] = React.useState<FormatChoice>('auto')
 
   React.useEffect(() => {
     return () => {
@@ -97,6 +100,7 @@ export function DeckCheckModal({
     setSaveName(resolved.deckName ?? '')
     setSavePhysical(false)
     setSaveCopies(1)
+    setFormatChoice('auto')
   }
 
   function handleSaveDeck() {
@@ -108,12 +112,7 @@ export function DeckCheckModal({
       sourceText: text,
     })
     if (!result.ok) {
-      showToast(
-        result.reason === 'missing-leader'
-          ? "This decklist doesn't have a leader — it can't be saved yet."
-          : "This decklist doesn't have a base — it can't be saved yet.",
-        'warning',
-      )
+      showToast(`${deckContentsFailureMessage(result.reason)} It can't be saved yet.`, 'warning')
       return
     }
     onSaveDeck(result.deck)
@@ -122,6 +121,10 @@ export function DeckCheckModal({
   }
 
   const summary = React.useMemo(() => summarizeDeck(rows, includeSideboard), [rows, includeSideboard])
+  const legality = React.useMemo(
+    () => (resolution ? checkDeckLegality(resolution.rows, formatChoice) : null),
+    [resolution, formatChoice],
+  )
   const mainRows = rows.filter(r => r.role !== 'sideboard')
   const sideboardRows = rows.filter(r => r.role === 'sideboard')
   const detectedFormat = text.trim() ? FORMAT_LABEL[detectDeckFormat(text)] : null
@@ -187,7 +190,8 @@ export function DeckCheckModal({
 
         <p className="muted" style={{ marginTop: 0 }}>
           Paste a decklist (JSON, Melee, Picklist, or a plain "3x Card Name" list) to see which cards
-          you own, which are missing, and what it would cost to complete the deck.
+          you own, which are missing, and what it would cost to complete the deck. Premier and Twin
+          Suns (two leaders, 80 cards, no repeats) decks are both checked against their format rules.
         </p>
 
         <label className="row" style={{ gap: 6, marginBottom: 12 }}>
@@ -230,27 +234,34 @@ export function DeckCheckModal({
           <>
             <div className="row" style={{ marginTop: 20, justifyContent: 'space-between' }}>
               <h3 style={{ margin: 0 }}>{resolution.deckName ?? 'Pasted decklist'}</h3>
-              <label className="row" style={{ gap: 6 }}>
-                <input
-                  type="checkbox"
-                  checked={includeSideboard}
-                  onChange={e => setIncludeSideboard(e.target.checked)}
-                />
-                <span>Include sideboard in totals &amp; export</span>
-              </label>
+              <div className="row" style={{ gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+                <FormatPicker id="deck-check-format" value={formatChoice} onChange={setFormatChoice} />
+                <label className="row" style={{ gap: 6 }}>
+                  <input
+                    type="checkbox"
+                    checked={includeSideboard}
+                    onChange={e => setIncludeSideboard(e.target.checked)}
+                  />
+                  <span>Include sideboard in totals &amp; export</span>
+                </label>
+              </div>
             </div>
+
+            {legality && <DeckLegalityPanel legality={legality} />}
 
             <div className="row" style={{ marginTop: 8, gap: 16 }}>
               <span className="pill">Needed cards: {summary.totalNeededCards}</span>
               <span className="pill">Cost to complete: {money(summary.totalCost)}</span>
+              {/* "owned" spelled out so these don't read as a second opinion on the legality
+                  panel's leader/base counts sitting directly above them. */}
               {summary.leaderOwned !== null && (
                 <span className="pill">
-                  {rows.filter(r => r.role === 'leader').length > 1 ? 'Leaders' : 'Leader'}:{' '}
-                  {summary.leaderOwned ? 'Owned ✓' : 'Missing'}
+                  {rows.filter(r => r.role === 'leader').length > 1 ? 'Leaders' : 'Leader'}{' '}
+                  {summary.leaderOwned ? 'owned ✓' : 'not owned'}
                 </span>
               )}
               {summary.baseOwned !== null && (
-                <span className="pill">Base: {summary.baseOwned ? 'Owned ✓' : 'Missing'}</span>
+                <span className="pill">Base {summary.baseOwned ? 'owned ✓' : 'not owned'}</span>
               )}
             </div>
 

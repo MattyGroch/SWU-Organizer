@@ -11,9 +11,11 @@ import {
   type DeckRowWithNeed,
 } from '../core/decklist'
 import { allCardRefs, deckContentsFromRows, type DeckCardRef, type DeckContents } from '../core/deckContents'
-import { createSavedDeck, type DeckLibrary, type SavedDeck } from '../core/decks'
+import { createSavedDeck, deckContentsFailureMessage, type DeckLibrary, type SavedDeck } from '../core/decks'
+import { FORMAT_RULES, checkDeckLegality, type FormatChoice } from '../core/deckLegality'
 import type { PreconCatalogEntry } from '../core/precons'
 import { DeckRowsTable } from './DeckRowsTable'
+import { DeckLegalityPanel, FormatPicker } from './DeckLegalityPanel'
 import { PickListModal } from './PickListModal'
 
 type Props = {
@@ -85,6 +87,11 @@ function contentsToRows(
   return rows
 }
 
+/** Two leaders is what makes a deck Twin Suns; derived from the stored contents so it needs no card lookup. */
+function formatLabel(contents: DeckContents): string {
+  return contents.secondLeader ? FORMAT_RULES.twinSuns.label : FORMAT_RULES.premier.label
+}
+
 function cardsNeeded(contents: DeckContents, ownedByBase: (setKey: SetKey, baseNumber: number) => number): number {
   let needed = 0
   for (const ref of allCardRefs(contents)) needed += Math.max(0, ref.count - ownedByBase(ref.setKey, ref.baseNumber))
@@ -114,6 +121,7 @@ function DeckImportForm({
   const [name, setName] = React.useState('')
   const [physical, setPhysical] = React.useState(false)
   const [copies, setCopies] = React.useState(1)
+  const [formatChoice, setFormatChoice] = React.useState<FormatChoice>('auto')
 
   function handleResolve() {
     if (!text.trim()) {
@@ -129,18 +137,14 @@ function DeckImportForm({
     const resolved = resolveDeckList(parsed, canonicalCatalog, parsedSets, trackedSetKeys, owned)
     setResolution(resolved)
     setName(resolved.deckName ?? '')
+    setFormatChoice('auto')
   }
 
   function handleSave() {
     if (!resolution) return
     const result = createSavedDeck(resolution.rows, { name, physical, copies, sourceText: text })
     if (!result.ok) {
-      showToast(
-        result.reason === 'missing-leader'
-          ? "This decklist doesn't have a leader — it can't be saved yet."
-          : "This decklist doesn't have a base — it can't be saved yet.",
-        'warning',
-      )
+      showToast(`${deckContentsFailureMessage(result.reason)} It can't be saved yet.`, 'warning')
       return
     }
     onSaveDeck(result.deck)
@@ -150,6 +154,10 @@ function DeckImportForm({
 
   const owned = React.useMemo(() => buildOwnedLookup(), [buildOwnedLookup])
   const previewRows = resolution ? computeDeckRows(resolution.rows, owned) : []
+  const legality = React.useMemo(
+    () => (resolution ? checkDeckLegality(resolution.rows, formatChoice) : null),
+    [resolution, formatChoice],
+  )
 
   return (
     <div className="card" style={{ padding: 12, marginTop: 8 }}>
@@ -169,6 +177,10 @@ function DeckImportForm({
 
       {resolution && (
         <>
+          <div className="row" style={{ marginTop: 8 }}>
+            <FormatPicker id="deck-import-format" value={formatChoice} onChange={setFormatChoice} />
+          </div>
+          {legality && <DeckLegalityPanel legality={legality} />}
           {previewRows.length > 0 && <DeckRowsTable rows={previewRows} />}
           {resolution.unresolved.length > 0 && (
             <p className="muted">{resolution.unresolved.length} line(s) couldn't be matched to a card.</p>
@@ -222,6 +234,7 @@ function PreconJsonBuilder({
   const [label, setLabel] = React.useState('')
   const [setKeyInput, setSetKeyInput] = React.useState('')
   const [aspect, setAspect] = React.useState('Heroism')
+  const [formatChoice, setFormatChoice] = React.useState<FormatChoice>('auto')
 
   function handleResolve() {
     if (!text.trim()) {
@@ -235,9 +248,11 @@ function PreconJsonBuilder({
     const parsed = parseDeckList(text)
     const resolved = resolveDeckList(parsed, canonicalCatalog, parsedSets, trackedSetKeys, () => 0)
     setResolution(resolved)
+    setFormatChoice('auto')
   }
 
   const contentsResult = resolution ? deckContentsFromRows(resolution.rows) : null
+  const legality = resolution ? checkDeckLegality(resolution.rows, formatChoice) : null
 
   function handleCopyFile() {
     if (!contentsResult?.ok) return
@@ -276,13 +291,16 @@ function PreconJsonBuilder({
 
       {resolution && (
         <>
+          <div className="row" style={{ marginTop: 8 }}>
+            <FormatPicker id="precon-builder-format" value={formatChoice} onChange={setFormatChoice} />
+          </div>
+          {legality && <DeckLegalityPanel legality={legality} />}
           {resolution.unresolved.length > 0 && (
             <p className="muted">{resolution.unresolved.length} line(s) couldn't be matched to a card.</p>
           )}
           {contentsResult && !contentsResult.ok && (
             <p className="err">
-              Missing a {contentsResult.reason === 'missing-leader' ? 'leader' : 'base'} — this decklist can't
-              become a precon file yet.
+              {deckContentsFailureMessage(contentsResult.reason)} It can't become a precon file yet.
             </p>
           )}
           {contentsResult?.ok && (
@@ -357,6 +375,7 @@ function SavedDeckRow({
           <span>{deck.name}</span>
         </button>
         <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+          <span className="pill">{formatLabel(deck)}</span>
           <span className="pill">{deck.physical ? `Physical × ${deck.copies}` : 'Reference'}</span>
           <span className="pill">{deck.constructed ? 'Constructed' : 'Not built'}</span>
           <span className="pill">Needed: {needed}</span>
