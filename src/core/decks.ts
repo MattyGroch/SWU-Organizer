@@ -6,6 +6,7 @@ import {
   isDeckContents,
   type DeckCardRef,
   type DeckContents,
+  type DeckContentsFailureReason,
   type OwnedTotals,
 } from './deckContents'
 import type { PreconCatalogEntry } from './precons'
@@ -46,7 +47,20 @@ export type NewSavedDeckInput = {
 
 export type CreateSavedDeckResult =
   | { ok: true; deck: SavedDeck }
-  | { ok: false; reason: 'missing-leader' | 'missing-base' }
+  | { ok: false; reason: DeckContentsFailureReason }
+
+/** Describes the problem only; callers add what it blocks ("it can't be saved yet", etc.). */
+const DECK_CONTENTS_FAILURE_MESSAGE: Record<DeckContentsFailureReason, string> = {
+  'missing-leader': "This decklist doesn't have a leader.",
+  'missing-base': "This decklist doesn't have a base.",
+  'too-many-leaders':
+    "This decklist's leaders don't fit a deck — Premier takes one leader, Twin Suns takes two different ones.",
+  'too-many-bases': 'This decklist has more than one base.',
+}
+
+export function deckContentsFailureMessage(reason: DeckContentsFailureReason): string {
+  return DECK_CONTENTS_FAILURE_MESSAGE[reason]
+}
 
 export function createSavedDeck(
   rows: ResolvedDeckRow[],

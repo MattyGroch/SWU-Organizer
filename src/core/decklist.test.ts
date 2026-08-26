@@ -165,6 +165,21 @@ describe('parseDeckJson', () => {
       { role: 'leader', name: 'ASH_001', count: 1, exact: { setKey: 'ASH', printingNumber: 1 } },
     ])
   })
+
+  it.each(['secondLeader', 'leader2'])(
+    'also accepts %s as the second leader key',
+    key => {
+      const parsed = parseDeckJson(
+        JSON.stringify({
+          leader: { id: 'SHD_012', count: 1 },
+          [key]: { id: 'ASH_001', count: 1 },
+          base: { id: 'SOR_030', count: 1 },
+          deck: [],
+        }),
+      )
+      expect(parsed.entries.filter(e => e.role === 'leader')).toHaveLength(2)
+    },
+  )
 })
 
 // ---------------------------------------------------------------------------

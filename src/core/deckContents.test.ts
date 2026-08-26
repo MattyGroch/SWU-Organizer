@@ -36,6 +36,33 @@ describe('deckContentsFromRows', () => {
     });
   });
 
+  it('rejects a third leader instead of silently dropping it', () => {
+    const rows = [
+      row({ role: 'leader', setKey: 'TS26', baseNumber: 1, count: 1 }),
+      row({ role: 'leader', setKey: 'TS26', baseNumber: 2, count: 1 }),
+      row({ role: 'leader', setKey: 'TS26', baseNumber: 3, count: 1 }),
+      row({ role: 'base', setKey: 'TS26', baseNumber: 4, count: 1 }),
+    ];
+    expect(deckContentsFromRows(rows)).toEqual({ ok: false, reason: 'too-many-leaders' });
+  });
+
+  it('rejects the same leader listed twice, which is not a legal Twin Suns pair', () => {
+    const rows = [
+      row({ role: 'leader', setKey: 'TS26', baseNumber: 1, count: 2 }),
+      row({ role: 'base', setKey: 'TS26', baseNumber: 4, count: 1 }),
+    ];
+    expect(deckContentsFromRows(rows)).toEqual({ ok: false, reason: 'too-many-leaders' });
+  });
+
+  it('rejects a second base instead of silently dropping it', () => {
+    const rows = [
+      row({ role: 'leader', setKey: 'SOR', baseNumber: 1, count: 1 }),
+      row({ role: 'base', setKey: 'SOR', baseNumber: 2, count: 1 }),
+      row({ role: 'base', setKey: 'SOR', baseNumber: 3, count: 1 }),
+    ];
+    expect(deckContentsFromRows(rows)).toEqual({ ok: false, reason: 'too-many-bases' });
+  });
+
   it('captures a second leader row for Twin Suns decks', () => {
     const rows = [
       row({ role: 'leader', setKey: 'TS26', baseNumber: 1, count: 1 }),

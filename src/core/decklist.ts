@@ -40,6 +40,8 @@ export type ResolvedDeckRow = {
   subtitle?: string
   type?: string
   price: number
+  /** Per-card deck-building override from the card's own text (e.g. Swarming Vulture Droid's 15), when it has one. */
+  maxCopies?: number
   /** True if this row's set was guessed because the same name matched more than one tracked set. */
   ambiguous: boolean
   ambiguousOtherSets?: SetKey[]
@@ -121,6 +123,8 @@ function parseCardId(id: unknown): DeckEntryCandidate | null {
   return { setKey, printingNumber }
 }
 
+const SECOND_LEADER_KEYS = ['secondleader', 'secondLeader', 'leader2'] as const
+
 export function parseDeckJson(text: string): ParsedDeckList {
   const payload: unknown = JSON.parse(text)
   if (!isRecord(payload)) throw new Error('Invalid decklist JSON payload.')
@@ -146,8 +150,10 @@ export function parseDeckJson(text: string): ParsedDeckList {
   }
 
   pushRef('leader', payload.leader, 'leader')
-  // Twin Suns decks run two leaders; swudb-style exports carry the second under `secondleader`.
-  pushRef('leader', payload.secondleader, 'secondleader')
+  // Twin Suns decks run two leaders. Exporters disagree on the key for the second one, so accept
+  // the spellings seen in the wild rather than only swudb's `secondleader`.
+  const secondLeaderKey = SECOND_LEADER_KEYS.find(key => payload[key] !== undefined)
+  if (secondLeaderKey) pushRef('leader', payload[secondLeaderKey], secondLeaderKey)
   pushRef('base', payload.base, 'base')
   if (Array.isArray(payload.deck)) {
     payload.deck.forEach((item, i) => pushRef('deck', item, `deck[${i}]`))
@@ -572,6 +578,7 @@ export function resolveDeckList(
         subtitle: resolved.card.Subtitle,
         type: resolved.card.Type,
         price: Number(resolved.card.MarketPrice ?? 0),
+        maxCopies: resolved.card.MaxCopies,
         ambiguous,
         ambiguousOtherSets,
       })
