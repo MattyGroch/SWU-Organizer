@@ -49,6 +49,11 @@
       "key": "ASH",
       "label": "Ashes of the Empire (ASH)",
       "file": "SWU-ASH.json"
+    },
+    {
+      "key": "HMW",
+      "label": "Homeworlds (HMW)",
+      "file": "SWU-HMW.json"
     }
   ]
 }
