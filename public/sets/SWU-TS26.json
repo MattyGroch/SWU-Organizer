@@ -4,8 +4,12 @@
       "Name": "501st Veteran",
       "Number": 20,
       "Aspects": [
-        "Vigilance",
-        "Aggression"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -14,8 +18,12 @@
       "Name": "Abandoned the Order",
       "Number": 37,
       "Aspects": [
-        "Cunning",
-        "Vigilance"
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Vigilance"
+        }
       ],
       "Type": "Upgrade",
       "Rarity": "Uncommon"
@@ -25,8 +33,12 @@
       "Subtitle": "I Have an Idea",
       "Number": 8,
       "Aspects": [
-        "Cunning",
-        "Heroism"
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Leader",
       "Rarity": "Rare"
@@ -35,9 +47,15 @@
       "Name": "Ahsoka's Lightsabers",
       "Number": 35,
       "Aspects": [
-        "Cunning",
-        "Vigilance",
-        "Heroism"
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Upgrade",
       "Rarity": "Rare"
@@ -47,8 +65,12 @@
       "Subtitle": "Protect Her At All Costs",
       "Number": 2,
       "Aspects": [
-        "Vigilance",
-        "Heroism"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Leader",
       "Rarity": "Rare"
@@ -57,7 +79,9 @@
       "Name": "Arena Reek",
       "Number": 44,
       "Aspects": [
-        "Vigilance"
+        {
+          "S": "Vigilance"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -66,7 +90,9 @@
       "Name": "Arms Deal",
       "Number": 68,
       "Aspects": [
-        "Aggression"
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Event",
       "Rarity": "Common"
@@ -76,8 +102,12 @@
       "Subtitle": "Ambitious Apprentice",
       "Number": 7,
       "Aspects": [
-        "Cunning",
-        "Villainy"
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Leader",
       "Rarity": "Rare"
@@ -86,8 +116,12 @@
       "Name": "Assault Lander LAAT",
       "Number": 23,
       "Aspects": [
-        "Command",
-        "Aggression"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -96,7 +130,9 @@
       "Name": "Backed by Black Sun",
       "Number": 70,
       "Aspects": [
-        "Aggression"
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Event",
       "Rarity": "Rare"
@@ -105,7 +141,9 @@
       "Name": "Backed by the Pykes",
       "Number": 58,
       "Aspects": [
-        "Command"
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Event",
       "Rarity": "Rare"
@@ -115,7 +153,9 @@
       "Subtitle": "It's Only a Matter of Time",
       "Number": 78,
       "Aspects": [
-        "Cunning"
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -125,7 +165,9 @@
       "Subtitle": "The Lawless",
       "Number": 65,
       "Aspects": [
-        "Aggression"
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -134,7 +176,9 @@
       "Name": "Brothers",
       "Number": 59,
       "Aspects": [
-        "Command"
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Event",
       "Rarity": "Rare"
@@ -144,8 +188,12 @@
       "Subtitle": "Die, Jedi Dogs!",
       "Number": 15,
       "Aspects": [
-        "Vigilance",
-        "Command"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -155,8 +203,12 @@
       "Subtitle": "Search the Tunnels",
       "Number": 39,
       "Aspects": [
-        "Vigilance",
-        "Heroism"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -165,7 +217,9 @@
       "Name": "Champion",
       "Number": 45,
       "Aspects": [
-        "Vigilance"
+        {
+          "S": "Vigilance"
+        }
       ],
       "Type": "Upgrade",
       "Rarity": "Common"
@@ -174,8 +228,12 @@
       "Name": "Chaotic Diversion",
       "Number": 31,
       "Aspects": [
-        "Aggression",
-        "Cunning"
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Event",
       "Rarity": "Rare"
@@ -185,9 +243,15 @@
       "Subtitle": "Jedi Rescuer",
       "Number": 19,
       "Aspects": [
-        "Vigilance",
-        "Aggression",
-        "Heroism"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -196,7 +260,9 @@
       "Name": "Coruscanti Spy",
       "Number": 53,
       "Aspects": [
-        "Command"
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Common"
@@ -206,8 +272,12 @@
       "Subtitle": "Offering Aid",
       "Number": 1,
       "Aspects": [
-        "Vigilance",
-        "Villainy"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Leader",
       "Rarity": "Rare"
@@ -217,9 +287,15 @@
       "Subtitle": "Under a Cloak of Darkness",
       "Number": 13,
       "Aspects": [
-        "Vigilance",
-        "Command",
-        "Villainy"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -228,7 +304,9 @@
       "Name": "Deployed Droideka",
       "Number": 77,
       "Aspects": [
-        "Cunning"
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Common"
@@ -238,7 +316,9 @@
       "Subtitle": "Serenno",
       "Number": 10,
       "Aspects": [
-        "Command"
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Base",
       "Rarity": "Rare"
@@ -248,8 +328,12 @@
       "Subtitle": "Beautiful and Expensive",
       "Number": 38,
       "Aspects": [
-        "Vigilance",
-        "Villainy"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -258,7 +342,9 @@
       "Name": "Encircle",
       "Number": 61,
       "Aspects": [
-        "Command"
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Event",
       "Rarity": "Uncommon"
@@ -267,7 +353,9 @@
       "Name": "Evade Arrest",
       "Number": 82,
       "Aspects": [
-        "Cunning"
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Event",
       "Rarity": "Uncommon"
@@ -277,7 +365,9 @@
       "Subtitle": "Geonosis",
       "Number": 11,
       "Aspects": [
-        "Aggression"
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Base",
       "Rarity": "Rare"
@@ -286,7 +376,9 @@
       "Name": "Fearless Attack",
       "Number": 84,
       "Aspects": [
-        "Heroism"
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Event",
       "Rarity": "Uncommon"
@@ -295,7 +387,9 @@
       "Name": "Fervor",
       "Number": 72,
       "Aspects": [
-        "Aggression"
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Event",
       "Rarity": "Uncommon"
@@ -304,8 +398,12 @@
       "Name": "Fiery Alliance",
       "Number": 25,
       "Aspects": [
-        "Command",
-        "Aggression"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Upgrade",
       "Rarity": "Uncommon"
@@ -315,7 +413,9 @@
       "Subtitle": "Coruscant",
       "Number": 9,
       "Aspects": [
-        "Vigilance"
+        {
+          "S": "Vigilance"
+        }
       ],
       "Type": "Base",
       "Rarity": "Rare"
@@ -325,9 +425,15 @@
       "Subtitle": "I Have Proof!",
       "Number": 34,
       "Aspects": [
-        "Cunning",
-        "Vigilance",
-        "Heroism"
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -337,8 +443,12 @@
       "Subtitle": "Hondo's Luxury Yacht",
       "Number": 27,
       "Aspects": [
-        "Command",
-        "Cunning"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -347,7 +457,9 @@
       "Name": "Galactic Escalation",
       "Number": 56,
       "Aspects": [
-        "Command"
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Event",
       "Rarity": "Common"
@@ -357,9 +469,15 @@
       "Subtitle": "Sundari Pillager",
       "Number": 21,
       "Aspects": [
-        "Command",
-        "Aggression",
-        "Villainy"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -369,8 +487,12 @@
       "Subtitle": "Crush Them!",
       "Number": 50,
       "Aspects": [
-        "Command",
-        "Villainy"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -380,8 +502,12 @@
       "Subtitle": "Guarding the Count",
       "Number": 75,
       "Aspects": [
-        "Cunning",
-        "Villainy"
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -390,7 +516,9 @@
       "Name": "Jedi General",
       "Number": 55,
       "Aspects": [
-        "Command"
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -400,8 +528,12 @@
       "Subtitle": "Refugee Freighter",
       "Number": 18,
       "Aspects": [
-        "Vigilance",
-        "Command"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -411,8 +543,12 @@
       "Subtitle": "Great King of Toydaria",
       "Number": 16,
       "Aspects": [
-        "Vigilance",
-        "Command"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -421,9 +557,15 @@
       "Name": "Kouhun Assassination",
       "Number": 33,
       "Aspects": [
-        "Cunning",
-        "Vigilance",
-        "Villainy"
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Event",
       "Rarity": "Rare"
@@ -433,8 +575,12 @@
       "Subtitle": "Making a Withdrawal",
       "Number": 51,
       "Aspects": [
-        "Command",
-        "Villainy"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -444,8 +590,12 @@
       "Subtitle": "Collective Ambition",
       "Number": 3,
       "Aspects": [
-        "Command",
-        "Villainy"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Leader",
       "Rarity": "Rare"
@@ -455,8 +605,12 @@
       "Subtitle": "One Last Lesson",
       "Number": 30,
       "Aspects": [
-        "Aggression",
-        "Cunning"
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -465,7 +619,9 @@
       "Name": "Mechanize",
       "Number": 57,
       "Aspects": [
-        "Command"
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Event",
       "Rarity": "Uncommon"
@@ -474,7 +630,9 @@
       "Name": "Mislead",
       "Number": 81,
       "Aspects": [
-        "Cunning"
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Event",
       "Rarity": "Common"
@@ -484,8 +642,12 @@
       "Subtitle": "Infamous Murderer",
       "Number": 73,
       "Aspects": [
-        "Cunning",
-        "Villainy"
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -495,9 +657,15 @@
       "Subtitle": "Stealing the Spirit",
       "Number": 26,
       "Aspects": [
-        "Command",
-        "Cunning",
-        "Villainy"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -507,8 +675,12 @@
       "Subtitle": "Steadfast Knight",
       "Number": 40,
       "Aspects": [
-        "Vigilance",
-        "Heroism"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -518,8 +690,12 @@
       "Subtitle": "Follow My Lead",
       "Number": 4,
       "Aspects": [
-        "Command",
-        "Heroism"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Leader",
       "Rarity": "Rare"
@@ -529,8 +705,12 @@
       "Subtitle": "For Mandalore!",
       "Number": 74,
       "Aspects": [
-        "Cunning",
-        "Villainy"
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -540,8 +720,12 @@
       "Subtitle": "Scheming Populist",
       "Number": 28,
       "Aspects": [
-        "Command",
-        "Cunning"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -551,8 +735,12 @@
       "Subtitle": "Getting His Chance",
       "Number": 62,
       "Aspects": [
-        "Aggression",
-        "Heroism"
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -561,8 +749,12 @@
       "Name": "Reckless Landing",
       "Number": 32,
       "Aspects": [
-        "Aggression",
-        "Cunning"
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Event",
       "Rarity": "Rare"
@@ -571,7 +763,9 @@
       "Name": "Relief Frigate",
       "Number": 42,
       "Aspects": [
-        "Vigilance"
+        {
+          "S": "Vigilance"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Common"
@@ -580,7 +774,9 @@
       "Name": "Remove the Chip",
       "Number": 69,
       "Aspects": [
-        "Aggression"
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Event",
       "Rarity": "Rare"
@@ -589,7 +785,9 @@
       "Name": "Reveal Intentions",
       "Number": 80,
       "Aspects": [
-        "Cunning"
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Event",
       "Rarity": "Uncommon"
@@ -599,8 +797,12 @@
       "Subtitle": "No Other Option",
       "Number": 6,
       "Aspects": [
-        "Aggression",
-        "Heroism"
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Leader",
       "Rarity": "Rare"
@@ -609,8 +811,12 @@
       "Name": "Rex's DC-17s",
       "Number": 63,
       "Aspects": [
-        "Aggression",
-        "Heroism"
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Upgrade",
       "Rarity": "Rare"
@@ -619,7 +825,9 @@
       "Name": "Ruping Rider",
       "Number": 67,
       "Aspects": [
-        "Aggression"
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Common"
@@ -629,8 +837,12 @@
       "Subtitle": "Trapped by Authority",
       "Number": 17,
       "Aspects": [
-        "Vigilance",
-        "Command"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -640,8 +852,12 @@
       "Subtitle": "You Must Have Your Revenge",
       "Number": 5,
       "Aspects": [
-        "Aggression",
-        "Villainy"
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Leader",
       "Rarity": "Rare"
@@ -650,7 +866,9 @@
       "Name": "Secret Marriage",
       "Number": 46,
       "Aspects": [
-        "Vigilance"
+        {
+          "S": "Vigilance"
+        }
       ],
       "Type": "Event",
       "Rarity": "Rare"
@@ -660,8 +878,12 @@
       "Subtitle": "Quarrelsome Holdouts",
       "Number": 49,
       "Aspects": [
-        "Command",
-        "Villainy"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -670,8 +892,12 @@
       "Name": "Sith Traditions",
       "Number": 52,
       "Aspects": [
-        "Command",
-        "Villainy"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Upgrade",
       "Rarity": "Uncommon"
@@ -680,8 +906,12 @@
       "Name": "Sundari Gauntlet",
       "Number": 24,
       "Aspects": [
-        "Command",
-        "Aggression"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -691,7 +921,9 @@
       "Subtitle": "Mandalore",
       "Number": 12,
       "Aspects": [
-        "Cunning"
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Base",
       "Rarity": "Rare"
@@ -700,7 +932,9 @@
       "Name": "Take Action",
       "Number": 71,
       "Aspects": [
-        "Aggression"
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Event",
       "Rarity": "Common"
@@ -709,7 +943,9 @@
       "Name": "Take Aim",
       "Number": 83,
       "Aspects": [
-        "Cunning"
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Event",
       "Rarity": "Common"
@@ -718,7 +954,9 @@
       "Name": "Take Charge",
       "Number": 60,
       "Aspects": [
-        "Command"
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Event",
       "Rarity": "Common"
@@ -727,7 +965,9 @@
       "Name": "Take Cover",
       "Number": 47,
       "Aspects": [
-        "Vigilance"
+        {
+          "S": "Vigilance"
+        }
       ],
       "Type": "Event",
       "Rarity": "Common"
@@ -737,9 +977,15 @@
       "Subtitle": "Only the Strongest Shall Rule",
       "Number": 22,
       "Aspects": [
-        "Command",
-        "Aggression",
-        "Villainy"
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Upgrade",
       "Rarity": "Rare"
@@ -749,8 +995,12 @@
       "Subtitle": "Grave of the 332nd",
       "Number": 36,
       "Aspects": [
-        "Cunning",
-        "Vigilance"
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Vigilance"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -760,8 +1010,12 @@
       "Subtitle": "Escaping Malevolence",
       "Number": 41,
       "Aspects": [
-        "Vigilance",
-        "Heroism"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Uncommon"
@@ -770,7 +1024,9 @@
       "Name": "Underestimated",
       "Number": 79,
       "Aspects": [
-        "Cunning"
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Upgrade",
       "Rarity": "Uncommon"
@@ -779,8 +1035,12 @@
       "Name": "Urgent Mission",
       "Number": 64,
       "Aspects": [
-        "Aggression",
-        "Heroism"
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Event",
       "Rarity": "Rare"
@@ -789,7 +1049,9 @@
       "Name": "Vanquish the Legion",
       "Number": 48,
       "Aspects": [
-        "Vigilance"
+        {
+          "S": "Vigilance"
+        }
       ],
       "Type": "Event",
       "Rarity": "Uncommon"
@@ -798,7 +1060,9 @@
       "Name": "Wartime Mercenaries",
       "Number": 54,
       "Aspects": [
-        "Command"
+        {
+          "S": "Command"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Common"
@@ -807,7 +1071,9 @@
       "Name": "Wartime Pirate",
       "Number": 66,
       "Aspects": [
-        "Aggression"
+        {
+          "S": "Aggression"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Common"
@@ -816,7 +1082,9 @@
       "Name": "Wartime Profiteer",
       "Number": 76,
       "Aspects": [
-        "Cunning"
+        {
+          "S": "Cunning"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Common"
@@ -825,7 +1093,9 @@
       "Name": "Wartime Refugee",
       "Number": 43,
       "Aspects": [
-        "Vigilance"
+        {
+          "S": "Vigilance"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Common"
@@ -835,9 +1105,15 @@
       "Subtitle": "Begun, the Clone War Has",
       "Number": 14,
       "Aspects": [
-        "Vigilance",
-        "Command",
-        "Heroism"
+        {
+          "S": "Vigilance"
+        },
+        {
+          "S": "Command"
+        },
+        {
+          "S": "Heroism"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
@@ -847,9 +1123,15 @@
       "Subtitle": "Sowing Chaos",
       "Number": 29,
       "Aspects": [
-        "Aggression",
-        "Cunning",
-        "Villainy"
+        {
+          "S": "Aggression"
+        },
+        {
+          "S": "Cunning"
+        },
+        {
+          "S": "Villainy"
+        }
       ],
       "Type": "Unit",
       "Rarity": "Rare"
