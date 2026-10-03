@@ -1,0 +1,9498 @@
+{
+  "data": [
+    {
+      "Name": "A'Koba",
+      "Subtitle": "Restless Raider",
+      "Number": 52,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "A'Koba",
+      "Subtitle": "Restless Raider",
+      "Number": 324,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "A'Koba",
+      "Subtitle": "Restless Raider",
+      "Number": 562,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "A'Koba",
+      "Subtitle": "Restless Raider",
+      "Number": 803,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "A'Koba",
+      "Subtitle": "Restless Raider",
+      "Number": 851,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "A'Koba",
+      "Subtitle": "Restless Raider",
+      "Number": 899,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Adamant Ewoks",
+      "Number": 177,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Adamant Ewoks",
+      "Number": 449,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Adamant Ewoks",
+      "Number": 687,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Aggrocrab",
+      "Number": 184,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Aggrocrab",
+      "Number": 456,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Aggrocrab",
+      "Number": 694,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Alliance Shield Generator",
+      "Number": 81,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Alliance Shield Generator",
+      "Number": 353,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Alliance Shield Generator",
+      "Number": 591,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Always a Bigger Fish",
+      "Number": 99,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Always a Bigger Fish",
+      "Number": 371,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Always a Bigger Fish",
+      "Number": 609,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Arena Acklay",
+      "Subtitle": "Screaming Predator",
+      "Number": 156,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Arena Acklay",
+      "Subtitle": "Screaming Predator",
+      "Number": 428,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Arena Acklay",
+      "Subtitle": "Screaming Predator",
+      "Number": 666,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Arena Acklay",
+      "Subtitle": "Screaming Predator",
+      "Number": 815,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Arena Acklay",
+      "Subtitle": "Screaming Predator",
+      "Number": 863,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Arena Acklay",
+      "Subtitle": "Screaming Predator",
+      "Number": 911,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Arena Nexu",
+      "Subtitle": "Starved for Prey",
+      "Number": 182,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Arena Nexu",
+      "Subtitle": "Starved for Prey",
+      "Number": 454,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Arena Nexu",
+      "Subtitle": "Starved for Prey",
+      "Number": 692,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Arena Reek",
+      "Subtitle": "Fixture of Ceremony",
+      "Number": 135,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Arena Reek",
+      "Subtitle": "Fixture of Ceremony",
+      "Number": 407,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Arena Reek",
+      "Subtitle": "Fixture of Ceremony",
+      "Number": 645,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Asajj Ventress",
+      "Subtitle": "No Time for Regret",
+      "Number": 1,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Asajj Ventress",
+      "Subtitle": "No Time for Regret",
+      "Number": 273,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Asajj Ventress",
+      "Subtitle": "No Time for Regret",
+      "Number": 783,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Assault Frigate",
+      "Number": 140,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Assault Frigate",
+      "Number": 412,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Assault Frigate",
+      "Number": 650,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Auzituck Avenger",
+      "Number": 120,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Auzituck Avenger",
+      "Number": 392,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Auzituck Avenger",
+      "Number": 630,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Awakened Exogorth",
+      "Number": 233,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Awakened Exogorth",
+      "Number": 505,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Awakened Exogorth",
+      "Number": 743,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Awakened Exogorth",
+      "Number": 832,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Awakened Exogorth",
+      "Number": 880,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Awakened Exogorth",
+      "Number": 928,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Babwa Venomor",
+      "Subtitle": "Burning Kashyyyk",
+      "Number": 152,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Babwa Venomor",
+      "Subtitle": "Burning Kashyyyk",
+      "Number": 424,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Babwa Venomor",
+      "Subtitle": "Burning Kashyyyk",
+      "Number": 662,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Babwa Venomor",
+      "Subtitle": "Burning Kashyyyk",
+      "Number": 814,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Babwa Venomor",
+      "Subtitle": "Burning Kashyyyk",
+      "Number": 862,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Babwa Venomor",
+      "Subtitle": "Burning Kashyyyk",
+      "Number": 910,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Bacta Tank",
+      "Number": 37,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Bacta Tank",
+      "Number": 309,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Bacta Tank",
+      "Number": 547,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Banking Clan Warship",
+      "Number": 143,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Banking Clan Warship",
+      "Number": 415,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Banking Clan Warship",
+      "Number": 653,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Batcher",
+      "Subtitle": "Loyal Hound",
+      "Number": 83,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Batcher",
+      "Subtitle": "Loyal Hound",
+      "Number": 355,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Batcher",
+      "Subtitle": "Loyal Hound",
+      "Number": 593,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Battle-Scarred Destroyer",
+      "Number": 158,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Battle-Scarred Destroyer",
+      "Number": 430,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Battle-Scarred Destroyer",
+      "Number": 668,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Battle-Scarred Destroyer",
+      "Number": 829,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Battle-Scarred Destroyer",
+      "Number": 877,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Battle-Scarred Destroyer",
+      "Number": 925,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Beast Lair",
+      "Number": 147,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Beast Lair",
+      "Number": 419,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Beast Lair",
+      "Number": 657,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ben Kenobi",
+      "Subtitle": "Don't Be Afraid",
+      "Number": 261,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Ben Kenobi",
+      "Subtitle": "Don't Be Afraid",
+      "Number": 533,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Ben Kenobi",
+      "Subtitle": "Don't Be Afraid",
+      "Number": 771,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Bestial Bond",
+      "Number": 38,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Bestial Bond",
+      "Number": 310,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Bestial Bond",
+      "Number": 548,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Bioweapons Lab",
+      "Subtitle": "Naboo",
+      "Number": 27,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Bioweapons Lab",
+      "Subtitle": "Naboo",
+      "Number": 299,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Blockade Ship",
+      "Number": 251,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Blockade Ship",
+      "Number": 523,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Blockade Ship",
+      "Number": 761,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Boba Fett",
+      "Subtitle": "Family Found",
+      "Number": 225,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Boba Fett",
+      "Subtitle": "Family Found",
+      "Number": 497,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Boba Fett",
+      "Subtitle": "Family Found",
+      "Number": 735,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Boga",
+      "Subtitle": "Loyal Varactyl",
+      "Number": 122,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Boga",
+      "Subtitle": "Loyal Varactyl",
+      "Number": 394,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Boga",
+      "Subtitle": "Loyal Varactyl",
+      "Number": 632,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Boga",
+      "Subtitle": "Loyal Varactyl",
+      "Number": 812,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Boga",
+      "Subtitle": "Loyal Varactyl",
+      "Number": 860,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Boga",
+      "Subtitle": "Loyal Varactyl",
+      "Number": 908,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Booma Ball",
+      "Number": 236,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Booma Ball",
+      "Number": 508,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Booma Ball",
+      "Number": 746,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Boss Lyonie",
+      "Subtitle": "Hypnotized",
+      "Number": 57,
+      "Aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Boss Lyonie",
+      "Subtitle": "Hypnotized",
+      "Number": 329,
+      "Aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Boss Lyonie",
+      "Subtitle": "Hypnotized",
+      "Number": 567,
+      "Aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Boss Nass",
+      "Subtitle": "Otoh Gunga Boss",
+      "Number": 77,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Boss Nass",
+      "Subtitle": "Otoh Gunga Boss",
+      "Number": 349,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Boss Nass",
+      "Subtitle": "Otoh Gunga Boss",
+      "Number": 587,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Boss Nass",
+      "Subtitle": "Otoh Gunga Boss",
+      "Number": 807,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Boss Nass",
+      "Subtitle": "Otoh Gunga Boss",
+      "Number": 855,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Boss Nass",
+      "Subtitle": "Otoh Gunga Boss",
+      "Number": 903,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Bossk",
+      "Subtitle": "Cruel Hunter",
+      "Number": 15,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Bossk",
+      "Subtitle": "Cruel Hunter",
+      "Number": 287,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Bossk",
+      "Subtitle": "Cruel Hunter",
+      "Number": 797,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Breach",
+      "Number": 114,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Breach",
+      "Number": 386,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Breach",
+      "Number": 624,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Bright Tree Village",
+      "Subtitle": "Endor",
+      "Number": 23,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Bright Tree Village",
+      "Subtitle": "Endor",
+      "Number": 295,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "C-3P0",
+      "Subtitle": "Captivating Storyteller",
+      "Number": 255,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "C-3P0",
+      "Subtitle": "Captivating Storyteller",
+      "Number": 527,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "C-3P0",
+      "Subtitle": "Captivating Storyteller",
+      "Number": 765,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Captain Tarpals",
+      "Subtitle": "Grand Army Captain",
+      "Number": 254,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Captain Tarpals",
+      "Subtitle": "Grand Army Captain",
+      "Number": 526,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Captain Tarpals",
+      "Subtitle": "Grand Army Captain",
+      "Number": 764,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Captain Tarpals",
+      "Subtitle": "Grand Army Captain",
+      "Number": 821,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Captain Tarpals",
+      "Subtitle": "Grand Army Captain",
+      "Number": 869,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Captain Tarpals",
+      "Subtitle": "Grand Army Captain",
+      "Number": 917,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Carbonite Chamber",
+      "Number": 95,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Carbonite Chamber",
+      "Number": 367,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Carbonite Chamber",
+      "Number": 605,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Carrion Spike",
+      "Subtitle": "Harbinger of Tyranny",
+      "Number": 66,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Carrion Spike",
+      "Subtitle": "Harbinger of Tyranny",
+      "Number": 338,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Carrion Spike",
+      "Subtitle": "Harbinger of Tyranny",
+      "Number": 576,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Catch the Scent",
+      "Number": 195,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Catch the Scent",
+      "Number": 467,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Catch the Scent",
+      "Number": 705,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Cham Syndulla",
+      "Subtitle": "Hammer of Ryloth",
+      "Number": 13,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Cham Syndulla",
+      "Subtitle": "Hammer of Ryloth",
+      "Number": 285,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Cham Syndulla",
+      "Subtitle": "Hammer of Ryloth",
+      "Number": 795,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Champions of Endor",
+      "Number": 163,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Champions of Endor",
+      "Number": 435,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Champions of Endor",
+      "Number": 673,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Relentless Rebel",
+      "Number": 9,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Resourceful Wookiee",
+      "Number": 117,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Relentless Rebel",
+      "Number": 281,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Resourceful Wookiee",
+      "Number": 389,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Resourceful Wookiee",
+      "Number": 627,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Relentless Rebel",
+      "Number": 791,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Resourceful Wookiee",
+      "Number": 811,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Resourceful Wookiee",
+      "Number": 859,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chewbacca",
+      "Subtitle": "Resourceful Wookiee",
+      "Number": 907,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chewbacca's Bowcaster",
+      "Subtitle": "Handcrafted Tradition",
+      "Number": 127,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Chewbacca's Bowcaster",
+      "Subtitle": "Handcrafted Tradition",
+      "Number": 399,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Chewbacca's Bowcaster",
+      "Subtitle": "Handcrafted Tradition",
+      "Number": 637,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Chief Chirpa",
+      "Subtitle": "Defiant Elder",
+      "Number": 164,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chief Chirpa",
+      "Subtitle": "Defiant Elder",
+      "Number": 436,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chief Chirpa",
+      "Subtitle": "Defiant Elder",
+      "Number": 674,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chief Chirpa",
+      "Subtitle": "Defiant Elder",
+      "Number": 818,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chief Chirpa",
+      "Subtitle": "Defiant Elder",
+      "Number": 866,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Chief Chirpa",
+      "Subtitle": "Defiant Elder",
+      "Number": 914,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Child of Dathomir",
+      "Number": 129,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Child of Dathomir",
+      "Number": 401,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Child of Dathomir",
+      "Number": 639,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Cid Scaleback",
+      "Subtitle": "Can't Be Trusted",
+      "Number": 197,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Cid Scaleback",
+      "Subtitle": "Can't Be Trusted",
+      "Number": 469,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Cid Scaleback",
+      "Subtitle": "Can't Be Trusted",
+      "Number": 707,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Clever Trapper",
+      "Number": 220,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Clever Trapper",
+      "Number": 492,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Clever Trapper",
+      "Number": 730,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Clone X Assassin",
+      "Number": 59,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Clone X Assassin",
+      "Number": 331,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Clone X Assassin",
+      "Number": 569,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Clone of the Zillo Beast",
+      "Subtitle": "Emperor's Experiment",
+      "Number": 65,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Clone of the Zillo Beast",
+      "Subtitle": "Emperor's Experiment",
+      "Number": 337,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Clone of the Zillo Beast",
+      "Subtitle": "Emperor's Experiment",
+      "Number": 575,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Clone of the Zillo Beast",
+      "Subtitle": "Emperor's Experiment",
+      "Number": 824,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Clone of the Zillo Beast",
+      "Subtitle": "Emperor's Experiment",
+      "Number": 872,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Clone of the Zillo Beast",
+      "Subtitle": "Emperor's Experiment",
+      "Number": 920,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Coastal Catamarans",
+      "Number": 93,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Coastal Catamarans",
+      "Number": 365,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Coastal Catamarans",
+      "Number": 603,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Commandeered Tour Shuttle",
+      "Number": 165,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Commandeered Tour Shuttle",
+      "Number": 437,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Commandeered Tour Shuttle",
+      "Number": 675,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Commander Gree",
+      "Subtitle": "Of the 41st Elite Corps",
+      "Number": 138,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Commander Gree",
+      "Subtitle": "Of the 41st Elite Corps",
+      "Number": 410,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Commander Gree",
+      "Subtitle": "Of the 41st Elite Corps",
+      "Number": 648,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Corona Squadron X-Wing",
+      "Number": 209,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Corona Squadron X-Wing",
+      "Number": 481,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Corona Squadron X-Wing",
+      "Number": 719,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Corpo Thugs",
+      "Number": 157,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Corpo Thugs",
+      "Number": 429,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Corpo Thugs",
+      "Number": 667,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Crosshair",
+      "Subtitle": "I've Changed",
+      "Number": 169,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Crosshair",
+      "Subtitle": "I've Changed",
+      "Number": 441,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Crosshair",
+      "Subtitle": "I've Changed",
+      "Number": 679,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Dark Sanctum",
+      "Number": 70,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Dark Sanctum",
+      "Number": 342,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Dark Sanctum",
+      "Number": 580,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Darth Sidious",
+      "Subtitle": "There is no Mercy",
+      "Number": 11,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Darth Sidious",
+      "Subtitle": "There is no Mercy",
+      "Number": 283,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Darth Sidious",
+      "Subtitle": "There is no Mercy",
+      "Number": 793,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Darth Vader",
+      "Subtitle": "Might of the Empire",
+      "Number": 7,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Darth Vader",
+      "Subtitle": "Any Methods Necessary",
+      "Number": 43,
+      "Aspects": [
+        "Command",
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Darth Vader",
+      "Subtitle": "Might of the Empire",
+      "Number": 279,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Darth Vader",
+      "Subtitle": "Any Methods Necessary",
+      "Number": 315,
+      "Aspects": [
+        "Command",
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Darth Vader",
+      "Subtitle": "Any Methods Necessary",
+      "Number": 553,
+      "Aspects": [
+        "Command",
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Darth Vader",
+      "Subtitle": "Might of the Empire",
+      "Number": 789,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Dathomiri Rancor",
+      "Number": 187,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dathomiri Rancor",
+      "Number": 459,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dathomiri Rancor",
+      "Number": 697,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dathomiri Rancor",
+      "Number": 830,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dathomiri Rancor",
+      "Number": 878,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dathomiri Rancor",
+      "Number": 926,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Defoliator Tank",
+      "Number": 248,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Defoliator Tank",
+      "Number": 520,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Defoliator Tank",
+      "Number": 758,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Dendroid Wilds",
+      "Subtitle": "Endor",
+      "Number": 29,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dendroid Wilds",
+      "Subtitle": "Endor",
+      "Number": 301,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Desperate Nantex",
+      "Number": 178,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Desperate Nantex",
+      "Number": 450,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Desperate Nantex",
+      "Number": 688,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Devotion",
+      "Number": 96,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Devotion",
+      "Number": 368,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Devotion",
+      "Number": 606,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Dire Prowess",
+      "Number": 97,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dire Prowess",
+      "Number": 369,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dire Prowess",
+      "Number": 607,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Director Krennic",
+      "Subtitle": "The Work has Stalled",
+      "Number": 61,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Director Krennic",
+      "Subtitle": "The Work has Stalled",
+      "Number": 333,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Director Krennic",
+      "Subtitle": "The Work has Stalled",
+      "Number": 571,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Disposable B1",
+      "Number": 103,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Disposable B1",
+      "Number": 375,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Disposable B1",
+      "Number": 613,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Doctor Hemlock",
+      "Subtitle": "Emotion Has No Place Here",
+      "Number": 3,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Doctor Hemlock",
+      "Subtitle": "Emotion Has No Place Here",
+      "Number": 275,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Doctor Hemlock",
+      "Subtitle": "Emotion Has No Place Here",
+      "Number": 785,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Don't Touch Anything",
+      "Number": 217,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Don't Touch Anything",
+      "Number": 489,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Don't Touch Anything",
+      "Number": 727,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Dooku",
+      "Subtitle": "Corruption Must Be Eradicated",
+      "Number": 42,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Dooku",
+      "Subtitle": "Corruption Must Be Eradicated",
+      "Number": 314,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Dooku",
+      "Subtitle": "Corruption Must Be Eradicated",
+      "Number": 552,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Dooku's Solar Sailer",
+      "Subtitle": "Droid Army Portent",
+      "Number": 154,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Dooku's Solar Sailer",
+      "Subtitle": "Droid Army Portent",
+      "Number": 426,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Dooku's Solar Sailer",
+      "Subtitle": "Droid Army Portent",
+      "Number": 664,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Dragon's Might",
+      "Number": 102,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dragon's Might",
+      "Number": 374,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dragon's Might",
+      "Number": 612,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dragonboat Freighter",
+      "Number": 231,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dragonboat Freighter",
+      "Number": 503,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dragonboat Freighter",
+      "Number": 741,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dune Sea",
+      "Subtitle": "Tatooine",
+      "Number": 19,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dune Sea",
+      "Subtitle": "Tatooine",
+      "Number": 291,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dune Sea Nomads",
+      "Number": 167,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dune Sea Nomads",
+      "Number": 439,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Dune Sea Nomads",
+      "Number": 677,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Easy Prey",
+      "Number": 237,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Easy Prey",
+      "Number": 509,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Easy Prey",
+      "Number": 747,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Emerie Karr",
+      "Subtitle": "For Your Own Good",
+      "Number": 130,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Emerie Karr",
+      "Subtitle": "For Your Own Good",
+      "Number": 402,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Emerie Karr",
+      "Subtitle": "For Your Own Good",
+      "Number": 640,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Emperor Palpatine",
+      "Subtitle": "Consolidating Power",
+      "Number": 110,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Emperor Palpatine",
+      "Subtitle": "Consolidating Power",
+      "Number": 382,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Emperor Palpatine",
+      "Subtitle": "Consolidating Power",
+      "Number": 620,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Emperor Palpatine",
+      "Subtitle": "Consolidating Power",
+      "Number": 836,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Emperor Palpatine",
+      "Subtitle": "Consolidating Power",
+      "Number": 884,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Emperor Palpatine",
+      "Subtitle": "Consolidating Power",
+      "Number": 932,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Enraged",
+      "Number": 190,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Enraged",
+      "Number": 462,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Enraged",
+      "Number": 700,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Eravana",
+      "Subtitle": "Hauling Rathtars",
+      "Number": 47,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Eravana",
+      "Subtitle": "Hauling Rathtars",
+      "Number": 319,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Eravana",
+      "Subtitle": "Hauling Rathtars",
+      "Number": 557,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Ewok Archers",
+      "Number": 257,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ewok Archers",
+      "Number": 529,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ewok Archers",
+      "Number": 767,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ewok Brigade",
+      "Number": 116,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ewok Brigade",
+      "Number": 388,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ewok Brigade",
+      "Number": 626,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Exploit Confidence",
+      "Number": 238,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Exploit Confidence",
+      "Number": 510,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Exploit Confidence",
+      "Number": 748,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ezra Bridger",
+      "Subtitle": "What are you Afraid Of?",
+      "Number": 168,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ezra Bridger",
+      "Subtitle": "What are you Afraid Of?",
+      "Number": 440,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ezra Bridger",
+      "Subtitle": "What are you Afraid Of?",
+      "Number": 678,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Fambaa Shield Team",
+      "Number": 80,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Fambaa Shield Team",
+      "Number": 352,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Fambaa Shield Team",
+      "Number": 590,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Fambaa Shield Team",
+      "Number": 808,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Fambaa Shield Team",
+      "Number": 856,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Fambaa Shield Team",
+      "Number": 904,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Familiar Strategem",
+      "Number": 266,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Familiar Strategem",
+      "Number": 538,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Familiar Strategem",
+      "Number": 776,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Feisty Blurrg",
+      "Number": 179,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Feisty Blurrg",
+      "Number": 451,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Feisty Blurrg",
+      "Number": 689,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Fennec Shand",
+      "Subtitle": "A Ship for a Life",
+      "Number": 175,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Fennec Shand",
+      "Subtitle": "A Ship for a Life",
+      "Number": 447,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Fennec Shand",
+      "Subtitle": "A Ship for a Life",
+      "Number": 685,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Fett's Firespray",
+      "Subtitle": "Settling the Score",
+      "Number": 53,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Fett's Firespray",
+      "Subtitle": "Settling the Score",
+      "Number": 325,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Fett's Firespray",
+      "Subtitle": "Settling the Score",
+      "Number": 563,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Fett's Firespray",
+      "Subtitle": "Settling the Score",
+      "Number": 843,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Fett's Firespray",
+      "Subtitle": "Settling the Score",
+      "Number": 891,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Fett's Firespray",
+      "Subtitle": "Settling the Score",
+      "Number": 939,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Filthy Dianoga",
+      "Number": 155,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Filthy Dianoga",
+      "Number": 427,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Filthy Dianoga",
+      "Number": 665,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Flock of Mynocks",
+      "Number": 139,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Flock of Mynocks",
+      "Number": 411,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Flock of Mynocks",
+      "Number": 649,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Forced Pacification",
+      "Number": 253,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Forced Pacification",
+      "Number": 525,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Forced Pacification",
+      "Number": 763,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Frenzied Tri-Fighters",
+      "Number": 249,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Frenzied Tri-Fighters",
+      "Number": 521,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Frenzied Tri-Fighters",
+      "Number": 759,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Friendly Eopie",
+      "Number": 269,
+      "Aspects": [],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Friendly Eopie",
+      "Number": 541,
+      "Aspects": [],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Friendly Eopie",
+      "Number": 779,
+      "Aspects": [],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gaderffii Stick",
+      "Number": 235,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gaderffii Stick",
+      "Number": 507,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gaderffii Stick",
+      "Number": 745,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Garnac",
+      "Subtitle": "Let the Hunt Begin!",
+      "Number": 104,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Garnac",
+      "Subtitle": "Let the Hunt Begin!",
+      "Number": 376,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Garnac",
+      "Subtitle": "Let the Hunt Begin!",
+      "Number": 614,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Garnac",
+      "Subtitle": "Let the Hunt Begin!",
+      "Number": 809,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Garnac",
+      "Subtitle": "Let the Hunt Begin!",
+      "Number": 857,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Garnac",
+      "Subtitle": "Let the Hunt Begin!",
+      "Number": 905,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "General Grievous",
+      "Subtitle": "Separatist Warlord",
+      "Number": 8,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "General Grievous",
+      "Subtitle": "Scourge of Dathomir",
+      "Number": 159,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "General Grievous",
+      "Subtitle": "Separatist Warlord",
+      "Number": 280,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "General Grievous",
+      "Subtitle": "Scourge of Dathomir",
+      "Number": 431,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "General Grievous",
+      "Subtitle": "Scourge of Dathomir",
+      "Number": 669,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "General Grievous",
+      "Subtitle": "Separatist Warlord",
+      "Number": 790,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "General Grievous",
+      "Subtitle": "Scourge of Dathomir",
+      "Number": 816,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "General Grievous",
+      "Subtitle": "Scourge of Dathomir",
+      "Number": 864,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "General Grievous",
+      "Subtitle": "Scourge of Dathomir",
+      "Number": 912,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Geonosian Picador",
+      "Number": 199,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Geonosian Picador",
+      "Number": 471,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Geonosian Picador",
+      "Number": 709,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Giant Gorax",
+      "Number": 188,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Giant Gorax",
+      "Number": 460,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Giant Gorax",
+      "Number": 698,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Giant Gorax",
+      "Number": 831,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Giant Gorax",
+      "Number": 879,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Giant Gorax",
+      "Number": 927,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Grand Army Marine",
+      "Number": 72,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Grand Army Marine",
+      "Number": 344,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Grand Army Marine",
+      "Number": 582,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Grand Moff Tarkin // The Death Star",
+      "Subtitle": "Tyrant of the Outer Rim // Icon of Tyranny",
+      "Number": 4,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Grand Moff Tarkin // The Death Star",
+      "Subtitle": "Tyrant of the Outer Rim // Icon of Tyranny",
+      "Number": 276,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Grand Moff Tarkin // The Death Star",
+      "Subtitle": "Tyrant of the Outer Rim // Icon of Tyranny",
+      "Number": 786,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Great Grass Plains",
+      "Subtitle": "Naboo",
+      "Number": 20,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Great Grass Plains",
+      "Subtitle": "Naboo",
+      "Number": 292,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Greater Sarlacc",
+      "Number": 49,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Greater Sarlacc",
+      "Number": 321,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Greater Sarlacc",
+      "Number": 559,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Greater Sarlacc",
+      "Number": 823,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Greater Sarlacc",
+      "Number": 871,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Greater Sarlacc",
+      "Number": 919,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Growth",
+      "Number": 272,
+      "Aspects": [],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Growth",
+      "Number": 544,
+      "Aspects": [],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Growth",
+      "Number": 782,
+      "Aspects": [],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gunga City Guard",
+      "Number": 84,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gunga City Guard",
+      "Number": 356,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gunga City Guard",
+      "Number": 594,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gungan Battle Wagon",
+      "Number": 226,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gungan Battle Wagon",
+      "Number": 498,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gungan Battle Wagon",
+      "Number": 736,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Gungi",
+      "Subtitle": "Fighting for Kashyyyk",
+      "Number": 166,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Gungi",
+      "Subtitle": "Fighting for Kashyyyk",
+      "Number": 438,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Gungi",
+      "Subtitle": "Fighting for Kashyyyk",
+      "Number": 676,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Gungi",
+      "Subtitle": "Fighting for Kashyyyk",
+      "Number": 819,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Gungi",
+      "Subtitle": "Fighting for Kashyyyk",
+      "Number": 867,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Gungi",
+      "Subtitle": "Fighting for Kashyyyk",
+      "Number": 915,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Han Solo",
+      "Subtitle": "My Team's Ready",
+      "Number": 170,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Han Solo",
+      "Subtitle": "My Team's Ready",
+      "Number": 442,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Han Solo",
+      "Subtitle": "My Team's Ready",
+      "Number": 680,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Heavy Ion Cannon",
+      "Number": 172,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Heavy Ion Cannon",
+      "Number": 444,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Heavy Ion Cannon",
+      "Number": 682,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Heroic Bravery",
+      "Number": 264,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Heroic Bravery",
+      "Number": 536,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Heroic Bravery",
+      "Number": 774,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Hijacked AT-ST",
+      "Number": 121,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Hijacked AT-ST",
+      "Number": 393,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Hijacked AT-ST",
+      "Number": 631,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Horizon Chaser",
+      "Number": 227,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Horizon Chaser",
+      "Number": 499,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Horizon Chaser",
+      "Number": 737,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Howl",
+      "Number": 241,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Howl",
+      "Number": 513,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Howl",
+      "Number": 751,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Howler Pack",
+      "Number": 144,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Howler Pack",
+      "Number": 416,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Howler Pack",
+      "Number": 654,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Hunter",
+      "Subtitle": "Everyone Get to Cover!",
+      "Number": 35,
+      "Aspects": [
+        "Vigilance",
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Hunter",
+      "Subtitle": "Everyone Get to Cover!",
+      "Number": 307,
+      "Aspects": [
+        "Vigilance",
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Hunter",
+      "Subtitle": "Everyone Get to Cover!",
+      "Number": 545,
+      "Aspects": [
+        "Vigilance",
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Hunter's Instinct",
+      "Number": 191,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Hunter's Instinct",
+      "Number": 463,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Hunter's Instinct",
+      "Number": 701,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ima-Gun Di",
+      "Subtitle": "Holding out for Resupply",
+      "Number": 44,
+      "Aspects": [
+        "Command",
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Ima-Gun Di",
+      "Subtitle": "Holding out for Resupply",
+      "Number": 316,
+      "Aspects": [
+        "Command",
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Ima-Gun Di",
+      "Subtitle": "Holding out for Resupply",
+      "Number": 554,
+      "Aspects": [
+        "Command",
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Imperial Cavalry",
+      "Number": 250,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Imperial Cavalry",
+      "Number": 522,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Imperial Cavalry",
+      "Number": 760,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Imperial Commandos",
+      "Number": 68,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Imperial Commandos",
+      "Number": 340,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Imperial Commandos",
+      "Number": 578,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Imperial Venator",
+      "Number": 69,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Imperial Venator",
+      "Number": 341,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Imperial Venator",
+      "Number": 579,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Inferno Squad",
+      "Subtitle": "We can Grieve Later",
+      "Number": 202,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Inferno Squad",
+      "Subtitle": "We can Grieve Later",
+      "Number": 474,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Inferno Squad",
+      "Subtitle": "We can Grieve Later",
+      "Number": 712,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Insurgent Camp",
+      "Number": 216,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Insurgent Camp",
+      "Number": 488,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Insurgent Camp",
+      "Number": 726,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Intelligence Agency",
+      "Number": 205,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Intelligence Agency",
+      "Number": 477,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Intelligence Agency",
+      "Number": 715,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Invasion Lander",
+      "Number": 111,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Invasion Lander",
+      "Number": 383,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Invasion Lander",
+      "Number": 621,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Invasion Lander",
+      "Number": 827,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Invasion Lander",
+      "Number": 875,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Invasion Lander",
+      "Number": 923,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Jar Jar Binks",
+      "Subtitle": "Bombad General",
+      "Number": 5,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Jar Jar Binks",
+      "Subtitle": "Bombad General",
+      "Number": 277,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Jar Jar Binks",
+      "Subtitle": "Bombad General",
+      "Number": 787,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Jaxxon",
+      "Subtitle": "I Can Hear You Breathing!",
+      "Number": 219,
+      "Aspects": [
+        "Cunning",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Jaxxon",
+      "Subtitle": "I Can Hear You Breathing!",
+      "Number": 491,
+      "Aspects": [
+        "Cunning",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Jaxxon",
+      "Subtitle": "I Can Hear You Breathing!",
+      "Number": 729,
+      "Aspects": [
+        "Cunning",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Jedi Interceptor",
+      "Number": 256,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Jedi Interceptor",
+      "Number": 528,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Jedi Interceptor",
+      "Number": 766,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Jundland Wastes",
+      "Subtitle": "Tatooine",
+      "Number": 28,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Jundland Wastes",
+      "Subtitle": "Tatooine",
+      "Number": 300,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Kachirho",
+      "Subtitle": "Kashyyyk",
+      "Number": 21,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Kachirho",
+      "Subtitle": "Kashyyyk",
+      "Number": 293,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Keeper of Skara Nal",
+      "Subtitle": "Awoken",
+      "Number": 41,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Keeper of Skara Nal",
+      "Subtitle": "Awoken",
+      "Number": 313,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Keeper of Skara Nal",
+      "Subtitle": "Awoken",
+      "Number": 551,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Keeper of Skara Nal",
+      "Subtitle": "Awoken",
+      "Number": 822,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Keeper of Skara Nal",
+      "Subtitle": "Awoken",
+      "Number": 870,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Keeper of Skara Nal",
+      "Subtitle": "Awoken",
+      "Number": 918,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Kelnacca",
+      "Subtitle": "Solitary Master",
+      "Number": 36,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Kelnacca",
+      "Subtitle": "Solitary Master",
+      "Number": 308,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Kelnacca",
+      "Subtitle": "Solitary Master",
+      "Number": 546,
+      "Aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "King Grakchawwaa",
+      "Subtitle": "King of Kashyyyk",
+      "Number": 123,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "King Grakchawwaa",
+      "Subtitle": "King of Kashyyyk",
+      "Number": 395,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "King Grakchawwaa",
+      "Subtitle": "King of Kashyyyk",
+      "Number": 633,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "King Grakchawwaa",
+      "Subtitle": "King of Kashyyyk",
+      "Number": 813,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "King Grakchawwaa",
+      "Subtitle": "King of Kashyyyk",
+      "Number": 861,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "King Grakchawwaa",
+      "Subtitle": "King of Kashyyyk",
+      "Number": 909,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Krrsantan",
+      "Subtitle": "Santo",
+      "Number": 46,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Krrsantan",
+      "Subtitle": "Santo",
+      "Number": 318,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Krrsantan",
+      "Subtitle": "Santo",
+      "Number": 556,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Krrsantan",
+      "Subtitle": "Santo",
+      "Number": 802,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Krrsantan",
+      "Subtitle": "Santo",
+      "Number": 850,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Krrsantan",
+      "Subtitle": "Santo",
+      "Number": 898,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Kyyyalstaad Swamp",
+      "Subtitle": "Kashyyyk",
+      "Number": 31,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Kyyyalstaad Swamp",
+      "Subtitle": "Kashyyyk",
+      "Number": 303,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "L3-37",
+      "Subtitle": "We're Programmed to Learn",
+      "Number": 215,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "L3-37",
+      "Subtitle": "We're Programmed to Learn",
+      "Number": 487,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "L3-37",
+      "Subtitle": "We're Programmed to Learn",
+      "Number": 725,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Lakeside Shaaks",
+      "Number": 228,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Lakeside Shaaks",
+      "Number": 500,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Lakeside Shaaks",
+      "Number": 738,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Landing Pad",
+      "Number": 271,
+      "Aspects": [],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Landing Pad",
+      "Number": 543,
+      "Aspects": [],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Landing Pad",
+      "Number": 781,
+      "Aspects": [],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Leia Organa",
+      "Subtitle": "These are My Friends",
+      "Number": 115,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Leia Organa",
+      "Subtitle": "These are My Friends",
+      "Number": 387,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Leia Organa",
+      "Subtitle": "These are My Friends",
+      "Number": 625,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Lifetree Caravan",
+      "Number": 136,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Lifetree Caravan",
+      "Number": 408,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Lifetree Caravan",
+      "Number": 646,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Local Support",
+      "Number": 148,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Local Support",
+      "Number": 420,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Local Support",
+      "Number": 658,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Log Trap",
+      "Number": 149,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Log Trap",
+      "Number": 421,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Log Trap",
+      "Number": 659,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Logray",
+      "Subtitle": "Bright Tree Shaman",
+      "Number": 45,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Logray",
+      "Subtitle": "Bright Tree Shaman",
+      "Number": 317,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Logray",
+      "Subtitle": "Bright Tree Shaman",
+      "Number": 555,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Logray",
+      "Subtitle": "Bright Tree Shaman",
+      "Number": 801,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Logray",
+      "Subtitle": "Bright Tree Shaman",
+      "Number": 849,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Logray",
+      "Subtitle": "Bright Tree Shaman",
+      "Number": 897,
+      "Aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Low Altitude Combat",
+      "Number": 50,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Low Altitude Combat",
+      "Number": 322,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Low Altitude Combat",
+      "Number": 560,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Luke Skywalker",
+      "Subtitle": "Dreaming Farmboy",
+      "Number": 208,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Luke Skywalker",
+      "Subtitle": "Dreaming Farmboy",
+      "Number": 480,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Luke Skywalker",
+      "Subtitle": "Dreaming Farmboy",
+      "Number": 718,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Luke Skywalker",
+      "Subtitle": "Dreaming Farmboy",
+      "Number": 847,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Luke Skywalker",
+      "Subtitle": "Dreaming Farmboy",
+      "Number": 895,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Luke Skywalker",
+      "Subtitle": "Dreaming Farmboy",
+      "Number": 943,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Luminara Unduli",
+      "Subtitle": "Besieged General",
+      "Number": 124,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Luminara Unduli",
+      "Subtitle": "Besieged General",
+      "Number": 396,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Luminara Unduli",
+      "Subtitle": "Besieged General",
+      "Number": 634,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Luminara Unduli",
+      "Subtitle": "Besieged General",
+      "Number": 838,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Luminara Unduli",
+      "Subtitle": "Besieged General",
+      "Number": 886,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Luminara Unduli",
+      "Subtitle": "Besieged General",
+      "Number": 934,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Lurking Wampa",
+      "Number": 229,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Lurking Wampa",
+      "Number": 501,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Lurking Wampa",
+      "Number": 739,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Mace Windu",
+      "Subtitle": "Austere Centrist",
+      "Number": 128,
+      "Aspects": [
+        "Command",
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mace Windu",
+      "Subtitle": "Austere Centrist",
+      "Number": 400,
+      "Aspects": [
+        "Command",
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mace Windu",
+      "Subtitle": "Austere Centrist",
+      "Number": 638,
+      "Aspects": [
+        "Command",
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mae",
+      "Subtitle": "Kill the Dream",
+      "Number": 55,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Mae",
+      "Subtitle": "Kill the Dream",
+      "Number": 327,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Mae",
+      "Subtitle": "Kill the Dream",
+      "Number": 565,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Mae",
+      "Subtitle": "Kill the Dream",
+      "Number": 835,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Mae",
+      "Subtitle": "Kill the Dream",
+      "Number": 883,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Mae",
+      "Subtitle": "Kill the Dream",
+      "Number": 931,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Maim",
+      "Number": 207,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Maim",
+      "Number": 479,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Maim",
+      "Number": 717,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "Old Master",
+      "Number": 16,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "Only Revenge Remains",
+      "Number": 174,
+      "Aspects": [
+        "Aggression",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "Old Master",
+      "Number": 288,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "Only Revenge Remains",
+      "Number": 446,
+      "Aspects": [
+        "Aggression",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "Only Revenge Remains",
+      "Number": 684,
+      "Aspects": [
+        "Aggression",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "Old Master",
+      "Number": 798,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "Only Revenge Remains",
+      "Number": 842,
+      "Aspects": [
+        "Aggression",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "Only Revenge Remains",
+      "Number": 890,
+      "Aspects": [
+        "Aggression",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maul",
+      "Subtitle": "Only Revenge Remains",
+      "Number": 938,
+      "Aspects": [
+        "Aggression",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maz Kanata",
+      "Subtitle": "Eclectic Pirate Queen",
+      "Number": 2,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maz Kanata",
+      "Subtitle": "Eclectic Pirate Queen",
+      "Number": 274,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Maz Kanata",
+      "Subtitle": "Eclectic Pirate Queen",
+      "Number": 784,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Migrate",
+      "Number": 150,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Migrate",
+      "Number": 422,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Migrate",
+      "Number": 660,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Military Academy",
+      "Number": 112,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Military Academy",
+      "Number": 384,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Military Academy",
+      "Number": 622,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Mining Guild Trespasser",
+      "Number": 186,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Mining Guild Trespasser",
+      "Number": 458,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Mining Guild Trespasser",
+      "Number": 696,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Mon Cal Cruiser",
+      "Number": 232,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Mon Cal Cruiser",
+      "Number": 504,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Mon Cal Cruiser",
+      "Number": 742,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Mos Eisley",
+      "Subtitle": "Tatooine",
+      "Number": 32,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Mos Eisley",
+      "Subtitle": "Tatooine",
+      "Number": 304,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Mother Talzin",
+      "Subtitle": "Pledged to the Sisterhood",
+      "Number": 39,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mother Talzin",
+      "Subtitle": "Pledged to the Sisterhood",
+      "Number": 311,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mother Talzin",
+      "Subtitle": "Pledged to the Sisterhood",
+      "Number": 549,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mother Talzin",
+      "Subtitle": "Pledged to the Sisterhood",
+      "Number": 840,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mother Talzin",
+      "Subtitle": "Pledged to the Sisterhood",
+      "Number": 888,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mother Talzin",
+      "Subtitle": "Pledged to the Sisterhood",
+      "Number": 936,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mylaya Rider",
+      "Number": 262,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Mylaya Rider",
+      "Number": 534,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Mylaya Rider",
+      "Number": 772,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Mysterious Disappearance",
+      "Number": 58,
+      "Aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mysterious Disappearance",
+      "Number": 330,
+      "Aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Mysterious Disappearance",
+      "Number": 568,
+      "Aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "N-1 Patroller",
+      "Number": 86,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "N-1 Patroller",
+      "Number": 358,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "N-1 Patroller",
+      "Number": 596,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Nala Se",
+      "Subtitle": "Silent Survivor",
+      "Number": 82,
+      "Aspects": [
+        "Vigilance",
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Nala Se",
+      "Subtitle": "Silent Survivor",
+      "Number": 354,
+      "Aspects": [
+        "Vigilance",
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Nala Se",
+      "Subtitle": "Silent Survivor",
+      "Number": 592,
+      "Aspects": [
+        "Vigilance",
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Neebray Manta",
+      "Number": 189,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Neebray Manta",
+      "Number": 461,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Neebray Manta",
+      "Number": 699,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "New Tactics",
+      "Number": 218,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "New Tactics",
+      "Number": 490,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "New Tactics",
+      "Number": 728,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Nightbrother",
+      "Subtitle": "Maul's Gauntlet",
+      "Number": 204,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Nightbrother",
+      "Subtitle": "Maul's Gauntlet",
+      "Number": 476,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Nightbrother",
+      "Subtitle": "Maul's Gauntlet",
+      "Number": 714,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Nightfall",
+      "Number": 193,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Nightfall",
+      "Number": 465,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Nightfall",
+      "Number": 703,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Nightsister Prodigy",
+      "Number": 183,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Nightsister Prodigy",
+      "Number": 455,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Nightsister Prodigy",
+      "Number": 693,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Noxious Refinery",
+      "Number": 160,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Noxious Refinery",
+      "Number": 432,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Noxious Refinery",
+      "Number": 670,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Numa",
+      "Subtitle": "Still Fighting",
+      "Number": 88,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Numa",
+      "Subtitle": "Still Fighting",
+      "Number": 360,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Numa",
+      "Subtitle": "Still Fighting",
+      "Number": 598,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Nute Gunray",
+      "Subtitle": "Perfectly Legal",
+      "Number": 105,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Nute Gunray",
+      "Subtitle": "Perfectly Legal",
+      "Number": 377,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Nute Gunray",
+      "Subtitle": "Perfectly Legal",
+      "Number": 615,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Nuvo Vindi",
+      "Subtitle": "Blue Shadow Perfected",
+      "Number": 62,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Nuvo Vindi",
+      "Subtitle": "Blue Shadow Perfected",
+      "Number": 334,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Nuvo Vindi",
+      "Subtitle": "Blue Shadow Perfected",
+      "Number": 572,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Occupation Officer",
+      "Number": 242,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Occupation Officer",
+      "Number": 514,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Occupation Officer",
+      "Number": 752,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Offworld Jawa",
+      "Number": 268,
+      "Aspects": [],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Offworld Jawa",
+      "Number": 540,
+      "Aspects": [],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Offworld Jawa",
+      "Number": 778,
+      "Aspects": [],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Omega",
+      "Subtitle": "Close Your Eyes and Focus",
+      "Number": 6,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Omega",
+      "Subtitle": "Close Your Eyes and Focus",
+      "Number": 278,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Omega",
+      "Subtitle": "Close Your Eyes and Focus",
+      "Number": 788,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Opee Sea Killer",
+      "Number": 90,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Opee Sea Killer",
+      "Number": 362,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Opee Sea Killer",
+      "Number": 600,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Origin Tree",
+      "Subtitle": "Kashyyyk",
+      "Number": 24,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Origin Tree",
+      "Subtitle": "Kashyyyk",
+      "Number": 296,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Origin Tree Shyyyo",
+      "Number": 145,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Origin Tree Shyyyo",
+      "Number": 417,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Origin Tree Shyyyo",
+      "Number": 655,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Origin Tree Shyyyo",
+      "Number": 828,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Origin Tree Shyyyo",
+      "Number": 876,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Origin Tree Shyyyo",
+      "Number": 924,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Osha",
+      "Subtitle": "Haunted by Her Past",
+      "Number": 17,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Osha",
+      "Subtitle": "Haunted by Her Past",
+      "Number": 289,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Osha",
+      "Subtitle": "Haunted by Her Past",
+      "Number": 799,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Otoh Gunga",
+      "Subtitle": "Naboo",
+      "Number": 33,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Otoh Gunga",
+      "Subtitle": "Naboo",
+      "Number": 305,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Outer Rim Garrison",
+      "Number": 146,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Outer Rim Garrison",
+      "Number": 418,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Outer Rim Garrison",
+      "Number": 656,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Overgrowth",
+      "Number": 151,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Overgrowth",
+      "Number": 423,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Overgrowth",
+      "Number": 661,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pack Guardian",
+      "Number": 259,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pack Guardian",
+      "Number": 531,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pack Guardian",
+      "Number": 769,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pelta Relief Frigate",
+      "Number": 91,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pelta Relief Frigate",
+      "Number": 363,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pelta Relief Frigate",
+      "Number": 601,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Peppi Bow",
+      "Subtitle": "Shaak Herder",
+      "Number": 73,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Peppi Bow",
+      "Subtitle": "Shaak Herder",
+      "Number": 345,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Peppi Bow",
+      "Subtitle": "Shaak Herder",
+      "Number": 583,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Peppi Bow",
+      "Subtitle": "Shaak Herder",
+      "Number": 805,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Peppi Bow",
+      "Subtitle": "Shaak Herder",
+      "Number": 853,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Peppi Bow",
+      "Subtitle": "Shaak Herder",
+      "Number": 901,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Phee Genoa",
+      "Subtitle": "Liberator of Ancient Wonders",
+      "Number": 214,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Phee Genoa",
+      "Subtitle": "Liberator of Ancient Wonders",
+      "Number": 486,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Phee Genoa",
+      "Subtitle": "Liberator of Ancient Wonders",
+      "Number": 724,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Poacher's Starfighter",
+      "Number": 153,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Poacher's Starfighter",
+      "Number": 425,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Poacher's Starfighter",
+      "Number": 663,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Poggle the Lesser",
+      "Subtitle": "Let the Executions Begin",
+      "Number": 12,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Poggle the Lesser",
+      "Subtitle": "Let the Executions Begin",
+      "Number": 284,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Poggle the Lesser",
+      "Subtitle": "Let the Executions Begin",
+      "Number": 794,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pounce",
+      "Number": 239,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pounce",
+      "Number": 511,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pounce",
+      "Number": 749,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pyke Sarisa",
+      "Number": 246,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pyke Sarisa",
+      "Number": 518,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Pyke Sarisa",
+      "Number": 756,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Qimir",
+      "Subtitle": "Everyone Has a Weakness",
+      "Number": 196,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Qimir",
+      "Subtitle": "Everyone Has a Weakness",
+      "Number": 468,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Qimir",
+      "Subtitle": "Everyone Has a Weakness",
+      "Number": 706,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Qimir",
+      "Subtitle": "Everyone Has a Weakness",
+      "Number": 846,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Qimir",
+      "Subtitle": "Everyone Has a Weakness",
+      "Number": 894,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Qimir",
+      "Subtitle": "Everyone Has a Weakness",
+      "Number": 942,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Queen Amidala",
+      "Subtitle": "Retaking Theed",
+      "Number": 260,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Queen Amidala",
+      "Subtitle": "Retaking Theed",
+      "Number": 532,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Queen Amidala",
+      "Subtitle": "Retaking Theed",
+      "Number": 770,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Queen Amidala",
+      "Subtitle": "Retaking Theed",
+      "Number": 848,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Queen Amidala",
+      "Subtitle": "Retaking Theed",
+      "Number": 896,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Queen Amidala",
+      "Subtitle": "Retaking Theed",
+      "Number": 944,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Qui-Gon Jinn",
+      "Subtitle": "We'll Handle This",
+      "Number": 78,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Qui-Gon Jinn",
+      "Subtitle": "We'll Handle This",
+      "Number": 350,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Qui-Gon Jinn",
+      "Subtitle": "We'll Handle This",
+      "Number": 588,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Qui-Gon Jinn",
+      "Subtitle": "We'll Handle This",
+      "Number": 837,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Qui-Gon Jinn",
+      "Subtitle": "We'll Handle This",
+      "Number": 885,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Qui-Gon Jinn",
+      "Subtitle": "We'll Handle This",
+      "Number": 933,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Radiant VII",
+      "Subtitle": "Negotiating for Naboo",
+      "Number": 79,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Radiant VII",
+      "Subtitle": "Negotiating for Naboo",
+      "Number": 351,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Radiant VII",
+      "Subtitle": "Negotiating for Naboo",
+      "Number": 589,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Raiding Party",
+      "Number": 230,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Raiding Party",
+      "Number": 502,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Raiding Party",
+      "Number": 740,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ravage",
+      "Number": 71,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Ravage",
+      "Number": 343,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Ravage",
+      "Number": 581,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Raze to Ruin",
+      "Number": 161,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Raze to Ruin",
+      "Number": 433,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Raze to Ruin",
+      "Number": 671,
+      "Aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Rebel Operation",
+      "Number": 173,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Rebel Operation",
+      "Number": 445,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Rebel Operation",
+      "Number": 683,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Remote Scout",
+      "Number": 85,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Remote Scout",
+      "Number": 357,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Remote Scout",
+      "Number": 595,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Renew",
+      "Number": 267,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Renew",
+      "Number": 539,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Renew",
+      "Number": 777,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Research Station 9",
+      "Subtitle": "Endor",
+      "Number": 34,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Research Station 9",
+      "Subtitle": "Endor",
+      "Number": 306,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Resonate",
+      "Number": 98,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Resonate",
+      "Number": 370,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Resonate",
+      "Number": 608,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Rex",
+      "Subtitle": "Outserved His Purpose",
+      "Number": 141,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Rex",
+      "Subtitle": "Outserved His Purpose",
+      "Number": 413,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Rex",
+      "Subtitle": "Outserved His Purpose",
+      "Number": 651,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Rho Medical Shuttle",
+      "Number": 63,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Rho Medical Shuttle",
+      "Number": 335,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Rho Medical Shuttle",
+      "Number": 573,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Rish Loo",
+      "Subtitle": "Traitorous Minister",
+      "Number": 200,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Rish Loo",
+      "Subtitle": "Traitorous Minister",
+      "Number": 472,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Rish Loo",
+      "Subtitle": "Traitorous Minister",
+      "Number": 710,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ritual Dragon",
+      "Number": 234,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Ritual Dragon",
+      "Number": 506,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Ritual Dragon",
+      "Number": 744,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Ritual Dragon",
+      "Number": 833,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Ritual Dragon",
+      "Number": 881,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Ritual Dragon",
+      "Number": 929,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Run Amok",
+      "Number": 194,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Run Amok",
+      "Number": 466,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Run Amok",
+      "Number": 704,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ryloth Revolutionary Rider",
+      "Number": 258,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ryloth Revolutionary Rider",
+      "Number": 530,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ryloth Revolutionary Rider",
+      "Number": 768,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ryyk Blademaster",
+      "Number": 118,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ryyk Blademaster",
+      "Number": 390,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Ryyk Blademaster",
+      "Number": 628,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sandcrawler Sales Team",
+      "Number": 222,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sandcrawler Sales Team",
+      "Number": 494,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sandcrawler Sales Team",
+      "Number": 732,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sando Aqua Monster",
+      "Number": 94,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Sando Aqua Monster",
+      "Number": 366,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Sando Aqua Monster",
+      "Number": 604,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Sando Aqua Monster",
+      "Number": 826,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Sando Aqua Monster",
+      "Number": 874,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Sando Aqua Monster",
+      "Number": 922,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Sandstorm",
+      "Number": 240,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sandstorm",
+      "Number": 512,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sandstorm",
+      "Number": 750,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sandtrooper Squad",
+      "Number": 201,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sandtrooper Squad",
+      "Number": 473,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sandtrooper Squad",
+      "Number": 711,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Saw Gerrera",
+      "Subtitle": "Shadowlands Insurgent",
+      "Number": 119,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Saw Gerrera",
+      "Subtitle": "Shadowlands Insurgent",
+      "Number": 391,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Saw Gerrera",
+      "Subtitle": "Shadowlands Insurgent",
+      "Number": 629,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Saw Gerrera",
+      "Subtitle": "Shadowlands Insurgent",
+      "Number": 845,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Saw Gerrera",
+      "Subtitle": "Shadowlands Insurgent",
+      "Number": 893,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Saw Gerrera",
+      "Subtitle": "Shadowlands Insurgent",
+      "Number": 941,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Scorch",
+      "Subtitle": "Imperial Commando",
+      "Number": 64,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Scorch",
+      "Subtitle": "Imperial Commando",
+      "Number": 336,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Scorch",
+      "Subtitle": "Imperial Commando",
+      "Number": 574,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Scorch",
+      "Subtitle": "Imperial Commando",
+      "Number": 804,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Scorch",
+      "Subtitle": "Imperial Commando",
+      "Number": 852,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Scorch",
+      "Subtitle": "Imperial Commando",
+      "Number": 900,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Secessionist Convert",
+      "Number": 106,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Secessionist Convert",
+      "Number": 378,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Secessionist Convert",
+      "Number": 616,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Seismic Detonation",
+      "Number": 54,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Seismic Detonation",
+      "Number": 326,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Seismic Detonation",
+      "Number": 564,
+      "Aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "Type": "Event",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Separatist Harbinger",
+      "Number": 244,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Separatist Harbinger",
+      "Number": 516,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Separatist Harbinger",
+      "Number": 754,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Shadowlands",
+      "Subtitle": "Kashyyyk",
+      "Number": 30,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Shadowlands",
+      "Subtitle": "Kashyyyk",
+      "Number": 302,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Shield Generator Complex",
+      "Subtitle": "Endor",
+      "Number": 22,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Shield Generator Complex",
+      "Subtitle": "Endor",
+      "Number": 294,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sinister War Memorial",
+      "Number": 113,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Sinister War Memorial",
+      "Number": 385,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Sinister War Memorial",
+      "Number": 623,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Soaring Can-Cell",
+      "Number": 131,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Soaring Can-Cell",
+      "Number": 403,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Soaring Can-Cell",
+      "Number": 641,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Sol",
+      "Subtitle": "Compassionate Guardian",
+      "Number": 210,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Sol",
+      "Subtitle": "Compassionate Guardian",
+      "Number": 482,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Sol",
+      "Subtitle": "Compassionate Guardian",
+      "Number": 720,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Sol",
+      "Subtitle": "Compassionate Guardian",
+      "Number": 839,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Sol",
+      "Subtitle": "Compassionate Guardian",
+      "Number": 887,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Sol",
+      "Subtitle": "Compassionate Guardian",
+      "Number": 935,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Starlit Purrgil",
+      "Number": 92,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Starlit Purrgil",
+      "Number": 364,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Starlit Purrgil",
+      "Number": 602,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Stormchaser",
+      "Number": 180,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Stormchaser",
+      "Number": 452,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Stormchaser",
+      "Number": 690,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Stormtrooper Patrol",
+      "Number": 107,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Stormtrooper Patrol",
+      "Number": 379,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Stormtrooper Patrol",
+      "Number": 617,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Sun Fac",
+      "Subtitle": "Poggle's Second",
+      "Number": 243,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Sun Fac",
+      "Subtitle": "Poggle's Second",
+      "Number": 515,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Sun Fac",
+      "Subtitle": "Poggle's Second",
+      "Number": 753,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Surveillance Cruiser",
+      "Number": 247,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Surveillance Cruiser",
+      "Number": 519,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Surveillance Cruiser",
+      "Number": 757,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Talzin's Shuttle",
+      "Subtitle": "Mysterious Arrival",
+      "Number": 40,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Talzin's Shuttle",
+      "Subtitle": "Mysterious Arrival",
+      "Number": 312,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Talzin's Shuttle",
+      "Subtitle": "Mysterious Arrival",
+      "Number": 550,
+      "Aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Tarfful",
+      "Subtitle": "Fighting From the Shadowlands",
+      "Number": 10,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tarfful",
+      "Subtitle": "Fighting From the Shadowlands",
+      "Number": 282,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tarfful",
+      "Subtitle": "Fighting From the Shadowlands",
+      "Number": 792,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tech",
+      "Subtitle": "I Thought it Was Obvious",
+      "Number": 211,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Tech",
+      "Subtitle": "I Thought it Was Obvious",
+      "Number": 483,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Tech",
+      "Subtitle": "I Thought it Was Obvious",
+      "Number": 721,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Teebo",
+      "Subtitle": "Striped Hunter",
+      "Number": 162,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Teebo",
+      "Subtitle": "Striped Hunter",
+      "Number": 434,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Teebo",
+      "Subtitle": "Striped Hunter",
+      "Number": 672,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Teebo",
+      "Subtitle": "Striped Hunter",
+      "Number": 817,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Teebo",
+      "Subtitle": "Striped Hunter",
+      "Number": 865,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Teebo",
+      "Subtitle": "Striped Hunter",
+      "Number": 913,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Teeka",
+      "Subtitle": "You're in Luck",
+      "Number": 221,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Teeka",
+      "Subtitle": "You're in Luck",
+      "Number": 493,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Teeka",
+      "Subtitle": "You're in Luck",
+      "Number": 731,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Territorial Mudhorn",
+      "Number": 89,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Territorial Mudhorn",
+      "Number": 361,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Territorial Mudhorn",
+      "Number": 599,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "The Chieftain",
+      "Subtitle": "Here Since the Oceans Dried",
+      "Number": 212,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The Chieftain",
+      "Subtitle": "Here Since the Oceans Dried",
+      "Number": 484,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The Chieftain",
+      "Subtitle": "Here Since the Oceans Dried",
+      "Number": 722,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The Chieftain",
+      "Subtitle": "Here Since the Oceans Dried",
+      "Number": 820,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The Chieftain",
+      "Subtitle": "Here Since the Oceans Dried",
+      "Number": 868,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The Chieftain",
+      "Subtitle": "Here Since the Oceans Dried",
+      "Number": 916,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The First Legion",
+      "Subtitle": "Vader's Fist",
+      "Number": 108,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The First Legion",
+      "Subtitle": "Vader's Fist",
+      "Number": 380,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The First Legion",
+      "Subtitle": "Vader's Fist",
+      "Number": 618,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The First Legion",
+      "Subtitle": "Vader's Fist",
+      "Number": 810,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The First Legion",
+      "Subtitle": "Vader's Fist",
+      "Number": 858,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The First Legion",
+      "Subtitle": "Vader's Fist",
+      "Number": 906,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "The Great Progenitor",
+      "Subtitle": "First of the Drengir",
+      "Number": 67,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "The Great Progenitor",
+      "Subtitle": "First of the Drengir",
+      "Number": 339,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "The Great Progenitor",
+      "Subtitle": "First of the Drengir",
+      "Number": 577,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "The Great Progenitor",
+      "Subtitle": "First of the Drengir",
+      "Number": 825,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "The Great Progenitor",
+      "Subtitle": "First of the Drengir",
+      "Number": 873,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "The Great Progenitor",
+      "Subtitle": "First of the Drengir",
+      "Number": 921,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "The Marauder",
+      "Subtitle": "A New Home",
+      "Number": 125,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "The Marauder",
+      "Subtitle": "A New Home",
+      "Number": 397,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "The Marauder",
+      "Subtitle": "A New Home",
+      "Number": 635,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "The Tarkin Doctrine",
+      "Subtitle": "Protect and Punish",
+      "Number": 206,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "The Tarkin Doctrine",
+      "Subtitle": "Protect and Punish",
+      "Number": 478,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "The Tarkin Doctrine",
+      "Subtitle": "Protect and Punish",
+      "Number": 716,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "The Warrior",
+      "Subtitle": "Deft Duelist",
+      "Number": 18,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "The Warrior",
+      "Subtitle": "Deft Duelist",
+      "Number": 290,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "The Warrior",
+      "Subtitle": "Deft Duelist",
+      "Number": 800,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Theed Palace",
+      "Subtitle": "Naboo",
+      "Number": 25,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Theed Palace",
+      "Subtitle": "Naboo",
+      "Number": 297,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Therm Scissorpunch",
+      "Subtitle": "Boastful Gambler",
+      "Number": 223,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Therm Scissorpunch",
+      "Subtitle": "Boastful Gambler",
+      "Number": 495,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Therm Scissorpunch",
+      "Subtitle": "Boastful Gambler",
+      "Number": 733,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Third Sister",
+      "Subtitle": "Cycle of Vengeance",
+      "Number": 51,
+      "Aspects": [
+        "Aggression",
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Third Sister",
+      "Subtitle": "Cycle of Vengeance",
+      "Number": 323,
+      "Aspects": [
+        "Aggression",
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Third Sister",
+      "Subtitle": "Cycle of Vengeance",
+      "Number": 561,
+      "Aspects": [
+        "Aggression",
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Third Sister",
+      "Subtitle": "Cycle of Vengeance",
+      "Number": 834,
+      "Aspects": [
+        "Aggression",
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Third Sister",
+      "Subtitle": "Cycle of Vengeance",
+      "Number": 882,
+      "Aspects": [
+        "Aggression",
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Third Sister",
+      "Subtitle": "Cycle of Vengeance",
+      "Number": 930,
+      "Aspects": [
+        "Aggression",
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Tibidee Mate",
+      "Number": 132,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tibidee Mate",
+      "Number": 404,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tibidee Mate",
+      "Number": 642,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tireless Magnaguard",
+      "Number": 109,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Tireless Magnaguard",
+      "Number": 381,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Tireless Magnaguard",
+      "Number": 619,
+      "Aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Torrent",
+      "Number": 100,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Torrent",
+      "Number": 372,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Torrent",
+      "Number": 610,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Trandoshan Collaborator",
+      "Number": 245,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Trandoshan Collaborator",
+      "Number": 517,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Trandoshan Collaborator",
+      "Number": 755,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Trap Field",
+      "Number": 171,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Trap Field",
+      "Number": 443,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Trap Field",
+      "Number": 681,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Treacherous Pyke",
+      "Number": 198,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Treacherous Pyke",
+      "Number": 470,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Treacherous Pyke",
+      "Number": 708,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Tribubble Bongo Sub",
+      "Number": 213,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tribubble Bongo Sub",
+      "Number": 485,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tribubble Bongo Sub",
+      "Number": 723,
+      "Aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Trust Yourself",
+      "Number": 101,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Trust Yourself",
+      "Number": 373,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Trust Yourself",
+      "Number": 611,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Event",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tusken Bantha Rider",
+      "Number": 181,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tusken Bantha Rider",
+      "Number": 453,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tusken Bantha Rider",
+      "Number": 691,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tusken Camp",
+      "Subtitle": "Tatooine",
+      "Number": 26,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tusken Camp",
+      "Subtitle": "Tatooine",
+      "Number": 298,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Base",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tusken Raider",
+      "Number": 224,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tusken Raider",
+      "Number": 496,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Tusken Raider",
+      "Number": 734,
+      "Aspects": [
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Twi'lek Kalikori",
+      "Number": 265,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Twi'lek Kalikori",
+      "Number": 537,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Twi'lek Kalikori",
+      "Number": 775,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ty Yorrick",
+      "Subtitle": "Monster Hunter",
+      "Number": 185,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ty Yorrick",
+      "Subtitle": "Monster Hunter",
+      "Number": 457,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Ty Yorrick",
+      "Subtitle": "Monster Hunter",
+      "Number": 695,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "V-19 Skirmisher",
+      "Number": 137,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "V-19 Skirmisher",
+      "Number": 409,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "V-19 Skirmisher",
+      "Number": 647,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Venomous Wyyyshokk",
+      "Number": 87,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Venomous Wyyyshokk",
+      "Number": 359,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Venomous Wyyyshokk",
+      "Number": 597,
+      "Aspects": [
+        "Vigilance"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Verdant Fortress",
+      "Number": 126,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Verdant Fortress",
+      "Number": 398,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Verdant Fortress",
+      "Number": 636,
+      "Aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Vernestra Rwoh",
+      "Subtitle": "We Should Handle This Ourselves",
+      "Number": 48,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Vernestra Rwoh",
+      "Subtitle": "We Should Handle This Ourselves",
+      "Number": 320,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Vernestra Rwoh",
+      "Subtitle": "We Should Handle This Ourselves",
+      "Number": 558,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Vernestra Rwoh",
+      "Subtitle": "We Should Handle This Ourselves",
+      "Number": 841,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Vernestra Rwoh",
+      "Subtitle": "We Should Handle This Ourselves",
+      "Number": 889,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Vernestra Rwoh",
+      "Subtitle": "We Should Handle This Ourselves",
+      "Number": 937,
+      "Aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Vice Admiral Rampart",
+      "Subtitle": "A New Era of Safety",
+      "Number": 60,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Vice Admiral Rampart",
+      "Subtitle": "A New Era of Safety",
+      "Number": 332,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Vice Admiral Rampart",
+      "Subtitle": "A New Era of Safety",
+      "Number": 570,
+      "Aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Special"
+    },
+    {
+      "Name": "Victor Squadron",
+      "Subtitle": "In Attack Formation",
+      "Number": 203,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Victor Squadron",
+      "Subtitle": "In Attack Formation",
+      "Number": 475,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Victor Squadron",
+      "Subtitle": "In Attack Formation",
+      "Number": 713,
+      "Aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Village Troublemaker",
+      "Number": 176,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Village Troublemaker",
+      "Number": 448,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Village Troublemaker",
+      "Number": 686,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Villainous Ambition",
+      "Number": 252,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Villainous Ambition",
+      "Number": 524,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Villainous Ambition",
+      "Number": 762,
+      "Aspects": [
+        "Villainy"
+      ],
+      "Type": "Upgrade",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Volley Fire",
+      "Number": 192,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Volley Fire",
+      "Number": 464,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Volley Fire",
+      "Number": 702,
+      "Aspects": [
+        "Aggression"
+      ],
+      "Type": "Event",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Wicket",
+      "Subtitle": "Few Greater Battles to Fight",
+      "Number": 14,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wicket",
+      "Subtitle": "Few Greater Battles to Fight",
+      "Number": 286,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wicket",
+      "Subtitle": "Few Greater Battles to Fight",
+      "Number": 796,
+      "Aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "Type": "Leader",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wild Space Wanderer",
+      "Number": 270,
+      "Aspects": [],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Wild Space Wanderer",
+      "Number": 542,
+      "Aspects": [],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Wild Space Wanderer",
+      "Number": 780,
+      "Aspects": [],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Wookiee Protector",
+      "Number": 75,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wookiee Protector",
+      "Number": 347,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wookiee Protector",
+      "Number": 585,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wookiee Rangers",
+      "Number": 142,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wookiee Rangers",
+      "Number": 414,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wookiee Rangers",
+      "Number": 652,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wrecker",
+      "Subtitle": "Wrecking the Empire",
+      "Number": 263,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Wrecker",
+      "Subtitle": "Wrecking the Empire",
+      "Number": 535,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Wrecker",
+      "Subtitle": "Wrecking the Empire",
+      "Number": 773,
+      "Aspects": [
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Wroshyr Rebel",
+      "Number": 133,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wroshyr Rebel",
+      "Number": 405,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Wroshyr Rebel",
+      "Number": 643,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Common"
+    },
+    {
+      "Name": "Yanna",
+      "Subtitle": "Sanctuary Elder",
+      "Number": 76,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Yanna",
+      "Subtitle": "Sanctuary Elder",
+      "Number": 348,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Yanna",
+      "Subtitle": "Sanctuary Elder",
+      "Number": 586,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Yanna",
+      "Subtitle": "Sanctuary Elder",
+      "Number": 806,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Yanna",
+      "Subtitle": "Sanctuary Elder",
+      "Number": 854,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Yanna",
+      "Subtitle": "Sanctuary Elder",
+      "Number": 902,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Uncommon"
+    },
+    {
+      "Name": "Yoda",
+      "Subtitle": "Trickster in Exile",
+      "Number": 56,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Yoda",
+      "Subtitle": "Trickster in Exile",
+      "Number": 328,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Yoda",
+      "Subtitle": "Trickster in Exile",
+      "Number": 566,
+      "Aspects": [
+        "Cunning",
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Legendary"
+    },
+    {
+      "Name": "Yord Fandar",
+      "Subtitle": "Devoutly Disciplined",
+      "Number": 74,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Yord Fandar",
+      "Subtitle": "Devoutly Disciplined",
+      "Number": 346,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Yord Fandar",
+      "Subtitle": "Devoutly Disciplined",
+      "Number": 584,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Yord Fandar",
+      "Subtitle": "Devoutly Disciplined",
+      "Number": 844,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Yord Fandar",
+      "Subtitle": "Devoutly Disciplined",
+      "Number": 892,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Yord Fandar",
+      "Subtitle": "Devoutly Disciplined",
+      "Number": 940,
+      "Aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Zam Wesell",
+      "Subtitle": "Not What She Seems",
+      "Number": 134,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Zam Wesell",
+      "Subtitle": "Not What She Seems",
+      "Number": 406,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    },
+    {
+      "Name": "Zam Wesell",
+      "Subtitle": "Not What She Seems",
+      "Number": 644,
+      "Aspects": [
+        "Command"
+      ],
+      "Type": "Unit",
+      "Rarity": "Rare"
+    }
+  ]
+}
