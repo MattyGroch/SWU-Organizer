@@ -104,3 +104,37 @@
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
+
+.binderArea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/*
+ * Phones: no binder grid — it is too small to use. The page is search, filters and the
+ * card table; tapping a row selects the card, and its controls are pinned to the bottom
+ * of the screen so they stay reachable while scrolling the table.
+ */
+@media (max-width: 760px) {
+  .binderArea,
+  .keyboardOnly {
+    display: none;
+  }
+
+  /* Placed last in the column so `sticky; bottom` pins it while the table scrolls by. */
+  .panelSlot {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    order: 99;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--color-bg);
+    box-shadow: 0 -8px 16px rgb(0 0 0 / 0.35);
+  }
+
+  /* Nothing selected: no empty placeholder taking up the bottom of the screen. */
+  .panelSlot[data-active='false'] {
+    display: none;
+  }
+}

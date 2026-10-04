@@ -134,6 +134,12 @@ describe('selectArtPrinting', () => {
     expect(choice.foil).toBe(true);
   });
 
+  it('treats a Prestige Serialized as foil, while keeping its own stamped art', () => {
+    const choice = selectArtPrinting(adiGallia, owned([['prestige-serialized', 1]]));
+    expect(choice.foil).toBe(true);
+    expect(choice.printing.variant).toBe('prestige-serialized');
+  });
+
   it('flags foil whenever any owned copy is foil', () => {
     expect(selectArtPrinting(adiGallia, owned([['hyperspace-foil', 1]])).foil).toBe(true);
     expect(selectArtPrinting(adiGallia, owned([['prestige-foil', 1]])).foil).toBe(true);
@@ -148,11 +154,10 @@ describe('selectArtPrinting', () => {
     ).toBe(true);
   });
 
-  it('does not flag foil for plain or serialized holdings', () => {
+  it('does not flag foil for plain holdings', () => {
     expect(selectArtPrinting(adiGallia, owned([['normal', 3]])).foil).toBe(false);
     expect(selectArtPrinting(adiGallia, owned([['hyperspace', 1]])).foil).toBe(false);
-    // Serialized is its own stamped art, not a foil treatment.
-    expect(selectArtPrinting(adiGallia, owned([['prestige-serialized', 1]])).foil).toBe(false);
+    expect(selectArtPrinting(adiGallia, owned([['prestige', 1]])).foil).toBe(false);
   });
 
   it('resolves a Hyperspace Foil holding to the Hyperspace artwork', () => {

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 
 import {
   ALL_ASPECTS,
@@ -51,7 +51,23 @@ function FilterGroup({ label, children }: { label: string; children: ReactNode }
   );
 }
 
+/** Phones get the filters folded away by default: they would fill the whole screen. */
+const NARROW = '(max-width: 760px)';
+
+function activeFilterCount(filters: Filters): number {
+  return (
+    filters.aspect.length +
+    filters.rarity.length +
+    filters.type.length +
+    filters.status.length +
+    (filters.text.trim() ? 1 : 0) +
+    (filters.hideInDecks ? 1 : 0)
+  );
+}
+
 export function FilterBar({ filters, onChange }: Props) {
+  const [open, setOpen] = useState(() => !window.matchMedia?.(NARROW)?.matches);
+  const active = activeFilterCount(filters);
   function toggle<K extends 'aspect' | 'rarity' | 'type' | 'status'>(
     key: K,
     value: Filters[K][number],
@@ -64,103 +80,114 @@ export function FilterBar({ filters, onChange }: Props) {
   }
 
   return (
-    <div className={styles.bar}>
-      <FilterGroup label="Aspect">
-        {ALL_ASPECTS.map((aspect) => {
-          const active = filters.aspect.includes(aspect);
-          return (
+    <details
+      className={styles.panel}
+      open={open}
+      onToggle={(event) => setOpen(event.currentTarget.open)}
+    >
+      <summary className={styles.summary}>
+        Filters
+        {/* Folded away, the count is what says the table is narrowed. */}
+        {active > 0 && <span className={styles.activeCount}>{active} active</span>}
+      </summary>
+      <div className={styles.bar}>
+        <FilterGroup label="Aspect">
+          {ALL_ASPECTS.map((aspect) => {
+            const active = filters.aspect.includes(aspect);
+            return (
+              <button
+                key={aspect}
+                type="button"
+                className={styles.chip}
+                aria-pressed={active}
+                style={active ? { background: `var(${ASPECT_VAR[aspect]})` } : undefined}
+                data-light={active && aspect === 'Heroism'}
+                onClick={() => toggle('aspect', aspect)}
+              >
+                {aspect === 'NEUTRAL' ? 'Neutral' : aspect}
+              </button>
+            );
+          })}
+        </FilterGroup>
+
+        <FilterGroup label="Rarity">
+          {ALL_RARITIES.map((rarity) => {
+            const active = filters.rarity.includes(rarity);
+            return (
+              <button
+                key={rarity}
+                type="button"
+                className={styles.chip}
+                aria-pressed={active}
+                style={active ? { background: `var(${RARITY_VAR[rarity]})` } : undefined}
+                data-dark={active && rarity === 'Special'}
+                onClick={() => toggle('rarity', rarity)}
+              >
+                {rarity}
+              </button>
+            );
+          })}
+        </FilterGroup>
+
+        <FilterGroup label="Type">
+          {ALL_TYPES.map((type) => (
             <button
-              key={aspect}
+              key={type}
               type="button"
               className={styles.chip}
-              aria-pressed={active}
-              style={active ? { background: `var(${ASPECT_VAR[aspect]})` } : undefined}
-              data-light={active && aspect === 'Heroism'}
-              onClick={() => toggle('aspect', aspect)}
+              aria-pressed={filters.type.includes(type)}
+              onClick={() => toggle('type', type)}
             >
-              {aspect === 'NEUTRAL' ? 'Neutral' : aspect}
+              {type}
             </button>
-          );
-        })}
-      </FilterGroup>
+          ))}
+        </FilterGroup>
 
-      <FilterGroup label="Rarity">
-        {ALL_RARITIES.map((rarity) => {
-          const active = filters.rarity.includes(rarity);
-          return (
+        <FilterGroup label="Status">
+          {ALL_STATUSES.map((status) => (
             <button
-              key={rarity}
+              key={status}
               type="button"
-              className={styles.chip}
-              aria-pressed={active}
-              style={active ? { background: `var(${RARITY_VAR[rarity]})` } : undefined}
-              data-dark={active && rarity === 'Special'}
-              onClick={() => toggle('rarity', rarity)}
+              className={`${styles.chip} ${styles.statusChip}`}
+              data-status={status}
+              aria-pressed={filters.status.includes(status)}
+              title={STATUS_LABEL[status]}
+              aria-label={STATUS_LABEL[status]}
+              onClick={() => toggle('status', status)}
             >
-              {rarity}
+              <span aria-hidden="true">{STATUS_GLYPH[status]}</span>
             </button>
-          );
-        })}
-      </FilterGroup>
-
-      <FilterGroup label="Type">
-        {ALL_TYPES.map((type) => (
+          ))}
           <button
-            key={type}
             type="button"
             className={styles.chip}
-            aria-pressed={filters.type.includes(type)}
-            onClick={() => toggle('type', type)}
+            aria-pressed={filters.hideInDecks}
+            title="Hide cards you own a full playset of, but whose slot is short because copies are in built decks"
+            onClick={() => onChange({ ...filters, hideInDecks: !filters.hideInDecks })}
           >
-            {type}
+            Hide out in decks
           </button>
-        ))}
-      </FilterGroup>
+        </FilterGroup>
 
-      <FilterGroup label="Status">
-        {ALL_STATUSES.map((status) => (
+        <FilterGroup label="Name">
+          <input
+            type="search"
+            className={styles.text}
+            placeholder="Filter by name…"
+            aria-label="Filter cards by name"
+            value={filters.text}
+            onChange={(event) => onChange({ ...filters, text: event.target.value })}
+          />
           <button
-            key={status}
             type="button"
-            className={`${styles.chip} ${styles.statusChip}`}
-            data-status={status}
-            aria-pressed={filters.status.includes(status)}
-            title={STATUS_LABEL[status]}
-            aria-label={STATUS_LABEL[status]}
-            onClick={() => toggle('status', status)}
+            className={styles.clear}
+            onClick={() => onChange(EMPTY_FILTERS)}
+            disabled={!hasActiveFilters(filters)}
           >
-            <span aria-hidden="true">{STATUS_GLYPH[status]}</span>
+            Clear all
           </button>
-        ))}
-        <button
-          type="button"
-          className={styles.chip}
-          aria-pressed={filters.hideInDecks}
-          title="Hide cards you own a full playset of, but whose slot is short because copies are in built decks"
-          onClick={() => onChange({ ...filters, hideInDecks: !filters.hideInDecks })}
-        >
-          Hide out in decks
-        </button>
-      </FilterGroup>
-
-      <FilterGroup label="Name">
-        <input
-          type="search"
-          className={styles.text}
-          placeholder="Filter by name…"
-          aria-label="Filter cards by name"
-          value={filters.text}
-          onChange={(event) => onChange({ ...filters, text: event.target.value })}
-        />
-        <button
-          type="button"
-          className={styles.clear}
-          onClick={() => onChange(EMPTY_FILTERS)}
-          disabled={!hasActiveFilters(filters)}
-        >
-          Clear all
-        </button>
-      </FilterGroup>
-    </div>
+        </FilterGroup>
+      </div>
+    </details>
   );
 }

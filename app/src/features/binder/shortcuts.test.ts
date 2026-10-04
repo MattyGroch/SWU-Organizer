@@ -48,6 +48,12 @@ describe('resolveShortcut', () => {
     expect(resolveShortcut(key({ key: '1', code: 'Digit1', altKey: true }), selected)).toBeNull();
   });
 
+  it('opens the shortcuts help on ?, but not while typing', () => {
+    const question = key({ key: '?', code: 'Slash', shiftKey: true });
+    expect(resolveShortcut(question, nothingSelected)).toEqual({ type: 'showHelp' });
+    expect(resolveShortcut(question, { ...selected, typing: true })).toBeNull();
+  });
+
   it('focuses search on slash regardless of selection', () => {
     expect(resolveShortcut(key({ key: '/' }), nothingSelected)).toEqual({ type: 'focusSearch' });
   });

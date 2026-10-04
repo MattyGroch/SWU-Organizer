@@ -34,12 +34,14 @@ import { CollectionProgress } from './CollectionProgress';
 import { FilterBar } from './FilterBar';
 import { SelectedCardPanel } from './SelectedCardPanel';
 import { SetVisibility } from './SetVisibility';
+import { ShortcutsDialog } from './ShortcutsDialog';
 import { SpreadPager } from './SpreadPager';
 import { isTypingTarget, resolveShortcut } from './shortcuts';
 import { useBinder } from './useBinder';
 import { useSetOwnership } from './useOwnership';
 import { binderEntries, DEFAULT_HIDDEN_SETS, useHiddenSets } from '~/data/binderSettings';
 import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
+import { BulkEditDialog } from '~/features/bulk/BulkEditDialog';
 import { ImportDialog } from '~/features/import/ImportDialog';
 import { CardSearch } from '~/features/search/CardSearch';
 import { formatUsd } from '~/ui/format';
@@ -62,6 +64,8 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
+  const [bulkOpen, setBulkOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const hasQueryRef = useRef(false);
   const showToast = useToast();
@@ -77,6 +81,13 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
       void navigate({ to: '/' });
     }
   }, [hiddenSets, visibleEntries, set.setKey, navigate]);
+
+  /** Sets that have a binder, and the ones hidden — for whole-collection bulk edits. */
+  const binderSets = visibleEntries;
+  const hiddenSetKeys = useMemo(
+    () => [...hidden].filter((key) => entries.some((e) => e.key === key)),
+    [hidden, entries],
+  );
 
   const searchCatalogs = useMemo<SearchCatalog[]>(
     () =>
@@ -237,6 +248,9 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
   // One global key handler, driven by the pure `resolveShortcut` map.
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      // A modal (import, bulk edit) owns the keyboard: without this, `]` or Shift+−
+      // pressed inside one would change set or clear a slot in the binder behind it.
+      if (document.querySelector('dialog[open]')) return;
       const intent = resolveShortcut(event, {
         typing: isTypingTarget(event.target),
         hasSelection: binder.active !== null,
@@ -245,6 +259,10 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
       if (!intent) return;
 
       switch (intent.type) {
+        case 'showHelp':
+          event.preventDefault();
+          setHelpOpen(true);
+          break;
         case 'focusSearch':
           event.preventDefault();
           searchInputRef.current?.focus();
@@ -343,38 +361,67 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
           }}
         />
 
+        <button type="button" className={styles.action} onClick={() => setBulkOpen(true)}>
+          Bulk edit
+        </button>
+        <button
+          type="button"
+          className={`${styles.action} ${styles.keyboardOnly}`}
+          onClick={() => setHelpOpen(true)}
+          title="Keyboard shortcuts — ?"
+          aria-keyshortcuts="Shift+?"
+        >
+          Shortcuts
+        </button>
         <button type="button" className={styles.action} onClick={() => setImportOpen(true)}>
           Import / export
         </button>
       </div>
 
+      {helpOpen && <ShortcutsDialog onClose={() => setHelpOpen(false)} />}
+      {bulkOpen && (
+        <BulkEditDialog
+          set={set}
+          rows={rows}
+          filters={filters}
+          binderSets={binderSets}
+          hiddenSetKeys={hiddenSetKeys}
+          onClose={() => setBulkOpen(false)}
+        />
+      )}
       {importOpen && <ImportDialog catalog={loadedSets} onClose={() => setImportOpen(false)} />}
 
-      <SelectedCardPanel
-        set={set}
-        active={binder.active}
-        counts={ownedFor(ownership, binder.active?.card.Number)}
-        held={(binder.active && held.get(binder.active.card.Number)) || {}}
-        onAdjust={adjustDefault}
-        onAdjustPrinting={adjustPrinting_}
-      />
+      <div className={styles.panelSlot} data-active={binder.active !== null}>
+        <SelectedCardPanel
+          set={set}
+          active={binder.active}
+          counts={ownedFor(ownership, binder.active?.card.Number)}
+          held={(binder.active && held.get(binder.active.card.Number)) || {}}
+          onAdjust={adjustDefault}
+          onAdjustPrinting={adjustPrinting_}
+        />
+      </div>
 
-      <SpreadPager
-        viewSpread={binder.viewSpread}
-        totalSpreads={binder.geometry.totalSpreads}
-        onGoTo={binder.goToSpread}
-        onStep={binder.stepSpread}
-      />
+      {/* The page grid is the desktop view: on a phone it is too small to use, so the
+          page becomes search, filters and the table, with the selected card pinned below. */}
+      <div className={styles.binderArea}>
+        <SpreadPager
+          viewSpread={binder.viewSpread}
+          totalSpreads={binder.geometry.totalSpreads}
+          onGoTo={binder.goToSpread}
+          onStep={binder.stepSpread}
+        />
 
-      <BinderGrid
-        set={set}
-        viewSpread={binder.viewSpread}
-        active={binder.active}
-        ownership={ownership}
-        held={held}
-        focusRequest={binder.focusRequest}
-        onSelect={binder.selectCard}
-      />
+        <BinderGrid
+          set={set}
+          viewSpread={binder.viewSpread}
+          active={binder.active}
+          ownership={ownership}
+          held={held}
+          focusRequest={binder.focusRequest}
+          onSelect={binder.selectCard}
+        />
+      </div>
 
       <FilterBar filters={filters} onChange={setFilters} />
 

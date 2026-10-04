@@ -40,6 +40,9 @@
     padding-bottom: var(--space-2);
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
+    /* Contains absolutely-positioned descendants (e.g. .visually-hidden labels) so
+       they are clipped here instead of stretching the page as rows scroll. */
+    position: relative;
   }
 
   .row {

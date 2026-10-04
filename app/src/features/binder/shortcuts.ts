@@ -21,7 +21,9 @@ export type BinderIntent =
   /** Shift+minus — empty the slot entirely. Undoable. */
   | { type: 'clearSlot' }
   | { type: 'stepSpread'; delta: number }
-  | { type: 'stepSet'; delta: number };
+  | { type: 'stepSet'; delta: number }
+  /** `?` — the shortcuts help. */
+  | { type: 'showHelp' };
 
 export type KeyContext = {
   /** Focus is in a text field, so the key belongs to that field. */
@@ -60,6 +62,7 @@ export function resolveShortcut(event: KeyLike, context: KeyContext): BinderInte
 
   if (context.typing) return null;
 
+  if (event.key === '?') return { type: 'showHelp' };
   if (event.key === '/') return { type: 'focusSearch' };
   if (event.key === 'Enter') return context.hasQuery ? { type: 'submitSearch' } : null;
   if (event.key === 'Escape') return { type: 'clearSelection' };
@@ -101,3 +104,36 @@ export function resolveShortcut(event: KeyLike, context: KeyContext): BinderInte
 
   return null;
 }
+
+export type ShortcutHelp = { keys: string[]; action: string };
+
+/**
+ * The shortcuts as the help dialog lists them. Kept next to `resolveShortcut` so the two
+ * are edited together; the variant digits come from the variant list itself.
+ */
+export const SHORTCUT_HELP: Array<{ title: string; items: ShortcutHelp[] }> = [
+  {
+    title: 'Getting around',
+    items: [
+      { keys: ['/'], action: 'Search cards by name or number' },
+      { keys: [','], action: 'Previous spread' },
+      { keys: ['.'], action: 'Next spread' },
+      { keys: ['['], action: 'Previous set' },
+      { keys: [']'], action: 'Next set' },
+      { keys: ['?'], action: 'Show these shortcuts' },
+    ],
+  },
+  {
+    title: 'With a card selected',
+    items: [
+      { keys: ['←', '→', '↑', '↓'], action: 'Move to the neighbouring slot' },
+      { keys: ['+'], action: 'Add one copy (Normal)' },
+      { keys: ['−'], action: 'Remove one copy' },
+      { keys: ['Shift', '+'], action: 'Fill to a playset' },
+      { keys: ['Shift', '−'], action: 'Empty the slot — every printing, with Undo' },
+      { keys: ['1–8'], action: 'Add one of a specific printing (see below)' },
+      { keys: ['Shift', '1–8'], action: 'Remove one of that printing' },
+      { keys: ['Esc'], action: 'Deselect' },
+    ],
+  },
+];

@@ -87,19 +87,31 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
             >
               Owned
             </th>
-            <th scope="col" className={styles.numericCol} title="Copies beyond the playset">
+            <th
+              scope="col"
+              className={`${styles.numericCol} ${styles.wideOnly}`}
+              title="Copies beyond the playset"
+            >
               Spare
             </th>
-            <th scope="col" className={styles.numericCol} title="Copies pulled into built decks">
+            <th
+              scope="col"
+              className={`${styles.numericCol} ${styles.wideOnly}`}
+              title="Copies pulled into built decks"
+            >
               Decks
             </th>
             <th scope="col" className={styles.numericCol} title="Copies still needed for a playset">
               Need
             </th>
-            <th scope="col" className={styles.numericCol}>
+            <th scope="col" className={`${styles.numericCol} ${styles.wideOnly}`}>
               Value
             </th>
-            <th scope="col" className={styles.numericCol} title="Cost of the copies still needed">
+            <th
+              scope="col"
+              className={`${styles.numericCol} ${styles.wideOnly}`}
+              title="Cost of the copies still needed"
+            >
               Cost
             </th>
           </tr>
@@ -169,11 +181,13 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
                 <td className={styles.numericCol}>
                   {row.inBinder}/{row.quota}
                 </td>
-                <td className={styles.numericCol}>{row.spares || ''}</td>
-                <td className={styles.numericCol}>{row.inDecks || ''}</td>
+                <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.spares || ''}</td>
+                <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.inDecks || ''}</td>
                 <td className={styles.numericCol}>{row.needed || ''}</td>
-                <td className={styles.numericCol}>{row.value ? formatUsd(row.value) : ''}</td>
-                <td className={styles.numericCol}>
+                <td className={`${styles.numericCol} ${styles.wideOnly}`}>
+                  {row.value ? formatUsd(row.value) : ''}
+                </td>
+                <td className={`${styles.numericCol} ${styles.wideOnly}`}>
                   {row.missingCost ? formatUsd(row.missingCost) : ''}
                 </td>
               </tr>

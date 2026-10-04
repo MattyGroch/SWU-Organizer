@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -45,10 +45,10 @@ describe('VariantStrip', () => {
   it('shows the digit hotkey on each control, so the mapping is discoverable', () => {
     renderStrip(sorDroid);
 
-    expect(screen.getByText('Normal').closest('button')).toHaveTextContent('1');
-    expect(screen.getByText('Foil').closest('button')).toHaveTextContent('2');
-    expect(screen.getByText('Hyperspace').closest('button')).toHaveTextContent('3');
-    expect(screen.getByText('Hyperspace Foil').closest('button')).toHaveTextContent('4');
+    expect(screen.getByText('Normal').closest('li')).toHaveTextContent('1');
+    expect(screen.getByText('Foil').closest('li')).toHaveTextContent('2');
+    expect(screen.getByText('Hyperspace').closest('li')).toHaveTextContent('3');
+    expect(screen.getByText('Hyperspace Foil').closest('li')).toHaveTextContent('4');
   });
 
   it('keeps a variant on its own digit even when earlier ones are absent', () => {
@@ -59,8 +59,8 @@ describe('VariantStrip', () => {
       { num: '900', variant: 'prestige' },
     ]);
 
-    expect(screen.getByText('Hyperspace').closest('button')).toHaveTextContent('3');
-    expect(screen.getByText('Prestige').closest('button')).toHaveTextContent('5');
+    expect(screen.getByText('Hyperspace').closest('li')).toHaveTextContent('3');
+    expect(screen.getByText('Prestige').closest('li')).toHaveTextContent('5');
   });
 
   it('names each control for screen readers with its count and key', () => {
@@ -79,18 +79,27 @@ describe('VariantStrip', () => {
       ['hyperspace-foil', 1],
     ]);
 
-    expect(screen.getByText('Normal').closest('button')).toHaveTextContent('3');
-    expect(screen.getByText('Hyperspace Foil').closest('button')).toHaveTextContent('1');
-    expect(screen.getByText('Foil').closest('button')).toHaveTextContent('0');
+    expect(screen.getByText('Normal').closest('li')).toHaveTextContent('3');
+    expect(screen.getByText('Hyperspace Foil').closest('li')).toHaveTextContent('1');
+    expect(screen.getByText('Foil').closest('li')).toHaveTextContent('0');
   });
 
-  it('adds a copy of the clicked printing', async () => {
+  it('adds and removes a copy of a printing with + and −, for mouse and touch', async () => {
     const user = userEvent.setup();
-    const { onAdjust } = renderStrip(sorDroid);
+    const { onAdjust } = renderStrip(sorDroid, [['hyperspace', 2]]);
+    const hyperspace = screen.getByText('Hyperspace').closest('li')!;
 
-    await user.click(screen.getByText('Hyperspace').closest('button')!);
+    await user.click(within(hyperspace).getByRole('button', { name: /^Add one Hyperspace/ }));
+    expect(onAdjust).toHaveBeenLastCalledWith({ num: '324', variant: 'hyperspace' }, 1);
 
-    expect(onAdjust).toHaveBeenCalledWith({ num: '324', variant: 'hyperspace' }, 1);
+    await user.click(within(hyperspace).getByRole('button', { name: /^Remove one Hyperspace/ }));
+    expect(onAdjust).toHaveBeenLastCalledWith({ num: '324', variant: 'hyperspace' }, -1);
+  });
+
+  it('cannot remove a printing you own none of', () => {
+    renderStrip(sorDroid);
+    const foil = screen.getByText('Foil').closest('li')!;
+    expect(within(foil).getByRole('button', { name: /^Remove one Foil/ })).toBeDisabled();
   });
 
   it('is hidden for a card with only one printing', () => {

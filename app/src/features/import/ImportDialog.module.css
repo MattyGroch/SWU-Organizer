@@ -47,6 +47,9 @@
   gap: var(--space-4);
   padding: var(--space-4);
   overflow-y: auto;
+  /* Contains absolutely-positioned descendants (e.g. .visually-hidden labels) so
+     they are clipped here instead of stretching the page as rows scroll. */
+  position: relative;
 }
 
 .lead {

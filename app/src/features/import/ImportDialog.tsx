@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { applyImport, buildExport, type ImportMode } from '~/data/applyImport';
+import { applyImport, type ImportMode } from '~/data/applyImport';
 import { variantLabel, type VariantSlug } from '~/domain/catalog';
 import type { CatalogLookup, ImportResult, SkipReason } from '~/domain/import';
 import type { SetKey } from '~/domain/types';
 
 import styles from './ImportDialog.module.css';
+import { downloadBackup } from './downloadBackup';
 import { readImportFile } from './readFile';
 
 type Props = {
@@ -154,16 +155,7 @@ export function ImportDialog({ catalog, onClose }: Props) {
     }
   }
 
-  async function onExport() {
-    const payload = await buildExport();
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = `SWU-Backup-${payload.exportedAt.slice(0, 10)}.json`;
-    anchor.click();
-    URL.revokeObjectURL(url);
-  }
+  const onExport = downloadBackup;
 
   const summary = result ? summarize(result) : null;
   const chosen = result ? result.printings.filter((p) => !skippedSets.has(p.setKey)) : [];

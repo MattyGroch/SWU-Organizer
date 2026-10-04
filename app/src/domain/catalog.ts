@@ -82,6 +82,14 @@ export function variantAxes(slug: VariantSlug) {
   return VARIANT_AXES[slug];
 }
 
+/**
+ * Is this printing on foil stock? Serialized is its own finish — the stamp sets it apart
+ * — but every Prestige Serialized is also foil, like every Showcase.
+ */
+export function isFoilPrinting(slug: VariantSlug): boolean {
+  return VARIANT_AXES[slug].finish !== 'plain';
+}
+
 export function variantLabel(slug: VariantSlug): string {
   return VARIANT_LABELS[slug];
 }

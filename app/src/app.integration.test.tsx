@@ -360,3 +360,126 @@ describe('sets hidden from the binder', () => {
     );
   });
 });
+
+describe('bulk edit', () => {
+  // jsdom implements <dialog> but not its modal API.
+  beforeEach(() => {
+    HTMLDialogElement.prototype.showModal ??= function showModal(this: HTMLDialogElement) {
+      this.open = true;
+    };
+    HTMLDialogElement.prototype.close ??= function close(this: HTMLDialogElement) {
+      this.open = false;
+      this.dispatchEvent(new Event('close'));
+    };
+  });
+
+  const sorCopies = async () =>
+    (await db.owned.where('setKey').equals('SOR').toArray()).reduce((n, r) => n + r.count, 0);
+
+  it('fills exactly the cards the filters show, and undoes', async () => {
+    const user = userEvent.setup();
+    await renderApp();
+
+    await user.click(screen.getByRole('button', { name: 'Legendary' }));
+    await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
+    const dialog = screen.getByRole('dialog', { name: 'Bulk edit' });
+    expect(dialog).toHaveTextContent(/Legendary/);
+
+    await user.click(within(dialog).getByRole('button', { name: /^Fill to playset/ }));
+
+    await waitFor(async () => expect(await sorCopies()).toBeGreaterThan(0));
+    // Only Legendaries were touched.
+    const sor = serveFromDisk('/sets/SWU-SOR.json') as {
+      cards: Array<{ base: number; rarity: string }>;
+    };
+    const rarityOf = new Map(sor.cards.map((c) => [c.base, c.rarity]));
+    const after = await db.owned.where('setKey').equals('SOR').toArray();
+    expect(after.every((r) => rarityOf.get(r.base) === 'Legendary')).toBe(true);
+
+    await user.click(await screen.findByRole('button', { name: 'Undo' }));
+    await waitFor(async () => expect(await sorCopies()).toBe(0));
+  });
+
+  it('can fill across the whole collection, leaving hidden sets alone, with one Undo', async () => {
+    const user = userEvent.setup();
+    await renderApp();
+
+    await user.click(screen.getByRole('button', { name: 'Legendary' }));
+    await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
+    const dialog = screen.getByRole('dialog', { name: 'Bulk edit' });
+    await user.click(within(dialog).getByRole('radio', { name: 'Whole collection' }));
+    expect(within(dialog).getByRole('alert')).toHaveTextContent(/TS26/);
+
+    const fill = within(dialog).getByRole('button', { name: /^Fill to playset/ });
+    await waitFor(() => expect(fill).toBeEnabled(), { timeout: 5000 });
+    await user.click(fill);
+
+    // Sets are edited one after another; the Undo toast appears once all of them are done.
+    const undo = await screen.findByRole('button', { name: 'Undo' }, { timeout: 5000 });
+    const rows = await db.owned.toArray();
+    const sets = new Set(rows.map((r) => r.setKey));
+    expect(sets.size).toBeGreaterThan(5);
+    expect(sets.has('TS26')).toBe(false);
+    for (const setKey of sets) {
+      const catalog = serveFromDisk(`/sets/SWU-${setKey}.json`) as {
+        cards: Array<{ base: number; rarity: string }>;
+      };
+      const rarityOf = new Map(catalog.cards.map((c) => [c.base, c.rarity]));
+      expect(
+        rows.filter((r) => r.setKey === setKey).every((r) => rarityOf.get(r.base) === 'Legendary'),
+      ).toBe(true);
+    }
+
+    await user.click(undo);
+    await waitFor(async () => expect(await db.owned.count()).toBe(0));
+  });
+
+  it('resets the whole collection only after typing RESET', async () => {
+    const user = userEvent.setup();
+    await db.owned.put({
+      id: 'HMW:001',
+      setKey: 'HMW',
+      base: 1,
+      num: '001',
+      variant: 'normal',
+      count: 2,
+      updatedAt: 0,
+    });
+    await renderApp();
+
+    await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
+    const dialog = screen.getByRole('dialog', { name: 'Bulk edit' });
+    await user.click(within(dialog).getByText('Reset…'));
+    const button = within(dialog).getByRole('button', { name: 'Reset entire collection' });
+    expect(button).toBeDisabled();
+
+    await user.type(within(dialog).getByRole('textbox', { name: /Type RESET/ }), 'RESET');
+    await user.click(button);
+    await waitFor(async () => expect(await db.owned.count()).toBe(0));
+  });
+
+  it('keeps binder shortcuts out of the way while the dialog is open', async () => {
+    const user = userEvent.setup();
+    await renderApp();
+    await user.click(cell(/Director Krennic/));
+
+    await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
+    await user.keyboard('+');
+    expect(await db.owned.count()).toBe(0);
+  });
+});
+
+describe('shortcuts help', () => {
+  it('opens on ? and lists every printing digit', async () => {
+    HTMLDialogElement.prototype.showModal ??= function showModal(this: HTMLDialogElement) {
+      this.open = true;
+    };
+    const user = userEvent.setup();
+    await renderApp();
+
+    await user.keyboard('?');
+    const dialog = await screen.findByRole('dialog', { name: 'Keyboard shortcuts' });
+    expect(within(dialog).getByText('Fill to a playset')).toBeInTheDocument();
+    expect(within(dialog).getByText('Prestige Serialized')).toBeInTheDocument();
+  });
+});

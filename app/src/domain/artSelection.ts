@@ -1,4 +1,10 @@
-import { variantAxes, type CatalogCard, type Printing, type Treatment } from './catalog';
+import {
+  isFoilPrinting,
+  variantAxes,
+  type CatalogCard,
+  type Printing,
+  type Treatment,
+} from './catalog';
 import type { OwnedCounts } from './ownership';
 
 /**
@@ -62,7 +68,7 @@ export type ArtChoice = {
 /** Does any owned printing of this card have a foil finish? */
 function ownsFoil(card: CatalogCard, counts: OwnedCounts): boolean {
   return card.printings.some(
-    (p) => (counts.byVariant[p.variant] ?? 0) > 0 && variantAxes(p.variant).finish === 'foil',
+    (p) => (counts.byVariant[p.variant] ?? 0) > 0 && isFoilPrinting(p.variant),
   );
 }
 

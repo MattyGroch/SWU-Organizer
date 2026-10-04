@@ -3,6 +3,9 @@
   overflow: auto;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
+  /* Contains absolutely-positioned descendants (e.g. .visually-hidden labels) so
+     they are clipped here instead of stretching the page as rows scroll. */
+  position: relative;
 }
 
 .table {
@@ -140,8 +143,11 @@
   text-align: center;
 }
 
+/* Phones: keep what identifies a card and whether you need it; drop the money and the
+   spare/deck breakdown. */
 @media (max-width: 760px) {
-  .typeCol {
+  .typeCol,
+  .wideOnly {
     display: none;
   }
 }
