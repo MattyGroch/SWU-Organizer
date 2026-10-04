@@ -21,6 +21,10 @@ COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 COPY --from=build /build/app/dist /usr/share/nginx/html
+# Files keep the build host's permissions. A host with a strict umask (photonOS root uses
+# 0027) leaves them unreadable to nginx's non-root workers, which then answer 403 for
+# everything copied from app/public — catalogs, precons, fonts. Normalise them here.
+RUN chmod -R a+rX /usr/share/nginx/html
 # Fail the build, not the deploy, if the nginx config is broken.
 RUN mkdir -p /run/nginx && nginx -t
 COPY scripts/fetch-catalog-prices.mjs /app/scripts/fetch-catalog-prices.mjs

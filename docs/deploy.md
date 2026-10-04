@@ -62,16 +62,25 @@ The card catalog updates through the daily data PR; merging it and redeploying s
 
 ## Rolling back to v1
 
-Portainer's stack 99 directory still holds v1 exactly as it ran. From the host:
+v1's exact images were tagged before the cutover: `swu-organizer-swu-api:v1-rollback` and `mattygroch/swu-organizer:v1-rollback`. Use those — the v2 build has taken over the `swu-organizer-swu-api` name, and Docker Hub's `:latest` is v2 once the PR is merged. Portainer's stack 99 directory still holds v1's compose files and `stack.env`.
 
 ```bash
 cd /opt/swu-organizer && docker compose down
+
+# Swap the databases back.
 mkdir -p /var/config/swu-organizer/v2-backup
 mv /var/config/swu-organizer/swu.db* /var/config/swu-organizer/v2-backup/ 2>/dev/null
 mv /var/config/swu-organizer/v1-backup/swu.db* /var/config/swu-organizer/
 
+# Point the names v1's compose expects at the v1 images, then start without building or pulling.
+docker tag swu-organizer-swu-api:v1-rollback swu-organizer-swu-api:latest
+docker tag mattygroch/swu-organizer:v1-rollback mattygroch/swu-organizer:latest
 cd /var/lib/docker/volumes/portainer_data/_data/compose/99/9289939e59bf01bdab6560d3db62f68a2c2088a0
-docker compose -p swu-organizer -f docker-compose.yml -f restore-override.yml --env-file stack.env up -d
+docker compose -p swu-organizer -f docker-compose.yml -f restore-override.yml --env-file stack.env up -d --no-build --pull never
 ```
 
 v1's last commit is also tagged `v1-final` in git.
+
+## Build host permissions
+
+The image normalises file permissions in the web root (`chmod -R a+rX`), so a checkout made under a strict umask — root on photonOS uses 0027 — still serves correctly. Without it, nginx's non-root workers answered 403 for everything copied from `app/public`.

@@ -11,6 +11,8 @@ export SWU_SETS_CONFIG="${SWU_SETS_CONFIG:-/app/scripts/sets.config.json}"
 sync_prices() {
   # A failed refresh keeps serving the prices baked into the image.
   node /app/scripts/fetch-catalog-prices.mjs || true
+  # Rewriting a file keeps its old mode; make sure nginx's workers can always read them.
+  chmod -R a+rX "$SWU_CATALOG_DIR" || true
 }
 
 sync_prices
