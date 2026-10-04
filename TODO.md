@@ -26,8 +26,7 @@ Your own list: things to try, questions only you can answer, and setup only you 
 
 ### To do / provide
 
-- [ ] **Google OAuth client for cloud sync** — create it and run sync locally: step-by-step in `app/docs/cloud-sync.md` (redirect URIs `http://localhost:5173/api/auth/callback` and `https://swu.mattyflix.com/api/auth/callback`; the secret goes in `server/.env`, which is gitignored).
-- [ ] **Test sync locally** — sign in; check your collection uploads ("Synced" in the header); then sign in from a private window and check it downloads; edit on both and check both edits survive.
+- [ ] **Production sync** — when ready to deploy: the v2 app's nginx needs to forward `/api` to the API container, and the Portainer stack needs the variables from `app/docs/cloud-sync.md` (production redirect is already registered on the OAuth client).
 - [ ] **HMW precon decklists** — paste them in and Claude will build the precon files.
 - [ ] **Push the `v2` branch** (`git push -u origin v2`) so the rebuild isn't only on this disk. Leaves `main` untouched.
 - [ ] Optional: delete the empty leftover branch — `git branch -d rebuild/v2-foundation`.
@@ -72,7 +71,7 @@ Not now, but don't lose it.
 
 ## Done
 
-- [x] **Cloud sync (app side).** Sign-in and account menu with sync status; pulls on sign-in, tab focus, reconnect and every 5 minutes; edits on two devices merge (cards per printing, decks per deck, deletions remembered); a first-sign-in choice when a device and the cloud both hold a collection. Server keeps deleted-deck records. Setup: `app/docs/cloud-sync.md`. Production wiring (nginx `/api`) still to do.
+- [x] **Cloud sync (app side).** Sign-in and account menu with sync status; pulls on sign-in, tab focus, reconnect and every 5 minutes; edits on two devices merge (cards per printing, decks per deck, deletions remembered); a first-sign-in choice when a device and the cloud both hold a collection. Server keeps deleted-deck records. Setup: `app/docs/cloud-sync.md`. Verified locally 2026-10-04 with the v1 OAuth client: 11 sets, 6,455 copies and the deck library reached the server; a second window downloaded it. Production wiring (nginx `/api`) still to do.
 
 - [x] **Page no longer grows as the card table scrolls (desktop), and no blank page at the bottom (phone).** Both were one bug: rows carry screen-reader-only labels (the rarity name, the status) that are `position: absolute`, and the table's scroll box wasn't positioned — so those labels escaped its clipping and stretched the page to wherever their rows sat, deeper with every scroll. The scroll box now contains them; the same fix went into the five other scrolling boxes (deck tables, pick list, intake, import dialog, the phone binder grid).
 - [x] **Bulk edit can act on the whole collection.** A "This set / Whole collection" toggle; the whole-collection scope applies the same filters to every binder set, with a warning (and backup link) while it's on. Hidden sets like TS26 are left out. It loads every set first, so opening it early can't skip sets still loading. One Undo reverses every set's change.

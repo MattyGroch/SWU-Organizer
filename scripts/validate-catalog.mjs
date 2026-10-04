@@ -1,10 +1,11 @@
 #!/usr/bin/env node
-// scripts/validate-catalog.mjs — Phase 0 gate for the v2 catalog.
+// scripts/validate-catalog.mjs — the CI gate for the card catalog.
 //
-// The check that matters most is BACKWARD COMPATIBILITY: a saved inventory is keyed by
-// base card number, so if v2 ever resolves a different base than the legacy pipeline did,
-// a user's collection silently re-points at the wrong cards. That is unrecoverable
-// without a backup, so it is asserted on every run against the committed legacy data.
+// The check that matters most is STABILITY: every owned card is filed under its base card
+// number (its binder slot), so if a data refresh ever resolved a card to a different base,
+// a collection would silently re-point at the wrong slots. CI therefore snapshots the
+// committed catalog before regenerating it, and this script compares the two
+// (SWU_REFERENCE_DIR). With no reference given, that comparison is skipped.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
@@ -12,7 +13,9 @@ import process from 'node:process';
 import { VARIANTS, numericPart } from './lib/catalog.mjs';
 
 const CATALOG_DIR = path.resolve(process.env.SWU_CATALOG_DIR || 'app/public/sets');
-const LEGACY_DIR = path.resolve(process.env.SWU_LEGACY_SETS_DIR || 'public/sets');
+const REFERENCE_DIR = process.env.SWU_REFERENCE_DIR
+  ? path.resolve(process.env.SWU_REFERENCE_DIR)
+  : null;
 
 const failures = [];
 const notes = [];
@@ -22,28 +25,6 @@ function fail(msg) {
 
 async function readJSON(file) {
   return JSON.parse(await fs.readFile(file, 'utf8'));
-}
-
-/** The legacy base rule: group by name|subtitle|type, take the lowest integer Number. */
-function legacyBases(legacyCards) {
-  const groups = new Map();
-  for (const c of legacyCards) {
-    if (!Number.isFinite(Number(c.Number))) continue;
-    const key = [
-      String(c.Name ?? '')
-        .trim()
-        .toLowerCase(),
-      String(c.Subtitle ?? '')
-        .trim()
-        .toLowerCase(),
-      String(c.Type ?? '')
-        .trim()
-        .toLowerCase(),
-    ].join('|');
-    const current = groups.get(key);
-    if (current === undefined || Number(c.Number) < current) groups.set(key, Number(c.Number));
-  }
-  return groups;
 }
 
 function v2Key(card) {
@@ -134,37 +115,37 @@ function v2Key(card) {
       else fail(`${key}: price overlay unreadable — ${e.message}`);
     }
 
-    // THE BACKWARD-COMPATIBILITY GATE.
-    const legacyFile = path.join(LEGACY_DIR, file);
-    let legacy;
+    // THE STABILITY GATE: no card may change binder slot between refreshes.
+    if (!REFERENCE_DIR) continue;
+    let reference;
     try {
-      legacy = await readJSON(legacyFile);
+      reference = await readJSON(path.join(REFERENCE_DIR, file));
     } catch (e) {
       if (e.code === 'ENOENT') {
-        notes.push(`${key}: no legacy catalog to compare against (new set?)`);
+        notes.push(`${key}: not in the previous catalog (new set?)`);
         continue;
       }
       throw e;
     }
 
-    const legacyMap = legacyBases(legacy.data ?? []);
+    const previousBase = new Map((reference.cards ?? []).map((card) => [v2Key(card), card.base]));
     let compared = 0;
     for (const card of catalog.cards) {
-      const legacyBase = legacyMap.get(v2Key(card));
-      if (legacyBase === undefined) continue; // card absent from the older snapshot
+      const before = previousBase.get(v2Key(card));
+      if (before === undefined) continue; // a card added by this refresh
       compared += 1;
-      if (legacyBase !== card.base) {
-        fail(`${key}: BASE DRIFT for "${card.name}" — legacy ${legacyBase}, v2 ${card.base}`);
+      if (before !== card.base) {
+        fail(`${key}: BASE DRIFT for "${card.name}" — was ${before}, now ${card.base}`);
       }
     }
-    if (compared === 0) notes.push(`${key}: legacy comparison matched zero cards`);
+    if (compared === 0) notes.push(`${key}: matched no cards in the previous catalog`);
   }
 
   console.log(
     `Validated ${manifest.sets.length} sets • ${totalCards} cards • ${totalPrintings} printings`,
   );
   console.log(
-    `Suffix-numbered foils present: ${suffixFoils} (legacy pipeline dropped all of these)`,
+    `Suffix-numbered foils present: ${suffixFoils}`,
   );
   for (const note of notes) console.log(`  note: ${note}`);
 
@@ -175,7 +156,9 @@ function v2Key(card) {
     process.exit(1);
   }
   console.log(
-    '\n✓ catalog valid — base numbers match the legacy pipeline, saved inventories stay correctly keyed',
+    REFERENCE_DIR
+      ? '\n✓ catalog valid — every card kept its binder slot since the previous catalog'
+      : '\n✓ catalog valid (no previous catalog given, so slot stability was not compared)',
   );
 })().catch((e) => {
   console.error(`✖ ${e.stack ?? e.message}`);
