@@ -61,9 +61,11 @@ npm test                   # pipeline tests
 
 ## Deployment
 
-`docker-compose.yml` runs two containers behind Traefik on one host: the app (`Dockerfile`, nginx on port 8080) and the API (`server/Dockerfile`, port 3001, SQLite on a mounted volume). Traefik sends `/api` to the API and everything else to the app. Environment variables for the API are listed in `server/.env.example`.
+`docker-compose.yml` runs two containers behind Traefik on one host: the app (`Dockerfile`, nginx on port 8080) and the API (`server/Dockerfile`, port 3001, SQLite on a mounted volume). Traefik sends `/api` to the API and everything else to the app. Both are built on the host from this repo — `git pull && docker compose up -d --build`. Settings go in a `.env` next to the compose file (template: `.env.example`).
 
-Pushing to `main` publishes the app image and triggers a Portainer redeploy (`.github/workflows/docker-publish.yml`). `.github/workflows/checks.yml` runs every type check, lint and test on pull requests.
+Full steps, including the first v2 deploy and rolling back: [`docs/deploy.md`](docs/deploy.md).
+
+Pushing to `main` also publishes the app image to Docker Hub (`.github/workflows/docker-publish.yml`), and `.github/workflows/checks.yml` runs every type check, lint and test on pull requests.
 
 ## Legal
 

@@ -26,9 +26,12 @@ Your own list: things to try, questions only you can answer, and setup only you 
 
 ### To do / provide
 
-- [ ] **Production sync** — when ready to deploy: the v2 app's nginx needs to forward `/api` to the API container, and the Portainer stack needs the variables from `app/docs/cloud-sync.md` (production redirect is already registered on the OAuth client).
+- [ ] **Ship v2 to production** — full steps in `docs/deploy.md`:
+  - [ ] Push `v2` **and the `v1-final` tag** (`git push -u origin v2 --follow-tags`), open the PR to `main`, let **Checks** go green, merge.
+  - [ ] On the host: create `.env` from `.env.example` (new `SESSION_SECRET`), `git pull`, `docker compose build`, `docker compose down`, move the old `swu.db*` into `v1-backup/`, `docker compose up -d`.
+  - [ ] Check the live site, then Download backup on localhost → import with **Replace entire collection** on swu.mattyflix.com → Sign in.
+  - [ ] Later: fix Portainer, then restore the redeploy step in `docker-publish.yml` (removed for now so runs stop failing).
 - [ ] **HMW precon decklists** — paste them in and Claude will build the precon files.
-- [ ] **Push the `v2` branch** (`git push -u origin v2`) so the rebuild isn't only on this disk. Leaves `main` untouched.
 - [ ] Optional: delete the empty leftover branch — `git branch -d rebuild/v2-foundation`.
 
 ---
@@ -70,6 +73,8 @@ Not now, but don't lose it.
 ---
 
 ## Done
+
+- [x] **v1 retired; v2 is the production app (in the repo).** v1's source, data and root config are gone; the root is the card-data pipeline. New `Dockerfile` serves `app/` with nginx (card-art proxy, security headers on every response, camera allowed for the scanner, daily price refresh). CI: a **Checks** workflow for app/server/pipeline, and the daily data refresh now guards against cards changing binder slot. README rewritten. Not deployed yet — see "Ship v2 to production".
 
 - [x] **Cloud sync (app side).** Sign-in and account menu with sync status; pulls on sign-in, tab focus, reconnect and every 5 minutes; edits on two devices merge (cards per printing, decks per deck, deletions remembered); a first-sign-in choice when a device and the cloud both hold a collection. Server keeps deleted-deck records. Setup: `app/docs/cloud-sync.md`. Verified locally 2026-10-04 with the v1 OAuth client: 11 sets, 6,455 copies and the deck library reached the server; a second window downloaded it. Production wiring (nginx `/api`) still to do.
 
