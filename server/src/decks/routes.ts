@@ -7,6 +7,9 @@ import { getOne, upsertOne, type DeckLibrary, type DeckLibraryRow } from './repo
 const DeckLibrarySchema = z.object({
   customDecks: z.array(z.unknown()),
   preconOwnership: z.record(z.string(), z.number()),
+  // Deck id -> ISO time it was deleted. Lets two devices merge their libraries without a
+  // deleted deck coming back from the one that had not heard about the deletion yet.
+  deletedDecks: z.record(z.string(), z.string()).optional(),
 })
 const PutBody = z.object({ data: DeckLibrarySchema })
 

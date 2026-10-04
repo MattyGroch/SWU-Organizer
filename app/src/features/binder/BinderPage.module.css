@@ -1,0 +1,140 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.setPicker select {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-sm);
+}
+
+/*
+ * Copy buttons | progress | totals. The two outer columns share the leftover space
+ * equally, so the progress bar sits centred over the table rather than just centred in
+ * whatever gap the buttons and totals happen to leave.
+ */
+.listHeader {
+  display: grid;
+  grid-template-areas: 'copy progress totals';
+  grid-template-columns: 1fr minmax(260px, 420px) 1fr;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+/* Too narrow for three columns: buttons and totals share a row, the bar gets its own. */
+@media (max-width: 900px) {
+  .listHeader {
+    grid-template-areas:
+      'copy totals'
+      'progress progress';
+    grid-template-columns: auto 1fr;
+  }
+}
+
+.progressSlot {
+  grid-area: progress;
+  min-width: 0;
+}
+
+.copyGroup {
+  grid-area: copy;
+  justify-self: start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.action {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action:hover:not(:disabled) {
+  background: var(--color-surface-raised);
+}
+
+.copyStatus {
+  color: var(--color-success-fg);
+  font-size: var(--font-size-xs);
+}
+
+.totals {
+  grid-area: totals;
+  justify-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.totals div {
+  text-align: right;
+}
+
+.totals dt {
+  color: var(--color-text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.totals dd {
+  margin: 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.binderArea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/*
+ * Phones: no binder grid — it is too small to use. The page is search, filters and the
+ * card table; tapping a row selects the card, and its controls are pinned to the bottom
+ * of the screen so they stay reachable while scrolling the table.
+ */
+@media (max-width: 760px) {
+  .binderArea,
+  .keyboardOnly {
+    display: none;
+  }
+
+  /* Placed last in the column so `sticky; bottom` pins it while the table scrolls by. */
+  .panelSlot {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    order: 99;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--color-bg);
+    box-shadow: 0 -8px 16px rgb(0 0 0 / 0.35);
+  }
+
+  /* Nothing selected: no empty placeholder taking up the bottom of the screen. */
+  .panelSlot[data-active='false'] {
+    display: none;
+  }
+}

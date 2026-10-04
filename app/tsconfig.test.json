@@ -1,0 +1,16 @@
+{
+  // Ported tests are checked without `noUncheckedIndexedAccess`.
+  //
+  // They came over from src/core/* byte-identical on purpose: passing them unchanged is
+  // the proof that the port did not drift in behavior. Rewriting dozens of `rows[0].x`
+  // assertions into `rows[0]!.x` purely to satisfy a compiler flag would destroy that
+  // guarantee for no safety gain — an out-of-range index in a test fails the test anyway.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noUncheckedIndexedAccess": false
+  },
+  "include": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/test", "src/vite-env.d.ts"],
+  // The base config excludes test files, and `exclude` is inherited — without clearing it
+  // here, this config would match nothing and type-check no tests at all.
+  "exclude": []
+}

@@ -1,0 +1,84 @@
+.strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  flex-basis: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-xs);
+}
+
+.item[data-owned='true'] {
+  border-color: var(--color-success);
+}
+
+.badge {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+}
+
+/* Big enough for a fingertip: the only way to change a printing on a phone. */
+.step {
+  min-width: 32px;
+  min-height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-md);
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.step:hover:not(:disabled) {
+  background: var(--color-surface-raised);
+  color: var(--color-text);
+}
+
+.step:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.digit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.label {
+  color: var(--color-text-subtle);
+  white-space: nowrap;
+}
+
+.count {
+  min-width: 16px;
+  text-align: right;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.count[data-zero='true'] {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}

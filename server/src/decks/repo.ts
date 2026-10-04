@@ -3,6 +3,7 @@ import type { Db } from '../db.js'
 export type DeckLibrary = {
   customDecks: unknown[]
   preconOwnership: Record<string, number>
+  deletedDecks?: Record<string, string>
 }
 
 export type DeckLibraryRow = {
@@ -26,7 +27,11 @@ function parseData(json: string): DeckLibrary {
       parsed.preconOwnership && typeof parsed.preconOwnership === 'object' && !Array.isArray(parsed.preconOwnership)
         ? parsed.preconOwnership
         : {}
-    return { customDecks, preconOwnership }
+    const deletedDecks =
+      parsed.deletedDecks && typeof parsed.deletedDecks === 'object' && !Array.isArray(parsed.deletedDecks)
+        ? (parsed.deletedDecks as Record<string, string>)
+        : undefined
+    return deletedDecks ? { customDecks, preconOwnership, deletedDecks } : { customDecks, preconOwnership }
   } catch {
     return { ...EMPTY_LIBRARY }
   }

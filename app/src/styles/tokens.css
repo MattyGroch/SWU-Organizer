@@ -1,0 +1,102 @@
+/**
+ * Design tokens.
+ *
+ * The legacy app carried 273 hard-coded hex literals split between a 550-line inline
+ * <style> block in index.html and 158 inline style={{}} objects in App.tsx, so the same
+ * blue appeared as #213c6a in a dozen unrelated places. Everything visual resolves here.
+ */
+
+:root {
+  /* ---- Surfaces ---------------------------------------------------------- */
+  --color-bg: #0b0b0f;
+  --color-surface: #11121a;
+  --color-surface-sunken: #0f1017;
+  --color-surface-raised: #171826;
+
+  /* ---- Borders ----------------------------------------------------------- */
+  --color-border: #232433;
+  --color-border-strong: #2b2d3d;
+  --color-border-interactive: #424452;
+
+  /* ---- Text -------------------------------------------------------------- */
+  --color-text: #eaeaf0;
+  --color-text-muted: #9aa0b4;
+  --color-text-subtle: #c8ccd9;
+  --color-text-inverse: #11121a;
+
+  /* ---- Intent ------------------------------------------------------------ */
+  --color-accent: #213c6a;
+  --color-accent-text: #ffffff;
+  --color-focus: #8b5cf6;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  /* Status badges (complete / in-progress / missing) */
+  --color-success-bg: #093c2d;
+  --color-success-fg: #34d399;
+  --color-warning-bg: #3a3000;
+  --color-warning-fg: #fcd34d;
+  --color-danger-bg: #3a0a0a;
+  --color-danger-fg: #f87171;
+
+  /* ---- Aspects ----------------------------------------------------------- */
+  --aspect-vigilance: #3b82f6;
+  --aspect-command: #22c55e;
+  --aspect-aggression: #ef4444;
+  --aspect-cunning: #f59e0b;
+  --aspect-heroism: #e5e7eb;
+  --aspect-villainy: #0b0b0b;
+  --aspect-neutral: #2f3545;
+
+  /* ---- Rarity ------------------------------------------------------------ */
+  --rarity-common: #8b5e3c;
+  --rarity-uncommon: #9aa0b4;
+  --rarity-rare: #facc15;
+  --rarity-legendary: #7dd3fc;
+  --rarity-special: #000000;
+
+  /* ---- Spacing ----------------------------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  /* ---- Radii ------------------------------------------------------------- */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 999px;
+
+  /* ---- Type -------------------------------------------------------------- */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans',
+    Arial, sans-serif;
+  /* Bumped one step across the board: the first build read as too small in use,
+     particularly rarity glyphs and per-slot counts. */
+  --font-size-xs: 13px;
+  --font-size-sm: 15px;
+  --font-size-md: 17px;
+  --font-size-lg: 22px;
+  --font-size-xl: 30px;
+
+  /* ---- Elevation --------------------------------------------------------- */
+  --shadow-sticky: 0 4px 12px rgb(0 0 0 / 0.35);
+  --shadow-raised: 0 2px 4px rgb(0 0 0 / 0.2);
+
+  /* ---- Motion ------------------------------------------------------------ */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.2s ease-in-out;
+}
+
+/* Respect a user's reduced-motion preference everywhere, which the legacy app's
+   hard-coded `transition:` declarations did not. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0ms;
+    --transition-base: 0ms;
+  }
+}

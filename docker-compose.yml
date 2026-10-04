@@ -1,9 +1,18 @@
+# SWU Organizer on one host behind Traefik: the app (Dockerfile) and the sync API (server/).
+# Deploy with `git pull && docker compose up -d --build` — see docs/deploy.md.
+
+# A fixed project name: the stack keeps one identity whichever directory it is run from.
+name: swu-organizer
+
 services:
   swu-organizer:
     build: .
     container_name: swu-organizer
     restart: unless-stopped
     labels:
+      # Both images are built on the host, so Watchtower has nothing to pull anyway; this
+      # makes sure it never swaps in a Docker Hub image out of step with the API.
+      - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
       - "traefik.http.routers.swu-organizer.entrypoints=websecure"
       - "traefik.http.routers.swu-organizer.rule=Host(`swu.mattyflix.com`)"
@@ -30,6 +39,7 @@ services:
     volumes:
       - /var/config/swu-organizer:/config
     labels:
+      - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
       - "traefik.http.routers.swu-api.entrypoints=websecure"
       - "traefik.http.routers.swu-api.rule=Host(`swu.mattyflix.com`) && PathPrefix(`/api`)"

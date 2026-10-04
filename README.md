@@ -1,190 +1,86 @@
 # SWU Organizer
 
-A fast, local-first web app for organizing a personal **Star Wars: Unlimited** collection. Pick a set, search by name or number, and instantly see the card’s physical **Page / Row / Column** in the binder. Track inventory, filter for missing cards, and export or import counts without sending collection data to a server. Docker-ready.
-
-You can check it out at: [https://swu.mattyflix.com/](https://swu.mattyflix.com/)
-
----
+Track a **Star Wars: Unlimited** collection the way it sits in your binders — slot by slot, printing by printing — and build decks from it.
 
 ## Features
 
-- 🔎 **Smart search**: search by **name** (typeahead) or **number** (handles leading zeros like `003`).
-- 🗺️ **Visual binder**: an 8×3 two-page spread mirrors your physical binder; Page 1 stands alone, followed by spreads `2/3`, `4/5`, etc.
-- 🎨 **Aspect colors**: cells tinted by the card’s first aspect (Vigilance/Command/Aggression/Cunning/Heroism/Villainy).
-- ➕➖ **Inventory tracking**: per-card counts with +/− controls (1× cap for Leaders/Bases; 3× default for others).
-- ⌨️ **Keyboard-first filing**: arrow keys move the selected card through the grid, while `+`/`-` adjust its quantity.
-- 🗂️ **All-sets import/export**: supported app, SWUDB, and SW-Unlimited exports normalize alternate printings to their base cards; one JSON export rolls up all eight supported sets.
-- 🐳 **Docker**: build once, run anywhere.
+- **Binder view** — every set laid out as binder spreads, with real card art, the playset count in each pocket, and a foil mark on foil copies. Leaders and Bases sit sideways, as they do in a pocket.
+- **Every printing tracked** — Normal, Foil, Hyperspace, Hyperspace Foil, Showcase, Prestige, Prestige Foil and Prestige Serialized are counted separately, and the binder shows the most premium copy you own.
+- **Fast filing** — keyboard-first: `+`/`−` for a card, `1`–`8` for a specific printing, arrows to move, `/` to search across every set. Press `?` in the app for the full list.
+- **Decks** — paste a decklist (swudb JSON, Melee, picklist or plain text) to check it against your collection and its format's rules (Premier, Twin Suns). Save it, then construct it with a pick list in binder order; deconstruct puts the same printings back. A deck can be partly built, flagged with what's missing and whether you own it elsewhere.
+- **Precons** — owned precon decks count toward your collection but stay sealed.
+- **Intake** — a review queue for cards entering the collection (a deck bought built, and later scanned cards): set each copy's printing before it counts.
+- **Bulk edit, import and backup** — fill or clear whatever the filters show; import SW-Unlimited, SWUDB or Hyperspace Vault exports; download a full backup and restore it with add / only-missing / keep-higher / replace options.
+- **Cloud sync** — sign in with Google to keep every device in step; offline changes sync later, and edits on two devices merge.
+- **Works on a phone** — on small screens the binder becomes a searchable list with the selected card's controls at hand.
 
----
+## Repository layout
 
-## Quick Start (Dev)
+| Path                    | What it is                                                                   |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `app/`                  | The web app — React 19, Vite, TanStack Router/Query, IndexedDB (Dexie).      |
+| `server/`               | The sync API — Express, SQLite, Google OAuth.                                |
+| `scripts/`              | The card-data pipeline: builds the catalog from swu-db.com and validates it. |
+| `app/public/sets/`      | The committed card catalog, refreshed daily by CI.                           |
+| `app/public/precons/`   | Precon decklists.                                                            |
+| `Dockerfile`, `docker/` | The app's production image (nginx).                                          |
 
-**Requirements:** Node 20+ and npm (or pnpm/yarn).
+## Development
 
 ```bash
+cd app
 npm ci
-npm run dev
-# visit http://localhost:5173
-```
-
-Build production:
-
-```bash
-npm run build
-npm run preview
-# visit http://localhost:4173
-```
-
-Verification commands:
-
-```bash
-npm test
-npx tsc --noEmit
+npm run dev        # http://localhost:5173
+npm test           # unit and integration tests
+npm run typecheck
 npm run lint
-npm run format:check
-npm run build
 ```
 
-Tests, TypeScript, ESLint, and the production build currently pass. The repository-wide `npm run format:check` command still reports 34 committed baseline files; this iteration does not normalize or hide that existing formatting debt.
-
----
-
-## Docker
-
-**Build & run:**
+The app works fully on its own — everything is stored in the browser. To try cloud sync locally too, run the API alongside it; setup (including the Google OAuth client) is in [`app/docs/cloud-sync.md`](app/docs/cloud-sync.md).
 
 ```bash
-docker build -t swu-organizer .
-docker run --rm -p 8080:8080 swu-organizer
-# http://localhost:8080
+cd server
+npm ci
+npm run dev        # http://localhost:3001 — reads server/.env
 ```
 
-**docker-compose.yml:**
+To check the app on a phone on the same network: `npm run dev -- --host` in `app/`, then open the "Network" address it prints.
 
-```yaml
-services:
-  swu-organizer:
-    build: .
-    ports:
-      - '8080:8080'
+## Card data
+
+`scripts/fetch-catalog.mjs` builds one catalog file per set from the swu-db.com API, keeping every printing and resolving each card's base number (its binder slot). `scripts/validate-catalog.mjs` checks it; in CI it also fails the refresh if any card would change binder slot. A scheduled workflow (`.github/workflows/update-sets.yml`) opens a pull request when the data changes.
+
+Prices are not committed by CI: the production container refreshes them when it starts and every 24 hours.
+
+```bash
+npm ci                     # at the repo root
+npm run catalog:build      # rebuild app/public/sets
+npm run catalog:validate
+npm test                   # pipeline tests
 ```
 
----
+## Deployment
 
-## Using the App
+`docker-compose.yml` runs two containers behind Traefik on one host: the app (`Dockerfile`, nginx on port 8080) and the API (`server/Dockerfile`, port 3001, SQLite on a mounted volume). Traefik sends `/api` to the API and everything else to the app. Both are built on the host from this repo — `git pull && docker compose up -d --build`. Settings go in a `.env` next to the compose file (template: `.env.example`).
 
-1. **Choose a set** (SOR, SHD, TWI, JTL, LOF, SEC, LAW, or ASH).
-2. **Search** by name or number (press `/` to focus; **Enter** to go).
-3. Read the selected card’s **Page / Row / Column** in the binder header and find the highlighted slot in the spread. Columns are the four physical columns on a page (`1`–`4`), not the internal eight-column spread position.
-4. Adjust **quantities** with +/− on any filled slot.
-5. **Export** your inventory (all sets) to JSON; **Import** it later to restore.
+Full steps, including the first v2 deploy and rolling back: [`docs/deploy.md`](docs/deploy.md).
 
-### Binder view
-
-- The binder displays a two-page eight-column spread; the view jumps to the selected card’s spread and follows the selection when arrow-key navigation crosses a page boundary.
-- Spread navigation shows `Page 1` and then `Page 2/3`, `Page 4/5`, and so on.
-
----
-
-## Data & Format
-
-Included set files live under `public/sets/`:
-
-- `SWU-SOR.json` — Spark of Rebellion (SOR)
-- `SWU-SHD.json` — Shadows of the Galaxy (SHD)
-- `SWU-TWI.json` — Twilight of the Republic (TWI)
-- `SWU-JTL.json` — Jump to Lightspeed (JTL)
-- `SWU-LOF.json` — Legends of the Force (LOF)
-- `SWU-SEC.json` — Secrets of Power (SEC)
-- `SWU-LAW.json` — A Lawless Time (LAW)
-- `SWU-ASH.json` — Ashes of the Empire (ASH)
-
-The app reads these fields per card:
-
-```json
-{
-  "Name": "Ahsoka Tano",
-  "Number": 3,
-  "Aspects": ["Vigilance"],
-  "Type": "Unit"
-}
-```
-
-Only **Name**, **Number**, **Aspects[0]**, and **Type** are required for UI & inventory logic.
-
----
-
-## Inventory, Imports, and Local Migration
-
-- **Caps:** Leaders/Bases = **1×**, other types = **3×** (configurable in code).
-- **Export** produces a single JSON like:
-
-```json
-{
-  "version": 1,
-  "sets": {
-    "SOR": { "12": 1, "98": 3 },
-    "SHD": {},
-    "TWI": {},
-    "JTL": {},
-    "LOF": { "212": 1 },
-    "SEC": {},
-    "LAW": {},
-    "ASH": {}
-  }
-}
-```
-
-- **Accepted import schemas:** the app’s version-one JSON export (`version: 1` with a `sets` object); SWUDB CSV with `Set`, `CardNumber`, and `Count` columns; and SW-Unlimited CSV or XLSX with `Set`, `Base card id`, and `Normal` columns. Header matching tolerates differences in case, spaces, and underscores, but arbitrary CSV/XLSX layouts are not supported.
-- **Import preview:** supported imports feed the same canonical inventory path. The preview reports recognized and skipped entries and lets you merge counts or replace data for the imported sets.
-- **Canonical counts:** alternate printings are mapped to their base card, combined, and capped only after aggregation. Unknown or malformed entries are skipped. Exports store one quantity per base card while retaining the version-one JSON shape shown above.
-- **Silent migration:** on the first load after upgrading, existing local inventory is normalized once. Before any normalized inventory is written, the app creates a recoverable local backup of the original `inv:<set>` records. The migration does not display a notice and does not repeat after its schema marker is stored.
-- Collection data, the migration backup, and schema marker remain in this browser’s local storage. They are not cloud-synchronized.
-- Setting a card back to **0** removes it from the inventory list and storage.
-
----
-
-## Keyboard Shortcuts
-
-- Arrow keys move the selected card through the binder grid, including existing page-edge wrapping.
-- `+` / `-` adjust the selected card quantity.
-- `,` / `.` move to the previous or next spread.
-- `/` focuses search and Enter selects the highlighted result.
-
----
-
-## Roadmap / Ideas
-
-- Progress bars per page & per set
-- Filters by **Aspect**/**Type**
-- Printable checklist / CSV export
-- PWA install & offline cache
-
----
+Pushing to `main` also publishes the app image to Docker Hub (`.github/workflows/docker-publish.yml`), and `.github/workflows/checks.yml` runs every type check, lint and test on pull requests.
 
 ## Legal
 
 This is an **unofficial fan project**. It is not affiliated with or endorsed by Lucasfilm Ltd., Disney, Fantasy Flight Games, or Asmodee.
 
-“Star Wars” and all related properties are © & ™ Lucasfilm Ltd.  
-“Star Wars: Unlimited” is © & ™ Fantasy Flight Games / Asmodee.
+“Star Wars” and all related properties are © & ™ Lucasfilm Ltd. “Star Wars: Unlimited” is © & ™ Fantasy Flight Games / Asmodee.
 
-This app uses **factual metadata** (card names, numbers, sets, aspects, types) for organizational purposes and **does not include** card art, rules text, or logos.  
-If you are a rights holder and have concerns, please contact: **matt.grochocinski@gmail.com**.
-
----
+This repository contains **factual card metadata** (names, numbers, sets, aspects, types) for organizational purposes, and no card art, rules text or logos. The app **displays card images** loaded at view time from swu-db.com's image CDN (through the site's own proxy, cached in your browser); they are not stored in or redistributed by this project. If you are a rights holder and have concerns, please contact **matt.grochocinski@gmail.com**.
 
 ## License
 
-- **Code:** **Polyform Noncommercial 1.0.0** — non-commercial use, modification, and redistribution allowed **with attribution**. Commercial use requires prior permission.
+- **Code:** **PolyForm Noncommercial 1.0.0** — non-commercial use, modification, and redistribution allowed **with attribution**. Commercial use requires prior permission.
 
 For commercial licensing or questions, email **matt.grochocinski@gmail.com**.
 
----
-
 ## Contributing
 
-Issues and PRs welcome! Please keep changes focused and include screenshots/GIFs for UI tweaks.
-
-**Contact:** matt.grochocinski@gmail.com
+Issues and PRs welcome. Please keep changes focused and include screenshots for UI changes.

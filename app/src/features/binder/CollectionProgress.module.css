@@ -1,0 +1,68 @@
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+}
+
+.cards {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.percent {
+  font-variant-numeric: tabular-nums;
+}
+
+/* The track is the empty state: a filter that matches nothing shows a plain bar. */
+.bar {
+  display: flex;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: var(--color-surface-sunken);
+}
+
+.segment {
+  height: 100%;
+  transition: width var(--transition-base);
+}
+
+.segment[data-status='complete'] {
+  background: var(--color-success);
+}
+
+.segment[data-status='partial'] {
+  background: var(--color-warning);
+}
+
+.segment[data-status='none'] {
+  background: var(--color-danger);
+}
+
+.legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.legend [data-status='complete'] {
+  color: var(--color-success-fg);
+}
+
+.legend [data-status='partial'] {
+  color: var(--color-warning-fg);
+}
+
+.legend [data-status='none'] {
+  color: var(--color-danger-fg);
+}

@@ -1,0 +1,235 @@
+import type { CatalogCard, LoadedSet } from '~/domain/catalog';
+import {
+  binderCount,
+  cardValue,
+  collectionStatus,
+  neededCount,
+  ownedFor,
+  pocketCounts,
+  sumVariants,
+  quotaForCard,
+  spareCount,
+  type CollectionStatus,
+  type OwnedCounts,
+  type VariantCounts,
+} from '~/domain/ownership';
+
+/**
+ * Builds the single row list that both the Inventory and Missing tables project from.
+ *
+ * Pure, so filtering and the collection totals are testable without rendering. The legacy
+ * version was three chained `useMemo`s inside App.tsx that each recomputed over every
+ * card, plus a fourth for the status counts.
+ */
+
+export const ALL_ASPECTS = [
+  'Vigilance',
+  'Command',
+  'Aggression',
+  'Cunning',
+  'Heroism',
+  'Villainy',
+  'NEUTRAL',
+] as const;
+
+export const ALL_RARITIES = ['Common', 'Uncommon', 'Rare', 'Legendary', 'Special'] as const;
+export const ALL_TYPES = ['Leader', 'Base', 'Unit', 'Event', 'Upgrade'] as const;
+export const ALL_STATUSES = ['complete', 'partial', 'none'] as const;
+
+/** Shared by the Status filter chips and the table's Status column, so the two always agree. */
+export const STATUS_LABEL = {
+  complete: 'Complete playset',
+  partial: 'In progress',
+  none: 'Not collected',
+} as const satisfies Record<CollectionStatus, string>;
+
+export const STATUS_GLYPH = {
+  complete: '✓',
+  partial: '!',
+  none: '✕',
+} as const satisfies Record<CollectionStatus, string>;
+
+export type Filters = {
+  aspect: string[];
+  rarity: string[];
+  type: string[];
+  status: CollectionStatus[];
+  /** Free-text filter applied to name and subtitle. */
+  text: string;
+  /** Hide cards whose binder slot is short only because copies are out in built decks. */
+  hideInDecks: boolean;
+};
+
+export const EMPTY_FILTERS: Filters = {
+  aspect: [],
+  rarity: [],
+  type: [],
+  status: [],
+  text: '',
+  hideInDecks: false,
+};
+
+export type CardRow = {
+  base: number;
+  name: string;
+  subtitle?: string;
+  type?: string;
+  rarity?: string;
+  aspects: string[];
+  quota: number;
+  /** Every copy owned, across printings. */
+  total: number;
+  inBinder: number;
+  /** Copies pulled into built decks: owned, but out of the binder. */
+  inDecks: number;
+  spares: number;
+  needed: number;
+  status: CollectionStatus;
+  counts: OwnedCounts;
+  /** Value of the copies owned, each printing at its own price. */
+  value: number;
+  /** What the copies still needed would cost at the Normal printing's price. */
+  missingCost: number;
+};
+
+function matchesFilters(card: CatalogCard, status: CollectionStatus, filters: Filters): boolean {
+  if (filters.aspect.length) {
+    const labels = card.aspects.length ? card.aspects : ['NEUTRAL'];
+    if (!labels.some((a) => filters.aspect.includes(a))) return false;
+  }
+  if (filters.rarity.length && !filters.rarity.includes(card.rarity ?? '')) return false;
+  if (filters.type.length && !filters.type.includes(card.type ?? '')) return false;
+  if (filters.status.length && !filters.status.includes(status)) return false;
+
+  const text = filters.text.trim().toLowerCase();
+  if (text) {
+    const haystack = `${card.name} ${card.subtitle ?? ''}`.toLowerCase();
+    if (!haystack.includes(text)) return false;
+  }
+
+  return true;
+}
+
+export function buildCardRows(
+  set: LoadedSet,
+  ownership: ReadonlyMap<number, OwnedCounts>,
+  filters: Filters,
+  heldByBase: ReadonlyMap<number, VariantCounts> = new Map(),
+): CardRow[] {
+  const rows: CardRow[] = [];
+
+  for (const card of set.cardsByBase.values()) {
+    const counts = ownedFor(ownership, card.base);
+    const quota = quotaForCard(card);
+    // The binder holds what is not out in a built deck; status follows the binder, as in
+    // v1, while "needed" follows everything owned — a pulled card is not one to buy.
+    const held = heldByBase.get(card.base) ?? {};
+    const inDecks = sumVariants(held);
+    const onHand = pocketCounts(counts, held).total;
+    const inBinder = binderCount(onHand, quota);
+    const status = collectionStatus(inBinder, quota);
+    if (!matchesFilters(card, status, filters)) continue;
+    if (filters.hideInDecks && inDecks > 0 && counts.total >= quota) continue;
+
+    const normal = card.printings.find((p) => p.variant === 'normal') ?? card.printings[0];
+    const unitPrice = (normal && set.prices.get(normal.num)) ?? 0;
+    const needed = neededCount(counts.total, quota);
+
+    rows.push({
+      base: card.base,
+      name: card.name,
+      subtitle: card.subtitle,
+      type: card.type,
+      rarity: card.rarity,
+      aspects: card.aspects,
+      quota,
+      total: counts.total,
+      inBinder,
+      inDecks,
+      spares: spareCount(onHand, quota),
+      needed,
+      status,
+      counts,
+      value: cardValue(counts, card, set.prices),
+      missingCost: needed * unitPrice,
+    });
+  }
+
+  return rows.sort((a, b) => a.base - b.base);
+}
+
+export type CollectionTotals = {
+  cards: number;
+  complete: number;
+  partial: number;
+  missing: number;
+  /** Value of everything owned. */
+  value: number;
+  /** Cost to finish every playset in the current filter. */
+  missingCost: number;
+  spares: number;
+};
+
+export function collectionTotals(rows: readonly CardRow[]): CollectionTotals {
+  const totals: CollectionTotals = {
+    cards: rows.length,
+    complete: 0,
+    partial: 0,
+    missing: 0,
+    value: 0,
+    missingCost: 0,
+    spares: 0,
+  };
+
+  for (const row of rows) {
+    if (row.status === 'complete') totals.complete += 1;
+    else if (row.status === 'partial') totals.partial += 1;
+    else totals.missing += 1;
+
+    totals.value += row.value;
+    totals.missingCost += row.missingCost;
+    totals.spares += row.spares;
+  }
+
+  return totals;
+}
+
+export function hasActiveFilters(filters: Filters): boolean {
+  return (
+    filters.aspect.length > 0 ||
+    filters.rarity.length > 0 ||
+    filters.type.length > 0 ||
+    filters.status.length > 0 ||
+    filters.hideInDecks ||
+    filters.text.trim() !== ''
+  );
+}
+
+/** `3 Vader - Dark Lord (SOR)` — the paste format TCGplayer's mass-entry box accepts. */
+export function formatMissingLine(row: CardRow, setKey: string, quantity: number): string {
+  const name = row.subtitle ? `${row.name} - ${row.subtitle}` : row.name;
+  return `${quantity} ${name} (${setKey})`;
+}
+
+/** What the copy buttons would put on the clipboard for these rows — shown on the buttons. */
+export function missingListSummary(rows: readonly CardRow[]): { cards: number; copies: number } {
+  let cards = 0;
+  let copies = 0;
+  for (const row of rows) {
+    if (row.needed <= 0) continue;
+    cards += 1;
+    copies += row.needed;
+  }
+  return { cards, copies };
+}
+
+export function missingListText(
+  rows: readonly CardRow[],
+  setKey: string,
+  mode: 'fullNeeded' | 'oneEach',
+): string {
+  return rows
+    .filter((row) => row.needed > 0)
+    .map((row) => formatMissingLine(row, setKey, mode === 'oneEach' ? 1 : row.needed))
+    .join('\n');
+}

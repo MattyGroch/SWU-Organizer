@@ -1,0 +1,42 @@
+.pager {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: center;
+}
+
+.step {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  cursor: pointer;
+}
+
+.step:hover:not(:disabled) {
+  background: var(--color-surface-raised);
+}
+
+.step:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.step kbd {
+  padding: 0 4px;
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.jump select {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-sm);
+}
