@@ -1,0 +1,160 @@
+{
+  "leader": {
+    "setKey": "SOR",
+    "baseNumber": 5,
+    "count": 1
+  },
+  "base": {
+    "setKey": "SOR",
+    "baseNumber": 29,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "SOR",
+      "baseNumber": 44,
+      "count": 2
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 45,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 46,
+      "count": 3
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 48,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 49,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 53,
+      "count": 3
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 59,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 63,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 66,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 69,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 74,
+      "count": 2
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 78,
+      "count": 3
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 189,
+      "count": 3
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 194,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 195,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 196,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 198,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 217,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 218,
+      "count": 2
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 220,
+      "count": 2
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 222,
+      "count": 2
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 236,
+      "count": 3
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 237,
+      "count": 3
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 238,
+      "count": 3
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 239,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 240,
+      "count": 3
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 241,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 242,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 244,
+      "count": 1
+    }
+  ],
+  "sideboard": []
+}

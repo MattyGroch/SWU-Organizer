@@ -1,0 +1,158 @@
+{
+  "precons": [
+    {
+      "key": "TS26-master-and-apprentice",
+      "label": "Master and Apprentice (Twin Suns)",
+      "setKey": "TS26",
+      "aspect": "Twin Suns",
+      "file": "TS26-master-and-apprentice.json"
+    },
+    {
+      "key": "TS26-aggressive-negotiations",
+      "label": "Aggressive Negotiations (Twin Suns)",
+      "setKey": "TS26",
+      "aspect": "Twin Suns",
+      "file": "TS26-aggressive-negotiations.json"
+    },
+    {
+      "key": "TS26-blood-brothers",
+      "label": "Blood Brothers (Twin Suns)",
+      "setKey": "TS26",
+      "aspect": "Twin Suns",
+      "file": "TS26-blood-brothers.json"
+    },
+    {
+      "key": "TS26-against-the-odds",
+      "label": "Against the Odds (Twin Suns)",
+      "setKey": "TS26",
+      "aspect": "Twin Suns",
+      "file": "TS26-against-the-odds.json"
+    },
+    {
+      "key": "SOR-Luke",
+      "label": "Luke Skywalker (Spark of Rebellion)",
+      "setKey": "SOR",
+      "aspect": "Heroism",
+      "file": "SOR-Luke.json"
+    },
+    {
+      "key": "SOR-Vader",
+      "label": "Darth Vader (Spark of Rebellion)",
+      "setKey": "SOR",
+      "aspect": "Villainy",
+      "file": "SOR-Vader.json"
+    },
+    {
+      "key": "SHD-Mando",
+      "label": "The Mandalorian (Shadows of the Galaxy)",
+      "setKey": "SHD",
+      "aspect": "Heroism",
+      "file": "SHD-Mando.json"
+    },
+    {
+      "key": "SHD-MoffGideon",
+      "label": "Moff Gideon (Shadows of the Galaxy)",
+      "setKey": "SHD",
+      "aspect": "Villainy",
+      "file": "SHD-MoffGideon.json"
+    },
+    {
+      "key": "TWI-Ahsoka",
+      "label": "Ahsoka Tano (Twilight of the Republic)",
+      "setKey": "TWI",
+      "aspect": "Heroism",
+      "file": "TWI-Ahsoka.json"
+    },
+    {
+      "key": "TWI-Grievous",
+      "label": "General Grievous (Twilight of the Republic)",
+      "setKey": "TWI",
+      "aspect": "Villainy",
+      "file": "TWI-Grievous.json"
+    },
+    {
+      "key": "JTL-BobaFett",
+      "label": "Boba Fett (Jump to Lightspeed)",
+      "setKey": "JTL",
+      "aspect": "Villainy",
+      "file": "JTL-BobaFett.json"
+    },
+    {
+      "key": "JTL-HanSolo",
+      "label": "Han Solo (Jump to Lightspeed)",
+      "setKey": "JTL",
+      "aspect": "Heroism",
+      "file": "JTL-HanSolo.json"
+    },
+    {
+      "key": "LOF-Maul",
+      "label": "Darth Maul (Legends of the Force)",
+      "setKey": "LOF",
+      "aspect": "Villainy",
+      "file": "LOF-Maul.json"
+    },
+    {
+      "key": "LOF-QuiGon",
+      "label": "Qui-Gon Jinn (Legends of the Force)",
+      "setKey": "LOF",
+      "aspect": "Heroism",
+      "file": "LOF-QuiGon.json"
+    },
+    {
+      "key": "SEC-Amidala",
+      "label": "Padme Amidala (Secrets of Power)",
+      "setKey": "SEC",
+      "aspect": "Heroism",
+      "file": "SEC-Amidala.json"
+    },
+    {
+      "key": "SEC-Palpatine",
+      "label": "Chancellor Palpatine (Secrets of Power)",
+      "setKey": "SEC",
+      "aspect": "Villainy",
+      "file": "SEC-Palpatine.json"
+    },
+    {
+      "key": "LAW-Jabba",
+      "label": "Jabba the Hutt (A Lawless Time)",
+      "setKey": "LAW",
+      "aspect": "Villainy",
+      "file": "LAW-Jabba.json"
+    },
+    {
+      "key": "LAW-Leia",
+      "label": "Leia Organa (A Lawless Time)",
+      "setKey": "LAW",
+      "aspect": "Heroism",
+      "file": "LAW-Leia.json"
+    },
+    {
+      "key": "ASH-Luke",
+      "label": "Luke Skywalker (Ashes of the Empire)",
+      "setKey": "ASH",
+      "aspect": "Heroism",
+      "file": "ASH-Luke.json"
+    },
+    {
+      "key": "ASH-Palpatine",
+      "label": "Emperor Palpatine (Ashes of the Empire)",
+      "setKey": "ASH",
+      "aspect": "Villainy",
+      "file": "ASH-Palpatine.json"
+    },
+    {
+      "key": "IBH-Vader",
+      "label": "Darth Vader (Intro Battle: Hoth)",
+      "setKey": "IBH",
+      "aspect": "Villainy",
+      "file": "IBH-Vader.json"
+    },
+    {
+      "key": "IBH-Leia",
+      "label": "Leia Organa (Intro Battle: Hoth)",
+      "setKey": "IBH",
+      "aspect": "Heroism",
+      "file": "IBH-Leia.json"
+    }
+  ]
+}

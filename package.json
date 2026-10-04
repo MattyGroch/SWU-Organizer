@@ -16,7 +16,10 @@
     "update:sets": "node scripts/fetch-sets.mjs",
     "update:sets:slim": "node scripts/fetch-sets.mjs --slim",
     "fetch:prices": "node scripts/fetch-prices.mjs",
-    "discover:sets": "node scripts/discover-sets.mjs"
+    "discover:sets": "node scripts/discover-sets.mjs",
+    "catalog:build": "node scripts/fetch-catalog.mjs",
+    "catalog:prices": "node scripts/fetch-catalog-prices.mjs",
+    "catalog:validate": "node scripts/validate-catalog.mjs"
   },
   "dependencies": {
     "react": "^18.2.0",

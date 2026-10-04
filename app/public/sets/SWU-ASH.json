@@ -1,0 +1,6982 @@
+{
+  "version": 2,
+  "setKey": "ASH",
+  "cards": [
+    {
+      "base": 1,
+      "name": "The Armorer",
+      "subtitle": "Steel Shapes Us",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "001",
+          "variant": "normal"
+        },
+        {
+          "num": "265",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "767",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 2,
+      "name": "Fennec Shand",
+      "subtitle": "Ready for War",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "002",
+          "variant": "normal"
+        },
+        {
+          "num": "266",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "768",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 3,
+      "name": "Baylan Skoll",
+      "subtitle": "Power Beyond Dream",
+      "type": "Leader",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "003",
+          "variant": "normal"
+        },
+        {
+          "num": "267",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "769",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 4,
+      "name": "Grand Admiral Thrawn",
+      "subtitle": "Victory is Mine",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "004",
+          "variant": "normal"
+        },
+        {
+          "num": "268",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "770",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 5,
+      "name": "Luke Skywalker",
+      "subtitle": "I Can Save Him",
+      "type": "Leader",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "005",
+          "variant": "normal"
+        },
+        {
+          "num": "269",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "771",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 6,
+      "name": "Sabine Wren",
+      "subtitle": "Bargaining on Belief",
+      "type": "Leader",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "006",
+          "variant": "normal"
+        },
+        {
+          "num": "270",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "772",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 7,
+      "name": "Grand Admiral Sloane",
+      "subtitle": "Holding the Empire Together",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "007",
+          "variant": "normal"
+        },
+        {
+          "num": "271",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "773",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 8,
+      "name": "Moff Gideon",
+      "subtitle": "Indomitable Warlord",
+      "type": "Leader",
+      "rarity": "Common",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "008",
+          "variant": "normal"
+        },
+        {
+          "num": "272",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "774",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 9,
+      "name": "Ahsoka Tano",
+      "subtitle": "Trust in the Force",
+      "type": "Leader",
+      "rarity": "Common",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "009",
+          "variant": "normal"
+        },
+        {
+          "num": "273",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "775",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 10,
+      "name": "Bo-Katan Kryze",
+      "subtitle": "Reclaiming Mandalore",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "010",
+          "variant": "normal"
+        },
+        {
+          "num": "274",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "776",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 11,
+      "name": "Cad Bane",
+      "subtitle": "Still Faster Than You",
+      "type": "Leader",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "011",
+          "variant": "normal"
+        },
+        {
+          "num": "275",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "777",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 12,
+      "name": "Vane",
+      "subtitle": "Quarrelsome Pirate",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "012",
+          "variant": "normal"
+        },
+        {
+          "num": "276",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "778",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 13,
+      "name": "Ezra Bridger",
+      "subtitle": "It's Now or Never",
+      "type": "Leader",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "013",
+          "variant": "normal"
+        },
+        {
+          "num": "277",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "779",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 14,
+      "name": "The Mandalorian",
+      "subtitle": "We Can't Keep Running",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "014",
+          "variant": "normal"
+        },
+        {
+          "num": "278",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "780",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 15,
+      "name": "Emperor Palpatine",
+      "subtitle": "According to My Design",
+      "type": "Leader",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "015",
+          "variant": "normal"
+        },
+        {
+          "num": "279",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "781",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 16,
+      "name": "Shin Hati",
+      "subtitle": "Eager Adversary",
+      "type": "Leader",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "016",
+          "variant": "normal"
+        },
+        {
+          "num": "280",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "782",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 17,
+      "name": "Greef Karga",
+      "subtitle": "Gracious Magistrate",
+      "type": "Leader",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "017",
+          "variant": "normal"
+        },
+        {
+          "num": "281",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "783",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 18,
+      "name": "Grogu",
+      "subtitle": "Charming Companion",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "018",
+          "variant": "normal"
+        },
+        {
+          "num": "282",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "784",
+          "variant": "showcase"
+        }
+      ]
+    },
+    {
+      "base": 19,
+      "name": "Fortress of the Great Mothers",
+      "subtitle": "Peridea",
+      "type": "Base",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "019",
+          "variant": "normal"
+        },
+        {
+          "num": "283",
+          "variant": "hyperspace"
+        }
+      ]
+    },
+    {
+      "base": 20,
+      "name": "Nevarro City, Restored",
+      "subtitle": "Nevarro",
+      "type": "Base",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "020",
+          "variant": "normal"
+        },
+        {
+          "num": "284",
+          "variant": "hyperspace"
+        }
+      ]
+    },
+    {
+      "base": 21,
+      "name": "Emperor's Throne Room",
+      "subtitle": "Death Star",
+      "type": "Base",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "021",
+          "variant": "normal"
+        },
+        {
+          "num": "285",
+          "variant": "hyperspace"
+        }
+      ]
+    },
+    {
+      "base": 22,
+      "name": "Kryze Castle",
+      "subtitle": "Kalevala",
+      "type": "Base",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "022",
+          "variant": "normal"
+        },
+        {
+          "num": "286",
+          "variant": "hyperspace"
+        }
+      ]
+    },
+    {
+      "base": 23,
+      "name": "Ancient Henge",
+      "subtitle": "Seatos",
+      "type": "Base",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "023",
+          "variant": "normal"
+        },
+        {
+          "num": "287",
+          "variant": "hyperspace"
+        }
+      ]
+    },
+    {
+      "base": 24,
+      "name": "Dragonsnake Bog",
+      "subtitle": "Dagobah",
+      "type": "Base",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "024",
+          "variant": "normal"
+        },
+        {
+          "num": "288",
+          "variant": "hyperspace"
+        }
+      ]
+    },
+    {
+      "base": 25,
+      "name": "Emperor's Observatory",
+      "subtitle": "Pillio",
+      "type": "Base",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "025",
+          "variant": "normal"
+        },
+        {
+          "num": "289",
+          "variant": "hyperspace"
+        }
+      ]
+    },
+    {
+      "base": 26,
+      "name": "Freetown",
+      "subtitle": "Tatooine",
+      "type": "Base",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "026",
+          "variant": "normal"
+        },
+        {
+          "num": "290",
+          "variant": "hyperspace"
+        }
+      ]
+    },
+    {
+      "base": 27,
+      "name": "Enoch",
+      "subtitle": "Solemn Servant",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "027",
+          "variant": "normal"
+        },
+        {
+          "num": "291",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "529",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 28,
+      "name": "Paz Vizsla",
+      "subtitle": "For a Brighter Future",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "028",
+          "variant": "normal"
+        },
+        {
+          "num": "292",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "530",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "785",
+          "variant": "prestige"
+        },
+        {
+          "num": "832",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "879",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 29,
+      "name": "Scorpenek Annihilator Droid",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "029",
+          "variant": "normal"
+        },
+        {
+          "num": "293",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "531",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 30,
+      "name": "Marrok",
+      "subtitle": "Mysterious Warrior",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "030",
+          "variant": "normal"
+        },
+        {
+          "num": "294",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "532",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "786",
+          "variant": "prestige"
+        },
+        {
+          "num": "833",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "880",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 31,
+      "name": "Hera Syndulla",
+      "subtitle": "Renegade General",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "031",
+          "variant": "normal"
+        },
+        {
+          "num": "295",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "533",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "787",
+          "variant": "prestige"
+        },
+        {
+          "num": "834",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "881",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 32,
+      "name": "Rancor Keeper",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "032",
+          "variant": "normal"
+        },
+        {
+          "num": "296",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "534",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 33,
+      "name": "Grand Admiral Thrawn",
+      "subtitle": "Orchestrating His Return",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "033",
+          "variant": "normal"
+        },
+        {
+          "num": "297",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "535",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "788",
+          "variant": "prestige"
+        },
+        {
+          "num": "835",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "882",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 34,
+      "name": "Wicket",
+      "subtitle": "Yub Nub!",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "034",
+          "variant": "normal"
+        },
+        {
+          "num": "298",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "536",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "826",
+          "variant": "prestige"
+        },
+        {
+          "num": "873",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "920",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 35,
+      "name": "Tatooine Repulsor Train",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "035",
+          "variant": "normal"
+        },
+        {
+          "num": "299",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "537",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 36,
+      "name": "Rukh",
+      "subtitle": "From the Shadows",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "036",
+          "variant": "normal"
+        },
+        {
+          "num": "300",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "538",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 37,
+      "name": "Red Leader",
+      "subtitle": "Strike the Reactor",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "037",
+          "variant": "normal"
+        },
+        {
+          "num": "301",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "539",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "818",
+          "variant": "prestige"
+        },
+        {
+          "num": "865",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "912",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 38,
+      "name": "Purrgil Ultra",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "038",
+          "variant": "normal"
+        },
+        {
+          "num": "302",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "540",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "789",
+          "variant": "prestige"
+        },
+        {
+          "num": "836",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "883",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 39,
+      "name": "Baylan Skoll",
+      "subtitle": "Fallen Jedi",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "039",
+          "variant": "normal"
+        },
+        {
+          "num": "303",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "541",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "790",
+          "variant": "prestige"
+        },
+        {
+          "num": "837",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "884",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 40,
+      "name": "Poe Dameron",
+      "subtitle": "I'll Come Back For You",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "040",
+          "variant": "normal"
+        },
+        {
+          "num": "304",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "542",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 41,
+      "name": "Outcast",
+      "subtitle": "Mercenary Starship",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "041",
+          "variant": "normal"
+        },
+        {
+          "num": "305",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "543",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 42,
+      "name": "Jabba the Hutt",
+      "subtitle": "Eminence of Tatooine",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "042",
+          "variant": "normal"
+        },
+        {
+          "num": "306",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "544",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 43,
+      "name": "Corona Four",
+      "subtitle": "Justice for Alderaan",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "043",
+          "variant": "normal"
+        },
+        {
+          "num": "307",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "545",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 44,
+      "name": "Barriss Offee",
+      "subtitle": "Redeeming Herself",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "044",
+          "variant": "normal"
+        },
+        {
+          "num": "308",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "546",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 45,
+      "name": "Reanimated Night Trooper",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "045",
+          "variant": "normal"
+        },
+        {
+          "num": "309",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "547",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 46,
+      "name": "Scion Shuttle",
+      "subtitle": "At Morgan's Bidding",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "046",
+          "variant": "normal"
+        },
+        {
+          "num": "310",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "548",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 47,
+      "name": "Gar Saxon",
+      "subtitle": "Coveting Power",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "047",
+          "variant": "normal"
+        },
+        {
+          "num": "311",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "549",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 48,
+      "name": "Imperial Armored Commando",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "048",
+          "variant": "normal"
+        },
+        {
+          "num": "312",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "550",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 49,
+      "name": "Shin Hati",
+      "subtitle": "Going Somewhere?",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "049",
+          "variant": "normal"
+        },
+        {
+          "num": "313",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "551",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "791",
+          "variant": "prestige"
+        },
+        {
+          "num": "838",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "885",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 50,
+      "name": "Morgan Elsbeth",
+      "subtitle": "Life Abandoned",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "050",
+          "variant": "normal"
+        },
+        {
+          "num": "314",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "552",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "792",
+          "variant": "prestige"
+        },
+        {
+          "num": "839",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "886",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 51,
+      "name": "Reinforcing Light Cruiser",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "051",
+          "variant": "normal"
+        },
+        {
+          "num": "315",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "553",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 52,
+      "name": "Chimaera",
+      "subtitle": "A Frightening Reality",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "052",
+          "variant": "normal"
+        },
+        {
+          "num": "316",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "554",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 53,
+      "name": "Pre Vizsla",
+      "subtitle": "Strong-Willed Ruler",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "053",
+          "variant": "normal"
+        },
+        {
+          "num": "317",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "555",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 54,
+      "name": "Pointless to Resist",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "054",
+          "variant": "normal"
+        },
+        {
+          "num": "318",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "556",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 55,
+      "name": "Blade of Talzin",
+      "subtitle": "A Gift of Shadows",
+      "type": "Upgrade",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "055",
+          "variant": "normal"
+        },
+        {
+          "num": "319",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "557",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "793",
+          "variant": "prestige"
+        },
+        {
+          "num": "840",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "887",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 56,
+      "name": "Huyang",
+      "subtitle": "Your Aptitude Falls Short",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "056",
+          "variant": "normal"
+        },
+        {
+          "num": "320",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "558",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 57,
+      "name": "Lothal E-Wing",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "057",
+          "variant": "normal"
+        },
+        {
+          "num": "321",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "559",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 58,
+      "name": "Duchess's Protector",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "058",
+          "variant": "normal"
+        },
+        {
+          "num": "322",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "560",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 59,
+      "name": "Leia Organa",
+      "subtitle": "Vigilant for Danger",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "059",
+          "variant": "normal"
+        },
+        {
+          "num": "323",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "561",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "819",
+          "variant": "prestige"
+        },
+        {
+          "num": "866",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "913",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 60,
+      "name": "Cobb Vanth",
+      "subtitle": "Let Me Handle This",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "060",
+          "variant": "normal"
+        },
+        {
+          "num": "324",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "562",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "794",
+          "variant": "prestige"
+        },
+        {
+          "num": "841",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "888",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 61,
+      "name": "Strike Team Vanguard",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "061",
+          "variant": "normal"
+        },
+        {
+          "num": "325",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "563",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 62,
+      "name": "The Mandalorian",
+      "subtitle": "Devoted Rescuer",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "062",
+          "variant": "normal"
+        },
+        {
+          "num": "326",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "564",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "795",
+          "variant": "prestige"
+        },
+        {
+          "num": "842",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "889",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 63,
+      "name": "Bo-Katan's Gauntlet",
+      "subtitle": "Reinforce from Above",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "063",
+          "variant": "normal"
+        },
+        {
+          "num": "327",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "565",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "796",
+          "variant": "prestige"
+        },
+        {
+          "num": "843",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "890",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 64,
+      "name": "The Armorer",
+      "subtitle": "Secrecy is Our Survival",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "064",
+          "variant": "normal"
+        },
+        {
+          "num": "328",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "566",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "797",
+          "variant": "prestige"
+        },
+        {
+          "num": "844",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "891",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 65,
+      "name": "Home One",
+      "subtitle": "Heart of the Fleet",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "065",
+          "variant": "normal"
+        },
+        {
+          "num": "329",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "567",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "820",
+          "variant": "prestige"
+        },
+        {
+          "num": "867",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "914",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 66,
+      "name": "Luke's Jedi Lightsaber",
+      "subtitle": "Constructed by Hand",
+      "type": "Upgrade",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "066",
+          "variant": "normal"
+        },
+        {
+          "num": "330",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "568",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 67,
+      "name": "Get Lost",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "067",
+          "variant": "normal"
+        },
+        {
+          "num": "331",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "569",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 68,
+      "name": "Domesticated Loth-Cat",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "068",
+          "variant": "normal"
+        },
+        {
+          "num": "332",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "570",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 69,
+      "name": "Noti Nomad",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "069",
+          "variant": "normal"
+        },
+        {
+          "num": "333",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "571",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 70,
+      "name": "At Attin Safety Droid",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "070",
+          "variant": "normal"
+        },
+        {
+          "num": "334",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "572",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 71,
+      "name": "Battered Haulcraft",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "071",
+          "variant": "normal"
+        },
+        {
+          "num": "335",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "573",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 72,
+      "name": "Doctor Pershing",
+      "subtitle": "Dedicated to Research",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "072",
+          "variant": "normal"
+        },
+        {
+          "num": "336",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "574",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 73,
+      "name": "Palace Chef Droid",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "073",
+          "variant": "normal"
+        },
+        {
+          "num": "337",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "575",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 74,
+      "name": "Mos Eisley Modifier",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "074",
+          "variant": "normal"
+        },
+        {
+          "num": "338",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "576",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 75,
+      "name": "Pit Droid Team",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "075",
+          "variant": "normal"
+        },
+        {
+          "num": "339",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "577",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 76,
+      "name": "Remnant Official",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "076",
+          "variant": "normal"
+        },
+        {
+          "num": "340",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "578",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 77,
+      "name": "Ryder Azadi",
+      "subtitle": "Restored Governor",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "077",
+          "variant": "normal"
+        },
+        {
+          "num": "341",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "579",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 78,
+      "name": "B-Wing Rearguard",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "078",
+          "variant": "normal"
+        },
+        {
+          "num": "342",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "580",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 79,
+      "name": "Koska Reeves",
+      "subtitle": "Warrior of Mandalore",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "079",
+          "variant": "normal"
+        },
+        {
+          "num": "343",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "581",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 80,
+      "name": "Covert Believers",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "080",
+          "variant": "normal"
+        },
+        {
+          "num": "344",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "582",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 81,
+      "name": "Nebulon-C Frigate",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "081",
+          "variant": "normal"
+        },
+        {
+          "num": "345",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "583",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 82,
+      "name": "Trexler Armored Marauder",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "082",
+          "variant": "normal"
+        },
+        {
+          "num": "346",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "584",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 83,
+      "name": "Summa-verminoth",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "083",
+          "variant": "normal"
+        },
+        {
+          "num": "347",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "585",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "827",
+          "variant": "prestige"
+        },
+        {
+          "num": "874",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "921",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 84,
+      "name": "Arcana Star Map",
+      "subtitle": "Path to Peridea",
+      "type": "Upgrade",
+      "rarity": "Legendary",
+      "aspects": [
+        "Vigilance"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "084",
+          "variant": "normal"
+        },
+        {
+          "num": "348",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "586",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "798",
+          "variant": "prestige"
+        },
+        {
+          "num": "845",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "892",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 85,
+      "name": "Grav Charge",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "085",
+          "variant": "normal"
+        },
+        {
+          "num": "349",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "587",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 86,
+      "name": "Durasteel Plating",
+      "type": "Upgrade",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "086",
+          "variant": "normal"
+        },
+        {
+          "num": "350",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "588",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 87,
+      "name": "Cybernetic Enhancements",
+      "type": "Upgrade",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "087",
+          "variant": "normal"
+        },
+        {
+          "num": "351",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "589",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 88,
+      "name": "The Conflict Within",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "088",
+          "variant": "normal"
+        },
+        {
+          "num": "352",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "590",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 89,
+      "name": "Perserverance",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "089",
+          "variant": "normal"
+        },
+        {
+          "num": "353",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "591",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 90,
+      "name": "Reforge",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "090",
+          "variant": "normal"
+        },
+        {
+          "num": "354",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "592",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 91,
+      "name": "Buy Time",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "091",
+          "variant": "normal"
+        },
+        {
+          "num": "355",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "593",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 92,
+      "name": "Foundling Rescue",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "092",
+          "variant": "normal"
+        },
+        {
+          "num": "356",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "594",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 93,
+      "name": "Captain Pellaeon",
+      "subtitle": "Plotting from the Shadows",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "093",
+          "variant": "normal"
+        },
+        {
+          "num": "357",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "595",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 94,
+      "name": "Moff Jerjerrod",
+      "subtitle": "We Shall Redouble Our Efforts",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "094",
+          "variant": "normal"
+        },
+        {
+          "num": "358",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "596",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 95,
+      "name": "Remnant Interceptor",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "095",
+          "variant": "normal"
+        },
+        {
+          "num": "359",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "597",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 96,
+      "name": "Forest Patroller",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "096",
+          "variant": "normal"
+        },
+        {
+          "num": "360",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "598",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 97,
+      "name": "Moff Gideon",
+      "subtitle": "Remnant Commander",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "097",
+          "variant": "normal"
+        },
+        {
+          "num": "361",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "599",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "799",
+          "variant": "prestige"
+        },
+        {
+          "num": "846",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "893",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 98,
+      "name": "AT-ST Raider",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "098",
+          "variant": "normal"
+        },
+        {
+          "num": "362",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "600",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 99,
+      "name": "Gozanti Assault Carrier",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "099",
+          "variant": "normal"
+        },
+        {
+          "num": "363",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "601",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 100,
+      "name": "Gallius Rax",
+      "subtitle": "Counselor to the Empire",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "100",
+          "variant": "normal"
+        },
+        {
+          "num": "364",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "602",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 101,
+      "name": "The Great Mothers",
+      "subtitle": "With Strange Magicks",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "101",
+          "variant": "normal"
+        },
+        {
+          "num": "365",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "603",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 102,
+      "name": "Ravager",
+      "subtitle": "Final Imperial Command",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "102",
+          "variant": "normal"
+        },
+        {
+          "num": "366",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "604",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 103,
+      "name": "Long Live the Empire",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "103",
+          "variant": "normal"
+        },
+        {
+          "num": "367",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "605",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 104,
+      "name": "Dathomiri Magicks",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "104",
+          "variant": "normal"
+        },
+        {
+          "num": "368",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "606",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 105,
+      "name": "Bo-Katan Kryze",
+      "subtitle": "For All of Mandalore",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "105",
+          "variant": "normal"
+        },
+        {
+          "num": "369",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "607",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 106,
+      "name": "Pathfinder Sergeant",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "106",
+          "variant": "normal"
+        },
+        {
+          "num": "370",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "608",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 107,
+      "name": "Clan Wren Loyalist",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "107",
+          "variant": "normal"
+        },
+        {
+          "num": "371",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "609",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 108,
+      "name": "Crix Madine",
+      "subtitle": "Strike Team Strategist",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "108",
+          "variant": "normal"
+        },
+        {
+          "num": "372",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "610",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "821",
+          "variant": "prestige"
+        },
+        {
+          "num": "868",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "915",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 109,
+      "name": "T-6 Shuttle 1974",
+      "subtitle": "With a Mentor's Dedication",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "109",
+          "variant": "normal"
+        },
+        {
+          "num": "373",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "611",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "800",
+          "variant": "prestige"
+        },
+        {
+          "num": "847",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "894",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 110,
+      "name": "Admiral Ackbar",
+      "subtitle": "Assume Attack Coordinates",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "110",
+          "variant": "normal"
+        },
+        {
+          "num": "374",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "612",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "822",
+          "variant": "prestige"
+        },
+        {
+          "num": "869",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "916",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 111,
+      "name": "Children of the Watch",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "111",
+          "variant": "normal"
+        },
+        {
+          "num": "375",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "613",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 112,
+      "name": "Luke Skywalker",
+      "subtitle": "Answering the Call",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "112",
+          "variant": "normal"
+        },
+        {
+          "num": "376",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "614",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "801",
+          "variant": "prestige"
+        },
+        {
+          "num": "848",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "895",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 113,
+      "name": "Mandalorian Flagship",
+      "subtitle": "Captured from the Empire",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "113",
+          "variant": "normal"
+        },
+        {
+          "num": "377",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "615",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 114,
+      "name": "Sabine's Lightsaber",
+      "subtitle": "Not Alone",
+      "type": "Upgrade",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "114",
+          "variant": "normal"
+        },
+        {
+          "num": "378",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "616",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 115,
+      "name": "The Student Guides the Master",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "115",
+          "variant": "normal"
+        },
+        {
+          "num": "379",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "617",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 116,
+      "name": "Ant Droid",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "116",
+          "variant": "normal"
+        },
+        {
+          "num": "380",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "618",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 117,
+      "name": "Outland Protector",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "117",
+          "variant": "normal"
+        },
+        {
+          "num": "381",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "619",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 118,
+      "name": "8D8",
+      "subtitle": "Daimyo's Majordomo",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "118",
+          "variant": "normal"
+        },
+        {
+          "num": "382",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "620",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 119,
+      "name": "Greef Karga",
+      "subtitle": "Introductions are in Order",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "119",
+          "variant": "normal"
+        },
+        {
+          "num": "383",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "621",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "802",
+          "variant": "prestige"
+        },
+        {
+          "num": "849",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "896",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 120,
+      "name": "Warrior of Clan Kryze",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "120",
+          "variant": "normal"
+        },
+        {
+          "num": "384",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "622",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 121,
+      "name": "Blurrg",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "121",
+          "variant": "normal"
+        },
+        {
+          "num": "385",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "623",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 122,
+      "name": "Consortium StarViper",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "122",
+          "variant": "normal"
+        },
+        {
+          "num": "386",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "624",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 123,
+      "name": "Lang",
+      "subtitle": "Arrogant Mercenary",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "123",
+          "variant": "normal"
+        },
+        {
+          "num": "387",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "625",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 124,
+      "name": "Protectorate Fighter",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "124",
+          "variant": "normal"
+        },
+        {
+          "num": "388",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "626",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 125,
+      "name": "Stolen Eta Shuttle",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "125",
+          "variant": "normal"
+        },
+        {
+          "num": "389",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "627",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 126,
+      "name": "Survivors' Langskib",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "126",
+          "variant": "normal"
+        },
+        {
+          "num": "390",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "628",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 127,
+      "name": "The Twins",
+      "subtitle": "We Don't Want War",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "127",
+          "variant": "normal"
+        },
+        {
+          "num": "391",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "629",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 128,
+      "name": "Bothan-5",
+      "subtitle": "New Republic Prison Ship",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "128",
+          "variant": "normal"
+        },
+        {
+          "num": "392",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "630",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 129,
+      "name": "Defenders of the Forest",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "129",
+          "variant": "normal"
+        },
+        {
+          "num": "393",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "631",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 130,
+      "name": "Fang Fighter Squadron",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "130",
+          "variant": "normal"
+        },
+        {
+          "num": "394",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "632",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 131,
+      "name": "Dinosaur Turtle",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "131",
+          "variant": "normal"
+        },
+        {
+          "num": "395",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "633",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 132,
+      "name": "Queen Soruna",
+      "subtitle": "Willing to Fight",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "132",
+          "variant": "normal"
+        },
+        {
+          "num": "396",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "634",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 133,
+      "name": "Trask Walker",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "133",
+          "variant": "normal"
+        },
+        {
+          "num": "397",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "635",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 134,
+      "name": "Warrior's Legacy",
+      "type": "Upgrade",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "134",
+          "variant": "normal"
+        },
+        {
+          "num": "398",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "636",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 135,
+      "name": "The Darksaber",
+      "subtitle": "Icon of Leadership",
+      "type": "Upgrade",
+      "rarity": "Legendary",
+      "aspects": [
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "135",
+          "variant": "normal"
+        },
+        {
+          "num": "399",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "637",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "803",
+          "variant": "prestige"
+        },
+        {
+          "num": "850",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "897",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 136,
+      "name": "Display of Strength",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "136",
+          "variant": "normal"
+        },
+        {
+          "num": "400",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "638",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 137,
+      "name": "Wipe Them Out",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "137",
+          "variant": "normal"
+        },
+        {
+          "num": "401",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "639",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 138,
+      "name": "Turning the Tide",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "138",
+          "variant": "normal"
+        },
+        {
+          "num": "402",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "640",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 139,
+      "name": "Hold Them Off",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "139",
+          "variant": "normal"
+        },
+        {
+          "num": "403",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "641",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 140,
+      "name": "Stronger Together",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "140",
+          "variant": "normal"
+        },
+        {
+          "num": "404",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "642",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 141,
+      "name": "TIE Striker",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "141",
+          "variant": "normal"
+        },
+        {
+          "num": "405",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "643",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 142,
+      "name": "Mortar Trooper",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "142",
+          "variant": "normal"
+        },
+        {
+          "num": "406",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "644",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 143,
+      "name": "Tempest Lieutenant",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "143",
+          "variant": "normal"
+        },
+        {
+          "num": "407",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "645",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 144,
+      "name": "Vane's Snub Fighter",
+      "subtitle": "Brash and Proud",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "144",
+          "variant": "normal"
+        },
+        {
+          "num": "408",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "646",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 145,
+      "name": "Praetorian Elite",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "145",
+          "variant": "normal"
+        },
+        {
+          "num": "409",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "647",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 146,
+      "name": "Justifier",
+      "subtitle": "Relentless",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "146",
+          "variant": "normal"
+        },
+        {
+          "num": "410",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "648",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 147,
+      "name": "The Cyborg Mech",
+      "subtitle": "Mysterious Threat",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "147",
+          "variant": "normal"
+        },
+        {
+          "num": "411",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "649",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 148,
+      "name": "Ninth Sister",
+      "subtitle": "Hulking Inquisitor",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "148",
+          "variant": "normal"
+        },
+        {
+          "num": "412",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "650",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 149,
+      "name": "Eviscerator",
+      "subtitle": "Burn Them Away",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "149",
+          "variant": "normal"
+        },
+        {
+          "num": "413",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "651",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 150,
+      "name": "Deadly Vulnerability",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "150",
+          "variant": "normal"
+        },
+        {
+          "num": "414",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "652",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 151,
+      "name": "Operation Cinder",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "151",
+          "variant": "normal"
+        },
+        {
+          "num": "415",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "653",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 152,
+      "name": "Inspired Recruit",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "152",
+          "variant": "normal"
+        },
+        {
+          "num": "416",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "654",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 153,
+      "name": "Green Leader",
+      "subtitle": "Crynyd's Sacrifice",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "153",
+          "variant": "normal"
+        },
+        {
+          "num": "417",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "655",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 154,
+      "name": "Honorable Nite Owl",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "154",
+          "variant": "normal"
+        },
+        {
+          "num": "418",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "656",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 155,
+      "name": "Grogu",
+      "subtitle": "Yes. Yes. Yes.",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "155",
+          "variant": "normal"
+        },
+        {
+          "num": "419",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "657",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "804",
+          "variant": "prestige"
+        },
+        {
+          "num": "851",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "898",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 156,
+      "name": "R5-D4",
+      "subtitle": "Built for Adventure",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "156",
+          "variant": "normal"
+        },
+        {
+          "num": "420",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "658",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 157,
+      "name": "Danger Squadron Wingmen",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "157",
+          "variant": "normal"
+        },
+        {
+          "num": "421",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "659",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 158,
+      "name": "Han Solo",
+      "subtitle": "It'll Work",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "158",
+          "variant": "normal"
+        },
+        {
+          "num": "422",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "660",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "823",
+          "variant": "prestige"
+        },
+        {
+          "num": "870",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "917",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 159,
+      "name": "Alphabet Squadron U-Wing",
+      "subtitle": "Quiet Devotion",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "159",
+          "variant": "normal"
+        },
+        {
+          "num": "423",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "661",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 160,
+      "name": "Kachirho Militia",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "160",
+          "variant": "normal"
+        },
+        {
+          "num": "424",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "662",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 161,
+      "name": "Zeb Orrelios",
+      "subtitle": "Fists Work Every Time",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "161",
+          "variant": "normal"
+        },
+        {
+          "num": "425",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "663",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "824",
+          "variant": "prestige"
+        },
+        {
+          "num": "871",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "918",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 162,
+      "name": "Rash Action",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "162",
+          "variant": "normal"
+        },
+        {
+          "num": "426",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "664",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 163,
+      "name": "Reckless Sacrifice",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "163",
+          "variant": "normal"
+        },
+        {
+          "num": "427",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "665",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 164,
+      "name": "Alamite Hunter",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "164",
+          "variant": "normal"
+        },
+        {
+          "num": "428",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "666",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 165,
+      "name": "Clan Vizsla Soldier",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "165",
+          "variant": "normal"
+        },
+        {
+          "num": "429",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "667",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 166,
+      "name": "Ewok Warrior",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "166",
+          "variant": "normal"
+        },
+        {
+          "num": "430",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "668",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 167,
+      "name": "Flarestar Attack Shuttle",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "167",
+          "variant": "normal"
+        },
+        {
+          "num": "431",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "669",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 168,
+      "name": "Migs Mayfeld",
+      "subtitle": "How About a Toast?",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "168",
+          "variant": "normal"
+        },
+        {
+          "num": "432",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "670",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 169,
+      "name": "Axe Woves",
+      "subtitle": "Undaunted",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "169",
+          "variant": "normal"
+        },
+        {
+          "num": "433",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "671",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 170,
+      "name": "Desert Sharpshooter",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "170",
+          "variant": "normal"
+        },
+        {
+          "num": "434",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "672",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 171,
+      "name": "Pegasus Tri-Wing",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "171",
+          "variant": "normal"
+        },
+        {
+          "num": "435",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "673",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 172,
+      "name": "Razor Crest",
+      "subtitle": "Outfitted Armament",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "172",
+          "variant": "normal"
+        },
+        {
+          "num": "436",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "674",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "805",
+          "variant": "prestige"
+        },
+        {
+          "num": "852",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "899",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 173,
+      "name": "Shydopp Pirate Skiff",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "173",
+          "variant": "normal"
+        },
+        {
+          "num": "437",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "675",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 174,
+      "name": "StarFortress Heavy Bomber",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "174",
+          "variant": "normal"
+        },
+        {
+          "num": "438",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "676",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 175,
+      "name": "Wookiee Chieftain",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "175",
+          "variant": "normal"
+        },
+        {
+          "num": "439",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "677",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 176,
+      "name": "Imposing Scout Walker",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "176",
+          "variant": "normal"
+        },
+        {
+          "num": "440",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "678",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 177,
+      "name": "Onyx Cinder",
+      "subtitle": "Adventure Awaits",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "177",
+          "variant": "normal"
+        },
+        {
+          "num": "441",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "679",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 178,
+      "name": "Knobby White Ice Spider",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "178",
+          "variant": "normal"
+        },
+        {
+          "num": "442",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "680",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 179,
+      "name": "Boba Fett's Rancor",
+      "subtitle": "Emotionally Complex Creature",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Aggression"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "179",
+          "variant": "normal"
+        },
+        {
+          "num": "443",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "681",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "806",
+          "variant": "prestige"
+        },
+        {
+          "num": "853",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "900",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 180,
+      "name": "Bokken Saber",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "180",
+          "variant": "normal"
+        },
+        {
+          "num": "444",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "682",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 181,
+      "name": "Mark My Words",
+      "type": "Upgrade",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "181",
+          "variant": "normal"
+        },
+        {
+          "num": "445",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "683",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 182,
+      "name": "Unfettered Ambition",
+      "type": "Upgrade",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "182",
+          "variant": "normal"
+        },
+        {
+          "num": "446",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "684",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 183,
+      "name": "Whistling Birds",
+      "type": "Upgrade",
+      "rarity": "Legendary",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "183",
+          "variant": "normal"
+        },
+        {
+          "num": "447",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "685",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "807",
+          "variant": "prestige"
+        },
+        {
+          "num": "854",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "901",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 184,
+      "name": "Follow Me",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "184",
+          "variant": "normal"
+        },
+        {
+          "num": "448",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "686",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 185,
+      "name": "Intimidation",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "185",
+          "variant": "normal"
+        },
+        {
+          "num": "449",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "687",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 186,
+      "name": "Treacherous Minefield",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "186",
+          "variant": "normal"
+        },
+        {
+          "num": "450",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "688",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 187,
+      "name": "Reckoning",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "187",
+          "variant": "normal"
+        },
+        {
+          "num": "451",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "689",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 188,
+      "name": "Galvanized Leap",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "188",
+          "variant": "normal"
+        },
+        {
+          "num": "452",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "690",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 189,
+      "name": "Emperor's Messenger",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "189",
+          "variant": "normal"
+        },
+        {
+          "num": "453",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "691",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 190,
+      "name": "Peridea Bandit",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "190",
+          "variant": "normal"
+        },
+        {
+          "num": "454",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "692",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 191,
+      "name": "Shin Hati's Fiend Fighter",
+      "subtitle": "Compact and Agile",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "191",
+          "variant": "normal"
+        },
+        {
+          "num": "455",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "693",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 192,
+      "name": "Fennec Shand",
+      "subtitle": "The Galaxy is Dangerous",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "192",
+          "variant": "normal"
+        },
+        {
+          "num": "456",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "694",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "828",
+          "variant": "prestige"
+        },
+        {
+          "num": "875",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "922",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 193,
+      "name": "Emperor's Champion",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "193",
+          "variant": "normal"
+        },
+        {
+          "num": "457",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "695",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 194,
+      "name": "Snub Fighter Squadron",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "194",
+          "variant": "normal"
+        },
+        {
+          "num": "458",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "696",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 195,
+      "name": "Helgait",
+      "subtitle": "Dooku was a Visionary",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "195",
+          "variant": "normal"
+        },
+        {
+          "num": "459",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "697",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 196,
+      "name": "Gorian Shard's Corsair",
+      "subtitle": "Pirate Warship",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "196",
+          "variant": "normal"
+        },
+        {
+          "num": "460",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "698",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "808",
+          "variant": "prestige"
+        },
+        {
+          "num": "855",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "902",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 197,
+      "name": "Executor",
+      "subtitle": "Final Destruction of the Alliance",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "197",
+          "variant": "normal"
+        },
+        {
+          "num": "461",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "699",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 198,
+      "name": "Nowhere to Hide",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "198",
+          "variant": "normal"
+        },
+        {
+          "num": "462",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "700",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 199,
+      "name": "There Is No Conflict",
+      "type": "Upgrade",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "199",
+          "variant": "normal"
+        },
+        {
+          "num": "463",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "701",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 200,
+      "name": "Rehabilitation",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "200",
+          "variant": "normal"
+        },
+        {
+          "num": "464",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "702",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 201,
+      "name": "Open Circle Ace",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "201",
+          "variant": "normal"
+        },
+        {
+          "num": "465",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "703",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 202,
+      "name": "Carson Teva",
+      "subtitle": "There's Something Going On",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "202",
+          "variant": "normal"
+        },
+        {
+          "num": "466",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "704",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "809",
+          "variant": "prestige"
+        },
+        {
+          "num": "856",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "903",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 203,
+      "name": "Mando's N-1 Starfighter",
+      "subtitle": "Faster than a Fathier",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "203",
+          "variant": "normal"
+        },
+        {
+          "num": "467",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "705",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "810",
+          "variant": "prestige"
+        },
+        {
+          "num": "857",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "904",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 204,
+      "name": "Blade Three",
+      "subtitle": "Bane of the Devastator",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "204",
+          "variant": "normal"
+        },
+        {
+          "num": "468",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "706",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "825",
+          "variant": "prestige"
+        },
+        {
+          "num": "872",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "919",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 205,
+      "name": "Inspiring Veteran",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "205",
+          "variant": "normal"
+        },
+        {
+          "num": "469",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "707",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 206,
+      "name": "Kelleran Beq",
+      "subtitle": "Where are the Others?",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "206",
+          "variant": "normal"
+        },
+        {
+          "num": "470",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "708",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 207,
+      "name": "Heroic Purrgil",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "207",
+          "variant": "normal"
+        },
+        {
+          "num": "471",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "709",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 208,
+      "name": "Sabine Wren",
+      "subtitle": "I Learned the Hard Way",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "208",
+          "variant": "normal"
+        },
+        {
+          "num": "472",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "710",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "811",
+          "variant": "prestige"
+        },
+        {
+          "num": "858",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "905",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 209,
+      "name": "Ezra Bridger",
+      "subtitle": "The Force is All I Need",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "209",
+          "variant": "normal"
+        },
+        {
+          "num": "473",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "711",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "812",
+          "variant": "prestige"
+        },
+        {
+          "num": "859",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "906",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 210,
+      "name": "DDC Defender",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "210",
+          "variant": "normal"
+        },
+        {
+          "num": "474",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "712",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 211,
+      "name": "Fateful Goodbye",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "211",
+          "variant": "normal"
+        },
+        {
+          "num": "475",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "713",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 212,
+      "name": "Peli Motto",
+      "subtitle": "You Bring the Cash?",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "212",
+          "variant": "normal"
+        },
+        {
+          "num": "476",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "714",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 213,
+      "name": "Womp Rat",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "213",
+          "variant": "normal"
+        },
+        {
+          "num": "477",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "715",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 214,
+      "name": "Amnesty Officer",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "214",
+          "variant": "normal"
+        },
+        {
+          "num": "478",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "716",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 215,
+      "name": "Flanking TIE Interceptor",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "215",
+          "variant": "normal"
+        },
+        {
+          "num": "479",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "717",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 216,
+      "name": "Mandalorian Scout",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "216",
+          "variant": "normal"
+        },
+        {
+          "num": "480",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "718",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 217,
+      "name": "Mayor's Majordomo",
+      "subtitle": "No Problem Groveling",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "217",
+          "variant": "normal"
+        },
+        {
+          "num": "481",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "719",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 218,
+      "name": "Ferry Droid",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "218",
+          "variant": "normal"
+        },
+        {
+          "num": "482",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "720",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 219,
+      "name": "Jod Na Nawood",
+      "subtitle": "Keeping Secrets",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "219",
+          "variant": "normal"
+        },
+        {
+          "num": "483",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "721",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 220,
+      "name": "Remnant Lookouts",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "220",
+          "variant": "normal"
+        },
+        {
+          "num": "484",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "722",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 221,
+      "name": "Helix Starfighter",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "221",
+          "variant": "normal"
+        },
+        {
+          "num": "485",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "723",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 222,
+      "name": "Unsanctioned Patrol",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "222",
+          "variant": "normal"
+        },
+        {
+          "num": "486",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "724",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 223,
+      "name": "Halo",
+      "subtitle": "Not According to Plan",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "223",
+          "variant": "normal"
+        },
+        {
+          "num": "487",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "725",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 224,
+      "name": "Elzar Mann",
+      "subtitle": "Haunted by a Vision",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "224",
+          "variant": "normal"
+        },
+        {
+          "num": "488",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "726",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "829",
+          "variant": "prestige"
+        },
+        {
+          "num": "876",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "923",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 225,
+      "name": "Tatooine Sand Beast",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "225",
+          "variant": "normal"
+        },
+        {
+          "num": "489",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "727",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 226,
+      "name": "Qi'ra",
+      "subtitle": "Master of Teräs Käsi",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "226",
+          "variant": "normal"
+        },
+        {
+          "num": "490",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "728",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 227,
+      "name": "Heightened Awareness",
+      "type": "Upgrade",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "227",
+          "variant": "normal"
+        },
+        {
+          "num": "491",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "729",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 228,
+      "name": "Preparation",
+      "type": "Upgrade",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "228",
+          "variant": "normal"
+        },
+        {
+          "num": "492",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "730",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 229,
+      "name": "Camtono",
+      "type": "Upgrade",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "229",
+          "variant": "normal"
+        },
+        {
+          "num": "493",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "731",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 230,
+      "name": "Improvised Identity",
+      "type": "Upgrade",
+      "rarity": "Legendary",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "230",
+          "variant": "normal"
+        },
+        {
+          "num": "494",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "732",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 231,
+      "name": "Diplomatic Pageantry",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "231",
+          "variant": "normal"
+        },
+        {
+          "num": "495",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "733",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 232,
+      "name": "Full of Surprises",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "232",
+          "variant": "normal"
+        },
+        {
+          "num": "496",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "734",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 233,
+      "name": "Keep Them Talking",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "233",
+          "variant": "normal"
+        },
+        {
+          "num": "497",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "735",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 234,
+      "name": "Masterstroke",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "234",
+          "variant": "normal"
+        },
+        {
+          "num": "498",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "736",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 235,
+      "name": "Sense Through the Force",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "235",
+          "variant": "normal"
+        },
+        {
+          "num": "499",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "737",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "813",
+          "variant": "prestige"
+        },
+        {
+          "num": "860",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "907",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 236,
+      "name": "Far Far Away",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "236",
+          "variant": "normal"
+        },
+        {
+          "num": "500",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "738",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "814",
+          "variant": "prestige"
+        },
+        {
+          "num": "861",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "908",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 237,
+      "name": "Mouse Droid",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "237",
+          "variant": "normal"
+        },
+        {
+          "num": "501",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "739",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 238,
+      "name": "Attendant Navigator",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "238",
+          "variant": "normal"
+        },
+        {
+          "num": "502",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "740",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 239,
+      "name": "Imperial Loyalist",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "239",
+          "variant": "normal"
+        },
+        {
+          "num": "503",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "741",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 240,
+      "name": "Mandalorian Super Commandos",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "240",
+          "variant": "normal"
+        },
+        {
+          "num": "504",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "742",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 241,
+      "name": "Marrok's Fiend Fighter",
+      "subtitle": "Formidable Pursuer",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "241",
+          "variant": "normal"
+        },
+        {
+          "num": "505",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "743",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 242,
+      "name": "Death Trooper Squad",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "242",
+          "variant": "normal"
+        },
+        {
+          "num": "506",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "744",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 243,
+      "name": "Darth Vader",
+      "subtitle": "Meet Your Destiny",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "243",
+          "variant": "normal"
+        },
+        {
+          "num": "507",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "745",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "830",
+          "variant": "prestige"
+        },
+        {
+          "num": "877",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "924",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 244,
+      "name": "Remnant Trooper Corps",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "244",
+          "variant": "normal"
+        },
+        {
+          "num": "508",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "746",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 245,
+      "name": "Eye of Sion",
+      "subtitle": "Delivered from Exile",
+      "type": "Unit",
+      "rarity": "Legendary",
+      "aspects": [
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "245",
+          "variant": "normal"
+        },
+        {
+          "num": "509",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "747",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "815",
+          "variant": "prestige"
+        },
+        {
+          "num": "862",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "909",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 246,
+      "name": "Exploit Advantage",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "246",
+          "variant": "normal"
+        },
+        {
+          "num": "510",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "748",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 247,
+      "name": "One Must Destroy to Create",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "247",
+          "variant": "normal"
+        },
+        {
+          "num": "511",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "749",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "816",
+          "variant": "prestige"
+        },
+        {
+          "num": "863",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "910",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 248,
+      "name": "Neel",
+      "subtitle": "The Cutest Boy",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "248",
+          "variant": "normal"
+        },
+        {
+          "num": "512",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "750",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 249,
+      "name": "Covert Veteran",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "249",
+          "variant": "normal"
+        },
+        {
+          "num": "513",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "751",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 250,
+      "name": "Imperial Defector",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "250",
+          "variant": "normal"
+        },
+        {
+          "num": "514",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "752",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 251,
+      "name": "Zealous Soldier",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "251",
+          "variant": "normal"
+        },
+        {
+          "num": "515",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "753",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 252,
+      "name": "N5 Sentry Droid",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "252",
+          "variant": "normal"
+        },
+        {
+          "num": "516",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "754",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 253,
+      "name": "Yellow Aces Bomber",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "253",
+          "variant": "normal"
+        },
+        {
+          "num": "517",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "755",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 254,
+      "name": "Gallofree Transport",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "254",
+          "variant": "normal"
+        },
+        {
+          "num": "518",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "756",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 255,
+      "name": "Anakin Skywalker",
+      "subtitle": "You Were Right About Me",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "255",
+          "variant": "normal"
+        },
+        {
+          "num": "519",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "757",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "831",
+          "variant": "prestige"
+        },
+        {
+          "num": "878",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "925",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 256,
+      "name": "Rebel Infiltrators",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "256",
+          "variant": "normal"
+        },
+        {
+          "num": "520",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "758",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 257,
+      "name": "Choose Your Path",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "257",
+          "variant": "normal"
+        },
+        {
+          "num": "521",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "759",
+          "variant": "hyperspace-foil"
+        },
+        {
+          "num": "817",
+          "variant": "prestige"
+        },
+        {
+          "num": "864",
+          "variant": "prestige-foil"
+        },
+        {
+          "num": "911",
+          "variant": "prestige-serialized"
+        }
+      ]
+    },
+    {
+      "base": 258,
+      "name": "Grassroots Resistance",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "258",
+          "variant": "normal"
+        },
+        {
+          "num": "522",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "760",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 259,
+      "name": "LEP Ratcatcher",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [],
+      "printings": [
+        {
+          "num": "259",
+          "variant": "normal"
+        },
+        {
+          "num": "523",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "761",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 260,
+      "name": "Mos Espa Watermonger",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [],
+      "printings": [
+        {
+          "num": "260",
+          "variant": "normal"
+        },
+        {
+          "num": "524",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "762",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 261,
+      "name": "Noti Mobile Pod",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [],
+      "printings": [
+        {
+          "num": "261",
+          "variant": "normal"
+        },
+        {
+          "num": "525",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "763",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 262,
+      "name": "Faith in the Empire",
+      "type": "Upgrade",
+      "rarity": "Common",
+      "aspects": [],
+      "printings": [
+        {
+          "num": "262",
+          "variant": "normal"
+        },
+        {
+          "num": "526",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "764",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 263,
+      "name": "The Way of the Mand'alor",
+      "type": "Upgrade",
+      "rarity": "Common",
+      "aspects": [],
+      "printings": [
+        {
+          "num": "263",
+          "variant": "normal"
+        },
+        {
+          "num": "527",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "765",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    },
+    {
+      "base": 264,
+      "name": "A New Order",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [],
+      "printings": [
+        {
+          "num": "264",
+          "variant": "normal"
+        },
+        {
+          "num": "528",
+          "variant": "hyperspace"
+        },
+        {
+          "num": "766",
+          "variant": "hyperspace-foil"
+        }
+      ]
+    }
+  ],
+  "label": "Ashes of the Empire (ASH)"
+}

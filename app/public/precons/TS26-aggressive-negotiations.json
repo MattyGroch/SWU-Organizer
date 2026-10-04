@@ -1,0 +1,420 @@
+{
+  "leader": {
+    "setKey": "TS26",
+    "baseNumber": 2,
+    "count": 1
+  },
+  "secondLeader": {
+    "setKey": "TS26",
+    "baseNumber": 4,
+    "count": 1
+  },
+  "base": {
+    "setKey": "TS26",
+    "baseNumber": 11,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "TWI",
+      "baseNumber": 169,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 176,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 90,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 19,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 251,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 46,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 61,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 144,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 91,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 104,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 54,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 92,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 144,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 44,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 15,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 17,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 179,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 105,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 55,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 114,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 20,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 62,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 42,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 153,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 142,
+      "count": 1
+    },
+    {
+      "setKey": "SHD",
+      "baseNumber": 115,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 106,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 60,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 43,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 240,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 71,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 149,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 14,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 148,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 43,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 170,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 109,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 162,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 59,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 50,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 111,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 23,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 47,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 57,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 68,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 95,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 254,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 146,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 95,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 44,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 55,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 56,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 173,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 41,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 66,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 107,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 46,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 72,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 63,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 129,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 141,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 25,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 18,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 56,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 97,
+      "count": 1
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 160,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 64,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 160,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 64,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 67,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 53,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 84,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 40,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 70,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 149,
+      "count": 1
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 48,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 68,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 254,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 24,
+      "count": 1
+    },
+    {
+      "setKey": "TS26",
+      "baseNumber": 45,
+      "count": 1
+    }
+  ],
+  "sideboard": []
+}

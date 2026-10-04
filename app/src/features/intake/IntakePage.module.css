@@ -1,0 +1,288 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+}
+
+.lead,
+.empty,
+.note {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+}
+
+.empty {
+  padding: var(--space-5);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.batch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.batchHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  align-items: baseline;
+}
+
+.batchTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.badge {
+  padding: 2px var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+}
+
+.meta {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.table th {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-subtle);
+  text-align: left;
+}
+
+.table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+/* A card with copies moved off Normal stands out, so the review shows what changed. */
+.table tr[data-mixed='true'] td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-focus);
+}
+
+.alloc {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+/* Count above, printing code below: [3 / N] [  / H]. */
+.allocButton {
+  display: grid;
+  grid-template-rows: 1.1em auto;
+  justify-items: center;
+  min-width: 36px;
+  padding: 2px var(--space-2) 3px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  line-height: 1.1;
+  cursor: pointer;
+  user-select: none;
+}
+
+.allocButton:hover:not(:disabled) {
+  border-color: var(--color-border-interactive);
+  color: var(--color-text);
+}
+
+.allocButton:disabled {
+  cursor: default;
+}
+
+/* N with nothing to take back still shows its count at full strength. */
+.allocButton[data-source='true']:disabled {
+  opacity: 1;
+}
+
+.allocButton[data-source='false']:disabled {
+  opacity: 0.4;
+}
+
+.allocButton:not([data-count='0']) {
+  border-color: var(--color-focus);
+  color: var(--color-text);
+}
+
+.allocButton[data-source='true']:not([data-count='0']) {
+  border-color: var(--color-border-interactive);
+}
+
+.allocCount {
+  font-size: var(--font-size-md);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.allocLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.cardName {
+  font-weight: 600;
+}
+
+.subtitle,
+.where {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 0.85em;
+}
+
+.center {
+  text-align: center;
+}
+
+.stepper {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
+}
+
+.qty {
+  min-width: 2ch;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.step,
+.remove {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.step:disabled,
+.action:disabled,
+.primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.remove:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger-fg);
+}
+
+.rowActions {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.rowActions > * + * {
+  margin-left: var(--space-2);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.confirm {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  font-size: var(--font-size-sm);
+}
+
+.primary,
+.action,
+.danger {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.primary {
+  border: none;
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  font-weight: 700;
+}
+
+.action {
+  border: 1px solid var(--color-border-interactive);
+  background: var(--color-surface-sunken);
+}
+
+.action:hover:not(:disabled) {
+  background: var(--color-surface-raised);
+}
+
+.danger {
+  border: 1px solid var(--color-danger);
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+}
+
+.resetCol {
+  width: 1%;
+}
+
+.reset {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-size: var(--font-size-md);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.reset:hover:not(:disabled) {
+  background: var(--color-surface-raised);
+}
+
+/* Nothing to reset: keeps its column, but out of the way. */
+.reset:disabled {
+  opacity: 0.2;
+  cursor: default;
+}

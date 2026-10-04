@@ -1,0 +1,192 @@
+import { useEffect, useMemo, useRef, useState } from 'react';
+
+import { formatUsd } from '~/ui/format';
+
+import { aspectSwatchBackground, rarityStyle } from './aspect';
+import { STATUS_GLYPH, STATUS_LABEL, type CardRow } from './cardRows';
+import styles from './CardTable.module.css';
+
+const ROW_HEIGHT = 44;
+const OVERSCAN = 8;
+
+type Props = {
+  rows: CardRow[];
+  selectedBase: number | null;
+  onSelect: (base: number) => void;
+};
+
+/**
+ * Windowed card table.
+ *
+ * Only the rows near the viewport are in the DOM. The legacy tables rendered every row of
+ * a 250-card set — and did it again on every quantity change, because the row list was
+ * recomputed from `inventory` on each keystroke.
+ *
+ * Virtualization is hand-rolled rather than pulled from a library: rows are a fixed
+ * height, so the whole implementation is a slice and two spacer rows.
+ */
+export function CardTable({ rows, selectedBase, onSelect }: Props) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(600);
+
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (!element) return;
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) setViewportHeight(entry.contentRect.height);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  const { start, end } = useMemo(() => {
+    const first = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - OVERSCAN);
+    const visible = Math.ceil(viewportHeight / ROW_HEIGHT) + OVERSCAN * 2;
+    return { start: first, end: Math.min(rows.length, first + visible) };
+  }, [scrollTop, viewportHeight, rows.length]);
+
+  const visibleRows = rows.slice(start, end);
+  const padTop = start * ROW_HEIGHT;
+  const padBottom = Math.max(0, (rows.length - end) * ROW_HEIGHT);
+
+  if (rows.length === 0) {
+    return <p className={styles.empty}>No cards match these filters.</p>;
+  }
+
+  return (
+    <div
+      ref={scrollRef}
+      className={styles.scroller}
+      onScroll={(event) => setScrollTop(event.currentTarget.scrollTop)}
+    >
+      <table className={styles.table}>
+        <caption className="visually-hidden">Cards in this set — {rows.length} rows</caption>
+        <thead>
+          <tr>
+            <th scope="col" className={styles.numCol}>
+              #
+            </th>
+            <th scope="col" className={styles.dotCol}>
+              <span className="visually-hidden">Aspect</span>
+            </th>
+            <th scope="col" className={styles.rarCol}>
+              <span className="visually-hidden">Rarity</span>
+            </th>
+            <th scope="col">Name</th>
+            <th scope="col" className={styles.typeCol}>
+              Type
+            </th>
+            <th scope="col" className={styles.statusCol}>
+              Status
+            </th>
+            <th
+              scope="col"
+              className={styles.numericCol}
+              title="Copies in the binder of the playset quota"
+            >
+              Owned
+            </th>
+            <th scope="col" className={styles.numericCol} title="Copies beyond the playset">
+              Spare
+            </th>
+            <th scope="col" className={styles.numericCol} title="Copies pulled into built decks">
+              Decks
+            </th>
+            <th scope="col" className={styles.numericCol} title="Copies still needed for a playset">
+              Need
+            </th>
+            <th scope="col" className={styles.numericCol}>
+              Value
+            </th>
+            <th scope="col" className={styles.numericCol} title="Cost of the copies still needed">
+              Cost
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {padTop > 0 && (
+            <tr aria-hidden="true" style={{ height: padTop }}>
+              <td colSpan={12} />
+            </tr>
+          )}
+
+          {visibleRows.map((row) => {
+            const rarity = rarityStyle(row.rarity);
+            return (
+              <tr
+                key={row.base}
+                className={styles.row}
+                aria-selected={row.base === selectedBase}
+                onClick={() => onSelect(row.base)}
+              >
+                <td className={styles.numCol}>
+                  <button
+                    type="button"
+                    className={styles.jump}
+                    onClick={() => onSelect(row.base)}
+                    aria-label={`Show ${row.name} in the binder`}
+                  >
+                    {row.base}
+                  </button>
+                </td>
+                <td className={styles.dotCol}>
+                  <span
+                    className={styles.swatch}
+                    style={{ background: aspectSwatchBackground(row.aspects) }}
+                    aria-hidden="true"
+                  />
+                </td>
+                <td className={styles.rarCol}>
+                  {rarity && (
+                    <span
+                      className={styles.rarity}
+                      data-rarity={row.rarity}
+                      style={{ color: `var(${rarity.colorVar})` }}
+                      title={row.rarity}
+                    >
+                      {rarity.letter}
+                      <span className="visually-hidden">{row.rarity}</span>
+                    </span>
+                  )}
+                </td>
+                <td className={styles.nameCell}>
+                  {row.name}
+                  {row.subtitle && <span className={styles.subtitle}>{row.subtitle}</span>}
+                </td>
+                <td className={styles.typeCol}>{row.type}</td>
+                <td className={styles.statusCol}>
+                  <span
+                    className={styles.status}
+                    data-status={row.status}
+                    title={STATUS_LABEL[row.status]}
+                  >
+                    <span aria-hidden="true">{STATUS_GLYPH[row.status]}</span>
+                    <span className="visually-hidden">{STATUS_LABEL[row.status]}</span>
+                  </span>
+                </td>
+
+                <td className={styles.numericCol}>
+                  {row.inBinder}/{row.quota}
+                </td>
+                <td className={styles.numericCol}>{row.spares || ''}</td>
+                <td className={styles.numericCol}>{row.inDecks || ''}</td>
+                <td className={styles.numericCol}>{row.needed || ''}</td>
+                <td className={styles.numericCol}>{row.value ? formatUsd(row.value) : ''}</td>
+                <td className={styles.numericCol}>
+                  {row.missingCost ? formatUsd(row.missingCost) : ''}
+                </td>
+              </tr>
+            );
+          })}
+
+          {padBottom > 0 && (
+            <tr aria-hidden="true" style={{ height: padBottom }}>
+              <td colSpan={12} />
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}

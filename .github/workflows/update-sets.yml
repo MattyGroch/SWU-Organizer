@@ -36,6 +36,16 @@ jobs:
       - name: Fetch latest sets (writes /public/sets/*.json + manifest.json)
         run: npm run update:sets:slim
 
+      # v2 catalog for the rebuilt app: variant-aware, base numbers resolved at build time.
+      # Runs alongside the legacy fetch until the Phase 6 cutover retires it.
+      - name: Build v2 catalog (writes /app/public/sets/*.json + manifest.json)
+        run: npm run catalog:build
+
+      # Fails the run if a base number ever drifts from the legacy pipeline, which would
+      # silently re-point saved inventories at the wrong cards.
+      - name: Validate v2 catalog
+        run: npm run catalog:validate
+
       # Prices are intentionally NOT fetched here — Docker refreshes *.prices.json
       # at container start and every 24h independent of git, so committing price
       # snapshots via this workflow was redundant and made it open PRs on price
@@ -58,11 +68,14 @@ jobs:
             Automated refresh of the set catalog, manifest, and `scripts/sets.config.json`.
             - Sets list: `GET https://api.swu-db.com/sets` → `npm run discover:sets`
             - Card JSON: `GET https://api.swu-db.com/cards/{setKey}` → `scripts/fetch-sets.mjs` (slim)
+            - v2 catalog: same source → `scripts/fetch-catalog.mjs`, gated by `scripts/validate-catalog.mjs`
             - Prices are not part of this workflow — Docker refreshes `*.prices.json` on start and every 24h without a new image build or PR.
           labels: data, automation
           add-paths: |
             public/sets/*.json
             public/sets/manifest.json
+            app/public/sets/*.json
+            app/public/sets/manifest.json
             scripts/sets.config.json
             scripts/sets.discover-overrides.json
           delete-branch: true

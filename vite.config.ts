@@ -1,6 +1,6 @@
 /// <reference types="vitest/config" />
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
@@ -14,5 +14,9 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    // `server/` is a separate sub-project with its own deps and its own vitest config
+    // (server/vitest.config.ts). Without this, the root runner collects its tests and
+    // fails to resolve better-sqlite3/supertest from the root node_modules.
+    include: ['src/**/*.test.{ts,tsx}', 'scripts/**/*.test.{mjs,ts}'],
   },
-})
+});

@@ -1,0 +1,155 @@
+{
+  "leader": {
+    "setKey": "SEC",
+    "baseNumber": 16,
+    "count": 1
+  },
+  "base": {
+    "setKey": "SEC",
+    "baseNumber": 22,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "JTL",
+      "baseNumber": 111,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 123,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 100,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 192,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 194,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 198,
+      "count": 2
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 93,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 94,
+      "count": 2
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 96,
+      "count": 3
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 98,
+      "count": 3
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 99,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 103,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 106,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 111,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 115,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 116,
+      "count": 2
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 120,
+      "count": 2
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 127,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 129,
+      "count": 2
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 197,
+      "count": 3
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 198,
+      "count": 2
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 199,
+      "count": 2
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 201,
+      "count": 3
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 208,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 226,
+      "count": 3
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 234,
+      "count": 2
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 248,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 256,
+      "count": 1
+    }
+  ],
+  "sideboard": []
+}

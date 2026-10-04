@@ -1,0 +1,130 @@
+{
+  "leader": {
+    "setKey": "LAW",
+    "baseNumber": 15,
+    "count": 1
+  },
+  "base": {
+    "setKey": "LAW",
+    "baseNumber": 23,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "LAW",
+      "baseNumber": 170,
+      "count": 1
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 158,
+      "count": 2
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 168,
+      "count": 3
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 252,
+      "count": 1
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 184,
+      "count": 3
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 134,
+      "count": 1
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 65,
+      "count": 2
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 216,
+      "count": 2
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 211,
+      "count": 3
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 189,
+      "count": 2
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 244,
+      "count": 3
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 231,
+      "count": 3
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 246,
+      "count": 2
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 210,
+      "count": 3
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 214,
+      "count": 1
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 249,
+      "count": 3
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 186,
+      "count": 2
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 215,
+      "count": 1
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 152,
+      "count": 2
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 163,
+      "count": 3
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 136,
+      "count": 2
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 212,
+      "count": 3
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 216,
+      "count": 2
+    }
+  ],
+  "sideboard": []
+}

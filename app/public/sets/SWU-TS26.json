@@ -1,0 +1,1413 @@
+{
+  "version": 2,
+  "setKey": "TS26",
+  "cards": [
+    {
+      "base": 1,
+      "name": "Count Dooku",
+      "subtitle": "Offering Aid",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "1",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 2,
+      "name": "Anakin Skywalker",
+      "subtitle": "Protect Her At All Costs",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "2",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 3,
+      "name": "Maul",
+      "subtitle": "Collective Ambition",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "3",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 4,
+      "name": "Padmé Amidala",
+      "subtitle": "Follow My Lead",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "4",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 5,
+      "name": "Savage Opress",
+      "subtitle": "You Must Have Your Revenge",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "5",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 6,
+      "name": "Rex",
+      "subtitle": "No Other Option",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "6",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 7,
+      "name": "Asajj Ventress",
+      "subtitle": "Ambitious Apprentice",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "7",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 8,
+      "name": "Ahsoka Tano",
+      "subtitle": "I Have an Idea",
+      "type": "Leader",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "8",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 9,
+      "name": "First Battle Memorial",
+      "subtitle": "Coruscant",
+      "type": "Base",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "9",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 10,
+      "name": "Dooku's Palace",
+      "subtitle": "Serenno",
+      "type": "Base",
+      "rarity": "Rare",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "10",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 11,
+      "name": "Executioner's Arena",
+      "subtitle": "Geonosis",
+      "type": "Base",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "11",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 12,
+      "name": "Sundari Palace",
+      "subtitle": "Mandalore",
+      "type": "Base",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "12",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 13,
+      "name": "Darth Sidious",
+      "subtitle": "Under a Cloak of Darkness",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "13",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 14,
+      "name": "Yoda",
+      "subtitle": "Begun, the Clone War Has",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "14",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 15,
+      "name": "C-3P0",
+      "subtitle": "Die, Jedi Dogs!",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "15",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 16,
+      "name": "King Katuunko",
+      "subtitle": "Great King of Toydaria",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "16",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 17,
+      "name": "Rush Clovis",
+      "subtitle": "Trapped by Authority",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "17",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 18,
+      "name": "Jendirian Valley",
+      "subtitle": "Refugee Freighter",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Command"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "18",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 19,
+      "name": "Coleman Trebor",
+      "subtitle": "Jedi Rescuer",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "19",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 20,
+      "name": "501st Veteran",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "20",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 21,
+      "name": "Gar Saxon",
+      "subtitle": "Sundari Pillager",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "21",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 22,
+      "name": "The Darksaber",
+      "subtitle": "Only the Strongest Shall Rule",
+      "type": "Upgrade",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "22",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 23,
+      "name": "Assault Lander LAAT",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "23",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 24,
+      "name": "Sundari Gauntlet",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "24",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 25,
+      "name": "Fiery Alliance",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "25",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 26,
+      "name": "Mother Talzin",
+      "subtitle": "Stealing the Spirit",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "26",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 27,
+      "name": "Fortune and Glory",
+      "subtitle": "Hondo's Luxury Yacht",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "27",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 28,
+      "name": "Prime Minister Almec",
+      "subtitle": "Scheming Populist",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "28",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 29,
+      "name": "Ziton Moj",
+      "subtitle": "Sowing Chaos",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "29",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 30,
+      "name": "Maul",
+      "subtitle": "One Last Lesson",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "30",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 31,
+      "name": "Chaotic Diversion",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "31",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 32,
+      "name": "Reckless Landing",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "32",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 33,
+      "name": "Kouhun Assassination",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Vigilance",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "33",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 34,
+      "name": "Fives",
+      "subtitle": "I Have Proof!",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "34",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 35,
+      "name": "Ahsoka's Lightsabers",
+      "type": "Upgrade",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "35",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 36,
+      "name": "Tribunal",
+      "subtitle": "Grave of the 332nd",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "36",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 37,
+      "name": "Abandoned the Order",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "37",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 38,
+      "name": "Dooku's Solar Sailer",
+      "subtitle": "Beautiful and Expensive",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "38",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 39,
+      "name": "Captain Vaughn",
+      "subtitle": "Search the Tunnels",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "39",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 40,
+      "name": "Obi-Wan Kenobi",
+      "subtitle": "Steadfast Knight",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "40",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 41,
+      "name": "Twilight",
+      "subtitle": "Escaping Malevolence",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "41",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 42,
+      "name": "Relief Frigate",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "42",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 43,
+      "name": "Wartime Refugee",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "43",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 44,
+      "name": "Arena Reek",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "44",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 45,
+      "name": "Champion",
+      "type": "Upgrade",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "45",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 46,
+      "name": "Secret Marriage",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "46",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 47,
+      "name": "Take Cover",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "47",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 48,
+      "name": "Vanquish the Legion",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "48",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 49,
+      "name": "Separatist Council",
+      "subtitle": "Quarrelsome Holdouts",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "49",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 50,
+      "name": "General Grievous",
+      "subtitle": "Crush Them!",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "50",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 51,
+      "name": "Lom Pyke",
+      "subtitle": "Making a Withdrawal",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "51",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 52,
+      "name": "Sith Traditions",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "52",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 53,
+      "name": "Coruscanti Spy",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "53",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 54,
+      "name": "Wartime Mercenaries",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "54",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 55,
+      "name": "Jedi General",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "55",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 56,
+      "name": "Galactic Escalation",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "56",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 57,
+      "name": "Mechanize",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "57",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 58,
+      "name": "Backed by the Pykes",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "58",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 59,
+      "name": "Brothers",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "59",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 60,
+      "name": "Take Charge",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "60",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 61,
+      "name": "Encircle",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "61",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 62,
+      "name": "R2-D2",
+      "subtitle": "Getting His Chance",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "62",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 63,
+      "name": "Rex's DC-17s",
+      "type": "Upgrade",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "63",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 64,
+      "name": "Urgent Mission",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "64",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 65,
+      "name": "Bo-Katan Kryze",
+      "subtitle": "The Lawless",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "65",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 66,
+      "name": "Wartime Pirate",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "66",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 67,
+      "name": "Ruping Rider",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "67",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 68,
+      "name": "Arms Deal",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "68",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 69,
+      "name": "Remove the Chip",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "69",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 70,
+      "name": "Backed by Black Sun",
+      "type": "Event",
+      "rarity": "Rare",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "70",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 71,
+      "name": "Take Action",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "71",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 72,
+      "name": "Fervor",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "72",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 73,
+      "name": "Moralo Eval",
+      "subtitle": "Infamous Murderer",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "73",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 74,
+      "name": "Pre Vizsla",
+      "subtitle": "For Mandalore!",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "74",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 75,
+      "name": "Jango Fett",
+      "subtitle": "Guarding the Count",
+      "type": "Unit",
+      "rarity": "Rare",
+      "aspects": [
+        "Cunning",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "75",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 76,
+      "name": "Wartime Profiteer",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "76",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 77,
+      "name": "Deployed Droideka",
+      "type": "Unit",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "77",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 78,
+      "name": "Barriss Offee",
+      "subtitle": "It's Only a Matter of Time",
+      "type": "Unit",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "78",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 79,
+      "name": "Underestimated",
+      "type": "Upgrade",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "79",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 80,
+      "name": "Reveal Intentions",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "80",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 81,
+      "name": "Mislead",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "81",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 82,
+      "name": "Evade Arrest",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "82",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 83,
+      "name": "Take Aim",
+      "type": "Event",
+      "rarity": "Common",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "83",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 84,
+      "name": "Fearless Attack",
+      "type": "Event",
+      "rarity": "Uncommon",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "84",
+          "variant": "normal"
+        }
+      ]
+    }
+  ],
+  "label": "Twin Suns 2026 (TS26)"
+}

@@ -1,0 +1,1050 @@
+{
+  "version": 2,
+  "setKey": "IBH",
+  "cards": [
+    {
+      "base": 1,
+      "name": "Leia Organa",
+      "subtitle": "Get to Your Transports!",
+      "type": "Leader",
+      "rarity": "Special",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "1",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 2,
+      "name": "Echo Caverns",
+      "subtitle": "Hoth",
+      "type": "Base",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "2",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 3,
+      "name": "Chewbacca",
+      "subtitle": "Rrruuuurrr",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "3",
+          "variant": "normal"
+        },
+        {
+          "num": "46",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 4,
+      "name": "Rogue Squadron Speeder",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "17",
+          "variant": "normal"
+        },
+        {
+          "num": "34",
+          "variant": "normal"
+        },
+        {
+          "num": "4",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 5,
+      "name": "I'll Cover For You",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "39",
+          "variant": "normal"
+        },
+        {
+          "num": "5",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 6,
+      "name": "Rebellion Y-Wing",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "24",
+          "variant": "normal"
+        },
+        {
+          "num": "32",
+          "variant": "normal"
+        },
+        {
+          "num": "6",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 7,
+      "name": "Echo Coordinator",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "43",
+          "variant": "normal"
+        },
+        {
+          "num": "47",
+          "variant": "normal"
+        },
+        {
+          "num": "7",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 8,
+      "name": "Trench Defender",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "29",
+          "variant": "normal"
+        },
+        {
+          "num": "50",
+          "variant": "normal"
+        },
+        {
+          "num": "8",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 9,
+      "name": "I've Found Them",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "25",
+          "variant": "normal"
+        },
+        {
+          "num": "9",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 10,
+      "name": "Han Solo",
+      "subtitle": "Scruffy-Looking Nerf Herder",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "10",
+          "variant": "normal"
+        },
+        {
+          "num": "42",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 11,
+      "name": "R2-D2",
+      "subtitle": "Known to Make Mistakes",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "11",
+          "variant": "normal"
+        },
+        {
+          "num": "49",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 12,
+      "name": "Evacuation Escort",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "12",
+          "variant": "normal"
+        },
+        {
+          "num": "35",
+          "variant": "normal"
+        },
+        {
+          "num": "44",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 13,
+      "name": "Recovery",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "13",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 14,
+      "name": "Bright Hope",
+      "subtitle": "Narrow Escape",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "14",
+          "variant": "normal"
+        },
+        {
+          "num": "26",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 15,
+      "name": "Tauntaun Mount",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Command"
+      ],
+      "printings": [
+        {
+          "num": "15",
+          "variant": "normal"
+        },
+        {
+          "num": "28",
+          "variant": "normal"
+        },
+        {
+          "num": "51",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 16,
+      "name": "Ion Cannon",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "16",
+          "variant": "normal"
+        },
+        {
+          "num": "27",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 18,
+      "name": "Go for the Legs",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "18",
+          "variant": "normal"
+        },
+        {
+          "num": "45",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 19,
+      "name": "C-3P0",
+      "subtitle": "Oh Dear, Oh Dear",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "19",
+          "variant": "normal"
+        },
+        {
+          "num": "41",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 20,
+      "name": "Luke Skywalker",
+      "subtitle": "Do You Read Me?",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "20",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 21,
+      "name": "Improvised Detonation",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "21",
+          "variant": "normal"
+        },
+        {
+          "num": "30",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 22,
+      "name": "GR-75 Medium Transport",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "22",
+          "variant": "normal"
+        },
+        {
+          "num": "33",
+          "variant": "normal"
+        },
+        {
+          "num": "40",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 23,
+      "name": "General Rieekan",
+      "subtitle": "Stalwart Tactician",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Command",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "23",
+          "variant": "normal"
+        },
+        {
+          "num": "36",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 31,
+      "name": "Millennium Falcon",
+      "subtitle": "Bucket of Bolts",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "31",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 37,
+      "name": "Hoth Trooper",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning",
+        "Heroism"
+      ],
+      "printings": [
+        {
+          "num": "37",
+          "variant": "normal"
+        },
+        {
+          "num": "38",
+          "variant": "normal"
+        },
+        {
+          "num": "48",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 52,
+      "name": "Watch This",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Cunning"
+      ],
+      "printings": [
+        {
+          "num": "52",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 53,
+      "name": "Darth Vader",
+      "subtitle": "Don't Fail Me Again",
+      "type": "Leader",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "doubleSided": true,
+      "printings": [
+        {
+          "num": "53",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 54,
+      "name": "Forward Command Post",
+      "subtitle": "Hoth",
+      "type": "Base",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "54",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 55,
+      "name": "First Legion Trooper",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "101",
+          "variant": "normal"
+        },
+        {
+          "num": "55",
+          "variant": "normal"
+        },
+        {
+          "num": "73",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 56,
+      "name": "Ground Assault AT-AT",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "56",
+          "variant": "normal"
+        },
+        {
+          "num": "67",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 57,
+      "name": "Snowtrooper Vanguard",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "57",
+          "variant": "normal"
+        },
+        {
+          "num": "80",
+          "variant": "normal"
+        },
+        {
+          "num": "96",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 58,
+      "name": "Lambda Shuttle",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "58",
+          "variant": "normal"
+        },
+        {
+          "num": "84",
+          "variant": "normal"
+        },
+        {
+          "num": "90",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 59,
+      "name": "Target the Main Generator",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "59",
+          "variant": "normal"
+        },
+        {
+          "num": "71",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 60,
+      "name": "Admiral Piett",
+      "subtitle": "In Command Now",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "60",
+          "variant": "normal"
+        },
+        {
+          "num": "65",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 61,
+      "name": "We're In Trouble",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "61",
+          "variant": "normal"
+        },
+        {
+          "num": "86",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 62,
+      "name": "Imperial Deck Officer",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "100",
+          "variant": "normal"
+        },
+        {
+          "num": "62",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 63,
+      "name": "Snowtrooper",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "63",
+          "variant": "normal"
+        },
+        {
+          "num": "77",
+          "variant": "normal"
+        },
+        {
+          "num": "87",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 64,
+      "name": "Hoth Lieutenant",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "64",
+          "variant": "normal"
+        },
+        {
+          "num": "92",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 66,
+      "name": "Too Strong for Blasters",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "66",
+          "variant": "normal"
+        },
+        {
+          "num": "91",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 68,
+      "name": "General Veers",
+      "subtitle": "Leading the Assault",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "68",
+          "variant": "normal"
+        },
+        {
+          "num": "88",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 69,
+      "name": "E-Web Gunner",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "69",
+          "variant": "normal"
+        },
+        {
+          "num": "83",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 70,
+      "name": "Blizzard Force AT-ST",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "103",
+          "variant": "normal"
+        },
+        {
+          "num": "70",
+          "variant": "normal"
+        },
+        {
+          "num": "89",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 72,
+      "name": "Avenger",
+      "subtitle": "Hunting the Rebels",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "72",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 74,
+      "name": "I Want Proof, Not Leads",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "102",
+          "variant": "normal"
+        },
+        {
+          "num": "74",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 75,
+      "name": "Scouting TIE Fighter",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "75",
+          "variant": "normal"
+        },
+        {
+          "num": "81",
+          "variant": "normal"
+        },
+        {
+          "num": "97",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 76,
+      "name": "Rampaging Wampa",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression"
+      ],
+      "printings": [
+        {
+          "num": "76",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 78,
+      "name": "Surface Assault Bomber",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "78",
+          "variant": "normal"
+        },
+        {
+          "num": "93",
+          "variant": "normal"
+        },
+        {
+          "num": "94",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 79,
+      "name": "Death Squadron Star Destroyer",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "79",
+          "variant": "normal"
+        },
+        {
+          "num": "98",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 82,
+      "name": "Admiral Ozzel",
+      "subtitle": "As Clumsy as He Is Stupid",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "82",
+          "variant": "normal"
+        },
+        {
+          "num": "85",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 95,
+      "name": "You Have Failed Me",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Aggression",
+        "Villainy"
+      ],
+      "printings": [
+        {
+          "num": "95",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 99,
+      "name": "Blizzard One",
+      "subtitle": "Veers at the Helm",
+      "type": "Unit",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance",
+        "Villainy"
+      ],
+      "unique": true,
+      "printings": [
+        {
+          "num": "99",
+          "variant": "normal"
+        }
+      ]
+    },
+    {
+      "base": 104,
+      "name": "The Desolation of Hoth",
+      "type": "Event",
+      "rarity": "Special",
+      "aspects": [
+        "Vigilance"
+      ],
+      "printings": [
+        {
+          "num": "104",
+          "variant": "normal"
+        }
+      ]
+    }
+  ],
+  "label": "Intro Battle: Hoth (IBH)"
+}

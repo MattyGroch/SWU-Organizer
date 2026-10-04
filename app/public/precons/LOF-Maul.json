@@ -1,0 +1,130 @@
+{
+  "leader": {
+    "setKey": "LOF",
+    "baseNumber": 9,
+    "count": 1
+  },
+  "base": {
+    "setKey": "LOF",
+    "baseNumber": 21,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "LOF",
+      "baseNumber": 31,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 35,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 38,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 39,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 41,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 59,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 63,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 67,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 129,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 131,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 136,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 137,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 138,
+      "count": 1
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 139,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 140,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 156,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 160,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 164,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 229,
+      "count": 2
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 231,
+      "count": 3
+    },
+    {
+      "setKey": "LOF",
+      "baseNumber": 233,
+      "count": 3
+    },
+    {
+      "setKey": "SOR",
+      "baseNumber": 137,
+      "count": 1
+    },
+    {
+      "setKey": "TWI",
+      "baseNumber": 138,
+      "count": 1
+    }
+  ],
+  "sideboard": []
+}
