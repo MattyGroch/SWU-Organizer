@@ -84,6 +84,8 @@ export function useDeckLibrary() {
     await updateDeckLibrary((current) => ({
       ...current,
       customDecks: current.customDecks.filter((deck) => deck.id !== id),
+      // Remembered so a sync merge with another device cannot bring the deck back.
+      deletedDecks: { ...current.deletedDecks, [id]: new Date().toISOString() },
     }));
   }, []);
 
@@ -135,8 +137,14 @@ export function useDeckLibrary() {
     await updateDeckLibrary((current) => {
       if (current.customDecks.some((d) => d.id === deck.id)) return current;
       const customDecks = [...current.customDecks];
-      customDecks.splice(Math.min(index, customDecks.length), 0, deck);
-      return { ...current, customDecks };
+      // Restored now, so it is newer than its own deletion on every device.
+      customDecks.splice(Math.min(index, customDecks.length), 0, {
+        ...deck,
+        updatedAt: new Date().toISOString(),
+      });
+      const deletedDecks = { ...current.deletedDecks };
+      delete deletedDecks[deck.id];
+      return { ...current, customDecks, deletedDecks };
     });
   }, []);
 

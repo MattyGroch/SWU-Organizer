@@ -67,3 +67,8 @@
   margin: 0 auto;
   padding: var(--space-4);
 }
+
+/* Pushed to the far end of the header, past the nav. */
+.account {
+  margin-left: auto;
+}

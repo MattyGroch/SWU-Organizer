@@ -1,6 +1,6 @@
 import type { QueryClient } from '@tanstack/react-query';
 
-import { loadedSets, manifestQuery } from '~/data/catalog';
+import { loadedSets, manifestQuery, setQuery } from '~/data/catalog';
 import type { SetKey } from '~/domain/types';
 
 import { createDeckSync } from './decks';
@@ -12,6 +12,11 @@ export type SyncBundle = {
   inventory: ReturnType<typeof createInventorySync>;
   decks: ReturnType<typeof createDeckSync>;
   setSignedIn: (value: boolean) => void;
+  /**
+   * Loads every set's catalog. Pulled card counts can only be stored once their set has
+   * loaded — applied earlier, they would be dropped while still marked as received.
+   */
+  ensureCatalog: () => Promise<void>;
   dispose: () => void;
 };
 
@@ -45,6 +50,10 @@ export function startSync(queryClient: QueryClient): SyncBundle {
     setSignedIn(value: boolean) {
       inventory.setSignedIn(value);
       decks.setSignedIn(value);
+    },
+    async ensureCatalog() {
+      const entries = await queryClient.ensureQueryData(manifestQuery());
+      await Promise.all(entries.map((entry) => queryClient.ensureQueryData(setQuery(entry))));
     },
     dispose() {
       stopInventory();

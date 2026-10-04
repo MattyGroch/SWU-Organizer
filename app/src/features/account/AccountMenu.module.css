@@ -1,0 +1,112 @@
+.signIn,
+.unavailable {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+}
+
+.signIn {
+  border: 1px solid var(--color-border-interactive);
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signIn:hover {
+  background: var(--color-surface-raised);
+}
+
+.unavailable {
+  color: var(--color-text-muted);
+}
+
+.menu {
+  position: relative;
+}
+
+.summary {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  list-style: none;
+  cursor: pointer;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+}
+
+.dot[data-status='synced'] {
+  background: var(--color-success);
+}
+
+.dot[data-status='syncing'] {
+  background: var(--color-focus);
+}
+
+.dot[data-status='offline'] {
+  background: var(--color-warning);
+}
+
+.dot[data-status='error'] {
+  background: var(--color-danger);
+}
+
+.statusText {
+  white-space: nowrap;
+}
+
+.panel {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + var(--space-1));
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 260px;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.4);
+}
+
+.email {
+  font-weight: 700;
+}
+
+.detail {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+}
+
+.buttons {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.button {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--color-surface-raised);
+}

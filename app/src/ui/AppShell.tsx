@@ -1,6 +1,8 @@
 import { Link } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 
+import { AccountMenu } from '~/features/account/AccountMenu';
+import { FirstSyncDialog } from '~/features/account/FirstSyncDialog';
 import { useIntakeCount } from '~/features/intake/useIntake';
 
 import styles from './AppShell.module.css';
@@ -30,7 +32,11 @@ export function AppShell({ children }: { children: ReactNode }) {
             Scan
           </Link>
         </nav>
+        <div className={styles.account}>
+          <AccountMenu />
+        </div>
       </header>
+      <FirstSyncDialog />
       <main className={styles.main}>{children}</main>
     </div>
   );

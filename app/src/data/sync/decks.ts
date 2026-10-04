@@ -1,4 +1,5 @@
 import { parseDeckLibrary, type DeckLibrary } from '~/domain/decks';
+import { mergeDeckLibraries } from '~/domain/syncMerge';
 
 import { onDeckLibraryChanged } from '../changes';
 import { db, type SwuDatabase } from '../db';
@@ -37,6 +38,9 @@ export function createDeckSync(deps: DeckSyncDeps = {}): SyncEngine<DeckLibrary>
       // Re-parse rather than trusting the wire: a server payload is untrusted input.
       await writeDeckLibraryQuietly(parseDeckLibrary(JSON.stringify(data)), database);
     },
+    // Two devices' libraries combine deck by deck instead of one replacing the other.
+    merge: (local, remote, base) =>
+      mergeDeckLibraries(local, parseDeckLibrary(JSON.stringify(remote)), base),
   });
 
   async function queueCurrent(): Promise<void> {

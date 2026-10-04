@@ -1,4 +1,5 @@
 import type { LoadedSet } from '~/domain/catalog';
+import { mergeInventory } from '~/domain/syncMerge';
 import type { SetKey } from '~/domain/types';
 
 import { onInventoryChanged } from '../changes';
@@ -105,6 +106,8 @@ export function createInventorySync(deps: InventorySyncDeps): SyncEngine<Invento
     onApply: async (key, data) => {
       await applyInventoryPayload(key, data, deps.getSet(key), database);
     },
+    // Edits to the same set on two devices both survive, printing by printing.
+    merge: mergeInventory,
   });
 
   return {

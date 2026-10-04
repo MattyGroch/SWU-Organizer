@@ -32,6 +32,11 @@ export type DeckLibrary = {
   customDecks: SavedDeck[];
   /** precon catalog key -> owned copies (0 or 1 in practice). */
   preconOwnership: Record<string, number>;
+  /**
+   * Deck id -> ISO time it was deleted. Lets two devices' libraries merge without a
+   * deleted deck coming back from the device that had not seen the deletion.
+   */
+  deletedDecks?: Record<string, string>;
 };
 
 export const DECKS_STORAGE_KEY = 'decks:v1';
@@ -130,6 +135,10 @@ function isSavedDeck(value: unknown): value is SavedDeck {
   );
 }
 
+function isDeletedDecks(value: unknown): value is Record<string, string> {
+  return isRecord(value) && Object.values(value).every((v) => typeof v === 'string');
+}
+
 function isPreconOwnership(value: unknown): value is Record<string, number> {
   return (
     isRecord(value) &&
@@ -150,7 +159,10 @@ export function parseDeckLibrary(raw: string | null): DeckLibrary {
         }))
       : [];
     const preconOwnership = isPreconOwnership(parsed.preconOwnership) ? parsed.preconOwnership : {};
-    return { customDecks, preconOwnership };
+    const deletedDecks = isDeletedDecks(parsed.deletedDecks) ? parsed.deletedDecks : undefined;
+    return deletedDecks
+      ? { customDecks, preconOwnership, deletedDecks }
+      : { customDecks, preconOwnership };
   } catch {
     return { ...emptyDeckLibrary };
   }

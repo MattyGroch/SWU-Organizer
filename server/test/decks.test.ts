@@ -36,6 +36,22 @@ describe('decks API', () => {
     expect(get.body.version).toBe(1)
   })
 
+  it('keeps the deleted-deck record, so devices can merge without resurrecting decks', async () => {
+    const db = memoryDb()
+    const app = makeTestApp(db)
+    const { cookie } = seedUserWithSession(db)
+    const data = {
+      customDecks: [],
+      preconOwnership: {},
+      deletedDecks: { 'deck-1': '2026-10-04T12:00:00.000Z' },
+    }
+    const res = await request(app).put('/api/decks').set('Cookie', cookie).set('If-Match', '0').send({ data })
+    expect(res.status).toBe(200)
+
+    const get = await request(app).get('/api/decks').set('Cookie', cookie)
+    expect(get.body.data).toEqual(data)
+  })
+
   it('bumps version on subsequent writes with matching If-Match', async () => {
     const db = memoryDb()
     const app = makeTestApp(db)

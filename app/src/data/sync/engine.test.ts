@@ -184,6 +184,67 @@ describe('conflicts', () => {
   });
 });
 
+describe('merging with another device', () => {
+  /** Three-way, per key: the server's value plus whatever this device changed. */
+  const merge = (local: Payload, remote: Payload, base: Payload | undefined): Payload => {
+    const out: Payload = { ...remote };
+    for (const key of new Set([...Object.keys(local), ...Object.keys(base ?? {})])) {
+      const delta = (local[key] ?? 0) - (base?.[key] ?? 0);
+      out[key] = Math.max(0, (remote[key] ?? 0) + delta);
+    }
+    return out;
+  };
+
+  it('on 409, keeps both changes and pushes the merge at the server version', async () => {
+    const fetchFn = vi
+      .fn()
+      // Agreed base: 059 x2.
+      .mockResolvedValueOnce(ok(1))
+      // Meanwhile another device made it 059 x2, 324 x1 (version 2).
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ current: { data: { '059': 2, '324': 1 }, version: 2 } }), {
+          status: 409,
+        }),
+      )
+      .mockResolvedValueOnce(ok(3));
+    const local = makeHarness({ merge }, fetchFn);
+    local.engine.setSignedIn(true);
+
+    local.engine.queue('SOR', { '059': 2 });
+    await local.clock.advance(1000);
+    // This device adds a third 059, unaware of the other device's 324.
+    local.engine.queue('SOR', { '059': 3 });
+    await local.clock.advance(1000);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    const lastBody = JSON.parse(fetchFn.mock.calls.at(-1)![1].body as string) as { data: Payload };
+    expect(lastBody.data).toEqual({ '059': 3, '324': 1 });
+    expect(fetchFn.mock.calls.at(-1)![1].headers['if-match']).toBe('2');
+    expect(local.applied.at(-1)).toEqual({ key: 'SOR', data: { '059': 3, '324': 1 } });
+    expect(local.engine.hasPending()).toBe(false);
+  });
+
+  it('applies a newer pulled copy directly when nothing is pending, and ignores stale ones', async () => {
+    const local = makeHarness({ merge });
+    await local.engine.receive('SOR', { '059': 4 }, 5);
+    expect(local.applied).toEqual([{ key: 'SOR', data: { '059': 4 } }]);
+    expect(local.engine.getState().versions.SOR).toBe(5);
+
+    await local.engine.receive('SOR', { '059': 1 }, 5);
+    expect(local.applied).toHaveLength(1);
+  });
+
+  it('merges a pulled copy into a pending write instead of dropping it', async () => {
+    const local = makeHarness({ merge });
+    await local.engine.receive('SOR', { '059': 2 }, 1);
+    local.engine.queue('SOR', { '059': 2, '080': 1 });
+
+    await local.engine.receive('SOR', { '059': 1 }, 2);
+    expect(local.engine.getState().pending.SOR).toEqual({ '059': 1, '080': 1 });
+    expect(local.engine.getState().versions.SOR).toBe(2);
+  });
+});
+
 describe('failures', () => {
   it('retries with backoff and only reports after three consecutive failures', async () => {
     const fetchFn = vi.fn(async () => new Response('boom', { status: 500 }));
@@ -313,6 +374,6 @@ describe('lifecycle', () => {
 
   it('survives unreadable persisted state', () => {
     h.storage.setItem('sync:test', 'not json');
-    expect(h.engine.getState()).toEqual({ versions: {}, pending: {}, lastPulledAt: 0 });
+    expect(h.engine.getState()).toEqual({ versions: {}, pending: {}, base: {}, lastPulledAt: 0 });
   });
 });
