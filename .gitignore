@@ -21,6 +21,7 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+.obsidian/
 
 # ---- Tests / coverage / caches ----
 coverage/
@@ -43,6 +44,8 @@ coverage/
 docker-compose.override.yml
 
 # ---- Runtime data (local-dev SQLite; prod bind mount is /var/config/swu-organizer) ----
-data/
+# Anchored: an unanchored `data/` also matched app/src/data/ and kept source out of git.
+/data/
+/server/data/
 server/.env
 
