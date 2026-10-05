@@ -5,7 +5,7 @@ import {
   deckStatus,
   inBoxCounts,
   type DeckStatus,
-  type VariantLookup,
+  type HomeLookup,
 } from '~/domain/deckBuild';
 import {
   formatMissingCardsList,
@@ -26,12 +26,12 @@ type Props = {
   library: DeckLibrary;
   loading: boolean;
   lookup: Map<SetKey, DeckLookupSet>;
-  /** Everything owned — binder and built decks alike. */
+  /** Everything owned — binder, bulk box and built decks alike. */
   owned: OwnedLookup;
-  /** The same, per printing. */
-  ownedVariants: VariantLookup;
-  /** What is physically still in the binder. */
-  binderAvailable: OwnedLookup;
+  /** The same, per home and printing. */
+  homes: HomeLookup;
+  /** What a deck could still take: in the binder or the bulk box, not in a deck. */
+  pullable: OwnedLookup;
   onUpdate: (id: string, patch: DeckPatch) => void;
   onDelete: (deck: SavedDeck, index: number) => void;
   onOpenPickList: (deck: SavedDeck, mode: 'construct' | 'deconstruct') => void;
@@ -51,8 +51,8 @@ export function SavedDecks({
   loading,
   lookup,
   owned,
-  ownedVariants,
-  binderAvailable,
+  homes,
+  pullable,
   onUpdate,
   onDelete,
   onOpenPickList,
@@ -82,10 +82,10 @@ export function SavedDecks({
           <SavedDeckItem
             key={deck.id}
             deck={deck}
-            status={deckStatus(deck, library, ownedVariants)}
+            status={deckStatus(deck, library, homes)}
             lookup={lookup}
             owned={owned}
-            binderAvailable={binderAvailable}
+            pullable={pullable}
             expanded={expandedId === deck.id}
             onToggle={() => setExpandedId(expandedId === deck.id ? null : deck.id)}
             onUpdate={(patch) => onUpdate(deck.id, patch)}
@@ -105,7 +105,7 @@ type ItemProps = {
   status: DeckStatus;
   lookup: Map<SetKey, DeckLookupSet>;
   owned: OwnedLookup;
-  binderAvailable: OwnedLookup;
+  pullable: OwnedLookup;
   expanded: boolean;
   onToggle: () => void;
   onUpdate: (patch: DeckPatch) => void;
@@ -122,7 +122,7 @@ type ItemProps = {
 function boxColumn(
   deck: SavedDeck,
   rows: DeckRowWithNeed[],
-  binderAvailable: OwnedLookup,
+  pullable: OwnedLookup,
   onAdjust: ItemProps['onAdjustBox'],
 ): BoxColumn {
   const remaining = inBoxCounts(deck);
@@ -139,7 +139,7 @@ function boxColumn(
   });
   return {
     counts,
-    canAdd: rows.map((row) => binderAvailable(row.setKey, row.baseNumber) > 0),
+    canAdd: rows.map((row) => pullable(row.setKey, row.baseNumber) > 0),
     onAdjust: (row, delta) =>
       onAdjust(row, delta, listed.get(cardKey(row.setKey, row.baseNumber)) ?? row.count),
   };
@@ -185,6 +185,15 @@ function StatusBadges({
               {status.missingOwned} owned elsewhere
             </span>
           )}
+          {status.missingInBulk > 0 && (
+            <span
+              className={styles.badge}
+              data-tone="warning"
+              title="You own these — they are in the bulk box."
+            >
+              {status.missingInBulk} in bulk
+            </span>
+          )}
           {status.missingUnowned > 0 && (
             <span
               className={styles.badge}
@@ -204,7 +213,7 @@ function SavedDeckItem({
   status,
   lookup,
   owned,
-  binderAvailable,
+  pullable,
   expanded,
   onToggle,
   onUpdate,
@@ -337,7 +346,7 @@ function SavedDeckItem({
           <DeckRowsTable
             rows={rows}
             label={`${deck.name} cards`}
-            box={deck.constructed ? boxColumn(deck, rows, binderAvailable, onAdjustBox) : undefined}
+            box={deck.constructed ? boxColumn(deck, rows, pullable, onAdjustBox) : undefined}
           />
         </div>
       )}

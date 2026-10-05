@@ -9,10 +9,14 @@ export type DeckCardRef = {
   count: number;
   /**
    * Which printings these copies are — only on a built deck's `pulledCards`, so that
-   * deconstructing it files the same printings back. Not shown anywhere; older records
-   * without it fall back to the binder's most-valuable-first rule.
+   * deconstructing it files the same printings back.
    */
   variants?: VariantCounts;
+  /**
+   * Of `variants`, the copies taken from the bulk box rather than the binder; they go back
+   * to the box. Absent when every copy came from the binder.
+   */
+  fromBulk?: VariantCounts;
 };
 
 export type DeckContents = {
@@ -72,7 +76,8 @@ export function isDeckCardRef(value: unknown): value is DeckCardRef {
     Number.isInteger(value.baseNumber) &&
     Number.isInteger(value.count) &&
     (value.count as number) > 0 &&
-    (value.variants === undefined || isVariantCounts(value.variants))
+    (value.variants === undefined || isVariantCounts(value.variants)) &&
+    (value.fromBulk === undefined || isVariantCounts(value.fromBulk))
   );
 }
 

@@ -1,16 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { binderLayout } from '~/domain/binder';
+import { VARIANTS, variantLabel } from '~/domain/catalog';
 import {
+  applyDeconstruct,
   cardKey,
+  heldByHome,
   planConstruct,
   type ConstructLine,
+  type HomeLookup,
   type TakeFromDeck,
-  type VariantLookup,
 } from '~/domain/deckBuild';
 import type { DeckCardRef } from '~/domain/deckContents';
 import { formatMissingLine, type DeckLookupSet } from '~/domain/decklist';
 import type { DeckLibrary, SavedDeck } from '~/domain/decks';
+import { pocketSpill, subtractVariants, sumVariants, type VariantCounts } from '~/domain/ownership';
 import { buildPutBackList } from '~/domain/pickList';
 import type { SetKey } from '~/domain/types';
 import { useToast } from '~/ui/toastContext';
@@ -23,11 +27,13 @@ type Props = {
   library: DeckLibrary;
   lookup: Map<SetKey, DeckLookupSet>;
   setOrder: SetKey[];
-  /** Everything owned, binder and built decks alike, per printing. */
-  owned: VariantLookup;
+  /** Everything owned, per home and printing. */
+  homes: HomeLookup;
+  quotaOf: (setKey: SetKey, base: number) => number;
   onClose: () => void;
-  onConstruct: (fromBinder: DeckCardRef[], takes: TakeFromDeck[]) => void;
-  onDeconstruct: () => void;
+  onConstruct: (pulls: DeckCardRef[], takes: TakeFromDeck[]) => void;
+  /** Resolves to how many copies went to bulk because their pocket had filled up. */
+  onDeconstruct: () => Promise<number>;
 };
 
 type Named = { name: string; subtitle?: string };
@@ -37,10 +43,12 @@ type Named = { name: string; subtitle?: string };
  * back.
  *
  * Construct pulls from the binder first, in binder order — set, then page, row, column —
- * so one pass front to back finds everything. Copies the binder cannot supply but another
- * built deck holds are offered card by card: take it (that deck stays built, now missing
- * the card) or leave it (this deck is built missing it). Whatever you do not own at all
- * becomes the purchase list.
+ * so one pass front to back finds everything. Then the bulk box, for what the binder is
+ * out of. Copies neither can supply but another built deck holds are offered card by
+ * card: take it (that deck stays built, now missing the card) or leave it (this deck is
+ * built missing it). Whatever you do not own at all becomes the purchase list.
+ *
+ * Deconstruct sends each copy back where it came from: the binder, or the bulk box.
  */
 export function PickListDialog({
   deck,
@@ -48,7 +56,8 @@ export function PickListDialog({
   library,
   lookup,
   setOrder,
-  owned,
+  homes,
+  quotaOf,
   onClose,
   onConstruct,
   onDeconstruct,
@@ -70,8 +79,8 @@ export function PickListDialog({
   };
 
   const plan = useMemo(
-    () => (mode === 'construct' ? planConstruct(deck, library, owned, includeSideboard) : []),
-    [mode, deck, library, owned, includeSideboard],
+    () => (mode === 'construct' ? planConstruct(deck, library, homes, includeSideboard) : []),
+    [mode, deck, library, homes, includeSideboard],
   );
 
   const binderGroups = useMemo(() => groupInBinderOrder(plan, setOrder), [plan, setOrder]);
@@ -83,8 +92,15 @@ export function PickListDialog({
     })),
   );
   const unowned = plan.filter((line) => line.unowned > 0);
+  const fromBulk = inCardOrder(
+    plan
+      .filter((line) => line.fromBulk > 0)
+      .map((line) => ({ ...line, printings: line.bulkPrintings })),
+    setOrder,
+  );
 
   const pullCount = plan.reduce((sum, l) => sum + l.fromBinder, 0);
+  const bulkCount = plan.reduce((sum, l) => sum + l.fromBulk, 0);
   const takeCount = deckOffers.reduce(
     (sum, o) => sum + (taken.has(o.id) ? o.source.available : 0),
     0,
@@ -124,12 +140,13 @@ export function PickListDialog({
   }
 
   function markBuilt() {
-    const fromBinder = plan
-      .filter((line) => line.fromBinder > 0)
+    // The binder first, then the bulk box — the same order the plan was made in.
+    const pulls = plan
+      .filter((line) => line.fromBinder + line.fromBulk > 0)
       .map((line) => ({
         setKey: line.setKey,
         baseNumber: line.baseNumber,
-        count: line.fromBinder,
+        count: line.fromBinder + line.fromBulk,
       }));
     const takes = deckOffers
       .filter((offer) => taken.has(offer.id))
@@ -139,7 +156,7 @@ export function PickListDialog({
         baseNumber: offer.line.baseNumber,
         count: offer.source.available,
       }));
-    onConstruct(fromBinder, takes);
+    onConstruct(pulls, takes);
     const missing = leftCount + unownedCount;
     showToast({
       tone: missing ? 'warning' : 'success',
@@ -150,20 +167,50 @@ export function PickListDialog({
     close();
   }
 
-  function markReturned() {
-    onDeconstruct();
-    showToast({ tone: 'success', message: `“${deck.name}” returned to the binder.` });
+  async function markReturned() {
     close();
+    try {
+      const moved = await onDeconstruct();
+      showToast({
+        tone: 'success',
+        message:
+          `“${deck.name}” put away.` +
+          (moved ? ` ${moved} ${moved === 1 ? 'copy' : 'copies'} went to the bulk box.` : ''),
+      });
+    } catch {
+      showToast({ tone: 'danger', message: `“${deck.name}” could not be put away.` });
+    }
   }
 
-  const putBack = useMemo(
-    () => (mode === 'deconstruct' ? buildPutBackList(deck.pulledCards, lookup, setOrder) : []),
-    [mode, deck.pulledCards, lookup, setOrder],
-  );
-  const putBackCount = putBack.reduce(
-    (sum, g) => sum + g.items.reduce((s, i) => s + i.count, 0),
-    0,
-  );
+  const putAway = useMemo(() => {
+    if (mode !== 'deconstruct') return null;
+    const toBinder: DeckCardRef[] = [];
+    const toBulk: PrintedLine[] = [];
+    for (const ref of deck.pulledCards) {
+      const bulk = ref.fromBulk ?? {};
+      const binder = sumVariants(subtractVariants(ref.variants ?? { normal: ref.count }, bulk));
+      if (binder > 0) toBinder.push({ ...ref, count: binder });
+      if (sumVariants(bulk) > 0) toBulk.push({ ...ref, printings: bulk });
+    }
+    // Pockets that filled up while these were out keep only their best playset.
+    const heldAfter = heldByHome(applyDeconstruct(library, deck.id));
+    const overflow: PrintedLine[] = [];
+    for (const ref of toBinder) {
+      const key = cardKey(ref.setKey, ref.baseNumber);
+      const printings = pocketSpill(
+        homes(ref.setKey, ref.baseNumber),
+        heldAfter.get(key)?.binder ?? {},
+        quotaOf(ref.setKey, ref.baseNumber),
+      );
+      if (sumVariants(printings) > 0) overflow.push({ ...ref, printings });
+    }
+    return {
+      binder: buildPutBackList(toBinder, lookup, setOrder),
+      binderCount: toBinder.reduce((sum, ref) => sum + ref.count, 0),
+      bulk: inCardOrder(toBulk, setOrder),
+      overflow: inCardOrder(overflow, setOrder),
+    };
+  }, [mode, deck, library, homes, quotaOf, lookup, setOrder]);
 
   return (
     <dialog
@@ -182,15 +229,21 @@ export function PickListDialog({
         </button>
       </div>
 
-      {mode === 'deconstruct' ? (
+      {mode === 'deconstruct' && putAway ? (
         <div className={styles.body}>
           <p className={styles.lead}>
             Flip through your binders front to back and put each card below back in its slot.
           </p>
           <p className={styles.totals}>
-            <strong>{putBackCount}</strong> {putBackCount === 1 ? 'card' : 'cards'} to put back
+            <strong>{putAway.binderCount}</strong> to the binder
+            {putAway.bulk.length > 0 && (
+              <>
+                {' · '}
+                <strong>{sumLines(putAway.bulk)}</strong> to the bulk box
+              </>
+            )}
           </p>
-          {putBack.map((group) => (
+          {putAway.binder.map((group) => (
             <BinderTable
               key={group.setKey}
               setKey={group.setKey}
@@ -198,9 +251,27 @@ export function PickListDialog({
               items={group.items.map((item) => ({ ...item, count: item.count }))}
             />
           ))}
+          {putAway.overflow.length > 0 && (
+            <PrintedList
+              id="overflow-title"
+              title="Pockets that filled up meanwhile"
+              note="These pockets got new copies while the deck was out. Once the cards above are back, take these out for the bulk box."
+              lines={putAway.overflow}
+              card={card}
+            />
+          )}
+          {putAway.bulk.length > 0 && (
+            <PrintedList
+              id="to-bulk-title"
+              title="Back to the bulk box"
+              note="These came from the bulk box, so that is where they go."
+              lines={putAway.bulk}
+              card={card}
+            />
+          )}
           <div className={styles.buttons}>
-            <button type="button" className={styles.primary} onClick={markReturned}>
-              Mark as returned to binder
+            <button type="button" className={styles.primary} onClick={() => void markReturned()}>
+              Mark as put away
             </button>
           </div>
         </div>
@@ -221,6 +292,12 @@ export function PickListDialog({
 
           <p className={styles.totals}>
             <strong>{pullCount}</strong> from the binder
+            {bulkCount > 0 && (
+              <>
+                {' · '}
+                <strong>{bulkCount}</strong> from the bulk box
+              </>
+            )}
             {deckOffers.length > 0 && (
               <>
                 {' · '}
@@ -248,14 +325,24 @@ export function PickListDialog({
             />
           ))}
 
+          {fromBulk.length > 0 && (
+            <PrintedList
+              id="from-bulk-title"
+              title="From the bulk box"
+              note="The binder is out of these. Dig these printings out of the bulk box."
+              lines={fromBulk}
+              card={card}
+            />
+          )}
+
           {deckOffers.length > 0 && (
             <section className={styles.group} aria-labelledby="from-decks-title">
               <h3 id="from-decks-title" className={styles.groupTitle}>
                 In other built decks
               </h3>
               <p className={styles.muted}>
-                The binder is out of these. Take them and that deck stays built, flagged as missing
-                the card — or leave them, and this deck is built without it.
+                The binder and bulk box are out of these. Take them and that deck stays built,
+                flagged as missing the card — or leave them, and this deck is built without it.
               </p>
               <ul className={styles.offers}>
                 {deckOffers.map((offer) => {
@@ -402,6 +489,66 @@ function BinderTable({
           </tbody>
         </table>
       </div>
+    </section>
+  );
+}
+
+/** A card and the printings to move, for the lists outside the binder walk. */
+type PrintedLine = { setKey: SetKey; baseNumber: number; printings: VariantCounts };
+
+/** The bulk box is unsorted, so these lists just go by set, then card number. */
+function inCardOrder<T extends { setKey: SetKey; baseNumber: number }>(
+  lines: T[],
+  setOrder: SetKey[],
+): T[] {
+  const rank = (setKey: SetKey) => {
+    const i = setOrder.indexOf(setKey);
+    return i < 0 ? setOrder.length : i;
+  };
+  return [...lines].sort((a, b) => rank(a.setKey) - rank(b.setKey) || a.baseNumber - b.baseNumber);
+}
+
+function sumLines(lines: PrintedLine[]): number {
+  return lines.reduce((sum, line) => sum + sumVariants(line.printings), 0);
+}
+
+function printingsLabel(printings: VariantCounts): string {
+  return VARIANTS.filter((v) => (printings[v] ?? 0) > 0)
+    .map((v) => `${printings[v]} ${variantLabel(v)}`)
+    .join(', ');
+}
+
+function PrintedList({
+  id,
+  title,
+  note,
+  lines,
+  card,
+}: {
+  id: string;
+  title: string;
+  note: string;
+  lines: PrintedLine[];
+  card: (setKey: SetKey, baseNumber: number) => Named;
+}) {
+  return (
+    <section className={styles.group} aria-labelledby={id}>
+      <h3 id={id} className={styles.groupTitle}>
+        {title}
+      </h3>
+      <p className={styles.muted}>{note}</p>
+      <ul className={styles.plain}>
+        {lines.map((line) => {
+          const { name, subtitle } = card(line.setKey, line.baseNumber);
+          return (
+            <li key={cardKey(line.setKey, line.baseNumber)}>
+              {sumVariants(line.printings)}× {name}
+              {subtitle ? ` - ${subtitle}` : ''} ({line.setKey} #{line.baseNumber}) —{' '}
+              {printingsLabel(line.printings)}
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }

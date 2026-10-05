@@ -159,7 +159,7 @@ describe('decks tab, end to end', () => {
 
     await user.click(within(myDecks()).getByRole('button', { name: 'Deconstruct' }));
     const putBack = screen.getByRole('dialog', { name: /Deconstruct: Krennic Troopers/ });
-    await user.click(within(putBack).getByRole('button', { name: 'Mark as returned to binder' }));
+    await user.click(within(putBack).getByRole('button', { name: 'Mark as put away' }));
 
     await waitFor(async () => {
       const [deck] = (await readDeckLibrary()).customDecks;
