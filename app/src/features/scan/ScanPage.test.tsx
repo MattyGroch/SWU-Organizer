@@ -146,13 +146,12 @@ describe('ScanPage', () => {
     expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
   });
 
-  it('offers to swap a better printing in for the weakest copy', async () => {
+  it('adds a better printing straight away, bumping the weakest copy to bulk', async () => {
     await fillPocket();
     await scan('324', 'hyperspace');
-    expect(await screen.findByText(/This Hyperspace beats your Normal/)).toBeInTheDocument();
-    expect(await db.intakeLines.count()).toBe(0);
-
-    await userEvent.click(screen.getByRole('button', { name: /Swap it in — Normal to bulk/ }));
+    expect(
+      await screen.findByText(/Bumps a Normal 2-1B Surgical Droid to bulk/),
+    ).toBeInTheDocument();
     await waitFor(async () => {
       const lines = await db.intakeLines.toArray();
       expect(lines.map((l) => [l.num, Boolean(l.swapOut)]).sort()).toEqual([
@@ -160,6 +159,13 @@ describe('ScanPage', () => {
         ['324', false],
       ]);
     });
-    expect(await screen.findByText(/swaps out the weaker copy/)).toBeInTheDocument();
+
+    // Second thoughts: keep the Normal too — the Hyperspace stays queued.
+    await userEvent.click(screen.getByRole('button', { name: 'Keep both' }));
+    await waitFor(async () => {
+      const lines = await db.intakeLines.toArray();
+      expect(lines.map((l) => [l.num, Boolean(l.swapOut)])).toEqual([['324', false]]);
+    });
+    expect(screen.getByText('Added to Intake')).toBeInTheDocument();
   });
 });

@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { db } from '~/data/db';
-import { queuedPocket, queueScan, unqueueScan, type ScanReceipt } from '~/data/intake';
+import { cancelSwap, queuedPocket, queueScan, unqueueScan, type ScanReceipt } from '~/data/intake';
 import { binderLayout } from '~/domain/binder';
 import {
   artUrl,
@@ -44,9 +44,9 @@ type Item = {
   question: 'card' | 'set' | null;
   receipt: ScanReceipt | null;
   /**
-   * Set when the card's binder pocket was already full, so nothing was queued: `full` (no
-   * better than what is there — to bulk) or `upgrade` (better than the weakest copy:
-   * waiting for the user to swap it in, add it as a spare, or not).
+   * Set when the card's binder pocket was already full: `full` (no better than what is
+   * there — nothing queued, it goes to bulk) or `upgrade` (better than the weakest copy —
+   * queued, with that copy queued to leave for bulk).
    */
   room: PocketRoom | null;
 };
@@ -85,17 +85,28 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   );
 
   /**
-   * Queues a scanned printing if its binder pocket has room. When the pocket is full it
-   * queues nothing and says why: the copy goes to bulk, or could swap out a weaker one.
+   * Queues a scanned printing, minding its binder pocket. Room: queued. Full of copies at
+   * least as good: nothing queued — it goes to bulk. Better than the weakest copy: queued,
+   * bumping that copy to bulk, with no question asked.
    */
   const place = useCallback(
     async (printing: Printing): Promise<Pick<Item, 'receipt' | 'room'>> => {
-      const card = sets.get(printing.setKey)?.byNumber.get(printing.base);
-      if (card) {
-        const quota = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
-        const pocket = await queuedPocket(printing.setKey, printing.base);
-        const room = pocketRoom(pocket, quota, printing.variant);
-        if (room.kind !== 'room') return { receipt: null, room };
+      const set = sets.get(printing.setKey);
+      const card = set?.byNumber.get(printing.base);
+      if (!card) return { receipt: await queueScan(printing), room: null };
+      const quota = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
+      const room = pocketRoom(
+        await queuedPocket(printing.setKey, printing.base),
+        quota,
+        printing.variant,
+      );
+      if (room.kind === 'full') return { receipt: null, room };
+      if (room.kind === 'upgrade') {
+        const weaker = set?.printingsByBase
+          .get(printing.base)
+          ?.find((p) => p.variant === room.replaces);
+        const swapOut = weaker && { ...printing, num: weaker.num, variant: weaker.variant };
+        return { receipt: await queueScan(printing, swapOut ? { swapOut } : {}), room };
       }
       return { receipt: await queueScan(printing), room: null };
     },
@@ -125,8 +136,8 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       let placed: Pick<Item, 'receipt' | 'room'> = { receipt: null, room: null };
       if (mode === 'add' && !question) {
         placed = await place(chosen);
-        // A short buzz for "added"; a double one for "look at the screen".
-        navigator.vibrate?.(placed.room ? [60, 80, 60] : 40);
+        // A short buzz for "added"; a double one for "not added — look at the screen".
+        navigator.vibrate?.(placed.room?.kind === 'full' ? [60, 80, 60] : 40);
       }
       setItems((current) =>
         [{ id: nextId.current++, result, chosen, question, ...placed }, ...current].slice(0, 8),
@@ -163,33 +174,22 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     [mode, place],
   );
 
-  /** The answer to a full pocket: swap the weaker copy out, keep both, or add nothing. */
-  const settleRoom = useCallback(
-    async (item: Item, answer: 'swap' | 'spare' | 'none') => {
-      const { chosen, room } = item;
-      let receipt: ScanReceipt | null = null;
-      if (answer === 'swap' && room?.kind === 'upgrade') {
-        const weaker = sets
-          .get(chosen.setKey)
-          ?.printingsByBase.get(chosen.base)
-          ?.find((p) => p.variant === room.replaces);
-        receipt = await queueScan(
-          chosen,
-          weaker ? { swapOut: { ...chosen, num: weaker.num, variant: weaker.variant } } : {},
-        );
-      } else if (answer !== 'none') {
-        receipt = await queueScan(chosen);
-      }
-      setItems((current) =>
-        current.map((i) =>
-          i.id === item.id
-            ? { ...i, receipt, room: answer === 'none' ? { kind: 'full' } : null }
-            : i,
-        ),
-      );
-    },
-    [sets],
-  );
+  /**
+   * Second thoughts on a full pocket: add the copy anyway as a spare, or — for a copy that
+   * bumped a weaker one — keep that one too.
+   */
+  const settleRoom = useCallback(async (item: Item, answer: 'spare' | 'keep') => {
+    let receipt = item.receipt;
+    if (answer === 'keep' && receipt?.swapLineId) {
+      await cancelSwap(receipt.swapLineId);
+      receipt = { ...receipt, swapLineId: undefined };
+    } else if (answer === 'spare' && !receipt) {
+      receipt = await queueScan(item.chosen);
+    }
+    setItems((current) =>
+      current.map((i) => (i.id === item.id ? { ...i, receipt, room: null } : i)),
+    );
+  }, []);
 
   const remove = useCallback(
     async (item: Item, again: boolean) => {
@@ -404,7 +404,7 @@ function LatestScan({
   onChoose: (p: Printing) => void;
   onRescan: () => void;
   onConfirm: () => void;
-  onSettle: (answer: 'swap' | 'spare' | 'none') => void;
+  onSettle: (answer: 'spare' | 'keep') => void;
 }) {
   const [correcting, setCorrecting] = useState(false);
   const { chosen } = item;
@@ -431,7 +431,7 @@ function LatestScan({
     <section
       className={styles.result}
       aria-labelledby="latest-scan"
-      data-question={item.question ?? (item.room ? item.room.kind : undefined)}
+      data-question={item.question ?? (item.room?.kind === 'full' ? 'full' : undefined)}
     >
       <img className={styles.art} src={artUrl(chosen.setKey, chosen.num)} alt="" />
       <div className={styles.details}>
@@ -488,29 +488,21 @@ function LatestScan({
             )}
           </div>
         ) : mode === 'add' && item.room?.kind === 'upgrade' ? (
-          <div className={styles.question}>
+          <div className={styles.bump}>
+            <p className={styles.added}>Added to Intake</p>
             <p>
-              Your binder already has a full set of <strong>{nameOf(chosen)}</strong>. This{' '}
-              {variantLabel(chosen.variant)} beats your {variantLabel(item.room.replaces)}.
+              Bumps a {variantLabel(item.room.replaces)} {nameOf(chosen)} to bulk.{' '}
+              <button
+                type="button"
+                className={styles.inlineButton}
+                onClick={() => onSettle('keep')}
+              >
+                Keep both
+              </button>
             </p>
-            <div className={styles.choices}>
-              <button type="button" className={styles.primary} onClick={() => onSettle('swap')}>
-                Swap it in — {variantLabel(item.room.replaces)} to bulk
-              </button>
-              <button type="button" className={styles.button} onClick={() => onSettle('spare')}>
-                Add as a spare
-              </button>
-              <button type="button" className={styles.button} onClick={() => onSettle('none')}>
-                Don’t add
-              </button>
-            </div>
           </div>
         ) : mode === 'add' ? (
-          <p className={styles.added}>
-            {item.receipt?.swapLineId
-              ? 'Added to Intake — swaps out the weaker copy'
-              : 'Added to Intake'}
-          </p>
+          <p className={styles.added}>Added to Intake</p>
         ) : (
           <p className={styles.meta}>
             You own {owned ?? '…'} · binder page {position.page}, row {position.row}, column{' '}

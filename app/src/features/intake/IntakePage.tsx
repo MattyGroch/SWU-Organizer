@@ -152,8 +152,8 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
           onClick={() => void commit()}
         >
           {batch.kind === 'deck'
-            ? `Add ${batch.copies} cards & mark deck built`
-            : `Add ${batch.copies} cards to collection`}
+            ? `Add ${batch.copies} ${batch.copies === 1 ? 'card' : 'cards'} & mark deck built`
+            : `Add ${batch.copies} ${batch.copies === 1 ? 'card' : 'cards'} to collection`}
         </button>
         {confirmDiscard ? (
           <span className={styles.confirm}>
