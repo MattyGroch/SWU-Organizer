@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { db } from '~/data/db';
-import { queueScan, unqueueScan, type ScanReceipt } from '~/data/intake';
+import { queuedPocket, queueScan, unqueueScan, type ScanReceipt } from '~/data/intake';
 import { binderLayout } from '~/domain/binder';
 import {
   artUrl,
@@ -12,10 +12,11 @@ import {
   type LoadedSet,
   type VariantSlug,
 } from '~/domain/catalog';
+import { pocketRoom, quotaForCard, type PocketRoom } from '~/domain/ownership';
 import type { Match } from '~/domain/scan/index';
 import type { SetKey } from '~/domain/types';
 
-import { guideRect, toScreen, type Orientation, type Rect, type View } from './capture';
+import { guideRect, toScreen, type Rect, type View } from './capture';
 import styles from './ScanPage.module.css';
 import { useCamera } from './useCamera';
 import { useScanIndex } from './useScanIndex';
@@ -42,6 +43,12 @@ type Item = {
   /** Set while the scan is waiting for the user: unsure which card, or which set. */
   question: 'card' | 'set' | null;
   receipt: ScanReceipt | null;
+  /**
+   * Set when the card's binder pocket was already full, so nothing was queued: `full` (no
+   * better than what is there — to bulk) or `upgrade` (better than the weakest copy:
+   * waiting for the user to swap it in, add it as a spare, or not).
+   */
+  room: PocketRoom | null;
 };
 
 const cardKey = (p: { setKey: string; base: number }) => `${p.setKey}:${p.base}`;
@@ -67,7 +74,6 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const camera = useCamera();
   const index = useScanIndex();
   const [mode, setMode] = useState<Mode>('add');
-  const [orientation, setOrientation] = useState<Orientation>('portrait');
   const [items, setItems] = useState<Item[]>([]);
   const [view, setView] = useState<View | null>(null);
   const nextId = useRef(1);
@@ -75,6 +81,24 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const nameOf = useCallback(
     (p: { setKey: string; base: number }) =>
       sets.get(p.setKey)?.byNumber.get(p.base)?.Name ?? `#${p.base}`,
+    [sets],
+  );
+
+  /**
+   * Queues a scanned printing if its binder pocket has room. When the pocket is full it
+   * queues nothing and says why: the copy goes to bulk, or could swap out a weaker one.
+   */
+  const place = useCallback(
+    async (printing: Printing): Promise<Pick<Item, 'receipt' | 'room'>> => {
+      const card = sets.get(printing.setKey)?.byNumber.get(printing.base);
+      if (card) {
+        const quota = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
+        const pocket = await queuedPocket(printing.setKey, printing.base);
+        const room = pocketRoom(pocket, quota, printing.variant);
+        if (room.kind !== 'room') return { receipt: null, room };
+      }
+      return { receipt: await queueScan(printing), room: null };
+    },
     [sets],
   );
 
@@ -98,23 +122,23 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           : null;
 
       const chosen = asPrinting(top);
-      let receipt: ScanReceipt | null = null;
+      let placed: Pick<Item, 'receipt' | 'room'> = { receipt: null, room: null };
       if (mode === 'add' && !question) {
-        receipt = await queueScan(chosen);
-        navigator.vibrate?.(40);
+        placed = await place(chosen);
+        // A short buzz for "added"; a double one for "look at the screen".
+        navigator.vibrate?.(placed.room ? [60, 80, 60] : 40);
       }
       setItems((current) =>
-        [{ id: nextId.current++, result, chosen, question, receipt }, ...current].slice(0, 8),
+        [{ id: nextId.current++, result, chosen, question, ...placed }, ...current].slice(0, 8),
       );
     },
-    [mode, nameOf],
+    [mode, nameOf, place],
   );
 
   const scanning = camera.state === 'live' && Boolean(index.data);
   const { phase, rearm } = useScanner({
     videoRef: camera.videoRef,
     index: index.data,
-    orientation,
     view,
     active: scanning,
     onResult: (r) => void onResult(r),
@@ -125,18 +149,46 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   /** Replace what a scan records — a different printing, or a different card entirely. */
   const choose = useCallback(
     async (item: Item, printing: Printing) => {
-      let receipt = item.receipt;
+      let placed: Pick<Item, 'receipt' | 'room'> = { receipt: item.receipt, room: null };
       if (mode === 'add') {
-        if (receipt) await unqueueScan(receipt);
-        receipt = await queueScan(printing);
+        if (item.receipt) await unqueueScan(item.receipt);
+        placed = await place(printing);
       }
       setItems((current) =>
         current.map((i) =>
-          i.id === item.id ? { ...i, chosen: printing, question: null, receipt } : i,
+          i.id === item.id ? { ...i, chosen: printing, question: null, ...placed } : i,
         ),
       );
     },
-    [mode],
+    [mode, place],
+  );
+
+  /** The answer to a full pocket: swap the weaker copy out, keep both, or add nothing. */
+  const settleRoom = useCallback(
+    async (item: Item, answer: 'swap' | 'spare' | 'none') => {
+      const { chosen, room } = item;
+      let receipt: ScanReceipt | null = null;
+      if (answer === 'swap' && room?.kind === 'upgrade') {
+        const weaker = sets
+          .get(chosen.setKey)
+          ?.printingsByBase.get(chosen.base)
+          ?.find((p) => p.variant === room.replaces);
+        receipt = await queueScan(
+          chosen,
+          weaker ? { swapOut: { ...chosen, num: weaker.num, variant: weaker.variant } } : {},
+        );
+      } else if (answer !== 'none') {
+        receipt = await queueScan(chosen);
+      }
+      setItems((current) =>
+        current.map((i) =>
+          i.id === item.id
+            ? { ...i, receipt, room: answer === 'none' ? { kind: 'full' } : null }
+            : i,
+        ),
+      );
+    },
+    [sets],
   );
 
   const remove = useCallback(
@@ -172,25 +224,6 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
             </button>
           ))}
         </div>
-        <div className={styles.segmented} role="radiogroup" aria-label="Card orientation">
-          {(
-            [
-              ['portrait', 'Card'],
-              ['landscape', 'Leader / Base'],
-            ] as const
-          ).map(([value, label]) => (
-            <button
-              key={value}
-              type="button"
-              role="radio"
-              aria-checked={orientation === value}
-              className={styles.segment}
-              onClick={() => setOrientation(value)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
         {camera.torchAvailable && (
           <button
             type="button"
@@ -205,7 +238,6 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
 
       <Viewfinder
         camera={camera}
-        orientation={orientation}
         indexState={index.isError ? 'error' : index.data ? 'ready' : 'loading'}
         phase={phase}
         onView={setView}
@@ -220,6 +252,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           onChoose={(p) => void choose(latest, p)}
           onRescan={() => void remove(latest, true)}
           onConfirm={() => void choose(latest, latest.chosen)}
+          onSettle={(answer) => void settleRoom(latest, answer)}
         />
       )}
 
@@ -268,13 +301,11 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
 
 function Viewfinder({
   camera,
-  orientation,
   indexState,
   phase,
   onView,
 }: {
   camera: ReturnType<typeof useCamera>;
-  orientation: Orientation;
   indexState: 'loading' | 'ready' | 'error';
   phase: string;
   onView: (view: View) => void;
@@ -291,7 +322,7 @@ function Viewfinder({
       const size = { width: video.videoWidth, height: video.videoHeight };
       const view = { width: box.width, height: box.height };
       onView(view);
-      setGuide(toScreen(guideRect(size.width, size.height, orientation, view), size, box));
+      setGuide(toScreen(guideRect(size.width, size.height, view), size, box));
     };
     update();
     const video = camera.videoRef.current;
@@ -301,7 +332,7 @@ function Viewfinder({
       video?.removeEventListener('loadedmetadata', update);
       window.removeEventListener('resize', update);
     };
-  }, [camera.videoRef, camera.state, orientation, onView]);
+  }, [camera.videoRef, camera.state, onView]);
 
   const hint =
     indexState === 'error'
@@ -364,6 +395,7 @@ function LatestScan({
   onChoose,
   onRescan,
   onConfirm,
+  onSettle,
 }: {
   item: Item;
   mode: Mode;
@@ -372,9 +404,12 @@ function LatestScan({
   onChoose: (p: Printing) => void;
   onRescan: () => void;
   onConfirm: () => void;
+  onSettle: (answer: 'swap' | 'spare' | 'none') => void;
 }) {
   const [correcting, setCorrecting] = useState(false);
   const { chosen } = item;
+  const [top] = item.result.matches;
+  const fromBack = top?.entry.face === 'back' && top.entry.num === chosen.num;
   const set = sets.get(chosen.setKey);
   const card = set?.byNumber.get(chosen.base);
   const printings = set?.printingsByBase.get(chosen.base) ?? [];
@@ -396,7 +431,7 @@ function LatestScan({
     <section
       className={styles.result}
       aria-labelledby="latest-scan"
-      data-question={item.question ?? undefined}
+      data-question={item.question ?? (item.room ? item.room.kind : undefined)}
     >
       <img className={styles.art} src={artUrl(chosen.setKey, chosen.num)} alt="" />
       <div className={styles.details}>
@@ -406,6 +441,7 @@ function LatestScan({
         </h2>
         <p className={styles.meta}>
           {chosen.setKey} #{chosen.num} · {variantLabel(chosen.variant)}
+          {fromBack && ' · read from the back'}
         </p>
 
         {item.question === 'set' ? (
@@ -438,8 +474,43 @@ function LatestScan({
               </button>
             </div>
           </div>
+        ) : mode === 'add' && item.room?.kind === 'full' ? (
+          <div className={styles.question}>
+            <p>
+              Maximum count reached for <strong>{nameOf(chosen)}</strong> — add to bulk.
+            </p>
+            {!item.receipt && (
+              <div className={styles.choices}>
+                <button type="button" className={styles.button} onClick={() => onSettle('spare')}>
+                  Add anyway, as a spare
+                </button>
+              </div>
+            )}
+          </div>
+        ) : mode === 'add' && item.room?.kind === 'upgrade' ? (
+          <div className={styles.question}>
+            <p>
+              Your binder already has a full set of <strong>{nameOf(chosen)}</strong>. This{' '}
+              {variantLabel(chosen.variant)} beats your {variantLabel(item.room.replaces)}.
+            </p>
+            <div className={styles.choices}>
+              <button type="button" className={styles.primary} onClick={() => onSettle('swap')}>
+                Swap it in — {variantLabel(item.room.replaces)} to bulk
+              </button>
+              <button type="button" className={styles.button} onClick={() => onSettle('spare')}>
+                Add as a spare
+              </button>
+              <button type="button" className={styles.button} onClick={() => onSettle('none')}>
+                Don’t add
+              </button>
+            </div>
+          </div>
         ) : mode === 'add' ? (
-          <p className={styles.added}>Added to Intake</p>
+          <p className={styles.added}>
+            {item.receipt?.swapLineId
+              ? 'Added to Intake — swaps out the weaker copy'
+              : 'Added to Intake'}
+          </p>
         ) : (
           <p className={styles.meta}>
             You own {owned ?? '…'} · binder page {position.page}, row {position.row}, column{' '}

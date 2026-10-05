@@ -73,7 +73,22 @@ const RAIL_SEGMENTS: ReadonlyArray<readonly [number, number]> = [
   [0.37, 0.48],
   [0.48, 0.6],
 ];
-export const RAIL_BYTES = RAIL_BANDS.length;
+/**
+ * The same for a landscape card (Leader, Base) turned into the portrait guide: its frame
+ * then runs across the top and bottom. Bands are fractions of the height, segments of the
+ * width.
+ */
+const CROSS_RAIL_BANDS: ReadonlyArray<readonly [number, number]> = [
+  [0.02, 0.13],
+  [0.87, 0.98],
+];
+const CROSS_RAIL_SEGMENTS: ReadonlyArray<readonly [number, number]> = [
+  [0.15, 0.32],
+  [0.32, 0.5],
+  [0.5, 0.68],
+  [0.68, 0.85],
+];
+export const RAIL_BYTES = RAIL_BANDS.length + CROSS_RAIL_BANDS.length;
 
 export type Descriptor = {
   /** HASH_BITS bits, packed into 32-bit words. */
@@ -259,6 +274,21 @@ function railsOf(sample: SamplePixels): Uint8Array {
       total += best;
     }
     out[side] = Math.min(255, Math.round(total / RAIL_SEGMENTS.length));
+  });
+  CROSS_RAIL_BANDS.forEach(([a, b], side) => {
+    let total = 0;
+    for (const [s0, s1] of CROSS_RAIL_SEGMENTS) {
+      const x0 = Math.round(w * s0);
+      const x1 = Math.round(w * s1);
+      let best = 0;
+      for (let y = Math.round(h * a); y < Math.round(h * b); y++) {
+        let step = 0;
+        for (let x = x0; x < x1; x++) step += grey[(y + 1) * w + x]! - grey[y * w + x]!;
+        best = Math.max(best, Math.abs(step / (x1 - x0)));
+      }
+      total += best;
+    }
+    out[RAIL_BANDS.length + side] = Math.min(255, Math.round(total / CROSS_RAIL_SEGMENTS.length));
   });
   return out;
 }

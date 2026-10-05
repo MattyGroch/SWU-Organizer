@@ -17,9 +17,18 @@ const entries: ScanEntry[] = [
   { setKey: 'SOR', num: '059', base: 59, variant: 'normal' },
   { setKey: 'SOR', num: '324', base: 59, variant: 'hyperspace' },
   { setKey: 'SOR', num: '080', base: 80, variant: 'normal' },
+  // A Leader: its front turned into the guide, and its back.
+  { setKey: 'SOR', num: '010', base: 10, variant: 'normal', turned: true },
+  { setKey: 'SOR', num: '010', base: 10, variant: 'normal', face: 'back' },
 ];
 // Normal and Hyperspace of card 59 share their art (same hash); only the rails differ.
-const descriptors = [fp(0x0f0f0f0f, 100, 60), fp(0x0f0f0f0f, 100, 10), fp(0xf0f0f0f0, 40, 60)];
+const descriptors = [
+  fp(0x0f0f0f0f, 100, 60),
+  fp(0x0f0f0f0f, 100, 10),
+  fp(0xf0f0f0f0, 40, 60),
+  fp(0x00ff00ff, 200, 30),
+  fp(0x33333333, 20, 30),
+];
 
 function roundTrip() {
   const { bin, json } = packIndex(entries, descriptors);
@@ -59,9 +68,19 @@ suite('rankMatches', () => {
     expect(rankMatches(index, fp(0x0f0f0f0f, 100, 12))[0]!.entry.num).toBe('324');
   });
 
+  it('reports a printing once, whichever of its pictures matched', () => {
+    const top = rankMatches(index, fp(0x00ff00ff, 200, 30), 5);
+    expect(top.filter((m) => m.entry.num === '010')).toHaveLength(1);
+    expect(rankMatches(index, fp(0x33333333, 20, 30))[0]!.entry).toMatchObject({
+      num: '010',
+      face: 'back',
+    });
+  });
+
   it('never lets side features pull a different card ahead', () => {
     // Rails match card 80 exactly, but the artwork is card 59's.
     const top = rankMatches(index, fp(0x0f0f0f0f, 100, 60), 3);
-    expect(top.map((m) => m.entry.base)).toEqual([59, 59, 80]);
+    expect(top.slice(0, 2).map((m) => m.entry.base)).toEqual([59, 59]);
+    expect(top[2]!.entry.base).not.toBe(59);
   });
 });

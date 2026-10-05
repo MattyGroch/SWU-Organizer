@@ -7,6 +7,7 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 import { act, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { db } from '~/data/db';
@@ -95,7 +96,28 @@ describe('ScanPage', () => {
     await db.open();
     await db.intakeBatches.clear();
     await db.intakeLines.clear();
+    await db.owned.clear();
   });
+
+  /** A full pocket: three Normal copies of the droid (a Unit's quota is 3). */
+  const fillPocket = () =>
+    db.owned.put({
+      id: 'SOR:059',
+      setKey: 'SOR',
+      base: 59,
+      num: '059',
+      variant: 'normal',
+      count: 3,
+      updatedAt: 1,
+    });
+
+  const scan = async (num: string, variant: string) => {
+    renderPage();
+    await waitFor(() => expect(fire).not.toBeNull());
+    await act(async () => {
+      fire!({ matches: [match(num, 59, variant, 10), match('080', 80, 'normal', 90)], at: 1 });
+    });
+  };
   afterEach(() => {
     fire = null;
   });
@@ -111,5 +133,33 @@ describe('ScanPage', () => {
     expect(screen.getByRole('button', { name: 'Correct' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Rescan' })).toBeInTheDocument();
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
+  });
+
+  it('does not add a copy the binder has no room for, and says to bulk it', async () => {
+    await fillPocket();
+    await scan('059', 'normal');
+    expect(await screen.findByText(/Maximum count reached for/)).toBeInTheDocument();
+    expect(await db.intakeLines.count()).toBe(0);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Add anyway, as a spare' }));
+    await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
+    expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+  });
+
+  it('offers to swap a better printing in for the weakest copy', async () => {
+    await fillPocket();
+    await scan('324', 'hyperspace');
+    expect(await screen.findByText(/This Hyperspace beats your Normal/)).toBeInTheDocument();
+    expect(await db.intakeLines.count()).toBe(0);
+
+    await userEvent.click(screen.getByRole('button', { name: /Swap it in — Normal to bulk/ }));
+    await waitFor(async () => {
+      const lines = await db.intakeLines.toArray();
+      expect(lines.map((l) => [l.num, Boolean(l.swapOut)]).sort()).toEqual([
+        ['059', true],
+        ['324', false],
+      ]);
+    });
+    expect(await screen.findByText(/swaps out the weaker copy/)).toBeInTheDocument();
   });
 });

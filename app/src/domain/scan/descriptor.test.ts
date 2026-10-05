@@ -47,6 +47,8 @@ const art = (x: number, y: number, gain = 1, lift = 0): Rgb => {
 
 /** A "Normal" card: the art, framed by straight dark rails down each side. */
 const railColumns = new Set([12, 13, 146, 147]);
+/** The turned equivalent: rows in the top and bottom bands. */
+const crossRows = new Set([12, 13, 210, 211]);
 const framed = sample((x, y) => (railColumns.has(x) ? [10, 10, 30] : art(x, y)));
 const fullBleed = sample((x, y) => art(x, y));
 
@@ -99,7 +101,18 @@ suite('describe', () => {
   it('reads straight side rails, the mark of a Normal printing, and none on full-bleed art', () => {
     const withRails = describe(framed).rails;
     const without = describe(fullBleed).rails;
-    for (let side = 0; side < RAIL_BYTES; side++) {
+    for (const side of [0, 1]) {
+      expect(withRails[side]).toBeGreaterThan(3 * without[side]!);
+    }
+  });
+
+  it('reads the same rails across the top and bottom of a sideways card turned upright', () => {
+    // A Leader's frame, turned into the portrait guide, runs horizontally.
+    const turned = sample((x, y) => (crossRows.has(y) ? [10, 10, 30] : art(x, y)));
+    const withRails = describe(turned).rails;
+    const without = describe(fullBleed).rails;
+    expect(RAIL_BYTES).toBe(4);
+    for (const side of [2, 3]) {
       expect(withRails[side]).toBeGreaterThan(3 * without[side]!);
     }
   });

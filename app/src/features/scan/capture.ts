@@ -9,10 +9,11 @@ import { SCENE_HEIGHT, SCENE_MARGIN, SCENE_WIDTH } from '~/domain/scan/locate';
  * screen and the crop that gets fingerprinted are the same region.
  */
 
-export type Orientation = 'portrait' | 'landscape';
-
-/** SWU cards are 5:7; Leaders and Bases lie sideways at 7:5. */
-const ASPECT: Record<Orientation, number> = { portrait: 5 / 7, landscape: 7 / 5 };
+/**
+ * The guide is always portrait, 5:7. Leaders and Bases (7:5) are scanned turned on their
+ * side, either way round: the index holds them at both turns.
+ */
+const ASPECT = 5 / 7;
 /**
  * How much of the frame the guide fills: room to hold the card, without wasting pixels.
  * The guide plus SCENE_MARGIN on each side must still fit in the frame.
@@ -28,12 +29,7 @@ export type View = { width: number; height: number };
  * The guide, in video pixels: centred, as large as FILL allows at the card's aspect —
  * within the part of the video the view actually shows, so the whole guide is on screen.
  */
-export function guideRect(
-  videoWidth: number,
-  videoHeight: number,
-  orientation: Orientation,
-  view?: View | null,
-): Rect {
+export function guideRect(videoWidth: number, videoHeight: number, view?: View | null): Rect {
   let visibleWidth = videoWidth;
   let visibleHeight = videoHeight;
   if (view?.width && view.height) {
@@ -41,12 +37,12 @@ export function guideRect(
     visibleWidth = Math.min(videoWidth, view.width / scale);
     visibleHeight = Math.min(videoHeight, view.height / scale);
   }
-  const aspect = ASPECT[orientation];
+
   let height = visibleHeight * FILL;
-  let width = height * aspect;
+  let width = height * ASPECT;
   if (width > visibleWidth * FILL) {
     width = visibleWidth * FILL;
-    height = width / aspect;
+    height = width / ASPECT;
   }
   return { x: (videoWidth - width) / 2, y: (videoHeight - height) / 2, width, height };
 }
@@ -70,19 +66,17 @@ export function toScreen(
 
 /**
  * Captures the guide plus SCENE_MARGIN around it — room for locateCard to find a card that
- * sits small or off-centre in the guide. Landscape cards are stretched into the portrait
- * scene, exactly as the index builder stretches their reference images.
+ * sits small or off-centre in the guide.
  */
 export function captureScene(
   video: HTMLVideoElement,
-  orientation: Orientation,
   view: View | null,
   canvas: HTMLCanvasElement,
 ): SamplePixels | null {
   const vw = video.videoWidth;
   const vh = video.videoHeight;
   if (!vw || !vh) return null;
-  const rect = guideRect(vw, vh, orientation, view);
+  const rect = guideRect(vw, vh, view);
   canvas.width = SCENE_WIDTH;
   canvas.height = SCENE_HEIGHT;
   const context = canvas.getContext('2d', { willReadFrequently: true });

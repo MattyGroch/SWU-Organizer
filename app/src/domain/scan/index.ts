@@ -20,7 +20,19 @@ import {
  * is needed.
  */
 
-export type ScanEntry = { setKey: string; num: string; base: number; variant: string };
+/**
+ * One reference picture of a printing. A printing can have several: a Leader's back
+ * (`face: 'back'`), and a landscape card turned each way to fit the portrait guide
+ * (`turned`) — whose frame then runs across the top and bottom, not down the sides.
+ */
+export type ScanEntry = {
+  setKey: string;
+  num: string;
+  base: number;
+  variant: string;
+  face?: 'back';
+  turned?: true;
+};
 
 export type ScanIndex = {
   entries: ScanEntry[];
@@ -38,8 +50,11 @@ export type IndexJson = {
   version: 1;
   hashBits: number;
   sample: [number, number];
-  /** [setKey, num, base, variant] per entry, in index.bin order. */
-  entries: Array<[string, string, number, string]>;
+  /**
+   * [setKey, num, base, variant] per entry, in index.bin order, plus flags when there are
+   * any: space-separated `back` and `turned`.
+   */
+  entries: Array<[string, string, number, string] | [string, string, number, string, string]>;
 };
 
 const MAGIC = 0x53555753; // "SWUS", little-endian
@@ -81,7 +96,12 @@ export function packIndex(
       version: 1,
       hashBits: HASH_BITS,
       sample: [SAMPLE_WIDTH, SAMPLE_HEIGHT],
-      entries: entries.map((e) => [e.setKey, e.num, e.base, e.variant]),
+      entries: entries.map((e) => {
+        const flags = [e.face === 'back' && 'back', e.turned && 'turned'].filter(Boolean);
+        return flags.length
+          ? [e.setKey, e.num, e.base, e.variant, flags.join(' ')]
+          : [e.setKey, e.num, e.base, e.variant];
+      }),
     },
   };
 }
@@ -128,7 +148,13 @@ export function parseIndex(bin: ArrayBuffer, json: IndexJson): ScanIndex {
   const rails = take(RAIL_BYTES);
 
   return {
-    entries: json.entries.map(([setKey, num, base, variant]) => ({ setKey, num, base, variant })),
+    entries: json.entries.map(([setKey, num, base, variant, flags]) => {
+      const entry: ScanEntry = { setKey, num, base, variant };
+      const set = new Set(flags?.split(' '));
+      if (set.has('back')) entry.face = 'back';
+      if (set.has('turned')) entry.turned = true;
+      return entry;
+    }),
     hashes,
     colors,
     strips,
@@ -141,8 +167,25 @@ export const COLOR_WEIGHT = 0.5;
 /** Stage 2 — which printing of it: added to the stage-1 score among that card's printings. */
 export const STRIP_WEIGHT = 0.5;
 export const RAIL_WEIGHT = 1;
-/** How many stage-1 candidates stage 2 looks at. */
-const SHORTLIST = 8;
+
+/**
+ * Rails compared where the reference's frame runs: down the sides of an upright card,
+ * across the top and bottom of a turned one. The other pair is noise for that picture.
+ */
+function railDistance(query: Uint8Array, rails: Uint8Array, index: number, turned: boolean) {
+  const pair = RAIL_BYTES / 2;
+  const from = turned ? pair : 0;
+  let sum = 0;
+  for (let i = from; i < from + pair; i++) {
+    sum += Math.abs(query[i]! - rails[index * RAIL_BYTES + i]!);
+  }
+  return sum / pair;
+}
+/**
+ * How many stage-1 candidates stage 2 looks at. Generous, because one printing can hold
+ * several of them: a landscape card is indexed turned both ways.
+ */
+const SHORTLIST = 12;
 
 export type Match = { entry: ScanEntry; index: number; score: number; bits: number };
 
@@ -187,9 +230,18 @@ export function rankMatches(index: ScanIndex, query: Descriptor, limit = 5): Mat
       score:
         m.score +
         STRIP_WEIGHT * byteDistance(query.strip, index.strips, m.index * STRIP_BYTES, STRIP_BYTES) +
-        RAIL_WEIGHT * byteDistance(query.rails, index.rails, m.index * RAIL_BYTES, RAIL_BYTES),
+        RAIL_WEIGHT * railDistance(query.rails, index.rails, m.index, m.entry.turned === true),
     }))
     .sort((a, b) => a.score - b.score);
   const others = shortlist.filter((m) => !sameCard(m.entry, card));
-  return [...printings, ...others].slice(0, limit);
+  // Each printing once, at its best-matching picture (front, back, or either turn).
+  const seen = new Set<string>();
+  return [...printings, ...others]
+    .filter((m) => {
+      const key = `${m.entry.setKey}:${m.entry.num}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .slice(0, limit);
 }

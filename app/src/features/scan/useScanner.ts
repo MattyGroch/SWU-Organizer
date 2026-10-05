@@ -5,7 +5,7 @@ import { rankMatches, type Match, type ScanIndex } from '~/domain/scan/index';
 import { GUIDE, describePlacement, locateCard } from '~/domain/scan/locate';
 import { createTracker, type TrackerEvent } from '~/domain/scan/tracker';
 
-import { captureScene, type Orientation, type View } from './capture';
+import { captureScene, type View } from './capture';
 
 /** How often a frame is fingerprinted. Fast enough to feel instant, light on the battery. */
 const FRAME_INTERVAL_MS = 150;
@@ -28,14 +28,12 @@ export type ScanResult = {
 export function useScanner({
   videoRef,
   index,
-  orientation,
   view,
   active,
   onResult,
 }: {
   videoRef: RefObject<HTMLVideoElement | null>;
   index: ScanIndex | undefined;
-  orientation: Orientation;
   /** The on-screen viewfinder box, which decides where the guide is. */
   view: View | null;
   active: boolean;
@@ -50,9 +48,6 @@ export function useScanner({
   const viewRef = useRef(view);
   viewRef.current = view;
 
-  // A different orientation frames a different region: start fresh.
-  useEffect(() => trackerRef.current.reset(), [orientation]);
-
   useEffect(() => {
     if (!active || !index) {
       setPhase('idle');
@@ -65,7 +60,7 @@ export function useScanner({
       let scene: SamplePixels | null;
       let frame: Descriptor | null;
       try {
-        scene = captureScene(video, orientation, viewRef.current, canvasRef.current!);
+        scene = captureScene(video, viewRef.current, canvasRef.current!);
         frame = scene && describePlacement(scene, GUIDE);
       } catch {
         return;
@@ -94,7 +89,7 @@ export function useScanner({
       }
     }, FRAME_INTERVAL_MS);
     return () => window.clearInterval(timer);
-  }, [active, index, orientation, videoRef]);
+  }, [active, index, videoRef]);
 
   /** Lets the card already in view fire again — after Rescan or a mode change. */
   const rearm = useCallback(() => trackerRef.current.reset(), []);

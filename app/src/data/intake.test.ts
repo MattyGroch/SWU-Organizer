@@ -10,6 +10,8 @@ import {
   commitBatch,
   discardBatch,
   moveCopy,
+  cancelSwap,
+  queuedPocket,
   queueScan,
   queueDeck,
   removeCard,
@@ -232,5 +234,72 @@ describe('scanned cards', () => {
     const { batchId } = await queueScan(trooper, { database });
     await commitBatch(batchId, database);
     expect((await database.owned.get('SOR:033'))?.count).toBe(1);
+  });
+  const own = (num: string, variant: 'normal' | 'hyperspace', count: number) =>
+    database.owned.put({
+      id: `SOR:${num}`,
+      setKey: 'SOR',
+      base: 33,
+      num,
+      variant,
+      count,
+      updatedAt: 1,
+    });
+
+  it('know what the pocket will hold: owned, plus queued, less queued swap-outs', async () => {
+    await own('033', 'normal', 2);
+    await queueScan(trooper, { database });
+    expect(await queuedPocket('SOR', 33, database)).toEqual({ normal: 3 });
+    await queueScan(hyper, { database, swapOut: trooper });
+    expect(await queuedPocket('SOR', 33, database)).toEqual({ normal: 2, hyperspace: 1 });
+  });
+
+  it('a swap removes the weaker copy at commit, and is never counted as a card', async () => {
+    await own('033', 'normal', 3);
+    const receipt = await queueScan(hyper, { database, swapOut: trooper });
+    const lines = await database.intakeLines.toArray();
+    expect(lines.map((l) => [l.num, l.count, Boolean(l.swapOut)]).sort()).toEqual([
+      ['033', 1, true],
+      ['298', 1, false],
+    ]);
+
+    const report = await commitBatch(receipt.batchId, database);
+    expect(report.copies).toBe(1);
+    expect((await database.owned.get('SOR:033'))?.count).toBe(2);
+    expect((await database.owned.get('SOR:298'))?.count).toBe(1);
+  });
+
+  it('a swap can be undone with its scan, or dropped to keep both copies', async () => {
+    await own('033', 'normal', 1);
+    const receipt = await queueScan(hyper, { database, swapOut: trooper });
+    await unqueueScan(receipt, database);
+    expect(await database.intakeLines.count()).toBe(0);
+
+    const again = await queueScan(hyper, { database, swapOut: trooper });
+    await cancelSwap(again.swapLineId!, database);
+    await commitBatch(again.batchId, database);
+    expect((await database.owned.get('SOR:033'))?.count).toBe(1);
+    expect((await database.owned.get('SOR:298'))?.count).toBe(1);
+  });
+
+  it('a swap of the last copy deletes its row rather than leaving a zero', async () => {
+    await own('033', 'normal', 1);
+    const { batchId } = await queueScan(hyper, { database, swapOut: trooper });
+    await commitBatch(batchId, database);
+    expect(await database.owned.get('SOR:033')).toBeUndefined();
+  });
+
+  it('allocation never touches swap-outs; removing the card drops them too', async () => {
+    const { batchId } = await queueScan(hyper, { database, swapOut: trooper });
+    const card = { batchId, setKey: 'SOR', base: 33 };
+    await resetCard(card, trooper, database);
+    const lines = await database.intakeLines.toArray();
+    // The Hyperspace moved back to Normal; the swap-out line is untouched beside it.
+    expect(lines.map((l) => [l.num, l.count, Boolean(l.swapOut)]).sort()).toEqual([
+      ['033', 1, false],
+      ['033', 1, true],
+    ]);
+    await removeCard(card, database);
+    expect(await database.intakeLines.count()).toBe(0);
   });
 });

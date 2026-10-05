@@ -58,9 +58,27 @@ const option = (name: string) => {
 
 type Manifest = { sets: Array<{ key: string; file: string }> };
 type CatalogFile = {
-  cards: Array<{ base: number; name: string; printings: Array<{ num: string; variant: string }> }>;
+  cards: Array<{
+    base: number;
+    name: string;
+    type: string;
+    doubleSided?: boolean;
+    printings: Array<{ num: string; variant: string }>;
+  }>;
 };
-type Ref = ScanEntry & { name: string; file: string };
+/**
+ * One reference picture. `remote` is the CDN name (`005`, or `005-b` for a back).
+ * `sideways` marks a landscape card's front (Leader, Base). `turn` rotates the picture
+ * into the portrait guide — a sideways card can sit there either way round, so it is
+ * indexed at both turns.
+ */
+type Ref = ScanEntry & {
+  name: string;
+  remote: string;
+  file: string;
+  sideways: boolean;
+  turn: 0 | 90 | 180 | 270;
+};
 
 async function exists(path: string): Promise<boolean> {
   try {
@@ -81,14 +99,22 @@ async function references(): Promise<Ref[]> {
     for (const card of catalog.cards) {
       for (const printing of card.printings) {
         if (!INDEXED.has(printing.variant)) continue;
-        refs.push({
-          setKey: set.key,
-          num: printing.num,
-          base: card.base,
-          variant: printing.variant,
-          name: card.name,
-          file: join(CACHE_DIR, set.key, `${printing.num}.png`),
-        });
+        const faces = card.doubleSided ? (['front', 'back'] as const) : (['front'] as const);
+        for (const face of faces) {
+          const remote = face === 'back' ? `${printing.num}-b` : printing.num;
+          refs.push({
+            setKey: set.key,
+            num: printing.num,
+            base: card.base,
+            variant: printing.variant,
+            ...(face === 'back' ? { face } : {}),
+            name: card.name,
+            remote,
+            file: join(CACHE_DIR, set.key, `${remote}.png`),
+            sideways: face === 'front' && (card.type === 'Leader' || card.type === 'Base'),
+            turn: 0,
+          });
+        }
       }
     }
   }
@@ -99,7 +125,7 @@ async function download(ref: Ref): Promise<boolean> {
   if (await exists(ref.file)) return true;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      const response = await fetch(`${CDN}/${ref.setKey}/${ref.num}.png`);
+      const response = await fetch(`${CDN}/${ref.setKey}/${ref.remote}.png`);
       if (response.status === 404 || response.status === 403) return false;
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       await mkdir(dirname(ref.file), { recursive: true });
@@ -130,6 +156,39 @@ async function inParallel<T>(items: T[], worker: (item: T, i: number) => Promise
   );
 }
 
+/** What the app sees of a reference: the printing, and whether it is a back. */
+function toEntry({ setKey, num, base, variant, face, turned }: Ref): ScanEntry {
+  const entry: ScanEntry = { setKey, num, base, variant };
+  if (face) entry.face = face;
+  if (turned) entry.turned = true;
+  return entry;
+}
+
+/** A landscape picture becomes two references, turned each way; a portrait one stays. */
+async function orient(ref: Ref): Promise<Ref[]> {
+  const { width = 0, height = 0 } = await sharp(ref.file).metadata();
+  // A landscape picture, or a sideways card whose picture the CDN stores already turned
+  // (a few Hyperspace Bases): its frame runs across the top and bottom in the guide.
+  if (width > height) {
+    return [
+      { ...ref, turn: 90, turned: true },
+      { ...ref, turn: 270, turned: true },
+    ];
+  }
+  if (ref.sideways) {
+    return [
+      { ...ref, turn: 0, turned: true },
+      { ...ref, turn: 180, turned: true },
+    ];
+  }
+  return [ref];
+}
+
+/** The reference picture, turned into portrait as the guide sees it. */
+function picture(ref: Ref): Sharp {
+  return ref.turn ? sharp(ref.file).rotate(ref.turn) : sharp(ref.file);
+}
+
 /** The capture the camera also produces, from any sharp pipeline, fingerprinted. */
 async function sample(image: Sharp): Promise<Descriptor> {
   const { data, info } = await image
@@ -150,7 +209,8 @@ function jitter(i: number, salt: number): number {
 
 /** What a phone camera might make of the card: off-centre in the guide, a little tilted,
  * differently lit, slightly soft, then JPEG-compressed. */
-async function cameraLike(file: string, i: number): Promise<Descriptor> {
+async function cameraLike(ref: Ref, i: number): Promise<Descriptor> {
+  const file = await picture(ref).png().toBuffer();
   const base = sharp(file);
   const meta = await base.metadata();
   const w = meta.width ?? 1000;
@@ -174,7 +234,8 @@ async function cameraLike(file: string, i: number): Promise<Descriptor> {
  * A hand-held view of the card: smaller than the guide and off-centre on a table, slightly
  * tilted, as the phone sees it — what locateCard has to find.
  */
-async function handHeld(file: string, i: number) {
+async function handHeld(ref: Ref, i: number) {
+  const file = await picture(ref).png().toBuffer();
   const size = 0.75 + 0.25 * jitter(i, 11);
   const cx = 0.5 + (jitter(i, 12) - 0.5) * 0.12;
   const cy = 0.5 + (jitter(i, 13) - 0.5) * 0.12;
@@ -214,13 +275,18 @@ async function main() {
   await inParallel(all, async (ref, i) => {
     available[i] = await download(ref);
   });
-  const refs = all.filter((_, i) => available[i]);
-  console.log(`Images: ${refs.length} available, ${all.length - refs.length} missing on the CDN`);
+  const pictures = all.filter((_, i) => available[i]);
+  const refs = (await Promise.all(pictures.map(orient))).flat();
+  const backs = pictures.filter((r) => r.face === 'back').length;
+  console.log(
+    `Images: ${pictures.length} available (${backs} Leader backs), ${all.length - pictures.length} missing on the CDN; ` +
+      `${refs.length - pictures.length} sideways cards indexed both ways round → ${refs.length} references`,
+  );
   if (flag('--download-only')) return;
 
   const descriptors: Descriptor[] = new Array(refs.length);
   await inParallel(refs, async (ref, i) => {
-    descriptors[i] = await sample(sharp(ref.file));
+    descriptors[i] = await sample(picture(ref));
   });
 
   const hashes = new Uint32Array(refs.length * HASH_WORDS);
@@ -235,7 +301,7 @@ async function main() {
   });
 
   const scanIndex: ScanIndex = {
-    entries: refs.map(({ setKey, num, base, variant }) => ({ setKey, num, base, variant })),
+    entries: refs.map(toEntry),
     hashes,
     colors,
     strips,
@@ -243,12 +309,7 @@ async function main() {
   };
 
   await mkdir(OUT_DIR, { recursive: true });
-  const entries: ScanEntry[] = refs.map(({ setKey, num, base, variant }) => ({
-    setKey,
-    num,
-    base,
-    variant,
-  }));
+  const entries: ScanEntry[] = refs.map(toEntry);
   const { bin, json } = packIndex(entries, descriptors);
   await writeFile(join(OUT_DIR, 'index.bin'), bin);
   await writeFile(join(OUT_DIR, 'index.json'), JSON.stringify(json));
@@ -309,7 +370,7 @@ async function main() {
     let top3 = 0;
     const margins: number[] = [];
     await inParallel(refs, async (ref, i) => {
-      const query = await cameraLike(ref.file, i);
+      const query = await cameraLike(ref, i);
       const ranked = rankMatches(scanIndex, query, 5);
       const top = ranked[0]!;
       const hit = refs[top.index]!;
@@ -318,6 +379,10 @@ async function main() {
         return x.setKey === ref.setKey && x.num === ref.num;
       };
       if (same(top)) exact++;
+      else if (process.env.SCAN_DEBUG)
+        console.log(
+          `  miss: ${ref.setKey} ${ref.num} ${ref.name} ${ref.variant}${ref.face ? ' back' : ''} t${ref.turn} → ${hit.setKey} ${hit.num} ${hit.name} ${hit.variant}${hit.face ? ' back' : ''} t${hit.turn}`,
+        );
       if (hit.name === ref.name && hit.variant === ref.variant) card++;
       if (ranked.slice(0, 3).some(same)) top3++;
       if (same(top) && ranked[1]) margins.push(ranked[1].score - top.score);
@@ -343,7 +408,7 @@ async function main() {
     const sampled = refs.filter((_, i) => i % 10 === 0);
     let found = 0;
     await inParallel(sampled, async (ref, j) => {
-      const located = locateCard(await handHeld(ref.file, j), scanIndex);
+      const located = locateCard(await handHeld(ref, j), scanIndex);
       const top = located && rankMatches(scanIndex, located.descriptor, 1)[0];
       const hit = top && refs[top.index]!;
       if (hit && hit.name === ref.name && hit.variant === ref.variant) found++;

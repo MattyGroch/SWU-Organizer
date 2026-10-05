@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import type { IntakeLine } from '~/data/db';
 import {
   adjustCardCount,
+  cancelSwap,
   commitBatch,
   discardBatch,
   moveCopy,
@@ -72,7 +73,7 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
   const [busy, setBusy] = useState(false);
   const cards = groupByCard(batch.lines);
   const changed = batch.lines
-    .filter((l) => l.variant !== 'normal')
+    .filter((l) => l.variant !== 'normal' && !l.swapOut)
     .reduce((sum, l) => sum + l.count, 0);
 
   async function commit() {
@@ -135,6 +136,7 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
                 key={`${card.setKey}:${card.base}`}
                 batchId={batch.id}
                 lines={card.lines}
+                swaps={card.swaps}
                 set={sets.get(card.setKey)}
               />
             ))}
@@ -181,18 +183,24 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
   );
 }
 
-type CardGroup = { setKey: SetKey; base: number; lines: IntakeLine[] };
+type CardGroup = { setKey: SetKey; base: number; lines: IntakeLine[]; swaps: IntakeLine[] };
 
 /** One row per card, however many printings its copies are spread across. */
 function groupByCard(lines: IntakeLine[]): CardGroup[] {
   const groups = new Map<string, CardGroup>();
   for (const line of lines) {
     const key = `${line.setKey}:${line.base}`;
-    const group = groups.get(key) ?? { setKey: line.setKey, base: line.base, lines: [] };
-    group.lines.push(line);
+    const group = groups.get(key) ?? {
+      setKey: line.setKey,
+      base: line.base,
+      lines: [],
+      swaps: [],
+    };
+    (line.swapOut ? group.swaps : group.lines).push(line);
     groups.set(key, group);
   }
-  return [...groups.values()];
+  // A card whose copies were all removed has nothing left to add.
+  return [...groups.values()].filter((group) => group.lines.length > 0);
 }
 
 /** Everything a card's row and its Fix sheet need: counts per printing, and the moves. */
@@ -242,10 +250,12 @@ type CardModel = ReturnType<typeof useCardModel>;
 function CardRow({
   batchId,
   lines,
+  swaps,
   set,
 }: {
   batchId: string;
   lines: IntakeLine[];
+  swaps: IntakeLine[];
   set: LoadedSet | undefined;
 }) {
   const model = useCardModel(batchId, lines, set);
@@ -270,6 +280,7 @@ function CardRow({
               .join(' · ')}
           </span>
         </span>
+        <SwapNotes swaps={swaps} name={name} />
       </td>
       <td className={styles.wideOnly}>
         <PrintingButtons model={model} />
@@ -305,6 +316,29 @@ function CardRow({
         {fixing && source && <FixCardDialog model={model} onClose={() => setFixing(false)} />}
       </td>
     </tr>
+  );
+}
+
+/** "Swaps out 1 Normal": the weaker copies this card displaces from its pocket, to bulk. */
+function SwapNotes({ swaps, name }: { swaps: IntakeLine[]; name: string }) {
+  if (!swaps.length) return null;
+  return (
+    <span className={styles.swaps}>
+      {swaps.map((swap) => (
+        <span key={swap.id} className={styles.swap}>
+          Swaps out {swap.count} {variantLabel(swap.variant)} — to bulk
+          <button
+            type="button"
+            className={styles.keep}
+            onClick={() => void cancelSwap(swap.id)}
+            aria-label={`Keep the ${variantLabel(swap.variant)} ${name}; add the new copy as a spare`}
+            title="Keep it: the new copy is added as a spare instead"
+          >
+            Keep
+          </button>
+        </span>
+      ))}
+    </span>
   );
 }
 
