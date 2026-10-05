@@ -10,6 +10,16 @@ Add items anywhere under the right heading. Rough notes are fine — "the spread
 
 Your own list: things to try, questions only you can answer, and setup only you can do. Claude adds items here when it needs your input; tick them off or answer inline.
 
+### Launch checklist (before the point of no return)
+
+- [ ] **Clear test data everywhere** — every browser and device you've used: uninstall the installed app or clear the site's data (Chrome: Settings → Privacy → Site settings → swu.mattyflix.com → Delete data). Then, signed in on one clean device, wipe the collection (Bulk edit → Reset… → whole collection), delete test decks, untick precons and discard Intake batches — so the server's copy is empty too, and no old device can sync test data back.
+- [ ] **Import your collection** on that one device, let it sync, then sign in on the others — they download it.
+- [ ] **Two devices in sync on production** — edit on the phone, see it on the desktop (and with one offline, then back).
+- [ ] **Installed app + offline scan**, **scanner behaviour** and **deck lifecycle** — see Validate / test below.
+- [ ] **Server database copy to the on-site NAS** — an rsync (or similar) job for `/var/config/swu-organizer/swu.db`. Copy it with SQLite's own backup (`sqlite3 swu.db ".backup /tmp/swu-copy.db"`) and rsync that, rather than the live file — a raw copy taken mid-write can be torn. Claude can write the script.
+- [ ] **HMW precons** — decklists in, so owned precons are complete before you tick them.
+- [ ] **Declare the point of no return** — from then on, data is protected.
+
 ### Validate / test
 
 - [ ] **Scanner, new behaviour** — scan a few Leaders and Bases turned both ways up, and a Leader from its back. Scan a card you already have a playset of (should say "Maximum count reached — add to bulk", add nothing), and a better printing of a full card (should add it and say "Bumps a Normal … to bulk"). Commit that batch and check the Normal left the collection.
@@ -23,7 +33,6 @@ Your own list: things to try, questions only you can answer, and setup only you 
 
 ### To do / provide
 
-- [ ] **Point of no return** — tell Claude when you start using the live app for real. Until then, breaking changes and data loss are fair game; after it, data is protected and you import your collection from zero.
 - [ ] **HMW precon decklists** — paste them in and Claude will build the precon files.
 - [ ] Later: when Portainer is back, **delete or detach stack 99 first** (it's v1 — a redeploy would start it on top of v2), then let Portainer adopt `/opt/swu-organizer` as a git stack and restore the redeploy step in `docker-publish.yml`.
 - [ ] Once v2 has proved itself: delete `/var/config/swu-organizer/v1-backup/`, the `v1-rollback` image tags, and the `pre-scan` image tag on photonOS.
@@ -81,7 +90,7 @@ Not now, but don't lose it.
 - [x] **Intake on phones: a Fix sheet per card.** Rows show the card, a printing summary (2 N · 1 H), the count and a Fix button; the sheet has the art, large printing buttons, −/+, reset and remove. A single copy moves to whichever printing is tapped.
 - [x] **Scanner accuracy on a real phone.** It used to fingerprint the whole guide, so a card held a little small or off-centre matched wrongly; it now finds the card inside the guide first (hand-held: ~0% → 98%). The result panel shows under the camera on phones without scrolling, and a view with no recognisable card says so instead of guessing.
 - [x] **Scanner (Phase 5).** `/scan` with two modes — **Add to Intake** (every scan queues in a "Scanned cards" batch, reviewed and committed like any other) and **Look up** (shows the card's binder location) — plus Correct, Rescan, "Which set?" for identical reprints and "Is this the right card?" when unsure. Torch button where the phone has one.
-- [x] **TS26 / IBH double count** — answered.
+- [x] **TS26 / IBH double count** — moot: the production collection starts from zero.
 - [x] **Phone view, bulk edit, scrolling and shortcuts help validated by Matt.**
 - [x] **v2 launch finished** — #52 merged, backup restored on the live site, signed in.
 
