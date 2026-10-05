@@ -116,8 +116,14 @@
   text-align: center;
 }
 
-/* Phones: the type is the first thing to go. */
+/* Phones: the type is the first thing to go, and the box shares its row with Filters and
+   More, so it gives up its desktop minimum width. */
 @media (max-width: 760px) {
+  .container {
+    flex: 1 1 8rem;
+    min-width: 0;
+  }
+
   .optionType {
     display: none;
   }

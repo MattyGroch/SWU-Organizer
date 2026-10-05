@@ -153,6 +153,11 @@
     display: none;
   }
 
+  /* Scrolled to, the table takes the whole screen below the sticky header. */
+  .scroller {
+    max-height: calc(100dvh - 72px);
+  }
+
   /* With no Status column, the count carries its colour. */
   .owned {
     font-weight: 700;

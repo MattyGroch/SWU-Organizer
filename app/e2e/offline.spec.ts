@@ -14,12 +14,12 @@ test('installable: the manifest and icons are served', async ({ page, request })
 
 test('once visited, the app opens and scans offline', async ({ page, context }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Bulk edit' }).waitFor();
+  await page.getByRole('table').waitFor();
   await page.evaluate(() => navigator.serviceWorker.ready);
   // The first load happened before the worker took control; this one goes through it,
   // which caches the catalogs. Visiting Scan caches the scan index the same way.
   await page.reload();
-  await page.getByRole('button', { name: 'Bulk edit' }).waitFor();
+  await page.getByRole('table').waitFor();
   await page.goto('/scan');
   await page.getByRole('button', { name: 'Start camera' }).waitFor();
   await page.waitForTimeout(1_000);
@@ -27,7 +27,7 @@ test('once visited, the app opens and scans offline', async ({ page, context }) 
   await context.setOffline(true);
 
   await page.goto('/binder/SOR');
-  await expect(page.getByRole('button', { name: 'Bulk edit' })).toBeVisible();
+  await expect(page.getByRole('table')).toBeVisible();
   await expect(page.getByRole('cell', { name: /^Director Krennic/ })).toBeVisible();
 
   await page.goto('/scan');

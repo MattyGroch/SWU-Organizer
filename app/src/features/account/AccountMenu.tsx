@@ -38,8 +38,9 @@ export function AccountMenu() {
 
   if (account === 'signedOut') {
     return (
-      <a className={styles.signIn} href={SIGN_IN_URL}>
-        Sign in to sync
+      <a className={styles.signIn} href={SIGN_IN_URL} aria-label="Sign in to sync">
+        <span className={styles.long}>Sign in to sync</span>
+        <span className={styles.short}>Sign in</span>
       </a>
     );
   }

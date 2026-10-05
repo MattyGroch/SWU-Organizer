@@ -16,6 +16,8 @@ import styles from './FilterBar.module.css';
 type Props = {
   filters: Filters;
   onChange: (filters: Filters) => void;
+  /** Extra class for the panel, e.g. to sit inline in the phone toolbar. */
+  className?: string;
 };
 
 const ASPECT_VAR: Record<string, string> = {
@@ -65,7 +67,7 @@ function activeFilterCount(filters: Filters): number {
   );
 }
 
-export function FilterBar({ filters, onChange }: Props) {
+export function FilterBar({ filters, onChange, className }: Props) {
   const [open, setOpen] = useState(() => !window.matchMedia?.(NARROW)?.matches);
   const active = activeFilterCount(filters);
   function toggle<K extends 'aspect' | 'rarity' | 'type' | 'status'>(
@@ -81,7 +83,7 @@ export function FilterBar({ filters, onChange }: Props) {
 
   return (
     <details
-      className={styles.panel}
+      className={className ? `${styles.panel} ${className}` : styles.panel}
       open={open}
       onToggle={(event) => setOpen(event.currentTarget.open)}
     >
