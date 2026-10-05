@@ -389,10 +389,22 @@ export function toSearchCatalog(set: LoadedSet) {
     for (const n of numbers) baseByPrintingNumber.set(n, base);
   }
 
+  const promosByBase = new Map<number, Array<{ set: string; number: number }>>();
+  for (const [base, printings] of set.printingsByBase) {
+    const promos = printings.flatMap((p) => {
+      const parts = promoParts(p.num);
+      return parts && p.variant === 'promo'
+        ? [{ set: parts.set, number: numericPart(parts.number) }]
+        : [];
+    });
+    if (promos.length) promosByBase.set(base, promos);
+  }
+
   return {
     setKey: set.setKey,
     cards: set.baseCards,
     printingNumbersByBase,
     baseByPrintingNumber,
+    promosByBase,
   };
 }
