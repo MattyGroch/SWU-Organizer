@@ -1,9 +1,5 @@
-import {
-  CAPTURE_HEIGHT,
-  CAPTURE_WIDTH,
-  describeCapture,
-  type Descriptor,
-} from '~/domain/scan/descriptor';
+import type { SamplePixels } from '~/domain/scan/descriptor';
+import { SCENE_HEIGHT, SCENE_MARGIN, SCENE_WIDTH } from '~/domain/scan/locate';
 
 /**
  * Framing and capturing: turning a camera frame into a fingerprint.
@@ -17,18 +13,39 @@ export type Orientation = 'portrait' | 'landscape';
 
 /** SWU cards are 5:7; Leaders and Bases lie sideways at 7:5. */
 const ASPECT: Record<Orientation, number> = { portrait: 5 / 7, landscape: 7 / 5 };
-/** How much of the frame the guide fills: room to hold the card, without wasting pixels. */
+/**
+ * How much of the frame the guide fills: room to hold the card, without wasting pixels.
+ * The guide plus SCENE_MARGIN on each side must still fit in the frame.
+ */
 const FILL = 0.8;
 
 export type Rect = { x: number; y: number; width: number; height: number };
 
-/** The guide, in video pixels: centred, as large as FILL allows at the card's aspect. */
-export function guideRect(videoWidth: number, videoHeight: number, orientation: Orientation): Rect {
+/** The on-screen box the video fills (object-fit: cover), which may crop the video. */
+export type View = { width: number; height: number };
+
+/**
+ * The guide, in video pixels: centred, as large as FILL allows at the card's aspect —
+ * within the part of the video the view actually shows, so the whole guide is on screen.
+ */
+export function guideRect(
+  videoWidth: number,
+  videoHeight: number,
+  orientation: Orientation,
+  view?: View | null,
+): Rect {
+  let visibleWidth = videoWidth;
+  let visibleHeight = videoHeight;
+  if (view?.width && view.height) {
+    const scale = Math.max(view.width / videoWidth, view.height / videoHeight);
+    visibleWidth = Math.min(videoWidth, view.width / scale);
+    visibleHeight = Math.min(videoHeight, view.height / scale);
+  }
   const aspect = ASPECT[orientation];
-  let height = videoHeight * FILL;
+  let height = visibleHeight * FILL;
   let width = height * aspect;
-  if (width > videoWidth * FILL) {
-    width = videoWidth * FILL;
+  if (width > visibleWidth * FILL) {
+    width = visibleWidth * FILL;
     height = width / aspect;
   }
   return { x: (videoWidth - width) / 2, y: (videoHeight - height) / 2, width, height };
@@ -52,35 +69,36 @@ export function toScreen(
 }
 
 /**
- * Fingerprints whatever is inside the guide. Landscape cards are stretched into the
- * portrait capture, exactly as the index builder stretches their reference images.
+ * Captures the guide plus SCENE_MARGIN around it — room for locateCard to find a card that
+ * sits small or off-centre in the guide. Landscape cards are stretched into the portrait
+ * scene, exactly as the index builder stretches their reference images.
  */
-export function captureGuide(
+export function captureScene(
   video: HTMLVideoElement,
   orientation: Orientation,
+  view: View | null,
   canvas: HTMLCanvasElement,
-): Descriptor | null {
+): SamplePixels | null {
   const vw = video.videoWidth;
   const vh = video.videoHeight;
   if (!vw || !vh) return null;
-  const rect = guideRect(vw, vh, orientation);
-  canvas.width = CAPTURE_WIDTH;
-  canvas.height = CAPTURE_HEIGHT;
+  const rect = guideRect(vw, vh, orientation, view);
+  canvas.width = SCENE_WIDTH;
+  canvas.height = SCENE_HEIGHT;
   const context = canvas.getContext('2d', { willReadFrequently: true });
   if (!context) return null;
   context.imageSmoothingEnabled = true;
   context.imageSmoothingQuality = 'high';
   context.drawImage(
     video,
-    rect.x,
-    rect.y,
-    rect.width,
-    rect.height,
+    rect.x - rect.width * SCENE_MARGIN,
+    rect.y - rect.height * SCENE_MARGIN,
+    rect.width * (1 + 2 * SCENE_MARGIN),
+    rect.height * (1 + 2 * SCENE_MARGIN),
     0,
     0,
-    CAPTURE_WIDTH,
-    CAPTURE_HEIGHT,
+    SCENE_WIDTH,
+    SCENE_HEIGHT,
   );
-  const image = context.getImageData(0, 0, CAPTURE_WIDTH, CAPTURE_HEIGHT);
-  return describeCapture(image);
+  return context.getImageData(0, 0, SCENE_WIDTH, SCENE_HEIGHT);
 }

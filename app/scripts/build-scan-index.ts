@@ -35,6 +35,7 @@ import {
   type Descriptor,
 } from '../src/domain/scan/descriptor';
 import { packIndex, rankMatches, type ScanEntry, type ScanIndex } from '../src/domain/scan/index';
+import { SCENE_HEIGHT, SCENE_MARGIN, SCENE_WIDTH, locateCard } from '../src/domain/scan/locate';
 
 const APP_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SETS_DIR = join(APP_DIR, 'public/sets');
@@ -169,6 +170,42 @@ async function cameraLike(file: string, i: number): Promise<Descriptor> {
   return sample(sharp(jpeg));
 }
 
+/**
+ * A hand-held view of the card: smaller than the guide and off-centre on a table, slightly
+ * tilted, as the phone sees it — what locateCard has to find.
+ */
+async function handHeld(file: string, i: number) {
+  const size = 0.75 + 0.25 * jitter(i, 11);
+  const cx = 0.5 + (jitter(i, 12) - 0.5) * 0.12;
+  const cy = 0.5 + (jitter(i, 13) - 0.5) * 0.12;
+  const table = { r: 120, g: 95, b: 70 };
+  const card = await sharp(file)
+    .resize(Math.round(size * CAPTURE_WIDTH), Math.round(size * CAPTURE_HEIGHT), { fit: 'fill' })
+    .rotate((jitter(i, 14) - 0.5) * 4, { background: table })
+    .modulate({ brightness: 0.75 + 0.5 * jitter(i, 15) })
+    .blur(0.6 + jitter(i, 16))
+    .png()
+    .toBuffer();
+  const meta = await sharp(card).metadata();
+  const jpeg = await sharp({
+    create: { width: SCENE_WIDTH, height: SCENE_HEIGHT, channels: 3, background: table },
+  })
+    .composite([
+      {
+        input: card,
+        left: Math.round((SCENE_MARGIN + cx) * CAPTURE_WIDTH - meta.width! / 2),
+        top: Math.round((SCENE_MARGIN + cy) * CAPTURE_HEIGHT - meta.height! / 2),
+      },
+    ])
+    .jpeg({ quality: 60 })
+    .toBuffer();
+  const { data, info } = await sharp(jpeg)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  return { data, width: info.width, height: info.height };
+}
+
 async function main() {
   const all = await references();
   console.log(`Scan index: ${all.length} printings with their own art · cache ${CACHE_DIR}`);
@@ -301,6 +338,26 @@ async function main() {
       process.exitCode = 1;
     }
   }
+  // ---- Self-test: finding a hand-held card (a sample — every 10th card) ----
+  if (!flag('--no-robust')) {
+    const sampled = refs.filter((_, i) => i % 10 === 0);
+    let found = 0;
+    await inParallel(sampled, async (ref, j) => {
+      const located = locateCard(await handHeld(ref.file, j), scanIndex);
+      const top = located && rankMatches(scanIndex, located.descriptor, 1)[0];
+      const hit = top && refs[top.index]!;
+      if (hit && hit.name === ref.name && hit.variant === ref.variant) found++;
+    });
+    const rate = found / sampled.length;
+    console.log(
+      `\nHand-held (card small and off-centre in the guide, ${sampled.length} cards): right card & treatment ${(100 * rate).toFixed(1)}%`,
+    );
+    if (rate < 0.95) {
+      console.error('\n✖ Hand-held below 95% — locating the card in the guide is not good enough.');
+      process.exitCode = 1;
+    }
+  }
+
   if (crossCard > 0) {
     console.error(`\n✖ ${crossCard} different cards share a fingerprint.`);
     process.exitCode = 1;

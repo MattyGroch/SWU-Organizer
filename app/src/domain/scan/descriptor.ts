@@ -89,18 +89,29 @@ export type SamplePixels = { data: Uint8Array | Uint8ClampedArray; width: number
 const luma = (r: number, g: number, b: number) => 0.299 * r + 0.587 * g + 0.114 * b;
 
 /**
- * Area-averaging resize of RGBA pixels: every source pixel contributes in proportion to how
- * much of it each destination pixel covers. Deterministic, so both sides agree exactly.
+ * Area-averaging resize of RGBA pixels (optionally of just a region of them): every source
+ * pixel contributes in proportion to how much of it each destination pixel covers.
+ * Deterministic, so both sides agree exactly. The region must lie inside the source.
  */
-export function areaResize(src: SamplePixels, width: number, height: number): Uint8ClampedArray {
+export function areaResize(
+  src: SamplePixels,
+  width: number,
+  height: number,
+  region: { x: number; y: number; width: number; height: number } = {
+    x: 0,
+    y: 0,
+    width: src.width,
+    height: src.height,
+  },
+): Uint8ClampedArray {
   const out = new Uint8ClampedArray(width * height * 4);
-  const sx = src.width / width;
-  const sy = src.height / height;
+  const sx = region.width / width;
+  const sy = region.height / height;
   for (let y = 0; y < height; y++) {
-    const y0 = y * sy;
+    const y0 = region.y + y * sy;
     const y1 = y0 + sy;
     for (let x = 0; x < width; x++) {
-      const x0 = x * sx;
+      const x0 = region.x + x * sx;
       const x1 = x0 + sx;
       let r = 0;
       let g = 0;
@@ -250,6 +261,14 @@ function railsOf(sample: SamplePixels): Uint8Array {
     out[side] = Math.min(255, Math.round(total / RAIL_SEGMENTS.length));
   });
   return out;
+}
+
+/** Just the hash of a region of some pixels — the cheap part of a fingerprint, for searching. */
+export function hashRegion(
+  pixels: SamplePixels,
+  region: { x: number; y: number; width: number; height: number },
+): Uint32Array {
+  return hashOf(areaResize(pixels, HASH_SAMPLE, HASH_SAMPLE, region));
 }
 
 export function describe(sample: SamplePixels): Descriptor {

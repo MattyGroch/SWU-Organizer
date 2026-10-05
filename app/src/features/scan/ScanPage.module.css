@@ -297,3 +297,16 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
 }
+
+/* Phones: leave room under the camera for the latest scan, without scrolling. */
+@media (max-width: 760px) {
+  .viewfinder {
+    aspect-ratio: auto;
+    height: 48dvh;
+    max-height: none;
+  }
+
+  .result {
+    grid-template-columns: 72px 1fr;
+  }
+}
