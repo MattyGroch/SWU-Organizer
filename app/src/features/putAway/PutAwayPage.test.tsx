@@ -126,8 +126,8 @@ describe('PutAwayPage', () => {
       'Pile 3. 2-1B Surgical Droid',
       'Pile 2. Nameless Scout',
       'Scoop up the piles, Pile 1 through Pile 3.',
-      'Open Spark of Rebellion to page 1. Page 1, row 1, column 1. Krennic.',
-      'Open Spark of Rebellion to pages 6 and 7. Page 7, row 2, column 4. Nameless Scout.',
+      'Open Spark of Rebellion to page 1. Right page, row 1, column 1. Krennic.',
+      'Open Spark of Rebellion to pages 6 and 7. Right page, row 2, column 4. Nameless Scout.',
       'Bulk. 2-1B Surgical Droid',
       'All put away.',
     ]);

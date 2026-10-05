@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { binderLayout, getSpreadCoords, moveBinderSelection, pageToSpread } from './binder';
+import {
+  binderLayout,
+  getSpreadCoords,
+  moveBinderSelection,
+  pageSide,
+  pageToSpread,
+} from './binder';
 
 describe('binder geometry', () => {
   it.each([
@@ -40,5 +46,11 @@ describe('binder geometry', () => {
     const first = { ...binderLayout(1), number: 1 };
     expect(moveBinderSelection(first, 'left', 1)).toEqual(first);
     expect(pageToSpread(1)).toBe(0);
+  });
+
+  it('puts even pages on the left and odd pages on the right', () => {
+    expect(pageSide(1)).toBe('right');
+    expect(pageSide(6)).toBe('left');
+    expect(pageSide(7)).toBe('right');
   });
 });

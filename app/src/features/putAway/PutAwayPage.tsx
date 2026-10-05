@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHiddenSets } from '~/data/binderSettings';
 import { db, readMeta, writeMeta, type StackCardRow, type StackRow } from '~/data/db';
 import { dismissStack, resetPutAway, setStep, stackCards, startPutAway } from '~/data/stacks';
+import { pageSide } from '~/domain/binder';
 import { artUrl, variantLabel, type LoadedSet } from '~/domain/catalog';
 import {
   PILES_PER_SORTER,
@@ -439,12 +440,15 @@ function StepView({
       <div className={styles.details}>
         {cardLine}
         <h1 id="step-title" className={styles.instruction}>
-          <span className={styles.spotSet}>{spot.setKey}</span> Page {spot.page}
+          <span className={styles.spotSet}>
+            {spot.setKey} · Page {spot.page}
+          </span>
+          {SIDE[pageSide(spot.page)]} page
           <span className={styles.spotRow}>
             Row {spot.row} · Column {spot.column}
           </span>
         </h1>
-        <Pocket row={spot.row} column={spot.column} />
+        <Pocket page={spot.page} row={spot.row} column={spot.column} />
         {card.swapOut && (
           <p className={styles.swap}>
             Take out the {variantLabel(card.swapOut.variant)} copy first — it goes to bulk.
@@ -516,17 +520,34 @@ function Sorters({ sorters, used, target }: { sorters: number; used: number; tar
   );
 }
 
-/** A binder page's 3×4 pockets, with the card's pocket lit. */
-function Pocket({ row, column }: { row: number; column: number }) {
+const SIDE = { left: 'Left', right: 'Right' } as const;
+
+/**
+ * The open spread's two pages of 3×4 pockets, with the card's page outlined and its pocket
+ * lit. Page 1 has the inside cover, not a page, to its left.
+ */
+function Pocket({ page, row, column }: { page: number; row: number; column: number }) {
+  const side = pageSide(page);
   return (
-    <div className={styles.pocket} aria-hidden="true">
-      {Array.from({ length: 12 }, (_, i) => (
-        <span
-          key={i}
-          className={styles.pocketCell}
-          data-target={(Math.floor(i / 4) + 1 === row && (i % 4) + 1 === column) || undefined}
-        />
-      ))}
+    <div className={styles.spread} aria-hidden="true">
+      {(['left', 'right'] as const).map((s) =>
+        s === 'left' && page === 1 ? (
+          <div key={s} className={styles.cover} />
+        ) : (
+          <div key={s} className={styles.pocket} data-target={s === side || undefined}>
+            {Array.from({ length: 12 }, (_, i) => (
+              <span
+                key={i}
+                className={styles.pocketCell}
+                data-target={
+                  (s === side && Math.floor(i / 4) + 1 === row && (i % 4) + 1 === column) ||
+                  undefined
+                }
+              />
+            ))}
+          </div>
+        ),
+      )}
     </div>
   );
 }
@@ -561,5 +582,6 @@ function spoken(step: PutAwayStep, sorters: number, sets: Map<SetKey, LoadedSet>
   const swap = step.card.swapOut
     ? ` Take out the ${variantLabel(step.card.swapOut.variant)} copy.`
     : '';
-  return `${open}Page ${spot.page}, row ${spot.row}, column ${spot.column}. ${name}.${swap}`;
+  // Once the binder is open, the side of the spread is easier to find than the page number.
+  return `${open}${SIDE[pageSide(spot.page)]} page, row ${spot.row}, column ${spot.column}. ${name}.${swap}`;
 }
