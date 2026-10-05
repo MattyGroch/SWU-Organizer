@@ -18,6 +18,9 @@ import {
 } from '~/data/catalog';
 import { binderEntries, readHiddenSets } from '~/data/binderSettings';
 import { BinderRoute } from '~/routes/BinderRoute';
+import { BulkPage } from '~/features/inventory/BulkPage';
+import { isInventoryView, type InventoryView } from '~/features/inventory/views';
+import { NARROW_QUERY } from '~/ui/useNarrow';
 import { DecksRoute } from '~/routes/DecksRoute';
 import { IntakePage } from '~/features/intake/IntakePage';
 import { PutAwayPage } from '~/features/putAway/PutAwayPage';
@@ -43,16 +46,35 @@ const rootRoute = createRootRouteWithContext<RouterContext>()({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  beforeLoad: async ({ context }) => {
-    const entries = await context.queryClient.ensureQueryData(manifestQuery());
-    const key = newestSetKey(binderEntries(entries, await readHiddenSets()));
-    throw redirect({ to: '/binder/$setKey', params: { setKey: key ?? 'SOR' } });
+  beforeLoad: () => {
+    throw redirect({ to: '/inventory' });
   },
 });
 
-const binderRoute = createRoute({
+/** Phones have no binder grid, so they land on the list instead. */
+function defaultView(): InventoryView {
+  return typeof window !== 'undefined' && window.matchMedia?.(NARROW_QUERY)?.matches
+    ? 'list'
+    : 'binder';
+}
+
+/** The Inventory tab: the newest set with a binder. */
+const inventoryIndexRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/binder/$setKey',
+  path: '/inventory',
+  beforeLoad: async ({ context }) => {
+    const entries = await context.queryClient.ensureQueryData(manifestQuery());
+    const key = newestSetKey(binderEntries(entries, await readHiddenSets()));
+    throw redirect({
+      to: '/inventory/$setKey/$view',
+      params: { setKey: key ?? 'SOR', view: defaultView() },
+    });
+  },
+});
+
+const setViewRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/inventory/$setKey/$view',
   /**
    * `?card=` names the base number to select on arrival, which is what makes a binder
    * position linkable — "SOR, page 12, Vader selected" is a URL rather than transient
@@ -64,23 +86,58 @@ const binderRoute = createRoute({
     return Number.isInteger(card) && card > 0 ? { card } : {};
   },
   loader: async ({ context, params }) => {
+    if (!isInventoryView(params.view)) {
+      throw redirect({
+        to: '/inventory/$setKey/$view',
+        params: { setKey: params.setKey, view: 'binder' },
+      });
+    }
     const entries = await context.queryClient.ensureQueryData(manifestQuery());
     const entry = entries.find((e) => e.key === params.setKey);
-    if (!entry) throw redirect({ to: '/' });
+    if (!entry) throw redirect({ to: '/inventory' });
     // A set hidden from the binder has no pages; send its link to the default binder.
     const visible = binderEntries(entries, await readHiddenSets());
-    if (!visible.some((e) => e.key === params.setKey)) throw redirect({ to: '/' });
+    if (!visible.some((e) => e.key === params.setKey)) throw redirect({ to: '/inventory' });
 
     // Only the active set is awaited; the rest warm in the background so first paint
     // never waits on them.
     const set = await context.queryClient.ensureQueryData(setQuery(entry));
     prefetchOtherSets(context.queryClient, entries, params.setKey);
-    return { set, entries };
+    return { set, entries, view: params.view };
   },
-  component: function BinderRouteComponent() {
-    const { set, entries } = binderRoute.useLoaderData();
-    const { card } = binderRoute.useSearch();
-    return <BinderRoute set={set} entries={entries} selectCard={card} />;
+  component: function SetViewRouteComponent() {
+    const { set, entries, view } = setViewRoute.useLoaderData();
+    const { card } = setViewRoute.useSearch();
+    return <BinderRoute set={set} entries={entries} view={view} selectCard={card} />;
+  },
+});
+
+/** Links from before the Inventory tab, e.g. `/binder/SOR?card=31`. */
+const legacyBinderRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/binder/$setKey',
+  beforeLoad: ({ params, location }) => {
+    throw redirect({
+      to: '/inventory/$setKey/$view',
+      params: { setKey: params.setKey, view: 'binder' },
+      search: location.search,
+    });
+  },
+});
+
+/** Everything in the bulk box, across every set. */
+const bulkRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/inventory/bulk',
+  loader: async ({ context }) => {
+    const entries = await context.queryClient.ensureQueryData(manifestQuery());
+    await Promise.all(entries.map((entry) => context.queryClient.ensureQueryData(setQuery(entry))));
+    return { entries };
+  },
+  component: function BulkRouteComponent() {
+    const { entries } = bulkRoute.useLoaderData();
+    const { queryClient } = bulkRoute.useRouteContext();
+    return <BulkPage entries={entries} sets={loadedSets(queryClient, entries)} />;
   },
 });
 
@@ -152,7 +209,10 @@ const putAwayRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
-  binderRoute,
+  inventoryIndexRoute,
+  bulkRoute,
+  setViewRoute,
+  legacyBinderRoute,
   decksRoute,
   intakeRoute,
   scanRoute,

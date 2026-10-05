@@ -23,7 +23,8 @@ import {
   type LoadedSet,
   type VariantSlug,
 } from '~/domain/catalog';
-import { pocketRoom, quotaForCard, type PocketRoom } from '~/domain/ownership';
+import { pocketRoom, type PocketRoom } from '~/domain/ownership';
+import { useQuota } from '~/features/inventory/useQuota';
 import { cardLead, type Match } from '~/domain/scan/index';
 import type { SearchSuggestion } from '~/domain/search';
 import type { SetKey } from '~/domain/types';
@@ -106,6 +107,7 @@ function cardsIn(matches: Match[]): Match[] {
 export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const camera = useCamera();
   const index = useScanIndex();
+  const quotaOf = useQuota();
   const [mode, setMode] = useState<Mode>('add');
   /**
    * Foils mode: every scan is recorded on foil stock, for running a stack of foils
@@ -170,7 +172,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       const set = sets.get(printing.setKey);
       const card = set?.byNumber.get(printing.base);
       if (!card) return { receipt: await queueScan(printing), room: null };
-      const quota = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
+      const quota = quotaOf({ type: card.Type, maxCopies: card.MaxCopies });
       const room = pocketRoom(
         await queuedPocket(printing.setKey, printing.base),
         quota,
@@ -178,7 +180,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       );
       return { receipt: await queueScan(printing), room: room.kind === 'room' ? null : room };
     },
-    [sets],
+    [sets, quotaOf],
   );
 
   /** The printing as recorded: its foil counterpart in Foils mode, where one exists. */
@@ -754,8 +756,8 @@ function LatestScan({
             You own {owned ?? '…'} · binder page {position.page}, row {position.row}, column{' '}
             {position.column} ·{' '}
             <Link
-              to="/binder/$setKey"
-              params={{ setKey: chosen.setKey }}
+              to="/inventory/$setKey/$view"
+              params={{ setKey: chosen.setKey, view: 'binder' }}
               search={{ card: chosen.base }}
             >
               Open in binder

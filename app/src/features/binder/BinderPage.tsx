@@ -16,8 +16,9 @@ import {
   type Printing,
   type SetManifestEntry,
 } from '~/domain/catalog';
-import { heldVariants, parseCardKey } from '~/domain/deckBuild';
-import { ownedFor, quotaForCard, type VariantCounts } from '~/domain/ownership';
+import { settleCards } from '~/data/spill';
+import { heldInSet } from '~/domain/deckBuild';
+import { NO_HOMES, ownedFor } from '~/domain/ownership';
 import type { SearchCatalog, SearchSuggestion } from '~/domain/search';
 
 import { BinderGrid } from './BinderGrid';
@@ -44,6 +45,9 @@ import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
 import { BulkEditDialog } from '~/features/bulk/BulkEditDialog';
 import { ImportDialog } from '~/features/import/ImportDialog';
 import { CardSearch } from '~/features/search/CardSearch';
+import { InventoryNav } from '~/features/inventory/InventoryNav';
+import { useQuota } from '~/features/inventory/useQuota';
+import type { InventoryView } from '~/features/inventory/views';
 import { formatUsd } from '~/ui/format';
 import { useToast } from '~/ui/toastContext';
 import { useNarrow } from '~/ui/useNarrow';
@@ -53,19 +57,23 @@ import styles from './BinderPage.module.css';
 type Props = {
   set: LoadedSet;
   entries: SetManifestEntry[];
+  /** The binder spread, or the card list. Phones always get the list. */
+  view: InventoryView;
   /** Every set already resolved, so search can span the whole collection. */
   loadedSets: Map<string, LoadedSet>;
   /** Base number from `?card=` — selected on arrival and paged to. */
   selectCard?: number;
 };
 
-export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
+export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props) {
   const navigate = useNavigate();
   const binder = useBinder(set);
   const ownership = useSetOwnership(set.setKey);
   const searchInputRef = useRef<HTMLInputElement>(null);
   /** Phones get a shorter stack of controls, so the card table has the screen. */
   const narrow = useNarrow();
+  const showBinder = view === 'binder' && !narrow;
+  const quota = useQuota();
   const moreRef = useRef<HTMLDetailsElement>(null);
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
@@ -83,7 +91,7 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
   // Hiding the set on screen leaves nothing to show here; go to the default binder.
   useEffect(() => {
     if (hiddenSets && !visibleEntries.some((e) => e.key === set.setKey)) {
-      void navigate({ to: '/' });
+      void navigate({ to: '/inventory' });
     }
   }, [hiddenSets, visibleEntries, set.setKey, navigate]);
 
@@ -103,19 +111,42 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
   );
 
   const { library } = useDeckLibrary();
-  /** Printings of each card in this set pulled into built decks, from the binder or bulk. */
-  const held = useMemo(() => {
-    const map = new Map<number, VariantCounts>();
-    for (const [key, variants] of heldVariants(library)) {
-      const { setKey, baseNumber } = parseCardKey(key);
-      if (setKey === set.setKey) map.set(baseNumber, variants);
-    }
-    return map;
-  }, [library, set.setKey]);
+  /** What built decks hold of this set's cards, by the home each copy returns to. */
+  const held = useMemo(() => heldInSet(library, set.setKey), [library, set.setKey]);
 
   const rows = useMemo(
-    () => buildCardRows(set, ownership, filters, held),
-    [set, ownership, filters, held],
+    () => buildCardRows(set, ownership, filters, held, quota),
+    [set, ownership, filters, held, quota],
+  );
+
+  /**
+   * A copy added by hand goes in the pocket; if that overfills it, the weakest copy goes to
+   * the bulk box, exactly as when Intake adds one.
+   */
+  const settle = useCallback(
+    (base: number) => {
+      const quotaOf = (_setKey: string, number: number) => {
+        const card = set.cardsByBase.get(number);
+        return card ? quota(card) : Infinity;
+      };
+      void settleCards([{ setKey: set.setKey, base }], quotaOf).then((moved) => {
+        if (moved) {
+          showToast({
+            tone: 'info',
+            message: `Pocket full: ${moved} ${moved === 1 ? 'copy goes' : 'copies go'} to the bulk box.`,
+          });
+        }
+      });
+    },
+    [set, quota, showToast],
+  );
+  const adjustCopies = useCallback(
+    (base: number, printing: Printing, delta: number) => {
+      void adjustPrinting(set.setKey, base, printing, delta).then(() => {
+        if (delta > 0) settle(base);
+      });
+    },
+    [set.setKey, settle],
   );
   const totals = useMemo(() => collectionTotals(rows), [rows]);
   // The copy buttons take exactly the rows the table shows, so filters decide what goes
@@ -130,10 +161,14 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
       // `search: {}` is deliberate — the router preserves search params by default, and a
       // stale `?card=` would select an unrelated card in the set you just moved to.
       if (next) {
-        void navigate({ to: '/binder/$setKey', params: { setKey: next.key }, search: {} });
+        void navigate({
+          to: '/inventory/$setKey/$view',
+          params: { setKey: next.key, view },
+          search: {},
+        });
       }
     },
-    [visibleEntries, set.setKey, navigate],
+    [visibleEntries, set.setKey, navigate, view],
   );
 
   const adjustDefault = useCallback(
@@ -141,18 +176,18 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
       const base = binder.active?.card.Number;
       if (base === undefined) return;
       const printing = defaultPrinting(set, base);
-      if (printing) void adjustPrinting(set.setKey, base, printing, delta);
+      if (printing) adjustCopies(base, printing, delta);
     },
-    [binder.active, set],
+    [binder.active, set, adjustCopies],
   );
 
   const adjustPrinting_ = useCallback(
     (printing: Printing, delta: number) => {
       const base = binder.active?.card.Number;
       if (base === undefined) return;
-      void adjustPrinting(set.setKey, base, printing, delta);
+      adjustCopies(base, printing, delta);
     },
-    [binder.active, set.setKey],
+    [binder.active, adjustCopies],
   );
 
   const adjustVariant = useCallback(
@@ -163,9 +198,9 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
       // Only live for printings this card actually has — SOR units have no Prestige run,
       // and LAW/ASH/HMW list no plain Foil.
       const printing = printingFor(set, base, variant);
-      if (printing) void adjustPrinting(set.setKey, base, printing, delta);
+      if (printing) adjustCopies(base, printing, delta);
     },
-    [binder.active, set],
+    [binder.active, set, adjustCopies],
   );
 
   /** Shift+plus — top this card up to a full playset of its default printing. */
@@ -175,9 +210,9 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
     const printing = defaultPrinting(set, card.Number);
     if (!printing) return;
 
-    const quota = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
-    void fillPlayset(set.setKey, card.Number, printing, quota);
-  }, [binder.active, set]);
+    const playset = quota({ type: card.Type, maxCopies: card.MaxCopies });
+    void fillPlayset(set.setKey, card.Number, printing, playset).then(() => settle(card.Number));
+  }, [binder.active, set, quota, settle]);
 
   /** Shift+minus — empty the slot, with undo rather than a confirmation prompt. */
   const clearSelectedSlot = useCallback(() => {
@@ -210,8 +245,8 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
         binder.selectNumber(suggestion.baseNumber);
         appliedSelectionRef.current = `${set.setKey}:${suggestion.baseNumber}`;
         void navigate({
-          to: '/binder/$setKey',
-          params: { setKey: set.setKey },
+          to: '/inventory/$setKey/$view',
+          params: { setKey: set.setKey, view },
           search: { card: suggestion.baseNumber },
           replace: true,
         });
@@ -219,12 +254,12 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
       }
 
       void navigate({
-        to: '/binder/$setKey',
-        params: { setKey: suggestion.setKey },
+        to: '/inventory/$setKey/$view',
+        params: { setKey: suggestion.setKey, view },
         search: { card: suggestion.baseNumber },
       });
     },
-    [set.setKey, navigate, binder],
+    [set.setKey, navigate, binder, view],
   );
 
   /**
@@ -391,14 +426,16 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
   return (
     <div className={styles.page}>
       <div className={styles.toolbar}>
+        <InventoryNav setKey={set.setKey} current={narrow ? 'list' : view} />
+
         <label className={styles.setPicker}>
           <span className="visually-hidden">Card set</span>
           <select
             value={set.setKey}
             onChange={(event) =>
               navigate({
-                to: '/binder/$setKey',
-                params: { setKey: event.target.value },
+                to: '/inventory/$setKey/$view',
+                params: { setKey: event.target.value, view },
                 search: {},
               })
             }
@@ -490,57 +527,66 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
           set={set}
           active={binder.active}
           counts={ownedFor(ownership, binder.active?.card.Number)}
-          held={(binder.active && held.get(binder.active.card.Number)) || {}}
+          held={(binder.active && held.get(binder.active.card.Number)) || NO_HOMES}
+          quota={
+            binder.active
+              ? quota({ type: binder.active.card.Type, maxCopies: binder.active.card.MaxCopies })
+              : 0
+          }
           onAdjust={adjustDefault}
           onAdjustPrinting={adjustPrinting_}
           onClose={binder.clearSelection}
         />
       </div>
 
-      {/* The page grid is the desktop view: on a phone it is too small to use, so the
-          page becomes search, filters and the table, with the selected card pinned below. */}
-      <div className={styles.binderArea}>
-        <SpreadPager
-          viewSpread={binder.viewSpread}
-          totalSpreads={binder.geometry.totalSpreads}
-          onGoTo={binder.goToSpread}
-          onStep={binder.stepSpread}
-        />
+      {/* The page grid is the desktop Binder view: on a phone it is too small to use, so
+          phones get the List view, with the selected card pinned below. */}
+      {showBinder ? (
+        <div className={styles.binderArea}>
+          <SpreadPager
+            viewSpread={binder.viewSpread}
+            totalSpreads={binder.geometry.totalSpreads}
+            onGoTo={binder.goToSpread}
+            onStep={binder.stepSpread}
+          />
 
-        <BinderGrid
-          set={set}
-          viewSpread={binder.viewSpread}
-          active={binder.active}
-          ownership={ownership}
-          held={held}
-          focusRequest={binder.focusRequest}
-          onSelect={binder.selectCard}
-        />
-      </div>
-
-      {!narrow && <FilterBar filters={filters} onChange={setFilters} />}
-
-      {narrow ? (
-        <div className={styles.progressSlot}>
-          <CollectionProgress totals={totals} compact />
+          <BinderGrid
+            set={set}
+            viewSpread={binder.viewSpread}
+            active={binder.active}
+            ownership={ownership}
+            held={held}
+            focusRequest={binder.focusRequest}
+            onSelect={binder.selectCard}
+          />
         </div>
       ) : (
-        <div className={styles.listHeader}>
-          {copyButtons}
+        <>
+          {!narrow && <FilterBar filters={filters} onChange={setFilters} />}
 
-          <div className={styles.progressSlot}>
-            <CollectionProgress totals={totals} />
-          </div>
+          {narrow ? (
+            <div className={styles.progressSlot}>
+              <CollectionProgress totals={totals} compact />
+            </div>
+          ) : (
+            <div className={styles.listHeader}>
+              {copyButtons}
 
-          {totalsList}
-        </div>
+              <div className={styles.progressSlot}>
+                <CollectionProgress totals={totals} />
+              </div>
+
+              {totalsList}
+            </div>
+          )}
+
+          <CardTable
+            rows={rows}
+            selectedBase={binder.active?.card.Number ?? null}
+            onSelect={binder.selectNumber}
+          />
+        </>
       )}
-
-      <CardTable
-        rows={rows}
-        selectedBase={binder.active?.card.Number ?? null}
-        onSelect={binder.selectNumber}
-      />
     </div>
   );
 }

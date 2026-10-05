@@ -9,8 +9,8 @@ import {
   neededCount,
   ownedFor,
   quotaForCard,
-  spareCount,
   pocketCounts,
+  boxCounts,
   pocketRoom,
   spillToBulk,
   takeVariants,
@@ -37,6 +37,12 @@ describe('quotaForCard', () => {
     expect(quotaForCard({ type: 'Base' })).toBe(1);
   });
 
+  it('keeps the Leader & Base setting for those two types only', () => {
+    expect(quotaForCard({ type: 'Leader' }, 2)).toBe(2);
+    expect(quotaForCard({ type: 'Base' }, 2)).toBe(2);
+    expect(quotaForCard({ type: 'Unit' }, 2)).toBe(3);
+  });
+
   it('honours a per-card override', () => {
     // Swarming Vulture Droid allows 15.
     expect(quotaForCard({ type: 'Unit', maxCopies: 15 })).toBe(15);
@@ -44,14 +50,9 @@ describe('quotaForCard', () => {
 });
 
 describe('binder vs collection', () => {
-  it('caps the binder at the playset while keeping the extras as spares', () => {
+  it('caps the binder at the playset', () => {
     expect(binderCount(5, 3)).toBe(3);
-    expect(spareCount(5, 3)).toBe(2);
-  });
-
-  it('has no spares below the quota', () => {
     expect(binderCount(2, 3)).toBe(2);
-    expect(spareCount(2, 3)).toBe(0);
   });
 
   it('reports what is still needed to finish a playset', () => {
@@ -88,7 +89,6 @@ describe('indexOwnership', () => {
     ]);
     expect(index.get(59)!.total).toBe(5);
     expect(binderCount(index.get(59)!.total, 3)).toBe(3);
-    expect(spareCount(index.get(59)!.total, 3)).toBe(2);
   });
 
   it('ignores non-positive rows', () => {
@@ -140,7 +140,10 @@ describe('pocketCounts', () => {
   };
 
   it('removes exactly the printings out in decks', () => {
-    const pocket = pocketCounts(counts, { prestige: 1, 'hyperspace-foil': 1 });
+    const pocket = pocketCounts(counts, {
+      binder: { prestige: 1, 'hyperspace-foil': 1 },
+      bulk: {},
+    });
     expect(pocket.byVariant).toMatchObject({
       prestige: 0,
       'hyperspace-foil': 0,
@@ -151,7 +154,14 @@ describe('pocketCounts', () => {
   });
 
   it('changes nothing when no copies are out', () => {
-    expect(pocketCounts(counts, {})).toBe(counts);
+    expect(pocketCounts(counts, { binder: {}, bulk: {} })).toEqual(counts);
+  });
+
+  it('leaves out bulk-box copies, and counts what is in the box apart', () => {
+    const withBulk = { ...counts, bulkByVariant: { normal: 2 } };
+    const held = { binder: {}, bulk: { normal: 1 } };
+    expect(pocketCounts(withBulk, held).total).toBe(4);
+    expect(boxCounts(withBulk, held)).toEqual({ normal: 1 });
   });
 });
 

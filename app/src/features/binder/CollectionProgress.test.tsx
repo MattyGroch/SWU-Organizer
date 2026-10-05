@@ -11,7 +11,7 @@ const totals = (over: Partial<CollectionTotals>): CollectionTotals => ({
   missing: 0,
   value: 0,
   missingCost: 0,
-  spares: 0,
+  inBulk: 0,
   ...over,
 });
 

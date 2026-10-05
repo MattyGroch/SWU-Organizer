@@ -1,17 +1,18 @@
 import type { CatalogCard, LoadedSet } from '~/domain/catalog';
 import {
+  NO_HOMES,
   binderCount,
+  boxCounts,
   cardValue,
   collectionStatus,
   neededCount,
   ownedFor,
   pocketCounts,
-  sumVariants,
   quotaForCard,
-  spareCount,
+  sumVariants,
   type CollectionStatus,
+  type Homes,
   type OwnedCounts,
-  type VariantCounts,
 } from '~/domain/ownership';
 
 /**
@@ -77,12 +78,14 @@ export type CardRow = {
   rarity?: string;
   aspects: string[];
   quota: number;
-  /** Every copy owned, across printings. */
+  /** Every copy owned, across printings: binder, bulk box and decks. */
   total: number;
+  /** Copies in the binder pocket right now, up to the playset. */
   inBinder: number;
-  /** Copies pulled into built decks: owned, but out of the binder. */
+  /** Copies in the bulk box right now. */
+  inBulk: number;
+  /** Copies pulled into built decks, from the binder or the bulk box. */
   inDecks: number;
-  spares: number;
   needed: number;
   status: CollectionStatus;
   counts: OwnedCounts;
@@ -114,19 +117,19 @@ export function buildCardRows(
   set: LoadedSet,
   ownership: ReadonlyMap<number, OwnedCounts>,
   filters: Filters,
-  heldByBase: ReadonlyMap<number, VariantCounts> = new Map(),
+  heldByBase: ReadonlyMap<number, Homes> = new Map(),
+  quotaOf: (card: CatalogCard) => number = quotaForCard,
 ): CardRow[] {
   const rows: CardRow[] = [];
 
   for (const card of set.cardsByBase.values()) {
     const counts = ownedFor(ownership, card.base);
-    const quota = quotaForCard(card);
-    // The binder holds what is not out in a built deck; status follows the binder, as in
-    // v1, while "needed" follows everything owned — a pulled card is not one to buy.
-    const held = heldByBase.get(card.base) ?? {};
-    const inDecks = sumVariants(held);
-    const onHand = pocketCounts(counts, held).total;
-    const inBinder = binderCount(onHand, quota);
+    const quota = quotaOf(card);
+    // Status follows the binder pocket, as in v1, while "needed" follows everything owned —
+    // a card out in a deck or in the bulk box is not one to buy.
+    const held = heldByBase.get(card.base) ?? NO_HOMES;
+    const inDecks = sumVariants(held.binder) + sumVariants(held.bulk);
+    const inBinder = binderCount(pocketCounts(counts, held).total, quota);
     const status = collectionStatus(inBinder, quota);
     if (!matchesFilters(card, status, filters)) continue;
     if (filters.hideInDecks && inDecks > 0 && counts.total >= quota) continue;
@@ -146,7 +149,7 @@ export function buildCardRows(
       total: counts.total,
       inBinder,
       inDecks,
-      spares: spareCount(onHand, quota),
+      inBulk: sumVariants(boxCounts(counts, held)),
       needed,
       status,
       counts,
@@ -167,7 +170,8 @@ export type CollectionTotals = {
   value: number;
   /** Cost to finish every playset in the current filter. */
   missingCost: number;
-  spares: number;
+  /** Copies in the bulk box. */
+  inBulk: number;
 };
 
 export function collectionTotals(rows: readonly CardRow[]): CollectionTotals {
@@ -178,7 +182,7 @@ export function collectionTotals(rows: readonly CardRow[]): CollectionTotals {
     missing: 0,
     value: 0,
     missingCost: 0,
-    spares: 0,
+    inBulk: 0,
   };
 
   for (const row of rows) {
@@ -188,7 +192,7 @@ export function collectionTotals(rows: readonly CardRow[]): CollectionTotals {
 
     totals.value += row.value;
     totals.missingCost += row.missingCost;
-    totals.spares += row.spares;
+    totals.inBulk += row.inBulk;
   }
 
   return totals;

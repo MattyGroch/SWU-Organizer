@@ -83,21 +83,21 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
             <th
               scope="col"
               className={styles.numericCol}
-              title="Copies in the binder of the playset quota"
+              title="Copies in the binder pocket, of its playset"
             >
-              Owned
+              Binder
             </th>
             <th
               scope="col"
               className={`${styles.numericCol} ${styles.wideOnly}`}
-              title="Copies beyond the playset"
+              title="Copies in the bulk box"
             >
-              Spare
+              Bulk
             </th>
             <th
               scope="col"
               className={`${styles.numericCol} ${styles.wideOnly}`}
-              title="Copies pulled into built decks"
+              title="Copies out in built decks, from the binder or the bulk box"
             >
               Decks
             </th>
@@ -185,7 +185,7 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
                 <td className={`${styles.numericCol} ${styles.owned}`} data-status={row.status}>
                   {row.inBinder}/{row.quota}
                 </td>
-                <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.spares || ''}</td>
+                <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.inBulk || ''}</td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.inDecks || ''}</td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.needed || ''}</td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>

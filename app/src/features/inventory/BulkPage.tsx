@@ -1,0 +1,133 @@
+import { Link } from '@tanstack/react-router';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { useMemo, useState } from 'react';
+
+import { db } from '~/data/db';
+import type { LoadedSet, SetManifestEntry } from '~/domain/catalog';
+import type { SetKey } from '~/domain/types';
+import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
+
+import styles from './BulkPage.module.css';
+import { buildBulkRows, matchesBulkSearch, printingsLabel } from './bulkRows';
+import { InventoryNav } from './InventoryNav';
+
+type Props = {
+  entries: SetManifestEntry[];
+  sets: Map<SetKey, LoadedSet>;
+};
+
+/**
+ * The bulk box: every copy beyond the binder's playsets, across every set — hidden sets
+ * too, since their cards are just as real. The box itself is one unsorted pile, so this
+ * list is how you find out whether a card is in it before you go digging.
+ */
+export function BulkPage({ entries, sets }: Props) {
+  const { library } = useDeckLibrary();
+  const owned = useLiveQuery(() => db.owned.filter((row) => (row.bulk ?? 0) > 0).toArray(), []);
+  const [query, setQuery] = useState('');
+  const [setFilter, setSetFilter] = useState<SetKey | ''>('');
+
+  const setOrder = useMemo(() => entries.map((e) => e.key), [entries]);
+  const all = useMemo(
+    () => (owned ? buildBulkRows(owned, library, sets, setOrder) : []),
+    [owned, library, sets, setOrder],
+  );
+  const rows = all.filter(
+    (row) => (!setFilter || row.setKey === setFilter) && matchesBulkSearch(row, query),
+  );
+  const copies = rows.reduce((sum, row) => sum + row.boxCount, 0);
+  const setsInBox = new Set(all.map((row) => row.setKey));
+
+  return (
+    <div className={styles.page}>
+      <div className={styles.toolbar}>
+        <InventoryNav current="bulk" />
+        <label className={styles.setPicker}>
+          <span className="visually-hidden">Set</span>
+          <select value={setFilter} onChange={(event) => setSetFilter(event.target.value)}>
+            <option value="">All sets</option>
+            {entries
+              .filter((entry) => setsInBox.has(entry.key))
+              .map((entry) => (
+                <option key={entry.key} value={entry.key}>
+                  {entry.label}
+                </option>
+              ))}
+          </select>
+        </label>
+        <label className={styles.search}>
+          <span className="visually-hidden">Search the bulk box</span>
+          <input
+            type="search"
+            value={query}
+            placeholder="Search name or number…"
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </label>
+      </div>
+
+      <p className={styles.summary} role="status">
+        {owned === undefined
+          ? 'Loading…'
+          : `${copies} ${copies === 1 ? 'copy' : 'copies'} of ${rows.length} ${
+              rows.length === 1 ? 'card' : 'cards'
+            } in the bulk box${setFilter || query ? ' match' : ''}.`}
+      </p>
+
+      {owned !== undefined && all.length === 0 && (
+        <p className={styles.empty}>
+          Nothing in the bulk box yet. Copies go here when a scan finds their binder pocket full, or
+          a better printing bumps them out of it.
+        </p>
+      )}
+
+      {rows.length > 0 && (
+        <div className={styles.scroller}>
+          <table className={styles.table} aria-label="Bulk box">
+            <thead>
+              <tr>
+                <th scope="col" className={styles.where}>
+                  Card
+                </th>
+                <th scope="col">Name</th>
+                <th scope="col">In the box</th>
+                <th scope="col" className={styles.decks} title="Bulk-box copies out in built decks">
+                  In decks
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr key={`${row.setKey}:${row.base}`}>
+                  <td className={styles.where}>
+                    {row.setKey} #{row.base}
+                  </td>
+                  <td className={styles.name}>
+                    <Link
+                      to="/inventory/$setKey/$view"
+                      params={{ setKey: row.setKey, view: 'list' }}
+                      search={{ card: row.base }}
+                    >
+                      {row.name}
+                    </Link>
+                    {row.subtitle && <span className={styles.subtitle}>{row.subtitle}</span>}
+                    <span className={styles.narrowWhere}>
+                      {row.setKey} #{row.base}
+                    </span>
+                  </td>
+                  <td>
+                    <span className={styles.count}>{row.boxCount}</span>
+                    {row.boxCount > 0 && (
+                      <span className={styles.printings}>{printingsLabel(row.inBox)}</span>
+                    )}
+                  </td>
+                  <td className={styles.decks}>{row.inDecks || ''}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}

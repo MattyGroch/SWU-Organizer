@@ -2,13 +2,13 @@ import { useEffect, useRef } from 'react';
 
 import { numberFromPagePosition, spreadToPrimaryPage } from '~/domain/binder';
 import type { LoadedSet } from '~/domain/catalog';
-import { ownedFor, type OwnedCounts, type VariantCounts } from '~/domain/ownership';
+import { NO_HOMES, ownedFor, type Homes, type OwnedCounts } from '~/domain/ownership';
 import type { ActiveSelection, Card } from '~/domain/types';
+
+import { useQuota } from '~/features/inventory/useQuota';
 
 import { BinderCell } from './BinderCell';
 import styles from './BinderGrid.module.css';
-
-const NONE_HELD: VariantCounts = {};
 
 const ROWS = 3;
 const COLS_PER_PAGE = 4;
@@ -20,7 +20,7 @@ type Props = {
   active: ActiveSelection | null;
   ownership: ReadonlyMap<number, OwnedCounts>;
   /** Base number → printings pulled into built decks. */
-  held: ReadonlyMap<number, VariantCounts>;
+  held: ReadonlyMap<number, Homes>;
   focusRequest: number;
   onSelect: (card: Card) => void;
 };
@@ -51,6 +51,7 @@ export function BinderGrid({
   const showLeft = leftPage >= 2;
 
   const gridRef = useRef<HTMLDivElement>(null);
+  const quotaOf = useQuota();
 
   // Move DOM focus to the selected cell whenever the selection changes, so keyboard
   // navigation and screen-reader focus stay on the card the user is actually filing.
@@ -123,7 +124,8 @@ export function BinderGrid({
                     active.column === column
                   }
                   counts={ownedFor(ownership, card.Number)}
-                  held={held.get(card.Number) ?? NONE_HELD}
+                  held={held.get(card.Number) ?? NO_HOMES}
+                  quota={quotaOf({ type: card.Type, maxCopies: card.MaxCopies })}
                   onSelect={onSelect}
                 />
               );

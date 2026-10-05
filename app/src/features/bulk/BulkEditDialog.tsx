@@ -16,6 +16,7 @@ import { setQuery } from '~/data/catalog';
 import type { LoadedSet, SetManifestEntry } from '~/domain/catalog';
 import { STATUS_LABEL, type CardRow, type Filters } from '~/features/binder/cardRows';
 import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
+import { useQuota } from '~/features/inventory/useQuota';
 import { downloadBackup } from '~/features/import/downloadBackup';
 import { useToast } from '~/ui/toastContext';
 
@@ -74,6 +75,7 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
   const [scope, setScope] = useState<'set' | 'collection'>('set');
   const [collection, setCollection] = useState<SetRows[] | null>(null);
   const { library } = useDeckLibrary();
+  const quotaOf = useQuota();
   const queryClient = useQueryClient();
 
   // Whole-collection rows are worked out when that scope is chosen, under the same filters.
@@ -84,14 +86,14 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
     // Every binder set, not just those the background prefetch has finished — opened
     // early, the dialog would otherwise quietly skip the sets still loading.
     void Promise.all(binderSets.map((entry) => queryClient.ensureQueryData(setQuery(entry))))
-      .then((sets) => collectionRows(sets, filters, library))
+      .then((sets) => collectionRows(sets, filters, library, quotaOf))
       .then((result) => {
         if (!cancelled) setCollection(result);
       });
     return () => {
       cancelled = true;
     };
-  }, [scope, binderSets, filters, library, queryClient]);
+  }, [scope, binderSets, filters, library, queryClient, quotaOf]);
 
   const targets: SetRows[] = scope === 'set' ? [{ set, rows }] : (collection ?? []);
   const allRows = targets.flatMap((t) => t.rows);

@@ -79,9 +79,9 @@ describe('BinderGrid accessibility', () => {
     ).toBeInTheDocument();
   });
 
-  it('reports spares separately from the binder count', () => {
+  it('never reports more than the playset in the binder', () => {
     renderGrid({ activeBase: 5, owned: 5 });
-    expect(screen.getByRole('button', { name: /3 of 3 in binder, 2 spare\./ })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /3 of 3 in binder\./ })).toBeInTheDocument();
   });
 
   it('keeps exactly one cell in the tab order (roving tabindex)', () => {

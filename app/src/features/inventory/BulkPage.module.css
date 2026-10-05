@@ -1,0 +1,129 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* The same full-bleed band as the binder's toolbar, without a set's colour. */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-4)) 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.setPicker select,
+.search input {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.search {
+  flex: 1 1 220px;
+}
+
+.search input {
+  width: 100%;
+}
+
+.summary {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+}
+
+.empty {
+  padding: var(--space-4);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-subtle);
+}
+
+.scroller {
+  overflow: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  /* Clips the visually-hidden labels rather than letting them stretch the page. */
+  position: relative;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+  color: var(--color-text-subtle);
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+.where {
+  width: 96px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-subtle);
+}
+
+.name a {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.subtitle,
+.narrowWhere,
+.printings {
+  display: block;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+}
+
+.narrowWhere {
+  display: none;
+}
+
+.count {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.decks {
+  width: 96px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 760px) {
+  .toolbar {
+    gap: var(--space-2);
+  }
+
+  .where {
+    display: none;
+  }
+
+  .narrowWhere {
+    display: block;
+  }
+}
