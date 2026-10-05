@@ -37,6 +37,7 @@ import { SelectedCardPanel } from './SelectedCardPanel';
 import { SetVisibility } from './SetVisibility';
 import { ShortcutsDialog } from './ShortcutsDialog';
 import { SpreadPager } from './SpreadPager';
+import { SwipePage } from './SwipePage';
 import { isTypingTarget, resolveShortcut } from './shortcuts';
 import { useBinder } from './useBinder';
 import { useSetOwnership } from './useOwnership';
@@ -73,8 +74,6 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   /** Phones get a shorter stack of controls, so the card table has the screen. */
   const narrow = useNarrow();
   const showBinder = view === 'binder';
-  /** Where a swipe on the phone's single page began, to turn the page when it ends. */
-  const swipeRef = useRef<{ x: number; y: number } | null>(null);
   const quota = useQuota();
   const moreRef = useRef<HTMLDetailsElement>(null);
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
@@ -543,28 +542,10 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
         />
       </div>
 
-      {/* A two-page spread is too wide for a phone, so a phone shows one page at a time and
-          a sideways swipe turns it. */}
+      {/* A two-page spread is too wide for a phone, so a phone shows one page at a time,
+          turned by dragging it sideways. */}
       {showBinder ? (
-        <div
-          className={styles.binderArea}
-          onTouchStart={(event) => {
-            const touch = event.touches[0];
-            swipeRef.current = narrow && touch ? { x: touch.clientX, y: touch.clientY } : null;
-          }}
-          onTouchEnd={(event) => {
-            const start = swipeRef.current;
-            const touch = event.changedTouches[0];
-            swipeRef.current = null;
-            if (!start || !touch) return;
-            const dx = touch.clientX - start.x;
-            const dy = touch.clientY - start.y;
-            // Mostly sideways and far enough to be deliberate, so scrolling never flips.
-            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-              binder.stepPage(dx < 0 ? 1 : -1);
-            }
-          }}
-        >
+        <div className={styles.binderArea}>
           {narrow ? (
             <SpreadPager
               unit="page"
@@ -583,16 +564,35 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
             />
           )}
 
-          <BinderGrid
-            set={set}
-            viewSpread={binder.viewSpread}
-            active={binder.active}
-            ownership={ownership}
-            held={held}
-            focusRequest={binder.focusRequest}
-            onSelect={binder.selectCard}
-            {...(narrow && { singlePage: binder.viewPage })}
-          />
+          {narrow ? (
+            <SwipePage
+              page={binder.viewPage}
+              canPrev={binder.viewPage > 1}
+              canNext={binder.viewPage < binder.geometry.totalPages}
+              onStep={binder.stepPage}
+            >
+              <BinderGrid
+                set={set}
+                viewSpread={binder.viewSpread}
+                active={binder.active}
+                ownership={ownership}
+                held={held}
+                focusRequest={binder.focusRequest}
+                onSelect={binder.selectCard}
+                singlePage={binder.viewPage}
+              />
+            </SwipePage>
+          ) : (
+            <BinderGrid
+              set={set}
+              viewSpread={binder.viewSpread}
+              active={binder.active}
+              ownership={ownership}
+              held={held}
+              focusRequest={binder.focusRequest}
+              onSelect={binder.selectCard}
+            />
+          )}
         </div>
       ) : (
         <>

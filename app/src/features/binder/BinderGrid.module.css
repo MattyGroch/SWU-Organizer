@@ -54,7 +54,6 @@
   .grid[data-single='true'] {
     overflow-x: visible;
     gap: var(--space-1);
-    touch-action: pan-y;
   }
 
   .grid[data-single='true'] .row {
