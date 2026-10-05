@@ -8,7 +8,7 @@ import { SwuDatabase } from '~/data/db';
 import { readSetOwnership } from '~/data/inventory';
 import { parseSetCatalog, toLoadedSet, type LoadedSet } from '~/domain/catalog';
 import { importText } from '~/domain/import';
-import { binderCount, quotaForCard, spareCount } from '~/domain/ownership';
+import { binderCount, quotaForCard } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 
 /**
@@ -82,10 +82,9 @@ describe('re-importing a collection with variants', () => {
       'hyperspace-foil': 1,
     });
 
-    // One slot, one playset, four spares.
+    // One slot, one playset; nothing is moved to bulk without being asked.
     const quota = quotaForCard(catalog.get('SOR')!.cardsByBase.get(59)!);
     expect(binderCount(droid.total, quota)).toBe(3);
-    expect(spareCount(droid.total, quota)).toBe(4);
   });
 
   it('handles prestige runs in the sets that have them', async () => {

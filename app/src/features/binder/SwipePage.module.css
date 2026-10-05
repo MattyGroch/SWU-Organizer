@@ -1,0 +1,19 @@
+/* Clips the page as it slides, so it never widens the screen. */
+.viewport {
+  overflow: hidden;
+  /* Room for the selected cell's focus ring, which sits just outside the cell. */
+  padding: 4px;
+  margin: -4px;
+}
+
+.page {
+  /* Vertical scrolling stays the browser's; sideways drags are ours. */
+  touch-action: pan-y;
+  will-change: transform;
+}
+
+.page[data-animate='true'] {
+  transition:
+    transform 180ms ease-out,
+    opacity 180ms ease-out;
+}

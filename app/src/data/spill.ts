@@ -3,7 +3,8 @@ import { parseDeckLibrary, type DeckLibrary } from '~/domain/decks';
 import { spillToBulk, type VariantCounts } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 
-import type { OwnedPrinting, SwuDatabase } from './db';
+import { notifyInventoryChanged } from './changes';
+import { db, type OwnedPrinting, type SwuDatabase } from './db';
 
 export type QuotaOf = (setKey: SetKey, base: number) => number;
 
@@ -42,5 +43,23 @@ export async function spillCards(
     });
     if (changed.length) await database.owned.bulkPut(changed);
   }
+  return moved;
+}
+
+/**
+ * Settles cards after a manual edit: a pocket over its playset sends the weakest extras to
+ * the bulk box, as Intake does. Returns how many copies moved.
+ */
+export async function settleCards(
+  cards: ReadonlyArray<{ setKey: SetKey; base: number }>,
+  quotaOf: QuotaOf,
+  database: SwuDatabase = db,
+  now = Date.now(),
+): Promise<number> {
+  const moved = await database.transaction('rw', database.owned, database.deckLibrary, () =>
+    spillCards(database, cards, quotaOf, now),
+  );
+  if (moved)
+    for (const setKey of new Set(cards.map((c) => c.setKey))) notifyInventoryChanged(setKey);
   return moved;
 }

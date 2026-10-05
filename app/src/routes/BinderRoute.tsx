@@ -5,15 +5,17 @@ import { setQuery } from '~/data/catalog';
 import type { LoadedSet, SetManifestEntry } from '~/domain/catalog';
 import type { SetKey } from '~/domain/types';
 import { BinderPage } from '~/features/binder/BinderPage';
+import type { InventoryView } from '~/features/inventory/views';
 
 type Props = {
   set: LoadedSet;
   entries: SetManifestEntry[];
+  view: InventoryView;
   /** Card to select on arrival, from `?card=`. Lets a binder position be linked to. */
   selectCard?: number;
 };
 
-export function BinderRoute({ set, entries, selectCard }: Props) {
+export function BinderRoute({ set, entries, view, selectCard }: Props) {
   /**
    * Subscribes to every set query rather than reading the cache once.
    *
@@ -42,5 +44,13 @@ export function BinderRoute({ set, entries, selectCard }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [results.map((r) => (r.data ? r.data.setKey : '')).join('|'), set]);
 
-  return <BinderPage set={set} entries={entries} loadedSets={loadedSets} selectCard={selectCard} />;
+  return (
+    <BinderPage
+      set={set}
+      entries={entries}
+      view={view}
+      loadedSets={loadedSets}
+      selectCard={selectCard}
+    />
+  );
 }

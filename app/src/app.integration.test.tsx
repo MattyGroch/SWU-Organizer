@@ -35,7 +35,7 @@ function serveFromDisk(url: string) {
   return JSON.parse(readFileSync(join(setsDir, file), 'utf8')) as unknown;
 }
 
-async function renderApp(path = '/binder/SOR') {
+async function renderApp(path = '/binder/SOR', ready?: () => HTMLElement) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false, staleTime: Infinity } },
   });
@@ -49,7 +49,11 @@ async function renderApp(path = '/binder/SOR') {
     </QueryClientProvider>,
   );
 
-  await waitFor(() => expect(screen.getByRole('grid')).toBeInTheDocument(), { timeout: 5000 });
+  // The Binder page shows the grid; the List page, the card table.
+  const landmark = path.includes('/list') ? 'table' : 'grid';
+  await waitFor(() => expect(ready ? ready() : screen.getByRole(landmark)).toBeInTheDocument(), {
+    timeout: 5000,
+  });
   return { router };
 }
 
@@ -116,9 +120,9 @@ describe('binder, end to end', () => {
     await user.click(cell(/Director Krennic/));
     await user.keyboard('+');
 
-    await waitFor(() => expect(cell(/Director Krennic.*1 of 1 in binder/)).toBeInTheDocument());
+    await waitFor(() => expect(cell(/Director Krennic.*1 of 2 in binder/)).toBeInTheDocument());
 
-    // Leaders have a quota of 1, and the Normal printing is "001".
+    // Leaders keep two in the binder by default, and the Normal printing is "001".
     const row = await db.owned.get('SOR:001');
     expect(row).toMatchObject({ setKey: 'SOR', base: 1, num: '001', variant: 'normal', count: 1 });
   });
@@ -136,7 +140,7 @@ describe('binder, end to end', () => {
     expect(row).toMatchObject({ base: 1, variant: 'hyperspace', count: 1 });
 
     // One slot, one playset — the variant does not create a second binder position.
-    await waitFor(() => expect(cell(/Director Krennic.*1 of 1 in binder/)).toBeInTheDocument());
+    await waitFor(() => expect(cell(/Director Krennic.*1 of 2 in binder/)).toBeInTheDocument());
   });
 
   it('ignores a digit for a printing the card does not have', async () => {
@@ -150,11 +154,11 @@ describe('binder, end to end', () => {
     expect(await db.owned.count()).toBe(0);
   });
 
-  it('counts copies beyond the playset as spares', async () => {
+  it('sends copies beyond the playset to the bulk box', async () => {
     const user = userEvent.setup();
     await renderApp();
 
-    // Every card on SOR page 1 is a Leader (quota 1); #31 Inferno Four is a Unit (quota 3).
+    // Every card on SOR page 1 is a Leader; #31 Inferno Four is a Unit (quota 3).
     await user.keyboard('/');
     await user.type(searchBox(), 'Inferno Four');
     await user.keyboard('{Enter}');
@@ -162,21 +166,22 @@ describe('binder, end to end', () => {
     await waitFor(() => expect(cell(/Inferno Four/)).toHaveFocus());
     await user.keyboard('+++++');
 
-    await waitFor(() =>
-      expect(cell(/Inferno Four.*3 of 3 in binder, 2 spare/)).toBeInTheDocument(),
+    await waitFor(async () =>
+      expect(await db.owned.get('SOR:031')).toMatchObject({ count: 5, bulk: 2 }),
     );
+    await waitFor(() => expect(cell(/Inferno Four.*3 of 3 in binder\./)).toBeInTheDocument());
   });
 
   it('fills a playset with Shift+plus, respecting the card’s quota', async () => {
     const user = userEvent.setup();
     await renderApp();
 
-    // Krennic is a Leader, so a full playset is one copy, not three.
+    // Krennic is a Leader, so a full playset is two copies by default, not three.
     await user.click(cell(/Director Krennic/));
     await user.keyboard('{Shift>}+{/Shift}');
 
     await waitFor(async () => expect(await db.owned.get('SOR:001')).toBeDefined());
-    expect((await db.owned.get('SOR:001'))!.count).toBe(1);
+    expect((await db.owned.get('SOR:001'))!.count).toBe(2);
   });
 
   it('fills a Unit to three', async () => {
@@ -202,6 +207,7 @@ describe('binder, end to end', () => {
     await user.keyboard('+');
     await user.keyboard('{3}');
     await waitFor(async () => expect(await db.owned.count()).toBe(2));
+    const before = await db.owned.toArray();
 
     await user.keyboard('{Shift>}_{/Shift}');
     await waitFor(async () => expect(await db.owned.count()).toBe(0));
@@ -210,9 +216,8 @@ describe('binder, end to end', () => {
     const undo = await screen.findByRole('button', { name: 'Undo' });
     await user.click(undo);
 
-    await waitFor(async () => expect(await db.owned.count()).toBe(2));
-    expect((await db.owned.get('SOR:001'))!.count).toBe(1);
-    expect((await db.owned.get('SOR:269'))!.count).toBe(1);
+    // Exactly as it was, printing by printing.
+    await waitFor(async () => expect(await db.owned.toArray()).toEqual(before));
   });
 
   it('moves the selection with arrow keys', async () => {
@@ -288,6 +293,12 @@ describe('binder, end to end', () => {
     await waitFor(() => expect(cell(/Inferno Four/)).toHaveFocus());
   });
 
+  it('sends links from before the Inventory tab to the Binder page', async () => {
+    const { router } = await renderApp('/binder/SOR?card=31');
+    expect(router.state.location.pathname).toBe('/inventory/SOR/binder');
+    expect(router.state.location.search).toEqual({ card: 31 });
+  });
+
   it('ignores a card param that is not in the set', async () => {
     await renderApp('/binder/SOR?card=99999');
     expect(screen.getByRole('grid')).toHaveAccessibleName('Binder, page 1');
@@ -348,7 +359,7 @@ describe('sets hidden from the binder', () => {
     const user = userEvent.setup();
     await renderApp();
 
-    await user.click(screen.getByText('Sets'));
+    await user.click(screen.getByText('Settings'));
     await user.click(screen.getByRole('checkbox', { name: /TS26/ }));
 
     const picker = screen.getByRole('combobox', { name: 'Card set' });
@@ -379,7 +390,7 @@ describe('bulk edit', () => {
 
   it('fills exactly the cards the filters show, and undoes', async () => {
     const user = userEvent.setup();
-    await renderApp();
+    await renderApp('/inventory/SOR/list');
 
     await user.click(screen.getByRole('button', { name: 'Legendary' }));
     await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
@@ -403,7 +414,7 @@ describe('bulk edit', () => {
 
   it('can fill across the whole collection, leaving hidden sets alone, with one Undo', async () => {
     const user = userEvent.setup();
-    await renderApp();
+    await renderApp('/inventory/SOR/list');
 
     await user.click(screen.getByRole('button', { name: 'Legendary' }));
     await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
@@ -482,5 +493,52 @@ describe('shortcuts help', () => {
     const dialog = await screen.findByRole('dialog', { name: 'Keyboard shortcuts' });
     expect(within(dialog).getByText('Fill to a playset')).toBeInTheDocument();
     expect(within(dialog).getByText('Prestige Serialized')).toBeInTheDocument();
+  });
+});
+
+describe('the bulk box', () => {
+  const put = (base: number, num: string, count: number, bulk?: number) =>
+    db.owned.put({
+      id: `SOR:${num}`,
+      setKey: 'SOR',
+      base,
+      num,
+      variant: 'normal',
+      count,
+      ...(bulk !== undefined && { bulk }),
+      updatedAt: 0,
+    });
+
+  it('lists what is in the box across sets, and finds a card by name', async () => {
+    const user = userEvent.setup();
+    await put(31, '031', 5, 2);
+    await put(1, '001', 1);
+    await renderApp('/inventory/bulk', () => screen.getByRole('table', { name: 'Bulk box' }));
+
+    const table = screen.getByRole('table', { name: 'Bulk box' });
+    expect(within(table).getByRole('link', { name: 'Inferno Four' })).toBeInTheDocument();
+    expect(within(table).getAllByRole('row')).toHaveLength(2);
+    expect(screen.getByRole('status')).toHaveTextContent('2 copies of 1 card in the bulk box');
+
+    await user.type(screen.getByRole('searchbox', { name: 'Search the bulk box' }), 'krennic');
+    expect(screen.queryByRole('table', { name: 'Bulk box' })).not.toBeInTheDocument();
+  });
+
+  it('takes the binder down to one Leader when the setting says so', async () => {
+    const user = userEvent.setup();
+    await put(1, '001', 2);
+    await renderApp();
+
+    await user.click(screen.getByText('Settings'));
+    await user.click(screen.getByRole('radio', { name: '1 copy' }));
+    await waitFor(async () =>
+      expect(await db.owned.get('SOR:001')).toMatchObject({ count: 2, bulk: 1 }),
+    );
+    await waitFor(() => expect(cell(/Director Krennic.*1 of 1 in binder/)).toBeInTheDocument());
+
+    await user.click(screen.getByRole('radio', { name: '2 copies' }));
+    // Raising it moves nothing back: the bulk box never refills the binder.
+    await waitFor(() => expect(cell(/Director Krennic.*1 of 2 in binder/)).toBeInTheDocument());
+    expect(await db.owned.get('SOR:001')).toMatchObject({ bulk: 1 });
   });
 });

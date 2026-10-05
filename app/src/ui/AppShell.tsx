@@ -15,8 +15,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className={styles.header}>
         <h1 className={styles.title}>SWU Organizer</h1>
         <nav className={styles.nav} aria-label="Main">
-          <Link to="/" className={styles.navLink} activeProps={{ 'aria-current': 'page' }}>
-            Binder
+          <Link to="/inventory" className={styles.navLink} activeProps={{ 'aria-current': 'page' }}>
+            Inventory
           </Link>
           <Link to="/decks" className={styles.navLink} activeProps={{ 'aria-current': 'page' }}>
             Decks

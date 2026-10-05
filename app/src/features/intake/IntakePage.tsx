@@ -22,7 +22,7 @@ import {
   type LoadedSet,
   type Printing,
 } from '~/domain/catalog';
-import { quotaForCard } from '~/domain/ownership';
+import { useQuota } from '~/features/inventory/useQuota';
 import type { SetKey } from '~/domain/types';
 import { StackList } from '~/features/putAway/StackList';
 import { useToast } from '~/ui/toastContext';
@@ -76,6 +76,7 @@ export function IntakePage({ sets }: Props) {
 
 function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, LoadedSet> }) {
   const showToast = useToast();
+  const quota = useQuota();
   const [confirmDiscard, setConfirmDiscard] = useState(false);
   const [busy, setBusy] = useState(false);
   const cards = groupByCard(batch.lines);
@@ -84,7 +85,7 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
     .reduce((sum, l) => sum + l.count, 0);
   const quotaOf = (setKey: SetKey, base: number) => {
     const card = sets.get(setKey)?.cardsByBase.get(base);
-    return card ? quotaForCard(card) : Infinity;
+    return card ? quota(card) : Infinity;
   };
 
   async function commit() {
@@ -275,6 +276,7 @@ function CardRow({
   const model = useCardModel(batchId, lines, set);
   const { ref, setKey, base, card, name, printings, source, countOf, total, mixed } = model;
   const [fixing, setFixing] = useState(false);
+  const quota = useQuota();
 
   return (
     <tr data-mixed={mixed}>
@@ -295,10 +297,7 @@ function CardRow({
           </span>
         </span>
         {previewBulk && card && (
-          <BulkNote
-            lines={lines}
-            quota={quotaForCard({ type: card.Type, maxCopies: card.MaxCopies })}
-          />
+          <BulkNote lines={lines} quota={quota({ type: card.Type, maxCopies: card.MaxCopies })} />
         )}
       </td>
       <td className={styles.wideOnly}>

@@ -5,16 +5,25 @@ import { spreadLabel } from '~/ui/format';
 import styles from './SpreadPager.module.css';
 
 type Props = {
-  viewSpread: number;
-  totalSpreads: number;
-  onGoTo: (spread: number) => void;
+  /** Spreads on a desktop; single pages on a phone. */
+  unit: 'spread' | 'page';
+  /** The spread index (from 0), or the page number (from 1). */
+  value: number;
+  /** How many spreads or pages the set has. */
+  total: number;
+  onGoTo: (value: number) => void;
   onStep: (delta: number) => void;
 };
 
-export function SpreadPager({ viewSpread, totalSpreads, onGoTo, onStep }: Props) {
+export function SpreadPager({ unit, value, total, onGoTo, onStep }: Props) {
+  const first = unit === 'page' ? 1 : 0;
   const options = useMemo(
-    () => Array.from({ length: totalSpreads }, (_, i) => ({ value: i, label: spreadLabel(i) })),
-    [totalSpreads],
+    () =>
+      Array.from({ length: total }, (_, i) => ({
+        value: i + first,
+        label: unit === 'page' ? `Page ${i + 1}` : spreadLabel(i),
+      })),
+    [total, unit, first],
   );
 
   return (
@@ -23,16 +32,16 @@ export function SpreadPager({ viewSpread, totalSpreads, onGoTo, onStep }: Props)
         type="button"
         className={styles.step}
         onClick={() => onStep(-1)}
-        disabled={viewSpread <= 0}
-        aria-label="Previous spread"
-        title="Previous spread — keyboard ,"
+        disabled={value <= first}
+        aria-label={`Previous ${unit}`}
+        title={`Previous ${unit} — keyboard ,`}
       >
         ‹<kbd>,</kbd>
       </button>
 
       <label className={styles.jump}>
-        <span className="visually-hidden">Jump to spread</span>
-        <select value={viewSpread} onChange={(event) => onGoTo(Number(event.target.value))}>
+        <span className="visually-hidden">Jump to {unit}</span>
+        <select value={value} onChange={(event) => onGoTo(Number(event.target.value))}>
           {options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
@@ -45,9 +54,9 @@ export function SpreadPager({ viewSpread, totalSpreads, onGoTo, onStep }: Props)
         type="button"
         className={styles.step}
         onClick={() => onStep(1)}
-        disabled={viewSpread >= totalSpreads - 1}
-        aria-label="Next spread"
-        title="Next spread — keyboard ."
+        disabled={value >= total - 1 + first}
+        aria-label={`Next ${unit}`}
+        title={`Next ${unit} — keyboard .`}
       >
         <kbd>.</kbd>›
       </button>

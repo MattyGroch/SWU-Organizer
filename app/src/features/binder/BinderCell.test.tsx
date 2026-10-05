@@ -2,7 +2,12 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { CatalogCard } from '~/domain/catalog';
-import { indexOwnership, type OwnedCounts, type VariantCounts } from '~/domain/ownership';
+import {
+  indexOwnership,
+  quotaForCard,
+  type OwnedCounts,
+  type VariantCounts,
+} from '~/domain/ownership';
 import type { Card } from '~/domain/types';
 
 import { BinderCell } from './BinderCell';
@@ -71,6 +76,7 @@ function renderCell(
   catalogCard: CatalogCard,
   owned: Array<[string, number]> = [],
   held: VariantCounts = {},
+  quota = quotaForCard(catalogCard),
 ): HTMLElement {
   const counts: OwnedCounts = indexOwnership(
     owned.map(([variant, count]) => ({ base: catalogCard.base, variant: variant as never, count })),
@@ -87,7 +93,8 @@ function renderCell(
       column={1}
       selected={false}
       counts={counts}
-      held={held}
+      held={{ binder: held, bulk: {} }}
+      quota={quota}
       onSelect={vi.fn()}
     />,
   ).container;

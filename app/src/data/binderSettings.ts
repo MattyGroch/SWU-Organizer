@@ -50,3 +50,28 @@ export function binderEntries(
   // Never hide everything — with no binder left, show them all rather than nothing.
   return visible.length ? visible : [...entries];
 }
+
+const LEADER_BASE_COPIES_KEY = 'binder:leaderBaseCopies';
+
+export type LeaderBaseCopies = 1 | 2;
+
+/** Two, so a Leader or Base pulled for a deck leaves a copy in its pocket. */
+export const DEFAULT_LEADER_BASE_COPIES: LeaderBaseCopies = 2;
+
+/** How many copies of each Leader and Base the binder holds; the rest live in bulk. */
+export async function readLeaderBaseCopies(database: SwuDatabase = db): Promise<LeaderBaseCopies> {
+  const raw = await readMeta(database, LEADER_BASE_COPIES_KEY);
+  return raw === '1' ? 1 : raw === '2' ? 2 : DEFAULT_LEADER_BASE_COPIES;
+}
+
+export async function writeLeaderBaseCopies(
+  copies: LeaderBaseCopies,
+  database: SwuDatabase = db,
+): Promise<void> {
+  await writeMeta(database, LEADER_BASE_COPIES_KEY, String(copies));
+}
+
+/** The default until the first read lands. */
+export function useLeaderBaseCopies(): LeaderBaseCopies {
+  return useLiveQuery(() => readLeaderBaseCopies(), []) ?? DEFAULT_LEADER_BASE_COPIES;
+}

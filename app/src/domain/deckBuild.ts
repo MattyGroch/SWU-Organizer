@@ -117,6 +117,16 @@ export function heldByHome(library: DeckLibrary): Map<CardKey, Homes> {
   return held;
 }
 
+/** What built decks hold of one set's cards, by base number and home. */
+export function heldInSet(library: DeckLibrary, setKey: SetKey): Map<number, Homes> {
+  const held = new Map<number, Homes>();
+  for (const [key, homes] of heldByHome(library)) {
+    const card = parseCardKey(key);
+    if (card.setKey === setKey) held.set(card.baseNumber, homes);
+  }
+  return held;
+}
+
 /** Every printing out in built decks, per card, wherever it came from. */
 export function heldVariants(library: DeckLibrary): Map<CardKey, VariantCounts> {
   const held = new Map<CardKey, VariantCounts>();

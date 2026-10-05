@@ -50,6 +50,18 @@
     min-width: max-content;
   }
 
+  /* One page: four columns that fit the screen, nothing to scroll. */
+  .grid[data-single='true'] {
+    overflow-x: visible;
+    gap: var(--space-1);
+  }
+
+  .grid[data-single='true'] .row {
+    grid-template-columns: repeat(4, 1fr);
+    min-width: 0;
+    gap: var(--space-1);
+  }
+
   .cell {
     scroll-snap-align: start;
   }

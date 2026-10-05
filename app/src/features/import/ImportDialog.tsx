@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { applyImport, type ImportMode } from '~/data/applyImport';
 import { variantLabel, type VariantSlug } from '~/domain/catalog';
 import type { CatalogLookup, ImportResult, SkipReason } from '~/domain/import';
-import { quotaForCard } from '~/domain/ownership';
+import { useQuota } from '~/features/inventory/useQuota';
 import type { SetKey } from '~/domain/types';
 
 import styles from './ImportDialog.module.css';
@@ -95,6 +95,7 @@ function summarize(result: ImportResult): Summary {
 
 export function ImportDialog({ catalog, onClose }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const quotaOf = useQuota();
   const [fileName, setFileName] = useState('');
   const [result, setResult] = useState<ImportResult | null>(null);
   const [error, setError] = useState('');
@@ -142,7 +143,7 @@ export function ImportDialog({ catalog, onClose }: Props) {
         ...(result.format !== 'app-json' && {
           spillOver: (setKey: SetKey, base: number) => {
             const card = catalog.get(setKey)?.cardsByBase.get(base);
-            return card ? quotaForCard(card) : Infinity;
+            return card ? quotaOf(card) : Infinity;
           },
         }),
       });

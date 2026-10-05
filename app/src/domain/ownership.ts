@@ -163,11 +163,18 @@ export function subtractHomes(a: Homes, b: Homes): Homes {
   };
 }
 
-/** What is physically left in a binder pocket, given the printings out in decks. */
-export function pocketCounts(counts: OwnedCounts, held: VariantCounts): OwnedCounts {
-  if (sumVariants(held) <= 0) return counts;
-  const byVariant = subtractVariants(counts.byVariant, held);
+/**
+ * What is physically in a card's binder pocket: copies whose home is the binder, less
+ * those out in decks.
+ */
+export function pocketCounts(counts: OwnedCounts, held: Homes): OwnedCounts {
+  const byVariant = subtractVariants(homesOf(counts).binder, held.binder);
   return { total: sumVariants(byVariant), byVariant };
+}
+
+/** What is physically in the bulk box of a card: its bulk copies, less those out in decks. */
+export function boxCounts(counts: OwnedCounts, held: Homes): VariantCounts {
+  return subtractVariants(counts.bulkByVariant ?? {}, held.bulk);
 }
 
 /**
@@ -229,11 +236,6 @@ export function binderCount(total: number, quota: number): number {
   return Math.min(total, quota);
 }
 
-/** Copies beyond the playset — the ones that live in a spares box, not the binder. */
-export function spareCount(total: number, quota: number): number {
-  return Math.max(0, total - quota);
-}
-
 export function collectionStatus(count: number, quota: number): CollectionStatus {
   if (count >= quota) return 'complete';
   if (count > 0) return 'partial';
@@ -245,8 +247,11 @@ export function neededCount(total: number, quota: number): number {
   return Math.max(0, quota - total);
 }
 
-export function quotaForCard(card: Pick<CatalogCard, 'type' | 'maxCopies'>): number {
-  return resolveQuota(card.type, card.maxCopies);
+export function quotaForCard(
+  card: Pick<CatalogCard, 'type' | 'maxCopies'>,
+  leaderBaseCopies = 1,
+): number {
+  return resolveQuota(card.type, card.maxCopies, leaderBaseCopies);
 }
 
 /**

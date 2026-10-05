@@ -3,11 +3,9 @@ import { isLandscapeArt, selectArtPrinting } from '~/domain/artSelection';
 import {
   binderCount,
   pocketCounts,
-  quotaForCard,
-  spareCount,
   sumVariants,
+  type Homes,
   type OwnedCounts,
-  type VariantCounts,
 } from '~/domain/ownership';
 import type { Card } from '~/domain/types';
 
@@ -26,7 +24,9 @@ type Props = {
   selected: boolean;
   counts: OwnedCounts;
   /** Printings pulled out into built decks — owned, but not in this pocket. */
-  held: VariantCounts;
+  held: Homes;
+  /** The card's binder playset. */
+  quota: number;
   onSelect: (card: Card) => void;
 };
 
@@ -50,20 +50,20 @@ export function BinderCell({
   selected,
   counts,
   held,
+  quota,
   onSelect,
 }: Props) {
   // The cell mirrors the physical pocket. Copies out in decks leave most valuable first,
   // so the art and foil mark come from what is actually still in the pages — and a pocket
   // emptied by decks looks exactly like a card you do not have.
   const pocket = pocketCounts(counts, held);
-  const inDecks = sumVariants(held);
+  // The slot shows its pocket only: bulk-box copies live in the List and Bulk pages.
+  const inDecks = sumVariants(held.binder);
   const choice = catalogCard ? selectArtPrinting(catalogCard, pocket) : undefined;
   const { src, state } = useCardImage(choice ? artUrl(setKey, choice.printing.num) : undefined);
 
-  const quota = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
   const onHand = pocket.total;
   const inBinder = binderCount(onHand, quota);
-  const spares = spareCount(onHand, quota);
   const pocketEmpty = onHand === 0;
   const rarity = rarityStyle(card.Rarity);
   const light = isLightFill(card.Aspects);
@@ -74,7 +74,7 @@ export function BinderCell({
   const description =
     `${card.Name}${card.Subtitle ? `, ${card.Subtitle}` : ''}. ` +
     `Number ${card.Number}. Page ${page}, row ${row}, column ${column}. ` +
-    `${inBinder} of ${quota} in binder${spares > 0 ? `, ${spares} spare` : ''}` +
+    `${inBinder} of ${quota} in binder` +
     `${inDecks > 0 ? `, ${inDecks} in decks` : ''}.` +
     // The sparkle is decorative, so the finish is announced in words instead.
     (choice?.foil && !pocketEmpty ? ' Includes a foil.' : '');
@@ -138,7 +138,6 @@ export function BinderCell({
             data-empty={inBinder === 0}
           >
             {inBinder}/{quota}
-            {spares > 0 && <span className={styles.spares}>+{spares}</span>}
             {inDecks > 0 && (
               <span className={styles.inDecks} title={`${inDecks} pulled into built decks`}>
                 ⇢{inDecks}

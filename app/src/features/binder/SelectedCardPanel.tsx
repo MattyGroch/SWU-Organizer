@@ -1,12 +1,11 @@
 import type { LoadedSet, Printing } from '~/domain/catalog';
 import {
   binderCount,
+  boxCounts,
   pocketCounts,
-  quotaForCard,
-  spareCount,
   sumVariants,
+  type Homes,
   type OwnedCounts,
-  type VariantCounts,
 } from '~/domain/ownership';
 import type { ActiveSelection } from '~/domain/types';
 
@@ -19,7 +18,10 @@ type Props = {
   active: ActiveSelection | null;
   counts: OwnedCounts;
   /** Printings pulled into built decks. */
-  held: VariantCounts;
+  /** What built decks hold of this card, by the home each copy returns to. */
+  held: Homes;
+  /** The card's binder playset. */
+  quota: number;
   onAdjust: (delta: number) => void;
   onAdjustPrinting: (printing: Printing, delta: number) => void;
   /** Deselects the card. Phones show a close button for it: they have no Escape key. */
@@ -39,6 +41,7 @@ export function SelectedCardPanel({
   active,
   counts,
   held,
+  quota,
   onAdjust,
   onAdjustPrinting,
   onClose,
@@ -54,12 +57,9 @@ export function SelectedCardPanel({
   }
 
   const { card } = active;
-  const quota = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
-  // Same rule as the binder cell: decks take the most valuable copies, never a Serialized.
-  const onHand = pocketCounts(counts, held).total;
-  const inDecks = sumVariants(held);
-  const inBinder = binderCount(onHand, quota);
-  const spares = spareCount(onHand, quota);
+  const inBinder = binderCount(pocketCounts(counts, held).total, quota);
+  const inBulk = sumVariants(boxCounts(counts, held));
+  const inDecks = sumVariants(held.binder) + sumVariants(held.bulk);
   const printings = set.printingsByBase.get(card.Number) ?? [];
 
   return (
@@ -124,7 +124,7 @@ export function SelectedCardPanel({
           </span>
           <span className={styles.qtyCaption}>
             in binder
-            {spares > 0 && ` · ${spares} spare${spares === 1 ? '' : 's'}`}
+            {inBulk > 0 && ` · ${inBulk} in bulk`}
             {inDecks > 0 && ` · ${inDecks} in decks`}
           </span>
         </p>

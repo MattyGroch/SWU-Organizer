@@ -76,7 +76,7 @@ describe('buildCardRows', () => {
 
     expect(droid.total).toBe(5);
     expect(droid.inBinder).toBe(3);
-    expect(droid.spares).toBe(2);
+    expect(droid.inBulk).toBe(0);
     expect(droid.needed).toBe(0);
     expect(droid.status).toBe('complete');
   });
@@ -159,9 +159,11 @@ describe('collectionTotals', () => {
     expect(totals.missingCost).toBeCloseTo(2 + 0.2, 5);
   });
 
-  it('counts spares separately from the binder', () => {
-    const ownership = indexOwnership([{ base: 59, variant: 'normal', count: 5 }]);
-    expect(collectionTotals(buildCardRows(set, ownership, filters())).spares).toBe(2);
+  it('counts the bulk box separately from the binder', () => {
+    const ownership = indexOwnership([{ base: 59, variant: 'normal', count: 5, bulk: 2 }]);
+    const rows = buildCardRows(set, ownership, filters());
+    expect(rows.find((r) => r.base === 59)).toMatchObject({ inBinder: 3, inBulk: 2 });
+    expect(collectionTotals(rows).inBulk).toBe(2);
   });
 });
 
@@ -226,7 +228,7 @@ describe('missingListSummary', () => {
 
 describe('cards pulled into built decks', () => {
   const ownership = indexOwnership([{ base: 59, variant: 'normal', count: 3 }]);
-  const inDecks = new Map([[59, { normal: 2 }]]);
+  const inDecks = new Map([[59, { binder: { normal: 2 }, bulk: {} }]]);
 
   it('leaves the binder, but still counts as owned', () => {
     const row = buildCardRows(set, ownership, filters(), inDecks).find((r) => r.base === 59)!;
