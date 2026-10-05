@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  attachPromos,
+  artUrl,
   buildPriceTable,
   buildSetCatalog,
   hasOwnArtwork,
@@ -222,5 +224,65 @@ describe('buildPriceTable', () => {
       printing('T01', 'Normal', { Type: 'Force Token', MarketPrice: '1.00' }),
     ]);
     expect(prices).toEqual({ '059': 0.05 });
+  });
+});
+
+describe('attachPromos', () => {
+  const catalog = () => ({
+    setKey: 'SOR',
+    cards: [
+      {
+        base: 15,
+        name: 'Bossk',
+        subtitle: 'Deadly Stalker',
+        type: 'Unit',
+        printings: [{ num: '015', variant: 'normal' }],
+      },
+      {
+        base: 33,
+        name: 'Death Trooper',
+        type: 'Unit',
+        printings: [{ num: '033', variant: 'normal' }],
+      },
+    ],
+  });
+  const promo = (Number, Name, Subtitle, VariantType = 'OP Promo') => ({
+    Number,
+    Name,
+    Subtitle,
+    Type: 'Unit',
+    VariantType,
+  });
+
+  it('adds weekly-play promos to their base card, numbered under the promo set', () => {
+    const cat = catalog();
+    const unmatched = attachPromos(cat, 'SOROP', [
+      promo('015', 'Bossk', 'Deadly Stalker'),
+      promo('015F', 'Bossk', 'Deadly Stalker', 'OP Promo Foil'),
+      promo('013', 'Death Trooper'),
+    ]);
+    expect(unmatched).toEqual([]);
+    expect(cat.cards[0].printings).toEqual([
+      { num: '015', variant: 'normal' },
+      { num: 'SOROP-015', variant: 'promo' },
+      { num: 'SOROP-015F', variant: 'promo-foil' },
+    ]);
+    expect(cat.cards[1].printings.at(-1)).toEqual({ num: 'SOROP-013', variant: 'promo' });
+  });
+
+  it('reports a promo that matches no card instead of dropping it', () => {
+    expect(attachPromos(catalog(), 'SOROP', [promo('099', 'Nobody', 'At All')])).toEqual([
+      'SOROP 099 Nobody — At All',
+    ]);
+  });
+
+  it('finds promo art under the promo set code', () => {
+    expect(artUrl('SOR', 'SOROP-015')).toBe('https://cdn.swu-db.com/images/cards/SOROP/015.png');
+  });
+
+  it('prices promo printings under their promo numbers', () => {
+    expect(buildPriceTable([{ ...promo('015', 'Bossk'), MarketPrice: 2.5 }], 'SOROP')).toEqual({
+      'SOROP-015': 2.5,
+    });
   });
 });

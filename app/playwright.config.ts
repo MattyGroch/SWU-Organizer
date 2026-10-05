@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-import { FAKE_CAMERA } from './e2e/paths';
+import { FAKE_CAMERA, UNKNOWN_CAMERA } from './e2e/paths';
 
 /**
  * End-to-end tests against a production build (`vite build` + `vite preview`), so the
@@ -10,6 +10,21 @@ import { FAKE_CAMERA } from './e2e/paths';
  * e2e/global-setup.ts), which is how the scanner gets tested without a phone.
  */
 const PORT = 4173;
+
+/** A phone whose camera is Chromium's fake device playing `video`. */
+function phoneWithCamera(video: string) {
+  return {
+    ...devices['Pixel 7'],
+    permissions: ['camera'],
+    launchOptions: {
+      args: [
+        '--use-fake-ui-for-media-stream',
+        '--use-fake-device-for-media-stream',
+        `--use-file-for-fake-video-capture=${video}`,
+      ],
+    },
+  };
+}
 
 export default defineConfig({
   testDir: 'e2e',
@@ -24,17 +39,14 @@ export default defineConfig({
   projects: [
     {
       name: 'phone',
-      use: {
-        ...devices['Pixel 7'],
-        permissions: ['camera'],
-        launchOptions: {
-          args: [
-            '--use-fake-ui-for-media-stream',
-            '--use-fake-device-for-media-stream',
-            `--use-file-for-fake-video-capture=${FAKE_CAMERA}`,
-          ],
-        },
-      },
+      testIgnore: /unrecognised/,
+      use: phoneWithCamera(FAKE_CAMERA),
+    },
+    {
+      // A camera showing a card the index can't match.
+      name: 'phone, unknown card',
+      testMatch: /unrecognised/,
+      use: phoneWithCamera(UNKNOWN_CAMERA),
     },
   ],
   webServer: {

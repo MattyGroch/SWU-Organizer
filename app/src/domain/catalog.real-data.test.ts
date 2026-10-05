@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   numericPart,
+  promoParts,
   parsePriceTable,
   parseSetCatalog,
   parseSetManifest,
@@ -44,7 +45,11 @@ describe('committed catalog', () => {
 
     for (const card of catalog.cards) {
       // Every card files into a binder slot at or below its lowest printing number.
-      expect(card.base).toBe(Math.min(...card.printings.map((p) => numericPart(p.num))));
+      expect(card.base).toBe(
+        Math.min(
+          ...card.printings.filter((p) => !promoParts(p.num)).map((p) => numericPart(p.num)),
+        ),
+      );
       // Every card is reachable through the maps the binder and scanner rely on.
       expect(set.byNumber.get(card.base)?.Name).toBe(card.name);
       for (const printing of card.printings) {
@@ -94,6 +99,8 @@ describe('committed catalog', () => {
       'prestige',
       'prestige-foil',
       'prestige-serialized',
+      'promo',
+      'promo-foil',
       'showcase',
     ]);
   });

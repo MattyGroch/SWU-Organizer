@@ -1,8 +1,8 @@
 import { mkdir, stat, writeFile } from 'node:fs/promises';
 
-import sharp from 'sharp';
+import sharp, { type Sharp } from 'sharp';
 
-import { CACHE_DIR, CAMERA_CARD, FAKE_CAMERA } from './paths';
+import { CACHE_DIR, CAMERA_CARD, FAKE_CAMERA, UNKNOWN_CAMERA } from './paths';
 
 /** A webcam-shaped frame. */
 const WIDTH = 1280;
@@ -24,30 +24,41 @@ export default async function globalSetup() {
     await writeFile(art, Buffer.from(await response.arrayBuffer()));
   }
 
+  await writeFile(FAKE_CAMERA, await cameraFrame(sharp(art), 18, -10));
+  await writeFile(
+    UNKNOWN_CAMERA,
+    await cameraFrame(sharp(art).flop().negate({ alpha: false }), 0, 0),
+  );
+}
+
+/**
+ * One camera video: the card on a table, at about 85% of the scan guide's height, offset
+ * by (dx, dy) and tilted a degree — a hand-held card, not a perfect crop.
+ */
+async function cameraFrame(card: Sharp, dx: number, dy: number): Promise<Buffer> {
   // The guide is 80% of the frame height at 5:7; the card fills ~85% of that.
   const cardHeight = Math.round(HEIGHT * 0.8 * 0.85);
   const cardWidth = Math.round((cardHeight * 5) / 7);
-  const card = await sharp(art)
+  const picture = await card
     .resize(cardWidth, cardHeight, { fit: 'fill' })
     .rotate(1, { background: TABLE })
     .png()
     .toBuffer();
-  const meta = await sharp(card).metadata();
+  const meta = await sharp(picture).metadata();
   const { data } = await sharp({
     create: { width: WIDTH, height: HEIGHT, channels: 3, background: TABLE },
   })
     .composite([
       {
-        input: card,
-        left: Math.round(WIDTH / 2 - meta.width! / 2 + 18),
-        top: Math.round(HEIGHT / 2 - meta.height! / 2 - 10),
+        input: picture,
+        left: Math.round(WIDTH / 2 - meta.width! / 2 + dx),
+        top: Math.round(HEIGHT / 2 - meta.height! / 2 + dy),
       },
     ])
     .removeAlpha()
     .raw()
     .toBuffer({ resolveWithObject: true });
-
-  await writeFile(FAKE_CAMERA, toY4m(data, WIDTH, HEIGHT, 2));
+  return toY4m(data, WIDTH, HEIGHT, 2);
 }
 
 /** RGB → YUV4MPEG2 (4:2:0), the uncompressed format Chromium's fake camera plays. */

@@ -6,6 +6,7 @@ import { FirstSyncDialog } from '~/features/account/FirstSyncDialog';
 import { useIntakeCount } from '~/features/intake/useIntake';
 
 import styles from './AppShell.module.css';
+import { StorageBanner } from './StorageBanner';
 
 export function AppShell({ children }: { children: ReactNode }) {
   const queued = useIntakeCount();
@@ -35,6 +36,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className={styles.account}>
           <AccountMenu />
         </div>
+        <StorageBanner />
       </header>
       <FirstSyncDialog />
       <main className={styles.main}>{children}</main>

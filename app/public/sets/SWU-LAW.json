@@ -844,8 +844,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-01",
+          "variant": "promo"
+        },
+        {
           "num": "535",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-21",
+          "variant": "promo-foil"
         },
         {
           "num": "788",
@@ -1138,8 +1146,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-02",
+          "variant": "promo"
+        },
+        {
           "num": "544",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-22",
+          "variant": "promo-foil"
         },
         {
           "num": "821",
@@ -1227,8 +1243,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-03",
+          "variant": "promo"
+        },
+        {
           "num": "547",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-23",
+          "variant": "promo-foil"
         },
         {
           "num": "797",
@@ -1550,8 +1574,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-04",
+          "variant": "promo"
+        },
+        {
           "num": "557",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-24",
+          "variant": "promo-foil"
         },
         {
           "num": "795",
@@ -1958,8 +1990,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-05",
+          "variant": "promo"
+        },
+        {
           "num": "570",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-25",
+          "variant": "promo-foil"
         },
         {
           "num": "812",
@@ -2135,8 +2175,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-06",
+          "variant": "promo"
+        },
+        {
           "num": "576",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-26",
+          "variant": "promo-foil"
         },
         {
           "num": "820",
@@ -2172,8 +2220,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-07",
+          "variant": "promo"
+        },
+        {
           "num": "577",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-27",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2290,8 +2346,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-08",
+          "variant": "promo"
+        },
+        {
           "num": "581",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-28",
+          "variant": "promo-foil"
         },
         {
           "num": "802",
@@ -2521,8 +2585,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-09",
+          "variant": "promo"
+        },
+        {
           "num": "589",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-29",
+          "variant": "promo-foil"
         },
         {
           "num": "817",
@@ -2587,8 +2659,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-10",
+          "variant": "promo"
+        },
+        {
           "num": "591",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-30",
+          "variant": "promo-foil"
         },
         {
           "num": "794",
@@ -3367,8 +3447,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-11",
+          "variant": "promo"
+        },
+        {
           "num": "620",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-31",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3668,8 +3756,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-12",
+          "variant": "promo"
+        },
+        {
           "num": "633",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-32",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4207,8 +4303,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-13",
+          "variant": "promo"
+        },
+        {
           "num": "654",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-33",
+          "variant": "promo-foil"
         },
         {
           "num": "807",
@@ -4591,8 +4695,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-14",
+          "variant": "promo"
+        },
+        {
           "num": "670",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-34",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4684,8 +4796,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-15",
+          "variant": "promo"
+        },
+        {
           "num": "674",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-35",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5431,8 +5551,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-16",
+          "variant": "promo"
+        },
+        {
           "num": "705",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-36",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5772,8 +5900,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-17",
+          "variant": "promo"
+        },
+        {
           "num": "718",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-37",
+          "variant": "promo-foil"
         },
         {
           "num": "822",
@@ -5882,8 +6018,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-18",
+          "variant": "promo"
+        },
+        {
           "num": "722",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-38",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6033,8 +6177,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-19",
+          "variant": "promo"
+        },
+        {
           "num": "728",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-39",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6528,8 +6680,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "LAWP-20",
+          "variant": "promo"
+        },
+        {
           "num": "749",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "LAWP-40",
+          "variant": "promo-foil"
         }
       ]
     },

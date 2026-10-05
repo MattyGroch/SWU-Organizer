@@ -1,0 +1,42 @@
+.banner {
+  /* Last in the sticky header, edge to edge, so it stays in view while scrolling. */
+  flex: 0 0 calc(100% + 2 * var(--space-4));
+  margin: 0 calc(-1 * var(--space-4)) calc(-1 * var(--space-3));
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-warning);
+  font-size: var(--font-size-sm);
+}
+
+.banner[data-tone='danger'] {
+  border-left-color: var(--color-danger);
+}
+
+.banner p {
+  flex: 1;
+  min-width: 0;
+}
+
+.dismiss {
+  flex-shrink: 0;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Phones: the header is a grid (see AppShell), with tighter padding. */
+@media (max-width: 760px) {
+  .banner {
+    grid-column: 1 / -1;
+    margin: 0 calc(-1 * var(--space-3)) calc(-1 * var(--space-2));
+    padding: var(--space-2) var(--space-3);
+  }
+}

@@ -3,6 +3,8 @@ import { RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
+import { db } from './data/db';
+import { startInstanceWatch, storageHealth } from './data/storageHealth';
 import { startSync } from './data/sync';
 import { SyncProvider } from './features/account/SyncProvider';
 import { buildRouter } from './router';
@@ -25,6 +27,11 @@ const router = buildRouter(queryClient);
 // Queues local writes from the first paint. Nothing is transmitted until sign-in, but
 // queued writes persist, so an offline session loses nothing.
 const sync = startSync(queryClient);
+
+// Opening can wait forever too (another copy of the app blocking it), so it is watched
+// like any request. A failed open surfaces at the first query; only the wait matters here.
+void storageHealth.track(db.open()).catch(() => {});
+startInstanceWatch(storageHealth);
 
 const container = document.getElementById('root');
 if (!container) throw new Error('Missing #root element');

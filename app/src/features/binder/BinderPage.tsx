@@ -46,6 +46,7 @@ import { ImportDialog } from '~/features/import/ImportDialog';
 import { CardSearch } from '~/features/search/CardSearch';
 import { formatUsd } from '~/ui/format';
 import { useToast } from '~/ui/toastContext';
+import { useNarrow } from '~/ui/useNarrow';
 import styles from './BinderPage.module.css';
 
 type Props = {
@@ -62,6 +63,9 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
   const binder = useBinder(set);
   const ownership = useSetOwnership(set.setKey);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  /** Phones get a shorter stack of controls, so the card table has the screen. */
+  const narrow = useNarrow();
+  const moreRef = useRef<HTMLDetailsElement>(null);
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
   const [bulkOpen, setBulkOpen] = useState(false);
@@ -326,6 +330,51 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
     window.setTimeout(() => setCopyState('idle'), 2400);
   }
 
+  /** Copy-for-TCGplayer buttons and value totals: beside the progress on desktop, in More on a phone. */
+  const copyButtons = (
+    <div className={styles.copyGroup} role="group" aria-label="Copy for TCGplayer mass entry">
+      <button
+        type="button"
+        className={styles.action}
+        disabled={toOrder.cards === 0}
+        onClick={() => copyMissing('fullNeeded')}
+        title="Every copy still needed for the cards shown, in TCGplayer mass-entry format"
+      >
+        Copy full need{toOrder.cards > 0 && ` (${toOrder.copies})`}
+      </button>
+      <button
+        type="button"
+        className={styles.action}
+        disabled={toOrder.cards === 0}
+        onClick={() => copyMissing('oneEach')}
+        title="One copy of each card shown that is still needed"
+      >
+        Copy 1 each{toOrder.cards > 0 && ` (${toOrder.cards})`}
+      </button>
+      <span role="status" className={styles.copyStatus}>
+        {copyState === 'copied' ? 'Copied' : copyState === 'failed' ? 'Copy failed' : ''}
+      </span>
+    </div>
+  );
+  const totalsList = (
+    <dl className={styles.totals} aria-label="Collection totals">
+      <div>
+        <dt>Value</dt>
+        <dd>{formatUsd(totals.value)}</dd>
+      </div>
+      <div>
+        <dt>To finish</dt>
+        <dd>{formatUsd(totals.missingCost)}</dd>
+      </div>
+    </dl>
+  );
+
+  /** Run a More-menu action and fold the menu away. */
+  function fromMore(action: () => void) {
+    if (moreRef.current) moreRef.current.open = false;
+    action();
+  }
+
   return (
     <div className={styles.page}>
       <div className={styles.toolbar}>
@@ -359,23 +408,55 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
           onQueryChange={(query) => {
             hasQueryRef.current = query.trim().length > 0;
           }}
+          wideResults
         />
 
-        <button type="button" className={styles.action} onClick={() => setBulkOpen(true)}>
-          Bulk edit
-        </button>
-        <button
-          type="button"
-          className={`${styles.action} ${styles.keyboardOnly}`}
-          onClick={() => setHelpOpen(true)}
-          title="Keyboard shortcuts — ?"
-          aria-keyshortcuts="Shift+?"
-        >
-          Shortcuts
-        </button>
-        <button type="button" className={styles.action} onClick={() => setImportOpen(true)}>
-          Import / export
-        </button>
+        {narrow ? (
+          <>
+            <FilterBar filters={filters} onChange={setFilters} className={styles.inlineFilters} />
+            <details className={styles.more} ref={moreRef}>
+              <summary className={styles.moreSummary} aria-label="More: bulk edit, import, copy">
+                ⋯
+              </summary>
+              <div className={styles.morePanel}>
+                <button
+                  type="button"
+                  className={styles.action}
+                  onClick={() => fromMore(() => setBulkOpen(true))}
+                >
+                  Bulk edit
+                </button>
+                <button
+                  type="button"
+                  className={styles.action}
+                  onClick={() => fromMore(() => setImportOpen(true))}
+                >
+                  Import / export
+                </button>
+                {copyButtons}
+                {totalsList}
+              </div>
+            </details>
+          </>
+        ) : (
+          <>
+            <button type="button" className={styles.action} onClick={() => setBulkOpen(true)}>
+              Bulk edit
+            </button>
+            <button
+              type="button"
+              className={`${styles.action} ${styles.keyboardOnly}`}
+              onClick={() => setHelpOpen(true)}
+              title="Keyboard shortcuts — ?"
+              aria-keyshortcuts="Shift+?"
+            >
+              Shortcuts
+            </button>
+            <button type="button" className={styles.action} onClick={() => setImportOpen(true)}>
+              Import / export
+            </button>
+          </>
+        )}
       </div>
 
       {helpOpen && <ShortcutsDialog onClose={() => setHelpOpen(false)} />}
@@ -424,48 +505,23 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
         />
       </div>
 
-      <FilterBar filters={filters} onChange={setFilters} />
+      {!narrow && <FilterBar filters={filters} onChange={setFilters} />}
 
-      <div className={styles.listHeader}>
-        <div className={styles.copyGroup} role="group" aria-label="Copy for TCGplayer mass entry">
-          <button
-            type="button"
-            className={styles.action}
-            disabled={toOrder.cards === 0}
-            onClick={() => copyMissing('fullNeeded')}
-            title="Every copy still needed for the cards shown, in TCGplayer mass-entry format"
-          >
-            Copy full need{toOrder.cards > 0 && ` (${toOrder.copies})`}
-          </button>
-          <button
-            type="button"
-            className={styles.action}
-            disabled={toOrder.cards === 0}
-            onClick={() => copyMissing('oneEach')}
-            title="One copy of each card shown that is still needed"
-          >
-            Copy 1 each{toOrder.cards > 0 && ` (${toOrder.cards})`}
-          </button>
-          <span role="status" className={styles.copyStatus}>
-            {copyState === 'copied' ? 'Copied' : copyState === 'failed' ? 'Copy failed' : ''}
-          </span>
-        </div>
-
+      {narrow ? (
         <div className={styles.progressSlot}>
-          <CollectionProgress totals={totals} />
+          <CollectionProgress totals={totals} compact />
         </div>
+      ) : (
+        <div className={styles.listHeader}>
+          {copyButtons}
 
-        <dl className={styles.totals} aria-label="Collection totals">
-          <div>
-            <dt>Value</dt>
-            <dd>{formatUsd(totals.value)}</dd>
+          <div className={styles.progressSlot}>
+            <CollectionProgress totals={totals} />
           </div>
-          <div>
-            <dt>To finish</dt>
-            <dd>{formatUsd(totals.missingCost)}</dd>
-          </div>
-        </dl>
-      </div>
+
+          {totalsList}
+        </div>
+      )}
 
       <CardTable
         rows={rows}

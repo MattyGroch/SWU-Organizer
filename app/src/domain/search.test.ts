@@ -29,6 +29,7 @@ const catalogs = [
       [87, 87],
       [351, 87],
     ]),
+    promosByBase: new Map([[87, [{ set: 'SOROP', number: 15 }]]]),
   },
   {
     setKey: 'TWI',
@@ -61,5 +62,21 @@ describe('search suggestions', () => {
     const results = buildSearchSuggestions('Darth Vader', catalogs, 'SOR');
     expect(submittedSuggestion(results, 1)?.baseNumber).toBe(10);
     expect(submittedSuggestion(results, 99)?.baseNumber).toBe(87);
+  });
+
+  it('finds a weekly-play promo by its own number, with OP or its set code', () => {
+    for (const query of ['OP 15', 'op15', 'SOROP 15', 'sorop-015']) {
+      const [hit] = buildSearchSuggestions(query, catalogs, 'SOR');
+      expect(hit, query).toMatchObject({ setKey: 'SOR', baseNumber: 87, kind: 'number' });
+      expect(hit!.label).toContain('SOROP #15');
+    }
+    expect(buildSearchSuggestions('OP 16', catalogs, 'SOR')).toEqual([]);
+  });
+
+  it('leaves plain numbers and ordinary names alone', () => {
+    expect(buildSearchSuggestions('15', catalogs, 'SOR')).toEqual([]);
+    expect(buildSearchSuggestions('vader', catalogs, 'SOR').map((s) => s.kind)).not.toContain(
+      'number',
+    );
   });
 });

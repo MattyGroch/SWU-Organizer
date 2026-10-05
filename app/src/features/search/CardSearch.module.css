@@ -116,8 +116,42 @@
   text-align: center;
 }
 
-/* Phones: the type is the first thing to go. */
+/* Phones: the type is the first thing to go, and the box shares its row with Filters and
+   More, so it gives up its desktop minimum width. */
 @media (max-width: 760px) {
+  /* The box starts at the page's left gutter, so its results can run to the right one. */
+  .wideList {
+    width: calc(100vw - 2 * var(--space-3));
+  }
+
+  /* Two lines per result: the name, then the subtitle in full — the subtitle is what tells
+     eight Darth Vaders apart, so it is the last thing to cut. */
+  .option {
+    align-items: flex-start;
+  }
+
+  .optionName {
+    white-space: normal;
+  }
+
+  .optionSubtitle {
+    display: block;
+  }
+
+  .optionSubtitle::before {
+    content: none;
+  }
+
+  .setBadge,
+  .optionNumbers {
+    margin-top: 2px;
+  }
+
+  .container {
+    flex: 1 1 8rem;
+    min-width: 0;
+  }
+
   .optionType {
     display: none;
   }

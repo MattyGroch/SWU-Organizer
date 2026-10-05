@@ -1,9 +1,16 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 
-import type { Descriptor, SamplePixels } from '~/domain/scan/descriptor';
+import { hammingDistance, type Descriptor, type SamplePixels } from '~/domain/scan/descriptor';
 import { rankMatches, type Match, type ScanIndex } from '~/domain/scan/index';
-import { GUIDE, describePlacement, locateCard } from '~/domain/scan/locate';
-import { createTracker, type TrackerEvent } from '~/domain/scan/tracker';
+import { GUIDE, cardOverflows, describePlacement, locateCard } from '~/domain/scan/locate';
+import {
+  MAX_MISSES,
+  DEFAULT_TRACKER,
+  createMissCounter,
+  createTracker,
+  looksLikeCard,
+  type TrackerEvent,
+} from '~/domain/scan/tracker';
 
 import { captureScene, type View } from './capture';
 
@@ -19,6 +26,15 @@ export type ScanResult = {
   /** Best first; the first is what was recognised. */
   matches: Match[];
   at: number;
+  /**
+   * Whether the guide showed no card (an empty rig, a hand, the table) since the previous
+   * scan. Without one, a result for the same card is that card re-read — a phone close to
+   * a card keeps refocusing and re-exposing, which can shift the picture enough to fire
+   * again — not a second copy.
+   */
+  afterGap: boolean;
+  /** The card ran past the captured frame — the phone is too close for a sure read. */
+  tooClose: boolean;
 };
 
 /**
@@ -41,7 +57,22 @@ export function useScanner({
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const trackerRef = useRef(createTracker());
-  const [phase, setPhase] = useState<TrackerEvent | 'idle' | 'unknown'>('idle');
+  const missesRef = useRef(createMissCounter());
+  /**
+   * The view a miss was reported for. Its message ("too close", "can't make out a card")
+   * stays up while the view stays put — retries re-arm the tracker, whose first frame
+   * always reads as moving, so the tracker alone can't say when the view really changed.
+   */
+  const missedRef = useRef<Descriptor | null>(null);
+  /** Seen a view with no card in it since the last result? Starts true: nothing came before. */
+  const gapRef = useRef(true);
+  /** Set after MAX_MISSES on one card: no more tries until the user looks it up or skips. */
+  const stuckRef = useRef(false);
+  /** The view it gave up on: while paused, a clearly different view resumes scanning. */
+  const stuckOnRef = useRef<Descriptor | null>(null);
+  const [phase, setPhase] = useState<TrackerEvent | 'idle' | 'unknown' | 'stuck' | 'tooClose'>(
+    'idle',
+  );
   const onResultRef = useRef(onResult);
   onResultRef.current = onResult;
 
@@ -66,22 +97,66 @@ export function useScanner({
         return;
       }
       if (!scene || !frame) return;
+      if (stuckRef.current) {
+        // Paused on "couldn't recognise", but still watching: a card dropped into an
+        // empty tray changes the view enough to clear the prompt and carry on, untouched.
+        const stuckOn = stuckOnRef.current;
+        if (stuckOn && hammingDistance(frame.hash, stuckOn.hash) > DEFAULT_TRACKER.releaseBits) {
+          stuckRef.current = false;
+          stuckOnRef.current = null;
+          missesRef.current.reset();
+          missedRef.current = null;
+          trackerRef.current.reset();
+          setPhase('moving');
+        }
+        return;
+      }
+      if (!looksLikeCard(frame)) gapRef.current = true;
       const event = trackerRef.current.observe(frame);
       if (event !== 'fired') {
-        // After a miss the tracker is re-armed and keeps retrying the same view: keep
-        // saying so until the view moves.
-        setPhase((current) => (current === 'unknown' && event !== 'moving' ? current : event));
+        const missed = missedRef.current;
+        if (missed && hammingDistance(frame.hash, missed.hash) <= DEFAULT_TRACKER.releaseBits) {
+          return; // still the view that missed: keep its message
+        }
+        missedRef.current = null;
+        setPhase(event);
         return;
       }
       try {
         const located = locateCard(scene, index);
         if (!located || located.bits > NO_CARD_BITS) {
+          // A card running off the frame can't be read whole: say so, and don't count it
+          // toward giving up — moving the phone back fixes it.
+          if (cardOverflows(scene)) {
+            trackerRef.current.reset();
+            missedRef.current = frame;
+            setPhase('tooClose');
+            return;
+          }
+          if (looksLikeCard(frame) && missesRef.current.miss(frame) >= MAX_MISSES) {
+            // Stop retrying a card the index doesn't know. The tracker stays fired on it,
+            // so after resume() it waits for the next card rather than trying again.
+            stuckRef.current = true;
+            stuckOnRef.current = frame;
+            setPhase('stuck');
+            return;
+          }
           trackerRef.current.reset();
+          missedRef.current = frame;
           setPhase('unknown');
           return;
         }
+        missesRef.current.reset();
+        missedRef.current = null;
         setPhase('fired');
-        onResultRef.current({ matches: rankMatches(index, located.descriptor, 8), at: Date.now() });
+        const afterGap = gapRef.current;
+        gapRef.current = false;
+        onResultRef.current({
+          matches: rankMatches(index, located.descriptor, 8),
+          at: Date.now(),
+          afterGap,
+          tooClose: cardOverflows(scene),
+        });
       } catch (error) {
         console.error('Scan failed', error);
         trackerRef.current.reset();
@@ -94,5 +169,26 @@ export function useScanner({
   /** Lets the card already in view fire again — after Rescan or a mode change. */
   const rearm = useCallback(() => trackerRef.current.reset(), []);
 
-  return { phase, rearm };
+  /**
+   * Scanning again after a card it gave up on was looked up or skipped. The card still in
+   * view does not fire again; the next one does.
+   */
+  const resume = useCallback(() => {
+    missesRef.current.reset();
+    stuckRef.current = false;
+    stuckOnRef.current = null;
+    setPhase('holding');
+  }, []);
+
+  /** "Rescan" on the prompt: try again now, on whatever is in view. */
+  const retry = useCallback(() => {
+    missesRef.current.reset();
+    stuckRef.current = false;
+    stuckOnRef.current = null;
+    missedRef.current = null;
+    trackerRef.current.reset();
+    setPhase('moving');
+  }, []);
+
+  return { phase, rearm, resume, retry };
 }

@@ -29,20 +29,19 @@ const COLUMN_TO_VARIANT: Array<[string, VariantSlug]> = [
   ['serializedprestige', 'prestige-serialized'],
   ['prestigeserialized', 'prestige-serialized'],
   ['serialized', 'prestige-serialized'],
+  // Organized Play = the weekly-play OP promos, tracked as printings of the base card.
+  ['organizedplay', 'promo'],
+  ['organizedplayfoil', 'promo-foil'],
+  ['oppromo', 'promo'],
+  ['oppromofoil', 'promo-foil'],
 ];
 
 /**
- * Columns that record real cards but not a distinguishable printing in the catalog
- * (promos, event giveaways). They are counted as ordinary copies rather than dropped —
- * losing a card you own is worse than recording its finish imprecisely.
+ * Columns that record real cards but not a printing the catalog tracks (prerelease and
+ * event promos, and other giveaways). They are counted as ordinary copies rather than
+ * dropped — losing a card you own is worse than recording its finish imprecisely.
  */
-const PROMO_COLUMNS = new Set([
-  'organizedplay',
-  'organizedplayfoil',
-  'eventexclusive',
-  'prereleasepromo',
-  'promo',
-]);
+const PROMO_COLUMNS = new Set(['eventexclusive', 'prereleasepromo', 'promo']);
 
 export function normalizeHeader(header: string): string {
   return header.toLowerCase().replace(/[\s_\-.]+/g, '');

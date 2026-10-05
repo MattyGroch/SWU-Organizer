@@ -137,3 +137,41 @@ export function locateCard(scene: SamplePixels, index: ScanIndex): Located | nul
   const descriptor = describePlacement(scene, placement);
   return descriptor && { placement, descriptor, bits };
 }
+
+/** How much of the scene's height and width each edge band covers. */
+const EDGE_BAND = 0.03;
+/** Brightness spread above which an edge band holds part of a card, not table or rig. */
+export const EDGE_BUSY = 24;
+
+/**
+ * Whether the card overflows the captured scene — the phone too close, so the card's
+ * art and frame run into the scene's edges on both sides, where a framed card leaves
+ * table or rig. Recognition needs the whole card, so this is worth saying out loud.
+ */
+export function cardOverflows(scene: SamplePixels): boolean {
+  const { width: w, height: h, data } = scene;
+  const spread = (x0: number, y0: number, x1: number, y1: number) => {
+    let sum = 0;
+    let squares = 0;
+    let n = 0;
+    for (let y = Math.floor(y0); y < y1; y += 2) {
+      for (let x = Math.floor(x0); x < x1; x += 2) {
+        const i = (y * w + x) * 4;
+        const luma = 0.299 * data[i]! + 0.587 * data[i + 1]! + 0.114 * data[i + 2]!;
+        sum += luma;
+        squares += luma * luma;
+        n++;
+      }
+    }
+    const mean = sum / n;
+    return Math.sqrt(Math.max(0, squares / n - mean * mean));
+  };
+  const bh = Math.max(2, Math.round(h * EDGE_BAND));
+  const bw = Math.max(2, Math.round(w * EDGE_BAND));
+  // The middle half of each edge: corners can catch the card's rounded corner or the rig.
+  const top = spread(w / 4, 0, (3 * w) / 4, bh);
+  const bottom = spread(w / 4, h - bh, (3 * w) / 4, h);
+  const left = spread(0, h / 4, bw, (3 * h) / 4);
+  const right = spread(w - bw, h / 4, w, (3 * h) / 4);
+  return (top >= EDGE_BUSY && bottom >= EDGE_BUSY) || (left >= EDGE_BUSY && right >= EDGE_BUSY);
+}

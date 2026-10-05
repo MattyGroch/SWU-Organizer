@@ -1013,8 +1013,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-01",
+          "variant": "promo"
+        },
+        {
           "num": "793",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-21",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1443,8 +1451,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-02",
+          "variant": "promo"
+        },
+        {
           "num": "807",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-22",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1913,8 +1929,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-03",
+          "variant": "promo"
+        },
+        {
           "num": "824",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-23",
+          "variant": "promo-foil"
         },
         {
           "num": "1055",
@@ -1979,8 +2003,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-04",
+          "variant": "promo"
+        },
+        {
           "num": "826",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-24",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2060,8 +2092,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-05",
+          "variant": "promo"
+        },
+        {
           "num": "829",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-25",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2463,8 +2503,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-06",
+          "variant": "promo"
+        },
+        {
           "num": "842",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-26",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2703,8 +2751,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-07",
+          "variant": "promo"
+        },
+        {
           "num": "849",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-27",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3268,8 +3324,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-08",
+          "variant": "promo"
+        },
+        {
           "num": "867",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-28",
+          "variant": "promo-foil"
         },
         {
           "num": "1057",
@@ -3377,8 +3441,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-09",
+          "variant": "promo"
+        },
+        {
           "num": "870",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-29",
+          "variant": "promo-foil"
         },
         {
           "num": "1075",
@@ -3825,8 +3897,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-10",
+          "variant": "promo"
+        },
+        {
           "num": "886",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-30",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4210,8 +4290,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-12",
+          "variant": "promo"
+        },
+        {
           "num": "898",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-32",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4240,8 +4328,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-11",
+          "variant": "promo"
+        },
+        {
           "num": "899",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-31",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4496,8 +4592,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-13",
+          "variant": "promo"
+        },
+        {
           "num": "907",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-33",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4721,8 +4825,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-14",
+          "variant": "promo"
+        },
+        {
           "num": "914",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-34",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5076,8 +5188,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-15",
+          "variant": "promo"
+        },
+        {
           "num": "926",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-35",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5655,8 +5775,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-16",
+          "variant": "promo"
+        },
+        {
           "num": "945",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-36",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5939,8 +6067,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-17",
+          "variant": "promo"
+        },
+        {
           "num": "954",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-37",
+          "variant": "promo-foil"
         },
         {
           "num": "1043",
@@ -5979,8 +6115,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-18",
+          "variant": "promo"
+        },
+        {
           "num": "955",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-38",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7405,8 +7549,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-19",
+          "variant": "promo"
+        },
+        {
           "num": "1004",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-39",
+          "variant": "promo-foil"
         },
         {
           "num": "1067",
@@ -7701,8 +7853,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SECOP-20",
+          "variant": "promo"
+        },
+        {
           "num": "1014",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SECOP-40",
+          "variant": "promo-foil"
         }
       ]
     },

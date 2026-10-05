@@ -1,21 +1,35 @@
 import { Link } from '@tanstack/react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { db } from '~/data/db';
-import { cancelSwap, queuedPocket, queueScan, unqueueScan, type ScanReceipt } from '~/data/intake';
+import {
+  cancelSwap,
+  queuedPocket,
+  queueScan,
+  sourcePrinting,
+  unqueueScan,
+  type ScanReceipt,
+} from '~/data/intake';
 import { dropScan, logScan, updateScan, type ScanEntry } from '~/data/stacks';
 import { binderLayout } from '~/domain/binder';
 import {
+  artNumber,
   artUrl,
+  toSearchCatalog,
+  finishCounterpart,
+  variantAxes,
   variantLabel,
   variantShortLabel,
   type LoadedSet,
   type VariantSlug,
 } from '~/domain/catalog';
 import { pocketRoom, quotaForCard, type PocketRoom } from '~/domain/ownership';
-import type { Match } from '~/domain/scan/index';
+import { cardLead, type Match } from '~/domain/scan/index';
+import type { SearchSuggestion } from '~/domain/search';
 import type { SetKey } from '~/domain/types';
+import { CardSearch } from '~/features/search/CardSearch';
+import { useToast } from '~/ui/toastContext';
 
 import { guideRect, toScreen, type Rect, type View } from './capture';
 import styles from './ScanPage.module.css';
@@ -96,7 +110,50 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const camera = useCamera();
   const index = useScanIndex();
   const [mode, setMode] = useState<Mode>('add');
+  /**
+   * Foils mode: every scan is recorded on foil stock, for running a stack of foils
+   * through. The camera can't tell foil, so this is the user's say — remembered on the
+   * device.
+   */
+  const [foils, setFoils] = useState(() => {
+    try {
+      return localStorage.getItem('scan.foils') === '1';
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem('scan.foils', foils ? '1' : '0');
+    } catch {
+      // private mode: the setting lasts for this visit
+    }
+  }, [foils]);
+  const foilsRef = useRef(foils);
+  foilsRef.current = foils;
   const [items, setItems] = useState<Item[]>([]);
+  /** The latest items, for the scanner's callback (which outlives a render). */
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
+  /**
+   * Set by Rescan: the newest scan was taken back, so nothing shows as the latest until the
+   * next read — the scan before it stays in the history rather than taking its place.
+   */
+  const [cleared, setCleared] = useState(false);
+  const clearedRef = useRef(cleared);
+  clearedRef.current = cleared;
+  const showToast = useToast();
+  /** Never fail silently: a scan that cannot be saved says so. */
+  const failed = useCallback(
+    (error: unknown) => {
+      console.error('Scan action failed', error);
+      showToast({
+        tone: 'danger',
+        message: `Couldn’t save that scan: ${error instanceof Error ? error.message : String(error)}`,
+      });
+    },
+    [showToast],
+  );
   const [view, setView] = useState<View | null>(null);
   const nextId = useRef(1);
 
@@ -135,26 +192,58 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     [sets],
   );
 
+  /** The printing as recorded: its foil counterpart in Foils mode, where one exists. */
+  const asFound = useCallback(
+    (printing: Printing): Printing => {
+      if (!foilsRef.current || variantAxes(printing.variant).finish !== 'plain') return printing;
+      const printings = sets.get(printing.setKey)?.printingsByBase.get(printing.base) ?? [];
+      const foil = finishCounterpart(printings, printing.variant);
+      return foil ? { ...printing, num: foil.num, variant: foil.variant } : printing;
+    },
+    [sets],
+  );
+
   const onResult = useCallback(
     async (result: ScanResult) => {
       const [top] = result.matches;
       if (!top) return;
+      const latest = clearedRef.current ? undefined : itemsRef.current[0];
+      // A question waits for its answer: the scanner is paused for it, and a read already
+      // under way when it opened must not replace it either.
+      if (latest?.question) return;
+      // The same card again with no gap since — it was never lifted — is that card re-read
+      // (refocusing, re-exposing), not a second copy: leave its result as it is.
+      const latestTop = latest?.result.matches[0];
+      if (
+        !result.afterGap &&
+        latest &&
+        (cardKey(latest.chosen) === cardKey(top.entry) ||
+          (latestTop && cardKey(latestTop.entry) === cardKey(top.entry)))
+      ) {
+        return;
+      }
       const cards = cardsIn(result.matches);
       const runnerUp = cards[1];
+      // Card-level confidence on stage-1 scores only (see cardLead).
+      const topCardScore = Math.min(
+        ...result.matches
+          .filter((m) => cardKey(m.entry) === cardKey(top.entry))
+          .map((m) => m.cardScore),
+      );
       const reprint = cards.find(
         (m, i) =>
           i > 0 &&
           m.entry.setKey !== top.entry.setKey &&
           nameOf(m.entry) === nameOf(top.entry) &&
-          m.score - top.score <= REPRINT_GAP,
+          m.cardScore - topCardScore <= REPRINT_GAP,
       );
       const question: Item['question'] = reprint
         ? 'set'
-        : runnerUp && runnerUp.score - top.score < CARD_MARGIN
+        : runnerUp && cardLead(result.matches) < CARD_MARGIN
           ? 'card'
           : null;
 
-      const chosen = asPrinting(top);
+      const chosen = asFound(asPrinting(top));
       let placed: Pick<Item, 'receipt' | 'room'> = { receipt: null, room: null };
       let stackCardId: string | null = null;
       if (mode === 'add') {
@@ -168,6 +257,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           stackEntry({ chosen, question, ...placed }, sets.get(chosen.setKey)),
         );
       }
+      setCleared(false);
       setItems((current) =>
         [
           { id: nextId.current++, result, chosen, question, ...placed, stackCardId },
@@ -175,23 +265,79 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         ].slice(0, 8),
       );
     },
-    [mode, nameOf, place, sets],
+    [asFound, mode, nameOf, place, sets],
   );
 
+  const latest = cleared ? undefined : items[0];
+  /** An open question pauses scanning, and freezes the picture, until it is answered. */
+  const asking = Boolean(latest?.question);
   const scanning = camera.state === 'live' && Boolean(index.data);
-  const { phase, rearm } = useScanner({
+  const { phase, rearm, resume, retry } = useScanner({
     videoRef: camera.videoRef,
     index: index.data,
     view,
-    active: scanning,
-    onResult: (r) => void onResult(r),
+    active: scanning && !asking,
+    onResult: (r) => void onResult(r).catch(failed),
   });
+
+  /**
+   * A card the scanner gave up on, found by title or number instead: recorded like a
+   * scan of its plainest printing (Correct changes it), minding the binder pocket the same
+   * way. Then scanning carries on with the next card.
+   */
+  const lookUp = useCallback(
+    async (suggestion: SearchSuggestion) => {
+      const printings = sets.get(suggestion.setKey)?.printingsByBase.get(suggestion.baseNumber);
+      const printing = sourcePrinting(printings ?? []);
+      if (!printing) return;
+      const chosen = asFound({
+        setKey: suggestion.setKey,
+        base: suggestion.baseNumber,
+        num: printing.num,
+        variant: printing.variant,
+      });
+      const placed: Pick<Item, 'receipt' | 'room'> =
+        mode === 'add' ? await place(chosen) : { receipt: null, room: null };
+      // Found by search, but still a card in the stack: it keeps its place like any scan.
+      const stackCardId =
+        mode === 'add'
+          ? await logScan(
+              stackEntry({ chosen, question: null, ...placed }, sets.get(chosen.setKey)),
+            )
+          : null;
+      setCleared(false);
+      setItems((current) =>
+        [
+          {
+            id: nextId.current++,
+            result: { matches: [], at: Date.now(), afterGap: true, tooClose: false },
+            chosen,
+            question: null,
+            ...placed,
+            stackCardId,
+          },
+          ...current,
+        ].slice(0, 8),
+      );
+      resume();
+    },
+    [asFound, mode, place, resume, sets],
+  );
 
   useEffect(() => rearm(), [mode, rearm]);
 
+  useEffect(() => {
+    const video = camera.videoRef.current;
+    if (!video || camera.state !== 'live') return;
+    if (asking) video.pause();
+    else if (video.paused) void Promise.resolve(video.play()).catch(() => {});
+  }, [asking, camera.state, camera.videoRef]);
+
   /** Replace what a scan records — a different printing, or a different card entirely. */
   const choose = useCallback(
-    async (item: Item, printing: Printing) => {
+    async (item: Item, picked: Printing) => {
+      // Answering a question picks the card; Foils mode still decides the stock.
+      const printing = item.question ? asFound(picked) : picked;
       let placed: Pick<Item, 'receipt' | 'room'> = { receipt: item.receipt, room: null };
       let stackCardId = item.stackCardId;
       if (mode === 'add') {
@@ -212,8 +358,17 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         ),
       );
     },
-    [mode, place, sets],
+    [asFound, mode, place, sets],
   );
+
+  /** The latest scan on the other stock — one tap instead of the Correct menu. */
+  const foilToggle = (item: Item) => {
+    const printings = sets.get(item.chosen.setKey)?.printingsByBase.get(item.chosen.base) ?? [];
+    const other = finishCounterpart(printings, item.chosen.variant);
+    if (!other || item.question) return undefined;
+    return () =>
+      void choose(item, { ...item.chosen, num: other.num, variant: other.variant }).catch(failed);
+  };
 
   /**
    * Second thoughts on a full pocket: add the copy anyway as a spare, or — for a copy that
@@ -237,15 +392,19 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
 
   const remove = useCallback(
     async (item: Item, again: boolean) => {
-      if (item.receipt) await unqueueScan(item.receipt);
+      // The stack first: the screen updates as soon as Intake does, as before the stack.
       if (item.stackCardId) await dropScan(item.stackCardId);
+      if (item.receipt) await unqueueScan(item.receipt);
       setItems((current) => current.filter((i) => i.id !== item.id));
-      if (again) rearm();
+      if (again) {
+        setCleared(true);
+        rearm();
+      }
     },
     [rearm],
   );
 
-  const latest = items[0];
+  const earlier = latest ? items.slice(1) : items;
 
   return (
     <div className={styles.page}>
@@ -269,6 +428,15 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
             </button>
           ))}
         </div>
+        <button
+          type="button"
+          className={styles.foilMode}
+          aria-pressed={foils}
+          onClick={() => setFoils((on) => !on)}
+          title="Record every scan as its foil printing — for running a stack of foils through"
+        >
+          ✦ Foils {foils ? 'on' : 'off'}
+        </button>
         {camera.torchAvailable && (
           <button
             type="button"
@@ -284,30 +452,41 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       <Viewfinder
         camera={camera}
         indexState={index.isError ? 'error' : index.data ? 'ready' : 'loading'}
-        phase={phase}
+        phase={asking ? 'asking' : phase}
         onView={setView}
       />
 
+      {phase === 'stuck' && (
+        <NotRecognised
+          sets={sets}
+          onChoose={(s) => void lookUp(s).catch(failed)}
+          onRescan={retry}
+          onSkip={resume}
+        />
+      )}
+
       {latest && (
         <LatestScan
+          key={latest.id}
           item={latest}
           mode={mode}
           sets={sets}
           nameOf={nameOf}
-          onChoose={(p) => void choose(latest, p)}
-          onRescan={() => void remove(latest, true)}
-          onConfirm={() => void choose(latest, latest.chosen)}
-          onSettle={(answer) => void settleRoom(latest, answer)}
+          onChoose={(p) => void choose(latest, p).catch(failed)}
+          onRescan={() => void remove(latest, true).catch(failed)}
+          onConfirm={() => void choose(latest, latest.chosen).catch(failed)}
+          onSettle={(answer) => void settleRoom(latest, answer).catch(failed)}
+          onToggleFoil={foilToggle(latest)}
         />
       )}
 
-      {items.length > 1 && (
+      {earlier.length > 0 && (
         <section className={styles.history} aria-labelledby="scan-history">
           <h2 id="scan-history" className={styles.historyTitle}>
             Earlier scans
           </h2>
           <ul className={styles.historyList}>
-            {items.slice(1).map((item) => (
+            {earlier.map((item) => (
               <li key={item.id} className={styles.historyItem}>
                 <span>
                   {nameOf(item.chosen)}{' '}
@@ -333,14 +512,60 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
 
       {mode === 'add' && (
         <p className={styles.footnote}>
-          Scans wait in <Link to="/intake">Intake</Link> until you review them — check foils there,
-          since the camera can't tell foil from non-foil.
+          Scans wait in <Link to="/intake">Intake</Link> until you review them. The camera can’t
+          tell foil: tap ✦ Foil on a scan, or turn on ✦ Foils to run a stack of foils through.
         </p>
       )}
       <span className="visually-hidden" aria-live="polite">
         {latest ? `Scanned ${nameOf(latest.chosen)}` : ''}
       </span>
     </div>
+  );
+}
+
+/**
+ * After MAX_MISSES on one card: find it by title or number, or skip it. Cards outside the
+ * catalog (promos, other games) end up here, as does a card the camera just can't read.
+ */
+function NotRecognised({
+  sets,
+  onChoose,
+  onRescan,
+  onSkip,
+}: {
+  sets: Map<SetKey, LoadedSet>;
+  onChoose: (suggestion: SearchSuggestion) => void;
+  /** Try again now on what's in view — e.g. an empty tray was taken for a card. */
+  onRescan: () => void;
+  onSkip: () => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const catalogs = useMemo(() => [...sets.values()].map(toSearchCatalog), [sets]);
+  const newest = [...sets.keys()].at(-1) ?? 'SOR';
+  return (
+    <section className={styles.stuck} aria-labelledby="not-recognised">
+      <h2 id="not-recognised" className={styles.stuckTitle}>
+        Couldn’t recognise this card
+      </h2>
+      <p className={styles.meta}>
+        Look it up by title or number, rescan, or skip it. Putting a different card in view carries
+        on by itself.
+      </p>
+      <CardSearch
+        catalogs={catalogs}
+        currentSetKey={newest}
+        inputRef={inputRef}
+        onChoose={onChoose}
+      />
+      <div className={styles.actions}>
+        <button type="button" className={styles.primary} onClick={onRescan}>
+          Rescan
+        </button>
+        <button type="button" className={styles.button} onClick={onSkip}>
+          Skip this card
+        </button>
+      </div>
+    </section>
   );
 }
 
@@ -392,7 +617,13 @@ function Viewfinder({
               ? 'Got it — next card'
               : phase === 'unknown'
                 ? 'Can’t make out a card — keep it inside the frame, out of glare'
-                : 'Hold a card inside the frame';
+                : phase === 'stuck'
+                  ? 'Not recognised — look it up below, or skip it'
+                  : phase === 'asking'
+                    ? 'Paused — answer below to carry on scanning'
+                    : phase === 'tooClose'
+                      ? 'Too close — fit the whole card inside the frame'
+                      : 'Hold a card inside the frame';
 
   return (
     <div className={styles.viewfinder} ref={frameRef}>
@@ -441,6 +672,7 @@ function LatestScan({
   onRescan,
   onConfirm,
   onSettle,
+  onToggleFoil,
 }: {
   item: Item;
   mode: Mode;
@@ -450,6 +682,8 @@ function LatestScan({
   onRescan: () => void;
   onConfirm: () => void;
   onSettle: (answer: 'spare' | 'keep') => void;
+  /** Flip the scan to its foil / non-foil printing; absent when it has none. */
+  onToggleFoil?: () => void;
 }) {
   const [correcting, setCorrecting] = useState(false);
   const { chosen } = item;
@@ -478,7 +712,11 @@ function LatestScan({
       aria-labelledby="latest-scan"
       data-question={item.question ?? (item.room?.kind === 'full' ? 'full' : undefined)}
     >
-      <img className={styles.art} src={artUrl(chosen.setKey, chosen.num)} alt="" />
+      <img
+        className={styles.art}
+        src={artUrl(chosen.setKey, artNumber(printings, chosen))}
+        alt=""
+      />
       <div className={styles.details}>
         <h2 id="latest-scan" className={styles.name}>
           {card?.Name ?? nameOf(chosen)}
@@ -510,6 +748,12 @@ function LatestScan({
         ) : item.question === 'card' ? (
           <div className={styles.question}>
             <p>Not sure — is this the right card?</p>
+            {item.result.tooClose && (
+              <p className={styles.meta}>
+                The card runs past the edge of the frame — move the phone back so all of it shows,
+                for a surer read.
+              </p>
+            )}
             <div className={styles.choices}>
               <button type="button" className={styles.primary} onClick={onConfirm}>
                 {mode === 'add' ? 'Yes, add it' : 'Yes'}
@@ -563,6 +807,16 @@ function LatestScan({
         )}
 
         <div className={styles.actions}>
+          {onToggleFoil && (
+            <button
+              type="button"
+              className={styles.foil}
+              aria-pressed={variantAxes(chosen.variant).finish === 'foil'}
+              onClick={onToggleFoil}
+            >
+              ✦ Foil
+            </button>
+          )}
           <button
             type="button"
             className={styles.button}

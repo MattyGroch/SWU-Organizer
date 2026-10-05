@@ -5,15 +5,17 @@
 // exactly once. Pure functions only — no I/O, no network.
 
 /**
- * Canonical variant slugs, in the order the UI presents them. The index in this array
- * is the digit hotkey (1-based): 1 normal, 2 foil, 3 hyperspace, 4 hyperspace-foil,
- * 5 prestige, 6 prestige-foil, 7 prestige-serialized, 8 showcase.
+ * Canonical variant slugs, in the order the UI presents them — value order, least to
+ * most (the app's VARIANTS; hotkeys are defined there separately). `promo`/`promo-foil`
+ * are the weekly-play OP promos, attached to their base set's cards.
  */
 export const VARIANTS = [
   'normal',
   'foil',
   'hyperspace',
+  'promo',
   'hyperspace-foil',
+  'promo-foil',
   'prestige',
   'prestige-foil',
   'prestige-serialized',
@@ -36,6 +38,8 @@ const VARIANT_BY_API_NAME = new Map([
   ['Prestige Serialized', 'prestige-serialized'],
   ['Serialized', 'prestige-serialized'],
   ['Showcase', 'showcase'],
+  ['OP Promo', 'promo'],
+  ['OP Promo Foil', 'promo-foil'],
 ]);
 
 /**
@@ -53,6 +57,9 @@ const VARIANT_AXES = {
   foil: { treatment: 'normal', finish: 'foil', hasArt: false },
   hyperspace: { treatment: 'hyperspace', finish: 'plain', hasArt: true },
   'hyperspace-foil': { treatment: 'hyperspace', finish: 'foil', hasArt: false },
+  promo: { treatment: 'promo', finish: 'plain', hasArt: true },
+  // Newer sets publish a picture for promo foils too, but it is the promo's own art.
+  'promo-foil': { treatment: 'promo', finish: 'foil', hasArt: false },
   prestige: { treatment: 'prestige', finish: 'plain', hasArt: true },
   'prestige-foil': { treatment: 'prestige', finish: 'foil', hasArt: false },
   'prestige-serialized': { treatment: 'prestige', finish: 'serialized', hasArt: true },
@@ -152,8 +159,24 @@ function normalizeType(value) {
   return String(raw).trim() || undefined;
 }
 
+/**
+ * A promo printing's catalog number names its promo set — `SOROP-015` — because the bare
+ * number collides with the base set's own, and the picture lives under the promo code.
+ */
+export function promoNumber(promoSet, number) {
+  return `${promoSet}-${String(number).trim()}`;
+}
+
+/** `{ set, number }` for a promo printing number, else undefined. */
+export function promoParts(printingNumber) {
+  const match = /^([A-Z0-9]+)-(.+)$/.exec(String(printingNumber));
+  return match ? { set: match[1], number: match[2] } : undefined;
+}
+
 /** Deterministic — the CDN serves JPEG bytes under a `.png` path. */
 export function artUrl(setKey, printingNumber) {
+  const promo = promoParts(printingNumber);
+  if (promo) return `https://cdn.swu-db.com/images/cards/${promo.set}/${promo.number}.png`;
   return `https://cdn.swu-db.com/images/cards/${setKey}/${printingNumber}.png`;
 }
 
@@ -222,14 +245,56 @@ export function buildSetCatalog(setKey, rawCards) {
   return { version: 2, setKey, cards };
 }
 
+/**
+ * Attaches a weekly-play promo set's rows (`SOROP`) to the base set's cards as `promo` /
+ * `promo-foil` printings. Promo rows carry no base number, so they match by name and
+ * subtitle (and type), falling back to the name alone when it is unique in the set.
+ * Returns the rows that matched nothing — the caller fails on those rather than drop them.
+ */
+export function attachPromos(catalog, promoSet, promoRows) {
+  const norm = (value) =>
+    String(value ?? '')
+      .trim()
+      .toLowerCase();
+  const byKey = new Map();
+  const byName = new Map();
+  for (const card of catalog.cards) {
+    byKey.set(`${norm(card.name)}|${norm(card.subtitle)}|${norm(card.type)}`, card);
+    byName.set(norm(card.name), [...(byName.get(norm(card.name)) ?? []), card]);
+  }
+  const unmatched = [];
+  for (const raw of promoRows) {
+    if (isToken(raw)) continue;
+    const key = `${norm(raw.Name)}|${norm(raw.Subtitle)}|${norm(normalizeType(raw.Type))}`;
+    const named = byName.get(norm(raw.Name)) ?? [];
+    const card = byKey.get(key) ?? (named.length === 1 ? named[0] : undefined);
+    if (!card) {
+      unmatched.push(
+        `${promoSet} ${raw.Number} ${raw.Name}${raw.Subtitle ? ` — ${raw.Subtitle}` : ''}`,
+      );
+      continue;
+    }
+    const num = promoNumber(promoSet, raw.Number);
+    if (card.printings.some((p) => p.num === num)) continue;
+    card.printings.push({ num, variant: variantSlug(raw.VariantType) });
+    card.printings.sort(
+      (a, b) =>
+        (variantOrder.get(a.variant) ?? 99) - (variantOrder.get(b.variant) ?? 99) ||
+        a.num.localeCompare(b.num),
+    );
+  }
+  return unmatched;
+}
+
 /** `{ "059": 0.05, "059F": 0.10 }` — keyed by string printing number, not base number. */
-export function buildPriceTable(rawCards) {
+export function buildPriceTable(rawCards, promoSet) {
   const prices = {};
   for (const raw of rawCards) {
     if (isToken(raw)) continue;
     // For a foil printing the upstream `MarketPrice` is already that foil's price.
     const price = Number(raw.MarketPrice);
-    if (Number.isFinite(price) && price > 0) prices[String(raw.Number).trim()] = price;
+    const num = promoSet ? promoNumber(promoSet, raw.Number) : String(raw.Number).trim();
+    if (Number.isFinite(price) && price > 0) prices[num] = price;
   }
   return prices;
 }

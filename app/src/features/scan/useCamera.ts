@@ -4,7 +4,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  * The camera, as a <video> element to read frames from.
  *
  * Asks for the rear camera at high resolution (a phone's back camera; a laptop falls back
- * to its webcam). Browsers only allow cameras on secure pages — https, or localhost — and
+ * to its webcam), in 4:3: the shape of a phone's sensor, so the stream is the camera's
+ * whole field of view. A 16:9 stream is a crop of that sensor, which then gets cropped
+ * again to fill the 3:4 frame — together about 1.33x zoom, so a card has to be held well
+ * above where the phone's own camera app would need it. Browsers only allow cameras on secure pages — https, or localhost — and
  * only after the user grants permission, so every way this can fail is a state the page
  * explains rather than an exception.
  */
@@ -52,7 +55,8 @@ export function useCamera() {
         video: {
           facingMode: { ideal: 'environment' },
           width: { ideal: 1920 },
-          height: { ideal: 1080 },
+          height: { ideal: 1440 },
+          aspectRatio: { ideal: 4 / 3 },
         },
       });
       streamRef.current = stream;

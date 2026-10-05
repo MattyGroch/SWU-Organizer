@@ -1,3 +1,4 @@
+import { VALUE_ORDER } from '~/domain/ownership';
 import type { LoadedSet, VariantSlug } from '~/domain/catalog';
 import { applyDeconstruct, cardKey } from '~/domain/deckBuild';
 import { parseDeckLibrary } from '~/domain/decks';
@@ -20,16 +21,7 @@ export type BulkAction = 'add' | 'fillPlayset' | 'remove' | 'clear';
  * The order single copies are removed: plainest first, so premium copies are the last
  * to go. A Prestige Serialized goes only when nothing else is left.
  */
-const REMOVE_ORDER: readonly VariantSlug[] = [
-  'normal',
-  'foil',
-  'hyperspace',
-  'hyperspace-foil',
-  'showcase',
-  'prestige',
-  'prestige-foil',
-  'prestige-serialized',
-];
+const REMOVE_ORDER: readonly VariantSlug[] = [...VALUE_ORDER].reverse();
 
 export type Snapshot = {
   /** Rows to delete before restoring: every row of each touched card or set. */
