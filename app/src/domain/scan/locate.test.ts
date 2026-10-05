@@ -7,6 +7,7 @@ import {
   SCENE_HEIGHT,
   SCENE_MARGIN,
   SCENE_WIDTH,
+  cardOverflows,
   describePlacement,
   locateCard,
 } from './locate';
@@ -78,5 +79,12 @@ suite('locateCard', () => {
     expect(() =>
       describePlacement({ data: new Uint8Array(16), width: 2, height: 2 }, GUIDE),
     ).toThrow(/expected/);
+  });
+
+  it('notices a card too close to see whole: it runs into the edges of the scene', () => {
+    expect(cardOverflows(scene(2, 0.85, 0.5, 0.5))).toBe(false);
+    expect(cardOverflows(scene(2, 1.0, 0.5, 0.5))).toBe(false);
+    expect(cardOverflows(scene(2, 1.35, 0.5, 0.5))).toBe(true);
+    expect(cardOverflows(scene(0, 0, 0.5, 0.5))).toBe(false);
   });
 });
