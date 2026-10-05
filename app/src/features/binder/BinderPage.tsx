@@ -408,6 +408,7 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
           onQueryChange={(query) => {
             hasQueryRef.current = query.trim().length > 0;
           }}
+          wideResults
         />
 
         {narrow ? (
