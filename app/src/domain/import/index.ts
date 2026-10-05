@@ -12,10 +12,10 @@ export { parseCsv } from './csv';
 export { columnMeaning, hasVariantColumns, normalizeHeader } from './variantColumns';
 
 export class UnrecognizedImportError extends Error {
-  constructor() {
-    super(
-      'File format not recognized. Expected a SWUDB or SW-Unlimited export, or a SWU Organizer JSON backup.',
-    );
+  constructor(
+    message = 'File format not recognized. Expected a SWUDB or SW-Unlimited export, or a SWU Organizer JSON backup.',
+  ) {
+    super(message);
     this.name = 'UnrecognizedImportError';
   }
 }
@@ -196,16 +196,21 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return !!value && typeof value === 'object' && !Array.isArray(value);
 }
 
+/** The backup version this app writes, and the only one it reads. */
+export const BACKUP_VERSION = 4;
+
 /**
- * This app's own JSON backup.
- *
- * v2 backups carry printings. v1 backups (the legacy app's `{version:1, sets}`) only
- * carry base numbers, so each count is read as that card's printing — which for a base
- * number is its Normal printing. v3 backups add the deck library under `decks`; v4
- * backups add each printing's bulk-box copies under "059@bulk" beside "059".
+ * This app's own JSON backup: printings per set, with each printing's bulk-box copies
+ * under "059@bulk" beside "059", and the deck library under `decks`. Older versions are
+ * refused rather than half-read: they cannot say which copies are in the bulk box.
  */
 export function importAppJson(payload: unknown, catalog: CatalogLookup): ImportResult {
   if (!isRecord(payload) || !isRecord(payload.sets)) throw new UnrecognizedImportError();
+  if (payload.version !== BACKUP_VERSION) {
+    throw new UnrecognizedImportError(
+      'This backup is from an older version of SWU Organizer and can no longer be restored.',
+    );
+  }
 
   const resolver = new PrintingResolver(catalog);
   const bulk = new Map<string, number>();
@@ -223,13 +228,11 @@ export function importAppJson(payload: unknown, catalog: CatalogLookup): ImportR
     }
   }
 
-  const tracksBulk = typeof payload.version === 'number' && payload.version >= 4;
   return {
     printings: resolver.printings.map((p) => {
       const inBulk = Math.min(bulk.get(`${p.setKey}:${p.num}`) ?? 0, p.count);
       return inBulk > 0 ? { ...p, bulk: inBulk } : p;
     }),
-    ...(tracksBulk && { tracksBulk: true as const }),
     recognized: resolver.recognized,
     skipped: resolver.skipped,
     copies: resolver.copies,

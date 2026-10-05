@@ -9,7 +9,7 @@ export type ImportedPrinting = {
   num: string;
   variant: VariantSlug;
   count: number;
-  /** How many of `count` live in the bulk box. Only this app's v4+ backups say. */
+  /** How many of `count` live in the bulk box. Only this app's own backups say. */
   bulk?: number;
 };
 
@@ -30,13 +30,8 @@ export type ImportResult = {
   /** Total copies across all resolved printings. */
   copies: number;
   format: ImportFormat;
-  /** Saved decks and precon ownership, present only in this app's v3+ backups. */
+  /** Saved decks and precon ownership, present only in this app's own backups. */
   deckLibrary?: DeckLibrary;
-  /**
-   * True when the file records which copies are in the bulk box (this app's v4+ backups).
-   * Any other file only has totals, so copies beyond a playset are sent to bulk on import.
-   */
-  tracksBulk?: true;
 };
 
 export type ImportFormat =

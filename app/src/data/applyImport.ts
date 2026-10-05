@@ -1,5 +1,5 @@
 import { parseDeckLibrary, type DeckLibrary } from '~/domain/decks';
-import type { ImportedPrinting } from '~/domain/import';
+import { BACKUP_VERSION, type ImportedPrinting } from '~/domain/import';
 import { BULK_KEY_SUFFIX, spillToBulk } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 
@@ -35,7 +35,7 @@ export type ApplyOptions = {
   /** Replaces the saved decks and precon ownership with this, in the same transaction. */
   deckLibrary?: DeckLibrary;
   /**
-   * For files that only have totals (anything but this app's v4+ backups): each card's
+   * For files that only have totals (anything but this app's own backups): each card's
    * playset size. Copies beyond it go to the bulk box, the weakest first.
    */
   spillOver?: (setKey: SetKey, base: number) => number;
@@ -172,19 +172,11 @@ export async function applyImport(
   };
 }
 
-/**
- * A full offline backup: every printing owned, plus saved decks and precon ownership.
- *
- * v4 adds bulk-box copies; v3 added `decks`. v2 files (counts only) and the legacy v1
- * format still import.
- */
+/** A full offline backup: every printing owned, plus saved decks and precon ownership. */
 export type ExportPayload = {
-  version: 4;
+  version: typeof BACKUP_VERSION;
   exportedAt: string;
-  /**
-   * setKey → printing number → count, with bulk-box copies under "059@bulk". Printing
-   * level, unlike the legacy v1 export.
-   */
+  /** setKey → printing number → count, with bulk-box copies under "059@bulk". */
   sets: Record<SetKey, Record<string, number>>;
   decks: DeckLibrary;
 };
@@ -202,7 +194,7 @@ export async function buildExport(
   }
   const libraryRow = await database.deckLibrary.get('library');
   return {
-    version: 4,
+    version: BACKUP_VERSION,
     exportedAt: now.toISOString(),
     sets,
     decks: parseDeckLibrary(libraryRow?.json ?? null),

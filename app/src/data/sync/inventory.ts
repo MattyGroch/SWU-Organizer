@@ -10,11 +10,8 @@ import { createSyncEngine, makeBroadcastPort, type SyncEngine } from './engine';
 /**
  * Inventory sync adapter.
  *
- * The wire format is `{ printingNumber: count }`, which is the same `Record<string,
- * number>` the server already accepts — so moving from base-number keys to printing-number
- * keys needs no server change. Pulled payloads are resolved back through the catalog,
- * which also lets a pre-existing cloud backup written with base numbers ("59") load
- * correctly against the new printing numbers ("059").
+ * The wire format is `{ printingNumber: count }`, the `Record<string, number>` the server
+ * accepts. Pulled payloads are resolved back through the catalog.
  *
  * Copies in the bulk box ride along under their own key, "059@bulk", so a merge treats
  * them like any other count.
@@ -57,21 +54,9 @@ export async function applyInventoryPayload(
     const count = Number(rawCount);
     if (!Number.isFinite(count) || count <= 0) continue;
 
-    // Accept "059", "59" and "059F"; older backups wrote base numbers without padding.
-    const candidates = [num, num.toUpperCase(), String(Number(num)).padStart(3, '0')];
-    let resolved: { base: number; num: string } | undefined;
-    for (const candidate of candidates) {
-      const base = set.baseByPrinting.get(candidate);
-      if (base !== undefined) {
-        resolved = { base, num: candidate };
-        break;
-      }
-    }
-    if (!resolved) continue;
-
-    const printing = set.cardsByBase
-      .get(resolved.base)
-      ?.printings.find((p) => p.num === resolved.num);
+    const base = set.baseByPrinting.get(num);
+    if (base === undefined) continue;
+    const printing = set.cardsByBase.get(base)?.printings.find((p) => p.num === num);
     if (!printing) continue;
 
     // Two devices' merged edits can leave more in bulk than owned; the total wins.
@@ -79,7 +64,7 @@ export async function applyInventoryPayload(
     rows.push({
       id: printingId(setKey, printing.num),
       setKey,
-      base: resolved.base,
+      base,
       num: printing.num,
       variant: printing.variant,
       count,

@@ -305,69 +305,50 @@ describe('Hyperspace Vault import', () => {
 });
 
 describe('app JSON import', () => {
-  it('reads a legacy v1 backup, treating base numbers as Normal printings', () => {
-    const result = importAppJson({ version: 1, sets: { SOR: { 1: 1, 59: 3 } } }, catalog);
-    expect(byNum(result)).toEqual({ '001': 1, '059': 3 });
-  });
-
-  it('reads printing-level numbers when a backup has them', () => {
-    const result = importAppJson({ version: 2, sets: { SOR: { '324F': 2 } } }, catalog);
-    expect(result.printings[0]).toMatchObject({ variant: 'hyperspace-foil', count: 2 });
-  });
-
-  it('carries the deck library from a v3 backup', () => {
+  it('reads printings, bulk-box copies and the deck library', () => {
     const decks = { customDecks: [], preconOwnership: { 'SOR-Vader': 1 } };
-    const result = importAppJson({ version: 3, sets: {}, decks }, catalog);
+    const result = importAppJson(
+      { version: 4, sets: { SOR: { '059': 4, '059@bulk': 1, '324F': 2 } }, decks },
+      catalog,
+    );
+    expect(result.skipped).toEqual([]);
+    const byPrinting = Object.fromEntries(result.printings.map((p) => [p.num, p]));
+    expect(byPrinting['059']).toMatchObject({ variant: 'normal', count: 4, bulk: 1 });
+    expect(byPrinting['324F']).toMatchObject({ variant: 'hyperspace-foil', count: 2 });
+    expect(byPrinting['324F']!.bulk).toBeUndefined();
     expect(result.deckLibrary).toEqual(decks);
   });
 
-  it('reads bulk-box copies from a v4 backup', () => {
-    const result = importAppJson(
-      { version: 4, sets: { SOR: { '059': 4, '059@bulk': 1, '324': 1 } } },
-      catalog,
+  it('has no deck library when the backup has none', () => {
+    expect(importAppJson({ version: 4, sets: {} }, catalog).deckLibrary).toBeUndefined();
+  });
+
+  it.each([1, 2, 3, undefined])('refuses an older backup (version %s)', (version) => {
+    expect(() => importAppJson({ version, sets: { SOR: { '059': 1 } } }, catalog)).toThrow(
+      /older version/,
     );
-    expect(result.tracksBulk).toBe(true);
-    expect(result.skipped).toEqual([]);
-    const byPrinting = Object.fromEntries(result.printings.map((p) => [p.num, p]));
-    expect(byPrinting['059']).toMatchObject({ count: 4, bulk: 1 });
-    expect(byPrinting['324']!.bulk).toBeUndefined();
   });
 
-  it('says an older backup has no bulk data', () => {
-    expect(importAppJson({ version: 3, sets: {} }, catalog).tracksBulk).toBeUndefined();
-  });
-
-  it('has no deck library for a counts-only backup', () => {
-    const result = importAppJson({ version: 2, sets: {} }, catalog);
-    expect(result.deckLibrary).toBeUndefined();
-  });
-
-  it('counts malformed and reserved entries as skips', () => {
+  it('counts malformed entries as skips', () => {
     const result = importAppJson(
-      {
-        version: 1,
-        sets: {
-          SOR: { 59: 1, invalid: 2, 324: 'not-a-quantity' },
-          'migration:v2:backup': { 59: 1 },
-        },
-      },
+      { version: 4, sets: { SOR: { '059': 1, invalid: 2, '324': 'not-a-quantity' } } },
       catalog,
     );
 
     expect(byNum(result)).toEqual({ '059': 1 });
     expect(result.recognized).toBe(1);
-    expect(result.skipped).toHaveLength(3);
+    expect(result.skipped).toHaveLength(2);
   });
 
   it.each([
     ['null root', null],
     ['array root', []],
-    ['boolean sets', { version: 1, sets: true }],
-    ['null sets', { version: 1, sets: null }],
-    ['array sets', { version: 1, sets: [] }],
-    ['boolean set inventory', { version: 1, sets: { SOR: true } }],
-    ['null set inventory', { version: 1, sets: { SOR: null } }],
-    ['array set inventory', { version: 1, sets: { SOR: [] } }],
+    ['boolean sets', { version: 4, sets: true }],
+    ['null sets', { version: 4, sets: null }],
+    ['array sets', { version: 4, sets: [] }],
+    ['boolean set inventory', { version: 4, sets: { SOR: true } }],
+    ['null set inventory', { version: 4, sets: { SOR: null } }],
+    ['array set inventory', { version: 4, sets: { SOR: [] } }],
   ])('rejects malformed structure: %s', (_label, payload) => {
     expect(() => importAppJson(payload, catalog)).toThrow(UnrecognizedImportError);
   });

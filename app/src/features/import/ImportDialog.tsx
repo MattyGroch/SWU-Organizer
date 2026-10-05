@@ -138,7 +138,8 @@ export function ImportDialog({ catalog, onClose }: Props) {
     try {
       const report = await applyImport(chosen, mode, {
         deckLibrary: restoreDecks ? result.deckLibrary : undefined,
-        ...(!result.tracksBulk && {
+        // Only this app's backups say which copies are in the bulk box.
+        ...(result.format !== 'app-json' && {
           spillOver: (setKey: SetKey, base: number) => {
             const card = catalog.get(setKey)?.cardsByBase.get(base);
             return card ? quotaForCard(card) : Infinity;

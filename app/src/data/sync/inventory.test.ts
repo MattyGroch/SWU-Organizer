@@ -78,14 +78,6 @@ describe('applyInventoryPayload', () => {
     expect(rows[0]).toMatchObject({ num: '324', variant: 'hyperspace', count: 2 });
   });
 
-  it('accepts unpadded base numbers from an older cloud backup', async () => {
-    // The legacy app synced base numbers like "59"; the catalog spells it "059".
-    await applyInventoryPayload('SOR', { '59': 4 }, set, database);
-
-    const rows = await database.owned.toArray();
-    expect(rows[0]).toMatchObject({ num: '059', variant: 'normal', count: 4 });
-  });
-
   it('drops entries that no longer resolve, without failing the rest', async () => {
     await applyInventoryPayload('SOR', { '059': 2, '9999': 1, bad: 3 }, set, database);
 
