@@ -344,3 +344,23 @@
     grid-template-columns: 72px 1fr;
   }
 }
+
+/* The one-tap finish switch on the latest scan, and the mode that applies it to every scan. */
+.foil,
+.foilMode {
+  min-height: 40px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.foil[aria-pressed='true'],
+.foilMode[aria-pressed='true'] {
+  border-color: #e9c46a;
+  background: linear-gradient(135deg, #3a2f12, #5a4a1c 50%, #3a2f12);
+  color: #ffe8a3;
+}
