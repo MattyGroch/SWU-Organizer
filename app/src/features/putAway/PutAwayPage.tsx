@@ -1,6 +1,6 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useHiddenSets } from '~/data/binderSettings';
 import { db, readMeta, writeMeta, type StackCardRow, type StackRow } from '~/data/db';
@@ -19,10 +19,15 @@ import {
 import type { SetKey } from '~/domain/types';
 
 import styles from './PutAwayPage.module.css';
-import { speechSupported, useSpeech } from './speech';
+import { speechSupported, useSpeech, useWakeLock } from './speech';
 
 const SORTERS_KEY = 'putAway:sorters';
 const SPEECH_KEY = 'putAway:speech';
+const PACE_KEY = 'putAway:pace';
+/** Seconds between a dealt card's instruction and the next one; other steps scale from it. */
+const DEFAULT_PACE = 2;
+const PACE_STEP = 0.5;
+const MAX_PACE = 10;
 
 type Props = { sets: Map<SetKey, LoadedSet>; stackId: string };
 
@@ -36,6 +41,10 @@ export function PutAwayPage({ sets, stackId }: Props) {
   const cards = useLiveQuery(() => stackCards(stackId), [stackId]);
   const hidden = useHiddenSets();
   const speech = useLiveQuery(async () => (await readMeta(db, SPEECH_KEY)) !== 'off', []);
+  const pace = useLiveQuery(async () => {
+    const saved = Number(await readMeta(db, PACE_KEY));
+    return Number.isFinite(saved) && saved >= 0 ? Math.min(saved, MAX_PACE) : DEFAULT_PACE;
+  }, []);
 
   if (stack === undefined || cards === undefined || hidden === undefined) return null;
   if (stack === null) {
@@ -56,6 +65,7 @@ export function PutAwayPage({ sets, stackId }: Props) {
       sets={sets}
       hidden={hidden}
       speech={speech ?? true}
+      pace={pace ?? DEFAULT_PACE}
     />
   ) : (
     <Setup stack={stack} cards={cards} speech={speech ?? true} />
@@ -91,8 +101,9 @@ function Setup({
     <div className={styles.page}>
       <h1 className={styles.title}>Put away {cards.length} cards</h1>
       <p className={styles.lead}>
-        Keep the stack in the order you scanned it, top card first. The app tells you where each
-        card goes: first onto a pile in your sorter, then into the binder.
+        Keep the stack just as it came off the scanner, with the last card you scanned on top. The
+        app tells you where each card goes: first onto a pile in your sorter, then into the binder.
+        It reads each step aloud and moves on by itself; pause it any time.
         {aside > 0 && ` ${aside} of them don’t go in the binder; they get a pile of their own.`}
       </p>
       {queued != null && queued !== toAdd && (
@@ -151,6 +162,7 @@ function Walk({
   sets,
   hidden,
   speech,
+  pace,
 }: {
   stack: StackRow;
   sorters: number;
@@ -158,15 +170,27 @@ function Walk({
   sets: Map<SetKey, LoadedSet>;
   hidden: Set<SetKey>;
   speech: boolean;
+  pace: number;
 }) {
   const navigate = useNavigate();
   const steps = useMemo(
-    () => planPutAway(cards, { setOrder: [...sets.keys()], hiddenSets: hidden, sorters }),
+    () =>
+      // The last card scanned is on top of the stack, so it is the first one handled.
+      planPutAway([...cards].reverse(), {
+        setOrder: [...sets.keys()],
+        hiddenSets: hidden,
+        sorters,
+      }),
     [cards, sets, hidden, sorters],
   );
   const index = Math.min(stack.step, steps.length);
   const step = steps[index];
+  const text = step ? spoken(step, sorters, sets) : 'All put away.';
   const say = useSpeech(speech);
+  const [playing, setPlaying] = useState(true);
+  /** The step whose instruction has been read out: the pause before the next starts then. */
+  const [readIndex, setReadIndex] = useState<number | null>(null);
+  useWakeLock(playing && Boolean(step));
 
   const go = useCallback(
     (to: number) => {
@@ -177,25 +201,47 @@ function Walk({
     },
     [index, stack.id, steps.length],
   );
+  /** Stepping by hand pauses: otherwise the next step would come straight after. */
+  const goByHand = (to: number) => {
+    setPlaying(false);
+    go(to);
+  };
 
+  // Read each step once, as it arrives.
   useEffect(() => {
-    say(step ? spoken(step, sorters, sets) : 'All put away.');
-  }, [say, step, sorters, sets]);
+    setReadIndex(null);
+    return say(text, () => setReadIndex(index));
+  }, [say, text, index]);
+
+  // Then, while playing, give time to do it and move on.
+  useEffect(() => {
+    if (!playing || !step || readIndex !== index) return;
+    const timer = window.setTimeout(() => go(index + 1), stepPause(step, pace) * 1000);
+    return () => window.clearTimeout(timer);
+  }, [playing, step, readIndex, index, pace, go]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLButtonElement) return;
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+      if (e.key === ' ' || e.key === 'Enter') {
         e.preventDefault();
+        setPlaying((p) => !p);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setPlaying(false);
         go(index + 1);
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
+        setPlaying(false);
         go(index - 1);
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [go, index]);
+
+  const setPace = (seconds: number) =>
+    void writeMeta(db, PACE_KEY, String(Math.max(PACE_STEP, Math.min(MAX_PACE, seconds))));
 
   async function finish() {
     await dismissStack(stack.id);
@@ -207,6 +253,7 @@ function Walk({
       <div className={styles.progressRow}>
         <span className={styles.progressText}>
           {step ? `Step ${index + 1} of ${steps.length}` : 'Done'}
+          {step && !playing && <span className={styles.paused}> · Paused</span>}
         </span>
         <button type="button" className={styles.link} onClick={() => void resetPutAway(stack.id)}>
           Start over
@@ -215,36 +262,79 @@ function Walk({
       <progress className={styles.progress} max={steps.length} value={index} />
 
       {step ? (
-        <StepView step={step} sorters={sorters} sets={sets} onNext={() => go(index + 1)} />
+        <StepView
+          step={step}
+          sorters={sorters}
+          sets={sets}
+          playing={playing}
+          onToggle={() => setPlaying((p) => !p)}
+        />
       ) : (
         <section className={styles.done}>
           <h1 className={styles.instruction}>All put away</h1>
           <p className={styles.lead}>Every card in the stack is filed or set aside.</p>
         </section>
       )}
-      <span className="visually-hidden" aria-live="polite">
-        {step ? spoken(step, sorters, sets) : 'All put away.'}
-      </span>
+      {!speech && (
+        <span className="visually-hidden" aria-live="polite">
+          {text}
+        </span>
+      )}
 
-      <div className={styles.nav}>
-        <button
-          type="button"
-          className={styles.back}
-          disabled={index === 0}
-          onClick={() => go(index - 1)}
-        >
-          Back
-        </button>
-        {step ? (
-          <button type="button" className={styles.next} onClick={() => go(index + 1)}>
+      {step ? (
+        <div className={styles.nav}>
+          <button
+            type="button"
+            className={styles.back}
+            disabled={index === 0}
+            onClick={() => goByHand(index - 1)}
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            className={styles.next}
+            aria-pressed={!playing}
+            onClick={() => setPlaying((p) => !p)}
+          >
+            {playing ? 'Pause' : 'Resume'}
+          </button>
+          <button type="button" className={styles.back} onClick={() => goByHand(index + 1)}>
             Next
           </button>
-        ) : (
+        </div>
+      ) : (
+        <div className={styles.navDone}>
+          <button type="button" className={styles.back} onClick={() => goByHand(index - 1)}>
+            Back
+          </button>
           <button type="button" className={styles.next} onClick={() => void finish()}>
             Finish
           </button>
-        )}
-      </div>
+        </div>
+      )}
+
+      {step && (
+        <div className={styles.pace} role="group" aria-label="Pace">
+          <span>Time to do each step: {pace}s</span>
+          <button
+            type="button"
+            className={styles.paceButton}
+            disabled={pace <= PACE_STEP}
+            onClick={() => setPace(pace - PACE_STEP)}
+          >
+            Faster
+          </button>
+          <button
+            type="button"
+            className={styles.paceButton}
+            disabled={pace >= MAX_PACE}
+            onClick={() => setPace(pace + PACE_STEP)}
+          >
+            Slower
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -253,12 +343,14 @@ function StepView({
   step,
   sorters,
   sets,
-  onNext,
+  playing,
+  onToggle,
 }: {
   step: PutAwayStep;
   sorters: number;
   sets: Map<SetKey, LoadedSet>;
-  onNext: () => void;
+  playing: boolean;
+  onToggle: () => void;
 }) {
   if (step.kind === 'scoop') {
     return (
@@ -266,11 +358,7 @@ function StepView({
         <h1 id="step-title" className={styles.instruction}>
           Scoop up the piles
         </h1>
-        <p className={styles.lead}>
-          Pick up {pileName(0, sorters)} and put it on {pileName(1, sorters)}, pick both up and put
-          them on {pileName(2, sorters)}, and so on, ending on {pileName(step.piles - 1, sorters)}.
-          Don’t flip the stack over. Then keep going from the top.
-        </p>
+        <p className={styles.lead}>{scoopText(step.piles, sorters)}</p>
         <Sorters sorters={sorters} used={step.piles} />
       </section>
     );
@@ -280,7 +368,15 @@ function StepView({
   const set = sets.get(card.setKey);
   const name = set?.byNumber.get(card.base)?.Name ?? `${card.setKey} #${card.base}`;
   const art = (
-    <button type="button" className={styles.artButton} onClick={onNext} aria-label="Next step">
+    <button
+      type="button"
+      className={styles.artButton}
+      onClick={onToggle}
+      // A big tap target for pausing; the Pause button below is the accessible one.
+      tabIndex={-1}
+      aria-hidden="true"
+      title={playing ? 'Tap to pause' : 'Tap to resume'}
+    >
       <img className={styles.art} src={artUrl(card.setKey, card.num)} alt="" />
     </button>
   );
@@ -367,7 +463,33 @@ const ASIDE: Record<AsideReason, { title: string; detail: string }> = {
     detail: 'The scanner wasn’t sure what this was, and it was never added. Scan it again.',
   },
   hidden: { title: 'No binder', detail: 'This set is hidden from the binder.' },
+  replaced: {
+    title: 'Bulk',
+    detail: 'A better printing of this card, scanned later, takes its place in the pocket.',
+  },
 };
+
+/**
+ * Seconds to do a step before the next is read: dealing is quick, filing means finding the
+ * pocket, and scooping up the piles takes longest.
+ */
+function stepPause(step: PutAwayStep, pace: number): number {
+  if (step.kind === 'scoop') return pace * 4;
+  if (step.kind === 'file') return pace * 2 + (step.turnTo ? pace * 2 : 0);
+  return pace;
+}
+
+function scoopText(piles: number, sorters: number): string {
+  if (piles < 2) return 'Pick up the pile. Don’t flip it over. Then keep going from the top.';
+  const first = pileName(0, sorters);
+  const second = pileName(1, sorters);
+  const last = pileName(piles - 1, sorters);
+  const middle =
+    piles > 2
+      ? `, pick both up and put them on ${pileName(2, sorters)}, and so on, ending on ${last}`
+      : '';
+  return `Pick up ${first} and put it on ${second}${middle}. Don’t flip the stack over. Then keep going from the top.`;
+}
 
 /** A 3×3 grid per sorter in use, with the target pile lit. */
 function Sorters({ sorters, used, target }: { sorters: number; used: number; target?: number }) {

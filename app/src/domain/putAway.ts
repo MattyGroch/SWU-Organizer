@@ -5,8 +5,8 @@ import type { SetKey } from './types';
 /**
  * Putting a scanned stack away without reading a single card number.
  *
- * The stack is still in the order it was scanned, so the app knows every card's place in
- * it. It turns that into a list of one-card steps: deal this card onto pile 5; scoop the
+ * The stack is still in the order it was scanned — the last card scanned on top — so the
+ * app knows every card's place in it. It turns that into a list of one-card steps: deal this card onto pile 5; scoop the
  * piles back up; file this card at page 11, row 2, column 3. Deals split the stack into
  * binder ranges, and any range that would still mean flipping back and forth is dealt
  * again, so every card is filed with the binder already open at its spread.
@@ -30,8 +30,11 @@ export type StackCardInput = {
   swapOut?: { num: string; variant: VariantSlug };
 };
 
-/** Why a card is set aside rather than filed. `hidden`: its set has no binder. */
-export type AsideReason = Exclude<StackFate, 'binder'> | 'hidden';
+/**
+ * Why a card is set aside rather than filed. `hidden`: its set has no binder. `replaced`:
+ * a better printing scanned later in the same stack takes its place in the pocket.
+ */
+export type AsideReason = Exclude<StackFate, 'binder'> | 'hidden' | 'replaced';
 
 export type BinderSpot = { setKey: SetKey; page: number; row: number; column: number };
 
@@ -57,7 +60,8 @@ type Placed = { card: StackCardInput; aside?: AsideReason; setIndex: number; spr
 /**
  * Every step to put a stack away, in order.
  *
- * `cards` is the stack top first — scan order. Sets missing from `setOrder` sort last.
+ * `cards` is the stack top first: the last card scanned first. Sets missing from
+ * `setOrder` sort last.
  */
 export function planPutAway(
   cards: readonly StackCardInput[],
@@ -68,9 +72,16 @@ export function planPutAway(
   }: { setOrder: readonly SetKey[]; hiddenSets?: ReadonlySet<SetKey>; sorters: number },
 ): PutAwayStep[] {
   const rank = new Map(setOrder.map((key, i) => [key, i]));
-  const placed: Placed[] = cards.map((card) => {
-    const aside: AsideReason | undefined =
-      card.fate !== 'binder' ? card.fate : hiddenSets.has(card.setKey) ? 'hidden' : undefined;
+  const replaced = resolveSwaps(cards);
+  const placed: Placed[] = cards.map((original) => {
+    const card = replaced.upgraded.get(original.id) ?? original;
+    const aside: AsideReason | undefined = replaced.victims.has(card.id)
+      ? 'replaced'
+      : card.fate !== 'binder'
+        ? card.fate
+        : hiddenSets.has(card.setKey)
+          ? 'hidden'
+          : undefined;
     return {
       card,
       ...(aside ? { aside } : {}),
@@ -83,6 +94,36 @@ export function planPutAway(
   const state = { open: undefined as string | undefined };
   work(placed, Math.max(1, sorters) * PILES_PER_SORTER, steps, state);
   return steps;
+}
+
+/**
+ * A better printing bumps the weakest copy in its pocket. When that copy is in this same
+ * stack — three Normals scanned, then a Hyperspace — it never reaches the binder: one of
+ * those Normals goes straight to bulk, and the Hyperspace has nothing to take out.
+ */
+function resolveSwaps(cards: readonly StackCardInput[]): {
+  victims: Set<string>;
+  upgraded: Map<string, StackCardInput>;
+} {
+  const victims = new Set<string>();
+  const upgraded = new Map<string, StackCardInput>();
+  for (const card of cards) {
+    if (card.fate !== 'binder' || !card.swapOut) continue;
+    const { num } = card.swapOut;
+    const victim = cards.find(
+      (c) =>
+        c.fate === 'binder' &&
+        c.setKey === card.setKey &&
+        c.num === num &&
+        !c.swapOut &&
+        !victims.has(c.id),
+    );
+    if (!victim) continue;
+    victims.add(victim.id);
+    const { swapOut: _, ...rest } = card;
+    upgraded.set(card.id, rest);
+  }
+  return { victims, upgraded };
 }
 
 function spreadKey(p: Placed): string {

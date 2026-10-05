@@ -339,24 +339,29 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       // Answering a question picks the card; Foils mode still decides the stock.
       const printing = item.question ? asFound(picked) : picked;
       let placed: Pick<Item, 'receipt' | 'room'> = { receipt: item.receipt, room: null };
-      let stackCardId = item.stackCardId;
       if (mode === 'add') {
         if (item.receipt) await unqueueScan(item.receipt);
         placed = await place(printing);
-        const entry = stackEntry(
-          { chosen: printing, question: null, ...placed },
-          sets.get(printing.setKey),
-        );
-        if (stackCardId) await updateScan(stackCardId, entry);
-        else stackCardId = await logScan(entry);
       }
+      // The screen first, as soon as Intake has it; the stack is brought into line after.
       setItems((current) =>
         current.map((i) =>
           i.id === item.id
-            ? { ...i, chosen: printing, question: null, spare: false, ...placed, stackCardId }
+            ? { ...i, chosen: printing, question: null, spare: false, ...placed }
             : i,
         ),
       );
+      if (mode !== 'add') return;
+      const entry = stackEntry(
+        { chosen: printing, question: null, ...placed },
+        sets.get(printing.setKey),
+      );
+      if (item.stackCardId) {
+        await updateScan(item.stackCardId, entry);
+      } else {
+        const stackCardId = await logScan(entry);
+        setItems((current) => current.map((i) => (i.id === item.id ? { ...i, stackCardId } : i)));
+      }
     },
     [asFound, mode, place, sets],
   );
@@ -382,12 +387,12 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     } else if (answer === 'spare' && !receipt) {
       receipt = await queueScan(item.chosen);
     }
-    if (item.stackCardId) {
-      await updateScan(item.stackCardId, stackEntry({ ...item, receipt, room: null, spare: true }));
-    }
     setItems((current) =>
       current.map((i) => (i.id === item.id ? { ...i, receipt, room: null, spare: true } : i)),
     );
+    if (item.stackCardId) {
+      await updateScan(item.stackCardId, stackEntry({ ...item, receipt, room: null, spare: true }));
+    }
   }, []);
 
   const remove = useCallback(
@@ -766,7 +771,8 @@ function LatestScan({
         ) : mode === 'add' && item.room?.kind === 'full' ? (
           <div className={styles.question}>
             <p>
-              Maximum count reached for <strong>{nameOf(chosen)}</strong> — add to bulk.
+              Maximum count reached for <strong>{nameOf(chosen)}</strong>. Leave it in the stack:
+              Put away sets it aside for bulk.
             </p>
             {!item.receipt && (
               <div className={styles.choices}>
