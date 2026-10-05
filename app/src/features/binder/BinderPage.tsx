@@ -256,7 +256,9 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
     const root = document.documentElement;
     if (accent) root.style.setProperty('--set-accent', accent);
     else root.style.removeProperty('--set-accent');
-    return () => root.style.removeProperty('--set-accent');
+    return () => {
+      root.style.removeProperty('--set-accent');
+    };
   }, [set.setKey]);
 
   // One global key handler, driven by the pure `resolveShortcut` map.
