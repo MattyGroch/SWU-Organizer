@@ -14,7 +14,15 @@ body,
 
 body {
   margin: 0;
-  background: var(--color-bg);
+  /* --set-accent is set on <html> by the binder; unset elsewhere, so the wash is invisible. */
+  background:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--set-accent, transparent) 26%, transparent),
+      transparent 520px
+    )
+    no-repeat fixed,
+    var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--font-size-md);
