@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 
 import {
   bulkAdjust,
+  eraseEverything,
   resetCollection,
+  restoreErased,
   restoreSnapshot,
   restoreSnapshots,
   type BulkAction,
@@ -162,18 +164,30 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
     }
   }
 
-  async function reset(scope: 'set' | 'all') {
+  async function resetSet() {
     setBusy(true);
     try {
-      const result = await resetCollection(scope === 'set' ? set.setKey : undefined, {
-        unbuildDecks: unbuildOnReset,
-      });
-      done(
-        result,
-        scope === 'set' ? `${set.setKey} has been reset.` : 'Your whole collection has been reset.',
-      );
+      const result = await resetCollection(set.setKey, { unbuildDecks: unbuildOnReset });
+      done(result, `${set.setKey} has been reset.`);
     } catch {
       showToast({ tone: 'danger', message: 'The reset could not be saved.' });
+      setBusy(false);
+    }
+  }
+
+  async function eraseAll() {
+    setBusy(true);
+    try {
+      const erased = await eraseEverything();
+      showToast({
+        tone: 'success',
+        message: 'Everything has been erased.',
+        durationMs: 10000,
+        action: { label: 'Undo', onAction: () => restoreErased(erased) },
+      });
+      close();
+    } catch {
+      showToast({ tone: 'danger', message: 'The erase could not be saved.' });
       setBusy(false);
     }
   }
@@ -293,7 +307,7 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
           <summary className={styles.dangerSummary}>Reset…</summary>
           <div className={styles.dangerBody}>
             <p className={styles.warning}>
-              Resetting empties counts entirely, ignoring the filters.{' '}
+              Resetting ignores the filters.{' '}
               <button
                 type="button"
                 className={styles.inlineLink}
@@ -309,7 +323,7 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
                 checked={unbuildOnReset}
                 onChange={(event) => setUnbuildOnReset(event.target.checked)}
               />
-              <span>Return built decks holding reset cards to Not built</span>
+              <span>Resetting {set.setKey} returns built decks holding its cards to Not built</span>
             </label>
 
             <div className={styles.resetRow}>
@@ -320,7 +334,7 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
                     type="button"
                     className={styles.dangerButton}
                     disabled={busy}
-                    onClick={() => void reset('set')}
+                    onClick={() => void resetSet()}
                   >
                     Reset {set.setKey}
                   </button>
@@ -346,7 +360,8 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
             <div className={styles.resetRow}>
               <label className={styles.phrase}>
                 <span>
-                  Type <strong>{RESET_PHRASE}</strong> to empty the whole collection
+                  Type <strong>{RESET_PHRASE}</strong> to erase everything: every card, saved deck
+                  and precon tick, the Intake queue and scanned stacks
                 </span>
                 <input
                   type="text"
@@ -360,9 +375,9 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
                 type="button"
                 className={styles.dangerButton}
                 disabled={busy || phrase !== RESET_PHRASE}
-                onClick={() => void reset('all')}
+                onClick={() => void eraseAll()}
               >
-                Reset entire collection
+                Erase everything
               </button>
             </div>
           </div>

@@ -5,7 +5,16 @@ import { parseDeckLibrary } from '~/domain/decks';
 import type { SetKey } from '~/domain/types';
 
 import { notifyDeckLibraryChanged, notifyInventoryChanged } from './changes';
-import { db, printingId, type OwnedPrinting, type SwuDatabase } from './db';
+import {
+  db,
+  printingId,
+  type IntakeBatch,
+  type IntakeLine,
+  type OwnedPrinting,
+  type StackCardRow,
+  type StackRow,
+  type SwuDatabase,
+} from './db';
 import { defaultPrinting } from './inventory';
 
 /**
@@ -185,6 +194,124 @@ export async function resetCollection(
     decksUnbuilt,
     undo: { scope: setKey ? { setKey } : 'all', rows, deckLibraryJson },
   };
+}
+
+/** Everything `eraseEverything` removed, to put back on Undo. */
+export type ErasedSnapshot = {
+  rows: OwnedPrinting[];
+  deckLibraryJson: string | null;
+  intakeBatches: IntakeBatch[];
+  intakeLines: IntakeLine[];
+  stacks: StackRow[];
+  stackCards: StackCardRow[];
+};
+
+/**
+ * Back to zero: every card, saved deck and precon tick, plus the Intake queue and scanned
+ * stacks. Settings, sign-in and the card-art cache stay.
+ *
+ * Decks are deleted the way the Decks page deletes one, with a remembered deletion, and
+ * precons are set to 0 rather than dropped — otherwise the next sync would read them as
+ * never downloaded and bring the server's copies back.
+ */
+export async function eraseEverything({
+  database = db,
+  now = Date.now(),
+}: { database?: SwuDatabase; now?: number } = {}): Promise<ErasedSnapshot> {
+  let snapshot!: ErasedSnapshot;
+
+  await database.transaction(
+    'rw',
+    [
+      database.owned,
+      database.deckLibrary,
+      database.intakeBatches,
+      database.intakeLines,
+      database.stacks,
+      database.stackCards,
+    ],
+    async () => {
+      const libraryRow = await database.deckLibrary.get('library');
+      snapshot = {
+        rows: await database.owned.toArray(),
+        deckLibraryJson: libraryRow?.json ?? null,
+        intakeBatches: await database.intakeBatches.toArray(),
+        intakeLines: await database.intakeLines.toArray(),
+        stacks: await database.stacks.toArray(),
+        stackCards: await database.stackCards.toArray(),
+      };
+
+      const at = new Date(now).toISOString();
+      const library = parseDeckLibrary(snapshot.deckLibraryJson);
+      const deletedDecks = { ...library.deletedDecks };
+      for (const deck of library.customDecks) deletedDecks[deck.id] = at;
+      const preconOwnership = Object.fromEntries(
+        Object.keys(library.preconOwnership).map((key) => [key, 0]),
+      );
+      await database.deckLibrary.put({
+        id: 'library',
+        json: JSON.stringify({ customDecks: [], preconOwnership, deletedDecks }),
+        updatedAt: now,
+      });
+
+      await database.owned.clear();
+      await database.intakeBatches.clear();
+      await database.intakeLines.clear();
+      await database.stacks.clear();
+      await database.stackCards.clear();
+    },
+  );
+
+  for (const key of new Set(snapshot.rows.map((row) => row.setKey))) notifyInventoryChanged(key);
+  notifyDeckLibraryChanged();
+  return snapshot;
+}
+
+/**
+ * Undoes `eraseEverything`. Restored decks are stamped as edited now, so they outlive the
+ * deletions a sync may already have sent.
+ */
+export async function restoreErased(
+  snapshot: ErasedSnapshot,
+  { database = db, now = Date.now() }: { database?: SwuDatabase; now?: number } = {},
+): Promise<void> {
+  const sets = new Set<SetKey>(snapshot.rows.map((row) => row.setKey));
+
+  await database.transaction(
+    'rw',
+    [
+      database.owned,
+      database.deckLibrary,
+      database.intakeBatches,
+      database.intakeLines,
+      database.stacks,
+      database.stackCards,
+    ],
+    async () => {
+      for (const row of await database.owned.toArray()) sets.add(row.setKey);
+      await database.owned.clear();
+      await database.owned.bulkPut(snapshot.rows);
+
+      const at = new Date(now).toISOString();
+      const library = parseDeckLibrary(snapshot.deckLibraryJson);
+      await database.deckLibrary.put({
+        id: 'library',
+        json: JSON.stringify({
+          ...library,
+          customDecks: library.customDecks.map((deck) => ({ ...deck, updatedAt: at })),
+        }),
+        updatedAt: now,
+      });
+
+      await database.intakeBatches.bulkPut(snapshot.intakeBatches);
+      await database.intakeLines.bulkPut(snapshot.intakeLines);
+      await database.stacks.bulkPut(snapshot.stacks);
+      await database.stackCards.bulkPut(snapshot.stackCards);
+    },
+  );
+
+  for (const key of sets) notifyInventoryChanged(key);
+  notifyDeckLibraryChanged();
 }
 
 /** Puts back exactly what a bulk edit or reset replaced. */
