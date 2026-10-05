@@ -257,4 +257,47 @@ describe('ScanPage', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Yes, add it' }));
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
   });
+
+  it('holds an open "Not sure" question when a re-read ranks the cards the other way', async () => {
+    renderPage();
+    await waitFor(() => expect(fire).not.toBeNull());
+    const unsure = [match('059', 59, 'normal', 10), match('080', 80, 'normal', 15)];
+    await act(async () => fire!({ matches: unsure, at: 1, afterGap: true, tooClose: false }));
+    expect(await screen.findByText(/Not sure — is this the right card/)).toBeInTheDocument();
+
+    // An unsure card flips between its candidates, and the phone moves as the button is
+    // reached for: neither replaces the question being answered.
+    const flipped = [match('080', 80, 'normal', 10), match('059', 59, 'normal', 15)];
+    await act(async () => fire!({ matches: flipped, at: 2, afterGap: true, tooClose: false }));
+    expect(screen.getByRole('heading', { name: /2-1B Surgical Droid/ })).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Yes, add it' }));
+    expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+    const lines = await db.intakeLines.toArray();
+    expect(lines.map((l) => [l.num, l.count])).toEqual([['059', 1]]);
+  });
+
+  it('clears the result on Rescan rather than showing the scan before it', async () => {
+    renderPage();
+    await waitFor(() => expect(fire).not.toBeNull());
+    const scout = [match('080', 80, 'normal', 10), match('059', 59, 'normal', 90)];
+    const droid = [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)];
+    await act(async () => fire!({ matches: scout, at: 1, afterGap: true, tooClose: false }));
+    await act(async () => fire!({ matches: droid, at: 2, afterGap: true, tooClose: false }));
+    expect(await screen.findByRole('heading', { name: /2-1B Surgical Droid/ })).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Rescan' }));
+    await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
+    expect(screen.queryByRole('heading', { name: /Nameless Scout/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Rescan' })).not.toBeInTheDocument();
+    // The scout is still listed, as an earlier scan.
+    expect(screen.getByText('Nameless Scout')).toBeInTheDocument();
+
+    // A second scout read straight after counts — it is not taken for the first re-read.
+    await act(async () => fire!({ matches: scout, at: 3, afterGap: false, tooClose: false }));
+    expect(await screen.findByRole('heading', { name: /Nameless Scout/ })).toBeInTheDocument();
+    await waitFor(async () =>
+      expect((await db.intakeLines.toArray()).map((l) => [l.num, l.count])).toEqual([['080', 2]]),
+    );
+  });
 });

@@ -89,6 +89,13 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   /** The latest items, for the scanner's callback (which outlives a render). */
   const itemsRef = useRef(items);
   itemsRef.current = items;
+  /**
+   * Set by Rescan: the newest scan was taken back, so nothing shows as the latest until the
+   * next read — the scan before it stays in the history rather than taking its place.
+   */
+  const [cleared, setCleared] = useState(false);
+  const clearedRef = useRef(cleared);
+  clearedRef.current = cleared;
   const showToast = useToast();
   /** Never fail silently: a scan that cannot be saved says so. */
   const failed = useCallback(
@@ -143,10 +150,12 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     async (result: ScanResult) => {
       const [top] = result.matches;
       if (!top) return;
+      const latest = clearedRef.current ? undefined : itemsRef.current[0];
+      // A question waits for its answer: the scanner is paused for it, and a read already
+      // under way when it opened must not replace it either.
+      if (latest?.question) return;
       // The same card again with no gap since — it was never lifted — is that card re-read
-      // (refocusing, re-exposing), not a second copy: leave its result, and any open
-      // question about it, as they are.
-      const latest = itemsRef.current[0];
+      // (refocusing, re-exposing), not a second copy: leave its result as it is.
       const latestTop = latest?.result.matches[0];
       if (
         !result.afterGap &&
@@ -184,6 +193,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         // A short buzz for "added"; a double one for "not added — look at the screen".
         navigator.vibrate?.(placed.room?.kind === 'full' ? [60, 80, 60] : 40);
       }
+      setCleared(false);
       setItems((current) =>
         [{ id: nextId.current++, result, chosen, question, ...placed }, ...current].slice(0, 8),
       );
@@ -191,12 +201,15 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     [mode, nameOf, place],
   );
 
+  const latest = cleared ? undefined : items[0];
+  /** An open question pauses scanning, and freezes the picture, until it is answered. */
+  const asking = Boolean(latest?.question);
   const scanning = camera.state === 'live' && Boolean(index.data);
   const { phase, rearm, resume } = useScanner({
     videoRef: camera.videoRef,
     index: index.data,
     view,
-    active: scanning,
+    active: scanning && !asking,
     onResult: (r) => void onResult(r).catch(failed),
   });
 
@@ -218,6 +231,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       };
       const placed: Pick<Item, 'receipt' | 'room'> =
         mode === 'add' ? await place(chosen) : { receipt: null, room: null };
+      setCleared(false);
       setItems((current) =>
         [
           {
@@ -236,6 +250,13 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   );
 
   useEffect(() => rearm(), [mode, rearm]);
+
+  useEffect(() => {
+    const video = camera.videoRef.current;
+    if (!video || camera.state !== 'live') return;
+    if (asking) video.pause();
+    else if (video.paused) void Promise.resolve(video.play()).catch(() => {});
+  }, [asking, camera.state, camera.videoRef]);
 
   /** Replace what a scan records — a different printing, or a different card entirely. */
   const choose = useCallback(
@@ -275,12 +296,15 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     async (item: Item, again: boolean) => {
       if (item.receipt) await unqueueScan(item.receipt);
       setItems((current) => current.filter((i) => i.id !== item.id));
-      if (again) rearm();
+      if (again) {
+        setCleared(true);
+        rearm();
+      }
     },
     [rearm],
   );
 
-  const latest = items[0];
+  const earlier = latest ? items.slice(1) : items;
 
   return (
     <div className={styles.page}>
@@ -319,7 +343,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       <Viewfinder
         camera={camera}
         indexState={index.isError ? 'error' : index.data ? 'ready' : 'loading'}
-        phase={phase}
+        phase={asking ? 'asking' : phase}
         onView={setView}
       />
 
@@ -329,6 +353,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
 
       {latest && (
         <LatestScan
+          key={latest.id}
           item={latest}
           mode={mode}
           sets={sets}
@@ -340,13 +365,13 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         />
       )}
 
-      {items.length > 1 && (
+      {earlier.length > 0 && (
         <section className={styles.history} aria-labelledby="scan-history">
           <h2 id="scan-history" className={styles.historyTitle}>
             Earlier scans
           </h2>
           <ul className={styles.historyList}>
-            {items.slice(1).map((item) => (
+            {earlier.map((item) => (
               <li key={item.id} className={styles.historyItem}>
                 <span>
                   {nameOf(item.chosen)}{' '}
@@ -472,9 +497,11 @@ function Viewfinder({
                 ? 'Can’t make out a card — keep it inside the frame, out of glare'
                 : phase === 'stuck'
                   ? 'Not recognised — look it up below, or skip it'
-                  : phase === 'tooClose'
-                    ? 'Too close — fit the whole card inside the frame'
-                    : 'Hold a card inside the frame';
+                  : phase === 'asking'
+                    ? 'Paused — answer below to carry on scanning'
+                    : phase === 'tooClose'
+                      ? 'Too close — fit the whole card inside the frame'
+                      : 'Hold a card inside the frame';
 
   return (
     <div className={styles.viewfinder} ref={frameRef}>
