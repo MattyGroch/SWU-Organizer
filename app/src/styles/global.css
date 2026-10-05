@@ -14,7 +14,19 @@ body,
 
 body {
   margin: 0;
-  background: var(--color-bg);
+  /*
+   * --set-accent is set on <html> by the binder; unset elsewhere, so the wash is invisible.
+   * It fades out from under the binder's solid accent toolbar.
+   */
+  background:
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--set-accent, transparent) 60%, transparent),
+      color-mix(in srgb, var(--set-accent, transparent) 22%, transparent) 360px,
+      transparent 760px
+    )
+    no-repeat fixed,
+    var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--font-size-md);
