@@ -2,8 +2,16 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import { parseSetCatalog, toLoadedSet, type VariantSlug } from '~/domain/catalog';
 
-import { bulkAdjust, resetCollection, restoreSnapshot } from './bulk';
-import { SwuDatabase } from './db';
+import { mergeDeckLibraries } from '~/domain/syncMerge';
+
+import {
+  bulkAdjust,
+  eraseEverything,
+  resetCollection,
+  restoreErased,
+  restoreSnapshot,
+} from './bulk';
+import { SwuDatabase, type StackCardRow } from './db';
 import { readDeckLibrary, writeDeckLibraryQuietly } from './deckLibrary';
 
 const set = toLoadedSet(
@@ -163,5 +171,63 @@ describe('reset', () => {
     expect((await readDeckLibrary(database)).customDecks.some((d) => d.constructed)).toBe(false);
     await restoreSnapshot(undo, database);
     expect((await readDeckLibrary(database)).customDecks.every((d) => d.constructed)).toBe(true);
+  });
+
+  describe('erase everything', () => {
+    beforeEach(async () => {
+      const library = await readDeckLibrary(database);
+      await writeDeckLibraryQuietly({ ...library, preconOwnership: { 'SOR-vader': 1 } }, database);
+      await database.intakeBatches.add({ id: 'b', kind: 'scan', label: 'Scans', createdAt: 0 });
+      await database.intakeLines.add({
+        id: 'l',
+        batchId: 'b',
+        setKey: 'SOR',
+        base: 1,
+        num: '001',
+        variant: 'normal',
+        count: 1,
+        order: 0,
+      });
+      await database.stacks.add({ id: 's', label: 'Stack', createdAt: 0, step: 0 });
+      await database.stackCards.add({ id: 'c', stackId: 's', seq: 0 } as StackCardRow);
+    });
+
+    it('empties cards, decks, precons, intake and stacks', async () => {
+      await eraseEverything({ database, now: Date.parse('2026-10-05T00:00:00Z') });
+
+      expect(await database.owned.count()).toBe(0);
+      expect(await database.intakeBatches.count()).toBe(0);
+      expect(await database.intakeLines.count()).toBe(0);
+      expect(await database.stacks.count()).toBe(0);
+      expect(await database.stackCards.count()).toBe(0);
+      const library = await readDeckLibrary(database);
+      expect(library.customDecks).toEqual([]);
+      expect(library.preconOwnership).toEqual({ 'SOR-vader': 0 });
+      expect(Object.keys(library.deletedDecks ?? {}).sort()).toEqual(['hmw-deck', 'sor-deck']);
+    });
+
+    it('does not let a sync bring the old decks or precons back', async () => {
+      const before = await readDeckLibrary(database);
+      await eraseEverything({ database });
+      const merged = mergeDeckLibraries(await readDeckLibrary(database), before, before);
+      expect(merged.customDecks).toEqual([]);
+      expect(merged.preconOwnership).toEqual({ 'SOR-vader': 0 });
+    });
+
+    it('undo puts everything back, with decks newer than their deletions', async () => {
+      const erased = await eraseEverything({ database, now: Date.parse('2026-10-05T00:00:00Z') });
+      const deletedLibrary = await readDeckLibrary(database);
+      await restoreErased(erased, { database, now: Date.parse('2026-10-05T00:01:00Z') });
+
+      expect(await database.owned.count()).toBe(2);
+      expect(await database.intakeLines.count()).toBe(1);
+      expect(await database.stackCards.count()).toBe(1);
+      const library = await readDeckLibrary(database);
+      expect(library.customDecks.map((d) => d.id)).toEqual(['sor-deck', 'hmw-deck']);
+      expect(library.preconOwnership).toEqual({ 'SOR-vader': 1 });
+
+      const merged = mergeDeckLibraries(library, deletedLibrary, deletedLibrary);
+      expect(merged.customDecks).toHaveLength(2);
+    });
   });
 });

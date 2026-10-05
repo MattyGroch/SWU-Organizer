@@ -434,7 +434,7 @@ describe('bulk edit', () => {
     await waitFor(async () => expect(await db.owned.count()).toBe(0));
   });
 
-  it('resets the whole collection only after typing RESET', async () => {
+  it('erases everything only after typing RESET', async () => {
     const user = userEvent.setup();
     await db.owned.put({
       id: 'HMW:001',
@@ -450,7 +450,7 @@ describe('bulk edit', () => {
     await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
     const dialog = screen.getByRole('dialog', { name: 'Bulk edit' });
     await user.click(within(dialog).getByText('Reset…'));
-    const button = within(dialog).getByRole('button', { name: 'Reset entire collection' });
+    const button = within(dialog).getByRole('button', { name: 'Erase everything' });
     expect(button).toBeDisabled();
 
     await user.type(within(dialog).getByRole('textbox', { name: /Type RESET/ }), 'RESET');
