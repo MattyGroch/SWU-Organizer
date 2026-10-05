@@ -12,6 +12,7 @@ import {
   spareCount,
   pocketCounts,
   pocketRoom,
+  spillToBulk,
   takeVariants,
 } from './ownership';
 
@@ -193,5 +194,40 @@ describe('pocketRoom', () => {
       kind: 'upgrade',
       replaces: 'hyperspace',
     });
+  });
+});
+
+describe('bulk box', () => {
+  const row = (variant: 'normal' | 'hyperspace' | 'prestige', count: number, bulk?: number) => ({
+    base: 59,
+    variant,
+    count,
+    ...(bulk !== undefined && { bulk }),
+  });
+
+  it('indexes bulk copies apart from the total', () => {
+    const index = indexOwnership([row('normal', 3, 2), row('hyperspace', 1)]);
+    expect(ownedFor(index, 59)).toEqual({
+      total: 4,
+      byVariant: { normal: 3, hyperspace: 1 },
+      bulkByVariant: { normal: 2 },
+    });
+  });
+
+  it('spills the weakest binder copies beyond the playset', () => {
+    const rows = [row('prestige', 1), row('normal', 3), row('hyperspace', 1)];
+    expect(spillToBulk(rows, 3)).toEqual([
+      row('prestige', 1),
+      row('normal', 3, 2),
+      row('hyperspace', 1),
+    ]);
+  });
+
+  it('counts copies already in bulk as out of the binder, and never brings them back', () => {
+    expect(spillToBulk([row('normal', 4, 1), row('hyperspace', 1)], 3)).toEqual([
+      row('normal', 4, 2),
+      row('hyperspace', 1),
+    ]);
+    expect(spillToBulk([row('normal', 3, 3)], 3)).toEqual([row('normal', 3, 3)]);
   });
 });

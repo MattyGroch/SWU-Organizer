@@ -167,3 +167,31 @@ describe('createInventorySync', () => {
     sync.dispose();
   });
 });
+
+describe('bulk copies in sync payloads', () => {
+  it('sends them under their own key and reads them back', async () => {
+    await database.owned.put({
+      id: 'SOR:059',
+      setKey: 'SOR',
+      base: 59,
+      num: '059',
+      variant: 'normal',
+      count: 4,
+      bulk: 1,
+      updatedAt: 0,
+    });
+    const payload = await snapshotSet('SOR', database);
+    expect(payload).toEqual({ '059': 4, '059@bulk': 1 });
+
+    await database.owned.clear();
+    await applyInventoryPayload('SOR', payload, set, database);
+    expect(await database.owned.toArray()).toEqual([
+      expect.objectContaining({ num: '059', count: 4, bulk: 1 }),
+    ]);
+  });
+
+  it('never keeps more in bulk than owned after a merge', async () => {
+    await applyInventoryPayload('SOR', { '059': 1, '059@bulk': 3 }, set, database);
+    expect(await database.owned.get('SOR:059')).toMatchObject({ count: 1, bulk: 1 });
+  });
+});

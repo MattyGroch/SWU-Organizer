@@ -1,4 +1,5 @@
 import type { LoadedSet } from '~/domain/catalog';
+import { BULK_KEY_SUFFIX } from '~/domain/ownership';
 import { mergeInventory } from '~/domain/syncMerge';
 import type { SetKey } from '~/domain/types';
 
@@ -14,6 +15,9 @@ import { createSyncEngine, makeBroadcastPort, type SyncEngine } from './engine';
  * keys needs no server change. Pulled payloads are resolved back through the catalog,
  * which also lets a pre-existing cloud backup written with base numbers ("59") load
  * correctly against the new printing numbers ("059").
+ *
+ * Copies in the bulk box ride along under their own key, "059@bulk", so a merge treats
+ * them like any other count.
  */
 
 export type InventoryPayload = Record<string, number>;
@@ -23,7 +27,12 @@ export async function snapshotSet(
   database: SwuDatabase = db,
 ): Promise<InventoryPayload> {
   const rows = await database.owned.where('setKey').equals(setKey).toArray();
-  return Object.fromEntries(rows.map((row) => [row.num, row.count]));
+  const payload: InventoryPayload = {};
+  for (const row of rows) {
+    payload[row.num] = row.count;
+    if (row.bulk) payload[row.num + BULK_KEY_SUFFIX] = row.bulk;
+  }
+  return payload;
 }
 
 /**
@@ -44,6 +53,7 @@ export async function applyInventoryPayload(
 
   const rows: OwnedPrinting[] = [];
   for (const [num, rawCount] of Object.entries(payload)) {
+    if (num.endsWith(BULK_KEY_SUFFIX)) continue;
     const count = Number(rawCount);
     if (!Number.isFinite(count) || count <= 0) continue;
 
@@ -64,6 +74,8 @@ export async function applyInventoryPayload(
       ?.printings.find((p) => p.num === resolved.num);
     if (!printing) continue;
 
+    // Two devices' merged edits can leave more in bulk than owned; the total wins.
+    const bulk = Math.min(Number(payload[num + BULK_KEY_SUFFIX]) || 0, count);
     rows.push({
       id: printingId(setKey, printing.num),
       setKey,
@@ -71,6 +83,7 @@ export async function applyInventoryPayload(
       num: printing.num,
       variant: printing.variant,
       count,
+      ...(bulk > 0 && { bulk }),
       updatedAt: now,
     });
   }

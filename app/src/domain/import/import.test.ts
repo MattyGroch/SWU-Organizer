@@ -321,6 +321,22 @@ describe('app JSON import', () => {
     expect(result.deckLibrary).toEqual(decks);
   });
 
+  it('reads bulk-box copies from a v4 backup', () => {
+    const result = importAppJson(
+      { version: 4, sets: { SOR: { '059': 4, '059@bulk': 1, '324': 1 } } },
+      catalog,
+    );
+    expect(result.tracksBulk).toBe(true);
+    expect(result.skipped).toEqual([]);
+    const byPrinting = Object.fromEntries(result.printings.map((p) => [p.num, p]));
+    expect(byPrinting['059']).toMatchObject({ count: 4, bulk: 1 });
+    expect(byPrinting['324']!.bulk).toBeUndefined();
+  });
+
+  it('says an older backup has no bulk data', () => {
+    expect(importAppJson({ version: 3, sets: {} }, catalog).tracksBulk).toBeUndefined();
+  });
+
   it('has no deck library for a counts-only backup', () => {
     const result = importAppJson({ version: 2, sets: {} }, catalog);
     expect(result.deckLibrary).toBeUndefined();

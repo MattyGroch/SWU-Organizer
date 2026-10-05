@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { applyImport, type ImportMode } from '~/data/applyImport';
 import { variantLabel, type VariantSlug } from '~/domain/catalog';
 import type { CatalogLookup, ImportResult, SkipReason } from '~/domain/import';
+import { quotaForCard } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 
 import styles from './ImportDialog.module.css';
@@ -137,6 +138,12 @@ export function ImportDialog({ catalog, onClose }: Props) {
     try {
       const report = await applyImport(chosen, mode, {
         deckLibrary: restoreDecks ? result.deckLibrary : undefined,
+        ...(!result.tracksBulk && {
+          spillOver: (setKey: SetKey, base: number) => {
+            const card = catalog.get(setKey)?.cardsByBase.get(base);
+            return card ? quotaForCard(card) : Infinity;
+          },
+        }),
       });
       const delta = report.copiesDelta;
       const parts = [

@@ -14,12 +14,20 @@ import { resolveQuota } from './inventory';
  * shows is derived from it.
  */
 
+/**
+ * Sync payloads and backups write a printing's bulk copies under their own key, "059@bulk"
+ * beside "059", so the existing `{ key: count }` format carries them with no server change.
+ */
+export const BULK_KEY_SUFFIX = '@bulk';
+
 export type VariantCounts = Partial<Record<VariantSlug, number>>;
 
 export type OwnedCounts = {
-  /** Every copy you own, across all printings. */
+  /** Every copy you own, across all printings: binder, bulk box and decks alike. */
   total: number;
   byVariant: VariantCounts;
+  /** The part of `byVariant` whose home is the bulk box. Absent when none is. */
+  bulkByVariant?: VariantCounts;
 };
 
 export const EMPTY_OWNED: OwnedCounts = { total: 0, byVariant: {} };
@@ -140,6 +148,24 @@ export function pocketCounts(counts: OwnedCounts, held: VariantCounts): OwnedCou
   return { total: sumVariants(byVariant), byVariant };
 }
 
+/**
+ * One card's printings after its binder keeps only the best `quota` copies: the weakest
+ * binder copies beyond that move to the bulk box. Copies only ever move this way — the
+ * bulk box never refills the binder. Rows come back in the order given.
+ */
+export function spillToBulk<T extends OwnedRowLike>(rows: readonly T[], quota: number): T[] {
+  const inBulk = (row: T) => Math.min(row.bulk ?? 0, row.count);
+  let extra = rows.reduce((sum, row) => sum + row.count - inBulk(row), 0) - quota;
+  const spilled = new Map<T, number>();
+  for (const row of [...rows].sort((a, b) => valueRank(b.variant) - valueRank(a.variant))) {
+    if (extra <= 0) break;
+    const move = Math.min(row.count - inBulk(row), extra);
+    if (move > 0) spilled.set(row, inBulk(row) + move);
+    extra -= move;
+  }
+  return rows.map((row) => (spilled.has(row) ? { ...row, bulk: spilled.get(row) } : row));
+}
+
 export type CollectionStatus = 'complete' | 'partial' | 'none';
 
 /** Copies that physically sit in the binder: the playset, capped by the card's quota. */
@@ -191,6 +217,7 @@ export type OwnedRowLike = {
   base: number;
   variant: VariantSlug;
   count: number;
+  bulk?: number;
 };
 
 /** Folds per-printing rows into per-card totals for a whole set. */
@@ -202,6 +229,11 @@ export function indexOwnership(rows: readonly OwnedRowLike[]): Map<number, Owned
     const entry = index.get(row.base) ?? { total: 0, byVariant: {} };
     entry.total += row.count;
     entry.byVariant[row.variant] = (entry.byVariant[row.variant] ?? 0) + row.count;
+    const bulk = Math.min(row.bulk ?? 0, row.count);
+    if (bulk > 0) {
+      entry.bulkByVariant ??= {};
+      entry.bulkByVariant[row.variant] = (entry.bulkByVariant[row.variant] ?? 0) + bulk;
+    }
     index.set(row.base, entry);
   }
 
