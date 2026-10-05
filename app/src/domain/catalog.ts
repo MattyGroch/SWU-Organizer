@@ -99,6 +99,33 @@ export function isFoilPrinting(slug: VariantSlug): boolean {
   return VARIANT_AXES[slug].finish !== 'plain';
 }
 
+/**
+ * The same printing on the other stock: Normal ⇄ Foil, Hyperspace ⇄ Hyperspace Foil,
+ * Promo ⇄ Promo Foil, Prestige ⇄ Prestige Foil. Undefined when there is none — Showcase
+ * and Serialized come only as they are, and not every card was printed in foil.
+ */
+export function finishCounterpart<P extends { variant: VariantSlug }>(
+  printings: readonly P[],
+  variant: VariantSlug,
+): P | undefined {
+  const { treatment, finish } = VARIANT_AXES[variant];
+  if (finish === 'serialized') return undefined;
+  const wanted: Finish = finish === 'plain' ? 'foil' : 'plain';
+  return printings.find((p) => {
+    const axes = VARIANT_AXES[p.variant];
+    return axes.treatment === treatment && axes.finish === wanted;
+  });
+}
+
+/**
+ * The printing number whose picture shows this printing. A foil SKU has no picture of its
+ * own (its URL 404s), so it borrows its plain counterpart's — the same art on other stock.
+ */
+export function artNumber(printings: readonly Printing[], printing: Printing): string {
+  if (VARIANT_AXES[printing.variant].hasArt) return printing.num;
+  return finishCounterpart(printings, printing.variant)?.num ?? printing.num;
+}
+
 export function variantLabel(slug: VariantSlug): string {
   return VARIANT_LABELS[slug];
 }

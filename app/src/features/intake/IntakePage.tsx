@@ -13,6 +13,7 @@ import {
   sourcePrinting,
 } from '~/data/intake';
 import {
+  artNumber,
   artUrl,
   variantLabel,
   variantShortLabel,
@@ -444,7 +445,13 @@ function FixCardDialog({ model, onClose }: { model: CardModel; onClose: () => vo
       aria-labelledby={`fix-${setKey}-${base}`}
     >
       <div className={styles.sheetHeader}>
-        {shown && <img className={styles.sheetArt} src={artUrl(setKey, shown.num)} alt="" />}
+        {shown && (
+          <img
+            className={styles.sheetArt}
+            src={artUrl(setKey, artNumber(printings, shown))}
+            alt=""
+          />
+        )}
         <div>
           <h2 id={`fix-${setKey}-${base}`} className={styles.sheetTitle}>
             {name}

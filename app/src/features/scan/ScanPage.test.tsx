@@ -18,6 +18,7 @@ import type { ScanResult } from './useScanner';
 let fire: ((r: ScanResult) => void) | null = null;
 let phase = 'holding';
 const resume = vi.fn();
+const retry = vi.fn();
 vi.mock('./useCamera', () => ({
   useCamera: () => ({
     videoRef: { current: null },
@@ -35,7 +36,7 @@ vi.mock('./useScanIndex', () => ({
 vi.mock('./useScanner', () => ({
   useScanner: ({ onResult }: { onResult: (r: ScanResult) => void }) => {
     fire = onResult;
-    return { phase, rearm: vi.fn(), resume };
+    return { phase, rearm: vi.fn(), resume, retry };
   },
 }));
 
@@ -53,6 +54,7 @@ const sor = toLoadedSet(
         aspects: [],
         printings: [
           { num: '059', variant: 'normal' },
+          { num: '059F', variant: 'foil' },
           { num: '324', variant: 'hyperspace' },
         ],
       },
@@ -96,6 +98,7 @@ const match = (num: string, base: number, variant: string, score: number) => ({
 
 describe('ScanPage', () => {
   beforeEach(async () => {
+    localStorage.clear();
     await db.open();
     await db.intakeBatches.clear();
     await db.intakeLines.clear();
@@ -130,6 +133,7 @@ describe('ScanPage', () => {
     fire = null;
     phase = 'holding';
     resume.mockClear();
+    retry.mockClear();
   });
 
   it('adds a confident scan to Intake and shows it with Correct and Rescan', async () => {
@@ -299,5 +303,72 @@ describe('ScanPage', () => {
     await waitFor(async () =>
       expect((await db.intakeLines.toArray()).map((l) => [l.num, l.count])).toEqual([['080', 2]]),
     );
+  });
+
+  it('flips the latest scan to foil and back with one tap', async () => {
+    await scan('059', 'normal');
+    const foil = await screen.findByRole('button', { name: '✦ Foil' });
+    expect(foil).toHaveAttribute('aria-pressed', 'false');
+
+    await userEvent.click(foil);
+    await waitFor(async () =>
+      expect((await db.intakeLines.toArray()).map((l) => l.num)).toEqual(['059F']),
+    );
+    expect(screen.getByText(/SOR #059F · Foil/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '✦ Foil' })).toHaveAttribute('aria-pressed', 'true');
+
+    await userEvent.click(screen.getByRole('button', { name: '✦ Foil' }));
+    await waitFor(async () =>
+      expect((await db.intakeLines.toArray()).map((l) => l.num)).toEqual(['059']),
+    );
+  });
+
+  it('records every scan as its foil printing in Foils mode', async () => {
+    renderPage();
+    await userEvent.click(await screen.findByRole('button', { name: /Foils off/ }));
+    expect(screen.getByRole('button', { name: /Foils on/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    await waitFor(() => expect(fire).not.toBeNull());
+    await act(async () => {
+      fire!({
+        matches: [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)],
+        at: 1,
+        afterGap: true,
+        tooClose: false,
+      });
+    });
+    await waitFor(async () =>
+      expect((await db.intakeLines.toArray()).map((l) => l.num)).toEqual(['059F']),
+    );
+    expect(localStorage.getItem('scan.foils')).toBe('1');
+  });
+
+  it('records a card with no foil printing as it is, even in Foils mode', async () => {
+    localStorage.setItem('scan.foils', '1');
+    renderPage();
+    await waitFor(() => expect(fire).not.toBeNull());
+    await act(async () => {
+      fire!({
+        matches: [match('080', 80, 'normal', 10), match('059', 59, 'normal', 90)],
+        at: 1,
+        afterGap: true,
+        tooClose: false,
+      });
+    });
+    await waitFor(async () =>
+      expect((await db.intakeLines.toArray()).map((l) => l.num)).toEqual(['080']),
+    );
+    expect(screen.queryByRole('button', { name: '✦ Foil' })).not.toBeInTheDocument();
+  });
+
+  it('offers Rescan on the "couldn’t recognise" prompt, for a hiccup like an empty tray', async () => {
+    phase = 'stuck';
+    renderPage();
+    await userEvent.click(await screen.findByRole('button', { name: 'Rescan' }));
+    expect(retry).toHaveBeenCalled();
+    expect(resume).not.toHaveBeenCalled();
+    expect(await db.intakeLines.count()).toBe(0);
   });
 });

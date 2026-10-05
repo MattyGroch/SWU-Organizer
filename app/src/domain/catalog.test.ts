@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  artNumber,
   artUrl,
+  finishCounterpart,
   numericPart,
   parsePriceTable,
   parseSetCatalog,
@@ -271,5 +273,49 @@ describe('toSearchCatalog', () => {
     expect(search.printingNumbersByBase.get(59)).toEqual([59, 324]);
     expect(search.baseByPrintingNumber.get(324)).toBe(59);
     expect(search.cards).toHaveLength(2);
+  });
+});
+
+describe('finishCounterpart', () => {
+  const printings = [
+    { num: '182', variant: 'normal' as const },
+    { num: '182F', variant: 'foil' as const },
+    { num: '445', variant: 'hyperspace' as const },
+    { num: 'SOROP-015', variant: 'promo' as const },
+    { num: 'SOROP-015F', variant: 'promo-foil' as const },
+  ];
+
+  it('flips a printing to the same treatment on the other stock, both ways', () => {
+    expect(finishCounterpart(printings, 'normal')?.num).toBe('182F');
+    expect(finishCounterpart(printings, 'foil')?.num).toBe('182');
+    expect(finishCounterpart(printings, 'promo')?.num).toBe('SOROP-015F');
+  });
+
+  it('has nothing to flip to when that foil was never printed, or for Showcase/Serialized', () => {
+    expect(finishCounterpart(printings, 'hyperspace')).toBeUndefined();
+    expect(
+      finishCounterpart([{ num: '300', variant: 'showcase' as const }], 'showcase'),
+    ).toBeUndefined();
+    expect(
+      finishCounterpart(
+        [{ num: '500', variant: 'prestige-serialized' as const }],
+        'prestige-serialized',
+      ),
+    ).toBeUndefined();
+  });
+});
+
+describe('artNumber', () => {
+  const printings = [
+    { num: '182', variant: 'normal' as const },
+    { num: '182F', variant: 'foil' as const },
+    { num: 'SOROP-015', variant: 'promo' as const },
+    { num: 'SOROP-015F', variant: 'promo-foil' as const },
+  ];
+
+  it('shows a foil with its plain counterpart’s picture, which is the same art', () => {
+    expect(artNumber(printings, printings[1]!)).toBe('182');
+    expect(artNumber(printings, printings[3]!)).toBe('SOROP-015');
+    expect(artNumber(printings, printings[0]!)).toBe('182');
   });
 });
