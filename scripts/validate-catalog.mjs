@@ -10,7 +10,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
-import { VARIANTS, numericPart } from './lib/catalog.mjs';
+import { VARIANTS, numericPart, promoParts } from './lib/catalog.mjs';
 
 const CATALOG_DIR = path.resolve(process.env.SWU_CATALOG_DIR || 'app/public/sets');
 const REFERENCE_DIR = process.env.SWU_REFERENCE_DIR
@@ -46,6 +46,7 @@ function v2Key(card) {
   let totalCards = 0;
   let totalPrintings = 0;
   let suffixFoils = 0;
+  let promoPrintings = 0;
 
   for (const entry of manifest.sets) {
     const { key, file } = entry;
@@ -85,6 +86,19 @@ function v2Key(card) {
         seenPrintings.add(printing.num);
 
         if (/F$/.test(printing.num)) suffixFoils += 1;
+
+        // A weekly-play promo is numbered in its own promo set's run, so it is checked for
+        // shape and kind only: its number says nothing about the base card's slot.
+        const promo = promoParts(printing.num);
+        if (promo || printing.variant === 'promo' || printing.variant === 'promo-foil') {
+          if (!promo || !(printing.variant === 'promo' || printing.variant === 'promo-foil')) {
+            fail(
+              `${key}#${card.base}: promo printing ${printing.num} (${printing.variant}) is malformed`,
+            );
+          }
+          promoPrintings += 1;
+          continue;
+        }
 
         // Every printing must resolve back to its own card.
         if (numericPart(printing.num) < card.base) {
@@ -145,7 +159,7 @@ function v2Key(card) {
     `Validated ${manifest.sets.length} sets • ${totalCards} cards • ${totalPrintings} printings`,
   );
   console.log(
-    `Suffix-numbered foils present: ${suffixFoils}`,
+    `Suffix-numbered foils present: ${suffixFoils} • weekly-play promo printings: ${promoPrintings}`,
   );
   for (const note of notes) console.log(`  note: ${note}`);
 

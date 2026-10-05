@@ -15,7 +15,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
-import { buildSetCatalog } from './lib/catalog.mjs';
+import { attachPromos, buildSetCatalog } from './lib/catalog.mjs';
 
 const NODE_MAJOR = Number(process.versions.node.split('.')[0]);
 if (NODE_MAJOR < 18) {
@@ -28,6 +28,22 @@ if (NODE_MAJOR < 18) {
 const CONFIG_PATH = path.resolve(process.env.SWU_SETS_CONFIG || 'scripts/sets.config.json');
 const OUT_DIR = path.resolve(process.env.SWU_CATALOG_DIR || 'app/public/sets');
 const API_BASE = process.env.SWU_DB_BASE || 'https://api.swu-db.com/cards';
+const SETS_API = process.env.SWU_SETS_API || 'https://api.swu-db.com/sets';
+
+/**
+ * Each set's weekly-play promo set (`SOR` → `SOROP`, `HMW` → `HMWP`): the child set whose
+ * name ends "OP Promo". Judge, prerelease and event promos are not tracked.
+ */
+async function promoSetsByParent() {
+  const rows = await fetchJSON(SETS_API);
+  const map = new Map();
+  for (const row of Array.isArray(rows) ? rows : []) {
+    if (row.parentSetId && /- OP Promo$/i.test(String(row.fullName ?? '').trim())) {
+      map.set(String(row.parentSetId).toUpperCase(), String(row.setId));
+    }
+  }
+  return map;
+}
 const OVERRIDES_PATH = path.resolve(
   process.env.SWU_CARD_OVERRIDES || 'scripts/card-overrides.json',
 );
@@ -105,6 +121,7 @@ async function fetchJSON(url, timeoutMs = 45000) {
   }
 
   const overridesBySet = await readOverrides();
+  const promoSets = await promoSetsByParent();
   const manifest = [];
 
   for (const { key, label, file } of sets) {
@@ -120,11 +137,34 @@ async function fetchJSON(url, timeoutMs = 45000) {
       const catalog = buildSetCatalog(key, patched);
       catalog.label = label;
 
+      // Weekly-play promos are printings of these cards. A promo that matches no card
+      // fails the run: dropping it would silently lose a printing someone owns.
+      const promoSet = promoSets.get(key.toUpperCase());
+      let promoCount = 0;
+      if (promoSet) {
+        const promoPayload = await fetchJSON(`${API_BASE}/${encodeURIComponent(promoSet)}`);
+        const promoRows = Array.isArray(promoPayload)
+          ? promoPayload
+          : (promoPayload?.data ?? promoPayload?.cards ?? []);
+        const unmatched = attachPromos(catalog, promoSet, promoRows);
+        if (unmatched.length) {
+          throw new Error(`${promoSet} promos match no ${key} card: ${unmatched.join('; ')}`);
+        }
+        promoCount = promoRows.length;
+      }
+
       const outPath = path.join(OUT_DIR, file);
       await fs.writeFile(outPath, JSON.stringify(catalog, null, 2) + '\n');
 
       const printings = catalog.cards.reduce((n, c) => n + c.printings.length, 0);
-      manifest.push({ key, label, file, cards: catalog.cards.length, printings });
+      manifest.push({
+        key,
+        label,
+        file,
+        cards: catalog.cards.length,
+        printings,
+        ...(promoSet ? { promoSet } : {}),
+      });
 
       if (overridesForSet?.length && overridesForSet.length !== appliedRules.size) {
         const stale = overridesForSet.filter((o) => !appliedRules.has(o));
@@ -136,7 +176,10 @@ async function fetchJSON(url, timeoutMs = 45000) {
       }
 
       const overrideNote = appliedRules.size ? `, ${appliedRules.size} override rule(s)` : '';
-      console.log(`${catalog.cards.length} cards / ${printings} printings${overrideNote}`);
+      const promoNote = promoSet ? `, ${promoCount} ${promoSet} promos` : '';
+      console.log(
+        `${catalog.cards.length} cards / ${printings} printings${promoNote}${overrideNote}`,
+      );
     } catch (e) {
       console.log(`failed: ${e.message}`);
       process.exitCode = 1;

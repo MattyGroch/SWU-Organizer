@@ -37,8 +37,18 @@ function log(msg) {
 
 async function readConfig() {
   const raw = await fs.readFile(CONFIG_PATH, 'utf8');
+  // The catalog manifest names each set's weekly-play promo set, whose printings are
+  // priced alongside the set's own.
+  let manifest = { sets: [] };
+  try {
+    manifest = JSON.parse(await fs.readFile(path.join(OUT_DIR, 'manifest.json'), 'utf8'));
+  } catch {
+    // no manifest yet: base printings only
+  }
+  const promoSets = new Map(manifest.sets.map((s) => [s.key, s.promoSet]));
   const all = Object.keys(JSON.parse(raw)).map((key) => ({
     key,
+    promoSet: promoSets.get(key),
     pricesFile: `SWU-${key}.prices.json`,
   }));
   return KEYS_FILTER.length ? all.filter((s) => KEYS_FILTER.includes(s.key)) : all;
@@ -83,12 +93,17 @@ async function fetchWithRetry(url) {
     process.exit(1);
   }
 
-  for (const { key, pricesFile } of sets) {
+  const rowsOf = (payload) =>
+    Array.isArray(payload) ? payload : (payload?.data ?? payload?.cards ?? []);
+  for (const { key, promoSet, pricesFile } of sets) {
     process.stdout.write(`→ ${key} prices … `);
     try {
       const payload = await fetchWithRetry(`${API_BASE}/${encodeURIComponent(key)}`);
-      const rows = Array.isArray(payload) ? payload : (payload?.data ?? payload?.cards ?? []);
-      const prices = buildPriceTable(rows);
+      const prices = buildPriceTable(rowsOf(payload));
+      if (promoSet) {
+        const promoPayload = await fetchWithRetry(`${API_BASE}/${encodeURIComponent(promoSet)}`);
+        Object.assign(prices, buildPriceTable(rowsOf(promoPayload), promoSet));
+      }
       const outPath = path.join(OUT_DIR, pricesFile);
       await fs.writeFile(
         outPath,

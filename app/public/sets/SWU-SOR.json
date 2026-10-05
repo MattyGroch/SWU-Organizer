@@ -825,8 +825,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-014",
+          "variant": "promo"
+        },
+        {
           "num": "299F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-014F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1173,8 +1181,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-016",
+          "variant": "promo"
+        },
+        {
           "num": "311F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-016F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1398,6 +1414,10 @@
         {
           "num": "053",
           "variant": "normal"
+        },
+        {
+          "num": "SOROP-008",
+          "variant": "promo"
         }
       ]
     },
@@ -2244,6 +2264,10 @@
         {
           "num": "084",
           "variant": "normal"
+        },
+        {
+          "num": "SOROP-006",
+          "variant": "promo"
         }
       ]
     },
@@ -2558,6 +2582,10 @@
         {
           "num": "359",
           "variant": "hyperspace"
+        },
+        {
+          "num": "SOROP-001",
+          "variant": "promo"
         },
         {
           "num": "359F",
@@ -3427,8 +3455,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-012",
+          "variant": "promo"
+        },
+        {
           "num": "390F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-012F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3482,8 +3518,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-013",
+          "variant": "promo"
+        },
+        {
           "num": "392F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-013F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3705,6 +3749,10 @@
         {
           "num": "136",
           "variant": "normal"
+        },
+        {
+          "num": "SOROP-004",
+          "variant": "promo"
         }
       ]
     },
@@ -3843,6 +3891,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-002",
+          "variant": "promo"
+        },
+        {
           "num": "404F",
           "variant": "hyperspace-foil"
         }
@@ -3873,8 +3925,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-017",
+          "variant": "promo"
+        },
+        {
           "num": "405F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-017F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4997,8 +5057,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-015",
+          "variant": "promo"
+        },
+        {
           "num": "445F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-015F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5191,6 +5259,10 @@
         {
           "num": "189",
           "variant": "normal"
+        },
+        {
+          "num": "SOROP-011",
+          "variant": "promo"
         }
       ]
     },
@@ -5622,8 +5694,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-018",
+          "variant": "promo"
+        },
+        {
           "num": "466F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-018F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6108,6 +6188,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-003",
+          "variant": "promo"
+        },
+        {
           "num": "484F",
           "variant": "hyperspace-foil"
         }
@@ -6208,6 +6292,10 @@
         {
           "num": "226",
           "variant": "normal"
+        },
+        {
+          "num": "SOROP-007",
+          "variant": "promo"
         }
       ]
     },
@@ -6316,8 +6404,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-020",
+          "variant": "promo"
+        },
+        {
           "num": "491F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-020F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6387,6 +6483,10 @@
         {
           "num": "233",
           "variant": "normal"
+        },
+        {
+          "num": "SOROP-005",
+          "variant": "promo"
         }
       ]
     },
@@ -6458,6 +6558,10 @@
         {
           "num": "236",
           "variant": "normal"
+        },
+        {
+          "num": "SOROP-010",
+          "variant": "promo"
         }
       ]
     },
@@ -6502,6 +6606,10 @@
         {
           "num": "238",
           "variant": "normal"
+        },
+        {
+          "num": "SOROP-009",
+          "variant": "promo"
         }
       ]
     },
@@ -6610,8 +6718,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SOROP-019",
+          "variant": "promo"
+        },
+        {
           "num": "500F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-019F",
+          "variant": "promo-foil"
         }
       ]
     },

@@ -210,8 +210,16 @@ describe('resolveShortcut', () => {
     });
   });
 
-  it('ignores digits outside the variant range', () => {
-    expect(resolveShortcut(key({ key: '9', code: 'Digit9' }), selected)).toBeNull();
-    expect(resolveShortcut(key({ key: '0', code: 'Digit0' }), selected)).toBeNull();
+  it('uses 9 and 0 for the promo printings', () => {
+    expect(resolveShortcut(key({ key: '9', code: 'Digit9' }), selected)).toEqual({
+      type: 'adjustVariant',
+      hotkey: 9,
+      delta: 1,
+    });
+    expect(resolveShortcut(key({ key: ')', code: 'Digit0', shiftKey: true }), selected)).toEqual({
+      type: 'adjustVariant',
+      hotkey: 0,
+      delta: -1,
+    });
   });
 });

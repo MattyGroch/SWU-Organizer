@@ -950,6 +950,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-02",
+          "variant": "promo"
+        },
+        {
           "num": "310F",
           "variant": "hyperspace-foil"
         }
@@ -1382,8 +1386,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-18",
+          "variant": "promo"
+        },
+        {
           "num": "325F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-18F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1877,6 +1889,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-01",
+          "variant": "promo"
+        },
+        {
           "num": "343F",
           "variant": "hyperspace-foil"
         }
@@ -2012,8 +2028,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-14",
+          "variant": "promo"
+        },
+        {
           "num": "348F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-14F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2121,8 +2145,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-13",
+          "variant": "promo"
+        },
+        {
           "num": "352F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-13F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2225,6 +2257,10 @@
         {
           "num": "083",
           "variant": "normal"
+        },
+        {
+          "num": "TWIOP-10",
+          "variant": "promo"
         }
       ]
     },
@@ -2283,8 +2319,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-16",
+          "variant": "promo"
+        },
+        {
           "num": "357F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-16F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2543,8 +2587,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-15",
+          "variant": "promo"
+        },
+        {
           "num": "366F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-15F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2621,6 +2673,10 @@
         {
           "num": "097",
           "variant": "normal"
+        },
+        {
+          "num": "TWIOP-09",
+          "variant": "promo"
         }
       ]
     },
@@ -3978,6 +4034,10 @@
         {
           "num": "147",
           "variant": "normal"
+        },
+        {
+          "num": "TWIOP-08",
+          "variant": "promo"
         }
       ]
     },
@@ -4592,8 +4652,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-12",
+          "variant": "promo"
+        },
+        {
           "num": "436F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-12F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4871,6 +4939,10 @@
         {
           "num": "180",
           "variant": "normal"
+        },
+        {
+          "num": "TWIOP-07",
+          "variant": "promo"
         }
       ]
     },
@@ -5245,8 +5317,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-17",
+          "variant": "promo"
+        },
+        {
           "num": "458F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-17F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5646,8 +5726,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-11",
+          "variant": "promo"
+        },
+        {
           "num": "472F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-11F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5976,8 +6064,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-19",
+          "variant": "promo"
+        },
+        {
           "num": "484F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-19F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6224,6 +6320,10 @@
         {
           "num": "229",
           "variant": "normal"
+        },
+        {
+          "num": "TWIOP-05",
+          "variant": "promo"
         }
       ]
     },
@@ -6385,8 +6485,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIOP-20",
+          "variant": "promo"
+        },
+        {
           "num": "498F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-20F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6403,6 +6511,10 @@
         {
           "num": "236",
           "variant": "normal"
+        },
+        {
+          "num": "TWIOP-06",
+          "variant": "promo"
         }
       ]
     },
@@ -6499,6 +6611,10 @@
         {
           "num": "240",
           "variant": "normal"
+        },
+        {
+          "num": "TWIOP-04",
+          "variant": "promo"
         }
       ]
     },
@@ -6706,6 +6822,10 @@
         {
           "num": "248",
           "variant": "normal"
+        },
+        {
+          "num": "TWIOP-03",
+          "variant": "promo"
         }
       ]
     },

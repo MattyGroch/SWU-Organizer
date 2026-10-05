@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { VARIANTS, variantHotkey, variantLabel } from '~/domain/catalog';
+import { VARIANTS_BY_HOTKEY, variantHotkey, variantLabel } from '~/domain/catalog';
 
 import { SHORTCUT_HELP } from './shortcuts';
 import styles from './ShortcutsDialog.module.css';
@@ -54,7 +54,7 @@ export function ShortcutsDialog({ onClose }: { onClose: () => void }) {
         <section className={styles.group}>
           <h3 className={styles.groupTitle}>Printing digits</h3>
           <dl className={styles.digits}>
-            {VARIANTS.map((variant) => (
+            {VARIANTS_BY_HOTKEY.map((variant) => (
               <div key={variant} className={styles.row}>
                 <dt className={styles.keys}>
                   <kbd className={styles.kbd}>{variantHotkey(variant)}</kbd>

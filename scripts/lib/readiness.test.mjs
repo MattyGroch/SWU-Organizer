@@ -20,6 +20,8 @@ describe('requiredArt', () => {
           printings: [
             { num: '060', variant: 'normal' },
             { num: '060F', variant: 'foil' },
+            // A weekly-play promo: never holds the set back.
+            { num: 'HMWP-14', variant: 'promo' },
           ],
         },
       ],
