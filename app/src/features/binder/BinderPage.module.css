@@ -4,11 +4,18 @@
   gap: var(--space-4);
 }
 
+/*
+ * A full-bleed band in the set's own colour (--set-accent, set by BinderPage); the negative
+ * margins cancel .main's padding. The controls on it are dark pills, so any colour reads.
+ */
 .toolbar {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
   align-items: center;
+  margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-4)) 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--set-accent, transparent);
 }
 
 .setPicker select {
