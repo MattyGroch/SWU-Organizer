@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 import type { IntakeLine } from '~/data/db';
 import {
@@ -400,7 +401,8 @@ function FixCardDialog({ model, onClose }: { model: CardModel; onClose: () => vo
   const shown = [...printings].reverse().find((p) => countOf(p.num) > 0) ?? printings[0];
   const single = printings.find((p) => countOf(p.num) > 0);
 
-  return (
+  // Rendered at the page root, not inside its table row, so the row's layout can't leak in.
+  return createPortal(
     <dialog
       ref={dialogRef}
       className={styles.sheet}
@@ -470,6 +472,7 @@ function FixCardDialog({ model, onClose }: { model: CardModel; onClose: () => vo
           Remove from batch
         </button>
       </div>
-    </dialog>
+    </dialog>,
+    document.body,
   );
 }
