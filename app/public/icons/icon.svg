@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a4c86"/>
+      <stop offset="1" stop-color="#11121a"/>
+    </linearGradient>
+  </defs>
+  <!-- Full-bleed background: maskable icons are cropped to any shape by the launcher. -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <!-- A binder page, kept inside the central safe zone (80%). -->
+  <rect x="146" y="106" width="220" height="300" rx="18" fill="#0b0b0f" stroke="#eaeaf0" stroke-width="10"/>
+  <g fill="#3b3f52">
+    <rect x="168" y="128" width="52" height="74" rx="6"/>
+    <rect x="230" y="128" width="52" height="74" rx="6"/>
+    <rect x="292" y="128" width="52" height="74" rx="6"/>
+    <rect x="168" y="219" width="52" height="74" rx="6"/>
+    <rect x="292" y="219" width="52" height="74" rx="6"/>
+    <rect x="168" y="310" width="52" height="74" rx="6"/>
+    <rect x="230" y="310" width="52" height="74" rx="6"/>
+    <rect x="292" y="310" width="52" height="74" rx="6"/>
+  </g>
+  <!-- The card you're looking for. -->
+  <rect x="230" y="219" width="52" height="74" rx="6" fill="#8b5cf6"/>
+</svg>

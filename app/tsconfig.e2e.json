@@ -1,0 +1,9 @@
+{
+  // End-to-end tests and their config run in Node under Playwright, not in the app.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["e2e", "playwright.config.ts"],
+  "exclude": []
+}

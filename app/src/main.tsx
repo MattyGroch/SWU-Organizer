@@ -29,6 +29,16 @@ const sync = startSync(queryClient);
 const container = document.getElementById('root');
 if (!container) throw new Error('Missing #root element');
 
+// The service worker makes the installed app open and scan offline. Production only: in
+// development it would serve stale modules over Vite's live reload.
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((error: unknown) => {
+      console.warn('Service worker registration failed', error);
+    });
+  });
+}
+
 createRoot(container).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

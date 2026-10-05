@@ -9,3 +9,8 @@
 server/.env
 server/data
 *.log
+# Local test and screenshot output.
+app/test-results
+app/playwright-report
+app/e2e/.cache
+app/screenshots
