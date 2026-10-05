@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { COLOR_BYTES, HASH_WORDS, RAIL_BYTES, STRIP_BYTES, type Descriptor } from './descriptor';
-import { createTracker } from './tracker';
+import { MAX_MISSES, createMissCounter, createTracker, looksLikeCard } from './tracker';
 
 /** A frame whose hash has the first `ones` bits set — so frames differ by known bit counts. */
 function frame(ones: number): Descriptor {
@@ -52,5 +52,39 @@ describe('scan tracker', () => {
     [0, 2, 4].forEach((n) => t.observe(frame(n)));
     t.reset();
     expect([3, 2, 4].map((n) => t.observe(frame(n)))).toContain('fired');
+  });
+});
+
+describe('miss counter', () => {
+  it('counts misses on the same card, up to the point of asking', () => {
+    const counter = createMissCounter();
+    let count = 0;
+    for (let i = 0; i < MAX_MISSES; i++) count = counter.miss(frame(10 + (i % 2)));
+    expect(count).toBe(MAX_MISSES);
+  });
+
+  it('starts again for a different card, and after a reset', () => {
+    const counter = createMissCounter();
+    counter.miss(frame(10));
+    counter.miss(frame(10));
+    expect(counter.miss(frame(200))).toBe(1);
+    counter.reset();
+    expect(counter.miss(frame(200))).toBe(1);
+  });
+});
+
+describe('looksLikeCard', () => {
+  const withColors = (luma: (cell: number) => number): Descriptor => ({
+    ...frame(0),
+    color: Uint8Array.from({ length: COLOR_BYTES }, (_, i) => luma(Math.floor(i / 3))),
+  });
+
+  it('sees a varied picture as a possible card', () => {
+    expect(looksLikeCard(withColors((cell) => (cell % 2 ? 200 : 60)))).toBe(true);
+  });
+
+  it('sees an empty table as nothing to retry', () => {
+    expect(looksLikeCard(withColors(() => 120))).toBe(false);
+    expect(looksLikeCard(withColors((cell) => 110 + (cell % 3) * 5))).toBe(false);
   });
 });

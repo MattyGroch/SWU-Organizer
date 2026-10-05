@@ -1,12 +1,20 @@
 import { Link } from '@tanstack/react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { db } from '~/data/db';
-import { cancelSwap, queuedPocket, queueScan, unqueueScan, type ScanReceipt } from '~/data/intake';
+import {
+  cancelSwap,
+  queuedPocket,
+  queueScan,
+  sourcePrinting,
+  unqueueScan,
+  type ScanReceipt,
+} from '~/data/intake';
 import { binderLayout } from '~/domain/binder';
 import {
   artUrl,
+  toSearchCatalog,
   variantLabel,
   variantShortLabel,
   type LoadedSet,
@@ -14,7 +22,9 @@ import {
 } from '~/domain/catalog';
 import { pocketRoom, quotaForCard, type PocketRoom } from '~/domain/ownership';
 import type { Match } from '~/domain/scan/index';
+import type { SearchSuggestion } from '~/domain/search';
 import type { SetKey } from '~/domain/types';
+import { CardSearch } from '~/features/search/CardSearch';
 
 import { guideRect, toScreen, type Rect, type View } from './capture';
 import styles from './ScanPage.module.css';
@@ -147,13 +157,48 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   );
 
   const scanning = camera.state === 'live' && Boolean(index.data);
-  const { phase, rearm } = useScanner({
+  const { phase, rearm, resume } = useScanner({
     videoRef: camera.videoRef,
     index: index.data,
     view,
     active: scanning,
     onResult: (r) => void onResult(r),
   });
+
+  /**
+   * A card the scanner gave up on, found by title or number instead: recorded like a
+   * scan of its plainest printing (Correct changes it), minding the binder pocket the same
+   * way. Then scanning carries on with the next card.
+   */
+  const lookUp = useCallback(
+    async (suggestion: SearchSuggestion) => {
+      const printings = sets.get(suggestion.setKey)?.printingsByBase.get(suggestion.baseNumber);
+      const printing = sourcePrinting(printings ?? []);
+      if (!printing) return;
+      const chosen: Printing = {
+        setKey: suggestion.setKey,
+        base: suggestion.baseNumber,
+        num: printing.num,
+        variant: printing.variant,
+      };
+      const placed: Pick<Item, 'receipt' | 'room'> =
+        mode === 'add' ? await place(chosen) : { receipt: null, room: null };
+      setItems((current) =>
+        [
+          {
+            id: nextId.current++,
+            result: { matches: [], at: Date.now() },
+            chosen,
+            question: null,
+            ...placed,
+          },
+          ...current,
+        ].slice(0, 8),
+      );
+      resume();
+    },
+    [mode, place, resume, sets],
+  );
 
   useEffect(() => rearm(), [mode, rearm]);
 
@@ -243,6 +288,8 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         onView={setView}
       />
 
+      {phase === 'stuck' && <NotRecognised sets={sets} onChoose={lookUp} onSkip={resume} />}
+
       {latest && (
         <LatestScan
           item={latest}
@@ -299,6 +346,45 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   );
 }
 
+/**
+ * After MAX_MISSES on one card: find it by title or number, or skip it. Cards outside the
+ * catalog (promos, other games) end up here, as does a card the camera just can't read.
+ */
+function NotRecognised({
+  sets,
+  onChoose,
+  onSkip,
+}: {
+  sets: Map<SetKey, LoadedSet>;
+  onChoose: (suggestion: SearchSuggestion) => void;
+  onSkip: () => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const catalogs = useMemo(() => [...sets.values()].map(toSearchCatalog), [sets]);
+  const newest = [...sets.keys()].at(-1) ?? 'SOR';
+  return (
+    <section className={styles.stuck} aria-labelledby="not-recognised">
+      <h2 id="not-recognised" className={styles.stuckTitle}>
+        Couldn’t recognise this card
+      </h2>
+      <p className={styles.meta}>
+        Look it up by title or number, or skip it — scanning carries on with the next card.
+      </p>
+      <CardSearch
+        catalogs={catalogs}
+        currentSetKey={newest}
+        inputRef={inputRef}
+        onChoose={onChoose}
+      />
+      <div className={styles.actions}>
+        <button type="button" className={styles.button} onClick={onSkip}>
+          Skip this card
+        </button>
+      </div>
+    </section>
+  );
+}
+
 function Viewfinder({
   camera,
   indexState,
@@ -347,7 +433,9 @@ function Viewfinder({
               ? 'Got it — next card'
               : phase === 'unknown'
                 ? 'Can’t make out a card — keep it inside the frame, out of glare'
-                : 'Hold a card inside the frame';
+                : phase === 'stuck'
+                  ? 'Not recognised — look it up below, or skip it'
+                  : 'Hold a card inside the frame';
 
   return (
     <div className={styles.viewfinder} ref={frameRef}>

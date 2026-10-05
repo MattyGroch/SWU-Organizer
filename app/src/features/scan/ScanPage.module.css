@@ -151,6 +151,21 @@
   font-weight: 700;
 }
 
+.stuck {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.stuckTitle {
+  font-size: var(--font-size-md);
+  font-weight: 800;
+}
+
 .bump {
   display: flex;
   flex-direction: column;

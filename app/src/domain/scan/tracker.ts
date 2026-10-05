@@ -52,3 +52,55 @@ export function createTracker(options: TrackerOptions = DEFAULT_TRACKER) {
     },
   };
 }
+
+/** Misses on one card before the scanner stops retrying it and asks the user instead. */
+export const MAX_MISSES = 5;
+
+/**
+ * Whether the view could be a card at all: how much brightness varies across its 8×8
+ * colour grid. A card's art, text boxes and frame vary a lot — 99% of the index above 22,
+ * median 47 — while an empty table or a bare scanning rig sits near zero. Only a card-like
+ * view counts toward MAX_MISSES, so nothing in the guide never trips "not recognised".
+ */
+export const CARD_LIKE_SPREAD = 15;
+
+export function looksLikeCard(frame: Descriptor): boolean {
+  const cells = frame.color.length / 3;
+  let sum = 0;
+  let sumSquares = 0;
+  for (let i = 0; i < cells; i++) {
+    const luma =
+      0.299 * frame.color[i * 3]! +
+      0.587 * frame.color[i * 3 + 1]! +
+      0.114 * frame.color[i * 3 + 2]!;
+    sum += luma;
+    sumSquares += luma * luma;
+  }
+  const mean = sum / cells;
+  return Math.sqrt(Math.max(0, sumSquares / cells - mean * mean)) >= CARD_LIKE_SPREAD;
+}
+
+/**
+ * Counts consecutive failed scans of the same card. A card the index doesn't know — a
+ * promo, another game — would otherwise be retried forever. A miss whose picture is far
+ * from the last one (`releaseBits`, as for the tracker) is a different card: the count
+ * starts again.
+ */
+export function createMissCounter(options: TrackerOptions = DEFAULT_TRACKER) {
+  let last: Descriptor | null = null;
+  let count = 0;
+  return {
+    /** Records a miss; returns how many in a row this card has had. */
+    miss(frame: Descriptor): number {
+      const same = last !== null && hammingDistance(frame.hash, last.hash) <= options.releaseBits;
+      count = same ? count + 1 : 1;
+      last = frame;
+      return count;
+    },
+    /** A card was recognised, or the user dealt with the one in view. */
+    reset() {
+      last = null;
+      count = 0;
+    },
+  };
+}

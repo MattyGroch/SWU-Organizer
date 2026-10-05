@@ -3,7 +3,13 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from 'react'
 import type { Descriptor, SamplePixels } from '~/domain/scan/descriptor';
 import { rankMatches, type Match, type ScanIndex } from '~/domain/scan/index';
 import { GUIDE, describePlacement, locateCard } from '~/domain/scan/locate';
-import { createTracker, type TrackerEvent } from '~/domain/scan/tracker';
+import {
+  MAX_MISSES,
+  createMissCounter,
+  createTracker,
+  looksLikeCard,
+  type TrackerEvent,
+} from '~/domain/scan/tracker';
 
 import { captureScene, type View } from './capture';
 
@@ -41,7 +47,10 @@ export function useScanner({
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const trackerRef = useRef(createTracker());
-  const [phase, setPhase] = useState<TrackerEvent | 'idle' | 'unknown'>('idle');
+  const missesRef = useRef(createMissCounter());
+  /** Set after MAX_MISSES on one card: no more tries until the user looks it up or skips. */
+  const stuckRef = useRef(false);
+  const [phase, setPhase] = useState<TrackerEvent | 'idle' | 'unknown' | 'stuck'>('idle');
   const onResultRef = useRef(onResult);
   onResultRef.current = onResult;
 
@@ -56,7 +65,7 @@ export function useScanner({
     canvasRef.current ??= document.createElement('canvas');
     const timer = window.setInterval(() => {
       const video = videoRef.current;
-      if (!video || video.readyState < 2) return;
+      if (!video || video.readyState < 2 || stuckRef.current) return;
       let scene: SamplePixels | null;
       let frame: Descriptor | null;
       try {
@@ -76,10 +85,18 @@ export function useScanner({
       try {
         const located = locateCard(scene, index);
         if (!located || located.bits > NO_CARD_BITS) {
+          if (looksLikeCard(frame) && missesRef.current.miss(frame) >= MAX_MISSES) {
+            // Stop retrying a card the index doesn't know. The tracker stays fired on it,
+            // so after resume() it waits for the next card rather than trying again.
+            stuckRef.current = true;
+            setPhase('stuck');
+            return;
+          }
           trackerRef.current.reset();
           setPhase('unknown');
           return;
         }
+        missesRef.current.reset();
         setPhase('fired');
         onResultRef.current({ matches: rankMatches(index, located.descriptor, 8), at: Date.now() });
       } catch (error) {
@@ -94,5 +111,15 @@ export function useScanner({
   /** Lets the card already in view fire again — after Rescan or a mode change. */
   const rearm = useCallback(() => trackerRef.current.reset(), []);
 
-  return { phase, rearm };
+  /**
+   * Scanning again after a card it gave up on was looked up or skipped. The card still in
+   * view does not fire again; the next one does.
+   */
+  const resume = useCallback(() => {
+    missesRef.current.reset();
+    stuckRef.current = false;
+    setPhase('holding');
+  }, []);
+
+  return { phase, rearm, resume };
 }
