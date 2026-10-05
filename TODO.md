@@ -23,7 +23,7 @@ Your own list: things to try, questions only you can answer, and setup only you 
 
 ### To do / provide
 
-- [ ] **Merge PR #53** (Phase 5: scanner, install/offline, mobile pass), then on photonOS switch `/opt/swu-organizer` to `main` (`git checkout main && git pull`) — or ask Claude to have the deploy session do it.
+- [ ] **Merge PR #53** (Phase 5: scanner, install/offline, mobile pass), then tell Claude: it switches `/opt/swu-organizer` to `main` through the deploy session, tags `main` as **v2.0.0** with a GitHub release (so "Latest" stops being v1.5.3), and pushes the `v1-final` tag.
 - [ ] **Point of no return** — tell Claude when you start using the live app for real. Until then, breaking changes and data loss are fair game; after it, data is protected and you import your collection from zero.
 - [ ] **HMW precon decklists** — paste them in and Claude will build the precon files.
 - [ ] Later: when Portainer is back, **delete or detach stack 99 first** (it's v1 — a redeploy would start it on top of v2), then let Portainer adopt `/opt/swu-organizer` as a git stack and restore the redeploy step in `docker-publish.yml`.
