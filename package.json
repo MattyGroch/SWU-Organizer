@@ -12,7 +12,8 @@
     "discover:sets": "node scripts/discover-sets.mjs",
     "catalog:build": "node scripts/fetch-catalog.mjs",
     "catalog:prices": "node scripts/fetch-catalog-prices.mjs",
-    "catalog:validate": "node scripts/validate-catalog.mjs"
+    "catalog:validate": "node scripts/validate-catalog.mjs",
+    "catalog:readiness": "node scripts/check-readiness.mjs"
   },
   "devDependencies": {
     "prettier": "^3.9.4",

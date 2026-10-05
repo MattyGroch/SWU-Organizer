@@ -40,6 +40,16 @@ jobs:
       - name: Build catalog (writes app/public/sets/*.json + manifest.json)
         run: npm run catalog:build
 
+      # A set new to the catalog joins only once every card of it is listed and every
+      # picture is on the CDN — swu-db can list a set days before its art is published
+      # (prerelease events). Until then it is left out of this run and checked again
+      # tomorrow. The result is in the run summary and the PR description.
+      - name: Hold back sets whose data or art isn't published yet
+        run: npm run catalog:readiness
+        env:
+          SWU_REFERENCE_DIR: ${{ runner.temp }}/previous-sets
+          SWU_READINESS_REPORT: ${{ runner.temp }}/readiness.md
+
       # Fails the run if any card's base number (its binder slot) changed, which would
       # silently re-file owned cards into the wrong slots.
       - name: Validate catalog
@@ -51,6 +61,18 @@ jobs:
       # at container start and every 24h independent of git, so committing price
       # snapshots via this workflow was redundant and made it open PRs on price
       # drift alone, even when the card catalog hadn't changed.
+
+      - name: Write the PR description
+        run: |
+          {
+            echo "Automated refresh of the set catalog, manifest, and \`scripts/sets.config.json\`."
+            echo "- Sets list: \`GET https://api.swu-db.com/sets\` → \`npm run discover:sets\`"
+            echo "- Catalog: \`GET https://api.swu-db.com/cards/{setKey}\` → \`scripts/fetch-catalog.mjs\`, gated by \`scripts/validate-catalog.mjs\` (no card may change binder slot)"
+            echo "- New sets wait until every card is listed and every picture is published: \`scripts/check-readiness.mjs\`"
+            echo "- Prices are not part of this workflow — Docker refreshes \`*.prices.json\` on start and every 24h."
+            echo
+            cat "$RUNNER_TEMP/readiness.md"
+          } > "$RUNNER_TEMP/pr-body.md"
 
       # Optional but keeps diffs tidy/consistent
       - name: Prettify JSON
@@ -65,11 +87,7 @@ jobs:
           base: main
           title: "chore(data): refresh SWU set data"
           commit-message: "chore(data): refresh SWU set data"
-          body: |
-            Automated refresh of the set catalog, manifest, and `scripts/sets.config.json`.
-            - Sets list: `GET https://api.swu-db.com/sets` → `npm run discover:sets`
-            - Catalog: `GET https://api.swu-db.com/cards/{setKey}` → `scripts/fetch-catalog.mjs`, gated by `scripts/validate-catalog.mjs` (no card may change binder slot)
-            - Prices are not part of this workflow — Docker refreshes `*.prices.json` on start and every 24h without a new image build or PR.
+          body-path: ${{ runner.temp }}/pr-body.md
           labels: data, automation
           add-paths: |
             app/public/sets/*.json
