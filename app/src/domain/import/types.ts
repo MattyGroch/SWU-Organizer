@@ -9,6 +9,8 @@ export type ImportedPrinting = {
   num: string;
   variant: VariantSlug;
   count: number;
+  /** How many of `count` live in the bulk box. Only this app's own backups say. */
+  bulk?: number;
 };
 
 export type SkipReason =
@@ -28,7 +30,7 @@ export type ImportResult = {
   /** Total copies across all resolved printings. */
   copies: number;
   format: ImportFormat;
-  /** Saved decks and precon ownership, present only in this app's v3+ backups. */
+  /** Saved decks and precon ownership, present only in this app's own backups. */
   deckLibrary?: DeckLibrary;
 };
 

@@ -140,12 +140,8 @@ describe('re-importing a collection with variants', () => {
     ]);
   });
 
-  it('migrates a legacy v1 JSON backup onto Normal printings', async () => {
-    const legacy = JSON.stringify({ version: 1, sets: { SOR: { 1: 1, 59: 3 } } });
-    await applyImport(importText(legacy, catalog).printings, 'replaceSets', { database });
-
-    const rows = await database.owned.toArray();
-    expect(rows.every((r) => r.variant === 'normal')).toBe(true);
-    expect(Object.fromEntries(rows.map((r) => [r.num, r.count]))).toEqual({ '001': 1, '059': 3 });
+  it('refuses a backup from an older version of the app', () => {
+    const old = JSON.stringify({ version: 3, sets: { SOR: { '059': 3 } } });
+    expect(() => importText(old, catalog)).toThrow(/older version/);
   });
 });

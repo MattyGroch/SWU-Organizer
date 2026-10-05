@@ -78,14 +78,6 @@ describe('applyInventoryPayload', () => {
     expect(rows[0]).toMatchObject({ num: '324', variant: 'hyperspace', count: 2 });
   });
 
-  it('accepts unpadded base numbers from an older cloud backup', async () => {
-    // The legacy app synced base numbers like "59"; the catalog spells it "059".
-    await applyInventoryPayload('SOR', { '59': 4 }, set, database);
-
-    const rows = await database.owned.toArray();
-    expect(rows[0]).toMatchObject({ num: '059', variant: 'normal', count: 4 });
-  });
-
   it('drops entries that no longer resolve, without failing the rest', async () => {
     await applyInventoryPayload('SOR', { '059': 2, '9999': 1, bad: 3 }, set, database);
 
@@ -165,5 +157,33 @@ describe('createInventorySync', () => {
 
     stop();
     sync.dispose();
+  });
+});
+
+describe('bulk copies in sync payloads', () => {
+  it('sends them under their own key and reads them back', async () => {
+    await database.owned.put({
+      id: 'SOR:059',
+      setKey: 'SOR',
+      base: 59,
+      num: '059',
+      variant: 'normal',
+      count: 4,
+      bulk: 1,
+      updatedAt: 0,
+    });
+    const payload = await snapshotSet('SOR', database);
+    expect(payload).toEqual({ '059': 4, '059@bulk': 1 });
+
+    await database.owned.clear();
+    await applyInventoryPayload('SOR', payload, set, database);
+    expect(await database.owned.toArray()).toEqual([
+      expect.objectContaining({ num: '059', count: 4, bulk: 1 }),
+    ]);
+  });
+
+  it('never keeps more in bulk than owned after a merge', async () => {
+    await applyInventoryPayload('SOR', { '059': 1, '059@bulk': 3 }, set, database);
+    expect(await database.owned.get('SOR:059')).toMatchObject({ count: 1, bulk: 1 });
   });
 });

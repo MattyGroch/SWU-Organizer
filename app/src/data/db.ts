@@ -28,7 +28,14 @@ export type OwnedPrinting = {
   /** Printing number as the catalog spells it, e.g. "059", "059F", "1152". */
   num: string;
   variant: VariantSlug;
+  /** Every copy owned, wherever it is. */
   count: number;
+  /**
+   * How many of `count` live in the bulk box rather than the binder; never more than
+   * `count`, and absent when none do. Stored, not derived: the box never refills the
+   * binder, so which copies sit where cannot be worked out from totals.
+   */
+  bulk?: number;
   updatedAt: number;
 };
 
@@ -118,6 +125,35 @@ export type StackCardRow = {
 
 export function printingId(setKey: SetKey, num: string): string {
   return `${setKey}:${num}`;
+}
+
+/** A row for a printing not owned yet, ready for `withCount`. */
+export function emptyOwnedRow(
+  setKey: SetKey,
+  base: number,
+  printing: { num: string; variant: VariantSlug },
+): OwnedPrinting {
+  return {
+    id: printingId(setKey, printing.num),
+    setKey,
+    base,
+    num: printing.num,
+    variant: printing.variant,
+    count: 0,
+    updatedAt: 0,
+  };
+}
+
+/**
+ * `row` at a new total. Copies added go to the binder; copies removed leave the binder
+ * first, and the bulk count only drops once the binder has none left.
+ */
+export function withCount(row: OwnedPrinting, count: number, now: number): OwnedPrinting {
+  const { bulk, ...rest } = row;
+  const kept = Math.min(bulk ?? 0, count);
+  return kept > 0
+    ? { ...rest, count, bulk: kept, updatedAt: now }
+    : { ...rest, count, updatedAt: now };
 }
 
 export class SwuDatabase extends Dexie {

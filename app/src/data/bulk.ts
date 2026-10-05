@@ -7,7 +7,9 @@ import type { SetKey } from '~/domain/types';
 import { notifyDeckLibraryChanged, notifyInventoryChanged } from './changes';
 import {
   db,
+  emptyOwnedRow,
   printingId,
+  withCount,
   type IntakeBatch,
   type IntakeLine,
   type OwnedPrinting,
@@ -108,23 +110,20 @@ export async function bulkAdjust(
         const id = printingId(set.setKey, source.num);
         const existing = rows.find((row) => row.id === id);
         const add = action === 'add' ? 1 : quota - total;
-        await database.owned.put({
-          id,
-          setKey: set.setKey,
-          base,
-          num: source.num,
-          variant: source.variant,
-          count: (existing?.count ?? 0) + add,
-          updatedAt: now,
-        });
+        await database.owned.put(
+          withCount(
+            existing ?? emptyOwnedRow(set.setKey, base, source),
+            (existing?.count ?? 0) + add,
+            now,
+          ),
+        );
         changedHere = true;
       } else if (action === 'remove' && total > 0) {
         const row = REMOVE_ORDER.map((v) => rows.find((r) => r.variant === v && r.count > 0)).find(
           Boolean,
         );
         if (row) {
-          if (row.count > 1)
-            await database.owned.put({ ...row, count: row.count - 1, updatedAt: now });
+          if (row.count > 1) await database.owned.put(withCount(row, row.count - 1, now));
           else await database.owned.delete(row.id);
           changedHere = true;
         }

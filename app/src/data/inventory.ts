@@ -3,7 +3,14 @@ import { indexOwnership, type OwnedCounts } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 
 import { notifyInventoryChanged } from './changes';
-import { db, printingId, type OwnedPrinting, type SwuDatabase } from './db';
+import {
+  db,
+  emptyOwnedRow,
+  printingId,
+  withCount,
+  type OwnedPrinting,
+  type SwuDatabase,
+} from './db';
 
 /**
  * Reads and writes for owned printings.
@@ -68,15 +75,9 @@ export async function adjustPrinting(
       return 0;
     }
 
-    await database.owned.put({
-      id,
-      setKey,
-      base,
-      num: printing.num,
-      variant: printing.variant,
-      count: value,
-      updatedAt: now,
-    });
+    await database.owned.put(
+      withCount(existing ?? emptyOwnedRow(setKey, base, printing), value, now),
+    );
     return value;
   });
 
@@ -95,20 +96,14 @@ export async function setPrintingCount(
   const id = printingId(setKey, printing.num);
   const next = Math.max(0, Math.floor(count));
 
-  if (next === 0) {
-    await database.owned.delete(id);
-    notifyInventoryChanged(setKey);
-    return 0;
-  }
-
-  await database.owned.put({
-    id,
-    setKey,
-    base,
-    num: printing.num,
-    variant: printing.variant,
-    count: next,
-    updatedAt: now,
+  await database.transaction('rw', database.owned, async () => {
+    const existing = await database.owned.get(id);
+    if (next === 0) await database.owned.delete(id);
+    else {
+      await database.owned.put(
+        withCount(existing ?? emptyOwnedRow(setKey, base, printing), next, now),
+      );
+    }
   });
   notifyInventoryChanged(setKey);
   return next;
@@ -169,15 +164,9 @@ export async function fillPlayset(
     const value = Math.max(existing?.count ?? 0, quota);
     if (value === existing?.count) return value;
 
-    await database.owned.put({
-      id,
-      setKey,
-      base,
-      num: printing.num,
-      variant: printing.variant,
-      count: value,
-      updatedAt: now,
-    });
+    await database.owned.put(
+      withCount(existing ?? emptyOwnedRow(setKey, base, printing), value, now),
+    );
     return value;
   });
 

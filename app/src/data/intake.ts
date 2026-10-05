@@ -7,7 +7,15 @@ import { heldVariants } from '~/domain/deckBuild';
 import type { SetKey } from '~/domain/types';
 
 import { notifyDeckLibraryChanged, notifyInventoryChanged } from './changes';
-import { db, printingId, type IntakeLine, type OwnedPrinting, type SwuDatabase } from './db';
+import {
+  db,
+  emptyOwnedRow,
+  printingId,
+  withCount,
+  type IntakeLine,
+  type OwnedPrinting,
+  type SwuDatabase,
+} from './db';
 import { closeOpenStack, discardOpenStack } from './stacks';
 
 /**
@@ -362,15 +370,14 @@ export async function commitBatch(
       for (const line of lines) {
         const id = printingId(line.setKey, line.num);
         const current = rows.get(id) ?? (await database.owned.get(id));
-        rows.set(id, {
+        rows.set(
           id,
-          setKey: line.setKey,
-          base: line.base,
-          num: line.num,
-          variant: line.variant,
-          count: (current?.count ?? 0) + line.count,
-          updatedAt: now,
-        });
+          withCount(
+            current ?? emptyOwnedRow(line.setKey, line.base, line),
+            (current?.count ?? 0) + line.count,
+            now,
+          ),
+        );
         touched.add(line.setKey);
         copies += line.count;
       }
@@ -385,7 +392,7 @@ export async function commitBatch(
           rows.delete(id);
           emptied.push(id);
         } else {
-          rows.set(id, { ...current, count, updatedAt: now });
+          rows.set(id, withCount(current, count, now));
         }
         touched.add(line.setKey);
       }

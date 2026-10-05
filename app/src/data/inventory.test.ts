@@ -235,3 +235,36 @@ describe('fillPlayset', () => {
     });
   });
 });
+
+describe('bulk copies', () => {
+  let database: SwuDatabase;
+  const set = makeSet();
+  const normal = () => printingFor(set, 59, 'normal')!;
+
+  beforeEach(async () => {
+    database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+    await database.owned.put({
+      id: 'SOR:059',
+      setKey: 'SOR',
+      base: 59,
+      num: '059',
+      variant: 'normal',
+      count: 4,
+      bulk: 2,
+      updatedAt: 0,
+    });
+  });
+
+  it('adds copies to the binder, leaving bulk alone', async () => {
+    await adjustPrinting('SOR', 59, normal(), 1, database);
+    expect(await database.owned.get('SOR:059')).toMatchObject({ count: 5, bulk: 2 });
+  });
+
+  it('removes binder copies first, then bulk ones', async () => {
+    await adjustPrinting('SOR', 59, normal(), -2, database);
+    expect(await database.owned.get('SOR:059')).toMatchObject({ count: 2, bulk: 2 });
+    await setPrintingCount('SOR', 59, normal(), 1, database);
+    expect(await database.owned.get('SOR:059')).toMatchObject({ count: 1, bulk: 1 });
+  });
+});

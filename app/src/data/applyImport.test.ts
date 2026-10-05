@@ -219,7 +219,7 @@ describe('buildExport', () => {
 
     const payload = await buildExport(database, new Date('2026-10-04T12:00:00Z'));
 
-    expect(payload.version).toBe(3);
+    expect(payload.version).toBe(4);
     expect(payload.exportedAt).toBe('2026-10-04T12:00:00.000Z');
     // The legacy v1 export collapsed both of these into a single base-number count.
     expect(payload.sets.SOR).toEqual({ '059': 3, '059F': 1 });
@@ -261,5 +261,50 @@ describe('buildExport', () => {
 
   it('exports nothing for an empty collection', async () => {
     expect((await buildExport(database)).sets).toEqual({});
+  });
+});
+
+describe('bulk box', () => {
+  let database: SwuDatabase;
+
+  beforeEach(async () => {
+    database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+  });
+
+  it('sends copies beyond a playset to bulk for files with only totals', async () => {
+    await applyImport(
+      [printing('SOR', 59, '059', 'normal', 4), printing('SOR', 59, '324', 'hyperspace', 1)],
+      'add',
+      { database, spillOver: () => 3 },
+    );
+    expect(await database.owned.get('SOR:059')).toMatchObject({ count: 4, bulk: 2 });
+    expect((await database.owned.get('SOR:324'))!.bulk).toBeUndefined();
+  });
+
+  it('adds to what is already in bulk without moving bulk copies back', async () => {
+    await database.owned.put({
+      id: 'SOR:059',
+      setKey: 'SOR',
+      base: 59,
+      num: '059',
+      variant: 'normal',
+      count: 4,
+      bulk: 4,
+      updatedAt: 0,
+    });
+    await applyImport([printing('SOR', 59, '059', 'normal', 1)], 'add', {
+      database,
+      spillOver: () => 3,
+    });
+    expect(await database.owned.get('SOR:059')).toMatchObject({ count: 5, bulk: 4 });
+  });
+
+  it('backs up bulk copies and restores them as they were', async () => {
+    await applyImport([{ ...printing('SOR', 59, '059', 'normal', 4), bulk: 1 }], 'replaceAll', {
+      database,
+    });
+    const payload = await buildExport(database);
+    expect(payload.sets.SOR).toEqual({ '059': 4, '059@bulk': 1 });
   });
 });

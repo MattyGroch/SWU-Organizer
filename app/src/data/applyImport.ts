@@ -1,5 +1,6 @@
 import { parseDeckLibrary, type DeckLibrary } from '~/domain/decks';
-import type { ImportedPrinting } from '~/domain/import';
+import { BACKUP_VERSION, type ImportedPrinting } from '~/domain/import';
+import { BULK_KEY_SUFFIX, spillToBulk } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 
 import { notifyDeckLibraryChanged, notifyInventoryChanged } from './changes';
@@ -33,6 +34,11 @@ export type ApplyReport = {
 export type ApplyOptions = {
   /** Replaces the saved decks and precon ownership with this, in the same transaction. */
   deckLibrary?: DeckLibrary;
+  /**
+   * For files that only have totals (anything but this app's own backups): each card's
+   * playset size. Copies beyond it go to the bulk box, the weakest first.
+   */
+  spillOver?: (setKey: SetKey, base: number) => number;
   database?: SwuDatabase;
   now?: number;
 };
@@ -43,7 +49,16 @@ function combineDuplicates(printings: readonly ImportedPrinting[]): ImportedPrin
   for (const printing of printings) {
     const id = printingId(printing.setKey, printing.num);
     const seen = byId.get(id);
-    byId.set(id, seen ? { ...seen, count: seen.count + printing.count } : { ...printing });
+    byId.set(
+      id,
+      seen
+        ? {
+            ...seen,
+            count: seen.count + printing.count,
+            bulk: (seen.bulk ?? 0) + (printing.bulk ?? 0),
+          }
+        : { ...printing },
+    );
   }
   return [...byId.values()];
 }
@@ -71,7 +86,7 @@ function nextCount(mode: ImportMode, existing: number, imported: number): number
 export async function applyImport(
   printings: readonly ImportedPrinting[],
   mode: ImportMode,
-  { deckLibrary, database = db, now = Date.now() }: ApplyOptions = {},
+  { deckLibrary, spillOver, database = db, now = Date.now() }: ApplyOptions = {},
 ): Promise<ApplyReport> {
   const combined = combineDuplicates(printings);
   const touched = new Set<SetKey>(combined.map((p) => p.setKey));
@@ -99,7 +114,8 @@ export async function applyImport(
     const rows: OwnedPrinting[] = [];
     for (const printing of combined) {
       const id = printingId(printing.setKey, printing.num);
-      const existing = keepsExisting ? ((await database.owned.get(id))?.count ?? 0) : 0;
+      const row = keepsExisting ? await database.owned.get(id) : undefined;
+      const existing = row?.count ?? 0;
       const count = nextCount(mode, existing, printing.count);
       if (keepsExisting && count === existing) {
         printingsUnchanged += 1;
@@ -107,6 +123,8 @@ export async function applyImport(
       }
       printingsWritten += 1;
       copiesDelta += count - existing;
+      // `higher` and `missing` take the file's copies whole; `add` puts them beside ours.
+      const bulk = Math.min((mode === 'add' ? (row?.bulk ?? 0) : 0) + (printing.bulk ?? 0), count);
       rows.push({
         id,
         setKey: printing.setKey,
@@ -114,11 +132,23 @@ export async function applyImport(
         num: printing.num,
         variant: printing.variant,
         count,
+        ...(bulk > 0 && { bulk }),
         updatedAt: now,
       });
     }
 
     if (rows.length) await database.owned.bulkPut(rows);
+
+    if (spillOver) {
+      const cards = new Map(rows.map((row) => [`${row.setKey}:${row.base}`, row]));
+      for (const { setKey, base } of cards.values()) {
+        const card = await database.owned.where({ setKey, base }).toArray();
+        const spilled = spillToBulk(card, spillOver(setKey, base)).filter(
+          (row, i) => row.bulk !== card[i]!.bulk,
+        );
+        if (spilled.length) await database.owned.bulkPut(spilled);
+      }
+    }
 
     if (deckLibrary) {
       await database.deckLibrary.put({
@@ -142,15 +172,11 @@ export async function applyImport(
   };
 }
 
-/**
- * A full offline backup: every printing owned, plus saved decks and precon ownership.
- *
- * v3 adds `decks`. v2 files (counts only) and the legacy v1 format still import.
- */
+/** A full offline backup: every printing owned, plus saved decks and precon ownership. */
 export type ExportPayload = {
-  version: 3;
+  version: typeof BACKUP_VERSION;
   exportedAt: string;
-  /** setKey → printing number → count. Printing-level, unlike the legacy v1 export. */
+  /** setKey → printing number → count, with bulk-box copies under "059@bulk". */
   sets: Record<SetKey, Record<string, number>>;
   decks: DeckLibrary;
 };
@@ -161,11 +187,14 @@ export async function buildExport(
 ): Promise<ExportPayload> {
   const sets: Record<SetKey, Record<string, number>> = {};
   for (const row of await database.owned.toArray()) {
-    if (row.count > 0) (sets[row.setKey] ??= {})[row.num] = row.count;
+    if (row.count <= 0) continue;
+    const set = (sets[row.setKey] ??= {});
+    set[row.num] = row.count;
+    if (row.bulk) set[row.num + BULK_KEY_SUFFIX] = row.bulk;
   }
   const libraryRow = await database.deckLibrary.get('library');
   return {
-    version: 3,
+    version: BACKUP_VERSION,
     exportedAt: now.toISOString(),
     sets,
     decks: parseDeckLibrary(libraryRow?.json ?? null),
