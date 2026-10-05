@@ -39,11 +39,18 @@ describe('createHealthStore', () => {
 describe('watchStorage', () => {
   it('tracks the reads and writes made through Dexie', async () => {
     const database = new SwuDatabase('storage-health-test');
-    const track = vi.fn(<T>(request: Promise<T>) => request);
-    database.use(watchStorage({ track }));
+    let tracked = 0;
+    database.use(
+      watchStorage({
+        track: (request) => {
+          tracked++;
+          return request;
+        },
+      }),
+    );
     await database.meta.put({ key: 'a', value: '1' });
     expect(await database.meta.get('a')).toEqual({ key: 'a', value: '1' });
-    expect(track).toHaveBeenCalledTimes(2);
+    expect(tracked).toBe(2);
     database.close();
     await database.delete();
   });
