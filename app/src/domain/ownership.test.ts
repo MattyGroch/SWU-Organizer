@@ -230,4 +230,13 @@ describe('bulk box', () => {
     ]);
     expect(spillToBulk([row('normal', 3, 3)], 3)).toEqual([row('normal', 3, 3)]);
   });
+
+  it('leaves copies out in decks alone, and does not count them toward the playset', () => {
+    // A Leader: its Normal is in a deck, so the pocket holds only the two Hyperspace copies.
+    const rows = [row('normal', 1), row('hyperspace', 2)];
+    expect(spillToBulk(rows, 1, { normal: 1 })).toEqual([
+      row('normal', 1),
+      row('hyperspace', 2, 1),
+    ]);
+  });
 });

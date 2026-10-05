@@ -90,12 +90,12 @@ function Setup({
       (await db.intakeBatches.toArray()).filter((b) => b.kind === 'scan').map((b) => b.id),
     );
     await db.intakeLines.each((line) => {
-      if (scanBatches.has(line.batchId) && !line.swapOut) total += line.count;
+      if (scanBatches.has(line.batchId)) total += line.count;
     });
     return total;
   }, [stack.closedAt]);
   const sorters = saved ?? 1;
-  const toAdd = cards.filter((c) => c.fate === 'binder' || c.fate === 'spare').length;
+  const toAdd = cards.filter((c) => c.fate !== 'unsure').length;
   const aside = cards.filter((c) => c.fate !== 'binder').length;
 
   return (
@@ -460,8 +460,7 @@ function StepView({
 }
 
 const ASIDE: Record<AsideReason, { title: string; detail: string }> = {
-  bulk: { title: 'Bulk', detail: 'The binder already holds enough copies at least this good.' },
-  spare: { title: 'Spare', detail: 'Kept as a spare: its pocket is full.' },
+  bulk: { title: 'Bulk', detail: 'Its pocket already holds enough copies at least this good.' },
   unsure: {
     title: 'Check this card',
     detail: 'The scanner wasn’t sure what this was, and it was never added. Scan it again.',

@@ -1,10 +1,11 @@
+import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import type { IntakeLine } from '~/data/db';
 import {
   adjustCardCount,
-  cancelSwap,
+  bulkPreview,
   commitBatch,
   discardBatch,
   moveCopy,
@@ -15,11 +16,13 @@ import {
 import {
   artNumber,
   artUrl,
+  VARIANTS,
   variantLabel,
   variantShortLabel,
   type LoadedSet,
   type Printing,
 } from '~/domain/catalog';
+import { quotaForCard } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 import { StackList } from '~/features/putAway/StackList';
 import { useToast } from '~/ui/toastContext';
@@ -77,18 +80,26 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
   const [busy, setBusy] = useState(false);
   const cards = groupByCard(batch.lines);
   const changed = batch.lines
-    .filter((l) => l.variant !== 'normal' && !l.swapOut)
+    .filter((l) => l.variant !== 'normal')
     .reduce((sum, l) => sum + l.count, 0);
+  const quotaOf = (setKey: SetKey, base: number) => {
+    const card = sets.get(setKey)?.cardsByBase.get(base);
+    return card ? quotaForCard(card) : Infinity;
+  };
 
   async function commit() {
     setBusy(true);
     try {
-      const report = await commitBatch(batch.id);
+      const report = await commitBatch(batch.id, { quotaOf });
+      const toBulk = report.toBulk
+        ? ` ${report.toBulk} ${report.toBulk === 1 ? 'copy goes' : 'copies go'} to the bulk box.`
+        : '';
       showToast({
         tone: 'success',
-        message: report.deckBuilt
-          ? `Added ${report.copies} cards and marked “${batch.label}” built.`
-          : `Added ${report.copies} cards to your collection.`,
+        message:
+          (report.deckBuilt
+            ? `Added ${report.copies} cards and marked “${batch.label}” built.`
+            : `Added ${report.copies} cards to your collection.`) + toBulk,
       });
     } catch {
       showToast({ tone: 'danger', message: 'Could not add the batch.' });
@@ -140,8 +151,8 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
                 key={`${card.setKey}:${card.base}`}
                 batchId={batch.id}
                 lines={card.lines}
-                swaps={card.swaps}
                 set={sets.get(card.setKey)}
+                previewBulk={batch.kind === 'scan'}
               />
             ))}
           </tbody>
@@ -187,7 +198,7 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
   );
 }
 
-type CardGroup = { setKey: SetKey; base: number; lines: IntakeLine[]; swaps: IntakeLine[] };
+type CardGroup = { setKey: SetKey; base: number; lines: IntakeLine[] };
 
 /** One row per card, however many printings its copies are spread across. */
 function groupByCard(lines: IntakeLine[]): CardGroup[] {
@@ -198,13 +209,11 @@ function groupByCard(lines: IntakeLine[]): CardGroup[] {
       setKey: line.setKey,
       base: line.base,
       lines: [],
-      swaps: [],
     };
-    (line.swapOut ? group.swaps : group.lines).push(line);
+    group.lines.push(line);
     groups.set(key, group);
   }
-  // A card whose copies were all removed has nothing left to add.
-  return [...groups.values()].filter((group) => group.lines.length > 0);
+  return [...groups.values()];
 }
 
 /** Everything a card's row and its Fix sheet need: counts per printing, and the moves. */
@@ -254,13 +263,14 @@ type CardModel = ReturnType<typeof useCardModel>;
 function CardRow({
   batchId,
   lines,
-  swaps,
   set,
+  previewBulk,
 }: {
   batchId: string;
   lines: IntakeLine[];
-  swaps: IntakeLine[];
   set: LoadedSet | undefined;
+  /** Scanned cards only: a deck's cards go into its box, never to bulk. */
+  previewBulk: boolean;
 }) {
   const model = useCardModel(batchId, lines, set);
   const { ref, setKey, base, card, name, printings, source, countOf, total, mixed } = model;
@@ -284,7 +294,12 @@ function CardRow({
               .join(' · ')}
           </span>
         </span>
-        <SwapNotes swaps={swaps} name={name} />
+        {previewBulk && card && (
+          <BulkNote
+            lines={lines}
+            quota={quotaForCard({ type: card.Type, maxCopies: card.MaxCopies })}
+          />
+        )}
       </td>
       <td className={styles.wideOnly}>
         <PrintingButtons model={model} />
@@ -323,27 +338,18 @@ function CardRow({
   );
 }
 
-/** "Swaps out 1 Normal": the weaker copies this card displaces from its pocket, to bulk. */
-function SwapNotes({ swaps, name }: { swaps: IntakeLine[]; name: string }) {
-  if (!swaps.length) return null;
-  return (
-    <span className={styles.swaps}>
-      {swaps.map((swap) => (
-        <span key={swap.id} className={styles.swap}>
-          Swaps out {swap.count} {variantLabel(swap.variant)} — to bulk
-          <button
-            type="button"
-            className={styles.keep}
-            onClick={() => void cancelSwap(swap.id)}
-            aria-label={`Keep the ${variantLabel(swap.variant)} ${name}; add the new copy as a spare`}
-            title="Keep it: the new copy is added as a spare instead"
-          >
-            Keep
-          </button>
-        </span>
-      ))}
-    </span>
+/**
+ * "To bulk: 1 Normal": the copies this card's pocket has no room for once the batch is
+ * added. They are the weakest of what the pocket would hold, so they can be copies already
+ * in the binder, bumped by a better printing.
+ */
+function BulkNote({ lines, quota }: { lines: IntakeLine[]; quota: number }) {
+  const moved = useLiveQuery(() => bulkPreview(lines, quota), [lines, quota]);
+  const parts = VARIANTS.filter((v) => (moved?.[v] ?? 0) > 0).map(
+    (v) => `${moved![v]} ${variantLabel(v)}`,
   );
+  if (!parts.length) return null;
+  return <span className={styles.toBulk}>To bulk: {parts.join(', ')}</span>;
 }
 
 function ResetButton({ model, wide = false }: { model: CardModel; wide?: boolean }) {

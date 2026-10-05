@@ -149,17 +149,33 @@ export function pocketCounts(counts: OwnedCounts, held: VariantCounts): OwnedCou
 }
 
 /**
- * One card's printings after its binder keeps only the best `quota` copies: the weakest
- * binder copies beyond that move to the bulk box. Copies only ever move this way — the
+ * One card's printings after its binder pocket keeps only the best `quota` copies: the
+ * weakest copies beyond that move to the bulk box. Copies only ever move this way — the
  * bulk box never refills the binder. Rows come back in the order given.
+ *
+ * `held` is what built decks hold of the binder's copies. Those are out of the pocket, so
+ * they neither count toward the quota nor move.
  */
-export function spillToBulk<T extends OwnedRowLike>(rows: readonly T[], quota: number): T[] {
+export function spillToBulk<T extends OwnedRowLike>(
+  rows: readonly T[],
+  quota: number,
+  held: VariantCounts = {},
+): T[] {
   const inBulk = (row: T) => Math.min(row.bulk ?? 0, row.count);
-  let extra = rows.reduce((sum, row) => sum + row.count - inBulk(row), 0) - quota;
+  const heldLeft: VariantCounts = { ...held };
+  const inPocket = new Map<T, number>();
+  for (const row of rows) {
+    const home = row.count - inBulk(row);
+    const out = Math.min(heldLeft[row.variant] ?? 0, home);
+    heldLeft[row.variant] = (heldLeft[row.variant] ?? 0) - out;
+    inPocket.set(row, home - out);
+  }
+
+  let extra = [...inPocket.values()].reduce((sum, n) => sum + n, 0) - quota;
   const spilled = new Map<T, number>();
   for (const row of [...rows].sort((a, b) => valueRank(b.variant) - valueRank(a.variant))) {
     if (extra <= 0) break;
-    const move = Math.min(row.count - inBulk(row), extra);
+    const move = Math.min(inPocket.get(row)!, extra);
     if (move > 0) spilled.set(row, inBulk(row) + move);
     extra -= move;
   }

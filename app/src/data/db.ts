@@ -84,11 +84,6 @@ export type IntakeLine = {
   count: number;
   /** Insertion order, so lines keep their place as they are edited. */
   order: number;
-  /**
-   * A removal, not an addition: `count` copies of this printing leave the collection when
-   * the batch is committed — the weaker copy a better scan displaced from its pocket.
-   */
-  swapOut?: true;
 };
 
 /**

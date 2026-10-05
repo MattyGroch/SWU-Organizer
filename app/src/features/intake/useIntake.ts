@@ -22,7 +22,7 @@ export function useIntake(): { batches: BatchWithLines[]; loading: boolean } {
       loading: false,
       batches: batches.map((batch) => {
         const own = (byBatch.get(batch.id) ?? []).sort((a, b) => a.order - b.order);
-        const copies = own.reduce((sum, l) => sum + (l.swapOut ? 0 : l.count), 0);
+        const copies = own.reduce((sum, l) => sum + l.count, 0);
         return { ...batch, lines: own, copies };
       }),
     };
@@ -35,7 +35,7 @@ export function useIntakeCount(): number {
     useLiveQuery(async () => {
       let total = 0;
       await db.intakeLines.each((line) => {
-        if (!line.swapOut) total += line.count;
+        total += line.count;
       });
       return total;
     }, []) ?? 0

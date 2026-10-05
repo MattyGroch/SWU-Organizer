@@ -10,7 +10,7 @@ import {
   commitBatch,
   discardBatch,
   moveCopy,
-  cancelSwap,
+  bulkPreview,
   queuedPocket,
   queueScan,
   queueDeck,
@@ -116,7 +116,7 @@ describe('intake queue', () => {
     await moveCopy(trooper, normal, hyper, database);
     await moveCopy(trooper, hyper, normal, database);
 
-    await commitBatch(batchId, database);
+    await commitBatch(batchId, { database });
     expect((await database.owned.get('SOR:033'))?.count).toBe(2);
     expect(await database.owned.get('SOR:298')).toMatchObject({ count: 1, variant: 'hyperspace' });
   });
@@ -160,9 +160,10 @@ describe('intake queue', () => {
 
   it('commits a deck batch straight into the deck box, and clears the queue', async () => {
     const batchId = await queueDeck(deck, sets, { database });
-    const report = await commitBatch(batchId, database);
+    const report = await commitBatch(batchId, { database, quotaOf: () => 3 });
 
-    expect(report).toEqual({ copies: 5, deckBuilt: true });
+    // The copies go into the deck's box, so the binder pockets have nothing to spill.
+    expect(report).toEqual({ copies: 5, toBulk: 0, deckBuilt: true });
     const [built] = (await readDeckLibrary(database)).customDecks;
     expect(built).toMatchObject({ constructed: true });
     // The box records the printings reviewed in intake, so deconstructing files them back.
@@ -182,7 +183,7 @@ describe('intake queue', () => {
       updatedAt: 0,
     });
     const batchId = await queueDeck(deck, sets, { database });
-    await commitBatch(batchId, database);
+    await commitBatch(batchId, { database });
     expect((await database.owned.get('SOR:033'))?.count).toBe(5);
   });
 
@@ -232,10 +233,10 @@ describe('scanned cards', () => {
 
   it('commit straight into the binder, like any batch', async () => {
     const { batchId } = await queueScan(trooper, { database });
-    await commitBatch(batchId, database);
+    await commitBatch(batchId, { database });
     expect((await database.owned.get('SOR:033'))?.count).toBe(1);
   });
-  const own = (num: string, variant: 'normal' | 'hyperspace', count: number) =>
+  const own = (num: string, variant: 'normal' | 'hyperspace', count: number, bulk?: number) =>
     database.owned.put({
       id: `SOR:${num}`,
       setKey: 'SOR',
@@ -243,63 +244,66 @@ describe('scanned cards', () => {
       num,
       variant,
       count,
+      ...(bulk !== undefined && { bulk }),
       updatedAt: 1,
     });
+  const quotaOf = () => 3;
+  const row = async (num: string) => {
+    const r = await database.owned.get(`SOR:${num}`);
+    return r && [r.count, r.bulk ?? 0];
+  };
 
-  it('know what the pocket will hold: owned, plus queued, less queued swap-outs', async () => {
-    await own('033', 'normal', 2);
+  it('know what the pocket will hold: binder copies not in decks, plus queued', async () => {
+    await own('033', 'normal', 4, 2);
     await queueScan(trooper, { database });
     expect(await queuedPocket('SOR', 33, database)).toEqual({ normal: 3 });
-    await queueScan(hyper, { database, swapOut: trooper });
-    expect(await queuedPocket('SOR', 33, database)).toEqual({ normal: 2, hyperspace: 1 });
+    await queueScan(hyper, { database });
+    expect(await queuedPocket('SOR', 33, database)).toEqual({ normal: 3, hyperspace: 1 });
   });
 
-  it('a swap removes the weaker copy at commit, and is never counted as a card', async () => {
+  it('a copy for a full pocket is kept, in the bulk box', async () => {
     await own('033', 'normal', 3);
-    const receipt = await queueScan(hyper, { database, swapOut: trooper });
-    const lines = await database.intakeLines.toArray();
-    expect(lines.map((l) => [l.num, l.count, Boolean(l.swapOut)]).sort()).toEqual([
-      ['033', 1, true],
-      ['298', 1, false],
-    ]);
-
-    const report = await commitBatch(receipt.batchId, database);
-    expect(report.copies).toBe(1);
-    expect((await database.owned.get('SOR:033'))?.count).toBe(2);
-    expect((await database.owned.get('SOR:298'))?.count).toBe(1);
+    const { batchId } = await queueScan(trooper, { database });
+    const report = await commitBatch(batchId, { database, quotaOf });
+    expect(report).toMatchObject({ copies: 1, toBulk: 1 });
+    expect(await row('033')).toEqual([4, 1]);
   });
 
-  it('a swap can be undone with its scan, or dropped to keep both copies', async () => {
-    await own('033', 'normal', 1);
-    const receipt = await queueScan(hyper, { database, swapOut: trooper });
-    await unqueueScan(receipt, database);
-    expect(await database.intakeLines.count()).toBe(0);
-
-    const again = await queueScan(hyper, { database, swapOut: trooper });
-    await cancelSwap(again.swapLineId!, database);
-    await commitBatch(again.batchId, database);
-    expect((await database.owned.get('SOR:033'))?.count).toBe(1);
-    expect((await database.owned.get('SOR:298'))?.count).toBe(1);
+  it('a better printing bumps the weakest binder copy to bulk', async () => {
+    await own('033', 'normal', 3);
+    const { batchId } = await queueScan(hyper, { database });
+    await commitBatch(batchId, { database, quotaOf });
+    expect(await row('033')).toEqual([3, 1]);
+    expect(await row('298')).toEqual([1, 0]);
   });
 
-  it('a swap of the last copy deletes its row rather than leaving a zero', async () => {
-    await own('033', 'normal', 1);
-    const { batchId } = await queueScan(hyper, { database, swapOut: trooper });
-    await commitBatch(batchId, database);
-    expect(await database.owned.get('SOR:033')).toBeUndefined();
+  it('copies already in bulk stay there and never refill the pocket', async () => {
+    await own('033', 'normal', 3, 3);
+    const { batchId } = await queueScan(trooper, { database });
+    await commitBatch(batchId, { database, quotaOf });
+    expect(await row('033')).toEqual([4, 3]);
   });
 
-  it('allocation never touches swap-outs; removing the card drops them too', async () => {
-    const { batchId } = await queueScan(hyper, { database, swapOut: trooper });
-    const card = { batchId, setKey: 'SOR', base: 33 };
-    await resetCard(card, trooper, database);
-    const lines = await database.intakeLines.toArray();
-    // The Hyperspace moved back to Normal; the swap-out line is untouched beside it.
-    expect(lines.map((l) => [l.num, l.count, Boolean(l.swapOut)]).sort()).toEqual([
-      ['033', 1, false],
-      ['033', 1, true],
-    ]);
-    await removeCard(card, database);
-    expect(await database.intakeLines.count()).toBe(0);
+  it('copies out in decks leave room in the pocket', async () => {
+    await own('033', 'normal', 3);
+    await writeDeckLibraryQuietly(
+      {
+        customDecks: [{ ...deck, constructed: true, pulledCards: [ref(33, 2)] }],
+        preconOwnership: {},
+      },
+      database,
+    );
+    const { batchId } = await queueScan(trooper, { database });
+    await commitBatch(batchId, { database, quotaOf });
+    expect(await row('033')).toEqual([4, 0]);
+  });
+
+  it('previews what a card sends to bulk before the batch is added', async () => {
+    await own('033', 'normal', 3);
+    const { batchId } = await queueScan(hyper, { database });
+    await queueScan(trooper, { database });
+    const queued = await database.intakeLines.where('batchId').equals(batchId).toArray();
+    expect(await bulkPreview(queued, 3, database)).toEqual({ normal: 2 });
+    expect(await database.owned.count()).toBe(1);
   });
 });
