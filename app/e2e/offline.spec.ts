@@ -26,7 +26,7 @@ test('once visited, the app opens and scans offline', async ({ page, context }) 
 
   await context.setOffline(true);
 
-  await page.goto('/binder/SOR');
+  await page.goto('/inventory/SOR/list');
   await expect(page.getByRole('table')).toBeVisible();
   await expect(page.getByRole('cell', { name: /^Director Krennic/ })).toBeVisible();
 
