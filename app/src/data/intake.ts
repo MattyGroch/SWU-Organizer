@@ -1,4 +1,4 @@
-import type { LoadedSet, Printing } from '~/domain/catalog';
+import type { LoadedSet, Printing, VariantSlug } from '~/domain/catalog';
 import { applyConstruct, cardKey, parseCardKey } from '~/domain/deckBuild';
 import type { DeckCardRef } from '~/domain/deckContents';
 import { parseDeckLibrary, type SavedDeck } from '~/domain/decks';
@@ -69,6 +69,76 @@ export async function queueDeck(
     await database.intakeLines.bulkAdd(lines);
   });
   return batchId;
+}
+
+/** What `queueScan` did, so a mistaken scan can be taken back exactly. */
+export type ScanReceipt = {
+  batchId: string;
+  lineId: string;
+  createdBatch: boolean;
+  createdLine: boolean;
+};
+
+/**
+ * Adds one scanned copy to the open "Scanned cards" batch, creating the batch on first
+ * use. A second copy of the same printing bumps that line's count. Nothing counts as owned
+ * until the batch is reviewed and committed — the camera cannot tell foil from non-foil, so
+ * that review is where finishes get set.
+ */
+export async function queueScan(
+  printing: { setKey: SetKey; base: number; num: string; variant: VariantSlug },
+  { database = db, now = Date.now() } = {},
+): Promise<ScanReceipt> {
+  return database.transaction('rw', database.intakeBatches, database.intakeLines, async () => {
+    const open = (await database.intakeBatches.toArray())
+      .filter((b) => b.kind === 'scan')
+      .sort((a, b) => b.createdAt - a.createdAt)[0];
+    const batchId = open?.id ?? crypto.randomUUID();
+    if (!open) {
+      await database.intakeBatches.add({
+        id: batchId,
+        kind: 'scan',
+        label: 'Scanned cards',
+        createdAt: now,
+      });
+    }
+
+    const lines = await database.intakeLines.where('batchId').equals(batchId).toArray();
+    const same = lines.find((l) => l.setKey === printing.setKey && l.num === printing.num);
+    if (same) {
+      await database.intakeLines.update(same.id, { count: same.count + 1 });
+      return { batchId, lineId: same.id, createdBatch: !open, createdLine: false };
+    }
+    const lineId = crypto.randomUUID();
+    await database.intakeLines.add({
+      id: lineId,
+      batchId,
+      setKey: printing.setKey,
+      base: printing.base,
+      num: printing.num,
+      variant: printing.variant,
+      count: 1,
+      // Newest scans last, in the order they were made.
+      order: now,
+    });
+    return { batchId, lineId, createdBatch: !open, createdLine: true };
+  });
+}
+
+/** Takes back one `queueScan`: one fewer copy, and no empty line or batch left behind. */
+export async function unqueueScan(receipt: ScanReceipt, database: SwuDatabase = db): Promise<void> {
+  await database.transaction('rw', database.intakeBatches, database.intakeLines, async () => {
+    const line = await database.intakeLines.get(receipt.lineId);
+    if (line && line.count > 1)
+      await database.intakeLines.update(line.id, { count: line.count - 1 });
+    else if (line) await database.intakeLines.delete(line.id);
+    if (
+      receipt.createdBatch &&
+      (await database.intakeLines.where('batchId').equals(receipt.batchId).count()) === 0
+    ) {
+      await database.intakeBatches.delete(receipt.batchId);
+    }
+  });
 }
 
 /** The printing a card's copies start on, and move back to: Normal, or its first printing. */

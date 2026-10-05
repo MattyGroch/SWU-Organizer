@@ -20,6 +20,7 @@ import { binderEntries, readHiddenSets } from '~/data/binderSettings';
 import { BinderRoute } from '~/routes/BinderRoute';
 import { DecksRoute } from '~/routes/DecksRoute';
 import { IntakePage } from '~/features/intake/IntakePage';
+import { ScanPage } from '~/features/scan/ScanPage';
 import { AppShell } from '~/ui/AppShell';
 
 /**
@@ -118,7 +119,17 @@ const intakeRoute = createRoute({
 const scanRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/scan',
-  component: () => <section>The card scanner arrives in Phase 5.</section>,
+  loader: async ({ context }) => {
+    const entries = await context.queryClient.ensureQueryData(manifestQuery());
+    // A scan can be any card in any set: names, printings and binder slots come from here.
+    await Promise.all(entries.map((entry) => context.queryClient.ensureQueryData(setQuery(entry))));
+    return { entries };
+  },
+  component: function ScanRouteComponent() {
+    const { entries } = scanRoute.useLoaderData();
+    const { queryClient } = scanRoute.useRouteContext();
+    return <ScanPage sets={loadedSets(queryClient, entries)} />;
+  },
 });
 
 const routeTree = rootRoute.addChildren([

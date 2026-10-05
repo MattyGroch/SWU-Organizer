@@ -26,11 +26,9 @@ Your own list: things to try, questions only you can answer, and setup only you 
 
 ### To do / provide
 
-- [ ] **Ship v2 to production** — full steps in `docs/deploy.md`:
-  - [ ] Push `v2` **and the `v1-final` tag** (`git push -u origin v2 --follow-tags`), open the PR to `main`, let **Checks** go green, merge.
-  - [ ] On the host: create `.env` from `.env.example` (new `SESSION_SECRET`), `git pull`, `docker compose build`, `docker compose down`, move the old `swu.db*` into `v1-backup/`, `docker compose up -d`.
-  - [ ] Check the live site, then Download backup on localhost → import with **Replace entire collection** on swu.mattyflix.com → Sign in.
-  - [ ] Later: fix Portainer, then restore the redeploy step in `docker-publish.yml` (removed for now so runs stop failing).
+- [ ] **Finish the v2 launch**: merge #52; on swu.mattyflix.com import your backup with **Replace entire collection** and sign in; on photonOS switch `/opt/swu-organizer` to `main` (`git checkout main && git pull`).
+- [ ] Later: when Portainer is back, **delete or detach stack 99 first** (it's v1 — a redeploy would start it on top of v2), then let Portainer adopt `/opt/swu-organizer` as a git stack and restore the redeploy step in `docker-publish.yml`.
+- [ ] Once v2 has proved itself: delete `/var/config/swu-organizer/v1-backup/` and the `v1-rollback` image tags on photonOS.
 - [ ] **HMW precon decklists** — paste them in and Claude will build the precon files.
 - [ ] Optional: delete the empty leftover branch — `git branch -d rebuild/v2-foundation`.
 
@@ -64,6 +62,8 @@ Deliberate departures from the legacy app. Push back on any of these and I'll re
 
 Not now, but don't lose it.
 
+- [ ] **Scan index size** — `app/public/scan/index.bin` is ~1.5 MB (1.2 MB gzipped), mostly the 8×8 colour grid per printing. Could shrink (fewer bits per channel) if first-scan download time matters on mobile data; re-run the builder's robustness test after any change.
+- [ ] **Scan index refresh** — new sets need `cd app && npx tsx scripts/build-scan-index.ts` (downloads only new images to `~/.cache/swu-organizer/card-art`, ~4 min) and the result committed. Not in CI yet (needs the image cache).
 - [ ] **Scanner (Phase 5): two modes.**
   - **Scan / info** — scanning a card only selects it and turns the binder to its slot; nothing is added. For looking a card up, or checking whether you need it.
   - **Add** — every scan adds the card to an Intake "Scanned" batch, for working through a stack. Nothing counts as owned until you review that batch (variants, foils — the camera can't tell foil from non-foil) and commit it to the binder. Decided 2026-10-04.
@@ -74,7 +74,9 @@ Not now, but don't lose it.
 
 ## Done
 
-- [x] **v1 retired; v2 is the production app (in the repo).** v1's source, data and root config are gone; the root is the card-data pipeline. New `Dockerfile` serves `app/` with nginx (card-art proxy, security headers on every response, camera allowed for the scanner, daily price refresh). CI: a **Checks** workflow for app/server/pipeline, and the daily data refresh now guards against cards changing binder slot. README rewritten. Not deployed yet — see "Ship v2 to production".
+- [x] **v2 is live on swu.mattyflix.com (2026-10-04).** Deployed from `/opt/swu-organizer` with docker compose on photonOS (Portainer is down); clean database, v1's moved to `v1-backup/`, v1 images tagged `v1-rollback`. One fix along the way: photonOS's strict umask made `app/public` files unreadable to nginx (403s) — the image now normalises permissions (#52).
+
+- [x] **v1 retired; v2 is the production app (in the repo).** v1's source, data and root config are gone; the root is the card-data pipeline. New `Dockerfile` serves `app/` with nginx (card-art proxy, security headers on every response, camera allowed for the scanner, daily price refresh). CI: a **Checks** workflow for app/server/pipeline, and the daily data refresh now guards against cards changing binder slot. README rewritten. Deployed 2026-10-04.
 
 - [x] **Cloud sync (app side).** Sign-in and account menu with sync status; pulls on sign-in, tab focus, reconnect and every 5 minutes; edits on two devices merge (cards per printing, decks per deck, deletions remembered); a first-sign-in choice when a device and the cloud both hold a collection. Server keeps deleted-deck records. Setup: `app/docs/cloud-sync.md`. Verified locally 2026-10-04 with the v1 OAuth client: 11 sets, 6,455 copies and the deck library reached the server; a second window downloaded it. Production wiring (nginx `/api`) still to do.
 

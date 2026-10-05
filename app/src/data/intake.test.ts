@@ -10,9 +10,11 @@ import {
   commitBatch,
   discardBatch,
   moveCopy,
+  queueScan,
   queueDeck,
   removeCard,
   resetCard,
+  unqueueScan,
 } from './intake';
 
 const sets = new Map([
@@ -187,5 +189,48 @@ describe('intake queue', () => {
     await discardBatch(batchId, database);
     expect(await database.intakeLines.count()).toBe(0);
     expect(await database.owned.count()).toBe(0);
+  });
+});
+
+describe('scanned cards', () => {
+  let database: SwuDatabase;
+
+  beforeEach(async () => {
+    database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+  });
+
+  const trooper = { setKey: 'SOR', base: 33, num: '033', variant: 'normal' as const };
+  const hyper = { setKey: 'SOR', base: 33, num: '298', variant: 'hyperspace' as const };
+
+  it('go into one Scanned batch, a second copy bumping its line', async () => {
+    const first = await queueScan(trooper, { database });
+    await queueScan(trooper, { database });
+    await queueScan(hyper, { database });
+
+    expect(await database.intakeBatches.count()).toBe(1);
+    expect((await database.intakeBatches.get(first.batchId))?.kind).toBe('scan');
+    const lines = await database.intakeLines.where('batchId').equals(first.batchId).sortBy('order');
+    expect(lines.map((l) => [l.num, l.count])).toEqual([
+      ['033', 2],
+      ['298', 1],
+    ]);
+    expect(await database.owned.count()).toBe(0);
+  });
+
+  it('can be taken back one scan at a time, leaving nothing empty behind', async () => {
+    const a = await queueScan(trooper, { database });
+    const b = await queueScan(trooper, { database });
+    await unqueueScan(b, database);
+    expect((await database.intakeLines.get(a.lineId))?.count).toBe(1);
+    await unqueueScan(a, database);
+    expect(await database.intakeLines.count()).toBe(0);
+    expect(await database.intakeBatches.count()).toBe(0);
+  });
+
+  it('commit straight into the binder, like any batch', async () => {
+    const { batchId } = await queueScan(trooper, { database });
+    await commitBatch(batchId, database);
+    expect((await database.owned.get('SOR:033'))?.count).toBe(1);
   });
 });
