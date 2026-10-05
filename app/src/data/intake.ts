@@ -1,9 +1,14 @@
 import type { LoadedSet, Printing, VariantSlug } from '~/domain/catalog';
 import { applyConstruct, cardKey, parseCardKey } from '~/domain/deckBuild';
 import type { DeckCardRef } from '~/domain/deckContents';
-import { parseDeckLibrary, type DeckLibrary, type SavedDeck } from '~/domain/decks';
-import { addVariants, spillToBulk, subtractVariants, type VariantCounts } from '~/domain/ownership';
-import { heldVariants } from '~/domain/deckBuild';
+import { parseDeckLibrary, type SavedDeck } from '~/domain/decks';
+import {
+  NO_HOMES,
+  addVariants,
+  spillToBulk,
+  subtractVariants,
+  type VariantCounts,
+} from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 
 import { notifyDeckLibraryChanged, notifyInventoryChanged } from './changes';
@@ -16,6 +21,7 @@ import {
   type OwnedPrinting,
   type SwuDatabase,
 } from './db';
+import { heldFromBinder, readLibrary, spillCards, type QuotaOf } from './spill';
 import { closeOpenStack, discardOpenStack } from './stacks';
 
 /**
@@ -262,23 +268,6 @@ export async function removeCard(card: CardRef, database: SwuDatabase = db): Pro
   });
 }
 
-/** What built decks hold of one card, given that card's owned rows. */
-function heldOf(
-  library: DeckLibrary,
-  rows: readonly OwnedPrinting[],
-  setKey: SetKey,
-  base: number,
-): VariantCounts {
-  let owned: VariantCounts = {};
-  for (const row of rows) owned = addVariants(owned, { [row.variant]: row.count });
-  const lookup = (s: SetKey, b: number) => (s === setKey && b === base ? owned : {});
-  return heldVariants(library, lookup).get(cardKey(setKey, base)) ?? {};
-}
-
-async function readLibrary(database: SwuDatabase): Promise<DeckLibrary> {
-  return parseDeckLibrary((await database.deckLibrary.get('library'))?.json ?? null);
-}
-
 /** One card's owned rows after its batch lines are added, the way `commitBatch` adds them. */
 function withLines(
   rows: readonly OwnedPrinting[],
@@ -307,7 +296,7 @@ export async function bulkPreview(
   if (!first) return {};
   const { setKey, base } = first;
   const card = withLines(await database.owned.where({ setKey, base }).toArray(), lines, 0);
-  const held = heldOf(await readLibrary(database), card, setKey, base);
+  const held = heldFromBinder(await readLibrary(database), setKey, base);
   let moved: VariantCounts = {};
   spillToBulk(card, quota, held).forEach((row, i) => {
     const n = (row.bulk ?? 0) - (card[i]!.bulk ?? 0);
@@ -332,7 +321,7 @@ export async function queuedPocket(
   for (const row of rows) {
     home = addVariants(home, { [row.variant]: row.count - Math.min(row.bulk ?? 0, row.count) });
   }
-  const held = heldOf(await readLibrary(database), rows, setKey, base);
+  const held = heldFromBinder(await readLibrary(database), setKey, base);
   let pocket = subtractVariants(home, held);
   for (const line of await database.intakeLines.toArray()) {
     if (line.setKey !== setKey || line.base !== base) continue;
@@ -391,7 +380,7 @@ export async function commitBatch(
   }: {
     database?: SwuDatabase;
     now?: number;
-    quotaOf?: (setKey: SetKey, base: number) => number;
+    quotaOf?: QuotaOf;
   } = {},
 ): Promise<CommitReport> {
   const touched = new Set<SetKey>();
@@ -438,17 +427,13 @@ export async function commitBatch(
             ref.variants = addVariants(ref.variants ?? {}, { [line.variant]: line.count });
             byCard.set(key, ref);
           }
-          const owned = new Map<string, VariantCounts>();
-          for (const row of await database.owned.toArray()) {
-            const key = cardKey(row.setKey, row.base);
-            owned.set(key, addVariants(owned.get(key) ?? {}, { [row.variant]: row.count }));
-          }
+          // Every ref names its printings, so the binder and bulk box are never consulted.
           const next = applyConstruct(
             library,
             batch.deckId,
             [...byCard.values()],
             [],
-            (setKey, base) => owned.get(cardKey(setKey, base)) ?? {},
+            () => NO_HOMES,
             new Date(now).toISOString(),
           );
           await database.deckLibrary.put({
@@ -461,20 +446,8 @@ export async function commitBatch(
       }
 
       if (quotaOf) {
-        const library = await readLibrary(database);
-        for (const ofCard of cards.values()) {
-          const { setKey, base } = ofCard[0]!;
-          const card = await database.owned.where({ setKey, base }).toArray();
-          const held = heldOf(library, card, setKey, base);
-          const changed: OwnedPrinting[] = [];
-          spillToBulk(card, quotaOf(setKey, base), held).forEach((row, i) => {
-            const moved = (row.bulk ?? 0) - (card[i]!.bulk ?? 0);
-            if (!moved) return;
-            toBulk += moved;
-            changed.push({ ...row, updatedAt: now });
-          });
-          if (changed.length) await database.owned.bulkPut(changed);
-        }
+        const keys = [...cards.values()].map((ofCard) => ofCard[0]!);
+        toBulk = await spillCards(database, keys, quotaOf, now);
       }
 
       await database.intakeLines.where('batchId').equals(batchId).delete();

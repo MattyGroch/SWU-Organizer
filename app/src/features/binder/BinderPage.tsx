@@ -103,20 +103,15 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
   );
 
   const { library } = useDeckLibrary();
-  /**
-   * Printings of each card in this set pulled out of the binder into built decks. Decks
-   * record which printings they took; older records resolve most valuable first.
-   */
+  /** Printings of each card in this set pulled into built decks, from the binder or bulk. */
   const held = useMemo(() => {
     const map = new Map<number, VariantCounts>();
-    const owned = (setKey: string, base: number) =>
-      setKey === set.setKey ? (ownership.get(base)?.byVariant ?? {}) : {};
-    for (const [key, variants] of heldVariants(library, owned)) {
+    for (const [key, variants] of heldVariants(library)) {
       const { setKey, baseNumber } = parseCardKey(key);
       if (setKey === set.setKey) map.set(baseNumber, variants);
     }
     return map;
-  }, [library, ownership, set.setKey]);
+  }, [library, set.setKey]);
 
   const rows = useMemo(
     () => buildCardRows(set, ownership, filters, held),

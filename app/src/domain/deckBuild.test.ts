@@ -4,23 +4,29 @@ import {
   adjustInBox,
   applyConstruct,
   applyDeconstruct,
-  binderAvailable,
-  binderPocket,
+  available,
   deckStatus,
   heldVariants,
+  inPlace,
   planConstruct,
   pulledTotals,
   requiredCounts,
-  type VariantLookup,
+  type HomeLookup,
 } from './deckBuild';
 import type { DeckLibrary, SavedDeck } from './decks';
-import type { VariantCounts } from './ownership';
+import { sumVariants, type VariantCounts } from './ownership';
 
-const ref = (baseNumber: number, count: number, variants?: VariantCounts) => ({
+const ref = (
+  baseNumber: number,
+  count: number,
+  variants?: VariantCounts,
+  fromBulk?: VariantCounts,
+) => ({
   setKey: 'SOR',
   baseNumber,
   count,
   ...(variants && { variants }),
+  ...(fromBulk && { fromBulk }),
 });
 
 function deck(id: string, over: Partial<SavedDeck> = {}): SavedDeck {
@@ -48,14 +54,17 @@ const library = (...decks: SavedDeck[]): DeckLibrary => ({
   preconOwnership: {},
 });
 
-/** Owned copies per base number, per printing. A plain number means that many Normals. */
+type Spec = number | VariantCounts;
+const asVariants = (value: Spec | undefined): VariantCounts =>
+  value === undefined ? {} : typeof value === 'number' ? { normal: value } : value;
+
+/**
+ * Copies per base number whose home is the binder, and the bulk box. A plain number means
+ * that many Normals.
+ */
 const owning =
-  (counts: Record<number, number | VariantCounts>): VariantLookup =>
-  (_setKey, base) => {
-    const value = counts[base];
-    if (value === undefined) return {};
-    return typeof value === 'number' ? { normal: value } : value;
-  };
+  (binder: Record<number, Spec>, bulk: Record<number, Spec> = {}): HomeLookup =>
+  (_setKey, base) => ({ binder: asVariants(binder[base]), bulk: asVariants(bulk[base]) });
 
 const FULL = [ref(1, 1), ref(19, 1), ref(33, 3)];
 const boxOf = (lib: DeckLibrary, id: string) =>
@@ -75,13 +84,13 @@ describe('binder availability', () => {
       deck('b', { constructed: false, pulledCards: [ref(33, 3)] }),
     );
     expect(pulledTotals(lib).get('SOR:33')).toBe(2);
-    expect(binderAvailable(owning({ 33: 3 }), lib)('SOR', 33)).toBe(1);
-    expect(binderAvailable(owning({ 33: 1 }), lib)('SOR', 33)).toBe(0);
+    expect(available(owning({ 33: 3 }), lib)('SOR', 33)).toEqual({ binder: 1, bulk: 0 });
+    expect(available(owning({ 33: 1 }), lib)('SOR', 33)).toEqual({ binder: 0, bulk: 0 });
   });
 
   it('never offers a Prestige Serialized to a deck', () => {
     const owned = owning({ 33: { normal: 1, 'prestige-serialized': 1 } });
-    expect(binderAvailable(owned, library())('SOR', 33)).toBe(1);
+    expect(available(owned, library())('SOR', 33).binder).toBe(1);
   });
 });
 
@@ -99,6 +108,7 @@ describe('deckStatus', () => {
     expect(deckStatus(a, library(a), owning({ 1: 1, 19: 1, 33: 2 }))).toEqual({
       state: 'partial',
       missingOwned: 1,
+      missingInBulk: 0,
       missingUnowned: 1,
     });
   });
@@ -124,6 +134,8 @@ describe('planConstruct', () => {
       baseNumber: 33,
       need: 3,
       fromBinder: 1,
+      fromBulk: 0,
+      bulkPrintings: {},
       fromDecks: [{ deckId: 'b', deckName: 'B', available: 1 }],
       unowned: 1,
     });
@@ -133,7 +145,16 @@ describe('planConstruct', () => {
     const a = deck('a', { constructed: true, pulledCards: [ref(1, 1), ref(19, 1), ref(33, 2)] });
     const lines = planConstruct(a, library(a), owning({ 1: 1, 19: 1, 33: 3 }), false);
     expect(lines).toEqual([
-      { setKey: 'SOR', baseNumber: 33, need: 1, fromBinder: 1, fromDecks: [], unowned: 0 },
+      {
+        setKey: 'SOR',
+        baseNumber: 33,
+        need: 1,
+        fromBinder: 1,
+        fromBulk: 0,
+        bulkPrintings: {},
+        fromDecks: [],
+        unowned: 0,
+      },
     ]);
   });
 });
@@ -144,7 +165,7 @@ describe('which printings a deck holds', () => {
   it('pulls the most valuable printing from the binder, and records it', () => {
     const next = applyConstruct(library(deck('a')), 'a', [ref(33, 1)], [], owned);
     expect(boxOf(next, 'a')).toEqual([ref(33, 1, { prestige: 1 })]);
-    expect(binderPocket(owned, next)('SOR', 33)).toEqual({ normal: 2, prestige: 0 });
+    expect(inPlace(owned, next)('SOR', 33).binder).toEqual({ normal: 2, prestige: 0 });
   });
 
   it('puts back exactly what a deck took, whatever order decks are built and broken', () => {
@@ -155,8 +176,8 @@ describe('which printings a deck holds', () => {
 
     // Breaking A must return the Prestige — not reshuffle B's Normal into a Prestige.
     lib = applyDeconstruct(lib, 'a');
-    expect(binderPocket(owned, lib)('SOR', 33)).toEqual({ normal: 1, prestige: 1 });
-    expect(heldVariants(lib, owned).get('SOR:33')).toEqual({ normal: 1 });
+    expect(inPlace(owned, lib)('SOR', 33).binder).toEqual({ normal: 1, prestige: 1 });
+    expect(heldVariants(lib).get('SOR:33')).toEqual({ normal: 1 });
   });
 
   it('moves the exact printing when one deck takes from another', () => {
@@ -187,9 +208,9 @@ describe('which printings a deck holds', () => {
     expect(boxOf(next, 'a')).toEqual([ref(33, 3, { hyperspace: 1, normal: 2 })]);
   });
 
-  it('resolves older records without printings most valuable first', () => {
+  it('reads a record without printings as Normal binder copies', () => {
     const a = deck('a', { constructed: true, pulledCards: [ref(33, 1)] });
-    expect(heldVariants(library(a), owned).get('SOR:33')).toEqual({ prestige: 1 });
+    expect(heldVariants(library(a)).get('SOR:33')).toEqual({ normal: 1 });
   });
 
   it('never pulls a Prestige Serialized', () => {
@@ -258,5 +279,69 @@ describe('stored printings', () => {
     const parsed = parseDeckLibrary(JSON.stringify(library(good, bad)));
     expect(parsed.customDecks.map((d) => d.id)).toEqual(['a']);
     expect(parsed.customDecks[0]!.pulledCards).toEqual([ref(33, 2, { prestige: 1, normal: 1 })]);
+  });
+});
+
+describe('the bulk box', () => {
+  // One Normal in the binder; a Normal and a Hyperspace in the bulk box.
+  const homes = owning({ 33: 1 }, { 33: { normal: 1, hyperspace: 1 } });
+
+  it('is planned after the binder and before other decks', () => {
+    const a = deck('a');
+    const b = deck('b', { constructed: true, pulledCards: [ref(33, 1, { normal: 1 })] });
+    // Two Normals at home in the binder, one of them out in deck B; one in the bulk box.
+    const lines = planConstruct(a, library(a, b), owning({ 33: 2 }, { 33: 1 }), false);
+    expect(lines.find((l) => l.baseNumber === 33)).toMatchObject({
+      fromBinder: 1,
+      fromBulk: 1,
+      bulkPrintings: { normal: 1 },
+      fromDecks: [{ deckId: 'b', available: 1 }],
+      unowned: 0,
+    });
+  });
+
+  it('records which copies came from it, and leaves the binder copy out of its count', () => {
+    const next = applyConstruct(library(deck('a')), 'a', [ref(33, 3)], [], homes);
+    expect(boxOf(next, 'a')).toEqual([
+      ref(33, 3, { normal: 2, hyperspace: 1 }, { normal: 1, hyperspace: 1 }),
+    ]);
+    const left = inPlace(homes, next)('SOR', 33);
+    expect(sumVariants(left.binder) + sumVariants(left.bulk)).toBe(0);
+    // Breaking the deck sends each copy home.
+    const back = applyDeconstruct(next, 'a');
+    expect(inPlace(homes, back)('SOR', 33)).toEqual(homes('SOR', 33));
+  });
+
+  it('counts toward a partial deck as "in bulk"', () => {
+    const a = deck('a', { constructed: true, pulledCards: [ref(1, 1), ref(19, 1), ref(33, 1)] });
+    expect(deckStatus(a, library(a), owning({ 1: 1, 19: 1, 33: 1 }, { 33: 1 }))).toEqual({
+      state: 'partial',
+      missingOwned: 0,
+      missingInBulk: 1,
+      missingUnowned: 1,
+    });
+  });
+
+  it('+ falls back to it when the binder is out; − sends a bulk copy back first', () => {
+    const a = deck('a', { constructed: true, pulledCards: [ref(33, 1, { normal: 1 })] });
+    const up = adjustInBox(library(a), 'a', 'SOR', 33, 1, 3, homes);
+    expect(boxOf(up, 'a')).toEqual([ref(33, 2, { normal: 1, hyperspace: 1 }, { hyperspace: 1 })]);
+    const down = adjustInBox(up, 'a', 'SOR', 33, -1, 3, homes);
+    expect(boxOf(down, 'a')).toEqual([ref(33, 1, { normal: 1 })]);
+  });
+
+  it('travels with a copy one deck takes from another', () => {
+    const a = deck('a', {
+      constructed: true,
+      pulledCards: [ref(33, 1, { hyperspace: 1 }, { hyperspace: 1 })],
+    });
+    const lib = applyConstruct(
+      library(a, deck('b')),
+      'b',
+      [],
+      [{ deckId: 'a', setKey: 'SOR', baseNumber: 33, count: 1 }],
+      homes,
+    );
+    expect(boxOf(lib, 'b')).toEqual([ref(33, 1, { hyperspace: 1 }, { hyperspace: 1 })]);
   });
 });

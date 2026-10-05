@@ -4,10 +4,10 @@ import { useMemo, useState } from 'react';
 import { queueDeck } from '~/data/intake';
 
 import type { LoadedSet } from '~/domain/catalog';
-import { binderAvailable, type OwnedLookup, type VariantLookup } from '~/domain/deckBuild';
+import { available, type HomeLookup, type OwnedLookup } from '~/domain/deckBuild';
 import type { DeckLookupSet } from '~/domain/decklist';
 import type { SavedDeck } from '~/domain/decks';
-import type { OwnedCounts } from '~/domain/ownership';
+import { NO_HOMES, homesOf, quotaForCard, type OwnedCounts } from '~/domain/ownership';
 import type { PreconCatalogEntry } from '~/domain/precons';
 import type { SetKey } from '~/domain/types';
 import { useToast } from '~/ui/toastContext';
@@ -45,7 +45,7 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
   const setOrder = useMemo(() => [...sets.keys()], [sets]);
 
   /**
-   * Copies you can build with: the whole collection, spares and cards already in built
+   * Copies you can build with: the whole collection, bulk box and cards already in built
    * decks included. Precons are left out on purpose — they stay sealed, so their cards are
    * owned but never available to a deck.
    */
@@ -53,13 +53,25 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
     () => (setKey, base) => binderOwnership.get(setKey)?.get(base)?.total ?? 0,
     [binderOwnership],
   );
-  /** The same, per printing — what decks need to know which printings they hold. */
-  const ownedVariants = useMemo<VariantLookup>(
-    () => (setKey, base) => binderOwnership.get(setKey)?.get(base)?.byVariant ?? {},
+  /** The same, per home and printing — where a deck takes copies from, and returns them. */
+  const homes = useMemo<HomeLookup>(
+    () => (setKey, base) => {
+      const counts = binderOwnership.get(setKey)?.get(base);
+      return counts ? homesOf(counts) : NO_HOMES;
+    },
     [binderOwnership],
   );
-
-  const inBinder = useMemo(() => binderAvailable(ownedVariants, library), [ownedVariants, library]);
+  const pullable = useMemo<OwnedLookup>(() => {
+    const free = available(homes, library);
+    return (setKey, base) => {
+      const { binder, bulk } = free(setKey, base);
+      return binder + bulk;
+    };
+  }, [homes, library]);
+  const quotaOf = (setKey: SetKey, base: number) => {
+    const card = sets.get(setKey)?.cardsByBase.get(base);
+    return card ? quotaForCard(card) : Infinity;
+  };
 
   function onDelete(deck: SavedDeck, index: number) {
     void deckLibrary.deleteDeck(deck.id);
@@ -90,14 +102,14 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
         loading={loading}
         lookup={lookup}
         owned={owned}
-        ownedVariants={ownedVariants}
-        binderAvailable={inBinder}
+        homes={homes}
+        pullable={pullable}
         onUpdate={(id, patch) => void deckLibrary.updateDeck(id, patch)}
         onDelete={onDelete}
         onOpenPickList={(deck, mode) => setPickList({ id: deck.id, mode })}
         onQueue={(deck) => void onQueue(deck)}
         onAdjustBox={(deck, row, delta, max) =>
-          void deckLibrary.adjustBox(deck.id, row.setKey, row.baseNumber, delta, max, ownedVariants)
+          void deckLibrary.adjustBox(deck.id, row.setKey, row.baseNumber, delta, max, homes)
         }
       />
 
@@ -119,12 +131,13 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
           library={library}
           lookup={lookup}
           setOrder={setOrder}
-          owned={ownedVariants}
+          homes={homes}
+          quotaOf={quotaOf}
           onClose={() => setPickList(null)}
-          onConstruct={(fromBinder, takes) =>
-            void deckLibrary.construct(pickListDeck.id, fromBinder, takes, ownedVariants)
+          onConstruct={(pulls, takes) =>
+            void deckLibrary.construct(pickListDeck.id, pulls, takes, homes)
           }
-          onDeconstruct={() => void deckLibrary.deconstruct(pickListDeck.id)}
+          onDeconstruct={() => deckLibrary.deconstruct(pickListDeck.id, quotaOf)}
         />
       )}
     </div>

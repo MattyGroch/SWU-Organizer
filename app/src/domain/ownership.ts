@@ -141,6 +141,28 @@ export function pullableCount(pocket: VariantCounts): number {
   return sumVariants(pocket) - (pocket['prestige-serialized'] ?? 0);
 }
 
+/** Where a card's copies live, per printing: its binder pocket or the bulk box. */
+export type Homes = { binder: VariantCounts; bulk: VariantCounts };
+
+export const NO_HOMES: Homes = { binder: {}, bulk: {} };
+
+export function homesOf(counts: OwnedCounts): Homes {
+  const bulk = counts.bulkByVariant ?? {};
+  return { binder: subtractVariants(counts.byVariant, bulk), bulk };
+}
+
+export function addHomes(a: Homes, b: Homes): Homes {
+  return { binder: addVariants(a.binder, b.binder), bulk: addVariants(a.bulk, b.bulk) };
+}
+
+/** `a − b` per home and printing, never below zero. */
+export function subtractHomes(a: Homes, b: Homes): Homes {
+  return {
+    binder: subtractVariants(a.binder, b.binder),
+    bulk: subtractVariants(a.bulk, b.bulk),
+  };
+}
+
 /** What is physically left in a binder pocket, given the printings out in decks. */
 export function pocketCounts(counts: OwnedCounts, held: VariantCounts): OwnedCounts {
   if (sumVariants(held) <= 0) return counts;
@@ -180,6 +202,24 @@ export function spillToBulk<T extends OwnedRowLike>(
     extra -= move;
   }
   return rows.map((row) => (spilled.has(row) ? { ...row, bulk: spilled.get(row) } : row));
+}
+
+/**
+ * What `spillToBulk` would send to the bulk box for one card, per printing, given where its
+ * copies live and what decks hold of its binder copies.
+ */
+export function pocketSpill(homes: Homes, held: VariantCounts, quota: number): VariantCounts {
+  const variants = Object.keys(addVariants(homes.binder, homes.bulk)) as VariantSlug[];
+  const rows = variants.map((variant) => {
+    const bulk = homes.bulk[variant] ?? 0;
+    return { base: 0, variant, count: (homes.binder[variant] ?? 0) + bulk, bulk };
+  });
+  const moved: VariantCounts = {};
+  spillToBulk(rows, quota, held).forEach((row, i) => {
+    const n = (row.bulk ?? 0) - rows[i]!.bulk;
+    if (n > 0) moved[row.variant] = n;
+  });
+  return moved;
 }
 
 export type CollectionStatus = 'complete' | 'partial' | 'none';

@@ -22,10 +22,8 @@ export async function collectionRows(
   const result: SetRows[] = [];
   for (const set of sets) {
     const ownership = await readSetOwnership(set.setKey, database);
-    const owned = (setKey: string, base: number) =>
-      setKey === set.setKey ? (ownership.get(base)?.byVariant ?? {}) : {};
     const held = new Map<number, VariantCounts>();
-    for (const [key, variants] of heldVariants(library, owned)) {
+    for (const [key, variants] of heldVariants(library)) {
       const { setKey, baseNumber } = parseCardKey(key);
       if (setKey === set.setKey) held.set(baseNumber, variants);
     }

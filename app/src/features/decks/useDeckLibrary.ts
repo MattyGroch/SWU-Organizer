@@ -2,7 +2,8 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useCallback, useMemo } from 'react';
 
 import { db } from '~/data/db';
-import { updateDeckLibrary } from '~/data/deckLibrary';
+import { deconstructDeck, updateDeckLibrary } from '~/data/deckLibrary';
+import type { QuotaOf } from '~/data/spill';
 import {
   createSavedDeck,
   emptyDeckLibrary,
@@ -14,9 +15,8 @@ import {
 import {
   adjustInBox,
   applyConstruct,
-  applyDeconstruct,
+  type HomeLookup,
   type TakeFromDeck,
-  type VariantLookup,
 } from '~/domain/deckBuild';
 import type { DeckCardRef } from '~/domain/deckContents';
 import type { ResolvedDeckRow } from '~/domain/decklist';
@@ -99,22 +99,17 @@ export function useDeckLibrary() {
   }, []);
 
   const construct = useCallback(
-    async (
-      deckId: string,
-      fromBinder: DeckCardRef[],
-      takes: TakeFromDeck[],
-      owned: VariantLookup,
-    ) => {
-      await updateDeckLibrary((current) =>
-        applyConstruct(current, deckId, fromBinder, takes, owned),
-      );
+    async (deckId: string, pulls: DeckCardRef[], takes: TakeFromDeck[], homes: HomeLookup) => {
+      await updateDeckLibrary((current) => applyConstruct(current, deckId, pulls, takes, homes));
     },
     [],
   );
 
-  const deconstruct = useCallback(async (deckId: string) => {
-    await updateDeckLibrary((current) => applyDeconstruct(current, deckId));
-  }, []);
+  /** Returns how many copies went to the bulk box because their pocket had filled up. */
+  const deconstruct = useCallback(
+    (deckId: string, quotaOf: QuotaOf) => deconstructDeck(deckId, quotaOf),
+    [],
+  );
 
   const adjustBox = useCallback(
     async (
@@ -123,10 +118,10 @@ export function useDeckLibrary() {
       baseNumber: number,
       delta: 1 | -1,
       max: number,
-      owned: VariantLookup,
+      homes: HomeLookup,
     ) => {
       await updateDeckLibrary((current) =>
-        adjustInBox(current, deckId, setKey, baseNumber, delta, max, owned),
+        adjustInBox(current, deckId, setKey, baseNumber, delta, max, homes),
       );
     },
     [],
