@@ -68,6 +68,13 @@ suite('rankMatches', () => {
     expect(rankMatches(index, fp(0x0f0f0f0f, 100, 12))[0]!.entry.num).toBe('324');
   });
 
+  it('still reads a soft Normal card as Normal: blur weakens its rails, never removes them', () => {
+    // Rails at half strength sit nearer Hyperspace's 10 than Normal's 60 in plain distance.
+    expect(rankMatches(index, fp(0x0f0f0f0f, 100, 30))[0]!.entry.num).toBe('059');
+    // Fainter than blur explains is no rail at all.
+    expect(rankMatches(index, fp(0x0f0f0f0f, 100, 16))[0]!.entry.num).toBe('324');
+  });
+
   it('reports a printing once, whichever of its pictures matched', () => {
     const top = rankMatches(index, fp(0x00ff00ff, 200, 30), 5);
     expect(top.filter((m) => m.entry.num === '010')).toHaveLength(1);
