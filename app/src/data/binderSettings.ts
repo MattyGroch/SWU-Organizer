@@ -8,15 +8,15 @@ import { db, readMeta, writeMeta, type SwuDatabase } from './db';
 /**
  * Sets kept out of the binder view.
  *
- * Some sets have no binder of their own — TS26 exists only as Twin Suns precon decks. Its
- * cards are still owned and still count everywhere else (decks, imports, backups); they
- * just have no pages to flip through.
+ * Some sets have no binder of their own — TS26 exists only as Twin Suns precon decks, IBH
+ * only as the Intro Battle: Hoth box. Their cards are still owned and still count everywhere
+ * else (decks, imports, backups); they just have no pages to flip through.
  */
 
 const HIDDEN_SETS_KEY = 'binder:hiddenSets';
 
-/** Until the setting is first changed: TS26 is precon-only, so it starts hidden. */
-export const DEFAULT_HIDDEN_SETS: readonly SetKey[] = ['TS26'];
+/** Until the setting is first changed: TS26 and IBH are precon-only, so they start hidden. */
+export const DEFAULT_HIDDEN_SETS: readonly SetKey[] = ['IBH', 'TS26'];
 
 export async function readHiddenSets(database: SwuDatabase = db): Promise<Set<SetKey>> {
   const raw = await readMeta(database, HIDDEN_SETS_KEY);

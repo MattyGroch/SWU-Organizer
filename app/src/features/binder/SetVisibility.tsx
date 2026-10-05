@@ -10,7 +10,7 @@ type Props = {
 };
 
 /**
- * Which sets get a binder. A set with no physical binder — TS26 lives only in precon
+ * Which sets get a binder. A set with no physical binder — TS26 and IBH live only in precon
  * decks — can be dropped from the picker, `[`/`]` and search without losing its cards.
  */
 export function SetVisibility({ entries, hidden }: Props) {

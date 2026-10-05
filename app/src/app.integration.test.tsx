@@ -340,7 +340,8 @@ describe('sets hidden from the binder', () => {
       .getAllByRole('option')
       .map((o) => o.getAttribute('value'));
     expect(options).not.toContain('TS26');
-    expect(options).toContain('IBH');
+    expect(options).not.toContain('IBH');
+    expect(options).toContain('SOR');
   });
 
   it('can be shown again from the Sets menu', async () => {

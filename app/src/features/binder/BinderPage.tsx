@@ -47,7 +47,7 @@ import { CardSearch } from '~/features/search/CardSearch';
 import { formatUsd } from '~/ui/format';
 import { useToast } from '~/ui/toastContext';
 import { useNarrow } from '~/ui/useNarrow';
-import { setAccent } from './setAccent';
+import { accentText, setAccent } from './setAccent';
 import styles from './BinderPage.module.css';
 
 type Props = {
@@ -250,14 +250,20 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
     binder.selectNumber(selectCard);
   }, [selectCard, set, binder]);
 
-  // Tint the page with the set's accent colour (see global.css); cleared on leaving the binder.
+  // Paint the toolbar, tab and table header in the set's accent colour; cleared on leaving the binder.
   useEffect(() => {
     const accent = setAccent(set.setKey);
     const root = document.documentElement;
-    if (accent) root.style.setProperty('--set-accent', accent);
-    else root.style.removeProperty('--set-accent');
+    if (accent) {
+      root.style.setProperty('--set-accent', accent);
+      root.style.setProperty('--set-accent-text', accentText(accent));
+    } else {
+      root.style.removeProperty('--set-accent');
+      root.style.removeProperty('--set-accent-text');
+    }
     return () => {
       root.style.removeProperty('--set-accent');
+      root.style.removeProperty('--set-accent-text');
     };
   }, [set.setKey]);
 
