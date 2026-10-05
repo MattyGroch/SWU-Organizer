@@ -399,6 +399,7 @@ export function BinderPage({ set, entries, loadedSets, selectCard }: Props) {
           held={(binder.active && held.get(binder.active.card.Number)) || {}}
           onAdjust={adjustDefault}
           onAdjustPrinting={adjustPrinting_}
+          onClose={binder.clearSelection}
         />
       </div>
 

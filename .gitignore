@@ -49,3 +49,6 @@ docker-compose.override.yml
 /server/data/
 server/.env
 
+
+# Phone screenshots from `npm run screenshots` (app/scripts/screenshots.mjs)
+/app/screenshots/

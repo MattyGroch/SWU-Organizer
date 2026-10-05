@@ -98,3 +98,32 @@
   opacity: 0.35;
   cursor: not-allowed;
 }
+
+.narrowOnly {
+  display: none;
+}
+
+/* Phones: what the card is and how many — role and set fold under the name, cost goes. */
+@media (max-width: 760px) {
+  .wideOnly {
+    display: none;
+  }
+
+  .narrowOnly {
+    display: block;
+  }
+
+  .table th,
+  .table td {
+    padding: var(--space-2) 4px;
+  }
+
+  .numeric {
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  .table th {
+    font-size: var(--font-size-xs);
+  }
+}

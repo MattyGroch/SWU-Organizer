@@ -28,6 +28,8 @@
   --color-accent: #213c6a;
   --color-accent-text: #ffffff;
   --color-focus: #8b5cf6;
+  /* Links in running text: the focus violet, lightened to read on the dark ground. */
+  --color-link: #b9a6fb;
   --color-success: #22c55e;
   --color-warning: #f59e0b;
   --color-danger: #ef4444;

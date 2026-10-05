@@ -122,6 +122,16 @@
     display: none;
   }
 
+  /* The set picker shares its row with the Sets button instead of taking one alone. */
+  .setPicker {
+    flex: 1 1 10rem;
+    min-width: 0;
+  }
+
+  .setPicker select {
+    width: 100%;
+  }
+
   /* Placed last in the column so `sticky; bottom` pins it while the table scrolls by. */
   .panelSlot {
     position: sticky;

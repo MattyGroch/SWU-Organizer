@@ -145,3 +145,9 @@
   font-weight: 700;
   cursor: pointer;
 }
+
+@media (max-width: 760px) {
+  .panel {
+    padding: var(--space-3);
+  }
+}

@@ -98,7 +98,12 @@
 }
 
 .optionNumbers {
-  flex-shrink: 0;
+  flex-shrink: 1;
+  min-width: 0;
+  max-width: 35%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--color-text-subtle);
   font-size: var(--font-size-xs);
   font-variant-numeric: tabular-nums;
@@ -109,4 +114,11 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
   text-align: center;
+}
+
+/* Phones: the type is the first thing to go. */
+@media (max-width: 760px) {
+  .optionType {
+    display: none;
+  }
 }

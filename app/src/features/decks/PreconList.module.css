@@ -10,7 +10,8 @@
 
 .summary {
   display: flex;
-  gap: var(--space-3);
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
   align-items: baseline;
   list-style: none;
   cursor: pointer;
@@ -46,11 +47,13 @@
 .title {
   font-size: var(--font-size-lg);
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .count {
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
+  white-space: nowrap;
 }
 
 .lead {
@@ -181,4 +184,10 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
   white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .panel {
+    padding: var(--space-3);
+  }
 }
