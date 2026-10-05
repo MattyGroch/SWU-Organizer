@@ -1,8 +1,8 @@
 import type { LoadedSet, Printing, VariantSlug } from '~/domain/catalog';
 import { applyConstruct, cardKey, parseCardKey } from '~/domain/deckBuild';
 import type { DeckCardRef } from '~/domain/deckContents';
-import { parseDeckLibrary, type SavedDeck } from '~/domain/decks';
-import { addVariants, subtractVariants, type VariantCounts } from '~/domain/ownership';
+import { parseDeckLibrary, type DeckLibrary, type SavedDeck } from '~/domain/decks';
+import { addVariants, spillToBulk, subtractVariants, type VariantCounts } from '~/domain/ownership';
 import { heldVariants } from '~/domain/deckBuild';
 import type { SetKey } from '~/domain/types';
 
@@ -87,8 +87,6 @@ export type ScanReceipt = {
   lineId: string;
   createdBatch: boolean;
   createdLine: boolean;
-  /** The swap-out line this scan added to, when it displaced a weaker copy. */
-  swapLineId?: string;
 };
 
 type QueuedPrinting = { setKey: SetKey; base: number; num: string; variant: VariantSlug };
@@ -97,15 +95,12 @@ type QueuedPrinting = { setKey: SetKey; base: number; num: string; variant: Vari
  * Adds one scanned copy to the open "Scanned cards" batch, creating the batch on first
  * use. A second copy of the same printing bumps that line's count. Nothing counts as owned
  * until the batch is reviewed and committed — the camera cannot tell foil from non-foil, so
- * that review is where finishes get set.
+ * that review is where finishes get set. Whether a copy ends up in the binder or the bulk
+ * box is settled then too (see `commitBatch`).
  */
 export async function queueScan(
   printing: QueuedPrinting,
-  {
-    database = db,
-    now = Date.now(),
-    swapOut,
-  }: { database?: SwuDatabase; now?: number; swapOut?: QueuedPrinting } = {},
+  { database = db, now = Date.now() }: { database?: SwuDatabase; now?: number } = {},
 ): Promise<ScanReceipt> {
   return database.transaction('rw', database.intakeBatches, database.intakeLines, async () => {
     const open = (await database.intakeBatches.toArray())
@@ -121,53 +116,36 @@ export async function queueScan(
       });
     }
 
-    const lines = await database.intakeLines.where('batchId').equals(batchId).toArray();
-    /** One more copy on the matching line, or a new line: its id, and whether it is new. */
-    const bumpLine = async (p: QueuedPrinting, removal: boolean) => {
-      const same = lines.find(
-        (l) => l.setKey === p.setKey && l.num === p.num && Boolean(l.swapOut) === removal,
-      );
-      if (same) {
-        await database.intakeLines.update(same.id, { count: same.count + 1 });
-        return { id: same.id, created: false };
-      }
-      const id = crypto.randomUUID();
-      await database.intakeLines.add({
-        id,
-        batchId,
-        setKey: p.setKey,
-        base: p.base,
-        num: p.num,
-        variant: p.variant,
-        count: 1,
-        // Newest scans last, in the order they were made.
-        order: now,
-        ...(removal ? { swapOut: true as const } : {}),
-      });
-      return { id, created: true };
-    };
-
-    const line = await bumpLine(printing, false);
-    const swap = swapOut ? await bumpLine(swapOut, true) : undefined;
-    return {
+    const same = (await database.intakeLines.where('batchId').equals(batchId).toArray()).find(
+      (l) => l.setKey === printing.setKey && l.num === printing.num,
+    );
+    if (same) {
+      await database.intakeLines.update(same.id, { count: same.count + 1 });
+      return { batchId, lineId: same.id, createdBatch: !open, createdLine: false };
+    }
+    const id = crypto.randomUUID();
+    await database.intakeLines.add({
+      id,
       batchId,
-      lineId: line.id,
-      createdBatch: !open,
-      createdLine: line.created,
-      ...(swap ? { swapLineId: swap.id } : {}),
-    };
+      setKey: printing.setKey,
+      base: printing.base,
+      num: printing.num,
+      variant: printing.variant,
+      count: 1,
+      // Newest scans last, in the order they were made.
+      order: now,
+    });
+    return { batchId, lineId: id, createdBatch: !open, createdLine: true };
   });
 }
 
 /** Takes back one `queueScan`: one fewer copy, and no empty line or batch left behind. */
 export async function unqueueScan(receipt: ScanReceipt, database: SwuDatabase = db): Promise<void> {
   await database.transaction('rw', database.intakeBatches, database.intakeLines, async () => {
-    for (const id of [receipt.lineId, receipt.swapLineId]) {
-      const line = id ? await database.intakeLines.get(id) : undefined;
-      if (line && line.count > 1)
-        await database.intakeLines.update(line.id, { count: line.count - 1 });
-      else if (line) await database.intakeLines.delete(line.id);
-    }
+    const line = await database.intakeLines.get(receipt.lineId);
+    if (line && line.count > 1)
+      await database.intakeLines.update(line.id, { count: line.count - 1 });
+    else if (line) await database.intakeLines.delete(line.id);
     if (
       receipt.createdBatch &&
       (await database.intakeLines.where('batchId').equals(receipt.batchId).count()) === 0
@@ -184,10 +162,10 @@ export function sourcePrinting(printings: readonly Printing[]): Printing | undef
 
 type CardRef = { batchId: string; setKey: SetKey; base: number };
 
-/** A card's additions in a batch. Swap-outs are separate: allocating never touches them. */
+/** A card's lines in a batch: one per printing. */
 async function cardLines(database: SwuDatabase, card: CardRef): Promise<IntakeLine[]> {
   return (await database.intakeLines.where('batchId').equals(card.batchId).toArray()).filter(
-    (line) => line.setKey === card.setKey && line.base === card.base && !line.swapOut,
+    (line) => line.setKey === card.setKey && line.base === card.base,
   );
 }
 
@@ -274,7 +252,7 @@ export async function resetCard(
   });
 }
 
-/** Drops every copy of a card from the batch, and any swap it would have made. */
+/** Drops every copy of a card from the batch. */
 export async function removeCard(card: CardRef, database: SwuDatabase = db): Promise<void> {
   await database.transaction('rw', database.intakeLines, async () => {
     const lines = (await database.intakeLines.where('batchId').equals(card.batchId).toArray())
@@ -284,37 +262,92 @@ export async function removeCard(card: CardRef, database: SwuDatabase = db): Pro
   });
 }
 
-/** Keeps the weaker copy after all: the better one is still added, as a spare. */
-export async function cancelSwap(lineId: string, database: SwuDatabase = db): Promise<void> {
-  await database.intakeLines.delete(lineId);
+/** What built decks hold of one card, given that card's owned rows. */
+function heldOf(
+  library: DeckLibrary,
+  rows: readonly OwnedPrinting[],
+  setKey: SetKey,
+  base: number,
+): VariantCounts {
+  let owned: VariantCounts = {};
+  for (const row of rows) owned = addVariants(owned, { [row.variant]: row.count });
+  const lookup = (s: SetKey, b: number) => (s === setKey && b === base ? owned : {});
+  return heldVariants(library, lookup).get(cardKey(setKey, base)) ?? {};
+}
+
+async function readLibrary(database: SwuDatabase): Promise<DeckLibrary> {
+  return parseDeckLibrary((await database.deckLibrary.get('library'))?.json ?? null);
+}
+
+/** One card's owned rows after its batch lines are added, the way `commitBatch` adds them. */
+function withLines(
+  rows: readonly OwnedPrinting[],
+  lines: readonly IntakeLine[],
+  now: number,
+): OwnedPrinting[] {
+  const byId = new Map(rows.map((row) => [row.id, row]));
+  for (const line of lines) {
+    const id = printingId(line.setKey, line.num);
+    const current = byId.get(id) ?? emptyOwnedRow(line.setKey, line.base, line);
+    byId.set(id, withCount(current, current.count + line.count, now));
+  }
+  return [...byId.values()];
 }
 
 /**
- * What a card's binder pocket holds once the queue is committed: owned copies, less those
- * out in built decks, plus every copy already waiting in Intake (less queued swap-outs).
- * The scanner checks this to know whether a new copy has a place.
+ * What committing a scanned card's lines would send to the bulk box, per printing — for
+ * showing before the batch is added.
+ */
+export async function bulkPreview(
+  lines: readonly IntakeLine[],
+  quota: number,
+  database: SwuDatabase = db,
+): Promise<VariantCounts> {
+  const first = lines[0];
+  if (!first) return {};
+  const { setKey, base } = first;
+  const card = withLines(await database.owned.where({ setKey, base }).toArray(), lines, 0);
+  const held = heldOf(await readLibrary(database), card, setKey, base);
+  let moved: VariantCounts = {};
+  spillToBulk(card, quota, held).forEach((row, i) => {
+    const n = (row.bulk ?? 0) - (card[i]!.bulk ?? 0);
+    if (n > 0) moved = addVariants(moved, { [row.variant]: n });
+  });
+  return moved;
+}
+
+/**
+ * What a card's binder pocket would hold if everything waiting in Intake went into it:
+ * copies whose home is the binder, less those out in built decks, plus every queued copy.
+ * The scanner ranks a new copy against the best `quota` of these; the rest go to bulk on
+ * commit.
  */
 export async function queuedPocket(
   setKey: SetKey,
   base: number,
   database: SwuDatabase = db,
 ): Promise<VariantCounts> {
-  let owned: VariantCounts = {};
-  for (const row of await database.owned.where({ setKey, base }).toArray()) {
-    owned = addVariants(owned, { [row.variant]: row.count });
+  const rows = await database.owned.where({ setKey, base }).toArray();
+  let home: VariantCounts = {};
+  for (const row of rows) {
+    home = addVariants(home, { [row.variant]: row.count - Math.min(row.bulk ?? 0, row.count) });
   }
-  const library = parseDeckLibrary((await database.deckLibrary.get('library'))?.json ?? null);
-  const held =
-    heldVariants(library, (s, b) => (s === setKey && b === base ? owned : {})).get(
-      cardKey(setKey, base),
-    ) ?? {};
-  let pocket = subtractVariants(owned, held);
+  const held = heldOf(await readLibrary(database), rows, setKey, base);
+  let pocket = subtractVariants(home, held);
   for (const line of await database.intakeLines.toArray()) {
     if (line.setKey !== setKey || line.base !== base) continue;
-    const delta = { [line.variant]: line.count };
-    pocket = line.swapOut ? subtractVariants(pocket, delta) : addVariants(pocket, delta);
+    pocket = addVariants(pocket, { [line.variant]: line.count });
   }
   return pocket;
+}
+
+function groupLines(lines: readonly IntakeLine[]): Map<string, IntakeLine[]> {
+  const byCard = new Map<string, IntakeLine[]>();
+  for (const line of lines) {
+    const key = cardKey(line.setKey, line.base);
+    byCard.set(key, [...(byCard.get(key) ?? []), line]);
+  }
+  return byCard;
 }
 
 /** Drops a batch unadded. Discarding scanned cards drops their stack too. */
@@ -331,21 +364,39 @@ export async function discardBatch(batchId: string, database: SwuDatabase = db):
   );
 }
 
-export type CommitReport = { copies: number; deckBuilt: boolean };
+export type CommitReport = {
+  copies: number;
+  /** Copies sent to the bulk box because their binder pocket was full. */
+  toBulk: number;
+  deckBuilt: boolean;
+};
 
 /**
  * Adds a batch to the collection and clears it from the queue, in one transaction.
  *
  * For a deck batch, the same copies go straight into that deck's box: the cards were
  * never filed in the binder, so the binder's counts do not change.
+ *
+ * Every card the batch touched then keeps only the best `quotaOf` copies in its binder
+ * pocket; the weakest extras go to the bulk box. That covers a scan of a card whose pocket
+ * was full, and a better printing bumping a weaker one, with no special case for either.
+ * Without `quotaOf`, nothing moves.
  */
 export async function commitBatch(
   batchId: string,
-  database: SwuDatabase = db,
-  now = Date.now(),
+  {
+    database = db,
+    now = Date.now(),
+    quotaOf,
+  }: {
+    database?: SwuDatabase;
+    now?: number;
+    quotaOf?: (setKey: SetKey, base: number) => number;
+  } = {},
 ): Promise<CommitReport> {
   const touched = new Set<SetKey>();
   let copies = 0;
+  let toBulk = 0;
   let deckBuilt = false;
 
   await database.transaction(
@@ -360,44 +411,18 @@ export async function commitBatch(
     async () => {
       const batch = await database.intakeBatches.get(batchId);
       if (!batch) return;
-      const all = (await database.intakeLines.where('batchId').equals(batchId).toArray()).filter(
+      const lines = (await database.intakeLines.where('batchId').equals(batchId).toArray()).filter(
         (line) => line.count > 0,
       );
-      const lines = all.filter((line) => !line.swapOut);
-      const swaps = all.filter((line) => line.swapOut);
 
-      const rows = new Map<string, OwnedPrinting>();
-      for (const line of lines) {
-        const id = printingId(line.setKey, line.num);
-        const current = rows.get(id) ?? (await database.owned.get(id));
-        rows.set(
-          id,
-          withCount(
-            current ?? emptyOwnedRow(line.setKey, line.base, line),
-            (current?.count ?? 0) + line.count,
-            now,
-          ),
-        );
-        touched.add(line.setKey);
-        copies += line.count;
+      const cards = groupLines(lines);
+      for (const ofCard of cards.values()) {
+        const { setKey, base } = ofCard[0]!;
+        const rows = await database.owned.where({ setKey, base }).toArray();
+        await database.owned.bulkPut(withLines(rows, ofCard, now));
+        touched.add(setKey);
+        for (const line of ofCard) copies += line.count;
       }
-      // Swapped-out copies leave the collection (to bulk); never below zero.
-      const emptied: string[] = [];
-      for (const line of swaps) {
-        const id = printingId(line.setKey, line.num);
-        const current = rows.get(id) ?? (await database.owned.get(id));
-        if (!current) continue;
-        const count = Math.max(0, current.count - line.count);
-        if (count === 0) {
-          rows.delete(id);
-          emptied.push(id);
-        } else {
-          rows.set(id, withCount(current, count, now));
-        }
-        touched.add(line.setKey);
-      }
-      if (rows.size) await database.owned.bulkPut([...rows.values()]);
-      if (emptied.length) await database.owned.bulkDelete(emptied);
 
       if (batch.kind === 'deck' && batch.deckId) {
         const row = await database.deckLibrary.get('library');
@@ -435,6 +460,23 @@ export async function commitBatch(
         }
       }
 
+      if (quotaOf) {
+        const library = await readLibrary(database);
+        for (const ofCard of cards.values()) {
+          const { setKey, base } = ofCard[0]!;
+          const card = await database.owned.where({ setKey, base }).toArray();
+          const held = heldOf(library, card, setKey, base);
+          const changed: OwnedPrinting[] = [];
+          spillToBulk(card, quotaOf(setKey, base), held).forEach((row, i) => {
+            const moved = (row.bulk ?? 0) - (card[i]!.bulk ?? 0);
+            if (!moved) return;
+            toBulk += moved;
+            changed.push({ ...row, updatedAt: now });
+          });
+          if (changed.length) await database.owned.bulkPut(changed);
+        }
+      }
+
       await database.intakeLines.where('batchId').equals(batchId).delete();
       await database.intakeBatches.delete(batchId);
       // The scanned stack stays, to be put away; the next scan starts a new one.
@@ -444,5 +486,5 @@ export async function commitBatch(
 
   for (const setKey of touched) notifyInventoryChanged(setKey);
   if (deckBuilt) notifyDeckLibraryChanged();
-  return { copies, deckBuilt };
+  return { copies, toBulk, deckBuilt };
 }

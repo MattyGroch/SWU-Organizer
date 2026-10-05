@@ -114,11 +114,11 @@ describe('planPutAway', () => {
     expect(filed.map((s) => s.card.id).sort()).toEqual([a.id, b.id, stack[1]!.id].sort());
   });
 
-  it('sets aside spares, bulk, unsure and hidden-set cards on one last pile', () => {
+  it('sets aside bulk, unsure and hidden-set cards on one last pile', () => {
     const stack = [
       card('SOR', 5, 'bulk'),
       card('SOR', 50),
-      card('SOR', 9, 'spare'),
+      card('SOR', 9, 'bulk'),
       card('TS26', 3),
       card('SOR', 2, 'unsure'),
       card('SOR', 1),
@@ -134,7 +134,7 @@ describe('planPutAway', () => {
     const { aside } = play(stack, steps);
     expect(aside).toHaveLength(4);
     const reasons = steps.flatMap((s) => (s.kind === 'aside' ? [s.reason] : []));
-    expect(reasons.sort()).toEqual(['bulk', 'hidden', 'spare', 'unsure']);
+    expect(reasons.sort()).toEqual(['bulk', 'bulk', 'hidden', 'unsure']);
     // Set-aside cards come last, after everything is filed.
     expect(steps.at(-1)!.kind).toBe('aside');
   });

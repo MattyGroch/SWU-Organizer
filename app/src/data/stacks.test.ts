@@ -55,11 +55,11 @@ describe('scanned stacks', () => {
     const b = await logScan(scan(2, { swapOut: { num: '002', variant: 'normal' } }), { database });
     await logScan(scan(3), { database });
     await updateScan(a, scan(9), database);
-    await updateScan(b, scan(2, { fate: 'spare' }), database);
+    await updateScan(b, scan(2, { fate: 'bulk' }), database);
     const stack = await only();
     const cards = await stackCards(stack.id, database);
     expect(cards.map((c) => c.base)).toEqual([9, 2, 3]);
-    expect(cards[1]!.fate).toBe('spare');
+    expect(cards[1]!.fate).toBe('bulk');
     expect(cards[1]!.swapOut).toBeUndefined();
     await dropScan(b, database);
     expect(await bases(stack.id)).toEqual([9, 3]);
@@ -74,7 +74,7 @@ describe('scanned stacks', () => {
   it('survives its batch being added, and the next scan starts a new stack', async () => {
     const receipt = await queueScan(scan(1), { database });
     await logScan(scan(1), { database });
-    await commitBatch(receipt.batchId, database);
+    await commitBatch(receipt.batchId, { database });
     const stack = await only();
     expect(stack.closedAt).toBeDefined();
     await logScan(scan(5), { database });

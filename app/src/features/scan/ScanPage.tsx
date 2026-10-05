@@ -4,7 +4,6 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 
 import { db } from '~/data/db';
 import {
-  cancelSwap,
   queuedPocket,
   queueScan,
   sourcePrinting,
@@ -60,12 +59,11 @@ type Item = {
   receipt: ScanReceipt | null;
   /**
    * Set when the card's binder pocket was already full: `full` (no better than what is
-   * there — nothing queued, it goes to bulk) or `upgrade` (better than the weakest copy —
-   * queued, with that copy queued to leave for bulk).
+   * there — it goes to the bulk box) or `upgrade` (better than the weakest copy, which
+   * goes to the bulk box instead). Either way the copy is queued; committing the batch
+   * moves the extra copy to bulk.
    */
   room: PocketRoom | null;
-  /** Kept anyway though its pocket is full: it goes in with the spares. */
-  spare?: boolean;
   /** This scan's card in the scanned stack (Add mode), so putting away knows its place. */
   stackCardId: string | null;
 };
@@ -75,9 +73,8 @@ function stackEntry(item: Omit<Item, 'id' | 'result' | 'stackCardId'>, set?: Loa
   const { setKey, base, num, variant } = item.chosen;
   const card = { setKey, base, num, variant };
   if (item.question) return { ...card, fate: 'unsure' };
-  if (item.spare) return { ...card, fate: 'spare' };
-  if (!item.receipt) return { ...card, fate: 'bulk' };
-  if (item.receipt.swapLineId && item.room?.kind === 'upgrade') {
+  if (item.room?.kind === 'full') return { ...card, fate: 'bulk' };
+  if (item.room?.kind === 'upgrade') {
     const replaces = item.room.replaces;
     const weaker = set?.printingsByBase.get(base)?.find((p) => p.variant === replaces);
     if (weaker) {
@@ -164,9 +161,9 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   );
 
   /**
-   * Queues a scanned printing, minding its binder pocket. Room: queued. Full of copies at
-   * least as good: nothing queued — it goes to bulk. Better than the weakest copy: queued,
-   * bumping that copy to bulk, with no question asked.
+   * Queues a scanned printing and notes what it does to its binder pocket: room, full of
+   * copies at least as good (it goes to bulk), or better than the weakest copy (that one
+   * goes to bulk). Every copy is queued; committing settles which copies go to bulk.
    */
   const place = useCallback(
     async (printing: Printing): Promise<Pick<Item, 'receipt' | 'room'>> => {
@@ -179,15 +176,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         quota,
         printing.variant,
       );
-      if (room.kind === 'full') return { receipt: null, room };
-      if (room.kind === 'upgrade') {
-        const weaker = set?.printingsByBase
-          .get(printing.base)
-          ?.find((p) => p.variant === room.replaces);
-        const swapOut = weaker && { ...printing, num: weaker.num, variant: weaker.variant };
-        return { receipt: await queueScan(printing, swapOut ? { swapOut } : {}), room };
-      }
-      return { receipt: await queueScan(printing), room: null };
+      return { receipt: await queueScan(printing), room: room.kind === 'room' ? null : room };
     },
     [sets],
   );
@@ -346,9 +335,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       // The screen first, as soon as Intake has it; the stack is brought into line after.
       setItems((current) =>
         current.map((i) =>
-          i.id === item.id
-            ? { ...i, chosen: printing, question: null, spare: false, ...placed }
-            : i,
+          i.id === item.id ? { ...i, chosen: printing, question: null, ...placed } : i,
         ),
       );
       if (mode !== 'add') return;
@@ -374,26 +361,6 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     return () =>
       void choose(item, { ...item.chosen, num: other.num, variant: other.variant }).catch(failed);
   };
-
-  /**
-   * Second thoughts on a full pocket: add the copy anyway as a spare, or — for a copy that
-   * bumped a weaker one — keep that one too.
-   */
-  const settleRoom = useCallback(async (item: Item, answer: 'spare' | 'keep') => {
-    let receipt = item.receipt;
-    if (answer === 'keep' && receipt?.swapLineId) {
-      await cancelSwap(receipt.swapLineId);
-      receipt = { ...receipt, swapLineId: undefined };
-    } else if (answer === 'spare' && !receipt) {
-      receipt = await queueScan(item.chosen);
-    }
-    setItems((current) =>
-      current.map((i) => (i.id === item.id ? { ...i, receipt, room: null, spare: true } : i)),
-    );
-    if (item.stackCardId) {
-      await updateScan(item.stackCardId, stackEntry({ ...item, receipt, room: null, spare: true }));
-    }
-  }, []);
 
   const remove = useCallback(
     async (item: Item, again: boolean) => {
@@ -480,7 +447,6 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           onChoose={(p) => void choose(latest, p).catch(failed)}
           onRescan={() => void remove(latest, true).catch(failed)}
           onConfirm={() => void choose(latest, latest.chosen).catch(failed)}
-          onSettle={(answer) => void settleRoom(latest, answer).catch(failed)}
           onToggleFoil={foilToggle(latest)}
         />
       )}
@@ -676,7 +642,6 @@ function LatestScan({
   onChoose,
   onRescan,
   onConfirm,
-  onSettle,
   onToggleFoil,
 }: {
   item: Item;
@@ -686,7 +651,6 @@ function LatestScan({
   onChoose: (p: Printing) => void;
   onRescan: () => void;
   onConfirm: () => void;
-  onSettle: (answer: 'spare' | 'keep') => void;
   /** Flip the scan to its foil / non-foil printing; absent when it has none. */
   onToggleFoil?: () => void;
 }) {
@@ -769,31 +733,18 @@ function LatestScan({
             </div>
           </div>
         ) : mode === 'add' && item.room?.kind === 'full' ? (
-          <div className={styles.question}>
+          <div className={styles.bump}>
+            <p className={styles.added}>Added to Intake, for bulk</p>
             <p>
-              Maximum count reached for <strong>{nameOf(chosen)}</strong>. Leave it in the stack:
-              Put away sets it aside for bulk.
+              The <strong>{nameOf(chosen)}</strong> pocket is full. Leave it in the stack: Put away
+              sets it aside for the bulk box.
             </p>
-            {!item.receipt && (
-              <div className={styles.choices}>
-                <button type="button" className={styles.button} onClick={() => onSettle('spare')}>
-                  Add anyway, as a spare
-                </button>
-              </div>
-            )}
           </div>
         ) : mode === 'add' && item.room?.kind === 'upgrade' ? (
           <div className={styles.bump}>
             <p className={styles.added}>Added to Intake</p>
             <p>
-              Bumps a {variantLabel(item.room.replaces)} {nameOf(chosen)} to bulk.{' '}
-              <button
-                type="button"
-                className={styles.inlineButton}
-                onClick={() => onSettle('keep')}
-              >
-                Keep both
-              </button>
+              Bumps a {variantLabel(item.room.replaces)} {nameOf(chosen)} to bulk.
             </p>
           </div>
         ) : mode === 'add' ? (

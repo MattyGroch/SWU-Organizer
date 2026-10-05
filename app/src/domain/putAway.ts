@@ -16,8 +16,8 @@ import type { SetKey } from './types';
  * on top, each pile's last-dealt card first.
  */
 
-/** Where a scanned copy goes: its binder pocket, or somewhere other than the binder. */
-export type StackFate = 'binder' | 'spare' | 'bulk' | 'unsure';
+/** Where a scanned copy goes: its binder pocket, the bulk box, or nowhere yet. */
+export type StackFate = 'binder' | 'bulk' | 'unsure';
 
 export type StackCardInput = {
   id: string;

@@ -199,18 +199,13 @@ describe('ScanPage', () => {
     );
   });
 
-  it('does not add a copy the binder has no room for, and says to bulk it', async () => {
+  it('adds a copy the binder has no room for, and says it goes to bulk', async () => {
     await fillPocket();
     await scan('059', 'normal');
-    expect(await screen.findByText(/Maximum count reached for/)).toBeInTheDocument();
-    expect(await db.intakeLines.count()).toBe(0);
-    // Not added, but still in the stack in your hand: it goes to bulk.
-    await waitFor(async () => expect(await stack()).toEqual([['059', 'bulk', null]]));
-
-    await userEvent.click(screen.getByRole('button', { name: 'Add anyway, as a spare' }));
+    expect(await screen.findByText('Added to Intake, for bulk')).toBeInTheDocument();
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
-    expect(await stack()).toEqual([['059', 'spare', null]]);
-    expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+    // Still in the stack in your hand: Put away sets it aside for the bulk box.
+    await waitFor(async () => expect(await stack()).toEqual([['059', 'bulk', null]]));
   });
 
   it('adds a better printing straight away, bumping the weakest copy to bulk', async () => {
@@ -221,21 +216,10 @@ describe('ScanPage', () => {
     ).toBeInTheDocument();
     await waitFor(async () => {
       const lines = await db.intakeLines.toArray();
-      expect(lines.map((l) => [l.num, Boolean(l.swapOut)]).sort()).toEqual([
-        ['059', true],
-        ['324', false],
-      ]);
+      expect(lines.map((l) => l.num)).toEqual(['324']);
     });
+    // Filing it means taking the Normal out of the pocket, for bulk.
     expect(await stack()).toEqual([['324', 'binder', '059']]);
-
-    // Second thoughts: keep the Normal too — the Hyperspace stays queued.
-    await userEvent.click(screen.getByRole('button', { name: 'Keep both' }));
-    await waitFor(async () => {
-      const lines = await db.intakeLines.toArray();
-      expect(lines.map((l) => [l.num, Boolean(l.swapOut)])).toEqual([['324', false]]);
-    });
-    expect(await stack()).toEqual([['324', 'spare', null]]);
-    expect(screen.getByText('Added to Intake')).toBeInTheDocument();
   });
 
   it('after five misses, offers to look the card up by name instead', async () => {
