@@ -1,0 +1,14 @@
+# Runs the app built from this checkout instead of the published image — for trying a
+# branch on the live host before it is merged:
+#
+#   docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build swu-organizer
+#
+# The local image has a name Docker Hub doesn't know, so Watchtower leaves it alone. To go
+# back to the published image: `docker compose up -d swu-organizer`.
+services:
+  swu-organizer:
+    build: .
+    image: swu-organizer-local
+    pull_policy: build
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"

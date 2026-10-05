@@ -1,18 +1,24 @@
-# SWU Organizer on one host behind Traefik: the app (Dockerfile) and the sync API (server/).
-# Deploy with `git pull && docker compose up -d --build` — see docs/deploy.md.
+# SWU Organizer on one host behind Traefik: the app and the sync API (server/).
+#
+# The app runs the image CI publishes to Docker Hub on every merge to main; Watchtower
+# pulls a new one within a day. To update now: `docker compose up -d swu-organizer`.
+# The API is built here: `docker compose up -d --build swu-api`. See docs/deploy.md.
 
 # A fixed project name: the stack keeps one identity whichever directory it is run from.
 name: swu-organizer
 
 services:
   swu-organizer:
-    build: .
+    # SWU_APP_TAG (in .env) pins a published tag — v2.0.0, sha-6be7a7f — for a rollback.
+    image: mattygroch/swu-organizer:${SWU_APP_TAG:-latest}
+    # `up` always fetches the current tag, so `docker compose up -d swu-organizer` is the
+    # manual "deploy now". (docker-compose.build.yml builds this checkout instead.)
+    pull_policy: always
     container_name: swu-organizer
     restart: unless-stopped
     labels:
-      # Both images are built on the host, so Watchtower has nothing to pull anyway; this
-      # makes sure it never swaps in a Docker Hub image out of step with the API.
-      - "com.centurylinklabs.watchtower.enable=false"
+      # Watchtower keeps it on the newest published image, checking on its own schedule.
+      - "com.centurylinklabs.watchtower.enable=true"
       - "traefik.enable=true"
       - "traefik.http.routers.swu-organizer.entrypoints=websecure"
       - "traefik.http.routers.swu-organizer.rule=Host(`swu.mattyflix.com`)"
@@ -39,6 +45,7 @@ services:
     volumes:
       - /var/config/swu-organizer:/config
     labels:
+      # Built here, not published: there is nothing for Watchtower to pull.
       - "com.centurylinklabs.watchtower.enable=false"
       - "traefik.enable=true"
       - "traefik.http.routers.swu-api.entrypoints=websecure"

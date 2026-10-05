@@ -71,11 +71,11 @@ npm test                   # pipeline tests
 
 ## Deployment
 
-`docker-compose.yml` runs two containers behind Traefik on one host: the app (`Dockerfile`, nginx on port 8080) and the API (`server/Dockerfile`, port 3001, SQLite on a mounted volume). Traefik sends `/api` to the API and everything else to the app. Both are built on the host from this repo — `git pull && docker compose up -d --build`. Settings go in a `.env` next to the compose file (template: `.env.example`).
+`docker-compose.yml` runs two containers behind Traefik on one host: the app (`Dockerfile`, nginx on port 8080) and the API (`server/Dockerfile`, port 3001, SQLite on a mounted volume). Traefik sends `/api` to the API and everything else to the app. The app runs the image published to Docker Hub on every merge to `main`, and Watchtower on the host deploys each new one within a day (`docker compose up -d swu-organizer` deploys at once); the API is built on the host. Settings go in a `.env` next to the compose file (template: `.env.example`).
 
-Full steps, including the first v2 deploy and rolling back: [`docs/deploy.md`](docs/deploy.md).
+Full steps — everyday deploys, trying a branch, pinning a tag to roll back: [`docs/deploy.md`](docs/deploy.md).
 
-Pushing to `main` also publishes the app image to Docker Hub (`.github/workflows/docker-publish.yml`), and `.github/workflows/checks.yml` runs every type check, lint and test on pull requests.
+`.github/workflows/docker-publish.yml` publishes the app image on every push to `main` and every release tag, and `.github/workflows/checks.yml` runs every type check, lint and test on pull requests.
 
 ## Legal
 

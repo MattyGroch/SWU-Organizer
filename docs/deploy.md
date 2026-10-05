@@ -1,12 +1,40 @@
 # Deploying
 
-Production runs on one host with Docker Compose behind Traefik: the app container (`Dockerfile`, nginx) and the sync API (`server/Dockerfile`, SQLite). Traefik sends `swu.mattyflix.com/api/*` to the API and everything else to the app. Both images are built on the host from this repo.
+Production runs on one host with Docker Compose behind Traefik: the app container (`Dockerfile`, nginx) and the sync API (`server/Dockerfile`, SQLite). Traefik sends `swu.mattyflix.com/api/*` to the API and everything else to the app. The app runs the image CI publishes to Docker Hub (`mattygroch/swu-organizer`) on every merge to `main`, and Watchtower keeps it current; the API is built on the host from this repo.
 
 Portainer is not in the loop for now; when it is back, the same `docker-compose.yml` and variables work as a stack.
 
 ## Watchtower
 
-The host runs Watchtower, which by default updates _every_ container whose image has a newer version in a registry. Both images here are built on the host (Watchtower cannot pull them) and both services carry `com.centurylinklabs.watchtower.enable=false`, so it never touches this stack. Before the v2 cutover the live frontend ran `mattygroch/swu-organizer:latest` from Docker Hub — which is why v2 is deployed from the `v2` branch _before_ it is merged: merging publishes a new `:latest`.
+The host runs Watchtower, which updates a container when the registry has a newer image for the tag it runs. That is what deploys the app:
+
+1. A PR merges to `main` (a feature, or the daily data refresh with a new set).
+2. `docker-publish.yml` builds the image and pushes `latest`, `main` and `sha-<commit>` (release tags `v*.*.*` push that tag too) — about five minutes.
+3. On its next check — once a day — Watchtower pulls the new `latest` and restarts the app container: a few seconds' downtime.
+
+The app service is labelled `com.centurylinklabs.watchtower.enable=true`; the API carries `…=false` (it is built on the host, so there is nothing to pull). Watchtower's schedule is its own container's setting on the host, not part of this repo.
+
+## Everyday deploys
+
+- **Wait for Watchtower** — merged changes are live within a day.
+- **Now:** `cd /opt/swu-organizer && docker compose up -d swu-organizer` — the service always pulls its tag on `up`.
+- **API changes** (`server/`): `git pull && docker compose up -d --build swu-api`.
+- **Compose or `.env` changes:** `git pull && docker compose up -d`.
+
+## Trying a branch before merging
+
+Build the checkout instead of the published image:
+
+```bash
+git fetch && git checkout <branch>
+docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build swu-organizer
+```
+
+The local image (`swu-organizer-local`) has a name Docker Hub doesn't know, so Watchtower leaves it in place until you switch back: `git checkout main && docker compose up -d swu-organizer`.
+
+## Rolling back the app
+
+Every merge stays on Docker Hub under a fixed tag. Pin one in `.env` — `SWU_APP_TAG=v2.0.0` or `SWU_APP_TAG=sha-6be7a7f` — and run `docker compose up -d swu-organizer`. Watchtower follows the pinned tag, which never changes, so it stays put. Remove the line (and `up -d` again) to follow `latest` once the fix is merged.
 
 ## First v2 deploy (clean database)
 
@@ -52,13 +80,9 @@ Then merge the `v2` pull request and move the checkout onto `main` (`git checkou
 
 Finally, in the browser: on `localhost:5173` choose **Download backup**; on `swu.mattyflix.com` import it with **Replace entire collection** (decks ticked), then **Sign in to sync** — the clean cloud receives everything.
 
-## Later deploys
+## Card data
 
-```bash
-git pull && docker compose up -d --build
-```
-
-The card catalog updates through the daily data PR; merging it and redeploying ships new sets. Prices refresh inside the running app container every 24 hours on their own.
+The card catalog updates through the daily data PR (`update-sets.yml`). A new set joins it only once every card is listed and every picture is on the CDN (`scripts/check-readiness.mjs`), so prerelease listings wait. Merging the PR publishes a new image, which Watchtower deploys. Prices refresh inside the running app container every 24 hours on their own.
 
 ## Rolling back to v1
 

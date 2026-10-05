@@ -50,6 +50,5 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Deployment is manual for now (git pull + docker compose on the host — see
-      # docs/deploy.md). Portainer used to be triggered here via PORTAINER_WEBHOOK_URL;
-      # restore that step once Portainer is back.
+      # No deploy step: Watchtower on the host pulls the new `latest` on its next check
+      # (see docs/deploy.md).
