@@ -10,11 +10,11 @@ export function useScanIndex() {
     gcTime: Infinity,
     queryFn: async ({ signal }) => {
       const [bin, json] = await Promise.all([
-        fetch('/scan/index.bin', { signal }).then((r) => {
+        fetch('/scan-data/index.bin', { signal }).then((r) => {
           if (!r.ok) throw new Error(`scan index: HTTP ${r.status}`);
           return r.arrayBuffer();
         }),
-        fetch('/scan/index.json', { signal }).then((r) => {
+        fetch('/scan-data/index.json', { signal }).then((r) => {
           if (!r.ok) throw new Error(`scan index: HTTP ${r.status}`);
           return r.json() as Promise<IndexJson>;
         }),

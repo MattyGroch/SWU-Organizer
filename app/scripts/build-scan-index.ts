@@ -8,7 +8,7 @@
  * Fingerprints use src/domain/scan/descriptor.ts — the same code the camera runs — after
  * sharp resizes each image to the sample size.
  *
- * Writes app/public/scan/index.bin (fingerprints) and index.json (which printing each is).
+ * Writes app/public/scan-data/index.bin (fingerprints) and index.json (which printing each is).
  *
  * Then self-tests, and exits non-zero if matching is not good enough:
  * - separation: every reference's nearest neighbour is itself or the same artwork;
@@ -38,7 +38,7 @@ import { packIndex, rankMatches, type ScanEntry, type ScanIndex } from '../src/d
 
 const APP_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SETS_DIR = join(APP_DIR, 'public/sets');
-const OUT_DIR = join(APP_DIR, 'public/scan');
+const OUT_DIR = join(APP_DIR, 'public/scan-data');
 const CACHE_DIR = process.env.SWU_SCAN_CACHE ?? join(homedir(), '.cache/swu-organizer/card-art');
 const CDN = 'https://cdn.swu-db.com/images/cards';
 const CONCURRENCY = 8;
@@ -216,7 +216,7 @@ async function main() {
   await writeFile(join(OUT_DIR, 'index.bin'), bin);
   await writeFile(join(OUT_DIR, 'index.json'), JSON.stringify(json));
   console.log(
-    `Wrote scan/index.bin (${(bin.length / 1024).toFixed(0)} KB) and scan/index.json · ${HASH_BITS}-bit hash`,
+    `Wrote scan-data/index.bin (${(bin.length / 1024).toFixed(0)} KB) and scan-data/index.json · ${HASH_BITS}-bit hash`,
   );
 
   // ---- Self-test: separation ----

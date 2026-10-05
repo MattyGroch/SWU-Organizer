@@ -62,7 +62,7 @@ Deliberate departures from the legacy app. Push back on any of these and I'll re
 
 Not now, but don't lose it.
 
-- [ ] **Scan index size** — `app/public/scan/index.bin` is ~1.5 MB (1.2 MB gzipped), mostly the 8×8 colour grid per printing. Could shrink (fewer bits per channel) if first-scan download time matters on mobile data; re-run the builder's robustness test after any change.
+- [ ] **Scan index size** — `app/public/scan-data/index.bin` is ~1.5 MB (1.2 MB gzipped), mostly the 8×8 colour grid per printing. Could shrink (fewer bits per channel) if first-scan download time matters on mobile data; re-run the builder's robustness test after any change.
 - [ ] **Scan index refresh** — new sets need `cd app && npx tsx scripts/build-scan-index.ts` (downloads only new images to `~/.cache/swu-organizer/card-art`, ~4 min) and the result committed. Not in CI yet (needs the image cache).
 - [ ] **Scanner (Phase 5): two modes.**
   - **Scan / info** — scanning a card only selects it and turns the binder to its slot; nothing is added. For looking a card up, or checking whether you need it.
