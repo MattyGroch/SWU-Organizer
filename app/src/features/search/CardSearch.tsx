@@ -25,6 +25,11 @@ type Props = {
   inputRef: React.RefObject<HTMLInputElement | null>;
   onChoose: (suggestion: SearchSuggestion) => void;
   onQueryChange?: (query: string) => void;
+  /**
+   * On phones, let the results span the page instead of the search box — for a box that
+   * shares its row with other controls and would otherwise cut every name short.
+   */
+  wideResults?: boolean;
 };
 
 /**
@@ -34,7 +39,14 @@ type Props = {
  * `<div class="sug">` with no roles, no `aria-activedescendant`, and no announcement of
  * how many results were found.
  */
-export function CardSearch({ catalogs, currentSetKey, inputRef, onChoose, onQueryChange }: Props) {
+export function CardSearch({
+  catalogs,
+  currentSetKey,
+  inputRef,
+  onChoose,
+  onQueryChange,
+  wideResults = false,
+}: Props) {
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(0);
@@ -145,7 +157,7 @@ export function CardSearch({ catalogs, currentSetKey, inputRef, onChoose, onQuer
           id={listId}
           role="listbox"
           aria-label="Card suggestions"
-          className={styles.list}
+          className={wideResults ? `${styles.list} ${styles.wideList}` : styles.list}
         >
           {suggestions.map((suggestion, index) => (
             <li
