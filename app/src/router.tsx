@@ -19,8 +19,7 @@ import {
 import { binderEntries, readHiddenSets } from '~/data/binderSettings';
 import { BinderRoute } from '~/routes/BinderRoute';
 import { BulkPage } from '~/features/inventory/BulkPage';
-import { isInventoryView, type InventoryView } from '~/features/inventory/views';
-import { NARROW_QUERY } from '~/ui/useNarrow';
+import { isInventoryView } from '~/features/inventory/views';
 import { DecksRoute } from '~/routes/DecksRoute';
 import { IntakePage } from '~/features/intake/IntakePage';
 import { PutAwayPage } from '~/features/putAway/PutAwayPage';
@@ -51,13 +50,6 @@ const indexRoute = createRoute({
   },
 });
 
-/** Phones have no binder grid, so they land on the list instead. */
-function defaultView(): InventoryView {
-  return typeof window !== 'undefined' && window.matchMedia?.(NARROW_QUERY)?.matches
-    ? 'list'
-    : 'binder';
-}
-
 /** The Inventory tab: the newest set with a binder. */
 const inventoryIndexRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -67,7 +59,7 @@ const inventoryIndexRoute = createRoute({
     const key = newestSetKey(binderEntries(entries, await readHiddenSets()));
     throw redirect({
       to: '/inventory/$setKey/$view',
-      params: { setKey: key ?? 'SOR', view: defaultView() },
+      params: { setKey: key ?? 'SOR', view: 'binder' },
     });
   },
 });

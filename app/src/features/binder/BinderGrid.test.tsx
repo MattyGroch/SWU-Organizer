@@ -24,7 +24,9 @@ function makeSet(): LoadedSet {
 
 const set = makeSet();
 
-function renderGrid(options: { viewSpread?: number; activeBase?: number; owned?: number } = {}) {
+function renderGrid(
+  options: { viewSpread?: number; activeBase?: number; owned?: number; singlePage?: number } = {},
+) {
   const onSelect = vi.fn();
   const activeCard = options.activeBase ? set.byNumber.get(options.activeBase) : undefined;
   const ownership = indexOwnership(
@@ -42,10 +44,24 @@ function renderGrid(options: { viewSpread?: number; activeBase?: number; owned?:
       held={new Map()}
       focusRequest={0}
       onSelect={onSelect}
+      {...(options.singlePage !== undefined && { singlePage: options.singlePage })}
     />,
   );
   return { onSelect };
 }
+
+describe('one page at a time, on a phone', () => {
+  it('shows only that page, four pockets wide', () => {
+    renderGrid({ singlePage: 3 });
+    const grid = screen.getByRole('grid', { name: 'Binder, page 3' });
+    expect(grid).toHaveAttribute('aria-colcount', '4');
+    const rows = screen.getAllByRole('row');
+    expect(rows).toHaveLength(3);
+    // Page 3 holds cards 25–36.
+    expect(within(rows[0]!).getAllByRole('gridcell')).toHaveLength(4);
+    expect(screen.getAllByRole('button')[0]).toHaveAccessibleName(/Number 25\./);
+  });
+});
 
 describe('BinderGrid accessibility', () => {
   it('is a real grid with rows and labelled cells', () => {

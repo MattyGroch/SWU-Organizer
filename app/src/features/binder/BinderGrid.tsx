@@ -23,10 +23,12 @@ type Props = {
   held: ReadonlyMap<number, Homes>;
   focusRequest: number;
   onSelect: (card: Card) => void;
+  /** On a phone: show only this page, four columns wide, instead of the spread. */
+  singlePage?: number;
 };
 
 /**
- * The two-page binder spread.
+ * The two-page binder spread — or, on a phone, the one page on screen.
  *
  * A real `role="grid"` of buttons with a roving tabindex. The legacy version was an SVG
  * whose cells were `<g onClick>` elements: not focusable, no roles, no labels, and
@@ -44,11 +46,15 @@ export function BinderGrid({
   held,
   focusRequest,
   onSelect,
+  singlePage,
 }: Props) {
   const primaryPage = spreadToPrimaryPage(viewSpread);
   const leftPage = primaryPage % 2 === 0 ? primaryPage : primaryPage - 1;
-  const rightPage = primaryPage % 2 === 1 ? primaryPage : primaryPage + 1;
-  const showLeft = leftPage >= 2;
+  const rightPage = singlePage ?? (primaryPage % 2 === 1 ? primaryPage : primaryPage + 1);
+  const showLeft = singlePage === undefined && leftPage >= 2;
+  // One page fills the row on its own; a spread keeps page 1 on the right, as it opens.
+  const columns = singlePage === undefined ? SPREAD_COLS : COLS_PER_PAGE;
+  const leftColumns = columns - COLS_PER_PAGE;
 
   const gridRef = useRef<HTMLDivElement>(null);
   const quotaOf = useQuota();
@@ -76,19 +82,20 @@ export function BinderGrid({
       role="grid"
       aria-label={label}
       aria-rowcount={ROWS}
-      aria-colcount={SPREAD_COLS}
+      aria-colcount={columns}
       className={styles.grid}
+      data-single={singlePage !== undefined}
       data-has-selection={hasVisibleSelection}
     >
       {Array.from({ length: ROWS }, (_, rowIndex) => {
         const row = rowIndex + 1;
         return (
           <div key={row} role="row" className={styles.row} aria-rowindex={row}>
-            {Array.from({ length: SPREAD_COLS }, (_, colIndex) => {
+            {Array.from({ length: columns }, (_, colIndex) => {
               const spreadCol = colIndex + 1;
-              const onLeftPage = spreadCol <= COLS_PER_PAGE;
+              const onLeftPage = spreadCol <= leftColumns;
               const page = onLeftPage ? leftPage : rightPage;
-              const column = onLeftPage ? spreadCol : spreadCol - COLS_PER_PAGE;
+              const column = onLeftPage ? spreadCol : spreadCol - leftColumns;
               const hidden = onLeftPage && !showLeft;
               const number = numberFromPagePosition(page, row, column);
               const card = hidden ? undefined : set.byNumber.get(number);

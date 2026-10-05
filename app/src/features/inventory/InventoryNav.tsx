@@ -2,7 +2,6 @@ import { Link } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
 import type { SetKey } from '~/domain/types';
-import { useNarrow } from '~/ui/useNarrow';
 
 import styles from './InventoryNav.module.css';
 
@@ -18,8 +17,7 @@ function readLastSet(): SetKey | undefined {
 
 /**
  * Binder · List · Bulk. Binder and List show one set; Bulk shows the whole box, so leaving
- * it goes back to the set you were last looking at. Phones have no binder grid, so no
- * Binder tab.
+ * it goes back to the set you were last looking at.
  */
 export function InventoryNav({
   setKey,
@@ -29,8 +27,6 @@ export function InventoryNav({
   setKey?: SetKey;
   current: 'binder' | 'list' | 'bulk';
 }) {
-  const narrow = useNarrow();
-
   useEffect(() => {
     if (!setKey) return;
     try {
@@ -59,7 +55,7 @@ export function InventoryNav({
 
   return (
     <nav className={styles.nav} aria-label="Inventory">
-      {!narrow && setLink('binder')}
+      {setLink('binder')}
       {setLink('list')}
       <Link
         to="/inventory/bulk"

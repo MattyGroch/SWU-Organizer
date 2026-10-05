@@ -40,3 +40,10 @@
   background: var(--color-surface-sunken);
   font-size: var(--font-size-sm);
 }
+
+/* No keyboard on a phone, so no key hints. */
+@media (max-width: 760px) {
+  .step kbd {
+    display: none;
+  }
+}

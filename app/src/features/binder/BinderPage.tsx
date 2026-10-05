@@ -72,7 +72,9 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   const searchInputRef = useRef<HTMLInputElement>(null);
   /** Phones get a shorter stack of controls, so the card table has the screen. */
   const narrow = useNarrow();
-  const showBinder = view === 'binder' && !narrow;
+  const showBinder = view === 'binder';
+  /** Where a swipe on the phone's single page began, to turn the page when it ends. */
+  const swipeRef = useRef<{ x: number; y: number } | null>(null);
   const quota = useQuota();
   const moreRef = useRef<HTMLDetailsElement>(null);
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
@@ -426,7 +428,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   return (
     <div className={styles.page}>
       <div className={styles.toolbar}>
-        <InventoryNav setKey={set.setKey} current={narrow ? 'list' : view} />
+        <InventoryNav setKey={set.setKey} current={view} />
 
         <label className={styles.setPicker}>
           <span className="visually-hidden">Card set</span>
@@ -463,7 +465,9 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
 
         {narrow ? (
           <>
-            <FilterBar filters={filters} onChange={setFilters} className={styles.inlineFilters} />
+            {!showBinder && (
+              <FilterBar filters={filters} onChange={setFilters} className={styles.inlineFilters} />
+            )}
             <details className={styles.more} ref={moreRef}>
               <summary className={styles.moreSummary} aria-label="More: bulk edit, import, copy">
                 ⋯
@@ -539,16 +543,45 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
         />
       </div>
 
-      {/* The page grid is the desktop Binder view: on a phone it is too small to use, so
-          phones get the List view, with the selected card pinned below. */}
+      {/* A two-page spread is too wide for a phone, so a phone shows one page at a time and
+          a sideways swipe turns it. */}
       {showBinder ? (
-        <div className={styles.binderArea}>
-          <SpreadPager
-            viewSpread={binder.viewSpread}
-            totalSpreads={binder.geometry.totalSpreads}
-            onGoTo={binder.goToSpread}
-            onStep={binder.stepSpread}
-          />
+        <div
+          className={styles.binderArea}
+          onTouchStart={(event) => {
+            const touch = event.touches[0];
+            swipeRef.current = narrow && touch ? { x: touch.clientX, y: touch.clientY } : null;
+          }}
+          onTouchEnd={(event) => {
+            const start = swipeRef.current;
+            const touch = event.changedTouches[0];
+            swipeRef.current = null;
+            if (!start || !touch) return;
+            const dx = touch.clientX - start.x;
+            const dy = touch.clientY - start.y;
+            // Mostly sideways and far enough to be deliberate, so scrolling never flips.
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+              binder.stepPage(dx < 0 ? 1 : -1);
+            }
+          }}
+        >
+          {narrow ? (
+            <SpreadPager
+              unit="page"
+              value={binder.viewPage}
+              total={binder.geometry.totalPages}
+              onGoTo={binder.goToPage}
+              onStep={binder.stepPage}
+            />
+          ) : (
+            <SpreadPager
+              unit="spread"
+              value={binder.viewSpread}
+              total={binder.geometry.totalSpreads}
+              onGoTo={binder.goToSpread}
+              onStep={binder.stepSpread}
+            />
+          )}
 
           <BinderGrid
             set={set}
@@ -558,6 +591,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
             held={held}
             focusRequest={binder.focusRequest}
             onSelect={binder.selectCard}
+            {...(narrow && { singlePage: binder.viewPage })}
           />
         </div>
       ) : (

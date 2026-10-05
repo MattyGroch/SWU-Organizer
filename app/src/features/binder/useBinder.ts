@@ -1,6 +1,12 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 
-import { binderLayout, getSpreadCoords, pageToSpread, type MoveDirection } from '~/domain/binder';
+import {
+  binderLayout,
+  getSpreadCoords,
+  pageToSpread,
+  spreadToPrimaryPage,
+  type MoveDirection,
+} from '~/domain/binder';
 import type { LoadedSet } from '~/domain/catalog';
 import { selectionAfterMove } from '~/domain/selection';
 import type { ActiveSelection, Card } from '~/domain/types';
@@ -39,6 +45,9 @@ export function selectionForCard(card: Card): ActiveSelection {
 
 export type BinderState = {
   active: ActiveSelection | null;
+  /** The page on screen: alone on a phone, or as part of its spread. */
+  viewPage: number;
+  /** The spread holding `viewPage`. */
   viewSpread: number;
   geometry: BinderGeometry;
   /** Set when selection changes, so the grid can move DOM focus to the new cell. */
@@ -49,12 +58,19 @@ export type BinderState = {
   move: (direction: MoveDirection) => void;
   goToSpread: (spread: number) => void;
   stepSpread: (delta: number) => void;
+  goToPage: (page: number) => void;
+  stepPage: (delta: number) => void;
 };
 
 export function useBinder(set: LoadedSet): BinderState {
   const geometry = useMemo(() => binderGeometry(set), [set]);
   const [active, setActive] = useState<ActiveSelection | null>(null);
-  const [viewSpread, setViewSpread] = useState(0);
+  const [viewPage, setViewPage] = useState(1);
+  const viewSpread = pageToSpread(viewPage);
+  const clampPage = useCallback(
+    (page: number) => Math.max(1, Math.min(geometry.totalPages, page)),
+    [geometry.totalPages],
+  );
 
   /**
    * Reset when the set changes.
@@ -69,7 +85,7 @@ export function useBinder(set: LoadedSet): BinderState {
   if (renderedSetKey !== set.setKey) {
     setRenderedSetKey(set.setKey);
     setActive(null);
-    setViewSpread(0);
+    setViewPage(1);
   }
   const focusRequestRef = useRef(0);
   const [focusRequest, setFocusRequest] = useState(0);
@@ -83,7 +99,7 @@ export function useBinder(set: LoadedSet): BinderState {
     (card: Card) => {
       const next = selectionForCard(card);
       setActive(next);
-      setViewSpread(pageToSpread(next.page));
+      setViewPage(next.page);
       requestFocus();
     },
     [requestFocus],
@@ -105,7 +121,7 @@ export function useBinder(set: LoadedSet): BinderState {
         if (!current) return current;
         const next = selectionAfterMove(current, direction, geometry.totalPages, set.byNumber);
         if (next === current) return current;
-        setViewSpread(pageToSpread(next.page));
+        setViewPage(next.page);
         requestFocus();
         return next;
       });
@@ -115,21 +131,36 @@ export function useBinder(set: LoadedSet): BinderState {
 
   const goToSpread = useCallback(
     (spread: number) => {
-      setViewSpread(Math.max(0, Math.min(geometry.totalSpreads - 1, spread)));
+      const clamped = Math.max(0, Math.min(geometry.totalSpreads - 1, spread));
+      setViewPage(clampPage(spreadToPrimaryPage(clamped)));
     },
-    [geometry.totalSpreads],
+    [geometry.totalSpreads, clampPage],
   );
 
   /** Browsing moves the viewed pages only; the selection stays where it was. */
   const stepSpread = useCallback(
     (delta: number) => {
-      setViewSpread((current) => Math.max(0, Math.min(geometry.totalSpreads - 1, current + delta)));
+      setViewPage((current) => {
+        const spread = Math.max(
+          0,
+          Math.min(geometry.totalSpreads - 1, pageToSpread(current) + delta),
+        );
+        return clampPage(spreadToPrimaryPage(spread));
+      });
     },
-    [geometry.totalSpreads],
+    [geometry.totalSpreads, clampPage],
+  );
+
+  const goToPage = useCallback((page: number) => setViewPage(clampPage(page)), [clampPage]);
+
+  const stepPage = useCallback(
+    (delta: number) => setViewPage((current) => clampPage(current + delta)),
+    [clampPage],
   );
 
   return {
     active,
+    viewPage,
     viewSpread,
     geometry,
     focusRequest,
@@ -139,5 +170,7 @@ export function useBinder(set: LoadedSet): BinderState {
     move,
     goToSpread,
     stepSpread,
+    goToPage,
+    stepPage,
   };
 }
