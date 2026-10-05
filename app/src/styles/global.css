@@ -18,8 +18,9 @@ body {
   background:
     linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--set-accent, transparent) 26%, transparent),
-      transparent 520px
+      color-mix(in srgb, var(--set-accent, transparent) 60%, transparent),
+      color-mix(in srgb, var(--set-accent, transparent) 22%, transparent) 360px,
+      transparent 760px
     )
     no-repeat fixed,
     var(--color-bg);

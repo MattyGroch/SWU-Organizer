@@ -15,8 +15,8 @@ describe('binder set visibility', () => {
     await database.open();
   });
 
-  it('hides TS26 until the setting is first changed', async () => {
-    expect([...(await readHiddenSets(database))]).toEqual(['TS26']);
+  it('hides TS26 and IBH until the setting is first changed', async () => {
+    expect([...(await readHiddenSets(database))]).toEqual(['IBH', 'TS26']);
   });
 
   it('remembers what was chosen, including showing everything', async () => {
