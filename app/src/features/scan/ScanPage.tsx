@@ -222,7 +222,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         [
           {
             id: nextId.current++,
-            result: { matches: [], at: Date.now(), afterGap: true },
+            result: { matches: [], at: Date.now(), afterGap: true, tooClose: false },
             chosen,
             question: null,
             ...placed,
@@ -472,7 +472,9 @@ function Viewfinder({
                 ? 'Can’t make out a card — keep it inside the frame, out of glare'
                 : phase === 'stuck'
                   ? 'Not recognised — look it up below, or skip it'
-                  : 'Hold a card inside the frame';
+                  : phase === 'tooClose'
+                    ? 'Too close — fit the whole card inside the frame'
+                    : 'Hold a card inside the frame';
 
   return (
     <div className={styles.viewfinder} ref={frameRef}>
@@ -590,6 +592,12 @@ function LatestScan({
         ) : item.question === 'card' ? (
           <div className={styles.question}>
             <p>Not sure — is this the right card?</p>
+            {item.result.tooClose && (
+              <p className={styles.meta}>
+                The card runs past the edge of the frame — move the phone back so all of it shows,
+                for a surer read.
+              </p>
+            )}
             <div className={styles.choices}>
               <button type="button" className={styles.primary} onClick={onConfirm}>
                 {mode === 'add' ? 'Yes, add it' : 'Yes'}

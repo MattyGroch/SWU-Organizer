@@ -122,6 +122,7 @@ describe('ScanPage', () => {
         matches: [match(num, 59, variant, 10), match('080', 80, 'normal', 90)],
         at: 1,
         afterGap: true,
+        tooClose: false,
       });
     });
   };
@@ -139,6 +140,7 @@ describe('ScanPage', () => {
         matches: [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)],
         at: 1,
         afterGap: true,
+        tooClose: false,
       });
     });
     expect(await screen.findByRole('heading', { name: /2-1B Surgical Droid/ })).toBeInTheDocument();
@@ -216,6 +218,7 @@ describe('ScanPage', () => {
         matches: [match('059', 59, 'normal', 10), match('080', 80, 'normal', 15)],
         at: 1,
         afterGap: true,
+        tooClose: false,
       });
     });
     expect(await screen.findByText(/Not sure — is this the right card/)).toBeInTheDocument();
@@ -230,16 +233,16 @@ describe('ScanPage', () => {
     renderPage();
     await waitFor(() => expect(fire).not.toBeNull());
     const confident = [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)];
-    await act(async () => fire!({ matches: confident, at: 1, afterGap: true }));
+    await act(async () => fire!({ matches: confident, at: 1, afterGap: true, tooClose: false }));
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
 
     // Refocusing re-fires the scanner on the card still in the rig: nothing more is added.
-    await act(async () => fire!({ matches: confident, at: 2, afterGap: false }));
-    await act(async () => fire!({ matches: confident, at: 3, afterGap: false }));
+    await act(async () => fire!({ matches: confident, at: 2, afterGap: false, tooClose: false }));
+    await act(async () => fire!({ matches: confident, at: 3, afterGap: false, tooClose: false }));
     expect((await db.intakeLines.toArray())[0]!.count).toBe(1);
 
     // Lifted out and a second copy put in: that one counts.
-    await act(async () => fire!({ matches: confident, at: 4, afterGap: true }));
+    await act(async () => fire!({ matches: confident, at: 4, afterGap: true, tooClose: false }));
     await waitFor(async () => expect((await db.intakeLines.toArray())[0]!.count).toBe(2));
   });
 
@@ -247,9 +250,9 @@ describe('ScanPage', () => {
     renderPage();
     await waitFor(() => expect(fire).not.toBeNull());
     const unsure = [match('059', 59, 'normal', 10), match('080', 80, 'normal', 15)];
-    await act(async () => fire!({ matches: unsure, at: 1, afterGap: true }));
+    await act(async () => fire!({ matches: unsure, at: 1, afterGap: true, tooClose: false }));
     expect(await screen.findByText(/Not sure — is this the right card/)).toBeInTheDocument();
-    await act(async () => fire!({ matches: unsure, at: 2, afterGap: false }));
+    await act(async () => fire!({ matches: unsure, at: 2, afterGap: false, tooClose: false }));
 
     await userEvent.click(screen.getByRole('button', { name: 'Yes, add it' }));
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
