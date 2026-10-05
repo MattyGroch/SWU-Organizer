@@ -11,6 +11,7 @@ import {
   unqueueScan,
   type ScanReceipt,
 } from '~/data/intake';
+import { dropScan, logScan, updateScan, type ScanEntry } from '~/data/stacks';
 import { binderLayout } from '~/domain/binder';
 import {
   artNumber,
@@ -63,7 +64,28 @@ type Item = {
    * queued, with that copy queued to leave for bulk).
    */
   room: PocketRoom | null;
+  /** Kept anyway though its pocket is full: it goes in with the spares. */
+  spare?: boolean;
+  /** This scan's card in the scanned stack (Add mode), so putting away knows its place. */
+  stackCardId: string | null;
 };
+
+/** Where a scan's card goes when the stack is put away. */
+function stackEntry(item: Omit<Item, 'id' | 'result' | 'stackCardId'>, set?: LoadedSet): ScanEntry {
+  const { setKey, base, num, variant } = item.chosen;
+  const card = { setKey, base, num, variant };
+  if (item.question) return { ...card, fate: 'unsure' };
+  if (item.spare) return { ...card, fate: 'spare' };
+  if (!item.receipt) return { ...card, fate: 'bulk' };
+  if (item.receipt.swapLineId && item.room?.kind === 'upgrade') {
+    const replaces = item.room.replaces;
+    const weaker = set?.printingsByBase.get(base)?.find((p) => p.variant === replaces);
+    if (weaker) {
+      return { ...card, fate: 'binder', swapOut: { num: weaker.num, variant: weaker.variant } };
+    }
+  }
+  return { ...card, fate: 'binder' };
+}
 
 const cardKey = (p: { setKey: string; base: number }) => `${p.setKey}:${p.base}`;
 const asPrinting = (m: Match): Printing => ({
@@ -223,17 +245,27 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
 
       const chosen = asFound(asPrinting(top));
       let placed: Pick<Item, 'receipt' | 'room'> = { receipt: null, room: null };
-      if (mode === 'add' && !question) {
-        placed = await place(chosen);
-        // A short buzz for "added"; a double one for "not added — look at the screen".
-        navigator.vibrate?.(placed.room?.kind === 'full' ? [60, 80, 60] : 40);
+      let stackCardId: string | null = null;
+      if (mode === 'add') {
+        if (!question) {
+          placed = await place(chosen);
+          // A short buzz for "added"; a double one for "not added — look at the screen".
+          navigator.vibrate?.(placed.room?.kind === 'full' ? [60, 80, 60] : 40);
+        }
+        // Logged even while unsure: the card is in the stack either way.
+        stackCardId = await logScan(
+          stackEntry({ chosen, question, ...placed }, sets.get(chosen.setKey)),
+        );
       }
       setCleared(false);
       setItems((current) =>
-        [{ id: nextId.current++, result, chosen, question, ...placed }, ...current].slice(0, 8),
+        [
+          { id: nextId.current++, result, chosen, question, ...placed, stackCardId },
+          ...current,
+        ].slice(0, 8),
       );
     },
-    [asFound, mode, nameOf, place],
+    [asFound, mode, nameOf, place, sets],
   );
 
   const latest = cleared ? undefined : items[0];
@@ -266,6 +298,13 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       });
       const placed: Pick<Item, 'receipt' | 'room'> =
         mode === 'add' ? await place(chosen) : { receipt: null, room: null };
+      // Found by search, but still a card in the stack: it keeps its place like any scan.
+      const stackCardId =
+        mode === 'add'
+          ? await logScan(
+              stackEntry({ chosen, question: null, ...placed }, sets.get(chosen.setKey)),
+            )
+          : null;
       setCleared(false);
       setItems((current) =>
         [
@@ -275,6 +314,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
             chosen,
             question: null,
             ...placed,
+            stackCardId,
           },
           ...current,
         ].slice(0, 8),
@@ -299,17 +339,26 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       // Answering a question picks the card; Foils mode still decides the stock.
       const printing = item.question ? asFound(picked) : picked;
       let placed: Pick<Item, 'receipt' | 'room'> = { receipt: item.receipt, room: null };
+      let stackCardId = item.stackCardId;
       if (mode === 'add') {
         if (item.receipt) await unqueueScan(item.receipt);
         placed = await place(printing);
+        const entry = stackEntry(
+          { chosen: printing, question: null, ...placed },
+          sets.get(printing.setKey),
+        );
+        if (stackCardId) await updateScan(stackCardId, entry);
+        else stackCardId = await logScan(entry);
       }
       setItems((current) =>
         current.map((i) =>
-          i.id === item.id ? { ...i, chosen: printing, question: null, ...placed } : i,
+          i.id === item.id
+            ? { ...i, chosen: printing, question: null, spare: false, ...placed, stackCardId }
+            : i,
         ),
       );
     },
-    [asFound, mode, place],
+    [asFound, mode, place, sets],
   );
 
   /** The latest scan on the other stock — one tap instead of the Correct menu. */
@@ -333,13 +382,18 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     } else if (answer === 'spare' && !receipt) {
       receipt = await queueScan(item.chosen);
     }
+    if (item.stackCardId) {
+      await updateScan(item.stackCardId, stackEntry({ ...item, receipt, room: null, spare: true }));
+    }
     setItems((current) =>
-      current.map((i) => (i.id === item.id ? { ...i, receipt, room: null } : i)),
+      current.map((i) => (i.id === item.id ? { ...i, receipt, room: null, spare: true } : i)),
     );
   }, []);
 
   const remove = useCallback(
     async (item: Item, again: boolean) => {
+      // The stack first: the screen updates as soon as Intake does, as before the stack.
+      if (item.stackCardId) await dropScan(item.stackCardId);
       if (item.receipt) await unqueueScan(item.receipt);
       setItems((current) => current.filter((i) => i.id !== item.id));
       if (again) {
@@ -441,7 +495,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
                     {item.question && ' · not added'}
                   </span>
                 </span>
-                {item.receipt && (
+                {(item.receipt || item.stackCardId) && (
                   <button
                     type="button"
                     className={styles.link}

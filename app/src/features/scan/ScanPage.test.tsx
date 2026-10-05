@@ -103,7 +103,15 @@ describe('ScanPage', () => {
     await db.intakeBatches.clear();
     await db.intakeLines.clear();
     await db.owned.clear();
+    await db.stacks.clear();
+    await db.stackCards.clear();
   });
+
+  /** The scanned stack, top first: printing and where it goes. */
+  const stack = async () =>
+    (await db.stackCards.toArray())
+      .sort((a, b) => a.seq - b.seq)
+      .map((c) => [c.num, c.fate, c.swapOut?.num ?? null]);
 
   /** A full pocket: three Normal copies of the droid (a Unit's quota is 3). */
   const fillPocket = () =>
@@ -152,6 +160,43 @@ describe('ScanPage', () => {
     expect(screen.getByRole('button', { name: 'Correct' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Rescan' })).toBeInTheDocument();
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
+    expect(await stack()).toEqual([['059', 'binder', null]]);
+
+    // Rescan takes the card back out of the stack.
+    await userEvent.click(screen.getByRole('button', { name: 'Rescan' }));
+    await waitFor(async () => expect(await stack()).toEqual([]));
+  });
+
+  it('logs every scan in order, one per copy, and corrects one in place', async () => {
+    renderPage();
+    await waitFor(() => expect(fire).not.toBeNull());
+    for (const num of ['059', '080', '059']) {
+      await act(async () => {
+        fire!({
+          matches: [match(num, num === '059' ? 59 : 80, 'normal', 10), match('x', 1, 'normal', 90)],
+          at: 1,
+          // Each copy is lifted off the stack: a new card, not a re-read.
+          afterGap: true,
+          tooClose: false,
+        });
+      });
+    }
+    await waitFor(async () =>
+      expect(await stack()).toEqual([
+        ['059', 'binder', null],
+        ['080', 'binder', null],
+        ['059', 'binder', null],
+      ]),
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Correct' }));
+    await userEvent.click(await screen.findByTitle(/Hyperspace/));
+    await waitFor(async () =>
+      expect(await stack()).toEqual([
+        ['059', 'binder', null],
+        ['080', 'binder', null],
+        ['324', 'binder', null],
+      ]),
+    );
   });
 
   it('does not add a copy the binder has no room for, and says to bulk it', async () => {
@@ -159,9 +204,12 @@ describe('ScanPage', () => {
     await scan('059', 'normal');
     expect(await screen.findByText(/Maximum count reached for/)).toBeInTheDocument();
     expect(await db.intakeLines.count()).toBe(0);
+    // Not added, but still in the stack in your hand: it goes to bulk.
+    await waitFor(async () => expect(await stack()).toEqual([['059', 'bulk', null]]));
 
     await userEvent.click(screen.getByRole('button', { name: 'Add anyway, as a spare' }));
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
+    expect(await stack()).toEqual([['059', 'spare', null]]);
     expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
   });
 
@@ -178,6 +226,7 @@ describe('ScanPage', () => {
         ['324', false],
       ]);
     });
+    expect(await stack()).toEqual([['324', 'binder', '059']]);
 
     // Second thoughts: keep the Normal too — the Hyperspace stays queued.
     await userEvent.click(screen.getByRole('button', { name: 'Keep both' }));
@@ -185,6 +234,7 @@ describe('ScanPage', () => {
       const lines = await db.intakeLines.toArray();
       expect(lines.map((l) => [l.num, Boolean(l.swapOut)])).toEqual([['324', false]]);
     });
+    expect(await stack()).toEqual([['324', 'spare', null]]);
     expect(screen.getByText('Added to Intake')).toBeInTheDocument();
   });
 
@@ -202,8 +252,11 @@ describe('ScanPage', () => {
       const lines = await db.intakeLines.toArray();
       expect(lines.map((l) => l.num)).toEqual(['059']);
     });
-    expect(resume).toHaveBeenCalled();
+    // Scanning resumes once the card is also logged in the stack.
+    await waitFor(() => expect(resume).toHaveBeenCalled());
     expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+    // Found by search, it still keeps its place in the stack.
+    expect(await stack()).toEqual([['059', 'binder', null]]);
   });
 
   it('or skips it, adding nothing', async () => {
@@ -227,9 +280,12 @@ describe('ScanPage', () => {
     });
     expect(await screen.findByText(/Not sure — is this the right card/)).toBeInTheDocument();
     expect(await db.intakeLines.count()).toBe(0);
+    // Unsure, but already in the stack in your hand.
+    await waitFor(async () => expect(await stack()).toEqual([['059', 'unsure', null]]));
 
     await userEvent.click(screen.getByRole('button', { name: 'Yes, add it' }));
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
+    expect(await stack()).toEqual([['059', 'binder', null]]);
     expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
   });
 
@@ -315,6 +371,7 @@ describe('ScanPage', () => {
       expect((await db.intakeLines.toArray()).map((l) => l.num)).toEqual(['059F']),
     );
     expect(screen.getByText(/SOR #059F · Foil/)).toBeInTheDocument();
+    expect(await stack()).toEqual([['059F', 'binder', null]]);
     expect(screen.getByRole('button', { name: '✦ Foil' })).toHaveAttribute('aria-pressed', 'true');
 
     await userEvent.click(screen.getByRole('button', { name: '✦ Foil' }));

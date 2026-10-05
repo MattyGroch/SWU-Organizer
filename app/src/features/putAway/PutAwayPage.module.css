@@ -1,0 +1,372 @@
+/* Built to be read at arm's length: big type, big targets, one instruction at a time. */
+
+.page {
+  --sorter-0: #ef4444;
+  --sorter-1: #3b82f6;
+  --sorter-2: #22c55e;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: var(--font-size-xl);
+}
+
+.lead {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-md);
+}
+
+.warning {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+}
+
+.fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.legend {
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.choiceRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.choice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 88px;
+  padding: var(--space-3);
+  border: 2px solid var(--color-border-interactive);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.choice[aria-checked='true'] {
+  border-color: var(--color-link);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.choiceNote {
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+}
+
+.toggle {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  min-height: 48px;
+  font-size: var(--font-size-md);
+}
+
+.toggle input {
+  width: 28px;
+  height: 28px;
+}
+
+.progressRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progressText {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-md);
+}
+
+.progress {
+  width: 100%;
+  height: 8px;
+  accent-color: var(--color-link);
+}
+
+.link {
+  min-height: 44px;
+  padding: 0 var(--space-2);
+  border: none;
+  background: none;
+  color: var(--color-link);
+  font-size: var(--font-size-sm);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.scoop {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.turn {
+  grid-column: 1 / -1;
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-warning);
+  border-radius: var(--radius-lg);
+  background: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.artButton {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.art {
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  border-radius: 4.5%;
+  background: var(--color-surface-raised);
+  object-fit: cover;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.cardName {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.cardMeta {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+}
+
+.instruction {
+  font-size: 40px;
+  line-height: 1.1;
+}
+
+.spotSet {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-lg);
+}
+
+.spotRow {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: 32px;
+}
+
+.pile {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-3);
+  border: 4px solid var(--color-link);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-raised);
+}
+
+.pile[data-sorter='0'] {
+  border-color: var(--sorter-0);
+}
+
+.pile[data-sorter='1'] {
+  border-color: var(--sorter-1);
+}
+
+.pile[data-sorter='2'] {
+  border-color: var(--sorter-2);
+}
+
+.pileSorter {
+  font-size: 32px;
+}
+
+.pileNumber {
+  font-size: 96px;
+  line-height: 1;
+}
+
+.note {
+  color: var(--color-warning-fg);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.swap {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.sorters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.sorter {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  width: 132px;
+  padding: 6px;
+  border: 3px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+}
+
+.sorter[data-sorter='0'] {
+  border-color: var(--sorter-0);
+}
+
+.sorter[data-sorter='1'] {
+  border-color: var(--sorter-1);
+}
+
+.sorter[data-sorter='2'] {
+  border-color: var(--sorter-2);
+}
+
+.sorterCell {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  opacity: 0.4;
+}
+
+.sorterCell[data-used] {
+  opacity: 1;
+}
+
+.sorterCell[data-target] {
+  background: var(--color-text);
+  color: var(--color-text-inverse);
+  font-weight: 700;
+}
+
+.pocket {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  width: 160px;
+  padding: 6px;
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+}
+
+.pocketCell {
+  aspect-ratio: 5 / 7;
+  border-radius: 3px;
+  background: var(--color-surface-sunken);
+}
+
+.pocketCell[data-target] {
+  background: var(--color-text);
+}
+
+.done {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.nav {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--space-3);
+}
+
+.back,
+.next {
+  min-height: 64px;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.back {
+  border: 2px solid var(--color-border-interactive);
+  background: var(--color-surface-sunken);
+}
+
+.next {
+  border: none;
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.back:disabled,
+.next:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Phones: the art shrinks beside the instruction, so both fit above the buttons. */
+@media (max-width: 520px) {
+  .step {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: var(--space-3);
+  }
+
+  .instruction {
+    font-size: 32px;
+  }
+
+  .spotRow {
+    font-size: 26px;
+  }
+
+  .pileNumber {
+    font-size: 80px;
+  }
+
+  .sorter {
+    width: 96px;
+  }
+
+  .pocket {
+    width: 120px;
+  }
+}
