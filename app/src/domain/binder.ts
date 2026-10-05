@@ -29,6 +29,11 @@ export function spreadToPrimaryPage(spread: number): number {
   return spread <= 0 ? 1 : 2 + (spread - 1) * 2;
 }
 
+/** Which side of an open spread a page is on. Page 1 faces the inside cover, so it is a right page. */
+export function pageSide(page: number): 'left' | 'right' {
+  return page % 2 === 0 ? 'left' : 'right';
+}
+
 export function moveBinderSelection(
   selection: BinderPosition,
   direction: MoveDirection,
