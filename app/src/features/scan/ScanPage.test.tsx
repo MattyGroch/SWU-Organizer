@@ -16,6 +16,8 @@ import type { ScanResult } from './useScanner';
 
 // The camera, index and frame loop are replaced; everything after "a card was recognised" is real.
 let fire: ((r: ScanResult) => void) | null = null;
+let phase = 'holding';
+const resume = vi.fn();
 vi.mock('./useCamera', () => ({
   useCamera: () => ({
     videoRef: { current: null },
@@ -33,7 +35,7 @@ vi.mock('./useScanIndex', () => ({
 vi.mock('./useScanner', () => ({
   useScanner: ({ onResult }: { onResult: (r: ScanResult) => void }) => {
     fire = onResult;
-    return { phase: 'holding', rearm: vi.fn() };
+    return { phase, rearm: vi.fn(), resume };
   },
 }));
 
@@ -120,6 +122,8 @@ describe('ScanPage', () => {
   };
   afterEach(() => {
     fire = null;
+    phase = 'holding';
+    resume.mockClear();
   });
 
   it('adds a confident scan to Intake and shows it with Correct and Rescan', async () => {
@@ -167,5 +171,31 @@ describe('ScanPage', () => {
       expect(lines.map((l) => [l.num, Boolean(l.swapOut)])).toEqual([['324', false]]);
     });
     expect(screen.getByText('Added to Intake')).toBeInTheDocument();
+  });
+
+  it('after five misses, offers to look the card up by name instead', async () => {
+    phase = 'stuck';
+    renderPage();
+    expect(
+      await screen.findByRole('heading', { name: 'Couldn’t recognise this card' }),
+    ).toBeInTheDocument();
+
+    await userEvent.type(screen.getByRole('combobox', { name: /Search cards/ }), 'surgical');
+    await userEvent.click(await screen.findByRole('option', { name: /2-1B Surgical Droid/ }));
+
+    await waitFor(async () => {
+      const lines = await db.intakeLines.toArray();
+      expect(lines.map((l) => l.num)).toEqual(['059']);
+    });
+    expect(resume).toHaveBeenCalled();
+    expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+  });
+
+  it('or skips it, adding nothing', async () => {
+    phase = 'stuck';
+    renderPage();
+    await userEvent.click(await screen.findByRole('button', { name: 'Skip this card' }));
+    expect(resume).toHaveBeenCalled();
+    expect(await db.intakeLines.count()).toBe(0);
   });
 });
