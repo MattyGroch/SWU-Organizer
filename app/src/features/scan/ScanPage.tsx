@@ -21,10 +21,11 @@ import {
   type VariantSlug,
 } from '~/domain/catalog';
 import { pocketRoom, quotaForCard, type PocketRoom } from '~/domain/ownership';
-import type { Match } from '~/domain/scan/index';
+import { cardLead, type Match } from '~/domain/scan/index';
 import type { SearchSuggestion } from '~/domain/search';
 import type { SetKey } from '~/domain/types';
 import { CardSearch } from '~/features/search/CardSearch';
+import { useToast } from '~/ui/toastContext';
 
 import { guideRect, toScreen, type Rect, type View } from './capture';
 import styles from './ScanPage.module.css';
@@ -85,6 +86,21 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const index = useScanIndex();
   const [mode, setMode] = useState<Mode>('add');
   const [items, setItems] = useState<Item[]>([]);
+  /** The latest items, for the scanner's callback (which outlives a render). */
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
+  const showToast = useToast();
+  /** Never fail silently: a scan that cannot be saved says so. */
+  const failed = useCallback(
+    (error: unknown) => {
+      console.error('Scan action failed', error);
+      showToast({
+        tone: 'danger',
+        message: `Couldn’t save that scan: ${error instanceof Error ? error.message : String(error)}`,
+      });
+    },
+    [showToast],
+  );
   const [view, setView] = useState<View | null>(null);
   const nextId = useRef(1);
 
@@ -127,18 +143,37 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     async (result: ScanResult) => {
       const [top] = result.matches;
       if (!top) return;
+      // The same card again with no gap since — it was never lifted — is that card re-read
+      // (refocusing, re-exposing), not a second copy: leave its result, and any open
+      // question about it, as they are.
+      const latest = itemsRef.current[0];
+      const latestTop = latest?.result.matches[0];
+      if (
+        !result.afterGap &&
+        latest &&
+        (cardKey(latest.chosen) === cardKey(top.entry) ||
+          (latestTop && cardKey(latestTop.entry) === cardKey(top.entry)))
+      ) {
+        return;
+      }
       const cards = cardsIn(result.matches);
       const runnerUp = cards[1];
+      // Card-level confidence on stage-1 scores only (see cardLead).
+      const topCardScore = Math.min(
+        ...result.matches
+          .filter((m) => cardKey(m.entry) === cardKey(top.entry))
+          .map((m) => m.cardScore),
+      );
       const reprint = cards.find(
         (m, i) =>
           i > 0 &&
           m.entry.setKey !== top.entry.setKey &&
           nameOf(m.entry) === nameOf(top.entry) &&
-          m.score - top.score <= REPRINT_GAP,
+          m.cardScore - topCardScore <= REPRINT_GAP,
       );
       const question: Item['question'] = reprint
         ? 'set'
-        : runnerUp && runnerUp.score - top.score < CARD_MARGIN
+        : runnerUp && cardLead(result.matches) < CARD_MARGIN
           ? 'card'
           : null;
 
@@ -162,7 +197,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     index: index.data,
     view,
     active: scanning,
-    onResult: (r) => void onResult(r),
+    onResult: (r) => void onResult(r).catch(failed),
   });
 
   /**
@@ -187,7 +222,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         [
           {
             id: nextId.current++,
-            result: { matches: [], at: Date.now() },
+            result: { matches: [], at: Date.now(), afterGap: true },
             chosen,
             question: null,
             ...placed,
@@ -288,7 +323,9 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         onView={setView}
       />
 
-      {phase === 'stuck' && <NotRecognised sets={sets} onChoose={lookUp} onSkip={resume} />}
+      {phase === 'stuck' && (
+        <NotRecognised sets={sets} onChoose={(s) => void lookUp(s).catch(failed)} onSkip={resume} />
+      )}
 
       {latest && (
         <LatestScan
@@ -296,10 +333,10 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           mode={mode}
           sets={sets}
           nameOf={nameOf}
-          onChoose={(p) => void choose(latest, p)}
-          onRescan={() => void remove(latest, true)}
-          onConfirm={() => void choose(latest, latest.chosen)}
-          onSettle={(answer) => void settleRoom(latest, answer)}
+          onChoose={(p) => void choose(latest, p).catch(failed)}
+          onRescan={() => void remove(latest, true).catch(failed)}
+          onConfirm={() => void choose(latest, latest.chosen).catch(failed)}
+          onSettle={(answer) => void settleRoom(latest, answer).catch(failed)}
         />
       )}
 

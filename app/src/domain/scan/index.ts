@@ -187,7 +187,18 @@ function railDistance(query: Uint8Array, rails: Uint8Array, index: number, turne
  */
 const SHORTLIST = 12;
 
-export type Match = { entry: ScanEntry; index: number; score: number; bits: number };
+/**
+ * One candidate. `score` ranks printings: for the top card's own printings it includes
+ * stage 2 (strips and rails). `cardScore` is the stage-1 score alone — the same yardstick
+ * for every card — so "how sure is it that this is the card" compares like with like.
+ */
+export type Match = {
+  entry: ScanEntry;
+  index: number;
+  score: number;
+  cardScore: number;
+  bits: number;
+};
 
 const sameCard = (a: ScanEntry, b: ScanEntry) => a.setKey === b.setKey && a.base === b.base;
 
@@ -216,7 +227,13 @@ export function rankMatches(index: ScanIndex, query: Descriptor, limit = 5): Mat
         if (shortlist[mid]!.score <= score) lo = mid + 1;
         else hi = mid;
       }
-      shortlist.splice(lo, 0, { entry: index.entries[i]!, index: i, score, bits });
+      shortlist.splice(lo, 0, {
+        entry: index.entries[i]!,
+        index: i,
+        score,
+        cardScore: score,
+        bits,
+      });
       if (shortlist.length > size) shortlist.pop();
     }
   }
@@ -244,4 +261,22 @@ export function rankMatches(index: ScanIndex, query: Descriptor, limit = 5): Mat
       return true;
     })
     .slice(0, limit);
+}
+
+/**
+ * How far the recognised card leads the next-best different card, on stage-1 scores only.
+ * Stage 2 is added to the top card's printings and to nothing else, so comparing final
+ * scores would charge the winner for points the runner-up never pays — and anything that
+ * disturbs the card's edges (a coloured scanning rig, a tint) would read as doubt.
+ */
+export function cardLead(matches: readonly Match[]): number {
+  const [top] = matches;
+  if (!top) return 0;
+  let best = Infinity;
+  let runnerUp = Infinity;
+  for (const m of matches) {
+    if (sameCard(m.entry, top.entry)) best = Math.min(best, m.cardScore);
+    else runnerUp = Math.min(runnerUp, m.cardScore);
+  }
+  return runnerUp - best;
 }

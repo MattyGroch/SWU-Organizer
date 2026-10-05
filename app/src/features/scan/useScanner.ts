@@ -25,6 +25,13 @@ export type ScanResult = {
   /** Best first; the first is what was recognised. */
   matches: Match[];
   at: number;
+  /**
+   * Whether the guide showed no card (an empty rig, a hand, the table) since the previous
+   * scan. Without one, a result for the same card is that card re-read — a phone close to
+   * a card keeps refocusing and re-exposing, which can shift the picture enough to fire
+   * again — not a second copy.
+   */
+  afterGap: boolean;
 };
 
 /**
@@ -48,6 +55,8 @@ export function useScanner({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const trackerRef = useRef(createTracker());
   const missesRef = useRef(createMissCounter());
+  /** Seen a view with no card in it since the last result? Starts true: nothing came before. */
+  const gapRef = useRef(true);
   /** Set after MAX_MISSES on one card: no more tries until the user looks it up or skips. */
   const stuckRef = useRef(false);
   const [phase, setPhase] = useState<TrackerEvent | 'idle' | 'unknown' | 'stuck'>('idle');
@@ -75,6 +84,7 @@ export function useScanner({
         return;
       }
       if (!scene || !frame) return;
+      if (!looksLikeCard(frame)) gapRef.current = true;
       const event = trackerRef.current.observe(frame);
       if (event !== 'fired') {
         // After a miss the tracker is re-armed and keeps retrying the same view: keep
@@ -98,7 +108,13 @@ export function useScanner({
         }
         missesRef.current.reset();
         setPhase('fired');
-        onResultRef.current({ matches: rankMatches(index, located.descriptor, 8), at: Date.now() });
+        const afterGap = gapRef.current;
+        gapRef.current = false;
+        onResultRef.current({
+          matches: rankMatches(index, located.descriptor, 8),
+          at: Date.now(),
+          afterGap,
+        });
       } catch (error) {
         console.error('Scan failed', error);
         trackerRef.current.reset();
