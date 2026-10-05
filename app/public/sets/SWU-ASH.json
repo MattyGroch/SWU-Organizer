@@ -670,8 +670,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-001",
+          "variant": "promo"
+        },
+        {
           "num": "529",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-021",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -733,8 +741,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-002",
+          "variant": "promo"
+        },
+        {
           "num": "531",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-022",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -901,8 +917,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-003",
+          "variant": "promo"
+        },
+        {
           "num": "536",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-023",
+          "variant": "promo-foil"
         },
         {
           "num": "826",
@@ -1211,8 +1235,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-004",
+          "variant": "promo"
+        },
+        {
           "num": "546",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-024",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1235,8 +1267,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-005",
+          "variant": "promo"
+        },
+        {
           "num": "547",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-025",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1375,8 +1415,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-006",
+          "variant": "promo"
+        },
+        {
           "num": "552",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-026",
+          "variant": "promo-foil"
         },
         {
           "num": "792",
@@ -1801,8 +1849,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-007",
+          "variant": "promo"
+        },
+        {
           "num": "566",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-027",
+          "variant": "promo-foil"
         },
         {
           "num": "797",
@@ -1901,8 +1957,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-008",
+          "variant": "promo"
+        },
+        {
           "num": "569",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-028",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2041,8 +2105,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-009",
+          "variant": "promo"
+        },
+        {
           "num": "575",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-029",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2958,8 +3030,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-010",
+          "variant": "promo"
+        },
+        {
           "num": "611",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-030",
+          "variant": "promo-foil"
         },
         {
           "num": "800",
@@ -3242,8 +3322,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-011",
+          "variant": "promo"
+        },
+        {
           "num": "621",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-031",
+          "variant": "promo-foil"
         },
         {
           "num": "802",
@@ -3300,8 +3388,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-012",
+          "variant": "promo"
+        },
+        {
           "num": "623",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-032",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3536,8 +3632,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-013",
+          "variant": "promo"
+        },
+        {
           "num": "633",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-033",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3632,8 +3736,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-014",
+          "variant": "promo"
+        },
+        {
           "num": "637",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-034",
+          "variant": "promo-foil"
         },
         {
           "num": "803",
@@ -3933,8 +4045,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-015",
+          "variant": "promo"
+        },
+        {
           "num": "649",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-035",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5013,8 +5133,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-016",
+          "variant": "promo"
+        },
+        {
           "num": "691",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-036",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5089,8 +5217,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-017",
+          "variant": "promo"
+        },
+        {
           "num": "694",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-037",
+          "variant": "promo-foil"
         },
         {
           "num": "828",
@@ -5399,8 +5535,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-018",
+          "variant": "promo"
+        },
+        {
           "num": "705",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-038",
+          "variant": "promo-foil"
         },
         {
           "num": "810",
@@ -5991,8 +6135,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-019",
+          "variant": "promo"
+        },
+        {
           "num": "727",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-039",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6293,8 +6445,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "ASHOP-020",
+          "variant": "promo"
+        },
+        {
           "num": "739",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "ASHOP-040",
+          "variant": "promo-foil"
         }
       ]
     },

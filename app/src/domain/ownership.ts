@@ -25,24 +25,31 @@ export type OwnedCounts = {
 export const EMPTY_OWNED: OwnedCounts = { total: 0, byVariant: {} };
 
 /**
- * The order copies leave the binder for decks: most valuable printing first. Prestige
- * Serialized is absent on purpose — it never goes into a deck, so it never leaves.
+ * Most valuable first — the collector's ranking, the reverse of VARIANTS' order: Serialized
+ * and Showcase (equal), Prestige Foil, Prestige, Promo Foil, Hyperspace Foil, Promo,
+ * Hyperspace, Foil, Normal. It decides which copies a pocket keeps when it holds more
+ * than its quota, and which copy a better scan bumps.
  */
-export const DECK_PULL_ORDER: readonly VariantSlug[] = [
+export const VALUE_ORDER: readonly VariantSlug[] = [
+  'prestige-serialized',
+  'showcase',
   'prestige-foil',
   'prestige',
-  'showcase',
+  'promo-foil',
   'hyperspace-foil',
+  'promo',
   'hyperspace',
   'foil',
   'normal',
 ];
 
 /**
- * Most valuable first: the order a pocket keeps its copies in when it holds more than its
- * quota. Serialized outranks everything.
+ * The order copies leave the binder for decks: most valuable printing first. Prestige
+ * Serialized is absent on purpose — it never goes into a deck, so it never leaves.
  */
-export const VALUE_ORDER: readonly VariantSlug[] = ['prestige-serialized', ...DECK_PULL_ORDER];
+export const DECK_PULL_ORDER: readonly VariantSlug[] = VALUE_ORDER.filter(
+  (variant) => variant !== 'prestige-serialized',
+);
 
 const valueRank = (variant: VariantSlug) => {
   const rank = VALUE_ORDER.indexOf(variant);

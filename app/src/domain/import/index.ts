@@ -72,10 +72,16 @@ function importSwUnlimited(table: CsvTable, catalog: CatalogLookup): ImportResul
       const meaning = columnMeaning(header);
       if (meaning.kind === 'variant') {
         sawAny = true;
+        const isPromo = meaning.variant === 'promo' || meaning.variant === 'promo-foil';
+        if (isPromo && !resolver.hasPrinting(setKey, base, meaning.variant)) {
+          // An OP copy of a card the catalog has no promo printing for: keep the card.
+          promoCopies += count;
+          continue;
+        }
         resolver.addByBase(setKey, base, meaning.variant, count, `${label} (${header})`);
       } else if (meaning.kind === 'promo') {
-        // No catalog printing corresponds to these, so fold them into ordinary copies
-        // rather than losing cards the user owns.
+        // No catalog printing corresponds to these (prerelease, event promos), so fold
+        // them into ordinary copies rather than losing cards the user owns.
         promoCopies += count;
       }
     }

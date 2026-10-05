@@ -1,4 +1,4 @@
-import type { LoadedSet, VariantSlug } from '~/domain/catalog';
+import { promoParts, type LoadedSet, type VariantSlug } from '~/domain/catalog';
 import type { SetKey } from '~/domain/types';
 
 import { RESERVED_SET_KEYS, type ImportSkip, type ImportedPrinting } from './types';
@@ -16,11 +16,34 @@ export class PrintingResolver {
   readonly skipped: ImportSkip[] = [];
   recognized = 0;
 
-  constructor(private readonly catalog: CatalogLookup) {}
+  /** Promo set code (`SOROP`) → the base set its printings belong to (`SOR`). */
+  private readonly promoSets = new Map<string, SetKey>();
+
+  constructor(private readonly catalog: CatalogLookup) {
+    for (const set of catalog.values()) {
+      for (const printings of set.printingsByBase.values()) {
+        for (const printing of printings) {
+          const promo = promoParts(printing.num);
+          if (promo) this.promoSets.set(promo.set, set.setKey);
+        }
+      }
+    }
+  }
 
   private skip(reason: ImportSkip['reason'], detail: string): false {
     this.skipped.push({ reason, detail });
     return false;
+  }
+
+  /** Whether the catalog has this printing of the card — e.g. not every card has a promo. */
+  hasPrinting(rawSetKey: string, rawBase: unknown, variant: VariantSlug): boolean {
+    const set = this.catalog.get(
+      String(rawSetKey ?? '')
+        .trim()
+        .toUpperCase(),
+    );
+    const card = set?.cardsByBase.get(Number(rawBase));
+    return Boolean(card?.printings.some((p) => p.variant === variant));
   }
 
   /** Adds `count` copies of a card identified by its *base* number and a variant. */
@@ -78,15 +101,22 @@ export class PrintingResolver {
     const raw = String(rawPrintingNumber ?? '').trim();
     if (!raw) return this.skip('malformed', detail);
 
-    const set = this.catalog.get(setKey);
+    // A weekly-play promo set (`SOROP 015`) is a printing of its base set's card.
+    const promoBase = this.promoSets.get(setKey);
+    const set = this.catalog.get(promoBase ?? setKey);
     if (!set) return this.skip('unknown-set', detail);
 
     // Accept "059", "59" and "059F" alike — exports disagree about leading zeros.
-    const candidates = [raw, raw.toUpperCase(), raw.replace(/^0+/, '')];
+    const numbers = [raw, raw.toUpperCase(), raw.replace(/^0+/, '')];
     const asNumber = Number(raw.replace(/[^\d]/g, ''));
     if (Number.isInteger(asNumber) && asNumber > 0) {
-      candidates.push(String(asNumber).padStart(3, '0'), String(asNumber));
+      numbers.push(
+        String(asNumber).padStart(3, '0'),
+        String(asNumber).padStart(2, '0'),
+        String(asNumber),
+      );
     }
+    const candidates = promoBase ? numbers.map((n) => `${setKey}-${n}`) : numbers;
 
     let base: number | undefined;
     let matched: string | undefined;
@@ -104,7 +134,7 @@ export class PrintingResolver {
     const printing = card?.printings.find((p) => p.num === matched);
     if (!printing) return this.skip('unknown-card', detail);
 
-    this.record(setKey, base, printing.num, printing.variant, count);
+    this.record(set.setKey, base, printing.num, printing.variant, count);
     return true;
   }
 

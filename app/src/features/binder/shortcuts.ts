@@ -95,9 +95,10 @@ export function resolveShortcut(event: KeyLike, context: KeyContext): BinderInte
     return event.shiftKey ? { type: 'clearSlot' } : { type: 'adjustDefault', delta: -1 };
   }
 
-  // Digits 1-8 target a specific printing; Shift decrements it.
-  // `event.code` is used so the mapping survives non-US layouts, where Shift+1 is not "!".
-  const digitMatch = /^Digit([1-8])$/.exec(event.code) ?? /^Numpad([1-8])$/.exec(event.code);
+  // Digits target a specific printing (1–8, then 9 and 0 for the promos); Shift
+  // decrements it. `event.code` is used so the mapping survives non-US layouts, where
+  // Shift+1 is not "!".
+  const digitMatch = /^Digit([0-9])$/.exec(event.code) ?? /^Numpad([0-9])$/.exec(event.code);
   if (digitMatch?.[1]) {
     return { type: 'adjustVariant', hotkey: Number(digitMatch[1]), delta: event.shiftKey ? -1 : 1 };
   }
@@ -131,8 +132,8 @@ export const SHORTCUT_HELP: Array<{ title: string; items: ShortcutHelp[] }> = [
       { keys: ['−'], action: 'Remove one copy' },
       { keys: ['Shift', '+'], action: 'Fill to a playset' },
       { keys: ['Shift', '−'], action: 'Empty the slot — every printing, with Undo' },
-      { keys: ['1–8'], action: 'Add one of a specific printing (see below)' },
-      { keys: ['Shift', '1–8'], action: 'Remove one of that printing' },
+      { keys: ['1–9', '0'], action: 'Add one of a specific printing (see below)' },
+      { keys: ['Shift', '1–9', '0'], action: 'Remove one of that printing' },
       { keys: ['Esc'], action: 'Deselect' },
     ],
   },

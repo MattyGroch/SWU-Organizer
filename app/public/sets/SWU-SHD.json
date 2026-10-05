@@ -721,6 +721,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-04",
+          "variant": "promo"
+        },
+        {
           "num": "307F",
           "variant": "hyperspace-foil"
         }
@@ -989,6 +993,10 @@
         {
           "num": "039",
           "variant": "normal"
+        },
+        {
+          "num": "SHDOP-10",
+          "variant": "promo"
         }
       ]
     },
@@ -1045,8 +1053,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-20",
+          "variant": "promo"
+        },
+        {
           "num": "317F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-20F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1121,6 +1137,10 @@
         {
           "num": "044",
           "variant": "normal"
+        },
+        {
+          "num": "SHDOP-09",
+          "variant": "promo"
         }
       ]
     },
@@ -2178,6 +2198,10 @@
         {
           "num": "084",
           "variant": "normal"
+        },
+        {
+          "num": "SHDOP-12",
+          "variant": "promo"
         }
       ]
     },
@@ -2426,8 +2450,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-19",
+          "variant": "promo"
+        },
+        {
           "num": "362F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-19F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3154,6 +3186,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-03",
+          "variant": "promo"
+        },
+        {
           "num": "388F",
           "variant": "hyperspace-foil"
         }
@@ -3479,6 +3515,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-02",
+          "variant": "promo"
+        },
+        {
           "num": "400F",
           "variant": "hyperspace-foil"
         }
@@ -3682,8 +3722,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-18",
+          "variant": "promo"
+        },
+        {
           "num": "407F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-18F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3998,6 +4046,10 @@
         {
           "num": "418",
           "variant": "hyperspace"
+        },
+        {
+          "num": "SHDOP-01",
+          "variant": "promo"
         },
         {
           "num": "418F",
@@ -4589,8 +4641,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-17",
+          "variant": "promo"
+        },
+        {
           "num": "439F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-17F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5309,6 +5369,10 @@
         {
           "num": "196",
           "variant": "normal"
+        },
+        {
+          "num": "SHDOP-07",
+          "variant": "promo"
         }
       ]
     },
@@ -5541,8 +5605,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-16",
+          "variant": "promo"
+        },
+        {
           "num": "472F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-16F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5707,8 +5779,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-14",
+          "variant": "promo"
+        },
+        {
           "num": "478F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-14F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5957,8 +6037,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-15",
+          "variant": "promo"
+        },
+        {
           "num": "487F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-15F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6299,8 +6387,16 @@
           "variant": "hyperspace"
         },
         {
+          "num": "SHDOP-13",
+          "variant": "promo"
+        },
+        {
           "num": "499F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-13F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6343,6 +6439,10 @@
         {
           "num": "234",
           "variant": "normal"
+        },
+        {
+          "num": "SHDOP-06",
+          "variant": "promo"
         }
       ]
     },
@@ -6529,6 +6629,10 @@
         {
           "num": "242",
           "variant": "normal"
+        },
+        {
+          "num": "SHDOP-05",
+          "variant": "promo"
         }
       ]
     },
@@ -6600,6 +6704,10 @@
         {
           "num": "245",
           "variant": "normal"
+        },
+        {
+          "num": "SHDOP-08",
+          "variant": "promo"
         }
       ]
     },
@@ -6755,6 +6863,10 @@
         {
           "num": "251",
           "variant": "normal"
+        },
+        {
+          "num": "SHDOP-11",
+          "variant": "promo"
         }
       ]
     },

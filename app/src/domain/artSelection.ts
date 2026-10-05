@@ -20,11 +20,17 @@ import type { OwnedCounts } from './ownership';
  * still shows that treatment, via the sibling.
  */
 
+/**
+ * Which picture a pocket shows when you own several treatments: the most valuable, in
+ * the collector's ranking — Promo above Hyperspace, Showcase above Prestige (Serialized, a
+ * Prestige, ties with Showcase and shows its own stamped art when it is what you own).
+ */
 const TREATMENT_RANK: Record<Treatment, number> = {
   normal: 0,
   hyperspace: 1,
-  showcase: 2,
+  promo: 2,
   prestige: 3,
+  showcase: 4,
 };
 
 /**

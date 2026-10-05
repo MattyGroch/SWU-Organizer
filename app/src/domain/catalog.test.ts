@@ -65,9 +65,32 @@ describe('variant vocabulary', () => {
     }
   });
 
-  it('has no hotkey outside the 1-8 range', () => {
-    expect(variantForHotkey(0)).toBeUndefined();
-    expect(variantForHotkey(9)).toBeUndefined();
+  it('keeps 1–8 where they were, and puts the promos on 9 and 0', () => {
+    expect(variantForHotkey(1)).toBe('normal');
+    expect(variantForHotkey(8)).toBe('showcase');
+    expect(variantForHotkey(9)).toBe('promo');
+    expect(variantForHotkey(0)).toBe('promo-foil');
+    expect(variantForHotkey(10)).toBeUndefined();
+  });
+
+  it('lists printings in value order, least to most', () => {
+    expect(VARIANTS).toEqual([
+      'normal',
+      'foil',
+      'hyperspace',
+      'promo',
+      'hyperspace-foil',
+      'promo-foil',
+      'prestige',
+      'prestige-foil',
+      'prestige-serialized',
+      'showcase',
+    ]);
+  });
+
+  it('finds a promo printing’s art under its promo set', () => {
+    expect(artUrl('SOR', 'SOROP-015')).toBe('/card-art/SOROP/015.png');
+    expect(artUrl('SOR', '015')).toBe('/card-art/SOR/015.png');
   });
 
   it('splits variants into the axis a camera reads and the one it cannot', () => {

@@ -2,9 +2,10 @@ import type { CanonicalCatalog } from './inventory';
 import type { Card, SetKey } from './types';
 
 /**
- * Canonical printing variants, in presentation order. The 1-based index is the digit
- * hotkey the binder exposes: 1 normal, 2 foil, 3 hyperspace, 4 hyperspace-foil,
- * 5 prestige, 6 prestige-foil, 7 prestige-serialized, 8 showcase.
+ * Canonical printing variants, in presentation order — which is also value order, least
+ * to most: Normal, Foil, Hyperspace, Promo, Hyperspace Foil, Promo Foil, Prestige, Prestige
+ * Foil, then Serialized and Showcase (equal; Serialized listed first). Promos are the
+ * weekly-play OP promos, treated as printings of the base set's card.
  *
  * Must stay in step with `scripts/lib/catalog.mjs`, which writes these slugs into the
  * catalog JSON. `parseSetCatalog` throws on an unrecognized slug rather than silently
@@ -14,7 +15,9 @@ export const VARIANTS = [
   'normal',
   'foil',
   'hyperspace',
+  'promo',
   'hyperspace-foil',
+  'promo-foil',
   'prestige',
   'prestige-foil',
   'prestige-serialized',
@@ -24,7 +27,7 @@ export const VARIANTS = [
 export type VariantSlug = (typeof VARIANTS)[number];
 
 /** What a camera can read off the card. */
-export type Treatment = 'normal' | 'hyperspace' | 'prestige' | 'showcase';
+export type Treatment = 'normal' | 'hyperspace' | 'promo' | 'prestige' | 'showcase';
 /** What a camera cannot read: identical art, different stock. */
 export type Finish = 'plain' | 'foil' | 'serialized';
 
@@ -43,6 +46,8 @@ const VARIANT_AXES: Record<VariantSlug, { treatment: Treatment; finish: Finish; 
     foil: { treatment: 'normal', finish: 'foil', hasArt: false },
     hyperspace: { treatment: 'hyperspace', finish: 'plain', hasArt: true },
     'hyperspace-foil': { treatment: 'hyperspace', finish: 'foil', hasArt: false },
+    promo: { treatment: 'promo', finish: 'plain', hasArt: true },
+    'promo-foil': { treatment: 'promo', finish: 'foil', hasArt: false },
     prestige: { treatment: 'prestige', finish: 'plain', hasArt: true },
     'prestige-foil': { treatment: 'prestige', finish: 'foil', hasArt: false },
     'prestige-serialized': { treatment: 'prestige', finish: 'serialized', hasArt: true },
@@ -54,6 +59,8 @@ const VARIANT_LABELS: Record<VariantSlug, string> = {
   foil: 'Foil',
   hyperspace: 'Hyperspace',
   'hyperspace-foil': 'Hyperspace Foil',
+  promo: 'Promo',
+  'promo-foil': 'Promo Foil',
   prestige: 'Prestige',
   'prestige-foil': 'Prestige Foil',
   'prestige-serialized': 'Prestige Serialized',
@@ -66,6 +73,8 @@ const VARIANT_SHORT_LABELS: Record<VariantSlug, string> = {
   foil: 'F',
   hyperspace: 'H',
   'hyperspace-foil': 'HF',
+  promo: 'OP',
+  'promo-foil': 'OPF',
   prestige: 'P',
   'prestige-foil': 'PF',
   'prestige-serialized': 'PS',
@@ -98,13 +107,34 @@ export function variantShortLabel(slug: VariantSlug): string {
   return VARIANT_SHORT_LABELS[slug];
 }
 
-/** 1-based digit hotkey for a variant, matching `VARIANTS` order. */
+/**
+ * Digit hotkeys. 1–8 keep the keys they had before promos existed (muscle memory); the
+ * promos take 9 and 0, together at the end of the row.
+ */
+const HOTKEYS: Record<VariantSlug, number> = {
+  normal: 1,
+  foil: 2,
+  hyperspace: 3,
+  'hyperspace-foil': 4,
+  prestige: 5,
+  'prestige-foil': 6,
+  'prestige-serialized': 7,
+  showcase: 8,
+  promo: 9,
+  'promo-foil': 0,
+};
+
+/** Variants in hotkey order, 1 to 9 then 0 — the order the shortcuts help lists them. */
+export const VARIANTS_BY_HOTKEY: readonly VariantSlug[] = [...VARIANTS].sort(
+  (a, b) => ((HOTKEYS[a] + 9) % 10) - ((HOTKEYS[b] + 9) % 10),
+);
+
 export function variantHotkey(slug: VariantSlug): number {
-  return VARIANTS.indexOf(slug) + 1;
+  return HOTKEYS[slug];
 }
 
 export function variantForHotkey(digit: number): VariantSlug | undefined {
-  return VARIANTS[digit - 1];
+  return VARIANTS.find((slug) => HOTKEYS[slug] === digit);
 }
 
 /**
@@ -127,7 +157,20 @@ export function numericPart(printingNumber: string): number {
  * The path ends `.png` but the bytes are JPEG.
  */
 export function artUrl(setKey: SetKey, printingNumber: string): string {
-  return `/card-art/${setKey}/${printingNumber}.png`;
+  const promo = promoParts(printingNumber);
+  return promo
+    ? `/card-art/${promo.set}/${promo.number}.png`
+    : `/card-art/${setKey}/${printingNumber}.png`;
+}
+
+/**
+ * A promo printing's number names the promo set it comes from — `SOROP-015`, `HMWP-14` —
+ * because the number alone collides with the base set's own (`015`), and the art lives
+ * under the promo set's code on the CDN.
+ */
+export function promoParts(printingNumber: string): { set: string; number: string } | undefined {
+  const match = /^([A-Z0-9]+)-(.+)$/.exec(printingNumber);
+  return match ? { set: match[1]!, number: match[2]! } : undefined;
 }
 
 export type Printing = { num: string; variant: VariantSlug };
@@ -309,9 +352,13 @@ export function toCanonicalCatalog(sets: Iterable<LoadedSet>): CanonicalCatalog 
   for (const set of sets) {
     for (const card of set.cardsByBase.values()) {
       for (const printing of card.printings) {
-        catalog.set(`${set.setKey}:${numericPart(printing.num)}`, {
+        // A promo is filed under its own set code (`SOROP:15`), pointing at the base card.
+        const promo = promoParts(printing.num);
+        const code = promo?.set ?? set.setKey;
+        const number = numericPart(promo?.number ?? printing.num);
+        catalog.set(`${code}:${number}`, {
           setKey: set.setKey,
-          printingNumber: numericPart(printing.num),
+          printingNumber: number,
           baseNumber: card.base,
           type: card.type,
           maxCopies: card.maxCopies,
@@ -333,7 +380,11 @@ export function toSearchCatalog(set: LoadedSet) {
   const baseByPrintingNumber = new Map<number, number>();
 
   for (const [base, printings] of set.printingsByBase) {
-    const numbers = [...new Set(printings.map((p) => numericPart(p.num)))].sort((a, b) => a - b);
+    // Promo numbers belong to the promo set's own run, so they are left out: SOR #15 and
+    // SOROP #15 are different cards.
+    const numbers = [
+      ...new Set(printings.filter((p) => !promoParts(p.num)).map((p) => numericPart(p.num))),
+    ].sort((a, b) => a - b);
     printingNumbersByBase.set(base, numbers);
     for (const n of numbers) baseByPrintingNumber.set(n, base);
   }

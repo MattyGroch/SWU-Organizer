@@ -132,9 +132,17 @@ describe('columnMeaning', () => {
     });
   });
 
-  it('treats promo columns as ordinary copies, not as a lost card', () => {
-    expect(columnMeaning('Organized Play')).toEqual({ kind: 'promo' });
+  it('reads Organized Play columns as the OP promo printings', () => {
+    expect(columnMeaning('Organized Play')).toEqual({ kind: 'variant', variant: 'promo' });
+    expect(columnMeaning('Organized Play Foil')).toEqual({
+      kind: 'variant',
+      variant: 'promo-foil',
+    });
+  });
+
+  it('treats other promo columns as ordinary copies, not as a lost card', () => {
     expect(columnMeaning('Event Exclusive')).toEqual({ kind: 'promo' });
+    expect(columnMeaning('Prerelease Promo')).toEqual({ kind: 'promo' });
   });
 
   it('ignores bookkeeping columns', () => {

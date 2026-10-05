@@ -47,7 +47,7 @@ const CONCURRENCY = 8;
 /** Printings with their own picture. Foil SKUs share their sibling's art and 404 on the CDN;
  * a Prestige Serialized is its Prestige with a small stamp, so the camera cannot tell them
  * apart — the scanner reports the Prestige and the user picks Serialized by hand. */
-const INDEXED = new Set(['normal', 'hyperspace', 'showcase', 'prestige']);
+const INDEXED = new Set(['normal', 'hyperspace', 'promo', 'showcase', 'prestige']);
 
 const args = process.argv.slice(2);
 const flag = (name: string) => args.includes(name);
@@ -67,7 +67,8 @@ type CatalogFile = {
   }>;
 };
 /**
- * One reference picture. `remote` is the CDN name (`005`, or `005-b` for a back).
+ * One reference picture. `remote` is its CDN path: `SOR/005`, `SOR/005-b` for a back, or
+ * `SOROP/015` for a weekly-play promo (whose art lives under the promo set's code).
  * `sideways` marks a landscape card's front (Leader, Base). `turn` rotates the picture
  * into the portrait guide — a sideways card can sit there either way round, so it is
  * indexed at both turns.
@@ -101,7 +102,9 @@ async function references(): Promise<Ref[]> {
         if (!INDEXED.has(printing.variant)) continue;
         const faces = card.doubleSided ? (['front', 'back'] as const) : (['front'] as const);
         for (const face of faces) {
-          const remote = face === 'back' ? `${printing.num}-b` : printing.num;
+          const promo = /^([A-Z0-9]+)-(.+)$/.exec(printing.num);
+          const path = promo ? `${promo[1]}/${promo[2]}` : `${set.key}/${printing.num}`;
+          const remote = face === 'back' ? `${path}-b` : path;
           refs.push({
             setKey: set.key,
             num: printing.num,
@@ -110,7 +113,7 @@ async function references(): Promise<Ref[]> {
             ...(face === 'back' ? { face } : {}),
             name: card.name,
             remote,
-            file: join(CACHE_DIR, set.key, `${remote}.png`),
+            file: join(CACHE_DIR, `${remote}.png`),
             sideways: face === 'front' && (card.type === 'Leader' || card.type === 'Base'),
             turn: 0,
           });
@@ -125,7 +128,7 @@ async function download(ref: Ref): Promise<boolean> {
   if (await exists(ref.file)) return true;
   for (let attempt = 1; attempt <= 3; attempt++) {
     try {
-      const response = await fetch(`${CDN}/${ref.setKey}/${ref.remote}.png`);
+      const response = await fetch(`${CDN}/${ref.remote}.png`);
       if (response.status === 404 || response.status === 403) return false;
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       await mkdir(dirname(ref.file), { recursive: true });
