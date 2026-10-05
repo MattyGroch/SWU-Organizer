@@ -101,7 +101,11 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
             >
               Decks
             </th>
-            <th scope="col" className={styles.numericCol} title="Copies still needed for a playset">
+            <th
+              scope="col"
+              className={`${styles.numericCol} ${styles.wideOnly}`}
+              title="Copies still needed for a playset"
+            >
               Need
             </th>
             <th scope="col" className={`${styles.numericCol} ${styles.wideOnly}`}>
@@ -178,12 +182,12 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
                   </span>
                 </td>
 
-                <td className={styles.numericCol}>
+                <td className={`${styles.numericCol} ${styles.owned}`} data-status={row.status}>
                   {row.inBinder}/{row.quota}
                 </td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.spares || ''}</td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.inDecks || ''}</td>
-                <td className={styles.numericCol}>{row.needed || ''}</td>
+                <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.needed || ''}</td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>
                   {row.value ? formatUsd(row.value) : ''}
                 </td>

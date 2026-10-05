@@ -1,4 +1,4 @@
-import { variantHotkey, variantLabel, type Printing } from '~/domain/catalog';
+import { variantHotkey, variantLabel, variantShortLabel, type Printing } from '~/domain/catalog';
 import type { OwnedCounts } from '~/domain/ownership';
 
 import styles from './VariantStrip.module.css';
@@ -49,6 +49,9 @@ export function VariantStrip({ printings, counts, cardName, onAdjust }: Props) {
                 {digit}
               </span>
               <span className={styles.label}>{label}</span>
+              <span className={styles.shortLabel} aria-hidden="true">
+                {variantShortLabel(printing.variant)}
+              </span>
               <span className={styles.count} data-zero={owned === 0}>
                 <span className="visually-hidden">, </span>
                 {owned}

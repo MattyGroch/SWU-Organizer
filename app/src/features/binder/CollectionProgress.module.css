@@ -19,6 +19,7 @@
 
 .percent {
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 /* The track is the empty state: a filter that matches nothing shows a plain bar. */

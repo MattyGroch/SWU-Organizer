@@ -142,3 +142,78 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
 }
+
+.close {
+  display: none;
+}
+
+/*
+ * Phones: the panel is pinned over the table, so it stays compact — location on one line,
+ * smaller type — and gets a close button, there being no Escape key.
+ */
+@media (max-width: 760px) {
+  .panel {
+    gap: var(--space-2) var(--space-3);
+    min-height: 0;
+    padding: var(--space-2) var(--space-3);
+    box-shadow: 0 -6px 18px rgb(0 0 0 / 0.45);
+  }
+
+  .identity {
+    flex-basis: 100%;
+  }
+
+  .name {
+    font-size: var(--font-size-md);
+  }
+
+  .close {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    margin-left: auto;
+    border: 1px solid var(--color-border-interactive);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-sunken);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .location {
+    gap: var(--space-3);
+  }
+
+  .locationItem {
+    display: flex;
+    gap: 4px;
+    align-items: baseline;
+    padding: 0;
+    border: none;
+    background: none;
+  }
+
+  .locationItem dd {
+    font-size: var(--font-size-sm);
+  }
+
+  .quantity {
+    gap: var(--space-2);
+    margin-inline: auto;
+  }
+
+  .qtyButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  .qtyValue {
+    min-width: 72px;
+  }
+
+  .qtyNumbers {
+    font-size: var(--font-size-lg);
+  }
+}

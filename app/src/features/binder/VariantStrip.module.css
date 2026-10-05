@@ -82,3 +82,40 @@
   color: var(--color-text-muted);
   font-weight: 500;
 }
+
+.shortLabel {
+  display: none;
+}
+
+/* Phones: no keyboard, so no digits; short labels in an even grid of touch targets. */
+@media (max-width: 760px) {
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  }
+
+  .item {
+    justify-content: space-between;
+  }
+
+  .badge {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .digit,
+  .label {
+    display: none;
+  }
+
+  .shortLabel {
+    display: inline;
+    color: var(--color-text-subtle);
+    font-weight: 700;
+  }
+
+  .step {
+    min-width: 40px;
+    min-height: 40px;
+  }
+}

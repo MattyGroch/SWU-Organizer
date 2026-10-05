@@ -65,3 +65,12 @@
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
 }
+
+/* Phones: the button sits at the right of its row, so the panel opens leftward. */
+@media (max-width: 760px) {
+  .panel {
+    right: 0;
+    left: auto;
+    max-width: calc(100vw - 2 * var(--space-3));
+  }
+}

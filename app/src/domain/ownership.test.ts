@@ -11,6 +11,7 @@ import {
   quotaForCard,
   spareCount,
   pocketCounts,
+  pocketRoom,
   takeVariants,
 } from './ownership';
 
@@ -158,5 +159,39 @@ describe('takeVariants', () => {
     const available = { normal: 2, hyperspace: 1, prestige: 1, 'prestige-serialized': 1 };
     expect(takeVariants(available, 2)).toEqual({ prestige: 1, hyperspace: 1 });
     expect(takeVariants(available, 10)).toEqual({ prestige: 1, hyperspace: 1, normal: 2 });
+  });
+});
+
+describe('pocketRoom', () => {
+  it('has room until the pocket holds its quota', () => {
+    expect(pocketRoom({ normal: 2 }, 3, 'normal')).toEqual({ kind: 'room' });
+    expect(pocketRoom({}, 1, 'normal')).toEqual({ kind: 'room' });
+  });
+
+  it('sends a copy no better than the weakest in the pocket to bulk', () => {
+    expect(pocketRoom({ normal: 3 }, 3, 'normal')).toEqual({ kind: 'full' });
+    expect(pocketRoom({ hyperspace: 2, normal: 1 }, 3, 'normal')).toEqual({ kind: 'full' });
+    expect(pocketRoom({ hyperspace: 3 }, 3, 'foil')).toEqual({ kind: 'full' });
+  });
+
+  it('offers to swap out the weakest copy for a better one', () => {
+    // Your example: 2 Hyperspace and 1 Normal, then a Hyperspace Foil.
+    expect(pocketRoom({ hyperspace: 2, normal: 1 }, 3, 'hyperspace-foil')).toEqual({
+      kind: 'upgrade',
+      replaces: 'normal',
+    });
+    expect(pocketRoom({ normal: 1 }, 1, 'prestige-serialized')).toEqual({
+      kind: 'upgrade',
+      replaces: 'normal',
+    });
+  });
+
+  it('judges only the copies the binder shows, not the spares beyond them', () => {
+    // Three Hyperspace fill the pocket; the spare Normal is not "in the binder".
+    expect(pocketRoom({ hyperspace: 3, normal: 1 }, 3, 'foil')).toEqual({ kind: 'full' });
+    expect(pocketRoom({ hyperspace: 3, normal: 1 }, 3, 'hyperspace-foil')).toEqual({
+      kind: 'upgrade',
+      replaces: 'hyperspace',
+    });
   });
 });

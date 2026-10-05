@@ -33,19 +33,23 @@ export function DeckRowsTable({ rows, label, box }: Props) {
       <table className={styles.table} aria-label={label}>
         <thead>
           <tr>
-            <th scope="col">Role</th>
+            <th scope="col" className={styles.wideOnly}>
+              Role
+            </th>
             <th scope="col" className={styles.numeric}>
               Qty
             </th>
             <th scope="col">Card</th>
-            <th scope="col">Set</th>
+            <th scope="col" className={styles.wideOnly}>
+              Set
+            </th>
             <th scope="col" className={styles.numeric}>
               Have
             </th>
             <th scope="col" className={styles.numeric}>
               Need
             </th>
-            <th scope="col" className={styles.numeric}>
+            <th scope="col" className={`${styles.numeric} ${styles.wideOnly}`}>
               Cost
             </th>
             {box && (
@@ -62,7 +66,7 @@ export function DeckRowsTable({ rows, label, box }: Props) {
               data-short={row.needed > 0}
               data-box-short={box ? (box.counts[index] ?? 0) < row.count : undefined}
             >
-              <td className={styles.role}>{ROLE_LABEL[row.role]}</td>
+              <td className={`${styles.role} ${styles.wideOnly}`}>{ROLE_LABEL[row.role]}</td>
               <td className={styles.numeric}>{row.count}</td>
               <td>
                 {row.name}
@@ -80,11 +84,16 @@ export function DeckRowsTable({ rows, label, box }: Props) {
                   </span>
                 )}
                 {row.subtitle && <span className={styles.subtitle}>{row.subtitle}</span>}
+                <span className={`${styles.role} ${styles.narrowOnly}`}>
+                  {ROLE_LABEL[row.role]} · {row.setKey}
+                </span>
               </td>
-              <td>{row.setKey}</td>
+              <td className={styles.wideOnly}>{row.setKey}</td>
               <td className={styles.numeric}>{row.have}</td>
               <td className={styles.numeric}>{row.needed || ''}</td>
-              <td className={styles.numeric}>{row.rowCost ? formatUsd(row.rowCost) : ''}</td>
+              <td className={`${styles.numeric} ${styles.wideOnly}`}>
+                {row.rowCost ? formatUsd(row.rowCost) : ''}
+              </td>
               {box && (
                 <td className={styles.boxCol}>
                   <span className={styles.stepper}>

@@ -22,6 +22,8 @@ type Props = {
   held: VariantCounts;
   onAdjust: (delta: number) => void;
   onAdjustPrinting: (printing: Printing, delta: number) => void;
+  /** Deselects the card. Phones show a close button for it: they have no Escape key. */
+  onClose?: () => void;
 };
 
 /**
@@ -39,6 +41,7 @@ export function SelectedCardPanel({
   held,
   onAdjust,
   onAdjustPrinting,
+  onClose,
 }: Props) {
   if (!active) {
     return (
@@ -71,6 +74,16 @@ export function SelectedCardPanel({
           <h2 className={styles.name}>{card.Name}</h2>
           {card.Subtitle && <p className={styles.subtitle}>{card.Subtitle}</p>}
         </div>
+        {onClose && (
+          <button
+            type="button"
+            className={styles.close}
+            onClick={onClose}
+            aria-label={`Close ${card.Name}`}
+          >
+            ✕
+          </button>
+        )}
       </div>
 
       <dl className={styles.location} aria-label="Binder location">

@@ -81,6 +81,27 @@ docker compose -p swu-organizer -f docker-compose.yml -f restore-override.yml --
 
 v1's last commit is also tagged `v1-final` in git.
 
+## Rolling back past the service worker
+
+From `1c1c3be` on, the app installs a service worker (`/sw.js`) that caches the app for offline use. Pages are fetched network-first, so after any rollback a browser still loads whatever the server now serves. But an image that has no `sw.js` answers `/sw.js` with `index.html`, the browser's update check then fails on the MIME type, and the old worker stays registered: it keeps caching data and serves its cached shell when offline. To retire it cleanly, serve this as `/sw.js` from the rolled-back image (put it in that build's `app/public/sw.js`):
+
+```js
+// Unregisters itself and drops its caches; the next load is a plain website again.
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) => Promise.all(keys.map((key) => caches.delete(key))))
+      .then(() => self.registration.unregister())
+      .then(() => self.clients.matchAll())
+      .then((clients) => clients.forEach((client) => client.navigate(client.url))),
+  );
+});
+```
+
+On a single phone, uninstalling the app or clearing the site's data does the same.
+
 ## Build host permissions
 
 The image normalises file permissions in the web root (`chmod -R a+rX`), so a checkout made under a strict umask — root on photonOS uses 0027 — still serves correctly. Without it, nginx's non-root workers answered 403 for everything copied from `app/public`.

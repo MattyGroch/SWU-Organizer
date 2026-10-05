@@ -143,11 +143,59 @@
   text-align: center;
 }
 
-/* Phones: keep what identifies a card and whether you need it; drop the money and the
-   spare/deck breakdown. */
+/* Phones: keep what identifies a card and how many you have (1/3 says what is needed);
+   drop the money and the spare/deck/need breakdown, and tighten every column so the
+   name gets the room. */
 @media (max-width: 760px) {
   .typeCol,
+  .statusCol,
   .wideOnly {
     display: none;
+  }
+
+  /* With no Status column, the count carries its colour. */
+  .owned {
+    font-weight: 700;
+  }
+
+  .owned[data-status='complete'] {
+    color: var(--color-success);
+  }
+
+  .owned[data-status='partial'] {
+    color: var(--color-warning);
+  }
+
+  .owned[data-status='none'] {
+    color: var(--color-danger);
+  }
+
+  .table th,
+  .table td {
+    padding-inline: 6px;
+  }
+
+  .table th {
+    font-size: var(--font-size-xs);
+  }
+
+  .numCol {
+    width: 36px;
+  }
+
+  .jump {
+    padding: 2px 0;
+  }
+
+  .dotCol {
+    width: 14px;
+  }
+
+  .rarCol {
+    width: 16px;
+  }
+
+  .numericCol {
+    width: 52px;
   }
 }

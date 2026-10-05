@@ -289,3 +289,147 @@
   opacity: 0.2;
   cursor: default;
 }
+
+.fix {
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* The Fix sheet. */
+.sheet {
+  width: min(480px, calc(100vw - 24px));
+  max-height: calc(100dvh - 48px);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.sheet[open] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sheet::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+
+.sheetHeader {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.sheetArt {
+  width: 100%;
+  border-radius: var(--radius-md);
+}
+
+.sheetTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.sheetRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.sheetRow .step {
+  width: 40px;
+  height: 40px;
+}
+
+.choiceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+
+.choice {
+  min-height: 48px;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  color: var(--color-text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.choice[aria-checked='true'] {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.allocLarge {
+  gap: var(--space-2);
+}
+
+.allocLarge .allocButton {
+  min-width: 52px;
+  min-height: 52px;
+}
+
+.swaps {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--space-1);
+}
+
+.swap {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  color: var(--color-warning-fg);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.keep {
+  padding: 1px var(--space-2);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  color: var(--color-text);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+}
+
+.narrowOnly {
+  display: none;
+}
+
+/* Phones: rows show the card, its count and a Fix button; the details live in the sheet. */
+@media (max-width: 760px) {
+  .wideOnly {
+    display: none;
+  }
+
+  .narrowOnly {
+    display: revert;
+  }
+
+  .batch {
+    padding: var(--space-3);
+  }
+
+  .table td,
+  .table th {
+    padding: var(--space-2);
+  }
+}

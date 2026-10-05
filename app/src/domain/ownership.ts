@@ -38,6 +38,45 @@ export const DECK_PULL_ORDER: readonly VariantSlug[] = [
   'normal',
 ];
 
+/**
+ * Most valuable first: the order a pocket keeps its copies in when it holds more than its
+ * quota. Serialized outranks everything.
+ */
+export const VALUE_ORDER: readonly VariantSlug[] = ['prestige-serialized', ...DECK_PULL_ORDER];
+
+const valueRank = (variant: VariantSlug) => {
+  const rank = VALUE_ORDER.indexOf(variant);
+  return rank < 0 ? VALUE_ORDER.length : rank;
+};
+
+/** Whether a newly scanned copy has a place in its binder pocket. */
+export type PocketRoom =
+  | { kind: 'room' }
+  /** The pocket is full of copies at least as good: this one goes to bulk. */
+  | { kind: 'full' }
+  /** The pocket is full, but this copy beats its weakest: swap that one out. */
+  | { kind: 'upgrade'; replaces: VariantSlug };
+
+/**
+ * A pocket holds its quota of the most valuable copies. A new copy that is no better than
+ * the weakest of those has no place in the binder; a better one displaces it.
+ */
+export function pocketRoom(pocket: VariantCounts, quota: number, scanned: VariantSlug): PocketRoom {
+  if (sumVariants(pocket) < quota) return { kind: 'room' };
+  let left = quota;
+  let weakest: VariantSlug | undefined;
+  for (const variant of VALUE_ORDER) {
+    const count = pocket[variant] ?? 0;
+    if (count <= 0 || left <= 0) continue;
+    weakest = variant;
+    left -= Math.min(count, left);
+  }
+  if (!weakest) return { kind: 'full' };
+  return valueRank(scanned) < valueRank(weakest)
+    ? { kind: 'upgrade', replaces: weakest }
+    : { kind: 'full' };
+}
+
 export function sumVariants(variants: VariantCounts): number {
   let total = 0;
   for (const n of Object.values(variants)) total += n ?? 0;

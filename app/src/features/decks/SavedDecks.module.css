@@ -123,6 +123,7 @@
 
 .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--space-2);
   margin-left: auto;
 }
@@ -190,4 +191,19 @@
 
 .danger:hover {
   background: var(--color-danger-bg);
+}
+
+/* Phones: nested panels each give up some padding, so a deck's card table has room. */
+@media (max-width: 760px) {
+  .panel {
+    padding: var(--space-3);
+  }
+
+  .row {
+    padding: var(--space-2);
+  }
+
+  .details {
+    padding: 0 var(--space-2) var(--space-2);
+  }
 }
