@@ -18,6 +18,7 @@ import type { ScanResult } from './useScanner';
 let fire: ((r: ScanResult) => void) | null = null;
 let phase = 'holding';
 const resume = vi.fn();
+const retry = vi.fn();
 vi.mock('./useCamera', () => ({
   useCamera: () => ({
     videoRef: { current: null },
@@ -35,7 +36,7 @@ vi.mock('./useScanIndex', () => ({
 vi.mock('./useScanner', () => ({
   useScanner: ({ onResult }: { onResult: (r: ScanResult) => void }) => {
     fire = onResult;
-    return { phase, rearm: vi.fn(), resume };
+    return { phase, rearm: vi.fn(), resume, retry };
   },
 }));
 
@@ -132,6 +133,7 @@ describe('ScanPage', () => {
     fire = null;
     phase = 'holding';
     resume.mockClear();
+    retry.mockClear();
   });
 
   it('adds a confident scan to Intake and shows it with Correct and Rescan', async () => {
@@ -359,5 +361,14 @@ describe('ScanPage', () => {
       expect((await db.intakeLines.toArray()).map((l) => l.num)).toEqual(['080']),
     );
     expect(screen.queryByRole('button', { name: '✦ Foil' })).not.toBeInTheDocument();
+  });
+
+  it('offers Rescan on the "couldn’t recognise" prompt, for a hiccup like an empty tray', async () => {
+    phase = 'stuck';
+    renderPage();
+    await userEvent.click(await screen.findByRole('button', { name: 'Rescan' }));
+    expect(retry).toHaveBeenCalled();
+    expect(resume).not.toHaveBeenCalled();
+    expect(await db.intakeLines.count()).toBe(0);
   });
 });

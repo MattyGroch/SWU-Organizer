@@ -68,6 +68,8 @@ export function useScanner({
   const gapRef = useRef(true);
   /** Set after MAX_MISSES on one card: no more tries until the user looks it up or skips. */
   const stuckRef = useRef(false);
+  /** The view it gave up on: while paused, a clearly different view resumes scanning. */
+  const stuckOnRef = useRef<Descriptor | null>(null);
   const [phase, setPhase] = useState<TrackerEvent | 'idle' | 'unknown' | 'stuck' | 'tooClose'>(
     'idle',
   );
@@ -85,7 +87,7 @@ export function useScanner({
     canvasRef.current ??= document.createElement('canvas');
     const timer = window.setInterval(() => {
       const video = videoRef.current;
-      if (!video || video.readyState < 2 || stuckRef.current) return;
+      if (!video || video.readyState < 2) return;
       let scene: SamplePixels | null;
       let frame: Descriptor | null;
       try {
@@ -95,6 +97,20 @@ export function useScanner({
         return;
       }
       if (!scene || !frame) return;
+      if (stuckRef.current) {
+        // Paused on "couldn't recognise", but still watching: a card dropped into an
+        // empty tray changes the view enough to clear the prompt and carry on, untouched.
+        const stuckOn = stuckOnRef.current;
+        if (stuckOn && hammingDistance(frame.hash, stuckOn.hash) > DEFAULT_TRACKER.releaseBits) {
+          stuckRef.current = false;
+          stuckOnRef.current = null;
+          missesRef.current.reset();
+          missedRef.current = null;
+          trackerRef.current.reset();
+          setPhase('moving');
+        }
+        return;
+      }
       if (!looksLikeCard(frame)) gapRef.current = true;
       const event = trackerRef.current.observe(frame);
       if (event !== 'fired') {
@@ -121,6 +137,7 @@ export function useScanner({
             // Stop retrying a card the index doesn't know. The tracker stays fired on it,
             // so after resume() it waits for the next card rather than trying again.
             stuckRef.current = true;
+            stuckOnRef.current = frame;
             setPhase('stuck');
             return;
           }
@@ -159,8 +176,19 @@ export function useScanner({
   const resume = useCallback(() => {
     missesRef.current.reset();
     stuckRef.current = false;
+    stuckOnRef.current = null;
     setPhase('holding');
   }, []);
 
-  return { phase, rearm, resume };
+  /** "Rescan" on the prompt: try again now, on whatever is in view. */
+  const retry = useCallback(() => {
+    missesRef.current.reset();
+    stuckRef.current = false;
+    stuckOnRef.current = null;
+    missedRef.current = null;
+    trackerRef.current.reset();
+    setPhase('moving');
+  }, []);
+
+  return { phase, rearm, resume, retry };
 }

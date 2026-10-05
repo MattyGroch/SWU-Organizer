@@ -240,7 +240,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   /** An open question pauses scanning, and freezes the picture, until it is answered. */
   const asking = Boolean(latest?.question);
   const scanning = camera.state === 'live' && Boolean(index.data);
-  const { phase, rearm, resume } = useScanner({
+  const { phase, rearm, resume, retry } = useScanner({
     videoRef: camera.videoRef,
     index: index.data,
     view,
@@ -403,7 +403,12 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       />
 
       {phase === 'stuck' && (
-        <NotRecognised sets={sets} onChoose={(s) => void lookUp(s).catch(failed)} onSkip={resume} />
+        <NotRecognised
+          sets={sets}
+          onChoose={(s) => void lookUp(s).catch(failed)}
+          onRescan={retry}
+          onSkip={resume}
+        />
       )}
 
       {latest && (
@@ -471,10 +476,13 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
 function NotRecognised({
   sets,
   onChoose,
+  onRescan,
   onSkip,
 }: {
   sets: Map<SetKey, LoadedSet>;
   onChoose: (suggestion: SearchSuggestion) => void;
+  /** Try again now on what's in view — e.g. an empty tray was taken for a card. */
+  onRescan: () => void;
   onSkip: () => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -486,7 +494,8 @@ function NotRecognised({
         Couldn’t recognise this card
       </h2>
       <p className={styles.meta}>
-        Look it up by title or number, or skip it — scanning carries on with the next card.
+        Look it up by title or number, rescan, or skip it. Putting a different card in view carries
+        on by itself.
       </p>
       <CardSearch
         catalogs={catalogs}
@@ -495,6 +504,9 @@ function NotRecognised({
         onChoose={onChoose}
       />
       <div className={styles.actions}>
+        <button type="button" className={styles.primary} onClick={onRescan}>
+          Rescan
+        </button>
         <button type="button" className={styles.button} onClick={onSkip}>
           Skip this card
         </button>
