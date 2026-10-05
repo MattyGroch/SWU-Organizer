@@ -198,11 +198,6 @@ export const db = new SwuDatabase();
 // Every request is watched, so storage that stops answering says so (see storageHealth).
 db.use(watchStorage(storageHealth));
 
-export const META_KEYS = {
-  /** Set once the one-time localStorage import has run, so it never runs twice. */
-  localStorageMigration: 'migration:localStorage',
-} as const;
-
 export async function readMeta(database: SwuDatabase, key: string): Promise<string | undefined> {
   return (await database.meta.get(key))?.value;
 }
