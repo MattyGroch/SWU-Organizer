@@ -9,7 +9,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { db } from '~/data/db';
+import { db, writeMeta } from '~/data/db';
 import { logScan } from '~/data/stacks';
 import { parseSetCatalog, toLoadedSet } from '~/domain/catalog';
 
@@ -80,7 +80,13 @@ describe('PutAwayPage', () => {
     );
     Object.defineProperty(window, 'speechSynthesis', {
       configurable: true,
-      value: { speak: (u: { text: string }) => spoken.push(u.text), cancel: () => {} },
+      value: {
+        speak: (u: { text: string; onend?: () => void }) => {
+          spoken.push(u.text);
+          setTimeout(() => u.onend?.(), 0);
+        },
+        cancel: () => {},
+      },
     });
     await db.open();
     await db.stacks.clear();
@@ -97,40 +103,58 @@ describe('PutAwayPage', () => {
     fate,
   });
 
-  it('deals, scoops, files and sets aside, reading each step aloud', async () => {
+  /** A stack scanned in this order: the scout first, Krennic last — so Krennic is on top. */
+  const scanStack = async () => {
     await logScan(card(80));
     await logScan(card(59, 'bulk'));
     await logScan(card(1));
-    const stackId = (await db.stacks.toArray())[0]!.id;
-    renderPage(stackId);
+    return (await db.stacks.toArray())[0]!.id;
+  };
+
+  it('starts from the last card scanned and runs hands-free to the end', async () => {
+    // No pause between steps, so the whole walk plays out at once.
+    await writeMeta(db, 'putAway:pace', '0');
+    renderPage(await scanStack());
 
     expect(await screen.findByRole('heading', { name: 'Put away 3 cards' })).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: 'Start' }));
 
-    const next = async (text: string) => {
-      await waitFor(() => expect(spoken.at(-1)).toBe(text));
-      await userEvent.click(screen.getByRole('button', { name: 'Next' }));
-    };
+    await waitFor(() => expect(spoken.at(-1)).toBe('All put away.'), { timeout: 4000 });
     // Piles in binder order: page 1, then pages 6–7; the bulk card gets the last pile.
-    await next('Pile 2. Nameless Scout');
-    expect(await screen.findByText('Step 2 of 7')).toBeInTheDocument();
-    await next('Pile 3. 2-1B Surgical Droid');
-    await next('Pile 1. Krennic');
-    await next('Scoop up the piles, Pile 1 through Pile 3.');
-    await next('Open Spark of Rebellion to page 1. Page 1, row 1, column 1. Krennic.');
-    await next(
+    expect(spoken).toEqual([
+      'Pile 1. Krennic',
+      'Pile 3. 2-1B Surgical Droid',
+      'Pile 2. Nameless Scout',
+      'Scoop up the piles, Pile 1 through Pile 3.',
+      'Open Spark of Rebellion to page 1. Page 1, row 1, column 1. Krennic.',
       'Open Spark of Rebellion to pages 6 and 7. Page 7, row 2, column 4. Nameless Scout.',
-    );
-    await next('Bulk. 2-1B Surgical Droid');
-    await waitFor(() => expect(spoken.at(-1)).toBe('All put away.'));
-
-    // Progress is kept: Back steps through it again.
-    await userEvent.click(screen.getByRole('button', { name: 'Back' }));
-    await waitFor(() => expect(spoken.at(-1)).toBe('Bulk. 2-1B Surgical Droid'));
-    await userEvent.click(screen.getByRole('button', { name: 'Next' }));
+      'Bulk. 2-1B Surgical Droid',
+      'All put away.',
+    ]);
 
     await userEvent.click(await screen.findByRole('button', { name: 'Finish' }));
     await waitFor(async () => expect(await db.stacks.count()).toBe(0));
+  });
+
+  it('pauses, steps back and forth by hand, and resumes', async () => {
+    await writeMeta(db, 'putAway:pace', '10');
+    renderPage(await scanStack());
+    await userEvent.click(await screen.findByRole('button', { name: 'Start' }));
+    await waitFor(() => expect(spoken.at(-1)).toBe('Pile 1. Krennic'));
+
+    await userEvent.click(screen.getByRole('button', { name: 'Pause' }));
+    expect(screen.getByText(/Paused/)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Next' }));
+    await waitFor(() => expect(spoken.at(-1)).toBe('Pile 3. 2-1B Surgical Droid'));
+    expect(await screen.findByText(/Step 2 of 7/)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Back' }));
+    await waitFor(() => expect(spoken.at(-1)).toBe('Pile 1. Krennic'));
+
+    // Stepping by hand never restarts the walk on its own.
+    expect(screen.getByRole('button', { name: 'Resume' })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Resume' }));
+    expect(screen.getByRole('button', { name: 'Pause' })).toBeInTheDocument();
+    expect(screen.queryByText(/Paused/)).not.toBeInTheDocument();
   });
 
   it('stays quiet when reading aloud is off', async () => {

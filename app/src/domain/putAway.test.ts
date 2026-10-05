@@ -200,6 +200,35 @@ describe('planPutAway', () => {
     expect(steps.filter((s) => s.kind === 'file' && s.turnTo)).toHaveLength(1);
   });
 
+  it('sends a Normal from the same stack to bulk when a better printing replaces it', () => {
+    const normals = [card('SOR', 40), card('SOR', 40), card('SOR', 40)];
+    const hyper: StackCardInput = {
+      ...card('SOR', 40),
+      num: '300',
+      variant: 'hyperspace',
+      swapOut: { num: '040', variant: 'normal' },
+    };
+    const stack = [hyper, ...normals];
+    const steps = planPutAway(stack, { setOrder: SET_ORDER, sorters: 1 });
+    const { filed, aside } = play(stack, steps);
+    expect(filed.map((s) => s.card.num).sort()).toEqual(['040', '040', '300']);
+    // Nothing to take out of the binder: the replaced copy never got there.
+    expect(filed.every((s) => !s.card.swapOut)).toBe(true);
+    expect(aside).toHaveLength(1);
+    expect(steps.flatMap((s) => (s.kind === 'aside' ? [s.reason] : []))).toEqual(['replaced']);
+  });
+
+  it('still says to take the weaker copy out when it is already in the binder', () => {
+    const hyper: StackCardInput = {
+      ...card('SOR', 40),
+      num: '300',
+      variant: 'hyperspace',
+      swapOut: { num: '040', variant: 'normal' },
+    };
+    const { filed } = play([hyper], planPutAway([hyper], { setOrder: SET_ORDER, sorters: 1 }));
+    expect(filed[0]!.card.swapOut).toEqual({ num: '040', variant: 'normal' });
+  });
+
   it('places sets missing from the set order after the known ones', () => {
     const stack = [card('NEW', 1), card('SOR', 1)];
     const { filed } = play(stack, planPutAway(stack, { setOrder: SET_ORDER, sorters: 1 }));

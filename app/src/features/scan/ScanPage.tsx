@@ -766,7 +766,8 @@ function LatestScan({
         ) : mode === 'add' && item.room?.kind === 'full' ? (
           <div className={styles.question}>
             <p>
-              Maximum count reached for <strong>{nameOf(chosen)}</strong> — add to bulk.
+              Maximum count reached for <strong>{nameOf(chosen)}</strong>. Leave it in the stack:
+              Put away sets it aside for bulk.
             </p>
             {!item.receipt && (
               <div className={styles.choices}>
