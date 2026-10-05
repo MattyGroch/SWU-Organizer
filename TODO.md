@@ -23,7 +23,6 @@ Your own list: things to try, questions only you can answer, and setup only you 
 
 ### To do / provide
 
-- [ ] **Merge PR #53** (Phase 5: scanner, install/offline, mobile pass), then tell Claude: it switches `/opt/swu-organizer` to `main` through the deploy session, tags `main` as **v2.0.0** with a GitHub release (so "Latest" stops being v1.5.3), and pushes the `v1-final` tag.
 - [ ] **Point of no return** — tell Claude when you start using the live app for real. Until then, breaking changes and data loss are fair game; after it, data is protected and you import your collection from zero.
 - [ ] **HMW precon decklists** — paste them in and Claude will build the precon files.
 - [ ] Later: when Portainer is back, **delete or detach stack 99 first** (it's v1 — a redeploy would start it on top of v2), then let Portainer adopt `/opt/swu-organizer` as a git stack and restore the redeploy step in `docker-publish.yml`.
@@ -66,11 +65,14 @@ Not now, but don't lose it.
 - [ ] **Scan index size** — `app/public/scan-data/index.bin` is ~1.9 MB (~1.5 MB gzipped), mostly the 8×8 colour grid per picture. Could shrink (fewer bits per channel) if first-scan download time matters on mobile data; re-run the builder's robustness test after any change. It's cached after the first visit.
 - [ ] **Scan index refresh** — new sets need `cd app && npx tsx scripts/build-scan-index.ts` (downloads only new images to `~/.cache/swu-organizer/card-art`, ~9 min) and the result committed. Not in CI yet (needs the image cache).
 - [ ] **Backups don't include the intake queue yet** — only matters if something is mid-review.
+- [ ] **Node 20 is past end of life** (April 2026). The Docker images, CI and local dev all run Node 20; move to Node 24 LTS — check `sharp` and `better-sqlite3` build on it.
+- [ ] **Docker publish actions are several majors behind** (`docker/*` v3–v6 → v4–v7, `setup-qemu`). That workflow only runs after a merge, so bump it on its own and watch the first run.
 
 ---
 
 ## Done
 
+- [x] **v2.0.0 released (2026-10-05).** PR #53 merged; `main` tagged `v2.0.0` with a GitHub release (now "Latest"); the repo's About has the new description, the live site link and topics; the server runs from `main`.
 - [x] **Scanner: better printings are added without asking (2026-10-04).** A scan that beats the weakest copy in a full pocket goes straight into Intake with "Bumps a Normal X to bulk" and a "Keep both" button; a copy no better than what's there is not added: "Maximum count reached for X — add to bulk", with "Add anyway, as a spare". Bumped copies show in Intake as "Swaps out 1 Normal — to bulk" (with Keep) and leave the collection when the batch is committed. "Full" counts owned copies, less those in built decks, plus anything already waiting in Intake.
 - [x] **Scanner: always portrait, and Leader backs.** The Card / Leader-Base toggle is gone; Leaders and Bases match turned either way round (including a few Hyperspace Bases the CDN stores already turned), and Leaders also scan from the back ("read from the back"). 6,472 reference pictures; right card and treatment 99.1%, hand-held 98.9%.
 - [x] **Installable and offline.** "Add to Home Screen" installs it as an app (binder-page icon, shortcuts to Scan and Intake). A service worker lets it open — and scan — offline after one visit; a deploy still shows up on the next load. Rolling back past it is covered in `docs/deploy.md`.
