@@ -3,6 +3,8 @@ import Dexie, { type EntityTable } from 'dexie';
 import type { VariantSlug } from '~/domain/catalog';
 import type { SetKey } from '~/domain/types';
 
+import { storageHealth, watchStorage } from './storageHealth';
+
 /**
  * One row per printing you own, with an uncapped count.
  *
@@ -116,6 +118,8 @@ export class SwuDatabase extends Dexie {
 }
 
 export const db = new SwuDatabase();
+// Every request is watched, so storage that stops answering says so (see storageHealth).
+db.use(watchStorage(storageHealth));
 
 export const META_KEYS = {
   /** Set once the one-time localStorage import has run, so it never runs twice. */
