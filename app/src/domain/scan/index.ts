@@ -169,17 +169,39 @@ export const STRIP_WEIGHT = 0.5;
 export const RAIL_WEIGHT = 1;
 
 /**
+ * How faint a camera can make a rail: blur spreads a rail's step over several columns, so
+ * a soft photo of a Normal card can measure as little as this fraction of its reference.
+ */
+export const RAIL_FADE = 0.4;
+
+/**
  * Rails compared where the reference's frame runs: down the sides of an upright card,
  * across the top and bottom of a turned one. The other pair is noise for that picture.
+ *
+ * The reference's rails are first faded by whatever factor in [RAIL_FADE, 1] fits the
+ * query best. Blur only ever weakens rails, so compared as they are, a soft Normal card
+ * reads as Hyperspace (whose rails are near zero); faded, it still reads as Normal, while
+ * a Hyperspace card's weak rails stay far from the real thing.
  */
 function railDistance(query: Uint8Array, rails: Uint8Array, index: number, turned: boolean) {
   const pair = RAIL_BYTES / 2;
   const from = turned ? pair : 0;
-  let sum = 0;
+  const at = (fade: number) => {
+    let sum = 0;
+    for (let i = from; i < from + pair; i++) {
+      sum += Math.abs(query[i]! - fade * rails[index * RAIL_BYTES + i]!);
+    }
+    return sum / pair;
+  };
+  // The distance is piecewise linear in the fade, so its minimum lies at an end of the
+  // range or where one rail matches exactly.
+  let best = Math.min(at(RAIL_FADE), at(1));
   for (let i = from; i < from + pair; i++) {
-    sum += Math.abs(query[i]! - rails[index * RAIL_BYTES + i]!);
+    const reference = rails[index * RAIL_BYTES + i]!;
+    const fade = reference ? query[i]! / reference : 0;
+    if (fade > RAIL_FADE && fade < 1) best = Math.min(best, at(fade));
   }
-  return sum / pair;
+  return best;
 }
 /**
  * How many stage-1 candidates stage 2 looks at. Generous, because one printing can hold
