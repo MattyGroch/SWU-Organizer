@@ -3,9 +3,7 @@ import {
   createSavedDeck,
   deriveOwnedTotals,
   emptyDeckLibrary,
-  loadDeckLibrary,
   parseDeckLibrary,
-  persistDeckLibrary,
   type DeckLibrary,
   type SavedDeck,
 } from './decks';
@@ -17,16 +15,6 @@ function row(
     Pick<ResolvedDeckRow, 'role' | 'setKey' | 'baseNumber' | 'count'>,
 ): ResolvedDeckRow {
   return { name: 'Card', price: 0, ambiguous: false, ...partial };
-}
-
-function fakeStorage(initial: Record<string, string> = {}) {
-  const store = new Map(Object.entries(initial));
-  return {
-    getItem: (key: string) => store.get(key) ?? null,
-    setItem: (key: string, value: string) => {
-      store.set(key, value);
-    },
-  };
 }
 
 describe('createSavedDeck', () => {
@@ -219,21 +207,5 @@ describe('parseDeckLibrary / persistence', () => {
     expect(library.customDecks).toHaveLength(1);
     expect(library.customDecks[0]!.constructed).toBe(false);
     expect(library.customDecks[0]!.pulledCards).toEqual([]);
-  });
-
-  it('round-trips through loadDeckLibrary/persistDeckLibrary', () => {
-    const storage = fakeStorage();
-    const library: DeckLibrary = { customDecks: [], preconOwnership: { 'SOR-heroism': 1 } };
-    expect(persistDeckLibrary(storage, library)).toBe(true);
-    expect(loadDeckLibrary(storage)).toEqual(library);
-  });
-
-  it('loadDeckLibrary recovers to empty on a storage read error', () => {
-    const storage = {
-      getItem: () => {
-        throw new Error('boom');
-      },
-    };
-    expect(loadDeckLibrary(storage)).toEqual(emptyDeckLibrary);
   });
 });

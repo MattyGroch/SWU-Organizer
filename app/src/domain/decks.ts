@@ -39,8 +39,6 @@ export type DeckLibrary = {
   deletedDecks?: Record<string, string>;
 };
 
-export const DECKS_STORAGE_KEY = 'decks:v1';
-
 export const emptyDeckLibrary: DeckLibrary = { customDecks: [], preconOwnership: {} };
 
 export type NewSavedDeckInput = {
@@ -165,25 +163,5 @@ export function parseDeckLibrary(raw: string | null): DeckLibrary {
       : { customDecks, preconOwnership };
   } catch {
     return { ...emptyDeckLibrary };
-  }
-}
-
-export function loadDeckLibrary(storage: Pick<Storage, 'getItem'>): DeckLibrary {
-  try {
-    return parseDeckLibrary(storage.getItem(DECKS_STORAGE_KEY));
-  } catch {
-    return { ...emptyDeckLibrary };
-  }
-}
-
-export function persistDeckLibrary(
-  storage: Pick<Storage, 'setItem'>,
-  library: DeckLibrary,
-): boolean {
-  try {
-    storage.setItem(DECKS_STORAGE_KEY, JSON.stringify(library));
-    return true;
-  } catch {
-    return false;
   }
 }
