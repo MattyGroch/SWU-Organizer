@@ -62,7 +62,7 @@ Layout, spacing, colour, density, anything that feels wrong in use. Claude can n
 
 Phone-specific tweaks and thoughts.
 
-- (none)
+- [ ] **Binder tab: give the card table more of the screen.** On a phone the inventory table gets less than the bottom 50% of the screen — the header, set picker, Sets, search, Bulk edit / Import, Filters, copy buttons, value totals and progress bar above it take the rest. Tighten that stack so the table gets 60–75% of the screen on this tab.
 
 ## Ideas / later
 
