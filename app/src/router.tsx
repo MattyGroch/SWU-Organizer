@@ -20,6 +20,7 @@ import { binderEntries, readHiddenSets } from '~/data/binderSettings';
 import { BinderRoute } from '~/routes/BinderRoute';
 import { DecksRoute } from '~/routes/DecksRoute';
 import { IntakePage } from '~/features/intake/IntakePage';
+import { PutAwayPage } from '~/features/putAway/PutAwayPage';
 import { ScanPage } from '~/features/scan/ScanPage';
 import { AppShell } from '~/ui/AppShell';
 
@@ -132,12 +133,30 @@ const scanRoute = createRoute({
   },
 });
 
+const putAwayRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/put-away/$stackId',
+  loader: async ({ context }) => {
+    const entries = await context.queryClient.ensureQueryData(manifestQuery());
+    // A stack can hold any set; filing needs every set's names and binder order.
+    await Promise.all(entries.map((entry) => context.queryClient.ensureQueryData(setQuery(entry))));
+    return { entries };
+  },
+  component: function PutAwayRouteComponent() {
+    const { entries } = putAwayRoute.useLoaderData();
+    const { stackId } = putAwayRoute.useParams();
+    const { queryClient } = putAwayRoute.useRouteContext();
+    return <PutAwayPage sets={loadedSets(queryClient, entries)} stackId={stackId} />;
+  },
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   binderRoute,
   decksRoute,
   intakeRoute,
   scanRoute,
+  putAwayRoute,
 ]);
 
 /** `history` defaults to the browser's; tests pass an in-memory one. */

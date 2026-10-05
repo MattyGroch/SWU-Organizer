@@ -20,6 +20,7 @@ import {
   type Printing,
 } from '~/domain/catalog';
 import type { SetKey } from '~/domain/types';
+import { StackList } from '~/features/putAway/StackList';
 import { useToast } from '~/ui/toastContext';
 
 import styles from './IntakePage.module.css';
@@ -52,6 +53,8 @@ export function IntakePage({ sets }: Props) {
           count, then add the batch.
         </p>
       </header>
+
+      <StackList />
 
       {!loading && batches.length === 0 && (
         <p className={styles.empty}>

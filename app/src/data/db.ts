@@ -1,6 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie';
 
 import type { VariantSlug } from '~/domain/catalog';
+import type { StackFate } from '~/domain/putAway';
 import type { SetKey } from '~/domain/types';
 
 /**
@@ -81,6 +82,38 @@ export type IntakeLine = {
   swapOut?: true;
 };
 
+/**
+ * A physical stack of scanned cards, in the order they were scanned, kept so the stack can
+ * be put away without reading card numbers (see `domain/putAway.ts`).
+ *
+ * Scans land in the open stack — the newest one not yet closed. Committing the scan batch,
+ * or starting to put the stack away, closes it: later scans start a new stack, and the
+ * steps already walked stay valid. A stack outlives its batch until it is put away.
+ */
+export type StackRow = {
+  id: string;
+  label: string;
+  createdAt: number;
+  closedAt?: number;
+  /** Sorters in use, chosen when putting away starts. */
+  sorters?: number;
+  /** Steps of the put-away plan already done. */
+  step: number;
+};
+
+/** One physical card in a stack: the scan order is `seq`, one row per copy. */
+export type StackCardRow = {
+  id: string;
+  stackId: string;
+  seq: number;
+  setKey: SetKey;
+  base: number;
+  num: string;
+  variant: VariantSlug;
+  fate: StackFate;
+  swapOut?: { num: string; variant: VariantSlug };
+};
+
 export function printingId(setKey: SetKey, num: string): string {
   return `${setKey}:${num}`;
 }
@@ -92,6 +125,8 @@ export class SwuDatabase extends Dexie {
   cardImages!: EntityTable<CardImageRow, 'url'>;
   intakeBatches!: EntityTable<IntakeBatch, 'id'>;
   intakeLines!: EntityTable<IntakeLine, 'id'>;
+  stacks!: EntityTable<StackRow, 'id'>;
+  stackCards!: EntityTable<StackCardRow, 'id'>;
 
   constructor(name = 'swu-organizer') {
     super(name);
@@ -111,6 +146,12 @@ export class SwuDatabase extends Dexie {
     this.version(3).stores({
       intakeBatches: 'id, createdAt, deckId',
       intakeLines: 'id, batchId',
+    });
+
+    // Scanned stacks, card by card in scan order: additive like the intake queue.
+    this.version(4).stores({
+      stacks: 'id, createdAt',
+      stackCards: 'id, stackId',
     });
   }
 }

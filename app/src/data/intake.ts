@@ -8,6 +8,7 @@ import type { SetKey } from '~/domain/types';
 
 import { notifyDeckLibraryChanged, notifyInventoryChanged } from './changes';
 import { db, printingId, type IntakeLine, type OwnedPrinting, type SwuDatabase } from './db';
+import { closeOpenStack, discardOpenStack } from './stacks';
 
 /**
  * The intake queue: cards on their way into the collection.
@@ -308,11 +309,18 @@ export async function queuedPocket(
   return pocket;
 }
 
+/** Drops a batch unadded. Discarding scanned cards drops their stack too. */
 export async function discardBatch(batchId: string, database: SwuDatabase = db): Promise<void> {
-  await database.transaction('rw', database.intakeBatches, database.intakeLines, async () => {
-    await database.intakeLines.where('batchId').equals(batchId).delete();
-    await database.intakeBatches.delete(batchId);
-  });
+  await database.transaction(
+    'rw',
+    [database.intakeBatches, database.intakeLines, database.stacks, database.stackCards],
+    async () => {
+      const batch = await database.intakeBatches.get(batchId);
+      await database.intakeLines.where('batchId').equals(batchId).delete();
+      await database.intakeBatches.delete(batchId);
+      if (batch?.kind === 'scan') await discardOpenStack(database);
+    },
+  );
 }
 
 export type CommitReport = { copies: number; deckBuilt: boolean };
@@ -334,7 +342,13 @@ export async function commitBatch(
 
   await database.transaction(
     'rw',
-    [database.owned, database.deckLibrary, database.intakeBatches, database.intakeLines],
+    [
+      database.owned,
+      database.deckLibrary,
+      database.intakeBatches,
+      database.intakeLines,
+      database.stacks,
+    ],
     async () => {
       const batch = await database.intakeBatches.get(batchId);
       if (!batch) return;
@@ -416,6 +430,8 @@ export async function commitBatch(
 
       await database.intakeLines.where('batchId').equals(batchId).delete();
       await database.intakeBatches.delete(batchId);
+      // The scanned stack stays, to be put away; the next scan starts a new one.
+      if (batch.kind === 'scan') await closeOpenStack(database, now);
     },
   );
 
