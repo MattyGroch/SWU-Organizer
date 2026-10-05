@@ -67,3 +67,21 @@
 .legend [data-status='none'] {
   color: var(--color-danger-fg);
 }
+
+/* Compact: percent and counts on one line over a thin bar — the phone layout. */
+.progress[data-compact] {
+  gap: 4px;
+}
+
+.progress[data-compact] .heading {
+  align-items: baseline;
+}
+
+.progress[data-compact] .legend {
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+.progress[data-compact] .bar {
+  height: 6px;
+}

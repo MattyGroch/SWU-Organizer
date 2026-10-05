@@ -110,3 +110,37 @@
 .button:hover {
   background: var(--color-surface-raised);
 }
+
+.short {
+  display: none;
+}
+
+/* Phones: the account shares the header row with the tabs, so it says less. */
+@media (max-width: 760px) {
+  .long {
+    display: none;
+  }
+
+  .short {
+    display: inline;
+  }
+
+  .signIn {
+    padding: var(--space-2);
+  }
+
+  .summary .statusText {
+    display: none;
+  }
+
+  .summary {
+    padding: var(--space-2);
+  }
+}
+
+@media (max-width: 380px) {
+  .signIn {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--font-size-xs);
+  }
+}

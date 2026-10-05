@@ -86,6 +86,12 @@ async function run(name, device) {
         .join(' · ');
     });
   const dialog = () => page.locator('dialog[open]');
+  /** Clicks a binder action — opening the ⋯ More menu first on phones, where it lives. */
+  const binderAction = async (name) => {
+    const more = page.locator('summary[aria-label^="More"]');
+    if (await more.count()) await more.click();
+    await page.getByRole('button', { name }).click();
+  };
   const closeDialog = async () => {
     await page.keyboard.press('Escape');
     await dialog()
@@ -105,12 +111,12 @@ async function run(name, device) {
   async function steps() {
     await page.goto(base);
     await page.waitForURL(/\/binder\//);
-    await page.getByRole('button', { name: 'Import / export' }).waitFor();
+    await page.getByRole('table').waitFor();
     await shot('binder-empty');
 
     // Fill the profile through the Import dialog.
     for (const [i, file] of backups.entries()) {
-      await page.getByRole('button', { name: 'Import / export' }).click();
+      await binderAction('Import / export');
       await dialog().locator('input[type=file]').setInputFiles(file);
       // Backups default to replacing everything; these files add up instead.
       await dialog()
@@ -131,7 +137,7 @@ async function run(name, device) {
     }, SCANS);
 
     await page.goto(`${base}/binder/SOR`);
-    await page.getByRole('button', { name: 'Bulk edit' }).waitFor();
+    await page.getByRole('table').waitFor();
     await shot('binder');
     await shot('binder-top', { full: false });
     await page.locator('table').first().scrollIntoViewIfNeeded();
@@ -158,11 +164,11 @@ async function run(name, device) {
       await search.fill('');
     }
 
-    await page.getByRole('button', { name: 'Bulk edit' }).click();
+    await binderAction('Bulk edit');
     await shot('bulk-edit', { full: false });
     await closeDialog();
 
-    await page.getByRole('button', { name: 'Import / export' }).click();
+    await binderAction('Import / export');
     await shot('import-export', { full: false });
     await closeDialog();
 
@@ -174,7 +180,9 @@ async function run(name, device) {
     if (await deck.count()) {
       await deck.click();
       await shot('deck-open');
-      await deck.click();
+      // Collapse by reloading: once open, `deck` no longer matches a collapsed button.
+      await page.reload();
+      await page.waitForLoadState('networkidle');
     }
     const precons = page.locator('summary', { hasText: 'Precon' }).first();
     if (await precons.count()) {
