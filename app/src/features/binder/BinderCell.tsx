@@ -1,5 +1,3 @@
-import { useRef, type PointerEvent } from 'react';
-
 import { artUrl, type CatalogCard } from '~/domain/catalog';
 import { isLandscapeArt, selectArtPrinting } from '~/domain/artSelection';
 import {
@@ -16,26 +14,6 @@ import type { Card } from '~/domain/types';
 import { aspectBackground, isLightFill, rarityStyle } from './aspect';
 import styles from './BinderCell.module.css';
 import { useCardImage } from './useCardImage';
-
-/*
- * Dev-only foil experiment: `?foil=<variant>` picks how foil slots are marked, and is
- * remembered across navigation. `?foil=sparkle` (or clearing storage) returns to normal.
- * Production always gets the sparkle.
- */
-type FoilVariant = 'sparkle' | 'rainbow' | 'rainbow-sparkle' | 'holo';
-const FOIL_VARIANTS: readonly FoilVariant[] = ['sparkle', 'rainbow', 'rainbow-sparkle', 'holo'];
-
-function devFoilVariant(): FoilVariant {
-  if (!import.meta.env.DEV) return 'sparkle';
-  try {
-    const param = new URLSearchParams(location.search).get('foil');
-    if (param) localStorage.setItem('dev:foil', param);
-    const stored = localStorage.getItem('dev:foil') as FoilVariant | null;
-    return stored && FOIL_VARIANTS.includes(stored) ? stored : 'sparkle';
-  } catch {
-    return 'sparkle';
-  }
-}
 
 type Props = {
   colIndex: number;
@@ -80,25 +58,6 @@ export function BinderCell({
   const pocket = pocketCounts(counts, held);
   const inDecks = sumVariants(held);
   const choice = catalogCard ? selectArtPrinting(catalogCard, pocket) : undefined;
-  const foilVariant = devFoilVariant();
-  // Holo: the sheen follows the pointer. Written straight to the element's style rather than
-  // through state, so tracking the mouse never re-renders the cell.
-  const sheenRef = useRef<HTMLSpanElement>(null);
-  const trackSheen = (event: PointerEvent<HTMLElement>) => {
-    const sheen = sheenRef.current;
-    if (!sheen) return;
-    const box = event.currentTarget.getBoundingClientRect();
-    sheen.style.setProperty('--mx', `${((event.clientX - box.left) / box.width) * 100}%`);
-    sheen.style.setProperty('--my', `${((event.clientY - box.top) / box.height) * 100}%`);
-    sheen.dataset.active = 'true';
-  };
-  const resetSheen = () => {
-    const sheen = sheenRef.current;
-    if (!sheen) return;
-    sheen.style.removeProperty('--mx');
-    sheen.style.removeProperty('--my');
-    sheen.dataset.active = 'false';
-  };
   const { src, state } = useCardImage(choice ? artUrl(setKey, choice.printing.num) : undefined);
 
   const quota = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
@@ -133,8 +92,6 @@ export function BinderCell({
         className={`${styles.card} ${light && !showArt ? styles.lightFill : ''}`}
         style={showArt ? undefined : { background: aspectBackground(card.Aspects) }}
         onClick={() => onSelect(card)}
-        onPointerMove={trackSheen}
-        onPointerLeave={resetSheen}
       >
         {showArt && (
           <img
@@ -149,16 +106,7 @@ export function BinderCell({
           />
         )}
 
-        {choice?.foil && !pocketEmpty && foilVariant !== 'sparkle' && (
-          <span
-            ref={sheenRef}
-            className={styles.foilSheen}
-            data-variant={foilVariant}
-            aria-hidden="true"
-          />
-        )}
-
-        {choice?.foil && !pocketEmpty && foilVariant !== 'rainbow' && foilVariant !== 'holo' && (
+        {choice?.foil && !pocketEmpty && (
           /*
            * An SVG rather than a text glyph: a percentage `font-size` resolves against the
            * parent font size, not the cell, so a character could not be sized relative to
