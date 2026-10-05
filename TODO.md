@@ -14,19 +14,19 @@ Your own list: things to try, questions only you can answer, and setup only you 
 
 - [ ] **Deck lifecycle in production** — build decks that need a premium copy (Prestige, Showcase); build a second deck that _takes_ a card from the first; use −/+ on a built deck; deconstruct both. Check the binder art returns the right printing to each pocket.
 - [x] **Phone view** — below 760px the binder grid is hidden: search, filters and the card table remain; tap a row to select it, and its controls pin to the bottom of the screen. Check on a real phone: `cd app && npm run dev -- --host`, then open the "Network" URL it prints. Filters should start folded. Also eyeball Decks, Intake and the pick-list dialog at that width.
-- [ ] **Bulk edit** — try it on a filtered selection, then Undo; reset a set, then Undo. New: the **Whole collection** scope (your note) — same filters across every binder set, behind a toggle with a warning; one Undo reverses all of it.
+- [x] **Bulk edit** — try it on a filtered selection, then Undo; reset a set, then Undo. New: the **Whole collection** scope (your note) — same filters across every binder set, behind a toggle with a warning; one Undo reverses all of it.
 - [x] **Scrolling** — your two scroll notes should be fixed (see Done): on desktop, scrolling the card table should no longer make the page taller; on a phone, the page should end at the bottom of the content. Please confirm on both.
-- [ ] **Shortcuts help** — press `?` (or the Shortcuts button); is anything missing or wrong?
+- [x] **Shortcuts help** — press `?` (or the Shortcuts button); is anything missing or wrong?
 - [ ] **Backups** — keep taking offline exports; restore one now and then to be sure it works.
 
 ### Questions to answer
 
-- [ ] **TS26 / IBH double count?** The Vault import added 140 TS26 and 104 IBH copies to the inventory. If those are the cards inside your precon boxes _and_ the precons are ticked as owned, they'd count twice once exports include precon contents. Which side owns them?
+- [x] **TS26 / IBH double count?** The Vault import added 140 TS26 and 104 IBH copies to the inventory. If those are the cards inside your precon boxes _and_ the precons are ticked as owned, they'd count twice once exports include precon contents. Which side owns them?
 - [ ] **Export targets** — which collection sites should exports support, and their formats?
 
 ### To do / provide
 
-- [ ] **Finish the v2 launch**: merge #52; on swu.mattyflix.com import your backup with **Replace entire collection** and sign in; on photonOS switch `/opt/swu-organizer` to `main` (`git checkout main && git pull`).
+- [x] **Finish the v2 launch**: merge #52; on swu.mattyflix.com import your backup with **Replace entire collection** and sign in; on photonOS switch `/opt/swu-organizer` to `main` (`git checkout main && git pull`).
 - [ ] Later: when Portainer is back, **delete or detach stack 99 first** (it's v1 — a redeploy would start it on top of v2), then let Portainer adopt `/opt/swu-organizer` as a git stack and restore the redeploy step in `docker-publish.yml`.
 - [ ] Once v2 has proved itself: delete `/var/config/swu-organizer/v1-backup/` and the `v1-rollback` image tags on photonOS.
 - [ ] **HMW precon decklists** — paste them in and Claude will build the precon files.
@@ -38,7 +38,9 @@ Your own list: things to try, questions only you can answer, and setup only you 
 
 Things that are wrong enough to fix before the next phase builds on top of them.
 
-- [ ]
+- [x] The card scanner has a toggle for scanning both portrait and vertical cards, but I'd prefer it always scan in portrait, with the ability to recognize horizontal print cards in either 90 degree or 270 degree formats. I"ll likely be using a dedicated scanner apparatus that only accepts cards in one orientation. **Done (`00d04b7`):** the guide is always portrait and the toggle is gone; Leaders and Bases match turned either way round. Please test a few Leaders and Bases both ways up.
+- [x] The card scanner should be able to recognize a Leader card by the front or the back, but I'd most likely be scanning the horizontal face of the card. **Done (`00d04b7`):** backs are indexed too; the result says "read from the back".
+- [x] IF when scanning a card to add, I already have the maximum cards for that binder slot, throw a warn to the user and do not add the card. (Example message: "Maximum count reached for card: [Title], add to bulk."). This would not apply to higher value printings. Example, scanning a foil hyperspace if I have 2 hyperspace and 1 normal would instead prompt me to replace the normal in the playset, or drop the lowest value printing from the binder.) **Done (`00d04b7`):** a full pocket shows "Maximum count reached for X — add to bulk" (with "Add anyway, as a spare"). A better printing offers "Swap it in — Normal to bulk", "Add as a spare" or "Don't add". A swap shows in Intake as "Swaps out 1 Normal — to bulk" with a Keep button, and committing removes that copy. "Full" counts owned copies, less those in built decks, plus anything already waiting in Intake.
 
 ## Bugs
 
@@ -50,13 +52,7 @@ Something behaves incorrectly. Most useful shape: what you did → what you expe
 
 Layout, spacing, colour, density, anything that feels wrong in use. **This is the most valuable category right now** — I have no way to see the running app, so every visual judgement so far is unverified.
 
-- [ ] (nothing open — your two scroll notes are under Done, awaiting your check)
-
-## Behaviour changes I should reconsider
-
-Deliberate departures from the legacy app. Push back on any of these and I'll revert or rework them.
-
-- [ ] (nothing open — the four earlier ones were all kept: `+`/`−` in the selected-card panel, dimming only while something on the spread is selected, uncapped counts with spares, and `xlsx` from `cdn.sheetjs.com`)
+- [ ] (None)
 
 ## Ideas / later
 
@@ -69,6 +65,8 @@ Not now, but don't lose it.
   - **Add** — every scan adds the card to an Intake "Scanned" batch, for working through a stack. Nothing counts as owned until you review that batch (variants, foils — the camera can't tell foil from non-foil) and commit it to the binder. Decided 2026-10-04.
 - [ ] **Backups don't include the intake queue yet** — only matters if something is mid-review.
 - [ ] **Export to other collection tools** — format per tool, once the targets are picked. Must include the cards inside owned precons: they are sealed (never pulled) but owned.
+- [ ] Layout update: Instead of a tab at the top for "binder", have it listed as Inventory, with two subpages underneath: "binder" and "list" then break up the binder view and inventory list into two different tabs rather than keeping them open at the same time. The binder view wouldn't be visible on mobile at all.
+- [ ] Layout update, alt: Instead of viewing thw whole spread of a binder, only view one page at a time, then use the other half of the viewport to have the inventory list so on web/computer you can see both simultaneously rather than having to scroll.
 
 ---
 
