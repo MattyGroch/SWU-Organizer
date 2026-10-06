@@ -17,7 +17,6 @@ type Props = {
   set: LoadedSet;
   active: ActiveSelection | null;
   counts: OwnedCounts;
-  /** Printings pulled into built decks. */
   /** What built decks hold of this card, by the home each copy returns to. */
   held: Homes;
   /** The card's binder playset. */
@@ -57,7 +56,8 @@ export function SelectedCardPanel({
   }
 
   const { card } = active;
-  const inBinder = binderCount(pocketCounts(counts, held).total, quota);
+  const pocket = pocketCounts(counts, held);
+  const inBinder = binderCount(pocket.total, quota);
   const inBulk = sumVariants(boxCounts(counts, held));
   const inDecks = sumVariants(held.binder) + sumVariants(held.bulk);
   const printings = set.printingsByBase.get(card.Number) ?? [];
@@ -110,7 +110,7 @@ export function SelectedCardPanel({
           type="button"
           className={styles.qtyButton}
           onClick={() => onAdjust(-1)}
-          disabled={counts.total === 0}
+          disabled={pocket.total === 0}
           aria-label={`Remove one ${card.Name}`}
           title="Remove one — keyboard -"
         >
@@ -142,7 +142,7 @@ export function SelectedCardPanel({
 
       <VariantStrip
         printings={printings}
-        counts={counts}
+        counts={pocket}
         cardName={card.Name}
         onAdjust={onAdjustPrinting}
       />

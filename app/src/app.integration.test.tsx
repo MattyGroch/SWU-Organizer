@@ -154,7 +154,15 @@ describe('binder, end to end', () => {
     expect(await db.owned.count()).toBe(0);
   });
 
-  it('sends copies beyond the playset to the bulk box', async () => {
+  it('caps the pocket at its playset, and a better printing bumps the weakest to bulk', async () => {
+    // jsdom implements <dialog> but not its modal API.
+    HTMLDialogElement.prototype.showModal ??= function showModal(this: HTMLDialogElement) {
+      this.open = true;
+    };
+    HTMLDialogElement.prototype.close ??= function close(this: HTMLDialogElement) {
+      this.open = false;
+      this.dispatchEvent(new Event('close'));
+    };
     const user = userEvent.setup();
     await renderApp();
 
@@ -166,10 +174,39 @@ describe('binder, end to end', () => {
     await waitFor(() => expect(cell(/Inferno Four/)).toHaveFocus());
     await user.keyboard('+++++');
 
+    expect(await screen.findAllByText(/Inferno Four is full \(3\/3\)/)).not.toHaveLength(0);
+    expect(await db.owned.get('SOR:031')).toMatchObject({ count: 3 });
+    expect((await db.owned.get('SOR:031'))!.bulk).toBeUndefined();
+
+    // The refusal offers to file the copy in the bulk box instead, behind a confirmation.
+    await user.click((await screen.findAllByRole('button', { name: 'Add to bulk…' }))[0]!);
+    const confirm = await screen.findByRole('dialog', { name: /Add a Normal Inferno Four/ });
+    await user.click(within(confirm).getByRole('button', { name: 'Cancel' }));
+    expect((await db.owned.get('SOR:031'))!.count).toBe(3);
+
+    await user.click((await screen.findAllByRole('button', { name: 'Add to bulk…' }))[0]!);
+    await user.click(
+      within(await screen.findByRole('dialog', { name: /Add a Normal Inferno Four/ })).getByRole(
+        'button',
+        { name: 'Add to bulk' },
+      ),
+    );
     await waitFor(async () =>
-      expect(await db.owned.get('SOR:031')).toMatchObject({ count: 5, bulk: 2 }),
+      expect(await db.owned.get('SOR:031')).toMatchObject({ count: 4, bulk: 1 }),
     );
     await waitFor(() => expect(cell(/Inferno Four.*3 of 3 in binder\./)).toBeInTheDocument());
+
+    // Hyperspace beats Normal: it goes in, and one Normal moves to the bulk box.
+    await user.keyboard('3');
+    expect(
+      await screen.findByText(/Move the Normal Inferno Four to the bulk box/),
+    ).toBeInTheDocument();
+    await waitFor(async () =>
+      expect(await db.owned.get('SOR:031')).toMatchObject({ count: 4, bulk: 2 }),
+    );
+    expect(await db.owned.where({ setKey: 'SOR', base: 31, variant: 'hyperspace' }).count()).toBe(
+      1,
+    );
   });
 
   it('fills a playset with Shift+plus, respecting the card’s quota', async () => {
