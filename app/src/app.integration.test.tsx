@@ -169,6 +169,12 @@ describe('binder, end to end', () => {
     expect(await screen.findAllByText(/Inferno Four is full \(3\/3\)/)).not.toHaveLength(0);
     expect(await db.owned.get('SOR:031')).toMatchObject({ count: 3 });
     expect((await db.owned.get('SOR:031'))!.bulk).toBeUndefined();
+
+    // The refusal offers to file the copy in the bulk box instead.
+    await user.click((await screen.findAllByRole('button', { name: 'Add to bulk' }))[0]!);
+    await waitFor(async () =>
+      expect(await db.owned.get('SOR:031')).toMatchObject({ count: 4, bulk: 1 }),
+    );
     await waitFor(() => expect(cell(/Inferno Four.*3 of 3 in binder\./)).toBeInTheDocument());
 
     // Hyperspace beats Normal: it goes in, and one Normal moves to the bulk box.
@@ -177,7 +183,7 @@ describe('binder, end to end', () => {
       await screen.findByText(/Move the Normal Inferno Four to the bulk box/),
     ).toBeInTheDocument();
     await waitFor(async () =>
-      expect(await db.owned.get('SOR:031')).toMatchObject({ count: 3, bulk: 1 }),
+      expect(await db.owned.get('SOR:031')).toMatchObject({ count: 4, bulk: 2 }),
     );
     expect(await db.owned.where({ setKey: 'SOR', base: 31, variant: 'hyperspace' }).count()).toBe(
       1,

@@ -2,7 +2,14 @@ import { useNavigate } from '@tanstack/react-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { defaultPrinting, printingFor } from '~/data/inventory';
-import { addToPocket, clearPocket, fillPocket, removeFromPocket, restoreCard } from '~/data/pocket';
+import {
+  addToBulk,
+  addToPocket,
+  clearPocket,
+  fillPocket,
+  removeFromPocket,
+  restoreCard,
+} from '~/data/pocket';
 import {
   toSearchCatalog,
   variantForHotkey,
@@ -131,7 +138,11 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
         if (result.kind === 'full') {
           showToast({
             tone: 'warning',
-            message: `${card.Name} is full (${playset}/${playset}). A ${variantLabel(printing.variant)} doesn't beat anything in the pocket — add it through Intake.`,
+            message: `${card.Name} is full (${playset}/${playset}). A ${variantLabel(printing.variant)} doesn't beat anything in the pocket.`,
+            action: {
+              label: 'Add to bulk',
+              onAction: () => addToBulk(set.setKey, base, printing),
+            },
           });
         } else if (result.kind === 'upgrade') {
           showToast({

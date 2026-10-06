@@ -6,7 +6,14 @@ import type { SavedDeck } from '~/domain/decks';
 import { SwuDatabase } from './db';
 import { writeDeckLibraryQuietly } from './deckLibrary';
 import { printingFor } from './inventory';
-import { addToPocket, clearPocket, fillPocket, removeFromPocket, restoreCard } from './pocket';
+import {
+  addToBulk,
+  addToPocket,
+  clearPocket,
+  fillPocket,
+  removeFromPocket,
+  restoreCard,
+} from './pocket';
 
 const set: LoadedSet = toLoadedSet(
   parseSetCatalog({
@@ -71,6 +78,13 @@ describe('binder pocket edits', () => {
     expect((await add(normal)).kind).toBe('full');
     expect((await add(foil)).kind).toBe('full');
     expect(await rows()).toEqual({ foil: [3, 0] });
+  });
+
+  it('add to bulk puts a copy in the box and leaves the pocket alone', async () => {
+    await own(normal, 3, 1);
+    await addToBulk('SOR', 59, normal, database);
+    await addToBulk('SOR', 59, foil, database);
+    expect(await rows()).toEqual({ normal: [4, 2], foil: [1, 1] });
   });
 
   it('a better printing bumps the weakest copy to bulk', async () => {

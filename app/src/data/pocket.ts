@@ -84,6 +84,23 @@ export async function addToPocket(
   return result;
 }
 
+/** Adds one copy of `printing` straight to the bulk box, leaving the pocket as it is. */
+export async function addToBulk(
+  setKey: SetKey,
+  base: number,
+  printing: Printing,
+  database: SwuDatabase = db,
+  now = Date.now(),
+): Promise<void> {
+  await database.transaction('rw', database.owned, async () => {
+    const existing = await database.owned.get(printingId(setKey, printing.num));
+    const row = existing ?? emptyOwnedRow(setKey, base, printing);
+    const bulk = Math.min(row.bulk ?? 0, row.count) + 1;
+    await database.owned.put({ ...row, count: row.count + 1, bulk, updatedAt: now });
+  });
+  notifyInventoryChanged(setKey);
+}
+
 /** Removes one copy of `variant` from the pocket. Bulk and deck copies are never touched. */
 export async function removeFromPocket(
   setKey: SetKey,
