@@ -1,4 +1,5 @@
--- Applied once at boot when PRAGMA user_version < 1.
+-- The baseline schema (version 2), applied only to a new database. Later changes are
+-- steps in MIGRATIONS (src/db.ts); never edit this file to change an existing database.
 
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

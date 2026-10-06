@@ -1,23 +1,14 @@
-import { readFileSync } from 'node:fs'
-import { join, dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import Database from 'better-sqlite3'
 import { pino } from 'pino'
-import type { Db } from '../src/db.js'
+import { openDb, type Db } from '../src/db.js'
 import type { Config } from '../src/config.js'
 import { makeApp } from '../src/app.js'
 import { createSession, encodeSid } from '../src/auth/session.js'
 
 const silentLogger = pino({ level: 'silent' })
 
-const here = dirname(fileURLToPath(import.meta.url))
-const SCHEMA_PATH = join(here, '..', 'src', 'schema.sql')
-
+// The same path as prod: baseline schema, then every migration.
 export function memoryDb(): Db {
-  const db = new Database(':memory:')
-  db.pragma('foreign_keys = ON')
-  db.exec(readFileSync(SCHEMA_PATH, 'utf8'))
-  return db
+  return openDb(':memory:')
 }
 
 export const TEST_CONFIG: Config = {
