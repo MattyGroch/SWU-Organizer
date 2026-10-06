@@ -33,7 +33,6 @@ Your own list: things to try, questions only you can answer, and setup only you 
 
 ### To do / provide
 
-- [ ] **HMW precon decklists** — paste them in and Claude will build the precon files.
 - [ ] Later: when Portainer is back, **delete or detach stack 99 first** (it's v1 — a redeploy would start it on top of v2), then let Portainer adopt `/opt/swu-organizer` as a git stack and restore the redeploy step in `docker-publish.yml`.
 - [ ] Once v2 has proved itself: delete `/var/config/swu-organizer/v1-backup/`, the `v1-rollback` image tags, and the `pre-scan` image tag on photonOS.
 - [ ] Optional: delete the empty leftover branch — `git branch -d rebuild/v2-foundation`.
@@ -81,6 +80,7 @@ Not now, but don't lose it.
 
 ## Done
 
+- [x] **HMW precon decklists (2026-10-05).** Chewbacca and Grand Moff Tarkin built from the lists in the boxes (52 cards each, bases included) and added to the precon picker.
 - [x] **v2.0.0 released (2026-10-05).** PR #53 merged; `main` tagged `v2.0.0` with a GitHub release (now "Latest"); the repo's About has the new description, the live site link and topics; the server runs from `main`.
 - [x] **Scanner: better printings are added without asking (2026-10-04).** A scan that beats the weakest copy in a full pocket goes straight into Intake with "Bumps a Normal X to bulk" and a "Keep both" button; a copy no better than what's there is not added: "Maximum count reached for X — add to bulk", with "Add anyway, as a spare". Bumped copies show in Intake as "Swaps out 1 Normal — to bulk" (with Keep) and leave the collection when the batch is committed. "Full" counts owned copies, less those in built decks, plus anything already waiting in Intake.
 - [x] **Scanner: always portrait, and Leader backs.** The Card / Leader-Base toggle is gone; Leaders and Bases match turned either way round (including a few Hyperspace Bases the CDN stores already turned), and Leaders also scan from the back ("read from the back"). 6,472 reference pictures; right card and treatment 99.1%, hand-held 98.9%.
