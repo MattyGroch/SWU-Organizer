@@ -220,6 +220,11 @@
   mask-image: linear-gradient(to bottom, #000 14%, transparent 19%, transparent 49%, #000 54%);
 }
 
+/* Prestige and Showcase foils are foil edge to edge, text box and all. */
+.art ~ .holo[data-full-foil='true'] {
+  mask-image: none;
+}
+
 @keyframes foil-drift {
   0%,
   100% {

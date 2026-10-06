@@ -117,6 +117,7 @@ export function BinderCell({
             aria-hidden="true"
             // Where the matte text box sits depends on the card's layout (see the CSS).
             data-card-type={card.Type}
+            data-full-foil={choice?.fullFoil}
             // Staggers the idle animation, so a page of foils doesn't shimmer in lockstep.
             style={{ '--foil-seed': (parseInt(String(card.Number), 10) || 0) % 7 } as CSSProperties}
           />
