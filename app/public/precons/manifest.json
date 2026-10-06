@@ -153,6 +153,20 @@
       "setKey": "IBH",
       "aspect": "Heroism",
       "file": "IBH-Leia.json"
+    },
+    {
+      "key": "HMW-Chewbacca",
+      "label": "Chewbacca (Homeworlds)",
+      "setKey": "HMW",
+      "aspect": "Heroism",
+      "file": "HMW-Chewbacca.json"
+    },
+    {
+      "key": "HMW-Tarkin",
+      "label": "Grand Moff Tarkin (Homeworlds)",
+      "setKey": "HMW",
+      "aspect": "Villainy",
+      "file": "HMW-Tarkin.json"
     }
   ]
 }

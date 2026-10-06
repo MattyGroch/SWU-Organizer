@@ -1,0 +1,150 @@
+{
+  "leader": {
+    "setKey": "HMW",
+    "baseNumber": 9,
+    "count": 1
+  },
+  "base": {
+    "setKey": "HMW",
+    "baseNumber": 29,
+    "count": 1
+  },
+  "mainDeck": [
+    {
+      "setKey": "ASH",
+      "baseNumber": 34,
+      "count": 1
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 164,
+      "count": 1
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 56,
+      "count": 1
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 168,
+      "count": 1
+    },
+    {
+      "setKey": "SEC",
+      "baseNumber": 103,
+      "count": 1
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 115,
+      "count": 2
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 162,
+      "count": 1
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 176,
+      "count": 2
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 177,
+      "count": 2
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 255,
+      "count": 3
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 163,
+      "count": 2
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 116,
+      "count": 2
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 166,
+      "count": 2
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 45,
+      "count": 1
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 171,
+      "count": 3
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 95,
+      "count": 2
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 96,
+      "count": 2
+    },
+    {
+      "setKey": "ASH",
+      "baseNumber": 108,
+      "count": 1
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 257,
+      "count": 3
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 146,
+      "count": 2
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 151,
+      "count": 2
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 127,
+      "count": 3
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 164,
+      "count": 1
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 170,
+      "count": 2
+    },
+    {
+      "setKey": "HMW",
+      "baseNumber": 121,
+      "count": 3
+    },
+    {
+      "setKey": "LAW",
+      "baseNumber": 62,
+      "count": 2
+    },
+    {
+      "setKey": "JTL",
+      "baseNumber": 168,
+      "count": 2
+    }
+  ],
+  "sideboard": []
+}
