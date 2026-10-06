@@ -8,6 +8,7 @@ import {
   type OwnedCounts,
 } from '~/domain/ownership';
 import type { Card } from '~/domain/types';
+import type { CSSProperties, PointerEvent } from 'react';
 
 import { aspectBackground, isLightFill, rarityStyle } from './aspect';
 import styles from './BinderCell.module.css';
@@ -70,14 +71,15 @@ export function BinderCell({
   const showArt = state === 'ready' && src;
   // Leaders and Bases are printed landscape; they sit turned sideways in a binder pocket.
   const rotated = isLandscapeArt(card.Type);
+  const isFoil = !!choice?.foil && !pocketEmpty;
 
   const description =
     `${card.Name}${card.Subtitle ? `, ${card.Subtitle}` : ''}. ` +
     `Number ${card.Number}. Page ${page}, row ${row}, column ${column}. ` +
     `${inBinder} of ${quota} in binder` +
     `${inDecks > 0 ? `, ${inDecks} in decks` : ''}.` +
-    // The sparkle is decorative, so the finish is announced in words instead.
-    (choice?.foil && !pocketEmpty ? ' Includes a foil.' : '');
+    // The foil finish is decorative, so it is announced in words instead.
+    (isFoil ? ' Includes a foil.' : '');
 
   return (
     <div role="gridcell" aria-colindex={colIndex} className={styles.cell}>
@@ -91,7 +93,10 @@ export function BinderCell({
         aria-label={description}
         className={`${styles.card} ${light && !showArt ? styles.lightFill : ''}`}
         style={showArt ? undefined : { background: aspectBackground(card.Aspects) }}
+        data-foil={isFoil}
         onClick={() => onSelect(card)}
+        onPointerMove={isFoil ? trackFoilLight : undefined}
+        onPointerLeave={isFoil ? releaseFoilLight : undefined}
       >
         {showArt && (
           <img
@@ -106,19 +111,15 @@ export function BinderCell({
           />
         )}
 
-        {choice?.foil && !pocketEmpty && (
-          /*
-           * An SVG rather than a text glyph: a percentage `font-size` resolves against the
-           * parent font size, not the cell, so a character could not be sized relative to
-           * the card. A vector scales to its box directly.
-           */
-          <svg className={styles.foil} viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-            <title>Foil</title>
-            <path
-              d="M50 2 C54 30 70 46 98 50 C70 54 54 70 50 98 C46 70 30 54 2 50 C30 46 46 30 50 2 Z"
-              fill="currentColor"
-            />
-          </svg>
+        {isFoil && (
+          <span
+            className={styles.holo}
+            aria-hidden="true"
+            // Where the matte text box sits depends on the card's layout (see the CSS).
+            data-card-type={card.Type}
+            // Staggers the idle animation, so a page of foils doesn't shimmer in lockstep.
+            style={{ '--foil-seed': (parseInt(String(card.Number), 10) || 0) % 7 } as CSSProperties}
+          />
         )}
 
         {!showArt && (
@@ -158,4 +159,25 @@ export function BinderCell({
       </button>
     </div>
   );
+}
+
+/*
+ * The foil light follows the pointer. Written straight to the element's style rather than
+ * through state, so moving the mouse over a card never re-renders it. `data-tracking`
+ * stops the idle drift animation, which would otherwise win over the inline values.
+ */
+function trackFoilLight(event: PointerEvent<HTMLButtonElement>) {
+  if (event.pointerType !== 'mouse') return;
+  const el = event.currentTarget;
+  const box = el.getBoundingClientRect();
+  el.style.setProperty('--mx', `${((event.clientX - box.left) / box.width) * 100}%`);
+  el.style.setProperty('--my', `${((event.clientY - box.top) / box.height) * 100}%`);
+  el.dataset.tracking = 'true';
+}
+
+function releaseFoilLight(event: PointerEvent<HTMLButtonElement>) {
+  const el = event.currentTarget;
+  el.style.removeProperty('--mx');
+  el.style.removeProperty('--my');
+  delete el.dataset.tracking;
 }

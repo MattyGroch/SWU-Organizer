@@ -132,39 +132,123 @@
 }
 
 /*
- * Foil marker.
+ * Foil finish.
  *
- * Foil and non-foil share identical artwork, so the finish is marked rather than shown —
- * which is also why only the non-foil picture is ever fetched. A large, translucent
- * sparkle in the top-right corner: big enough to read at a glance across a whole spread,
- * sheer enough to still see the art through it, and clear of the count and rarity which
- * sit along the bottom.
+ * Foil and non-foil share identical artwork, so only the non-foil picture is ever fetched
+ * and the finish is painted on top. Modelled on a hyperspace foil photographed under a
+ * lamp: the pale parts of the art turn vivid rainbow while dark ink and saturated colour
+ * stay put — which is what `multiply` does — in smooth bands that flow as the light
+ * moves. A soft glare marks where the light is brightest. Foils come out a shade darker
+ * than their non-foil twins, as the real ones do.
  *
- * Stays upright on the rotated Leader and Base slots — like the rest of the overlay it is
- * app chrome rather than part of the card.
- *
- * `--foil-size` is the one number to change to tune its scale.
+ * `--mx`/`--my` are where the light is: the pointer on a mouse, otherwise an idle drift,
+ * staggered per card by `--foil-seed` so a page of foils doesn't shimmer in lockstep.
  */
-.foil {
-  --foil-size: 50%;
-
-  position: absolute;
-  /* Pushed down off the card's title bar, which runs along the top of the art. */
-  top: 12%;
-  right: var(--space-1);
-  z-index: 1;
-  width: var(--foil-size);
-  aspect-ratio: 1;
-  color: #fff6cf;
-  opacity: 0.5;
-  filter: drop-shadow(0 0 6px rgb(255 215 120 / 0.9)) drop-shadow(0 2px 4px rgb(0 0 0 / 0.55));
-  /* Decorative, and it sits over the art — never swallow a click meant for the slot. */
-  pointer-events: none;
+@property --mx {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
 }
 
-/* Full strength on the selected card, where the art is undimmed anyway. */
-.card[data-selected='true'] .foil {
+@property --my {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 50%;
+}
+
+.holo {
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--radius-lg) - 2px);
+  /* Three spectra over a layer twice the card's size: about one full rainbow per card
+     width, so several colours show at once. Wider bands read as a tint, not a sheen. */
+  background-image: linear-gradient(
+    110deg,
+    #ff6f8f 0%,
+    #ffb35c 4.76%,
+    #f6ff6e 9.52%,
+    #66ff9c 14.29%,
+    #5ee3ff 19.05%,
+    #9d8cff 23.81%,
+    #ff6fe0 28.57%,
+    #ff6f8f 33.33%,
+    #ffb35c 38.1%,
+    #f6ff6e 42.86%,
+    #66ff9c 47.62%,
+    #5ee3ff 52.38%,
+    #9d8cff 57.14%,
+    #ff6fe0 61.9%,
+    #ff6f8f 66.67%,
+    #ffb35c 71.43%,
+    #f6ff6e 76.19%,
+    #66ff9c 80.95%,
+    #5ee3ff 85.71%,
+    #9d8cff 90.48%,
+    #ff6fe0 95.24%,
+    #ff6f8f 100%
+  );
+  background-size: 200% 200%;
+  background-position: var(--mx) var(--my);
+  mix-blend-mode: multiply;
   opacity: 0.65;
+  /* Decorative, and it sits over the art — never swallow a click meant for the slot. */
+  pointer-events: none;
+  animation: foil-drift 9s ease-in-out infinite;
+  animation-delay: calc(var(--foil-seed, 0) * -1.1s);
+}
+
+/* The glare: brightens the band nearest the light so it reads as reflected, not printed. */
+.holo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 60% 45% at var(--mx) var(--my),
+    rgb(255 255 255 / 0.7),
+    transparent 70%
+  );
+  mix-blend-mode: soft-light;
+}
+
+/* The rules text box is printed matte. On portrait cards it is the lower ~40%... */
+.art:not([data-rotated='true']) ~ .holo {
+  mask-image: linear-gradient(to bottom, #000 56%, transparent 64%);
+}
+
+/* ...except events, which print it under the title (~18–50%) with the art below. */
+.art:not([data-rotated='true']) ~ .holo[data-card-type='Event'] {
+  mask-image: linear-gradient(to bottom, #000 14%, transparent 19%, transparent 49%, #000 54%);
+}
+
+@keyframes foil-drift {
+  0%,
+  100% {
+    --mx: 15%;
+    --my: 20%;
+  }
+  25% {
+    --mx: 85%;
+    --my: 35%;
+  }
+  50% {
+    --mx: 70%;
+    --my: 85%;
+  }
+  75% {
+    --mx: 25%;
+    --my: 65%;
+  }
+}
+
+/* The drift would override the pointer's inline values, so it stops while tracking. */
+[data-tracking='true'] .holo {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .holo {
+    animation: none;
+  }
 }
 
 /* ---- Overlay: always on top, art or not ---- */

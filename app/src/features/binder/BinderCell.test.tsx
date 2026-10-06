@@ -143,7 +143,7 @@ describe('ownership presentation', () => {
     const container = renderCell(unit, unitCatalog, [['foil', 2]], { foil: 2 });
     const art = await waitFor(() => artElement(container));
     expect(art).toHaveAttribute('data-unowned', 'true');
-    expect(container.querySelector('svg')).not.toBeInTheDocument();
+    expect(screen.getByRole('button')).toHaveAttribute('data-foil', 'false');
     expect(screen.getByRole('button')).toHaveAccessibleName(/0 of 3 in binder, 2 in decks\./);
   });
 
@@ -154,26 +154,31 @@ describe('ownership presentation', () => {
   });
 });
 
-describe('foil marker', () => {
-  it('marks a slot holding a foil, and says so for screen readers', async () => {
+describe('foil finish', () => {
+  it('gives a slot holding a foil the finish, and says so for screen readers', async () => {
     const container = renderCell(unit, unitCatalog, [['foil', 1]]);
+    await waitFor(() => artElement(container));
 
-    await waitFor(() => expect(container.querySelector('svg')).toBeInTheDocument());
+    expect(screen.getByRole('button')).toHaveAttribute('data-foil', 'true');
+    // The layer knows the card type, so the CSS can keep an Event's text box matte.
+    expect(container.querySelector('[data-card-type]')).toHaveAttribute('data-card-type', 'Unit');
     expect(screen.getByRole('button')).toHaveAccessibleName(/Includes a foil\./);
   });
 
-  it('shows no marker for non-foil holdings', async () => {
+  it('leaves non-foil holdings plain', async () => {
     const container = renderCell(unit, unitCatalog, [['normal', 3]]);
 
     await waitFor(() => artElement(container));
-    expect(container.querySelector('svg')).toBeNull();
+    expect(screen.getByRole('button')).toHaveAttribute('data-foil', 'false');
+    expect(container.querySelector('[data-card-type]')).toBeNull();
     expect(screen.getByRole('button')).not.toHaveAccessibleName(/foil/i);
   });
 
-  it('marks Showcase copies as foil, since every Showcase card is one', async () => {
+  it('treats Showcase copies as foil, since every Showcase card is one', async () => {
     const container = renderCell(leader, leaderCatalog, [['showcase', 1]]);
+    await waitFor(() => artElement(container));
 
-    await waitFor(() => expect(container.querySelector('svg')).toBeInTheDocument());
+    expect(screen.getByRole('button')).toHaveAttribute('data-foil', 'true');
     expect(screen.getByRole('button')).toHaveAccessibleName(/Includes a foil\./);
   });
 
@@ -200,7 +205,7 @@ describe('copies out in decks', () => {
     );
     await waitFor(() => artElement(container));
     expect(artElement(container).src).toContain('/card-art/SOR/001.png');
-    // The Showcase was the foil one, so the sparkle left with it.
-    expect(container.querySelector('svg')).not.toBeInTheDocument();
+    // The Showcase was the foil one, so the finish left with it.
+    expect(screen.getByRole('button')).toHaveAttribute('data-foil', 'false');
   });
 });
