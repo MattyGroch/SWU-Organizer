@@ -199,10 +199,12 @@ describe('ScanPage', () => {
     );
   });
 
-  it('adds a copy the binder has no room for, and says it goes to bulk', async () => {
+  it('adds a copy the binder has no room for without fuss, noting it for bulk', async () => {
     await fillPocket();
     await scan('059', 'normal');
-    expect(await screen.findByText('Added to Intake, for bulk')).toBeInTheDocument();
+    // Nothing to do about it while scanning: Put away deals with bulk.
+    expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+    expect(screen.queryByText(/bulk/i)).not.toBeInTheDocument();
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
     // Still in the stack in your hand: Put away sets it aside for the bulk box.
     await waitFor(async () => expect(await stack()).toEqual([['059', 'bulk', null]]));
@@ -211,9 +213,8 @@ describe('ScanPage', () => {
   it('adds a better printing straight away, bumping the weakest copy to bulk', async () => {
     await fillPocket();
     await scan('324', 'hyperspace');
-    expect(
-      await screen.findByText(/Bumps a Normal 2-1B Surgical Droid to bulk/),
-    ).toBeInTheDocument();
+    expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+    expect(screen.queryByText(/bulk/i)).not.toBeInTheDocument();
     await waitFor(async () => {
       const lines = await db.intakeLines.toArray();
       expect(lines.map((l) => l.num)).toEqual(['324']);

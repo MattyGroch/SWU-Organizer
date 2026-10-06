@@ -196,8 +196,8 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       if (mode === 'add') {
         if (!question) {
           placed = await place(chosen);
-          // A short buzz for "added"; a double one for "not added — look at the screen".
-          navigator.vibrate?.(placed.room?.kind === 'full' ? [60, 80, 60] : 40);
+          // Added, wherever it ends up: binder or bulk is put-away's business, not the scan's.
+          navigator.vibrate?.(40);
         }
         // Logged even while unsure: the card is in the stack either way.
         stackCardId = await logScan(
@@ -637,7 +637,7 @@ function LatestScan({
     <section
       className={styles.result}
       aria-labelledby="latest-scan"
-      data-question={item.question ?? (item.room?.kind === 'full' ? 'full' : undefined)}
+      data-question={item.question ?? undefined}
     >
       <img
         className={styles.art}
@@ -689,21 +689,6 @@ function LatestScan({
                 No, show others
               </button>
             </div>
-          </div>
-        ) : mode === 'add' && item.room?.kind === 'full' ? (
-          <div className={styles.bump}>
-            <p className={styles.added}>Added to Intake, for bulk</p>
-            <p>
-              The <strong>{nameOf(chosen)}</strong> pocket is full. Leave it in the stack: Put away
-              sets it aside for the bulk box.
-            </p>
-          </div>
-        ) : mode === 'add' && item.room?.kind === 'upgrade' ? (
-          <div className={styles.bump}>
-            <p className={styles.added}>Added to Intake</p>
-            <p>
-              Bumps a {variantLabel(item.room.replaces)} {nameOf(chosen)} to bulk.
-            </p>
           </div>
         ) : mode === 'add' ? (
           <p className={styles.added}>Added to Intake</p>
