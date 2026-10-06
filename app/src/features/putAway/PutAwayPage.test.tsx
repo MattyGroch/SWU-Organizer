@@ -168,6 +168,10 @@ describe('PutAwayPage', () => {
     renderPage(await scanStack());
     await userEvent.click(await screen.findByRole('button', { name: 'Start' }));
     await waitFor(() => expect(spoken.at(-1)).toBe('Pile 1. Krennic'));
+    // The card under Krennic, to check the stack against.
+    expect(screen.getByText('Next in the stack').closest('figure')).toHaveTextContent(
+      '2-1B Surgical Droid',
+    );
 
     await userEvent.click(screen.getByRole('button', { name: 'Pause' }));
     expect(screen.getByText(/Paused/)).toBeInTheDocument();

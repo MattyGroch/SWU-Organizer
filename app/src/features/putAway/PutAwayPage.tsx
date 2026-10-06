@@ -18,6 +18,7 @@ import { pageSide } from '~/domain/binder';
 import { artUrl, variantLabel, type LoadedSet } from '~/domain/catalog';
 import {
   PILES_PER_SORTER,
+  nextInHand,
   pileCell,
   pileName,
   planPutAway,
@@ -347,6 +348,7 @@ function Walk({
       {step ? (
         <StepView
           step={step}
+          next={nextInHand(steps, index)}
           sorters={sorters}
           sets={sets}
           playing={playing}
@@ -443,6 +445,7 @@ function Walk({
 
 function StepView({
   step,
+  next,
   sorters,
   sets,
   playing,
@@ -450,6 +453,8 @@ function StepView({
   onFix,
 }: {
   step: PutAwayStep;
+  /** The card under this one in hand, to check against the stack as you go. */
+  next: StackCardInput | undefined;
   sorters: number;
   sets: Map<SetKey, LoadedSet>;
   playing: boolean;
@@ -472,18 +477,29 @@ function StepView({
 
   const { card } = step;
   const name = cardName(card, sets);
+  const nextUp = next && (
+    <figure className={styles.nextUp}>
+      <figcaption className={styles.nextUpLabel}>Next in the stack</figcaption>
+      <img className={styles.nextUpArt} src={artUrl(next.setKey, next.num)} alt="" />
+      <span className={styles.nextUpName}>{cardName(next, sets)}</span>
+      <span className={styles.cardMeta}>{variantLabel(next.variant)}</span>
+    </figure>
+  );
   const art = (
-    <button
-      type="button"
-      className={styles.artButton}
-      onClick={onToggle}
-      // A big tap target for pausing; the Pause button below is the accessible one.
-      tabIndex={-1}
-      aria-hidden="true"
-      title={playing ? 'Tap to pause' : 'Tap to resume'}
-    >
-      <img className={styles.art} src={artUrl(card.setKey, card.num)} alt="" />
-    </button>
+    <div className={styles.artColumn}>
+      <button
+        type="button"
+        className={styles.artButton}
+        onClick={onToggle}
+        // A big tap target for pausing; the Pause button below is the accessible one.
+        tabIndex={-1}
+        aria-hidden="true"
+        title={playing ? 'Tap to pause' : 'Tap to resume'}
+      >
+        <img className={styles.art} src={artUrl(card.setKey, card.num)} alt="" />
+      </button>
+      {nextUp}
+    </div>
   );
   const cardLine = (
     <>

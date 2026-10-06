@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { binderLayout, pageToSpread } from './binder';
 import {
+  nextInHand,
   pileCell,
   pileName,
   planPutAway,
@@ -376,6 +377,32 @@ describe('planPutAway, pulling cards partway through', () => {
       pulls: [{ id: cards[1]!.id, at: 4 }],
     });
     expect(steps.some((s) => s.kind === 'bulk')).toBe(false);
+  });
+});
+
+describe('nextInHand', () => {
+  it('names the card under the top one, matching the stack at every step', () => {
+    const stack = shuffled(
+      Array.from({ length: 40 }, (_, i) =>
+        card('SOR', 1 + ((i * 37) % 260), i % 7 ? 'binder' : 'bulk'),
+      ),
+      9,
+    );
+    const steps = planPutAway(stack, { setOrder: SET_ORDER, sorters: 1 });
+    let hand = [...stack];
+    let piles: StackCardInput[][] = [];
+    steps.forEach((step, i) => {
+      if (step.kind === 'scoop') {
+        expect(nextInHand(steps, i)).toBeUndefined();
+        hand = [...piles.flatMap((pile) => [...(pile ?? [])].reverse()), ...hand];
+        piles = [];
+        return;
+      }
+      if (step.kind === 'bulk') return;
+      expect(nextInHand(steps, i)?.id).toBe(hand[1]?.id);
+      const top = hand.shift()!;
+      if (step.kind === 'deal') (piles[step.pile] ??= []).push(top);
+    });
   });
 });
 

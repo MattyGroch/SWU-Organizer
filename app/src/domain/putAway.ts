@@ -349,3 +349,20 @@ export function pileName(pile: number, sorters: number): string {
     ? `${SORTER_NAMES[sorter] ?? `Sorter ${sorter + 1}`} ${cell + 1}`
     : `Pile ${cell + 1}`;
 }
+
+/**
+ * The card under the one in hand at `index`: what the next step takes off the stack. None
+ * when a scoop comes first (the hand is empty until then), or when filing from one side.
+ */
+export function nextInHand(
+  steps: readonly PutAwayStep[],
+  index: number,
+): StackCardInput | undefined {
+  const step = steps[index];
+  if (!step || step.kind === 'scoop' || step.kind === 'bulk') return undefined;
+  if (step.kind === 'file' && step.fromSide) return undefined;
+  const next = steps[index + 1];
+  if (!next || next.kind === 'scoop') return undefined;
+  if (next.kind === 'bulk') return next.cards.find((l) => !l.fromSide)?.card;
+  return next.kind === 'file' && next.fromSide ? undefined : next.card;
+}
