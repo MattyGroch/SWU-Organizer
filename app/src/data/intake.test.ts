@@ -17,6 +17,7 @@ import {
   removeCard,
   resetCard,
   unqueueScan,
+  unqueuePrinting,
 } from './intake';
 
 const sets = new Map([
@@ -229,6 +230,21 @@ describe('scanned cards', () => {
     await unqueueScan(a, database);
     expect(await database.intakeLines.count()).toBe(0);
     expect(await database.intakeBatches.count()).toBe(0);
+  });
+
+  it('can be taken back without a receipt, by printing or else by card', async () => {
+    await queueScan(trooper, { database });
+    await queueScan(trooper, { database });
+    await queueScan(hyper, { database });
+    expect(await unqueuePrinting(hyper, database)).toBe(true);
+    const nums = async () => (await database.intakeLines.toArray()).map((l) => [l.num, l.count]);
+    expect(await nums()).toEqual([['033', 2]]);
+    // Moved to another printing in Intake since: a copy of the same card goes instead.
+    expect(await unqueuePrinting(hyper, database)).toBe(true);
+    expect(await nums()).toEqual([['033', 1]]);
+    await unqueuePrinting(trooper, database);
+    expect(await database.intakeBatches.count()).toBe(0);
+    expect(await unqueuePrinting(trooper, database)).toBe(false);
   });
 
   it('commit straight into the binder, like any batch', async () => {

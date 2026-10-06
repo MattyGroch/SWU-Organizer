@@ -14,6 +14,13 @@ import type { SetKey } from './types';
  * Physical conventions the steps rely on: a dealt card goes on top of its pile, and the
  * piles are scooped up from pile 1 onto pile 2, onto pile 3 and so on — so pile 1 ends up
  * on top, each pile's last-dealt card first.
+ *
+ * Cards that miss the binder all end up at the bottom, and are left in one last step: a
+ * list of what is still in hand, for the bulk box.
+ *
+ * A plan, once started, never shifts: cards already dealt are sitting on their piles. A
+ * card corrected or found missing partway through is pulled out instead — put to one side,
+ * its later steps dropped — and filed after everything else (see `pulls`, `toOneSide`).
  */
 
 /** Where a scanned copy goes: its binder pocket, the bulk box, or nowhere yet. */
@@ -47,8 +54,21 @@ export type PutAwayStep =
       spot: BinderSpot;
       /** Set when the binder must be turned to a new spread (or set) before this card. */
       turnTo?: SpreadRef;
+      /** From the cards put to one side partway through, not the stack in hand. */
+      fromSide?: true;
     }
-  | { kind: 'aside'; card: StackCardInput; reason: AsideReason };
+  /** Always the last step: every card left over, top of the stack in hand first. */
+  | { kind: 'bulk'; cards: LeftoverCard[] };
+
+export type LeftoverCard = {
+  card: StackCardInput;
+  reason: AsideReason;
+  /** From the cards put to one side partway through, not the stack in hand. */
+  fromSide?: true;
+};
+
+/** A card taken out of the plan at step `at`: its steps from there on are dropped. */
+export type Pull = { id: string; at: number };
 
 export type SpreadRef = { setKey: SetKey; spread: number; pages: [number, number] | [number] };
 
@@ -60,8 +80,11 @@ type Placed = { card: StackCardInput; aside?: AsideReason; setIndex: number; spr
 /**
  * Every step to put a stack away, in order.
  *
- * `cards` is the stack top first: the last card scanned first. Sets missing from
- * `setOrder` sort last.
+ * `cards` is the stack top first: the last card scanned first, as it was when putting
+ * away started. Sets missing from `setOrder` sort last.
+ *
+ * `pulls`, in the order they were made, take cards out partway through; `toOneSide` is
+ * what those cards really are now (plus any copy the scanner missed), filed at the end.
  */
 export function planPutAway(
   cards: readonly StackCardInput[],
@@ -69,13 +92,19 @@ export function planPutAway(
     setOrder,
     hiddenSets = new Set<SetKey>(),
     sorters,
-  }: { setOrder: readonly SetKey[]; hiddenSets?: ReadonlySet<SetKey>; sorters: number },
+    pulls = [],
+    toOneSide = [],
+  }: {
+    setOrder: readonly SetKey[];
+    hiddenSets?: ReadonlySet<SetKey>;
+    sorters: number;
+    pulls?: readonly Pull[];
+    toOneSide?: readonly StackCardInput[];
+  },
 ): PutAwayStep[] {
   const rank = new Map(setOrder.map((key, i) => [key, i]));
-  const replaced = resolveSwaps(cards);
-  const placed: Placed[] = cards.map((original) => {
-    const card = replaced.upgraded.get(original.id) ?? original;
-    const aside: AsideReason | undefined = replaced.victims.has(card.id)
+  const place = (card: StackCardInput, replaced = false): Placed => {
+    const aside: AsideReason | undefined = replaced
       ? 'replaced'
       : card.fate !== 'binder'
         ? card.fate
@@ -88,12 +117,59 @@ export function planPutAway(
       setIndex: rank.get(card.setKey) ?? setOrder.length,
       spread: pageToSpread(binderLayout(card.base).page),
     };
+  };
+  const swaps = resolveSwaps(cards);
+  const placed = cards.map((original) => {
+    const card = swaps.upgraded.get(original.id) ?? original;
+    return place(card, swaps.victims.has(card.id));
   });
 
-  const steps: PutAwayStep[] = [];
-  const state = { open: undefined as string | undefined };
-  work(placed, Math.max(1, sorters) * PILES_PER_SORTER, steps, state);
+  let steps: PutAwayStep[] = [];
+  work(placed, Math.max(1, sorters) * PILES_PER_SORTER, steps);
+  const last = steps.at(-1);
+  let leftover: LeftoverCard[] = [];
+  if (last?.kind === 'bulk') {
+    steps.pop();
+    leftover = last.cards;
+  }
+
+  // A pulled card was in hand at its step: from there on it is not in the stack.
+  for (const { id, at } of pulls) {
+    steps = steps.filter((s, i) => i < at || !('card' in s) || s.card.id !== id);
+  }
+  const pulled = new Set(pulls.map((p) => p.id));
+  leftover = leftover.filter((l) => !pulled.has(l.card.id));
+
+  const side = toOneSide.map((card) => place(card));
+  for (const p of side.filter((p) => !p.aside).sort(compareSpotOrder)) {
+    steps.push({ ...fileStep(p.card), fromSide: true });
+  }
+  for (const p of side.filter((p) => p.aside)) {
+    leftover.push({ card: p.card, reason: p.aside!, fromSide: true });
+  }
+  if (leftover.length) steps.push({ kind: 'bulk', cards: leftover });
+  markTurns(steps);
   return steps;
+}
+
+function compareSpotOrder(a: Placed, b: Placed): number {
+  return compareSpread(a, b) || a.card.base - b.card.base;
+}
+
+/** Says to turn the binder wherever a card is filed on a different spread from the last. */
+function markTurns(steps: PutAwayStep[]): void {
+  let open: string | undefined;
+  for (const step of steps) {
+    if (step.kind !== 'file') continue;
+    const spread = pageToSpread(step.spot.page);
+    const key = `${step.spot.setKey}:${spread}`;
+    if (key !== open) {
+      step.turnTo = spreadRef(step.spot.setKey, spread);
+      open = key;
+    } else {
+      delete step.turnTo;
+    }
+  }
 }
 
 /**
@@ -144,18 +220,18 @@ function inSpreadOrder(cards: readonly Placed[]): boolean {
   return true;
 }
 
-function work(
-  cards: Placed[],
-  cells: number,
-  steps: PutAwayStep[],
-  state: { open: string | undefined },
-): void {
+function work(cards: Placed[], cells: number, steps: PutAwayStep[]): void {
   if (!cards.length) return;
   const asides = cards.filter((p) => p.aside);
   const binder = cards.filter((p) => !p.aside);
 
   if (!asides.length && inSpreadOrder(binder)) {
-    fileAll(binder, steps, state);
+    for (const p of binder) steps.push(fileStep(p.card));
+    return;
+  }
+  // Nothing for the binder: the whole stack is already the leftover pile.
+  if (!binder.length) {
+    steps.push({ kind: 'bulk', cards: asides.map((p) => ({ card: p.card, reason: p.aside! })) });
     return;
   }
 
@@ -177,30 +253,20 @@ function work(
 
   // After the scoop, pile 1 is on top, each pile's last-dealt card first.
   for (let i = 0; i < groups.length; i++) {
-    work(dealt[i]!.reverse(), cells, steps, state);
+    work(dealt[i]!.reverse(), cells, steps);
   }
   if (asides.length) {
-    for (const p of dealt[asidePile]!.reverse()) {
-      steps.push({ kind: 'aside', card: p.card, reason: p.aside! });
-    }
+    steps.push({
+      kind: 'bulk',
+      cards: dealt[asidePile]!.reverse().map((p) => ({ card: p.card, reason: p.aside! })),
+    });
   }
 }
 
-function fileAll(cards: Placed[], steps: PutAwayStep[], state: { open: string | undefined }) {
-  for (const p of cards) {
-    const key = spreadKey(p);
-    const { page, row, column } = binderLayout(p.card.base);
-    const step: PutAwayStep = {
-      kind: 'file',
-      card: p.card,
-      spot: { setKey: p.card.setKey, page, row, column },
-    };
-    if (state.open !== key) {
-      step.turnTo = spreadRef(p.card.setKey, p.spread);
-      state.open = key;
-    }
-    steps.push(step);
-  }
+/** Filing one card; `markTurns` adds where the binder must be turned first. */
+function fileStep(card: StackCardInput): Extract<PutAwayStep, { kind: 'file' }> {
+  const { page, row, column } = binderLayout(card.base);
+  return { kind: 'file', card, spot: { setKey: card.setKey, page, row, column } };
 }
 
 export function spreadRef(setKey: SetKey, spread: number): SpreadRef {

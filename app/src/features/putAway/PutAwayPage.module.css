@@ -86,8 +86,15 @@
 
 .progressRow {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+}
+
+.progressLinks {
+  display: flex;
+  margin-left: auto;
+  white-space: nowrap;
 }
 
 .progressText {
@@ -434,4 +441,141 @@
   .cover {
     width: 110px;
   }
+}
+
+/* "Wrong card?": out of the way, but big enough to hit with the stack in the other hand. */
+.fixButton {
+  align-self: flex-start;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.leftoverTitle {
+  font-size: var(--font-size-xl);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.leftovers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding-left: var(--space-5);
+}
+
+.leftover {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.leftoverArt {
+  width: 48px;
+  border-radius: var(--radius-sm);
+}
+
+.leftoverText {
+  display: flex;
+  flex-direction: column;
+}
+
+.leftoverName {
+  font-weight: 700;
+}
+
+.leftoverTag {
+  color: var(--color-warning-fg);
+  font-size: var(--font-size-sm);
+}
+
+.sheet {
+  width: min(480px, calc(100vw - 24px));
+  max-height: calc(100dvh - 48px);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.sheet[open] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.sheet::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+
+.sheetHeader {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.sheetArt {
+  width: 100%;
+  border-radius: var(--radius-md);
+}
+
+.sheetTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 800;
+}
+
+.sheetLegend {
+  margin-bottom: var(--space-2);
+  font-weight: 700;
+}
+
+.choiceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+
+.sheetChoice,
+.sheetAction,
+.sheetDanger {
+  min-height: 48px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.sheetChoice[aria-pressed='true'] {
+  border-color: var(--color-link);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+}
+
+.sheetActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sheetDanger {
+  border-color: var(--color-danger);
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+}
+
+.sideNote {
+  grid-column: 1 / -1;
+  color: var(--color-warning-fg);
+  font-size: var(--font-size-md);
+  font-weight: 700;
 }

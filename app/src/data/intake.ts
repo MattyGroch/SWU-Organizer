@@ -161,6 +161,40 @@ export async function unqueueScan(receipt: ScanReceipt, database: SwuDatabase = 
   });
 }
 
+/**
+ * Takes one copy of a printing back out of the scanned cards, for a correction made
+ * without the scan's receipt (putting a stack away). Falls back to another printing of the
+ * same card, in case the copy was moved in Intake since. False when there is none to take.
+ */
+export async function unqueuePrinting(
+  printing: QueuedPrinting,
+  database: SwuDatabase = db,
+): Promise<boolean> {
+  return database.transaction('rw', database.intakeBatches, database.intakeLines, async () => {
+    const scanBatches = (await database.intakeBatches.toArray())
+      .filter((b) => b.kind === 'scan')
+      .sort((a, b) => b.createdAt - a.createdAt);
+    for (const exact of [true, false]) {
+      for (const batch of scanBatches) {
+        const line = (await database.intakeLines.where('batchId').equals(batch.id).toArray()).find(
+          (l) =>
+            l.setKey === printing.setKey &&
+            l.base === printing.base &&
+            (!exact || l.num === printing.num),
+        );
+        if (!line) continue;
+        if (line.count > 1) await database.intakeLines.update(line.id, { count: line.count - 1 });
+        else await database.intakeLines.delete(line.id);
+        if ((await database.intakeLines.where('batchId').equals(batch.id).count()) === 0) {
+          await database.intakeBatches.delete(batch.id);
+        }
+        return true;
+      }
+    }
+    return false;
+  });
+}
+
 /** The printing a card's copies start on, and move back to: Normal, or its first printing. */
 export function sourcePrinting(printings: readonly Printing[]): Printing | undefined {
   return printings.find((p) => p.variant === 'normal') ?? printings[0];

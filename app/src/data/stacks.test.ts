@@ -3,7 +3,10 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { SwuDatabase } from './db';
 import { commitBatch, discardBatch, queueScan } from './intake';
 import {
+  addMissedCopy,
   dismissStack,
+  pullCard,
+  resetPutAway,
   dropScan,
   logScan,
   setStep,
@@ -101,5 +104,50 @@ describe('scanned stacks', () => {
     await dismissStack(stack.id, database);
     expect(await database.stacks.count()).toBe(1);
     expect(await database.stackCards.count()).toBe(1);
+  });
+
+  it('keeps the plan as it was at the start while cards are pulled or added', async () => {
+    await logScan(scan(1), { database });
+    const second = await logScan(scan(2), { database });
+    const third = await logScan(scan(3), { database });
+    const stack = await only();
+    await startPutAway(stack.id, 1, { database });
+    expect((await only()).plan?.map((c) => c.base)).toEqual([1, 2, 3]);
+
+    await pullCard(stack.id, second, 4, scan(20), database);
+    await pullCard(stack.id, third, 5, null, database);
+    const extra = await addMissedCopy(stack.id, scan(1), database);
+    // Correcting a card already to one side drops nothing more.
+    await pullCard(stack.id, second, 7, scan(21), database);
+
+    const after = await only();
+    expect(after.plan?.map((c) => c.base)).toEqual([1, 2, 3]);
+    expect(after.pulls).toEqual([
+      { id: second, at: 4 },
+      { id: third, at: 5 },
+    ]);
+    expect(await bases(stack.id)).toEqual([1, 21, 1]);
+    expect((await stackCards(stack.id, database)).at(-1)!.id).toBe(extra);
+  });
+
+  it('notes the plan before the first pull of a walk started without one', async () => {
+    const first = await logScan(scan(1), { database });
+    await logScan(scan(2), { database });
+    const stack = await only();
+    await database.stacks.update(stack.id, { sorters: 1 });
+    await pullCard(stack.id, first, 0, null, database);
+    expect((await only()).plan?.map((c) => c.base)).toEqual([1, 2]);
+    expect(await bases(stack.id)).toEqual([2]);
+  });
+
+  it('plans afresh after starting over', async () => {
+    const first = await logScan(scan(1), { database });
+    const stack = await only();
+    await startPutAway(stack.id, 1, { database });
+    await pullCard(stack.id, first, 0, scan(9), database);
+    await resetPutAway(stack.id, database);
+    const reset = await only();
+    expect(reset.plan).toBeUndefined();
+    expect(reset.pulls).toBeUndefined();
   });
 });
