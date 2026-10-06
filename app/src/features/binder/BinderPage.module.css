@@ -9,6 +9,8 @@
  * margins cancel .main's padding. The controls on it are dark pills, so any colour reads.
  */
 .toolbar {
+  /* Phones hang the Settings panel from here (see SetVisibility). */
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
@@ -177,9 +179,13 @@
   }
 }
 
-/* ⋯ More (phones): bulk edit, import/export, the TCGplayer copy buttons and the totals. */
+/*
+ * ⋯ More (phones): bulk edit, import/export, the TCGplayer copy buttons and the totals.
+ * Where the button lands depends on how the toolbar wraps, so the panel hangs from the
+ * toolbar instead, just below the button and the screen's width less its gutters.
+ */
 .more {
-  position: relative;
+  position: static;
 }
 
 .moreSummary {
@@ -207,13 +213,15 @@
 .morePanel {
   position: absolute;
   z-index: 30;
-  top: calc(100% + var(--space-1));
-  right: 0;
+  top: auto;
+  right: var(--space-4);
+  left: var(--space-4);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  width: max-content;
-  max-width: calc(100vw - 2 * var(--space-3));
+  max-height: 70vh;
+  margin-top: var(--space-1);
+  overflow-y: auto;
   padding: var(--space-3);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-lg);
