@@ -21,6 +21,23 @@ The app service is labelled `com.centurylinklabs.watchtower.enable=true`; the AP
 - **API changes** (`server/`): `git pull && docker compose up -d --build swu-api`.
 - **Compose or `.env` changes:** `git pull && docker compose up -d`.
 
+## Snapshot the database
+
+Do this before merging or deploying anything that changes stored data. SQLite keeps recent writes in the `-wal` file, so stop the API and copy all three files together:
+
+```bash
+cd /opt/swu-organizer
+snap=/var/config/swu-organizer/snapshots/$(date +%F-%H%M)
+docker compose stop swu-api
+mkdir -p "$snap"
+cp -a /var/config/swu-organizer/swu.db* "$snap"/
+docker compose start swu-api
+```
+
+To restore: stop the API, move the current `swu.db*` aside, copy the snapshot's files back, then start the API again.
+
+The server copy only holds what has synced. Also choose **Download backup** in the app on the main device. That file is the client-side copy of the collection and decks.
+
 ## Trying a branch before merging
 
 Build the checkout instead of the published image:

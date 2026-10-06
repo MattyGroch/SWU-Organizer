@@ -2,6 +2,17 @@
 
 Matt often runs two or three Claude Code sessions at once, on different fixes and features. These rules keep them from colliding. They also keep them out of his way.
 
+## Prod data is critical
+
+Since 2026-10-06 swu.mattyflix.com has held Matt's real collection. Losing or corrupting it is the worst thing a change can do. Data lives in two places: the API's SQLite database on the host (`/var/config/swu-organizer/swu.db`) and the IndexedDB on each of his devices (Dexie, `app/src/data/db.ts`). Sync copies between them.
+
+- **Preserve existing data.** A change to a stored shape (Dexie tables or records, the SQLite schema, the JSON the API stores or returns, the backup file format) needs a migration that carries every existing row forward. Make migrations safe to run twice. Test them on data in the old shape, not only on a fresh database.
+- **Prefer additive changes.** Add a field, table or Dexie `version()` rather than rename, repurpose or drop one. Readers must tolerate records that lack a new field.
+- **Stay compatible with older clients.** A phone's PWA can run an old build for days. Sync and the API must keep accepting what old clients send, and old clients must survive what the new server returns.
+- **Server schema changes need a versioned step.** `server/src/db.ts` only runs `schema.sql` while `user_version` < 2, so a new table or column added there never reaches prod. Add an explicit migration keyed on `user_version` instead.
+- **Flag destructive or risky changes.** That means anything that deletes, overwrites or rewrites stored data, a schema or format change, or changes to sync, import, export or bulk edits. Say so plainly in chat and under a **Data risk** heading in the PR description. Tell Matt to **snapshot the database before merging** (`docs/deploy.md`, "Snapshot the database"). Do this every time, even when it seems obvious.
+- **Never touch prod data directly.** Don't query, edit or restart the prod database or containers without asking. Don't point a dev server's `VITE_API_PROXY_TARGET` at prod; dev runs against a local API.
+
 ## One worktree per task
 
 - **Never edit, commit or switch branches in the main checkout** (`~/SWU-Organizer`). It belongs to Matt. He edits `TODO.md` there (in Obsidian), and his dev server on port 5173 runs from it. A branch switch under it changes his files mid-work.
@@ -20,6 +31,7 @@ Matt often runs two or three Claude Code sessions at once, on different fixes an
 - **Stage only the files you changed, by exact path.** Never `git add -A`, `git add .` or a whole folder. Check `git diff --cached --stat` before committing. A changed file you didn't touch belongs to someone else: leave it unstaged.
 - **Base every PR on `main`. Never stack one PR on another's branch.** GitHub only retargets a stacked PR when the branch beneath it is deleted, so stacked work can merge into a stale branch and never reach `main`.
 - **Matt merges PRs.** Don't push to `main`.
+- **Call out data risk in the PR.** Any PR that touches stored data gets a **Data risk** section (see "Prod data is critical"). Say "none" when that's true, so Matt can tell it was checked.
 
 ## Dev servers
 
@@ -29,5 +41,7 @@ Matt often runs two or three Claude Code sessions at once, on different fixes an
 ## Deploying
 
 - **Production** (swu.mattyflix.com) runs the image CI publishes from `main` (`mattygroch/swu-organizer:latest`). Watchtower installs it daily at about 04:30 UTC.
+- **Every merge reaches prod by itself** within a day, through Watchtower. So the snapshot for a risky change comes before the merge, not before the deploy.
 - **To deploy sooner:** after a merge, wait for the "Publish Docker image" run for the new `main` commit to finish. Then ask the production session (Remote Control, "Live prod site work") to `git pull && docker compose up -d swu-organizer`.
-- **Read `docs/deploy.md`** for rollback and everything else.
+- **API changes don't deploy through Watchtower.** The API is built on the host (`git pull && docker compose up -d --build swu-api`). Snapshot the database first.
+- **Read `docs/deploy.md`** for snapshots, rollback and everything else.
