@@ -65,11 +65,18 @@ export type ArtChoice = {
    * True when any copy owned is a foil.
    *
    * Foil and non-foil share identical artwork, so the finish cannot be shown by picking a
-   * different image — it is marked with a sparkle over the art instead, the convention
-   * most card sites use.
+   * different image — it is painted over the art instead.
    */
   foil: boolean;
+  /**
+   * True when the art shown is a Prestige or Showcase you own in foil. Those are foil edge
+   * to edge, text box included, where other foils keep a matte text box.
+   */
+  fullFoil: boolean;
 };
+
+/** Treatments whose foil printings are foil across the whole card. */
+const FULL_FOIL_TREATMENTS: ReadonlySet<Treatment> = new Set(['prestige', 'showcase']);
 
 /** Does any owned printing of this card have a foil finish? */
 function ownsFoil(card: CatalogCard, counts: OwnedCounts): boolean {
@@ -84,7 +91,9 @@ export function selectArtPrinting(card: CatalogCard, counts: OwnedCounts): ArtCh
     card.printings.find(hasOwnArtwork) ??
     card.printings[0]!;
 
-  if (counts.total <= 0) return { printing: fallback, owned: false, foil: false };
+  if (counts.total <= 0) {
+    return { printing: fallback, owned: false, foil: false, fullFoil: false };
+  }
 
   let bestRank = -1;
   let bestTreatment: Treatment | undefined;
@@ -100,7 +109,9 @@ export function selectArtPrinting(card: CatalogCard, counts: OwnedCounts): ArtCh
   }
 
   const foil = ownsFoil(card, counts);
-  if (bestTreatment === undefined) return { printing: fallback, owned: true, foil };
+  if (bestTreatment === undefined) {
+    return { printing: fallback, owned: true, foil, fullFoil: false };
+  }
 
   // Within the winning treatment, take a printing that actually has artwork. Prefer one
   // you own (a Serialized copy shows its own stamped art), else the plain sibling.
@@ -109,5 +120,14 @@ export function selectArtPrinting(card: CatalogCard, counts: OwnedCounts): ArtCh
   );
   const ownedCandidate = candidates.find((p) => (counts.byVariant[p.variant] ?? 0) > 0);
 
-  return { printing: ownedCandidate ?? candidates[0] ?? fallback, owned: true, foil };
+  const fullFoil =
+    FULL_FOIL_TREATMENTS.has(bestTreatment) &&
+    card.printings.some(
+      (p) =>
+        (counts.byVariant[p.variant] ?? 0) > 0 &&
+        isFoilPrinting(p.variant) &&
+        variantAxes(p.variant).treatment === bestTreatment,
+    );
+
+  return { printing: ownedCandidate ?? candidates[0] ?? fallback, owned: true, foil, fullFoil };
 }

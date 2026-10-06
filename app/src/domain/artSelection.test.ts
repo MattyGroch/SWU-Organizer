@@ -83,6 +83,7 @@ describe('selectArtPrinting', () => {
       printing: { num: '142', variant: 'normal' },
       owned: false,
       foil: false,
+      fullFoil: false,
     });
   });
 
@@ -127,7 +128,7 @@ describe('selectArtPrinting', () => {
 
   it('resolves a foil-only holding to its sibling’s artwork, flagged as foil', () => {
     // Foil and non-foil share one image, so the art is the sibling's and the finish is
-    // signalled separately with a sparkle.
+    // painted on separately.
     const choice = selectArtPrinting(adiGallia, owned([['foil', 1]]));
     expect(choice.printing).toEqual({ num: '142', variant: 'normal' });
     expect(choice.owned).toBe(true);
@@ -184,5 +185,26 @@ describe('selectArtPrinting', () => {
 
   it('falls back to the foil’s sibling when a prestige run is foil-only', () => {
     expect(selectArtPrinting(adiGallia, owned([['prestige-foil', 1]])).printing.num).toBe('1060');
+  });
+
+  it('marks Prestige and Showcase foils as foil edge to edge', () => {
+    expect(selectArtPrinting(adiGallia, owned([['prestige-foil', 1]])).fullFoil).toBe(true);
+    expect(selectArtPrinting(adiGallia, owned([['prestige-serialized', 1]])).fullFoil).toBe(true);
+    expect(selectArtPrinting(krennic, owned([['showcase', 1]])).fullFoil).toBe(true);
+  });
+
+  it('keeps the matte text box on other foils, and on a plain Prestige beside one', () => {
+    expect(selectArtPrinting(adiGallia, owned([['foil', 1]])).fullFoil).toBe(false);
+    expect(selectArtPrinting(adiGallia, owned([['hyperspace-foil', 1]])).fullFoil).toBe(false);
+    // The pocket shows the plain Prestige art; the foil you own is a Normal.
+    const mixed = selectArtPrinting(
+      adiGallia,
+      owned([
+        ['prestige', 1],
+        ['foil', 1],
+      ]),
+    );
+    expect(mixed.foil).toBe(true);
+    expect(mixed.fullFoil).toBe(false);
   });
 });
