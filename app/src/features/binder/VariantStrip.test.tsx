@@ -68,7 +68,7 @@ describe('VariantStrip', () => {
 
     expect(
       screen.getByRole('button', {
-        name: 'Add one Hyperspace 2-1B Surgical Droid, number 324. 2 owned. Keyboard 3.',
+        name: 'Add one Hyperspace 2-1B Surgical Droid, number 324. 2 in binder. Keyboard 3.',
       }),
     ).toBeInTheDocument();
   });

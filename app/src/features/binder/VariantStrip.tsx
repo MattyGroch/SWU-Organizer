@@ -5,13 +5,14 @@ import styles from './VariantStrip.module.css';
 
 type Props = {
   printings: readonly Printing[];
+  /** What is in the binder pocket — bulk and deck copies are not counted here. */
   counts: OwnedCounts;
   cardName: string;
   onAdjust: (printing: Printing, delta: number) => void;
 };
 
 /**
- * Per-printing counts for the selected card, each with − and + and its digit hotkey.
+ * Per-printing binder counts for the selected card, each with − and + and its digit hotkey.
  *
  * Only the printings this card actually has are shown — SOR units have no Prestige run,
  * and LAW/ASH/HMW list no plain Foil — so the strip doubles as the discoverable form of
@@ -55,14 +56,14 @@ export function VariantStrip({ printings, counts, cardName, onAdjust }: Props) {
               <span className={styles.count} data-zero={owned === 0}>
                 <span className="visually-hidden">, </span>
                 {owned}
-                <span className="visually-hidden"> owned</span>
+                <span className="visually-hidden"> in binder</span>
               </span>
             </span>
             <button
               type="button"
               className={styles.step}
               onClick={() => onAdjust(printing, 1)}
-              aria-label={`Add one ${label} ${cardName}, number ${printing.num}. ${owned} owned. Keyboard ${digit}.`}
+              aria-label={`Add one ${label} ${cardName}, number ${printing.num}. ${owned} in binder. Keyboard ${digit}.`}
             >
               +
             </button>

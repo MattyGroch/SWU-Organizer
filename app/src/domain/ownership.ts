@@ -92,6 +92,11 @@ export function pocketRoom(pocket: VariantCounts, quota: number, scanned: Varian
     : { kind: 'full' };
 }
 
+/** The least valuable printing present, if any: what a bare minus takes from a pocket. */
+export function weakestVariant(variants: VariantCounts): VariantSlug | undefined {
+  return [...VALUE_ORDER].reverse().find((variant) => (variants[variant] ?? 0) > 0);
+}
+
 export function sumVariants(variants: VariantCounts): number {
   let total = 0;
   for (const n of Object.values(variants)) total += n ?? 0;

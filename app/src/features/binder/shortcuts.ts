@@ -18,7 +18,7 @@ export type BinderIntent =
   | { type: 'adjustVariant'; hotkey: number; delta: number }
   /** Shift+plus — top the default printing up to a full playset. */
   | { type: 'fillPlayset' }
-  /** Shift+minus — empty the slot entirely. Undoable. */
+  /** Shift+minus — empty the binder pocket; bulk and deck copies stay. Undoable. */
   | { type: 'clearSlot' }
   | { type: 'stepSpread'; delta: number }
   | { type: 'stepSet'; delta: number }
@@ -131,8 +131,8 @@ export const SHORTCUT_HELP: Array<{ title: string; items: ShortcutHelp[] }> = [
       { keys: ['+'], action: 'Add one copy (Normal)' },
       { keys: ['−'], action: 'Remove one copy' },
       { keys: ['Shift', '+'], action: 'Fill to a playset' },
-      { keys: ['Shift', '−'], action: 'Empty the slot — every printing, with Undo' },
-      { keys: ['1–9', '0'], action: 'Add one of a specific printing (see below)' },
+      { keys: ['Shift', '−'], action: 'Empty the pocket — bulk copies stay, with Undo' },
+      { keys: ['1–9', '0'], action: 'Add one of a printing — a full pocket takes only an upgrade' },
       { keys: ['Shift', '1–9', '0'], action: 'Remove one of that printing' },
       { keys: ['Esc'], action: 'Deselect' },
     ],

@@ -1,24 +1,19 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import {
-  adjustPrinting,
-  clearSlot,
-  defaultPrinting,
-  fillPlayset,
-  printingFor,
-  restorePrintings,
-} from '~/data/inventory';
+import { defaultPrinting, printingFor } from '~/data/inventory';
+import { addToPocket, clearPocket, fillPocket, removeFromPocket, restoreCard } from '~/data/pocket';
 import {
   toSearchCatalog,
   variantForHotkey,
+  variantLabel,
   type LoadedSet,
   type Printing,
   type SetManifestEntry,
 } from '~/domain/catalog';
-import { settleCards } from '~/data/spill';
 import { heldInSet } from '~/domain/deckBuild';
-import { NO_HOMES, ownedFor } from '~/domain/ownership';
+import { NO_HOMES, ownedFor, pocketCounts, weakestVariant } from '~/domain/ownership';
+import type { Card } from '~/domain/types';
 import type { SearchCatalog, SearchSuggestion } from '~/domain/search';
 
 import { BinderGrid } from './BinderGrid';
@@ -121,33 +116,33 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   );
 
   /**
-   * A copy added by hand goes in the pocket; if that overfills it, the weakest copy goes to
-   * the bulk box, exactly as when Intake adds one.
+   * The binder only holds a playset. A copy that doesn't fit is refused, unless it beats
+   * the pocket's weakest copy: then it goes in and that copy moves to the bulk box.
    */
-  const settle = useCallback(
-    (base: number) => {
-      const quotaOf = (_setKey: string, number: number) => {
-        const card = set.cardsByBase.get(number);
-        return card ? quota(card) : Infinity;
-      };
-      void settleCards([{ setKey: set.setKey, base }], quotaOf).then((moved) => {
-        if (moved) {
+  const adjustCopies = useCallback(
+    (card: Card, printing: Printing, delta: number) => {
+      const base = card.Number;
+      if (delta < 0) {
+        void removeFromPocket(set.setKey, base, printing.variant);
+        return;
+      }
+      const playset = quota({ type: card.Type, maxCopies: card.MaxCopies });
+      void addToPocket(set.setKey, base, printing, playset).then((result) => {
+        if (result.kind === 'full') {
+          showToast({
+            tone: 'warning',
+            message: `${card.Name} is full (${playset}/${playset}). A ${variantLabel(printing.variant)} doesn't beat anything in the pocket — add it through Intake.`,
+          });
+        } else if (result.kind === 'upgrade') {
           showToast({
             tone: 'info',
-            message: `Pocket full: ${moved} ${moved === 1 ? 'copy goes' : 'copies go'} to the bulk box.`,
+            message: `Move the ${variantLabel(result.replaces)} ${card.Name} to the bulk box; the ${variantLabel(printing.variant)} takes its place.`,
+            action: { label: 'Undo', onAction: () => restoreCard(result.before) },
           });
         }
       });
     },
-    [set, quota, showToast],
-  );
-  const adjustCopies = useCallback(
-    (base: number, printing: Printing, delta: number) => {
-      void adjustPrinting(set.setKey, base, printing, delta).then(() => {
-        if (delta > 0) settle(base);
-      });
-    },
-    [set.setKey, settle],
+    [set.setKey, quota, showToast],
   );
   const totals = useMemo(() => collectionTotals(rows), [rows]);
   // The copy buttons take exactly the rows the table shows, so filters decide what goes
@@ -174,37 +169,47 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
 
   const adjustDefault = useCallback(
     (delta: number) => {
-      const base = binder.active?.card.Number;
-      if (base === undefined) return;
-      const printing = defaultPrinting(set, base);
-      if (printing) adjustCopies(base, printing, delta);
+      const card = binder.active?.card;
+      if (!card) return;
+      const printing = defaultPrinting(set, card.Number);
+      if (!printing) return;
+      if (delta > 0) {
+        adjustCopies(card, printing, delta);
+        return;
+      }
+      // Minus takes the default printing if the pocket has one, else its weakest copy.
+      const pocket = pocketCounts(
+        ownedFor(ownership, card.Number),
+        held.get(card.Number) ?? NO_HOMES,
+      ).byVariant;
+      const variant = pocket[printing.variant] ? printing.variant : weakestVariant(pocket);
+      if (variant) void removeFromPocket(set.setKey, card.Number, variant);
     },
-    [binder.active, set, adjustCopies],
+    [binder.active, set, adjustCopies, ownership, held],
   );
 
   const adjustPrinting_ = useCallback(
     (printing: Printing, delta: number) => {
-      const base = binder.active?.card.Number;
-      if (base === undefined) return;
-      adjustCopies(base, printing, delta);
+      const card = binder.active?.card;
+      if (card) adjustCopies(card, printing, delta);
     },
     [binder.active, adjustCopies],
   );
 
   const adjustVariant = useCallback(
     (hotkey: number, delta: number) => {
-      const base = binder.active?.card.Number;
+      const card = binder.active?.card;
       const variant = variantForHotkey(hotkey);
-      if (base === undefined || !variant) return;
+      if (!card || !variant) return;
       // Only live for printings this card actually has — SOR units have no Prestige run,
       // and LAW/ASH/HMW list no plain Foil.
-      const printing = printingFor(set, base, variant);
-      if (printing) adjustCopies(base, printing, delta);
+      const printing = printingFor(set, card.Number, variant);
+      if (printing) adjustCopies(card, printing, delta);
     },
     [binder.active, set, adjustCopies],
   );
 
-  /** Shift+plus — top this card up to a full playset of its default printing. */
+  /** Shift+plus — top this card's pocket up to a full playset of its default printing. */
   const fillSelectedPlayset = useCallback(() => {
     const card = binder.active?.card;
     if (!card) return;
@@ -212,21 +217,23 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     if (!printing) return;
 
     const playset = quota({ type: card.Type, maxCopies: card.MaxCopies });
-    void fillPlayset(set.setKey, card.Number, printing, playset).then(() => settle(card.Number));
-  }, [binder.active, set, quota, settle]);
+    void fillPocket(set.setKey, card.Number, printing, playset);
+  }, [binder.active, set, quota]);
 
-  /** Shift+minus — empty the slot, with undo rather than a confirmation prompt. */
+  /**
+   * Shift+minus — empty the pocket, with undo rather than a confirmation prompt. Bulk and
+   * deck copies stay.
+   */
   const clearSelectedSlot = useCallback(() => {
     const card = binder.active?.card;
     if (!card) return;
 
-    void clearSlot(set.setKey, card.Number).then((removed) => {
-      if (!removed.length) return;
-      const copies = removed.reduce((sum, row) => sum + row.count, 0);
+    void clearPocket(set.setKey, card.Number).then(({ removed, before }) => {
+      if (!removed) return;
       showToast({
         tone: 'danger',
-        message: `Removed ${copies} ${copies === 1 ? 'copy' : 'copies'} of ${card.Name}.`,
-        action: { label: 'Undo', onAction: () => restorePrintings(removed) },
+        message: `Removed ${removed} ${removed === 1 ? 'copy' : 'copies'} of ${card.Name} from the binder.`,
+        action: { label: 'Undo', onAction: () => restoreCard(before) },
       });
     });
   }, [binder.active, set.setKey, showToast]);
