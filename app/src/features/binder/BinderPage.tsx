@@ -23,6 +23,7 @@ import { NO_HOMES, ownedFor, pocketCounts, weakestVariant } from '~/domain/owner
 import type { Card } from '~/domain/types';
 import type { SearchCatalog, SearchSuggestion } from '~/domain/search';
 
+import { AddToBulkDialog } from './AddToBulkDialog';
 import { BinderGrid } from './BinderGrid';
 import {
   buildCardRows,
@@ -83,6 +84,8 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   const [bulkOpen, setBulkOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
+  /** A copy refused by a full pocket, waiting for confirmation to go in the bulk box. */
+  const [pendingBulk, setPendingBulk] = useState<{ card: Card; printing: Printing } | null>(null);
   const hasQueryRef = useRef(false);
   const showToast = useToast();
 
@@ -139,10 +142,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
           showToast({
             tone: 'warning',
             message: `${card.Name} is full (${playset}/${playset}). A ${variantLabel(printing.variant)} doesn't beat anything in the pocket.`,
-            action: {
-              label: 'Add to bulk',
-              onAction: () => addToBulk(set.setKey, base, printing),
-            },
+            action: { label: 'Add to bulk…', onAction: () => setPendingBulk({ card, printing }) },
           });
         } else if (result.kind === 'upgrade') {
           showToast({
@@ -539,6 +539,21 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
           binderSets={binderSets}
           hiddenSetKeys={hiddenSetKeys}
           onClose={() => setBulkOpen(false)}
+        />
+      )}
+      {pendingBulk && (
+        <AddToBulkDialog
+          card={pendingBulk.card}
+          printing={pendingBulk.printing}
+          inBulk={
+            ownedFor(ownership, pendingBulk.card.Number).bulkByVariant?.[
+              pendingBulk.printing.variant
+            ] ?? 0
+          }
+          onConfirm={() =>
+            void addToBulk(set.setKey, pendingBulk.card.Number, pendingBulk.printing)
+          }
+          onClose={() => setPendingBulk(null)}
         />
       )}
       {importOpen && <ImportDialog catalog={loadedSets} onClose={() => setImportOpen(false)} />}

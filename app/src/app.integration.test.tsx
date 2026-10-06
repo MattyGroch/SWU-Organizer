@@ -155,6 +155,14 @@ describe('binder, end to end', () => {
   });
 
   it('caps the pocket at its playset, and a better printing bumps the weakest to bulk', async () => {
+    // jsdom implements <dialog> but not its modal API.
+    HTMLDialogElement.prototype.showModal ??= function showModal(this: HTMLDialogElement) {
+      this.open = true;
+    };
+    HTMLDialogElement.prototype.close ??= function close(this: HTMLDialogElement) {
+      this.open = false;
+      this.dispatchEvent(new Event('close'));
+    };
     const user = userEvent.setup();
     await renderApp();
 
@@ -170,8 +178,19 @@ describe('binder, end to end', () => {
     expect(await db.owned.get('SOR:031')).toMatchObject({ count: 3 });
     expect((await db.owned.get('SOR:031'))!.bulk).toBeUndefined();
 
-    // The refusal offers to file the copy in the bulk box instead.
-    await user.click((await screen.findAllByRole('button', { name: 'Add to bulk' }))[0]!);
+    // The refusal offers to file the copy in the bulk box instead, behind a confirmation.
+    await user.click((await screen.findAllByRole('button', { name: 'Add to bulk…' }))[0]!);
+    const confirm = await screen.findByRole('dialog', { name: /Add a Normal Inferno Four/ });
+    await user.click(within(confirm).getByRole('button', { name: 'Cancel' }));
+    expect((await db.owned.get('SOR:031'))!.count).toBe(3);
+
+    await user.click((await screen.findAllByRole('button', { name: 'Add to bulk…' }))[0]!);
+    await user.click(
+      within(await screen.findByRole('dialog', { name: /Add a Normal Inferno Four/ })).getByRole(
+        'button',
+        { name: 'Add to bulk' },
+      ),
+    );
     await waitFor(async () =>
       expect(await db.owned.get('SOR:031')).toMatchObject({ count: 4, bulk: 1 }),
     );
