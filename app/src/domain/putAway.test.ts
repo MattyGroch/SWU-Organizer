@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { binderLayout, pageToSpread } from './binder';
 import {
+  nextInHand,
   pileCell,
   pileName,
   planPutAway,
@@ -56,11 +57,22 @@ function play(stack: StackCardInput[], steps: PutAwayStep[]) {
       piles = [];
       continue;
     }
+    if (step.kind === 'bulk') {
+      // The list names what is left in hand, top first.
+      const inHand = step.cards.filter((l) => !l.fromSide).map((l) => l.card.id);
+      expect(inHand).toEqual(hand.map((c) => c.id));
+      aside.push(...hand);
+      hand = [];
+      continue;
+    }
+    if (step.kind === 'file' && step.fromSide) {
+      filed.push(step);
+      continue;
+    }
     const top = hand.shift();
     expect(top?.id).toBe(step.card.id);
     if (step.kind === 'deal') (piles[step.pile] ??= []).push(top!);
-    else if (step.kind === 'file') filed.push(step);
-    else aside.push(top!);
+    else filed.push(step);
   }
   expect(hand).toEqual([]);
   expect(piles.flat()).toEqual([]);
@@ -133,10 +145,15 @@ describe('planPutAway', () => {
     expect(deals.filter((s) => s.aside).every((s) => s.pile === asidePile)).toBe(true);
     const { aside } = play(stack, steps);
     expect(aside).toHaveLength(4);
-    const reasons = steps.flatMap((s) => (s.kind === 'aside' ? [s.reason] : []));
-    expect(reasons.sort()).toEqual(['bulk', 'bulk', 'hidden', 'unsure']);
-    // Set-aside cards come last, after everything is filed.
-    expect(steps.at(-1)!.kind).toBe('aside');
+    // Set-aside cards come last, after everything is filed, as one list.
+    const last = steps.at(-1)!;
+    expect(steps.filter((s) => s.kind === 'bulk')).toHaveLength(1);
+    expect(last.kind === 'bulk' && last.cards.map((l) => l.reason).sort()).toEqual([
+      'bulk',
+      'bulk',
+      'hidden',
+      'unsure',
+    ]);
   });
 
   it('never uses more piles than the sorters hold', () => {
@@ -215,7 +232,9 @@ describe('planPutAway', () => {
     // Nothing to take out of the binder: the replaced copy never got there.
     expect(filed.every((s) => !s.card.swapOut)).toBe(true);
     expect(aside).toHaveLength(1);
-    expect(steps.flatMap((s) => (s.kind === 'aside' ? [s.reason] : []))).toEqual(['replaced']);
+    expect(steps.flatMap((s) => (s.kind === 'bulk' ? s.cards.map((l) => l.reason) : []))).toEqual([
+      'replaced',
+    ]);
   });
 
   it('still says to take the weaker copy out when it is already in the binder', () => {
@@ -229,10 +248,161 @@ describe('planPutAway', () => {
     expect(filed[0]!.card.swapOut).toEqual({ num: '040', variant: 'normal' });
   });
 
+  it('lists an all-bulk stack without dealing it', () => {
+    const stack = [card('SOR', 5, 'bulk'), card('SOR', 9, 'bulk')];
+    const steps = planPutAway(stack, { setOrder: SET_ORDER, sorters: 1 });
+    expect(steps.map((s) => s.kind)).toEqual(['bulk']);
+    play(stack, steps);
+  });
+
   it('places sets missing from the set order after the known ones', () => {
     const stack = [card('NEW', 1), card('SOR', 1)];
     const { filed } = play(stack, planPutAway(stack, { setOrder: SET_ORDER, sorters: 1 }));
     expect(filed.map((s) => s.spot.setKey)).toEqual(['SOR', 'NEW']);
+  });
+});
+
+describe('planPutAway, pulling cards partway through', () => {
+  const stack = () => [
+    card('SOR', 200),
+    card('SOR', 1),
+    card('SOR', 5, 'bulk'),
+    card('SOR', 100),
+    card('SOR', 3),
+  ];
+
+  /** The card in hand at step `at`, pulled there. */
+  function pullAt(steps: PutAwayStep[], at: number) {
+    const step = steps[at]!;
+    expect(step.kind === 'deal' || step.kind === 'file').toBe(true);
+    return { id: (step as { card: StackCardInput }).card.id, at };
+  }
+
+  it('keeps every step before the pull, and drops the card from then on', () => {
+    const cards = stack();
+    const before = planPutAway(cards, { setOrder: SET_ORDER, sorters: 1 });
+    const pull = pullAt(before, 3);
+    const fixed = { ...cards.find((c) => c.id === pull.id)!, num: '150', base: 150 };
+    const after = planPutAway(cards, {
+      setOrder: SET_ORDER,
+      sorters: 1,
+      pulls: [pull],
+      toOneSide: [fixed],
+    });
+    expect(after.slice(0, 3)).toEqual(before.slice(0, 3));
+    const rest = after.slice(3).filter((s) => s.kind !== 'scoop' && s.kind !== 'bulk');
+    expect(
+      rest.filter((s) => 'card' in s && s.card === cards.find((c) => c.id === pull.id)),
+    ).toEqual([]);
+    // Filed at the end from the side pile, as what it really is.
+    const fromSide = after.filter((s) => s.kind === 'file' && s.fromSide);
+    expect(fromSide).toHaveLength(1);
+    expect(fromSide[0]!.kind === 'file' && fromSide[0]!.spot.page).toBe(binderLayout(150).page);
+    expect(after.at(-1)!.kind).toBe('bulk');
+  });
+
+  it('still matches the stack in hand once a card is taken out', () => {
+    const cards = shuffled(
+      Array.from({ length: 60 }, (_, i) =>
+        card('SOR', 1 + ((i * 37) % 260), i % 9 ? 'binder' : 'bulk'),
+      ),
+      5,
+    );
+    let pulls: { id: string; at: number }[] = [];
+    let steps = planPutAway(cards, { setOrder: SET_ORDER, sorters: 1 });
+    // Pull three cards at different points, each from the plan as it stood then.
+    for (const want of [10, 40, 70]) {
+      const at = steps.findIndex((s, i) => i >= want && (s.kind === 'deal' || s.kind === 'file'));
+      pulls = [...pulls, pullAt(steps, at)];
+      steps = planPutAway(cards, { setOrder: SET_ORDER, sorters: 1, pulls });
+    }
+    // Replaying with the pulled cards removed from the stack at their step:
+    let hand = [...cards];
+    let piles: StackCardInput[][] = [];
+    const seen = new Set<string>();
+    steps.forEach((step, i) => {
+      for (const p of pulls) {
+        if (p.at === i && hand[0]?.id === p.id) hand.shift();
+      }
+      if (step.kind === 'scoop') {
+        hand = [...piles.flatMap((pile) => [...(pile ?? [])].reverse()), ...hand];
+        piles = [];
+        return;
+      }
+      if (step.kind === 'bulk') {
+        expect(step.cards.map((l) => l.card.id)).toEqual(hand.map((c) => c.id));
+        hand.forEach((c) => seen.add(c.id));
+        hand = [];
+        return;
+      }
+      expect(hand[0]?.id).toBe(step.card.id);
+      const top = hand.shift()!;
+      if (step.kind === 'deal') (piles[step.pile] ??= []).push(top);
+      else seen.add(top.id);
+    });
+    expect(seen.size).toBe(cards.length - 3);
+  });
+
+  it('turns the binder again when the step that turned it is dropped', () => {
+    const a = card('SOR', 13);
+    const b = card('SOR', 14);
+    const cards = [a, b];
+    const before = planPutAway(cards, { setOrder: SET_ORDER, sorters: 1 });
+    expect(before.map((s) => s.kind === 'file' && Boolean(s.turnTo))).toEqual([true, false]);
+    const after = planPutAway(cards, {
+      setOrder: SET_ORDER,
+      sorters: 1,
+      pulls: [{ id: a.id, at: 0 }],
+    });
+    expect(after).toHaveLength(1);
+    expect(after[0]!.kind === 'file' && after[0]!.turnTo?.pages).toEqual([2, 3]);
+  });
+
+  it('lists side cards that miss the binder after the stack in hand', () => {
+    const cards = [card('SOR', 1), card('SOR', 5, 'bulk')];
+    const extra = card('SOR', 9, 'bulk');
+    const steps = planPutAway(cards, { setOrder: SET_ORDER, sorters: 1, toOneSide: [extra] });
+    const last = steps.at(-1)!;
+    expect(last.kind === 'bulk' && last.cards.map((l) => [l.card.id, l.fromSide])).toEqual([
+      [cards[1]!.id, undefined],
+      [extra.id, true],
+    ]);
+  });
+
+  it('takes a pulled card off the leftover list', () => {
+    const cards = [card('SOR', 1), card('SOR', 5, 'bulk')];
+    const steps = planPutAway(cards, {
+      setOrder: SET_ORDER,
+      sorters: 1,
+      pulls: [{ id: cards[1]!.id, at: 4 }],
+    });
+    expect(steps.some((s) => s.kind === 'bulk')).toBe(false);
+  });
+});
+
+describe('nextInHand', () => {
+  it('names the card under the top one, matching the stack at every step', () => {
+    const stack = shuffled(
+      Array.from({ length: 40 }, (_, i) =>
+        card('SOR', 1 + ((i * 37) % 260), i % 7 ? 'binder' : 'bulk'),
+      ),
+      9,
+    );
+    const steps = planPutAway(stack, { setOrder: SET_ORDER, sorters: 1 });
+    let hand = [...stack];
+    let piles: StackCardInput[][] = [];
+    steps.forEach((step, i) => {
+      if (step.kind === 'scoop') {
+        expect(nextInHand(steps, i)).toBeUndefined();
+        hand = [...piles.flatMap((pile) => [...(pile ?? [])].reverse()), ...hand];
+        piles = [];
+        return;
+      }
+      if (step.kind === 'bulk') return;
+      expect(nextInHand(steps, i)?.id).toBe(hand[1]?.id);
+      const top = hand.shift()!;
+      if (step.kind === 'deal') (piles[step.pile] ??= []).push(top);
+    });
   });
 });
 

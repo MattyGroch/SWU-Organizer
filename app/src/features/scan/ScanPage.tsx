@@ -3,14 +3,8 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { db } from '~/data/db';
-import {
-  queuedPocket,
-  queueScan,
-  sourcePrinting,
-  unqueueScan,
-  type ScanReceipt,
-} from '~/data/intake';
-import { dropScan, logScan, updateScan, type ScanEntry } from '~/data/stacks';
+import { sourcePrinting, unqueueScan, type ScanReceipt } from '~/data/intake';
+import { dropScan, logScan, updateScan } from '~/data/stacks';
 import { binderLayout } from '~/domain/binder';
 import {
   artNumber,
@@ -23,8 +17,7 @@ import {
   type LoadedSet,
   type VariantSlug,
 } from '~/domain/catalog';
-import { pocketRoom, type PocketRoom } from '~/domain/ownership';
-import { useQuota } from '~/features/inventory/useQuota';
+import type { PocketRoom } from '~/domain/ownership';
 import { cardLead, type Match } from '~/domain/scan/index';
 import type { SearchSuggestion } from '~/domain/search';
 import type { SetKey } from '~/domain/types';
@@ -34,6 +27,7 @@ import { useToast } from '~/ui/toastContext';
 import { guideRect, toScreen, type Rect, type View } from './capture';
 import styles from './ScanPage.module.css';
 import { useCamera } from './useCamera';
+import { stackEntry, usePlaceScan, type Printing } from './usePlaceScan';
 import { useScanIndex } from './useScanIndex';
 import { useScanner, type ScanResult } from './useScanner';
 
@@ -47,8 +41,6 @@ type Mode = 'info' | 'add';
 const CARD_MARGIN = 12;
 /** Score gap under which the same card from two sets counts as indistinguishable. */
 const REPRINT_GAP = 3;
-
-export type Printing = { setKey: SetKey; base: number; num: string; variant: VariantSlug };
 
 type Item = {
   id: number;
@@ -68,22 +60,6 @@ type Item = {
   /** This scan's card in the scanned stack (Add mode), so putting away knows its place. */
   stackCardId: string | null;
 };
-
-/** Where a scan's card goes when the stack is put away. */
-function stackEntry(item: Omit<Item, 'id' | 'result' | 'stackCardId'>, set?: LoadedSet): ScanEntry {
-  const { setKey, base, num, variant } = item.chosen;
-  const card = { setKey, base, num, variant };
-  if (item.question) return { ...card, fate: 'unsure' };
-  if (item.room?.kind === 'full') return { ...card, fate: 'bulk' };
-  if (item.room?.kind === 'upgrade') {
-    const replaces = item.room.replaces;
-    const weaker = set?.printingsByBase.get(base)?.find((p) => p.variant === replaces);
-    if (weaker) {
-      return { ...card, fate: 'binder', swapOut: { num: weaker.num, variant: weaker.variant } };
-    }
-  }
-  return { ...card, fate: 'binder' };
-}
 
 const cardKey = (p: { setKey: string; base: number }) => `${p.setKey}:${p.base}`;
 const asPrinting = (m: Match): Printing => ({
@@ -107,7 +83,6 @@ function cardsIn(matches: Match[]): Match[] {
 export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const camera = useCamera();
   const index = useScanIndex();
-  const quotaOf = useQuota();
   const [mode, setMode] = useState<Mode>('add');
   /**
    * Foils mode: every scan is recorded on foil stock, for running a stack of foils
@@ -162,26 +137,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     [sets],
   );
 
-  /**
-   * Queues a scanned printing and notes what it does to its binder pocket: room, full of
-   * copies at least as good (it goes to bulk), or better than the weakest copy (that one
-   * goes to bulk). Every copy is queued; committing settles which copies go to bulk.
-   */
-  const place = useCallback(
-    async (printing: Printing): Promise<Pick<Item, 'receipt' | 'room'>> => {
-      const set = sets.get(printing.setKey);
-      const card = set?.byNumber.get(printing.base);
-      if (!card) return { receipt: await queueScan(printing), room: null };
-      const quota = quotaOf({ type: card.Type, maxCopies: card.MaxCopies });
-      const room = pocketRoom(
-        await queuedPocket(printing.setKey, printing.base),
-        quota,
-        printing.variant,
-      );
-      return { receipt: await queueScan(printing), room: room.kind === 'room' ? null : room };
-    },
-    [sets, quotaOf],
-  );
+  const place = usePlaceScan(sets);
 
   /** The printing as recorded: its foil counterpart in Foils mode, where one exists. */
   const asFound = useCallback(
@@ -240,8 +196,8 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       if (mode === 'add') {
         if (!question) {
           placed = await place(chosen);
-          // A short buzz for "added"; a double one for "not added — look at the screen".
-          navigator.vibrate?.(placed.room?.kind === 'full' ? [60, 80, 60] : 40);
+          // Added, wherever it ends up: binder or bulk is put-away's business, not the scan's.
+          navigator.vibrate?.(40);
         }
         // Logged even while unsure: the card is in the stack either way.
         stackCardId = await logScan(
@@ -681,7 +637,7 @@ function LatestScan({
     <section
       className={styles.result}
       aria-labelledby="latest-scan"
-      data-question={item.question ?? (item.room?.kind === 'full' ? 'full' : undefined)}
+      data-question={item.question ?? undefined}
     >
       <img
         className={styles.art}
@@ -733,21 +689,6 @@ function LatestScan({
                 No, show others
               </button>
             </div>
-          </div>
-        ) : mode === 'add' && item.room?.kind === 'full' ? (
-          <div className={styles.bump}>
-            <p className={styles.added}>Added to Intake, for bulk</p>
-            <p>
-              The <strong>{nameOf(chosen)}</strong> pocket is full. Leave it in the stack: Put away
-              sets it aside for the bulk box.
-            </p>
-          </div>
-        ) : mode === 'add' && item.room?.kind === 'upgrade' ? (
-          <div className={styles.bump}>
-            <p className={styles.added}>Added to Intake</p>
-            <p>
-              Bumps a {variantLabel(item.room.replaces)} {nameOf(chosen)} to bulk.
-            </p>
           </div>
         ) : mode === 'add' ? (
           <p className={styles.added}>Added to Intake</p>

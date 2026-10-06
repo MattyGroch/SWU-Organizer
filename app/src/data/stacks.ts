@@ -2,7 +2,7 @@ import type { VariantSlug } from '~/domain/catalog';
 import type { StackFate } from '~/domain/putAway';
 import type { SetKey } from '~/domain/types';
 
-import { db, type StackCardRow, type StackRow, type SwuDatabase } from './db';
+import { db, type StackCardRow, type StackPlanCard, type StackRow, type SwuDatabase } from './db';
 
 /**
  * Scanned stacks, one row per physical card in scan order.
@@ -101,29 +101,91 @@ export async function discardOpenStack(database: SwuDatabase = db): Promise<void
   if (stack) await dismissStack(stack.id, database);
 }
 
+function planCard({ stackId: _, seq: __, ...card }: StackCardRow): StackPlanCard {
+  return card;
+}
+
 /**
  * Starts (or restarts) putting a stack away with this many sorters. The stack is closed,
- * so new scans cannot shift the steps under you.
+ * so new scans cannot shift the steps under you, and its cards are noted as they stand:
+ * the plan is made from those.
  */
 export async function startPutAway(
   id: string,
   sorters: number,
   { database = db, now = Date.now() }: { database?: SwuDatabase; now?: number } = {},
 ): Promise<void> {
-  await database.transaction('rw', database.stacks, async () => {
+  await database.transaction('rw', database.stacks, database.stackCards, async () => {
     const stack = await database.stacks.get(id);
     if (!stack) return;
-    await database.stacks.put({ ...stack, sorters, step: 0, closedAt: stack.closedAt ?? now });
+    const plan = (await stackCards(id, database)).map(planCard);
+    await database.stacks.put({
+      ...stack,
+      sorters,
+      step: 0,
+      closedAt: stack.closedAt ?? now,
+      plan,
+      pulls: [],
+    });
   });
 }
 
-/** Back to choosing sorters, from the first step. */
+/** Back to choosing sorters, from the first step: the next start plans the stack afresh. */
 export async function resetPutAway(id: string, database: SwuDatabase = db): Promise<void> {
   await database.transaction('rw', database.stacks, async () => {
     const stack = await database.stacks.get(id);
     if (!stack) return;
-    const { sorters: _, ...rest } = stack;
+    const { sorters: _, plan: __, pulls: ___, ...rest } = stack;
     await database.stacks.put({ ...rest, step: 0 });
+  });
+}
+
+/**
+ * Takes the card in hand at step `at` out of the plan: corrected to `entry`, to be filed
+ * at the end, or — with `null` — not in the stack at all (scanned twice).
+ */
+export async function pullCard(
+  stackId: string,
+  cardId: string,
+  at: number,
+  entry: ScanEntry | null,
+  database: SwuDatabase = db,
+): Promise<void> {
+  await database.transaction('rw', database.stacks, database.stackCards, async () => {
+    const stack = await database.stacks.get(stackId);
+    if (!stack) return;
+    // Started before plans were kept: the cards as they stand are the plan.
+    const plan = stack.plan ?? (await stackCards(stackId, database)).map(planCard);
+    const pulls = stack.pulls ?? [];
+    // A card already put to one side is no longer in the plan: nothing more to drop.
+    const pulled = pulls.some((p) => p.id === cardId) || !plan.some((c) => c.id === cardId);
+    await database.stacks.update(stackId, {
+      plan,
+      pulls: pulled ? pulls : [...pulls, { id: cardId, at }],
+    });
+    if (entry) await updateScan(cardId, entry, database);
+    else await database.stackCards.delete(cardId);
+  });
+}
+
+/** A copy the scanner missed, found partway through: put to one side and filed at the end. */
+export async function addMissedCopy(
+  stackId: string,
+  entry: ScanEntry,
+  database: SwuDatabase = db,
+): Promise<string> {
+  return database.transaction('rw', database.stacks, database.stackCards, async () => {
+    const stack = await database.stacks.get(stackId);
+    if (stack && !stack.plan) {
+      await database.stacks.update(stackId, {
+        plan: (await stackCards(stackId, database)).map(planCard),
+      });
+    }
+    const cards = await database.stackCards.where('stackId').equals(stackId).toArray();
+    const seq = cards.reduce((max, c) => Math.max(max, c.seq + 1), 0);
+    const id = crypto.randomUUID();
+    await database.stackCards.add({ id, stackId, seq, ...entry });
+    return id;
   });
 }
 

@@ -1,7 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie';
 
 import type { VariantSlug } from '~/domain/catalog';
-import type { StackFate } from '~/domain/putAway';
+import type { Pull, StackFate } from '~/domain/putAway';
 import type { SetKey } from '~/domain/types';
 
 import { storageHealth, watchStorage } from './storageHealth';
@@ -103,7 +103,16 @@ export type StackRow = {
   sorters?: number;
   /** Steps of the put-away plan already done. */
   step: number;
+  /**
+   * The cards as they were when putting away started, in scan order: the plan is made from
+   * these, so correcting a card partway through never moves the piles already dealt.
+   */
+  plan?: StackPlanCard[];
+  /** Cards taken out of the plan partway through, in order (see `domain/putAway.ts`). */
+  pulls?: Pull[];
 };
+
+export type StackPlanCard = Omit<StackCardRow, 'stackId' | 'seq'>;
 
 /** One physical card in a stack: the scan order is `seq`, one row per copy. */
 export type StackCardRow = {

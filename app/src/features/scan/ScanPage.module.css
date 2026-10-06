@@ -166,14 +166,6 @@
   font-weight: 800;
 }
 
-.bump {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  color: var(--color-warning-fg);
-  font-size: var(--font-size-sm);
-}
-
 .inlineButton {
   margin-left: var(--space-1);
   padding: 2px var(--space-2);

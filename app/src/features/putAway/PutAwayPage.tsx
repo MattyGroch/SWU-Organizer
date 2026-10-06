@@ -4,21 +4,36 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useHiddenSets } from '~/data/binderSettings';
 import { db, readMeta, writeMeta, type StackCardRow, type StackRow } from '~/data/db';
-import { dismissStack, resetPutAway, setStep, stackCards, startPutAway } from '~/data/stacks';
+import { unqueuePrinting } from '~/data/intake';
+import {
+  addMissedCopy,
+  dismissStack,
+  pullCard,
+  resetPutAway,
+  setStep,
+  stackCards,
+  startPutAway,
+} from '~/data/stacks';
 import { pageSide } from '~/domain/binder';
 import { artUrl, variantLabel, type LoadedSet } from '~/domain/catalog';
 import {
   PILES_PER_SORTER,
+  nextInHand,
   pileCell,
   pileName,
   planPutAway,
   SORTER_NAMES,
   type AsideReason,
+  type LeftoverCard,
   type PutAwayStep,
   type SpreadRef,
+  type StackCardInput,
 } from '~/domain/putAway';
 import type { SetKey } from '~/domain/types';
+import { stackEntry, usePlaceScan, type Printing } from '~/features/scan/usePlaceScan';
+import { useToast } from '~/ui/toastContext';
 
+import { FixCardSheet } from './FixCardSheet';
 import styles from './PutAwayPage.module.css';
 import { speechSupported, useSpeech, useWakeLock } from './speech';
 
@@ -174,16 +189,22 @@ function Walk({
   pace: number;
 }) {
   const navigate = useNavigate();
-  const steps = useMemo(
-    () =>
-      // The last card scanned is on top of the stack, so it is the first one handled.
-      planPutAway([...cards].reverse(), {
-        setOrder: [...sets.keys()],
-        hiddenSets: hidden,
-        sorters,
-      }),
-    [cards, sets, hidden, sorters],
-  );
+  const steps = useMemo(() => {
+    // The plan comes from the stack as it was at the start; cards changed since then are
+    // to one side, filed at the end.
+    const planned = stack.plan ?? cards;
+    const pulls = stack.pulls ?? [];
+    const pulled = new Set(pulls.map((p) => p.id));
+    const inPlan = new Set(planned.map((c) => c.id));
+    // The last card scanned is on top of the stack, so it is the first one handled.
+    return planPutAway([...planned].reverse(), {
+      setOrder: [...sets.keys()],
+      hiddenSets: hidden,
+      sorters,
+      pulls,
+      toOneSide: cards.filter((c) => pulled.has(c.id) || !inPlan.has(c.id)),
+    });
+  }, [stack.plan, stack.pulls, cards, sets, hidden, sorters]);
   const index = Math.min(stack.step, steps.length);
   const step = steps[index];
   const text = step ? spoken(step, sorters, sets) : 'All put away.';
@@ -191,7 +212,10 @@ function Walk({
   const [playing, setPlaying] = useState(true);
   /** The step whose instruction has been read out: the pause before the next starts then. */
   const [readIndex, setReadIndex] = useState<number | null>(null);
+  const [fixing, setFixing] = useState<StackCardInput | null>(null);
   useWakeLock(playing && Boolean(step));
+  const place = usePlaceScan(sets);
+  const showToast = useToast();
 
   const go = useCallback(
     (to: number) => {
@@ -214,14 +238,16 @@ function Walk({
     return say(text, () => setReadIndex(index));
   }, [say, text, index]);
 
-  // Then, while playing, give time to do it and move on.
+  // Then, while playing, give time to do it and move on — except from the leftover list,
+  // which waits while you check it.
   useEffect(() => {
-    if (!playing || !step || readIndex !== index) return;
+    if (!playing || !step || step.kind === 'bulk' || readIndex !== index) return;
     const timer = window.setTimeout(() => go(index + 1), stepPause(step, pace) * 1000);
     return () => window.clearTimeout(timer);
   }, [playing, step, readIndex, index, pace, go]);
 
   useEffect(() => {
+    if (fixing) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLButtonElement) return;
       if (e.key === ' ' || e.key === 'Enter') {
@@ -239,7 +265,7 @@ function Walk({
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [go, index]);
+  }, [go, index, fixing]);
 
   const setPace = (seconds: number) =>
     void writeMeta(db, PACE_KEY, String(Math.max(PACE_STEP, Math.min(MAX_PACE, seconds))));
@@ -249,26 +275,85 @@ function Walk({
     void navigate({ to: '/intake' });
   }
 
+  const openFix = (card: StackCardInput) => {
+    setPlaying(false);
+    setFixing(card);
+  };
+
+  /** Each fix changes Intake first, then takes the card out of the plan at this step. */
+  const fixed = (fix: () => Promise<string>) =>
+    void fix()
+      .then((message) => showToast({ tone: 'info', message }))
+      .catch((error: unknown) =>
+        showToast({
+          tone: 'danger',
+          message: `Couldn’t fix that card: ${error instanceof Error ? error.message : String(error)}`,
+        }),
+      );
+  const entryFor = async (printing: Printing) => {
+    const { room } = await place(printing);
+    return stackEntry({ chosen: printing, question: null, room }, sets.get(printing.setKey));
+  };
+  const fixes = (card: StackCardInput) => ({
+    onCorrect: (printing: Printing) =>
+      fixed(async () => {
+        if (card.fate !== 'unsure') await unqueuePrinting(card);
+        const entry = await entryFor(printing);
+        await pullCard(stack.id, card.id, index, entry);
+        return entry.fate === 'binder'
+          ? 'Put it to one side: it’s filed at the end.'
+          : 'Put it to one side: it goes to bulk at the end.';
+      }),
+    onMissedCopy: () =>
+      fixed(async () => {
+        const { setKey, base, num, variant } = card;
+        await addMissedCopy(stack.id, await entryFor({ setKey, base, num, variant }));
+        return 'Added to Intake. Put the extra copy to one side: it’s handled at the end.';
+      }),
+    onRemove: () =>
+      fixed(async () => {
+        if (card.fate !== 'unsure') await unqueuePrinting(card);
+        await pullCard(stack.id, card.id, index, null);
+        return 'Removed from the stack and from Intake.';
+      }),
+  });
+
   return (
     <div className={styles.page}>
       <div className={styles.progressRow}>
         <span className={styles.progressText}>
           {step ? `Step ${index + 1} of ${steps.length}` : 'Done'}
-          {step && !playing && <span className={styles.paused}> · Paused</span>}
+          {step && !playing && step.kind !== 'bulk' && (
+            <span className={styles.paused}> · Paused</span>
+          )}
         </span>
-        <button type="button" className={styles.link} onClick={() => void resetPutAway(stack.id)}>
-          Start over
-        </button>
+        <span className={styles.progressLinks}>
+          {speechSupported() && (
+            <button
+              type="button"
+              className={styles.link}
+              aria-pressed={speech}
+              onClick={() => void writeMeta(db, SPEECH_KEY, speech ? 'off' : 'on')}
+            >
+              Read aloud: {speech ? 'on' : 'off'}
+            </button>
+          )}
+          <button type="button" className={styles.link} onClick={() => void resetPutAway(stack.id)}>
+            Start over
+          </button>
+        </span>
       </div>
       <progress className={styles.progress} max={steps.length} value={index} />
 
       {step ? (
         <StepView
           step={step}
+          next={nextInHand(steps, index)}
           sorters={sorters}
           sets={sets}
           playing={playing}
           onToggle={() => setPlaying((p) => !p)}
+          onFix={openFix}
         />
       ) : (
         <section className={styles.done}>
@@ -282,7 +367,16 @@ function Walk({
         </span>
       )}
 
-      {step ? (
+      {step?.kind === 'bulk' ? (
+        <div className={styles.navDone}>
+          <button type="button" className={styles.back} onClick={() => goByHand(index - 1)}>
+            Back
+          </button>
+          <button type="button" className={styles.next} onClick={() => goByHand(index + 1)}>
+            Done
+          </button>
+        </div>
+      ) : step ? (
         <div className={styles.nav}>
           <button
             type="button"
@@ -315,7 +409,16 @@ function Walk({
         </div>
       )}
 
-      {step && (
+      {fixing && (
+        <FixCardSheet
+          card={fixing}
+          sets={sets}
+          onClose={() => setFixing(null)}
+          {...fixes(fixing)}
+        />
+      )}
+
+      {step && step.kind !== 'bulk' && (
         <div className={styles.pace} role="group" aria-label="Pace">
           <span>Time to do each step: {pace}s</span>
           <button
@@ -342,16 +445,21 @@ function Walk({
 
 function StepView({
   step,
+  next,
   sorters,
   sets,
   playing,
   onToggle,
+  onFix,
 }: {
   step: PutAwayStep;
+  /** The card under this one in hand, to check against the stack as you go. */
+  next: StackCardInput | undefined;
   sorters: number;
   sets: Map<SetKey, LoadedSet>;
   playing: boolean;
   onToggle: () => void;
+  onFix: (card: StackCardInput) => void;
 }) {
   if (step.kind === 'scoop') {
     return (
@@ -365,29 +473,46 @@ function StepView({
     );
   }
 
+  if (step.kind === 'bulk') return <Leftovers cards={step.cards} sets={sets} onFix={onFix} />;
+
   const { card } = step;
-  const set = sets.get(card.setKey);
-  const name = set?.byNumber.get(card.base)?.Name ?? `${card.setKey} #${card.base}`;
+  const name = cardName(card, sets);
+  const nextUp = next && (
+    <figure className={styles.nextUp}>
+      <figcaption className={styles.nextUpLabel}>Next in the stack</figcaption>
+      <img className={styles.nextUpArt} src={artUrl(next.setKey, next.num)} alt="" />
+      <span className={styles.nextUpName}>{cardName(next, sets)}</span>
+      <span className={styles.cardMeta}>{variantLabel(next.variant)}</span>
+    </figure>
+  );
   const art = (
-    <button
-      type="button"
-      className={styles.artButton}
-      onClick={onToggle}
-      // A big tap target for pausing; the Pause button below is the accessible one.
-      tabIndex={-1}
-      aria-hidden="true"
-      title={playing ? 'Tap to pause' : 'Tap to resume'}
-    >
-      <img className={styles.art} src={artUrl(card.setKey, card.num)} alt="" />
-    </button>
+    <div className={styles.artColumn}>
+      <button
+        type="button"
+        className={styles.artButton}
+        onClick={onToggle}
+        // A big tap target for pausing; the Pause button below is the accessible one.
+        tabIndex={-1}
+        aria-hidden="true"
+        title={playing ? 'Tap to pause' : 'Tap to resume'}
+      >
+        <img className={styles.art} src={artUrl(card.setKey, card.num)} alt="" />
+      </button>
+      {nextUp}
+    </div>
   );
   const cardLine = (
-    <p className={styles.cardName}>
-      {name}
-      <span className={styles.cardMeta}>
-        {card.setKey} · {variantLabel(card.variant)}
-      </span>
-    </p>
+    <>
+      <p className={styles.cardName}>
+        {name}
+        <span className={styles.cardMeta}>
+          {card.setKey} · {variantLabel(card.variant)}
+        </span>
+      </p>
+      <button type="button" className={styles.fixButton} onClick={() => onFix(card)}>
+        Wrong card?
+      </button>
+    </>
   );
 
   if (step.kind === 'deal') {
@@ -413,24 +538,10 @@ function StepView({
     );
   }
 
-  if (step.kind === 'aside') {
-    return (
-      <section className={styles.step} aria-labelledby="step-title">
-        {art}
-        <div className={styles.details}>
-          {cardLine}
-          <h1 id="step-title" className={styles.instruction}>
-            {ASIDE[step.reason].title}
-          </h1>
-          <p className={styles.lead}>{ASIDE[step.reason].detail}</p>
-        </div>
-      </section>
-    );
-  }
-
   const { spot, turnTo } = step;
   return (
     <section className={styles.step} aria-labelledby="step-title">
+      {step.fromSide && <p className={styles.sideNote}>From the cards you put to one side</p>}
       {turnTo && (
         <p className={styles.turn} role="status">
           Open {setName(turnTo.setKey, sets)} to {pagesText(turnTo)}
@@ -459,18 +570,79 @@ function StepView({
   );
 }
 
-const ASIDE: Record<AsideReason, { title: string; detail: string }> = {
-  bulk: { title: 'Bulk', detail: 'Its pocket already holds enough copies at least this good.' },
-  unsure: {
-    title: 'Check this card',
-    detail: 'The scanner wasn’t sure what this was, and it was never added. Scan it again.',
-  },
-  hidden: { title: 'No binder', detail: 'This set is hidden from the binder.' },
-  replaced: {
-    title: 'Bulk',
-    detail: 'A better printing of this card, scanned later, takes its place in the pocket.',
-  },
+/** What the leftover list says about a card that isn't plain bulk. */
+const LEFTOVER_TAG: Partial<Record<AsideReason, string>> = {
+  unsure: 'Check this card: the scanner wasn’t sure, so it was never added',
+  hidden: 'No binder: its set is hidden',
+  replaced: 'A better printing took its pocket',
 };
+
+/**
+ * The last step: everything still in hand, for the bulk box, in order from the top so it
+ * can be checked card by card. Then anything put to one side that goes there too.
+ */
+function Leftovers({
+  cards,
+  sets,
+  onFix,
+}: {
+  cards: LeftoverCard[];
+  sets: Map<SetKey, LoadedSet>;
+  onFix: (card: StackCardInput) => void;
+}) {
+  const inHand = cards.filter((l) => !l.fromSide);
+  const fromSide = cards.filter((l) => l.fromSide);
+  const list = (items: LeftoverCard[]) => (
+    <ol className={styles.leftovers}>
+      {items.map(({ card, reason }) => (
+        <li key={card.id} className={styles.leftover}>
+          <img className={styles.leftoverArt} src={artUrl(card.setKey, card.num)} alt="" />
+          <span className={styles.leftoverText}>
+            <span className={styles.leftoverName}>{cardName(card, sets)}</span>
+            <span className={styles.cardMeta}>
+              {card.setKey} · {variantLabel(card.variant)}
+            </span>
+            {LEFTOVER_TAG[reason] && (
+              <span className={styles.leftoverTag}>{LEFTOVER_TAG[reason]}</span>
+            )}
+          </span>
+          <button type="button" className={styles.fixButton} onClick={() => onFix(card)}>
+            Wrong card?
+          </button>
+        </li>
+      ))}
+    </ol>
+  );
+  return (
+    <section className={styles.done} aria-labelledby="step-title">
+      <h1 id="step-title" className={styles.leftoverTitle}>
+        {leftoverText(cards)}
+      </h1>
+      {inHand.length > 0 && (
+        <>
+          <p className={styles.lead}>Check them against this list, top of the stack first.</p>
+          {list(inHand)}
+        </>
+      )}
+      {fromSide.length > 0 && (
+        <>
+          <h2 className={styles.legend}>From the cards you put to one side</h2>
+          {list(fromSide)}
+        </>
+      )}
+    </section>
+  );
+}
+
+function leftoverText(cards: readonly LeftoverCard[]): string {
+  return cards.length === 1
+    ? 'The last card is to be deposited into bulk.'
+    : `The remaining ${cards.length} cards are to be deposited into bulk.`;
+}
+
+function cardName(card: StackCardInput, sets: Map<SetKey, LoadedSet>): string {
+  return sets.get(card.setKey)?.byNumber.get(card.base)?.Name ?? `${card.setKey} #${card.base}`;
+}
 
 /**
  * Seconds to do a step before the next is read: dealing is quick, filing means finding the
@@ -478,6 +650,7 @@ const ASIDE: Record<AsideReason, { title: string; detail: string }> = {
  */
 function stepPause(step: PutAwayStep, pace: number): number {
   if (step.kind === 'scoop') return pace * 4;
+  if (step.kind === 'bulk') return 0;
   if (step.kind === 'file') return pace * 2 + (step.turnTo ? pace * 2 : 0);
   return pace;
 }
@@ -571,10 +744,17 @@ function spoken(step: PutAwayStep, sorters: number, sets: Map<SetKey, LoadedSet>
   if (step.kind === 'scoop') {
     return `Scoop up the piles, ${pileName(0, sorters)} through ${pileName(step.piles - 1, sorters)}.`;
   }
+  if (step.kind === 'bulk') {
+    const unsure = step.cards.filter((l) => l.reason === 'unsure').length;
+    const check = unsure
+      ? ` ${unsure === 1 ? 'One needs' : `${unsure} need`} checking first: see the list.`
+      : '';
+    return `${leftoverText(step.cards)}${check}`;
+  }
   const name = sets.get(step.card.setKey)?.byNumber.get(step.card.base)?.Name ?? '';
   if (step.kind === 'deal') return `${pileName(step.pile, sorters)}. ${name}`;
-  if (step.kind === 'aside') return `${ASIDE[step.reason].title}. ${name}`;
   const { spot, turnTo } = step;
+  const side = step.fromSide ? 'From the cards to one side. ' : '';
   const open = turnTo
     ? `Open ${spokenName(turnTo.setKey, sets)} to ${pagesText(turnTo).replace('–', ' and ')}. `
     : '';
@@ -582,5 +762,5 @@ function spoken(step: PutAwayStep, sorters: number, sets: Map<SetKey, LoadedSet>
     ? ` Take out the ${variantLabel(step.card.swapOut.variant)} copy.`
     : '';
   // Once the binder is open, the side of the spread is easier to find than the page number.
-  return `${open}${SIDE[pageSide(spot.page)]} page, row ${spot.row}, column ${spot.column}. ${name}.${swap}`;
+  return `${side}${open}${SIDE[pageSide(spot.page)]} page, row ${spot.row}, column ${spot.column}. ${name}.${swap}`;
 }
