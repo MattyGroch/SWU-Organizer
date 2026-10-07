@@ -17,10 +17,6 @@
   cursor: pointer;
 }
 
-.step:hover:not(:disabled) {
-  background: var(--color-surface-raised);
-}
-
 .step:disabled {
   opacity: 0.35;
   cursor: not-allowed;

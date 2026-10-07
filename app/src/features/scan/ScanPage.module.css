@@ -33,11 +33,6 @@
   cursor: pointer;
 }
 
-.segment[aria-checked='true'] {
-  background: var(--color-accent);
-  color: var(--color-accent-text);
-}
-
 .viewfinder {
   position: relative;
   overflow: hidden;
@@ -223,10 +218,6 @@
   background: var(--color-surface-sunken);
 }
 
-.button[aria-pressed='true'] {
-  border-color: var(--color-warning);
-}
-
 .primary {
   border: none;
   background: var(--color-accent);
@@ -262,11 +253,6 @@
   background: var(--color-surface-sunken);
   font-weight: 800;
   cursor: pointer;
-}
-
-.chip[aria-pressed='true'] {
-  border-color: var(--color-focus);
-  background: var(--color-surface-raised);
 }
 
 .alternatives {

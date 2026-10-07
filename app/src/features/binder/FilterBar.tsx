@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 
 import {
   ALL_ASPECTS,
@@ -12,6 +12,8 @@ import {
   type Filters,
 } from './cardRows';
 import styles from './FilterBar.module.css';
+import { RarityBadge } from './RarityBadge';
+import { AspectGlyph } from './AspectGlyph';
 
 type Props = {
   filters: Filters;
@@ -56,6 +58,14 @@ function FilterGroup({ label, children }: { label: string; children: ReactNode }
 /** Phones get the filters folded away by default: they would fill the whole screen. */
 const NARROW = '(max-width: 760px)';
 
+/**
+ * The chip's own colour, for its indicator light and the HUD's lit edge (styles/hud.css).
+ * data-tone="dark" (Villainy, Neutral, Special): too dark to glow, so those light in silver.
+ */
+function toneStyle(colorVar: string | undefined): CSSProperties | undefined {
+  return colorVar ? ({ '--chip-color': `var(${colorVar})` } as CSSProperties) : undefined;
+}
+
 function activeFilterCount(filters: Filters): number {
   return (
     filters.aspect.length +
@@ -95,18 +105,26 @@ export function FilterBar({ filters, onChange, className }: Props) {
       <div className={styles.bar}>
         <FilterGroup label="Aspect">
           {ALL_ASPECTS.map((aspect) => {
-            const active = filters.aspect.includes(aspect);
+            const label = aspect === 'NEUTRAL' ? 'Neutral' : aspect;
             return (
               <button
                 key={aspect}
                 type="button"
-                className={styles.chip}
-                aria-pressed={active}
-                style={active ? { background: `var(${ASPECT_VAR[aspect]})` } : undefined}
-                data-light={active && aspect === 'Heroism'}
+                className={`${styles.chip} ${styles.aspectChip}`}
+                aria-pressed={filters.aspect.includes(aspect)}
+                aria-label={label}
+                title={label}
+                style={toneStyle(ASPECT_VAR[aspect])}
+                data-tone={aspect === 'Villainy' || aspect === 'NEUTRAL' ? 'dark' : undefined}
+                data-fill="solid"
+                data-aspect={aspect}
                 onClick={() => toggle('aspect', aspect)}
               >
-                {aspect === 'NEUTRAL' ? 'Neutral' : aspect}
+                {aspect === 'NEUTRAL' ? (
+                  <span className={styles.neutralPip} aria-hidden="true" />
+                ) : (
+                  <AspectGlyph aspect={aspect} className={styles.aspectGlyph} />
+                )}
               </button>
             );
           })}
@@ -119,13 +137,15 @@ export function FilterBar({ filters, onChange, className }: Props) {
               <button
                 key={rarity}
                 type="button"
-                className={styles.chip}
+                className={`${styles.chip} ${styles.rarityChip}`}
                 aria-pressed={active}
-                style={active ? { background: `var(${RARITY_VAR[rarity]})` } : undefined}
-                data-dark={active && rarity === 'Special'}
+                aria-label={rarity}
+                title={rarity}
+                style={toneStyle(RARITY_VAR[rarity])}
+                data-tone={rarity === 'Special' ? 'dark' : undefined}
                 onClick={() => toggle('rarity', rarity)}
               >
-                {rarity}
+                <RarityBadge rarity={rarity} />
               </button>
             );
           })}

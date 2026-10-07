@@ -165,10 +165,6 @@
   background: var(--color-surface-sunken);
 }
 
-.secondary:hover {
-  background: var(--color-surface-raised);
-}
-
 .offers {
   display: flex;
   flex-direction: column;

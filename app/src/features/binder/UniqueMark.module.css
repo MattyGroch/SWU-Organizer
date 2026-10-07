@@ -1,0 +1,9 @@
+.mark {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-right: 0.3em;
+  vertical-align: -0.05em;
+  color: var(--hud);
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--hud) 60%, transparent));
+}

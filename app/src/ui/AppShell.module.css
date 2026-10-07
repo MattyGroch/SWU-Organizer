@@ -45,16 +45,6 @@
   transition: background-color var(--transition-base);
 }
 
-.navLink:hover {
-  background: var(--color-surface-raised);
-}
-
-.navLink[aria-current='page'] {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: var(--color-accent-text);
-}
-
 .count {
   composes: ui-count from global;
   margin-left: var(--space-2);

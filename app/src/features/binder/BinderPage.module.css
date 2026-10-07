@@ -80,10 +80,6 @@
   cursor: not-allowed;
 }
 
-.action:hover:not(:disabled) {
-  background: var(--color-surface-raised);
-}
-
 .copyStatus {
   color: var(--color-success-fg);
   font-size: var(--font-size-xs);

@@ -38,10 +38,6 @@
 }
 
 .close:hover,
-.secondary:hover {
-  background: var(--color-surface-raised);
-}
-
 .body {
   display: flex;
   flex-direction: column;

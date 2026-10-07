@@ -5,6 +5,8 @@ export type Card = {
   Aspects?: string[];
   Type?: string;
   Rarity?: string;
+  /** Unique characters print a ✦ before their name. */
+  Unique?: boolean;
   MarketPrice?: number;
   Set: string;
   /** Overrides the default type-based playset quota (3, or 1 for leader/base) for cards whose text allows more/fewer copies, e.g. Swarming Vulture Droid (15). */

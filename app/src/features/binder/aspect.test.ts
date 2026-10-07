@@ -1,12 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  aspectBackground,
-  aspectFillVars,
-  aspectSwatchBackground,
-  isLightFill,
-  rarityStyle,
-} from './aspect';
+import { aspectBackground, aspectFillVars, isLightFill, rarityStyle } from './aspect';
 
 describe('aspectFillVars', () => {
   it('uses primary aspects when present', () => {
@@ -55,18 +49,6 @@ describe('aspectBackground', () => {
     expect(dual).toContain('linear-gradient(to right');
     expect(dual).toContain('42.5%');
     expect(dual).toContain('57.5%');
-  });
-});
-
-describe('aspectSwatchBackground', () => {
-  it('splits dual aspects diagonally so they read at small sizes', () => {
-    expect(aspectSwatchBackground(['Vigilance', 'Command'])).toBe(
-      'linear-gradient(135deg, var(--aspect-vigilance) 0 50%, var(--aspect-command) 50% 100%)',
-    );
-  });
-
-  it('stays solid for a single aspect', () => {
-    expect(aspectSwatchBackground(['Cunning'])).toBe('var(--aspect-cunning)');
   });
 });
 

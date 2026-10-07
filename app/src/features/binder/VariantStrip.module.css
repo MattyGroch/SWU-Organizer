@@ -44,11 +44,6 @@
   transition: background-color var(--transition-fast);
 }
 
-.step:hover:not(:disabled) {
-  background: var(--color-surface-raised);
-  color: var(--color-text);
-}
-
 .step:disabled {
   opacity: 0.3;
   cursor: default;

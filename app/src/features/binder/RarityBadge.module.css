@@ -10,6 +10,8 @@
   border-radius: 0.3em;
   background: currentColor;
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.6);
+  /* Pinned, so the tile looks the same inside a HUD control (which sets the display face). */
+  font-family: var(--font-sans);
   font-style: italic;
   font-weight: 900;
   line-height: 1;

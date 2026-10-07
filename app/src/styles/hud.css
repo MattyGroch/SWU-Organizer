@@ -57,10 +57,33 @@ body::before {
   transition: color var(--transition-fast);
 }
 
-:root :is(.ui-btn, .ui-chip, .ui-tab):hover:not(:disabled) {
-  --edge: var(--hud);
-  --fill: color-mix(in srgb, var(--hud) 8%, transparent);
-  color: var(--color-text);
+/* Hover only where there's a real pointer: a phone keeps :hover on the last thing tapped,
+   which made a chip you'd just switched off still look lit. */
+@media (hover: hover) {
+  :root :is(.ui-btn, .ui-chip, .ui-tab):hover:not(:disabled, [aria-pressed='true']) {
+    --edge: var(--hud);
+    --fill: color-mix(in srgb, var(--hud) 8%, transparent);
+    color: var(--color-text);
+  }
+
+  :root .ui-primary:hover:not(:disabled) {
+    --fill: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--hud) 42%, transparent),
+      color-mix(in srgb, var(--hud) 20%, transparent)
+    );
+  }
+
+  :root .ui-danger:hover:not(:disabled) {
+    --edge: #ff7a70;
+    --fill: rgb(255 60 50 / 0.22);
+    color: #ffd6d2;
+  }
+}
+
+/* Touch feedback instead: a brief flare while the finger is down. */
+:root :is(.ui-btn, .ui-chip):active:not(:disabled) {
+  filter: brightness(1.3);
 }
 
 :root .ui-primary {
@@ -78,31 +101,41 @@ body::before {
   box-shadow: inset 0 0 14px color-mix(in srgb, var(--hud) 25%, transparent);
 }
 
-:root .ui-primary:hover:not(:disabled) {
-  --fill: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--hud) 42%, transparent),
-    color-mix(in srgb, var(--hud) 20%, transparent)
-  );
-}
-
 :root .ui-danger {
   --edge: #ff5a4f;
   --fill: rgb(255 60 50 / 0.12);
   color: #ffb3ad;
 }
 
-:root .ui-danger:hover:not(:disabled) {
-  --edge: #ff7a70;
-  --fill: rgb(255 60 50 / 0.22);
-  color: #ffd6d2;
+/*
+ * Toggles. Off: dim edge, quiet text. On: lit in the chip's own colour (--chip-color: an
+ * aspect, a rarity, a status), or the HUD's when it has none, with an inner glow.
+ */
+:root :is(.ui-chip, .ui-btn) {
+  --tone: var(--chip-color, var(--hud));
+}
+
+:root .ui-chip[data-tone='dark'] {
+  --tone: #c3cbda;
 }
 
 :root :is(.ui-chip, .ui-btn)[aria-pressed='true'] {
-  --edge: var(--hud);
-  --fill: color-mix(in srgb, var(--hud) 22%, transparent);
-  color: #f2fcff;
-  box-shadow: inset 0 0 12px color-mix(in srgb, var(--hud) 30%, transparent);
+  --edge: var(--tone);
+  --fill: color-mix(in srgb, var(--tone) 24%, rgb(8 22 34));
+  color: #fff;
+  text-shadow: 0 0 6px color-mix(in srgb, var(--tone) 80%, transparent);
+  box-shadow: inset 0 0 12px color-mix(in srgb, var(--tone) 40%, transparent);
+}
+
+/* Solid toggles fill with their whole colour when on, like a card's aspect tile. */
+:root .ui-chip[data-fill='solid'][aria-pressed='true'] {
+  --edge: color-mix(in srgb, var(--chip-color) 55%, white);
+  --fill: var(--chip-color);
+  box-shadow: inset 0 0 10px rgb(255 255 255 / 0.25);
+}
+
+:root .ui-chip[data-fill='solid'][data-tone='dark'][aria-pressed='true'] {
+  --edge: var(--tone);
 }
 
 /* Segmented switches (Binder | List | Bulk, scan mode): one cut frame, a lit segment. */

@@ -191,10 +191,6 @@
   color: var(--color-danger-fg);
 }
 
-.danger:hover {
-  background: var(--color-danger-bg);
-}
-
 /* Phones: nested panels each give up some padding, so a deck's card table has room. */
 @media (max-width: 760px) {
   .panel {
