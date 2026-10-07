@@ -252,11 +252,8 @@ export function neededCount(total: number, quota: number): number {
   return Math.max(0, quota - total);
 }
 
-export function quotaForCard(
-  card: Pick<CatalogCard, 'type' | 'maxCopies'>,
-  leaderBaseCopies = 1,
-): number {
-  return resolveQuota(card.type, card.maxCopies, leaderBaseCopies);
+export function quotaForCard(card: Pick<CatalogCard, 'type' | 'maxCopies'>): number {
+  return resolveQuota(card.type, card.maxCopies);
 }
 
 /**

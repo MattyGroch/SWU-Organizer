@@ -37,12 +37,6 @@ describe('quotaForCard', () => {
     expect(quotaForCard({ type: 'Base' })).toBe(1);
   });
 
-  it('keeps the Leader & Base setting for those two types only', () => {
-    expect(quotaForCard({ type: 'Leader' }, 2)).toBe(2);
-    expect(quotaForCard({ type: 'Base' }, 2)).toBe(2);
-    expect(quotaForCard({ type: 'Unit' }, 2)).toBe(3);
-  });
-
   it('honours a per-card override', () => {
     // Swarming Vulture Droid allows 15.
     expect(quotaForCard({ type: 'Unit', maxCopies: 15 })).toBe(15);

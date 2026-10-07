@@ -3,9 +3,8 @@ import { useCallback } from 'react';
 import { queuedPocket, queueScan, type ScanReceipt } from '~/data/intake';
 import type { ScanEntry } from '~/data/stacks';
 import type { LoadedSet, VariantSlug } from '~/domain/catalog';
-import { pocketRoom, type PocketRoom } from '~/domain/ownership';
+import { pocketRoom, type PocketRoom, quotaForCard } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
-import { useQuota } from '~/features/inventory/useQuota';
 
 export type Printing = { setKey: SetKey; base: number; num: string; variant: VariantSlug };
 
@@ -25,13 +24,12 @@ export type Placed = { receipt: ScanReceipt | null; room: PocketRoom | null };
 export function usePlaceScan(
   sets: Map<SetKey, LoadedSet>,
 ): (printing: Printing) => Promise<Placed> {
-  const quotaOf = useQuota();
   return useCallback(
     async (printing: Printing): Promise<Placed> => {
       const set = sets.get(printing.setKey);
       const card = set?.byNumber.get(printing.base);
       if (!card) return { receipt: await queueScan(printing), room: null };
-      const quota = quotaOf({ type: card.Type, maxCopies: card.MaxCopies });
+      const quota = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
       const room = pocketRoom(
         await queuedPocket(printing.setKey, printing.base),
         quota,
@@ -39,7 +37,7 @@ export function usePlaceScan(
       );
       return { receipt: await queueScan(printing), room: room.kind === 'room' ? null : room };
     },
-    [sets, quotaOf],
+    [sets],
   );
 }
 

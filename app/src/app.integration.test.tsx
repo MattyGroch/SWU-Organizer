@@ -120,7 +120,7 @@ describe('binder, end to end', () => {
     await user.click(cell(/Director Krennic/));
     await user.keyboard('+');
 
-    await waitFor(() => expect(cell(/Director Krennic.*1 of 2 in binder/)).toBeInTheDocument());
+    await waitFor(() => expect(cell(/Director Krennic.*1 of 1 in binder/)).toBeInTheDocument());
 
     // Leaders keep two in the binder by default, and the Normal printing is "001".
     const row = await db.owned.get('SOR:001');
@@ -140,7 +140,7 @@ describe('binder, end to end', () => {
     expect(row).toMatchObject({ base: 1, variant: 'hyperspace', count: 1 });
 
     // One slot, one playset — the variant does not create a second binder position.
-    await waitFor(() => expect(cell(/Director Krennic.*1 of 2 in binder/)).toBeInTheDocument());
+    await waitFor(() => expect(cell(/Director Krennic.*1 of 1 in binder/)).toBeInTheDocument());
   });
 
   it('ignores a digit for a printing the card does not have', async () => {
@@ -213,12 +213,12 @@ describe('binder, end to end', () => {
     const user = userEvent.setup();
     await renderApp();
 
-    // Krennic is a Leader, so a full playset is two copies by default, not three.
+    // Krennic is a Leader, so a full playset is one copy, not three.
     await user.click(cell(/Director Krennic/));
     await user.keyboard('{Shift>}+{/Shift}');
 
     await waitFor(async () => expect(await db.owned.get('SOR:001')).toBeDefined());
-    expect((await db.owned.get('SOR:001'))!.count).toBe(2);
+    expect((await db.owned.get('SOR:001'))!.count).toBe(1);
   });
 
   it('fills a Unit to three', async () => {
@@ -239,7 +239,10 @@ describe('binder, end to end', () => {
     const user = userEvent.setup();
     await renderApp();
 
-    await user.click(cell(/Director Krennic/));
+    await user.keyboard('/');
+    await user.type(searchBox(), 'Inferno Four');
+    await user.keyboard('{Enter}');
+    await waitFor(() => expect(cell(/Inferno Four/)).toHaveFocus());
     // Two printings of the same card, so undo has a breakdown to restore.
     await user.keyboard('+');
     await user.keyboard('{3}');
@@ -561,21 +564,23 @@ describe('the bulk box', () => {
     expect(screen.queryByRole('table', { name: 'Bulk box' })).not.toBeInTheDocument();
   });
 
-  it('takes the binder down to one Leader when the setting says so', async () => {
+  it('moves a spare Leader left in the binder to the bulk box', async () => {
     const user = userEvent.setup();
     await put(1, '001', 2);
     await renderApp();
 
     await user.click(screen.getByText('Settings'));
-    await user.click(screen.getByRole('radio', { name: '1 copy' }));
+    await user.click(screen.getByRole('button', { name: 'Move spare copies to bulk' }));
     await waitFor(async () =>
       expect(await db.owned.get('SOR:001')).toMatchObject({ count: 2, bulk: 1 }),
     );
     await waitFor(() => expect(cell(/Director Krennic.*1 of 1 in binder/)).toBeInTheDocument());
 
-    await user.click(screen.getByRole('radio', { name: '2 copies' }));
-    // Raising it moves nothing back: the bulk box never refills the binder.
-    await waitFor(() => expect(cell(/Director Krennic.*1 of 2 in binder/)).toBeInTheDocument());
+    // A second run finds nothing left to move.
+    await user.click(screen.getByRole('button', { name: 'Move spare copies to bulk' }));
+    expect(
+      await screen.findByText('Every Leader and Base pocket already holds one copy.'),
+    ).toBeInTheDocument();
     expect(await db.owned.get('SOR:001')).toMatchObject({ bulk: 1 });
   });
 });

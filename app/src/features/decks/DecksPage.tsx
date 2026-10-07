@@ -7,8 +7,7 @@ import type { LoadedSet } from '~/domain/catalog';
 import { available, type HomeLookup, type OwnedLookup } from '~/domain/deckBuild';
 import type { DeckLookupSet } from '~/domain/decklist';
 import type { SavedDeck } from '~/domain/decks';
-import { NO_HOMES, homesOf, type OwnedCounts } from '~/domain/ownership';
-import { useQuota } from '~/features/inventory/useQuota';
+import { homesOf, NO_HOMES, type OwnedCounts, quotaForCard } from '~/domain/ownership';
 import type { PreconCatalogEntry } from '~/domain/precons';
 import type { SetKey } from '~/domain/types';
 import { useToast } from '~/ui/toastContext';
@@ -29,7 +28,6 @@ type Props = {
 export function DecksPage({ sets, binderOwnership, precons }: Props) {
   const deckLibrary = useDeckLibrary();
   const { library, loading } = deckLibrary;
-  const quota = useQuota();
   const showToast = useToast();
   const navigate = useNavigate();
   const [pickList, setPickList] = useState<{
@@ -72,7 +70,7 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
   }, [homes, library]);
   const quotaOf = (setKey: SetKey, base: number) => {
     const card = sets.get(setKey)?.cardsByBase.get(base);
-    return card ? quota(card) : Infinity;
+    return card ? quotaForCard(card) : Infinity;
   };
 
   function onDelete(deck: SavedDeck, index: number) {

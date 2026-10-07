@@ -1,11 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 
-import {
-  useLeaderBaseCopies,
-  writeHiddenSets,
-  writeLeaderBaseCopies,
-  type LeaderBaseCopies,
-} from '~/data/binderSettings';
+import { useState } from 'react';
+
+import { writeHiddenSets } from '~/data/binderSettings';
 import { setQuery } from '~/data/catalog';
 import { db } from '~/data/db';
 import { settleCards } from '~/data/spill';
@@ -28,12 +25,12 @@ const isLeaderOrBase = (type?: string) => /^(leader|base)$/i.test((type ?? '').t
  *
  * Which sets get a binder: a set with no physical binder — TS26 and IBH live only in
  * precon decks — can be dropped from the picker, `[`/`]` and search without losing its
- * cards. And how many copies of each Leader and Base the binder keeps: two leaves one in
- * the pocket while the other is out in a deck.
+ * cards. And a one-off tidy for pockets still holding a second Leader or Base from when
+ * the binder kept two.
  */
 export function SetVisibility({ entries, hidden }: Props) {
   const shownCount = entries.filter((e) => !hidden.has(e.key)).length;
-  const leaderBaseCopies = useLeaderBaseCopies();
+  const [settling, setSettling] = useState(false);
   const queryClient = useQueryClient();
   const showToast = useToast();
 
@@ -45,12 +42,12 @@ export function SetVisibility({ entries, hidden }: Props) {
   }
 
   /**
-   * Fewer copies moves each pocket's extras to the bulk box. More moves nothing: the bulk
-   * box never refills the binder, so the pocket just shows it is short.
+   * Moves each Leader and Base pocket's extras to the bulk box. A button rather than a
+   * migration on load: sync merges bulk counts as changes, so two devices both moving the
+   * same spare would count it twice. Run on one device, the move syncs to the rest, and a
+   * second run finds nothing to move.
    */
-  async function setLeaderBaseCopies(copies: LeaderBaseCopies) {
-    await writeLeaderBaseCopies(copies);
-    if (copies >= leaderBaseCopies) return;
+  async function settleLeadersAndBases() {
     const sets = await Promise.all(
       entries.map((entry) => queryClient.ensureQueryData(setQuery(entry))),
     );
@@ -64,14 +61,19 @@ export function SetVisibility({ entries, hidden }: Props) {
     }
     const moved = await settleCards([...cards.values()], (setKey, base) => {
       const card = cardOf(setKey, base);
-      return card ? quotaForCard(card, copies) : Infinity;
+      return card ? quotaForCard(card) : Infinity;
     });
-    if (moved) {
-      showToast({
-        tone: 'info',
-        message: `${moved} Leader and Base ${moved === 1 ? 'copy goes' : 'copies go'} to the bulk box.`,
-      });
-    }
+    showToast({
+      tone: 'info',
+      message: moved
+        ? `${moved} Leader and Base ${moved === 1 ? 'copy goes' : 'copies go'} to the bulk box.`
+        : 'Every Leader and Base pocket already holds one copy.',
+    });
+  }
+
+  function onSettle() {
+    setSettling(true);
+    void settleLeadersAndBases().finally(() => setSettling(false));
   }
 
   return (
@@ -105,21 +107,12 @@ export function SetVisibility({ entries, hidden }: Props) {
 
         <fieldset className={styles.group}>
           <legend className={styles.legend}>Leaders &amp; Bases in the binder</legend>
-          {([1, 2] as const).map((copies) => (
-            <label key={copies} className={styles.option}>
-              <input
-                type="radio"
-                name="leader-base-copies"
-                checked={leaderBaseCopies === copies}
-                onChange={() => void setLeaderBaseCopies(copies)}
-              />
-              <span>{copies === 1 ? '1 copy' : '2 copies'}</span>
-            </label>
-          ))}
           <p className={styles.note}>
-            Two keeps one in the pocket while the other is out in a deck. Extra copies live in the
-            bulk box.
+            The binder keeps one copy of each. Spares live in the bulk box.
           </p>
+          <button type="button" className={styles.action} disabled={settling} onClick={onSettle}>
+            {settling ? 'Moving…' : 'Move spare copies to bulk'}
+          </button>
         </fieldset>
       </div>
     </details>
