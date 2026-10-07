@@ -121,6 +121,23 @@
 }
 
 /*
+ * Wider screens: a selected card's panel pins just below the app header, so its controls
+ * stay in reach when the window is too short for them and the spread together. With
+ * nothing selected the placeholder scrolls away with the page.
+ */
+@media (min-width: 761px) {
+  .panelSlot[data-active='true'] {
+    position: sticky;
+    top: calc(var(--app-header-height, 0px) + var(--space-2));
+    z-index: 10;
+  }
+
+  .panelSlot[data-active='true'] > * {
+    box-shadow: var(--shadow-sticky);
+  }
+}
+
+/*
  * Phones: no binder grid — it is too small to use. The page is search, filters and the
  * card table; tapping a row selects the card, and its controls are pinned to the bottom
  * of the screen so they stay reachable while scrolling the table.
