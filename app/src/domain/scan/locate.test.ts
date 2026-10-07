@@ -7,6 +7,7 @@ import {
   SCENE_HEIGHT,
   SCENE_MARGIN,
   SCENE_WIDTH,
+  cardGone,
   cardOverflows,
   describePlacement,
   locateCard,
@@ -86,5 +87,68 @@ suite('locateCard', () => {
     expect(cardOverflows(scene(2, 1.0, 0.5, 0.5))).toBe(false);
     expect(cardOverflows(scene(2, 1.35, 0.5, 0.5))).toBe(true);
     expect(cardOverflows(scene(0, 0, 0.5, 0.5))).toBe(false);
+  });
+});
+
+suite('cardGone', () => {
+  /** The scene with every pixel passed through `f`: a lighting change, a blur, a hand. */
+  const edit = (
+    view: ReturnType<typeof scene>,
+    f: (rgb: [number, number, number], x: number, y: number) => [number, number, number],
+  ) => {
+    const data = new Uint8ClampedArray(view.data);
+    for (let y = 0; y < view.height; y++) {
+      for (let x = 0; x < view.width; x++) {
+        const i = (y * view.width + x) * 4;
+        data.set(f([data[i]!, data[i + 1]!, data[i + 2]!], x, y), i);
+      }
+    }
+    return { ...view, data };
+  };
+  /** A box blur over `r` pixels: a phone hunting for focus. */
+  const blur = (view: ReturnType<typeof scene>, r: number) => {
+    const { width: w, height: h, data } = view;
+    const out = new Uint8ClampedArray(data);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        for (let c = 0; c < 3; c++) {
+          let sum = 0;
+          let n = 0;
+          for (let dy = -r; dy <= r; dy++) {
+            for (let dx = -r; dx <= r; dx++) {
+              const xx = Math.min(w - 1, Math.max(0, x + dx));
+              const yy = Math.min(h - 1, Math.max(0, y + dy));
+              sum += data[(yy * w + xx) * 4 + c]!;
+              n++;
+            }
+          }
+          out[(y * w + x) * 4 + c] = sum / n;
+        }
+      }
+    }
+    return { ...view, data: out };
+  };
+
+  const view = scene(2, 0.9, 0.5, 0.5);
+  const located = locateCard(view, index)!;
+  const fired = { placement: located.placement, entries: [2] };
+
+  it('keeps a card that hasn’t moved, refocused or re-exposed', () => {
+    expect(cardGone(view, fired, index)).toBe(false);
+    expect(cardGone(blur(view, 2), fired, index)).toBe(false);
+    expect(
+      cardGone(
+        edit(view, ([r, g, b]) => [r * 0.6, g * 0.6, b * 0.6]),
+        fired,
+        index,
+      ),
+    ).toBe(false);
+  });
+
+  it('sees it go when another card takes its place — even the same card is a new copy then', () => {
+    expect(cardGone(scene(4, 0.9, 0.5, 0.5), fired, index)).toBe(true);
+    // A hand reaching over half the card, on its way to put the next one down.
+    const hand = edit(view, (rgb, x) => (x < view.width / 2 ? [200, 160, 140] : rgb));
+    expect(cardGone(hand, fired, index)).toBe(true);
   });
 });
