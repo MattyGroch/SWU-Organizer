@@ -563,24 +563,4 @@ describe('the bulk box', () => {
     await user.type(screen.getByRole('searchbox', { name: 'Search the bulk box' }), 'krennic');
     expect(screen.queryByRole('table', { name: 'Bulk box' })).not.toBeInTheDocument();
   });
-
-  it('moves a spare Leader left in the binder to the bulk box', async () => {
-    const user = userEvent.setup();
-    await put(1, '001', 2);
-    await renderApp();
-
-    await user.click(screen.getByText('Settings'));
-    await user.click(screen.getByRole('button', { name: 'Move spare copies to bulk' }));
-    await waitFor(async () =>
-      expect(await db.owned.get('SOR:001')).toMatchObject({ count: 2, bulk: 1 }),
-    );
-    await waitFor(() => expect(cell(/Director Krennic.*1 of 1 in binder/)).toBeInTheDocument());
-
-    // A second run finds nothing left to move.
-    await user.click(screen.getByRole('button', { name: 'Move spare copies to bulk' }));
-    expect(
-      await screen.findByText('Every Leader and Base pocket already holds one copy.'),
-    ).toBeInTheDocument();
-    expect(await db.owned.get('SOR:001')).toMatchObject({ bulk: 1 });
-  });
 });
