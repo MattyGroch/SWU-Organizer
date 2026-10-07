@@ -89,6 +89,7 @@
 }
 
 .qtyButton {
+  composes: ui-btn from global;
   width: 44px;
   height: 44px;
   border: 1px solid var(--color-border-interactive);
@@ -144,6 +145,7 @@
 }
 
 .close {
+  composes: ui-btn from global;
   display: none;
 }
 

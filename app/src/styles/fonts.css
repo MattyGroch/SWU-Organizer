@@ -1,0 +1,22 @@
+/* The HUD's faces (both SIL OFL), self-hosted so the installed app works offline. */
+
+@font-face {
+  font-family: 'Oxanium';
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/oxanium-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Oxanium';
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/oxanium-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Share Tech Mono';
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/share-tech-mono-400.woff2') format('woff2');
+}

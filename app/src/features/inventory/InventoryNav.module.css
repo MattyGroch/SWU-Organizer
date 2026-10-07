@@ -1,4 +1,5 @@
 .nav {
+  composes: ui-seg from global;
   display: inline-flex;
   padding: 3px;
   border: 1px solid var(--color-border-strong);
@@ -7,6 +8,7 @@
 }
 
 .tab {
+  composes: ui-seg-item from global;
   padding: var(--space-1) var(--space-3);
   border-radius: calc(var(--radius-lg) - 3px);
   color: var(--color-text-subtle);

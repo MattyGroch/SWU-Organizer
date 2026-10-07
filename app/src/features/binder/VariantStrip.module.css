@@ -31,6 +31,7 @@
 
 /* Big enough for a fingertip: the only way to change a printing on a phone. */
 .step {
+  composes: ui-btn from global;
   min-width: 32px;
   min-height: 32px;
   border: none;

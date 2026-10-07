@@ -7,38 +7,59 @@
  */
 
 :root {
+  /* ---- Hologram ----------------------------------------------------------
+   * The HUD's glow colour. In the inventory it takes the set's own accent (--set-accent,
+   * set on <html> by the binder), lifted towards white so dark accents still glow; elsewhere
+   * it's hologram cyan. Everything that glows (edges, the grid, focus) mixes from this.
+   */
+  --hud: color-mix(in oklab, var(--set-accent, #4fd8ff) 78%, white);
+  --hud-dim: color-mix(in srgb, var(--hud) 35%, transparent);
+  /* How far the HUD's controls and dialogs are cut back at two corners. */
+  --cut: 9px;
+  /* Behind everything: scanlines, a faint grid and a glow from the top of the screen. */
+  --bg-pattern:
+    repeating-linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--hud) 2.5%, transparent) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(color-mix(in srgb, var(--hud) 4.5%, transparent) 1px, transparent 1px) 0 0 /
+      28px 28px,
+    linear-gradient(90deg, color-mix(in srgb, var(--hud) 4.5%, transparent) 1px, transparent 1px) 0
+      0 / 28px 28px,
+    radial-gradient(ellipse at 50% 0%, rgb(30 110 160 / 0.22), transparent 70%);
+
   /* ---- Surfaces ---------------------------------------------------------- */
-  --color-bg: #0b0b0f;
-  --color-surface: #11121a;
-  --color-surface-sunken: #0f1017;
-  --color-surface-raised: #171826;
+  --color-bg: #04070b;
+  --color-surface: #08111a;
+  --color-surface-sunken: #060c13;
+  --color-surface-raised: #0d1b28;
 
   /* ---- Borders ----------------------------------------------------------- */
-  --color-border: #232433;
-  --color-border-strong: #2b2d3d;
-  --color-border-interactive: #424452;
+  --color-border: #11283a;
+  --color-border-strong: #17364d;
+  --color-border-interactive: #245575;
 
   /* ---- Text -------------------------------------------------------------- */
-  --color-text: #eaeaf0;
-  --color-text-muted: #9aa0b4;
-  --color-text-subtle: #c8ccd9;
-  --color-text-inverse: #11121a;
+  --color-text: #d9f4ff;
+  --color-text-muted: #7fa4ba;
+  --color-text-subtle: #b2d3e3;
+  --color-text-inverse: #04070b;
 
   /* ---- Intent ------------------------------------------------------------ */
-  --color-accent: #213c6a;
-  --color-accent-text: #ffffff;
-  --color-focus: #8b5cf6;
-  /* Links in running text: the focus violet, lightened to read on the dark ground. */
-  --color-link: #b9a6fb;
+  --color-accent: #0c4c68;
+  --color-accent-text: #e8fbff;
+  --color-focus: var(--hud);
+  --color-link: #8fe6ff;
   --color-success: #22c55e;
-  --color-warning: #f59e0b;
+  --color-warning: #ffb43c;
   --color-danger: #ef4444;
 
   /* Status badges (complete / in-progress / missing) */
   --color-success-bg: #093c2d;
   --color-success-fg: #34d399;
   --color-warning-bg: #3a3000;
-  --color-warning-fg: #fcd34d;
+  --color-warning-fg: #ffc96b;
   --color-danger-bg: #3a0a0a;
   --color-danger-fg: #f87171;
 
@@ -77,6 +98,10 @@
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans',
     Arial, sans-serif;
+  /* Headings, nav and controls. */
+  --font-display: 'Oxanium', var(--font-sans);
+  /* HUD readouts and badges. */
+  --font-mono-ui: 'Share Tech Mono', ui-monospace, monospace;
   /* Bumped one step across the board: the first build read as too small in use,
      particularly rarity glyphs and per-slot counts. */
   --font-size-xs: 13px;

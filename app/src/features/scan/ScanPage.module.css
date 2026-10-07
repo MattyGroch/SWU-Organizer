@@ -14,6 +14,7 @@
 }
 
 .segmented {
+  composes: ui-seg from global;
   display: inline-flex;
   overflow: hidden;
   border: 1px solid var(--color-border-strong);
@@ -21,6 +22,7 @@
 }
 
 .segment {
+  composes: ui-seg-item from global;
   min-height: 40px;
   padding: var(--space-2) var(--space-3);
   border: none;
@@ -178,6 +180,7 @@
 }
 
 .inlineButton {
+  composes: ui-btn from global;
   margin-left: var(--space-1);
   padding: 2px var(--space-2);
   border: 1px solid var(--color-border-interactive);
@@ -205,6 +208,7 @@
 
 .button,
 .primary {
+  composes: ui-btn ui-primary from global;
   min-height: 40px;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-md);
@@ -214,6 +218,7 @@
 }
 
 .button {
+  composes: ui-btn from global;
   border: 1px solid var(--color-border-interactive);
   background: var(--color-surface-sunken);
 }
@@ -249,6 +254,7 @@
 }
 
 .chip {
+  composes: ui-chip from global;
   min-width: 44px;
   min-height: 40px;
   border: 1px solid var(--color-border-strong);

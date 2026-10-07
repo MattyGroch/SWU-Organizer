@@ -1,0 +1,251 @@
+/*
+ * The Holotable HUD: a targeting-computer look for the shared controls. Feature modules
+ * opt in with `composes: ui-btn | ui-primary | ui-danger | ui-chip | ui-seg | ui-seg-item
+ * from global`, and the shell uses ui-appbar / ui-brand / ui-tab / ui-count.
+ *
+ * Every selector starts at :root so it outranks the modules' own rules (up to a state
+ * pseudo-class or attribute) without !important. These rules restyle colour, edge, shape
+ * and type only, never padding or size, which stay with each module's layout.
+ */
+
+/* Scanlines and grid, fixed behind everything (tokens: --bg-pattern). */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: var(--bg-pattern);
+  pointer-events: none;
+}
+
+:is(h1, h2, h3) {
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
+}
+
+:is(h2, h3) {
+  text-transform: uppercase;
+}
+
+/* ---- Controls --------------------------------------------------------------------------
+ * clip-path trims two corners; the 135° gradients redraw the border along each cut so the
+ * outline reads as continuous. --edge and --fill are the knobs each state turns.
+ */
+:root :is(.ui-btn, .ui-chip, .ui-tab, .ui-seg) {
+  --edge: var(--color-border-interactive);
+  --fill: rgb(8 22 34 / 0.85);
+  clip-path: polygon(
+    var(--cut) 0,
+    100% 0,
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    0 100%,
+    0 var(--cut)
+  );
+  border: 1px solid var(--edge);
+  border-radius: 0;
+  background:
+    linear-gradient(135deg, var(--edge) 0 calc(var(--cut) * 0.7071 + 0.8px), transparent 0)
+      border-box,
+    linear-gradient(-45deg, var(--edge) 0 calc(var(--cut) * 0.7071 + 0.8px), transparent 0)
+      border-box,
+    var(--fill) padding-box;
+  color: var(--color-text-subtle);
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: color var(--transition-fast);
+}
+
+:root :is(.ui-btn, .ui-chip, .ui-tab):hover:not(:disabled) {
+  --edge: var(--hud);
+  --fill: color-mix(in srgb, var(--hud) 8%, transparent);
+  color: var(--color-text);
+}
+
+:root .ui-primary {
+  --edge: var(--hud);
+  --fill: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--hud) 28%, transparent),
+    color-mix(in srgb, var(--hud) 12%, transparent)
+  );
+  color: #f2fcff;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px var(--hud);
+  box-shadow: inset 0 0 14px color-mix(in srgb, var(--hud) 25%, transparent);
+}
+
+:root .ui-primary:hover:not(:disabled) {
+  --fill: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--hud) 42%, transparent),
+    color-mix(in srgb, var(--hud) 20%, transparent)
+  );
+}
+
+:root .ui-danger {
+  --edge: #ff5a4f;
+  --fill: rgb(255 60 50 / 0.12);
+  color: #ffb3ad;
+}
+
+:root .ui-danger:hover:not(:disabled) {
+  --edge: #ff7a70;
+  --fill: rgb(255 60 50 / 0.22);
+  color: #ffd6d2;
+}
+
+:root :is(.ui-chip, .ui-btn)[aria-pressed='true'] {
+  --edge: var(--hud);
+  --fill: color-mix(in srgb, var(--hud) 22%, transparent);
+  color: #f2fcff;
+  box-shadow: inset 0 0 12px color-mix(in srgb, var(--hud) 30%, transparent);
+}
+
+/* Segmented switches (Binder | List | Bulk, scan mode): one cut frame, a lit segment. */
+:root .ui-seg {
+  --edge: var(--color-border-strong);
+  --fill: rgb(6 14 22 / 0.9);
+}
+
+:root .ui-seg-item {
+  border-radius: 0;
+  color: var(--color-text-subtle);
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+:root .ui-seg-item:is([aria-current='page'], [aria-checked='true']) {
+  background: color-mix(in srgb, var(--hud) 20%, transparent);
+  box-shadow:
+    inset 0 -2px 0 var(--hud),
+    inset 0 0 10px color-mix(in srgb, var(--hud) 25%, transparent);
+  color: #f2fcff;
+  text-shadow: 0 0 8px var(--hud);
+}
+
+/* ---- Shell ------------------------------------------------------------------------------- */
+:root .ui-appbar {
+  background:
+    linear-gradient(to bottom, rgb(13 34 50 / 0.96), rgb(5 12 19 / 0.96)), var(--color-surface);
+  border-bottom: 1px solid var(--hud-dim);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--hud) 15%, transparent),
+    0 6px 24px rgb(0 0 0 / 0.6);
+  backdrop-filter: blur(6px);
+}
+
+:root .ui-brand {
+  color: var(--hud);
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px color-mix(in srgb, var(--hud) 55%, transparent);
+}
+
+/* A terminal readout under the name; decorative, so screen readers skip it. */
+:root .ui-brand::after {
+  content: 'ARCHIVE TERMINAL · REC-04' / '';
+  display: block;
+  margin-top: -2px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono-ui);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-shadow: none;
+}
+
+:root .ui-tab {
+  --cut: 7px;
+  --fill: transparent;
+  --edge: transparent;
+  position: relative;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+:root .ui-tab[aria-current='page'] {
+  --edge: var(--hud);
+  --fill: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--hud) 25%, transparent),
+    color-mix(in srgb, var(--hud) 6%, transparent)
+  );
+  color: #f2fcff;
+  text-shadow: 0 0 8px var(--hud);
+}
+
+/* The active tab's blade: a white-hot core that ignites along its foot. */
+:root .ui-tab::after {
+  content: '';
+  position: absolute;
+  right: 16%;
+  bottom: 3px;
+  left: 16%;
+  height: 2px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--hud) 30%, white);
+  box-shadow:
+    0 0 3px var(--hud),
+    0 0 8px var(--hud);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+:root .ui-tab[aria-current='page']::after {
+  transform: scaleX(1);
+}
+
+:root .ui-count {
+  border-radius: 0;
+  background: var(--color-warning);
+  color: #1a1000;
+  font-family: var(--font-mono-ui);
+}
+
+/* ---- Surfaces ---------------------------------------------------------------------------- */
+:root dialog {
+  --cut: 16px;
+  clip-path: polygon(
+    var(--cut) 0,
+    100% 0,
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    0 100%,
+    0 var(--cut)
+  );
+  border: 1px solid var(--hud-dim);
+  border-radius: 0;
+  background:
+    linear-gradient(color-mix(in srgb, var(--hud) 4%, transparent) 1px, transparent 1px) 0 0 / 100%
+      22px,
+    linear-gradient(to bottom, #0b1824, #060d14);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--hud) 40%, transparent);
+}
+
+:root dialog::backdrop {
+  background: rgb(0 8 14 / 0.72);
+  backdrop-filter: blur(2px);
+}
+
+:root :is(select, input:not([type='checkbox'], [type='radio'], [type='range'])) {
+  border-color: var(--color-border-interactive);
+  border-radius: 0;
+  background-color: rgb(6 14 22 / 0.9);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--hud) 35%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root .ui-tab::after {
+    transition: none;
+  }
+}

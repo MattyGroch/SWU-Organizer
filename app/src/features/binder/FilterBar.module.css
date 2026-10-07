@@ -73,6 +73,7 @@
 }
 
 .chip {
+  composes: ui-chip from global;
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--color-border-interactive);
   border-radius: var(--radius-lg);
