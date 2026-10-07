@@ -74,14 +74,23 @@ export function DeckCheck({ sets, lookup, owned, onSave }: Props) {
 
   async function save() {
     if (!analysis) return;
-    const result = await onSave(analysis.resolution.rows, {
-      name,
-      // The physical-copy option is retired: a deck bought built goes through Intake.
-      physical: false,
-      copies: 1,
-      sourceText: text,
-      format: analysis.legality.format,
-    });
+    let result: CreateSavedDeckResult;
+    try {
+      result = await onSave(analysis.resolution.rows, {
+        name,
+        // The physical-copy option is retired: a deck bought built goes through Intake.
+        physical: false,
+        copies: 1,
+        sourceText: text,
+        format: analysis.legality.format,
+      });
+    } catch (error) {
+      // Say so rather than leave a button that seems to do nothing.
+      setSaveError(
+        `The deck could not be saved: ${error instanceof Error ? error.message : error}`,
+      );
+      return;
+    }
     if (!result.ok) {
       setSaveError(`${deckContentsFailureMessage(result.reason)} It can't be saved yet.`);
       return;
