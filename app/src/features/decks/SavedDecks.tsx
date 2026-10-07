@@ -46,6 +46,7 @@ type Props = {
   onOpenPickList: (deck: SavedDeck, mode: 'construct' | 'deconstruct') => void;
   onAdjustBox: (deck: SavedDeck, row: DeckRowWithNeed, delta: 1 | -1, max: number) => void;
   onQueue: (deck: SavedDeck) => void;
+  onImport: () => void;
 };
 
 /**
@@ -67,6 +68,7 @@ export function SavedDecks({
   onOpenPickList,
   onAdjustBox,
   onQueue,
+  onImport,
 }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const decks = library.customDecks;
@@ -78,6 +80,9 @@ export function SavedDecks({
           My decks
         </h2>
         <span className={styles.count}>{decks.length || ''}</span>
+        <button type="button" className={styles.importDeck} onClick={onImport}>
+          Import
+        </button>
         <Link to="/decks/new" className={styles.newDeck}>
           New deck
         </Link>
@@ -85,8 +90,8 @@ export function SavedDecks({
 
       {!loading && decks.length === 0 && (
         <p className={styles.empty}>
-          No saved decks yet. Choose <strong>New deck</strong> to build one, or paste a decklist
-          below and choose <strong>Save to My decks</strong>.
+          No saved decks yet. Choose <strong>New deck</strong> to build one, or{' '}
+          <strong>Import</strong> to paste a decklist.
         </p>
       )}
 

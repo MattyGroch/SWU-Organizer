@@ -19,9 +19,20 @@
   font-weight: 700;
 }
 
+.importDeck {
+  composes: ui-btn from global;
+  margin-left: auto;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
 .newDeck {
   composes: ui-btn ui-primary from global;
-  margin-left: auto;
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-md);
   background: var(--color-accent);
