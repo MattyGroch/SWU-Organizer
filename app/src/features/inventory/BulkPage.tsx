@@ -5,6 +5,8 @@ import { useMemo, useState } from 'react';
 import { db } from '~/data/db';
 import type { LoadedSet, SetManifestEntry } from '~/domain/catalog';
 import type { SetKey } from '~/domain/types';
+import { AspectIcons } from '~/features/binder/AspectIcons';
+import { RarityBadge } from '~/features/binder/RarityBadge';
 import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
 
 import styles from './BulkPage.module.css';
@@ -89,6 +91,12 @@ export function BulkPage({ entries, sets }: Props) {
                 <th scope="col" className={styles.where}>
                   Card
                 </th>
+                <th scope="col" className={styles.aspectCol}>
+                  <span className="visually-hidden">Aspect</span>
+                </th>
+                <th scope="col" className={styles.rarityCol}>
+                  <span className="visually-hidden">Rarity</span>
+                </th>
                 <th scope="col">Name</th>
                 <th scope="col">In the box</th>
                 <th scope="col" className={styles.decks} title="Bulk-box copies out in built decks">
@@ -101,6 +109,14 @@ export function BulkPage({ entries, sets }: Props) {
                 <tr key={`${row.setKey}:${row.base}`}>
                   <td className={styles.where}>
                     {row.setKey} #{row.base}
+                  </td>
+                  <td className={styles.aspectCol}>
+                    <AspectIcons className={styles.aspects} aspects={row.aspects} />
+                  </td>
+                  <td className={styles.rarityCol}>
+                    <RarityBadge rarity={row.rarity} title={row.rarity}>
+                      <span className="visually-hidden">{row.rarity}</span>
+                    </RarityBadge>
                   </td>
                   <td className={styles.name}>
                     <Link

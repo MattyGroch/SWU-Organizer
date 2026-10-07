@@ -16,6 +16,9 @@ export type BulkRow = {
   base: number;
   name: string;
   subtitle?: string;
+  type?: string;
+  rarity?: string;
+  aspects: string[];
   /** Printings physically in the box. */
   inBox: VariantCounts;
   boxCount: number;
@@ -24,8 +27,8 @@ export type BulkRow = {
 };
 
 /**
- * One row per card with copies whose home is the bulk box, in set order then card number —
- * the box is one unsorted pile, so the list is the only index it has.
+ * One row per card with copies whose home is the bulk box, in {@link compareBulkRows}
+ * order — the box is one unsorted pile, so the list is the only index it has.
  */
 export function buildBulkRows(
   owned: readonly Pick<OwnedPrinting, 'setKey' | 'base' | 'variant' | 'count' | 'bulk'>[],
@@ -53,17 +56,73 @@ export function buildBulkRows(
       base,
       name: card?.name ?? `#${base}`,
       ...(card?.subtitle && { subtitle: card.subtitle }),
+      ...(card?.type && { type: card.type }),
+      ...(card?.rarity && { rarity: card.rarity }),
+      aspects: card?.aspects ?? [],
       inBox,
       boxCount: sumVariants(inBox),
       inDecks: Math.min(sumVariants(out), sumVariants(bulk)),
     });
   }
 
+  return rows.sort(compareBulkRows(setOrder));
+}
+
+/** Vigilance / Command / Aggression / Cunning; Heroism and Villainy are affiliations. */
+const PRIMARY_ASPECTS = new Set(['Vigilance', 'Command', 'Aggression', 'Cunning']);
+
+/**
+ * The bulk list's sections, in order: leaders, bases, Legendaries, Rares, Specials, then
+ * Commons and Uncommons together.
+ */
+function section(row: BulkRow): number {
+  if (row.type === 'Leader') return 0;
+  if (row.type === 'Base') return 1;
+  switch (row.rarity) {
+    case 'Legendary':
+      return 2;
+    case 'Rare':
+      return 3;
+    case 'Special':
+      return 4;
+    default:
+      return 5;
+  }
+}
+
+/**
+ * Where a leader or base sits within its set: dual-aspect cards first, then single-aspect,
+ * then those with no primary aspect; alphabetical by first aspect within each.
+ */
+function aspectKey(row: BulkRow): [number, string] {
+  const primaries = [...new Set(row.aspects.filter((a) => PRIMARY_ASPECTS.has(a)))];
+  if (primaries.length >= 2) return [0, primaries[0] ?? ''];
+  if (primaries.length === 1) return [1, primaries[0] ?? ''];
+  return [2, row.aspects[0] ?? ''];
+}
+
+/**
+ * Sections first (see {@link section}), then set in release order (oldest first). Leaders
+ * and bases then sort by aspect; everything else by card number.
+ */
+export function compareBulkRows(setOrder: readonly SetKey[]): (a: BulkRow, b: BulkRow) => number {
   const rank = (setKey: SetKey) => {
     const i = setOrder.indexOf(setKey);
     return i < 0 ? setOrder.length : i;
   };
-  return rows.sort((a, b) => rank(a.setKey) - rank(b.setKey) || a.base - b.base);
+  return (a, b) => {
+    const bySection = section(a) - section(b);
+    if (bySection) return bySection;
+    const bySet = rank(a.setKey) - rank(b.setKey);
+    if (bySet) return bySet;
+    if (section(a) <= 1) {
+      const [aGroup, aAspect] = aspectKey(a);
+      const [bGroup, bAspect] = aspectKey(b);
+      const byAspect = aGroup - bGroup || aAspect.localeCompare(bAspect);
+      if (byAspect) return byAspect;
+    }
+    return a.base - b.base;
+  };
 }
 
 /** "3 Normal · 1 Hyperspace". */

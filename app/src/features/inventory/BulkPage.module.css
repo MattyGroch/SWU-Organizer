@@ -86,6 +86,21 @@
   color: var(--color-text-subtle);
 }
 
+.aspectCol,
+.rarityCol {
+  width: 1px;
+  white-space: nowrap;
+}
+
+.table td.aspectCol {
+  padding-right: 0;
+}
+
+.aspects {
+  gap: 3px;
+  font-size: 20px;
+}
+
 .name a {
   color: var(--color-text);
   font-weight: 600;
@@ -125,5 +140,18 @@
 
   .narrowWhere {
     display: block;
+  }
+
+  .table th.aspectCol,
+  .table td.aspectCol,
+  .table th.rarityCol,
+  .table td.rarityCol {
+    padding-left: var(--space-2);
+    padding-right: 0;
+  }
+
+  .aspects {
+    gap: 1px;
+    font-size: 17px;
   }
 }
