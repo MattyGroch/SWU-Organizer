@@ -1,5 +1,6 @@
 import type { VariantSlug } from '~/domain/catalog';
 import type { StackFate } from '~/domain/putAway';
+import { newId } from '~/domain/id';
 import type { SetKey } from '~/domain/types';
 
 import { db, type StackCardRow, type StackPlanCard, type StackRow, type SwuDatabase } from './db';
@@ -36,12 +37,12 @@ export async function logScan(
   return database.transaction('rw', database.stacks, database.stackCards, async () => {
     let stack = await openStack(database);
     if (!stack) {
-      stack = { id: crypto.randomUUID(), label: 'Scanned stack', createdAt: now, step: 0 };
+      stack = { id: newId(), label: 'Scanned stack', createdAt: now, step: 0 };
       await database.stacks.add(stack);
     }
     const cards = await database.stackCards.where('stackId').equals(stack.id).toArray();
     const seq = cards.reduce((max, c) => Math.max(max, c.seq + 1), 0);
-    const id = crypto.randomUUID();
+    const id = newId();
     await database.stackCards.add({ id, stackId: stack.id, seq, ...entry });
     return id;
   });
@@ -186,7 +187,7 @@ export async function addMissedCopy(
     }
     const cards = await database.stackCards.where('stackId').equals(stackId).toArray();
     const seq = cards.reduce((max, c) => Math.max(max, c.seq + 1), 0);
-    const id = crypto.randomUUID();
+    const id = newId();
     await database.stackCards.add({ id, stackId, seq, ...entry });
     return id;
   });

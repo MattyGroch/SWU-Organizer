@@ -11,6 +11,7 @@ import {
 } from './deckContents';
 import { isPlayFormat, type PlayFormat } from './deckLegality';
 import type { PreconCatalogEntry } from './precons';
+import { newId } from './id';
 
 export type SavedDeck = DeckContents & {
   id: string;
@@ -79,7 +80,7 @@ export function createSavedDeck(
   deps: { now?: () => string; makeId?: () => string } = {},
 ): CreateSavedDeckResult {
   const now = deps.now ?? (() => new Date().toISOString());
-  const makeId = deps.makeId ?? (() => crypto.randomUUID());
+  const makeId = deps.makeId ?? (() => newId());
   const contentsResult = deckContentsFromRows(rows);
   if (!contentsResult.ok) return { ok: false, reason: contentsResult.reason };
 
