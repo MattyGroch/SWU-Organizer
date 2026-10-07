@@ -286,6 +286,38 @@ export function rankMatches(index: ScanIndex, query: Descriptor, limit = 5): Mat
 }
 
 /**
+ * Score under which pictures of the same card in two sets are the same art reprinted: only
+ * the set icon and collector number differ, and the camera can't read those. Measured
+ * across the index, reprints with the same art land under 30 (Pounce, LOF and HMW: 12),
+ * while the closest pair of different cards is 44 apart.
+ */
+export const TWIN_SCORE = 30;
+
+/**
+ * The pictures in other sets that look just like `match`'s — one per set, closest first.
+ * Compared reference to reference, so it doesn't matter how the camera's read came out:
+ * whether a twin is there is a fact about the index. The caller still checks that each is
+ * the same card by name, since art alone could in principle collide.
+ */
+export function twinsOf(index: ScanIndex, match: Pick<Match, 'entry' | 'index'>): ScanEntry[] {
+  const { entry } = match;
+  const hash = index.hashes.subarray(match.index * HASH_WORDS, (match.index + 1) * HASH_WORDS);
+  const color = index.colors.subarray(match.index * COLOR_BYTES, (match.index + 1) * COLOR_BYTES);
+  const best = new Map<string, { entry: ScanEntry; score: number }>();
+  index.entries.forEach((other, i) => {
+    if (other.setKey === entry.setKey || other.face !== entry.face) return;
+    if (Boolean(other.turned) !== Boolean(entry.turned)) return;
+    const score =
+      hammingDistance(hash, index.hashes, i * HASH_WORDS) +
+      COLOR_WEIGHT * byteDistance(color, index.colors, i * COLOR_BYTES, COLOR_BYTES);
+    if (score > TWIN_SCORE) return;
+    const kept = best.get(other.setKey);
+    if (!kept || score < kept.score) best.set(other.setKey, { entry: other, score });
+  });
+  return [...best.values()].sort((a, b) => a.score - b.score).map((t) => t.entry);
+}
+
+/**
  * How far the recognised card leads the next-best different card, on stage-1 scores only.
  * Stage 2 is added to the top card's printings and to nothing else, so comparing final
  * scores would charge the winner for points the runner-up never pays — and anything that

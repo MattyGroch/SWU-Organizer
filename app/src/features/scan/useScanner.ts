@@ -1,8 +1,21 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 
 import { hammingDistance, type Descriptor, type SamplePixels } from '~/domain/scan/descriptor';
-import { rankMatches, type Match, type ScanIndex } from '~/domain/scan/index';
-import { GUIDE, cardOverflows, describePlacement, locateCard } from '~/domain/scan/locate';
+import {
+  rankMatches,
+  twinsOf,
+  type Match,
+  type ScanEntry,
+  type ScanIndex,
+} from '~/domain/scan/index';
+import {
+  GUIDE,
+  cardGone,
+  cardOverflows,
+  describePlacement,
+  locateCard,
+  type Fired,
+} from '~/domain/scan/locate';
 import {
   MAX_MISSES,
   DEFAULT_TRACKER,
@@ -27,14 +40,20 @@ export type ScanResult = {
   matches: Match[];
   at: number;
   /**
-   * Whether the guide showed no card (an empty rig, a hand, the table) since the previous
-   * scan. Without one, a result for the same card is that card re-read — a phone close to
+   * Whether the previous scan's card left the guide since: the view went empty, or
+   * something else took the card's place for a moment (a hand, the next card landing on
+   * top). Without that, a result for the same card is that card re-read — a phone close to
    * a card keeps refocusing and re-exposing, which can shift the picture enough to fire
    * again — not a second copy.
    */
   afterGap: boolean;
   /** The card ran past the captured frame — the phone is too close for a sure read. */
   tooClose: boolean;
+  /**
+   * Pictures in other sets that look just like the top match's — the same art reprinted,
+   * which the camera can't tell apart (see `twinsOf`).
+   */
+  twins?: ScanEntry[];
 };
 
 /**
@@ -64,8 +83,14 @@ export function useScanner({
    * always reads as moving, so the tracker alone can't say when the view really changed.
    */
   const missedRef = useRef<Descriptor | null>(null);
-  /** Seen a view with no card in it since the last result? Starts true: nothing came before. */
+  /**
+   * Has the last scanned card left the guide since its result? Starts true: nothing came
+   * before. An empty view counts, and so does anything else taking the card's place — a
+   * hand, or the next card landing on top in a rig that is never empty.
+   */
   const gapRef = useRef(true);
+  /** The card the last result was for, and where it sat: watched to see it leave. */
+  const firedRef = useRef<Fired | null>(null);
   /** Set after MAX_MISSES on one card: no more tries until the user looks it up or skips. */
   const stuckRef = useRef(false);
   /** The view it gave up on: while paused, a clearly different view resumes scanning. */
@@ -111,7 +136,12 @@ export function useScanner({
         }
         return;
       }
-      if (!looksLikeCard(frame)) gapRef.current = true;
+      if (!gapRef.current) {
+        const fired = firedRef.current;
+        if (!looksLikeCard(frame) || (fired && cardGone(scene, fired, index))) {
+          gapRef.current = true;
+        }
+      }
       const event = trackerRef.current.observe(frame);
       if (event !== 'fired') {
         const missed = missedRef.current;
@@ -151,11 +181,22 @@ export function useScanner({
         setPhase('fired');
         const afterGap = gapRef.current;
         gapRef.current = false;
+        const matches = rankMatches(index, located.descriptor, 8);
+        const top = matches[0]?.entry;
+        firedRef.current = top
+          ? {
+              placement: located.placement,
+              entries: index.entries.flatMap((e, i) =>
+                e.setKey === top.setKey && e.base === top.base ? [i] : [],
+              ),
+            }
+          : null;
         onResultRef.current({
-          matches: rankMatches(index, located.descriptor, 8),
+          matches,
           at: Date.now(),
           afterGap,
           tooClose: cardOverflows(scene),
+          twins: matches[0] ? twinsOf(index, matches[0]) : [],
         });
       } catch (error) {
         console.error('Scan failed', error);

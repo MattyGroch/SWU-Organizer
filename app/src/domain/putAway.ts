@@ -21,6 +21,8 @@ import type { SetKey } from './types';
  * A plan, once started, never shifts: cards already dealt are sitting on their piles. A
  * card corrected or found missing partway through is pulled out instead — put to one side,
  * its later steps dropped — and filed after everything else (see `pulls`, `toOneSide`).
+ * One corrected while it is being filed is in hand with the binder open, so it is filed
+ * there and then instead (`Pull.now`).
  */
 
 /** Where a scanned copy goes: its binder pocket, the bulk box, or nowhere yet. */
@@ -67,8 +69,12 @@ export type LeftoverCard = {
   fromSide?: true;
 };
 
-/** A card taken out of the plan at step `at`: its steps from there on are dropped. */
-export type Pull = { id: string; at: number };
+/**
+ * A card taken out of the plan at step `at`: its steps from there on are dropped. With
+ * `now`, it was corrected while being filed, binder open: what it really is is filed at
+ * that same step, instead of at the end.
+ */
+export type Pull = { id: string; at: number; now?: true };
 
 export type SpreadRef = { setKey: SetKey; spread: number; pages: [number, number] | [number] };
 
@@ -133,18 +139,27 @@ export function planPutAway(
     leftover = last.cards;
   }
 
+  const side = toOneSide.map((card) => place(card));
+  const filedNow = new Set<string>();
   // A pulled card was in hand at its step: from there on it is not in the stack.
-  for (const { id, at } of pulls) {
+  for (const { id, at, now } of pulls) {
+    const filing = steps[at];
+    const inPlace = now && filing?.kind === 'file' && filing.card.id === id;
     steps = steps.filter((s, i) => i < at || !('card' in s) || s.card.id !== id);
+    const fixed = inPlace ? side.find((p) => p.card.id === id) : undefined;
+    if (fixed && !fixed.aside) {
+      steps.splice(at, 0, fileStep(fixed.card));
+      filedNow.add(id);
+    }
   }
   const pulled = new Set(pulls.map((p) => p.id));
   leftover = leftover.filter((l) => !pulled.has(l.card.id));
 
-  const side = toOneSide.map((card) => place(card));
-  for (const p of side.filter((p) => !p.aside).sort(compareSpotOrder)) {
+  const later = side.filter((p) => !filedNow.has(p.card.id));
+  for (const p of later.filter((p) => !p.aside).sort(compareSpotOrder)) {
     steps.push({ ...fileStep(p.card), fromSide: true });
   }
-  for (const p of side.filter((p) => p.aside)) {
+  for (const p of later.filter((p) => p.aside)) {
     leftover.push({ card: p.card, reason: p.aside!, fromSide: true });
   }
   if (leftover.length) steps.push({ kind: 'bulk', cards: leftover });

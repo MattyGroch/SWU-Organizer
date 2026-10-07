@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useHiddenSets } from '~/data/binderSettings';
 import { db, readMeta, writeMeta, type StackCardRow, type StackRow } from '~/data/db';
-import { unqueuePrinting } from '~/data/intake';
+import { commitBatch, unqueuePrinting } from '~/data/intake';
 import {
   addMissedCopy,
   dismissStack,
@@ -30,6 +30,7 @@ import {
   type StackCardInput,
 } from '~/domain/putAway';
 import type { SetKey } from '~/domain/types';
+import { useQuota } from '~/features/inventory/useQuota';
 import { stackEntry, usePlaceScan, type Printing } from '~/features/scan/usePlaceScan';
 import { useToast } from '~/ui/toastContext';
 
@@ -88,6 +89,23 @@ export function PutAwayPage({ sets, stackId }: Props) {
   );
 }
 
+/** The scanned cards waiting in Intake, and the scan batches that hold them. */
+function useScanned(): { batchIds: string[]; copies: number } | undefined {
+  return useLiveQuery(async () => {
+    const batchIds = (await db.intakeBatches.toArray())
+      .filter((b) => b.kind === 'scan')
+      .map((b) => b.id);
+    let copies = 0;
+    await db.intakeLines
+      .where('batchId')
+      .anyOf(batchIds)
+      .each((line) => {
+        copies += line.count;
+      });
+    return { batchIds, copies };
+  }, []);
+}
+
 function Setup({
   stack,
   cards,
@@ -98,17 +116,8 @@ function Setup({
   speech: boolean;
 }) {
   const saved = useLiveQuery(async () => Number((await readMeta(db, SORTERS_KEY)) ?? 1), []);
-  const queued = useLiveQuery(async () => {
-    if (stack.closedAt !== undefined) return null;
-    let total = 0;
-    const scanBatches = new Set(
-      (await db.intakeBatches.toArray()).filter((b) => b.kind === 'scan').map((b) => b.id),
-    );
-    await db.intakeLines.each((line) => {
-      if (scanBatches.has(line.batchId)) total += line.count;
-    });
-    return total;
-  }, [stack.closedAt]);
+  const scanned = useScanned();
+  const queued = stack.closedAt === undefined ? scanned?.copies : null;
   const sorters = saved ?? 1;
   const toAdd = cards.filter((c) => c.fate !== 'unsure').length;
   const aside = cards.filter((c) => c.fate !== 'binder').length;
@@ -207,6 +216,7 @@ function Walk({
   }, [stack.plan, stack.pulls, cards, sets, hidden, sorters]);
   const index = Math.min(stack.step, steps.length);
   const step = steps[index];
+  const waiting = toOneSideAfter(steps, index);
   const text = step ? spoken(step, sorters, sets) : 'All put away.';
   const say = useSpeech(speech);
   const [playing, setPlaying] = useState(true);
@@ -275,6 +285,43 @@ function Walk({
     void navigate({ to: '/intake' });
   }
 
+  // At the end, the scanned cards can go straight into the collection — unless other
+  // stacks are still waiting, whose scans share the batch: then Intake is the place to look.
+  const scanned = useScanned();
+  const otherStacks = useLiveQuery(async () => (await db.stacks.count()) - 1, []);
+  const toAdd = otherStacks === 0 && scanned?.copies ? scanned : null;
+  const quota = useQuota();
+  const [adding, setAdding] = useState(false);
+  async function addAndFinish(batchIds: readonly string[]) {
+    setAdding(true);
+    try {
+      const quotaOf = (setKey: SetKey, base: number) => {
+        const card = sets.get(setKey)?.cardsByBase.get(base);
+        return card ? quota(card) : Infinity;
+      };
+      let copies = 0;
+      let toBulk = 0;
+      for (const id of batchIds) {
+        const report = await commitBatch(id, { quotaOf });
+        copies += report.copies;
+        toBulk += report.toBulk;
+      }
+      showToast({
+        tone: 'success',
+        message:
+          `Added ${copies} ${copies === 1 ? 'card' : 'cards'} to your collection.` +
+          (toBulk ? ` ${toBulk} ${toBulk === 1 ? 'copy goes' : 'copies go'} to the bulk box.` : ''),
+      });
+      await finish();
+    } catch (error) {
+      setAdding(false);
+      showToast({
+        tone: 'danger',
+        message: `Couldn’t add the cards: ${error instanceof Error ? error.message : String(error)}`,
+      });
+    }
+  }
+
   const openFix = (card: StackCardInput) => {
     setPlaying(false);
     setFixing(card);
@@ -299,8 +346,12 @@ function Walk({
       fixed(async () => {
         if (card.fate !== 'unsure') await unqueuePrinting(card);
         const entry = await entryFor(printing);
-        await pullCard(stack.id, card.id, index, entry);
-        return entry.fate === 'binder'
+        // Being filed, binder open: the card in hand is filed now, as what it really is.
+        const now = step?.kind === 'file' && !step.fromSide && step.card.id === card.id;
+        await pullCard(stack.id, card.id, index, entry, { now });
+        const binder = entry.fate === 'binder' && !hidden.has(entry.setKey);
+        if (now && binder) return 'Corrected: file it where it shows now.';
+        return binder
           ? 'Put it to one side: it’s filed at the end.'
           : 'Put it to one side: it goes to bulk at the end.';
       }),
@@ -344,6 +395,11 @@ function Walk({
         </span>
       </div>
       <progress className={styles.progress} max={steps.length} value={index} />
+      {waiting > 0 && step?.kind !== 'bulk' && (
+        <p className={styles.waiting} role="status">
+          {waiting === 1 ? '1 card' : `${waiting} cards`} to one side — handled at the end
+        </p>
+      )}
 
       {step ? (
         <StepView
@@ -359,6 +415,21 @@ function Walk({
         <section className={styles.done}>
           <h1 className={styles.instruction}>All put away</h1>
           <p className={styles.lead}>Every card in the stack is filed or set aside.</p>
+          {toAdd ? (
+            <p className={styles.lead}>
+              Add the {toAdd.copies} scanned {toAdd.copies === 1 ? 'card' : 'cards'} in Intake to
+              your collection now?
+            </p>
+          ) : (
+            otherStacks !== undefined &&
+            otherStacks > 0 &&
+            Boolean(scanned?.copies) && (
+              <p className={styles.lead}>
+                Other scanned stacks are still waiting, and their cards share Intake: add them there
+                once they’re put away too.
+              </p>
+            )
+          )}
         </section>
       )}
       {!speech && (
@@ -403,10 +474,31 @@ function Walk({
           <button type="button" className={styles.back} onClick={() => goByHand(index - 1)}>
             Back
           </button>
-          <button type="button" className={styles.next} onClick={() => void finish()}>
-            Finish
-          </button>
+          {toAdd ? (
+            <button
+              type="button"
+              className={styles.next}
+              disabled={adding}
+              onClick={() => void addAndFinish(toAdd.batchIds)}
+            >
+              Add {toAdd.copies} {toAdd.copies === 1 ? 'card' : 'cards'} to collection
+            </button>
+          ) : (
+            <button type="button" className={styles.next} onClick={() => void finish()}>
+              Finish
+            </button>
+          )}
         </div>
+      )}
+      {!step && toAdd && (
+        <button
+          type="button"
+          className={styles.link}
+          disabled={adding}
+          onClick={() => void finish()}
+        >
+          Review them in Intake first
+        </button>
       )}
 
       {fixing && (
@@ -638,6 +730,16 @@ function leftoverText(cards: readonly LeftoverCard[]): string {
   return cards.length === 1
     ? 'The last card is to be deposited into bulk.'
     : `The remaining ${cards.length} cards are to be deposited into bulk.`;
+}
+
+/** Cards put to one side that are still to come after step `index`. */
+function toOneSideAfter(steps: readonly PutAwayStep[], index: number): number {
+  let count = 0;
+  for (const step of steps.slice(index + 1)) {
+    if (step.kind === 'file' && step.fromSide) count++;
+    else if (step.kind === 'bulk') count += step.cards.filter((l) => l.fromSide).length;
+  }
+  return count;
 }
 
 function cardName(card: StackCardInput, sets: Map<SetKey, LoadedSet>): string {

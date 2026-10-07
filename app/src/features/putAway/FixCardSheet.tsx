@@ -28,7 +28,20 @@ export function FixCardSheet({ card, sets, onCorrect, onMissedCopy, onRemove, on
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const set = sets.get(card.setKey);
-  const name = set?.byNumber.get(card.base)?.Name ?? `${card.setKey} #${card.base}`;
+  const scanned = set?.byNumber.get(card.base);
+  const name = scanned?.Name ?? `${card.setKey} #${card.base}`;
+  /** The same card printed in other sets, often with the same art: the scanner's usual slip. */
+  const reprints = useMemo(() => {
+    if (!scanned) return [];
+    return [...sets.values()].flatMap((other) => {
+      if (other.setKey === card.setKey) return [];
+      const same = [...other.byNumber.values()].find(
+        (c) => c.Name === scanned.Name && (c.Subtitle ?? '') === (scanned.Subtitle ?? ''),
+      );
+      const printing = same && sourcePrinting(other.printingsByBase.get(same.Number) ?? []);
+      return printing ? [{ setKey: other.setKey, base: same.Number, printing }] : [];
+    });
+  }, [sets, card.setKey, scanned]);
   const printings = set?.printingsByBase.get(card.base) ?? [];
   const unsure = card.fate === 'unsure';
   const catalogs = useMemo(() => [...sets.values()].map(toSearchCatalog), [sets]);
@@ -87,6 +100,29 @@ export function FixCardSheet({ card, sets, onCorrect, onMissedCopy, onRemove, on
                 }
               >
                 {variantLabel(p.variant)}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+      )}
+
+      {reprints.length > 0 && (
+        <fieldset className={styles.fieldset}>
+          <legend className={styles.sheetLegend}>The same card from another set:</legend>
+          <div className={styles.choiceGrid}>
+            {reprints.map(({ setKey, base, printing }) => (
+              <button
+                key={setKey}
+                type="button"
+                className={styles.sheetChoice}
+                title={sets.get(setKey)?.label}
+                onClick={() =>
+                  pick(() =>
+                    onCorrect({ setKey, base, num: printing.num, variant: printing.variant }),
+                  )
+                }
+              >
+                {setKey} #{printing.num}
               </button>
             ))}
           </div>

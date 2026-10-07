@@ -138,6 +138,32 @@ export function locateCard(scene: SamplePixels, index: ScanIndex): Located | nul
   return descriptor && { placement, descriptor, bits };
 }
 
+/**
+ * Hash bits past which the card that was just scanned is no longer what sits where it was
+ * found. Refocusing or re-exposing a card that hasn't moved stays well inside this (about
+ * 30 bits, even blurred or dimmed); a hand reaching in, or the next card sliding or
+ * dropping on top, goes past it for at least a frame.
+ */
+export const GONE_BITS = 64;
+
+/** The card a scan fired on, and where in the scene it was found. */
+export type Fired = { placement: Placement; entries: readonly number[] };
+
+/**
+ * Whether the scanned card has left its spot: what is there now is far from every picture
+ * of it (`entries`, positions in the index). This is what tells a second copy of the same
+ * card from the first one re-read, in a rig where the guide always holds some card.
+ */
+export function cardGone(scene: SamplePixels, fired: Fired, index: ScanIndex): boolean {
+  const now = describePlacement(scene, fired.placement);
+  if (!now) return true;
+  let best = Infinity;
+  for (const i of fired.entries) {
+    best = Math.min(best, hammingDistance(now.hash, index.hashes, i * HASH_WORDS));
+  }
+  return best > GONE_BITS;
+}
+
 /** How much of the scene's height and width each edge band covers. */
 const EDGE_BAND = 0.03;
 /** Brightness spread above which an edge band holds part of a card, not table or rig. */

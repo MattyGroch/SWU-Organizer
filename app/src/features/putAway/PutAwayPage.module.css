@@ -573,6 +573,11 @@
   color: var(--color-danger-fg);
 }
 
+.waiting {
+  color: var(--color-warning-fg);
+  font-weight: 700;
+}
+
 .sideNote {
   grid-column: 1 / -1;
   color: var(--color-warning-fg);
