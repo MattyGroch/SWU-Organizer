@@ -313,27 +313,9 @@
 }
 
 .rarity {
-  /* The overlay pads 8px on the right and bottom, but the letter is centred against the
+  /* The overlay pads 8px on the right and bottom, but the badge is centred against the
      taller count pill, so it sits ~4px higher than the padding alone. Matching that on
      the right gives it an even inset from both card edges. */
   margin-right: var(--space-1);
-  font-size: clamp(14px, 2.1cqi, 19px);
-  font-weight: 900;
-  line-height: 1;
-  /* Outlined against the letter's own fill: light letters (Uncommon, Rare, Legendary) get
-     a near-black edge, dark ones (Common, Special) a white one — a white edge washes the
-     light letters out. Painted under the fill (`paint-order`), so only the outer half of
-     the stroke shows: 2.4px reads as a crisp ~1.2px edge without thinning the letter. */
-  -webkit-text-stroke: 2.4px #11121a;
-  paint-order: stroke fill;
-  /* A tight hard shadow under the letter, then a softer spread, so it lifts off the
-     scrim even where the dark edge blends into it. */
-  text-shadow:
-    0 2px 0 rgb(0 0 0 / 0.9),
-    0 3px 6px rgb(0 0 0 / 0.8);
-}
-
-.rarity[data-rarity='Common'],
-.rarity[data-rarity='Special'] {
-  -webkit-text-stroke-color: #ffffff;
+  font-size: clamp(12px, 1.8cqi, 16px);
 }

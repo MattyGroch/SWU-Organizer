@@ -1,0 +1,34 @@
+/* The tile takes the rarity colour (`currentColor`, set inline) and the letter is cut
+   out of it, so it reads the same over bright art, dark art and the table. Callers set
+   the size. */
+.rarity {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 0.3em;
+  background: currentColor;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.6);
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.letter {
+  color: #11121a;
+  font-weight: inherit;
+}
+
+/* Brown and black tiles need a light letter. */
+.rarity[data-rarity='Common'] .letter,
+.rarity[data-rarity='Special'] .letter {
+  color: #ffffff;
+}
+
+/* Special's black tile would vanish on dark art and the dark table: ring it. */
+.rarity[data-rarity='Special'] {
+  box-shadow:
+    0 0 0 1.5px #ffffff,
+    0 1px 3px rgb(0 0 0 / 0.6);
+}

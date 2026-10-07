@@ -10,8 +10,9 @@ import {
 import type { Card } from '~/domain/types';
 import type { CSSProperties, PointerEvent } from 'react';
 
-import { aspectBackground, isLightFill, rarityStyle } from './aspect';
+import { aspectBackground, isLightFill } from './aspect';
 import styles from './BinderCell.module.css';
+import { RarityBadge } from './RarityBadge';
 import { useCardImage } from './useCardImage';
 
 type Props = {
@@ -66,7 +67,6 @@ export function BinderCell({
   const onHand = pocket.total;
   const inBinder = binderCount(onHand, quota);
   const pocketEmpty = onHand === 0;
-  const rarity = rarityStyle(card.Rarity);
   const light = isLightFill(card.Aspects);
   const showArt = state === 'ready' && src;
   // Leaders and Bases are printed landscape; they sit turned sideways in a binder pocket.
@@ -147,15 +147,7 @@ export function BinderCell({
             )}
           </span>
           <span className={styles.number}>{card.Number}</span>
-          {rarity && (
-            <span
-              className={styles.rarity}
-              style={{ color: `var(${rarity.colorVar})` }}
-              data-rarity={card.Rarity}
-            >
-              {rarity.letter}
-            </span>
-          )}
+          <RarityBadge className={styles.rarity} rarity={card.Rarity} />
         </span>
       </button>
     </div>
