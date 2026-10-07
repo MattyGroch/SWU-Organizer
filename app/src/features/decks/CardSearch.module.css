@@ -1,0 +1,165 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.heading {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.text {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-md);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.chip {
+  composes: ui-chip from global;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.costChip {
+  min-width: 2.4em;
+  padding-inline: var(--space-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.count {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hit {
+  border-top: 1px solid var(--color-border);
+}
+
+.hitRow {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-2) 0;
+}
+
+.cost {
+  flex: none;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  background: var(--color-surface-raised);
+  font-weight: 700;
+  line-height: 1.6em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.aspects {
+  flex: none;
+  font-size: 1.1em;
+}
+
+.name {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.subtitle,
+.meta {
+  overflow: hidden;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subtitle {
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+}
+
+.meta {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  /* Wraps rather than hiding how many you own on a phone. */
+  white-space: normal;
+}
+
+.adds {
+  display: flex;
+  flex: none;
+  gap: var(--space-1);
+}
+
+.add,
+.secondary {
+  composes: ui-btn from global;
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.add {
+  flex: none;
+  padding: var(--space-1) var(--space-2);
+  white-space: nowrap;
+}
+
+.secondary {
+  align-self: flex-start;
+  padding: var(--space-1) var(--space-3);
+}
+
+.cardText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: 0 0 var(--space-2) calc(1.6em + var(--space-2));
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-sm);
+}
+
+.stats {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}

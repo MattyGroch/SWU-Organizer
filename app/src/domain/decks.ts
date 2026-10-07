@@ -9,7 +9,9 @@ import {
   type DeckContentsFailureReason,
   type OwnedTotals,
 } from './deckContents';
+import { isPlayFormat, type PlayFormat } from './deckLegality';
 import type { PreconCatalogEntry } from './precons';
+import { newId } from './id';
 
 export type SavedDeck = DeckContents & {
   id: string;
@@ -26,7 +28,14 @@ export type SavedDeck = DeckContents & {
   constructed: boolean;
   /** Snapshot of exactly what was pulled from the binder at construct time. Only meaningful while constructed=true; cleared on deconstruct. */
   pulledCards: DeckCardRef[];
+  /** The format it is built for. Absent on decks saved before formats were stored. */
+  format?: PlayFormat;
 };
+
+/** A deck's format; older decks without one are Twin Suns with two leaders, else Premier. */
+export function deckFormat(deck: DeckContents & { format?: PlayFormat }): PlayFormat {
+  return deck.format ?? (deck.secondLeader ? 'twinSuns' : 'premier');
+}
 
 export type DeckLibrary = {
   customDecks: SavedDeck[];
@@ -46,6 +55,7 @@ export type NewSavedDeckInput = {
   physical: boolean;
   copies: number;
   sourceText: string;
+  format?: PlayFormat;
 };
 
 export type CreateSavedDeckResult =
@@ -70,7 +80,7 @@ export function createSavedDeck(
   deps: { now?: () => string; makeId?: () => string } = {},
 ): CreateSavedDeckResult {
   const now = deps.now ?? (() => new Date().toISOString());
-  const makeId = deps.makeId ?? (() => crypto.randomUUID());
+  const makeId = deps.makeId ?? (() => newId());
   const contentsResult = deckContentsFromRows(rows);
   if (!contentsResult.ok) return { ok: false, reason: contentsResult.reason };
 
@@ -88,6 +98,7 @@ export function createSavedDeck(
       sourceText: input.sourceText,
       constructed: false,
       pulledCards: [],
+      ...(input.format && { format: input.format }),
     },
   };
 }
@@ -128,6 +139,7 @@ function isSavedDeck(value: unknown): value is SavedDeck {
     Number.isFinite(v.copies) &&
     typeof v.sourceText === 'string' &&
     (v.constructed === undefined || typeof v.constructed === 'boolean') &&
+    (v.format === undefined || isPlayFormat(v.format)) &&
     (v.pulledCards === undefined ||
       (Array.isArray(v.pulledCards) && v.pulledCards.every(isDeckCardRef)))
   );

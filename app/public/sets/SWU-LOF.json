@@ -14,6 +14,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 7,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FIRST ORDER"
+      ],
+      "text": "Action [Exhaust]: Discard a card from your hand. If you discarded an upgrade this way, draw a card.\nEpic Action: If you control 7 or more resources, deploy this leader.\nSentinel\nWhen Deployed: Play any number of upgrades from your discard pile on this unit (one at a time, paying their costs).",
       "printings": [
         {
           "num": "001",
@@ -41,6 +52,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: Give a unit -1/-1 for this phase.\nEpic Action: If you control 5 or more resources, deploy this leader.\nOn Attack: You may give a unit -1/-1 for this phase.",
       "printings": [
         {
           "num": "002",
@@ -68,6 +90,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: Give a friendly unit Sentinel for this phase. (Enemy units in its arena must attack a sentinel when they attack you.)\nEpic Action: If you control 6 or more resources, deploy this leader.\nOn Attack: You may give a friendly unit Sentinel for this phase.",
       "printings": [
         {
           "num": "003",
@@ -95,6 +128,19 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REBEL",
+        "SPECTRE"
+      ],
+      "text": "Action [C=1, Exhaust]: Give a Shield token to a Creature or Spectre unit.\nEpic Action: If you control 6 or more resources, deploy this leader.\nShielded (When you deploy this leader, give a Shield token to him.)\nWhile you control another Creature or Spectre unit, this unit gets +2/+2.",
       "printings": [
         {
           "num": "004",
@@ -122,6 +168,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "NIGHT"
+      ],
+      "text": "Action [Exhaust]: Choose a friendly unit that attacked this phase. Play a unit from your hand that shares a Keyword with the chosen unit. It costs 1 less.\nEpic Action: If you control 5 or more resources, deploy this leader.\nOn Attack: The next unit you play this phase costs 1 less if it shares a Keyword with a friendly unit.",
       "printings": [
         {
           "num": "005",
@@ -149,6 +207,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FIRST ORDER",
+        "OFFICIAL"
+      ],
+      "text": "Action [C=1, Exhaust]: Give an Experience token to the unit with the most power among friendly Villainy units. (If multiple units are tied, choose one.)\nEpic Action: If you control 6 or more resources, deploy this leader.\nOn Attack: Give an Experience token to the unit with the most power among friendly Villainy units.",
       "printings": [
         {
           "num": "006",
@@ -176,6 +246,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 9,
+      "power": 4,
+      "hp": 10,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Action [Exhaust]: The Force is with you (create your Force token).\nEpic Action: If the number of resources you control plus the number of times you used the Force this phase is 9 or more, deploy this leader.\nWhile the Force is with you, this unit gets +4/+0 and gains Overwhelm.",
       "printings": [
         {
           "num": "007",
@@ -203,6 +285,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: Give an Experience token to a unit without an Experience token on it.\nEpic Action: If you control 5 or more resources, deploy this leader.\nOn Attack: You may give an Experience token to another unit without an Experience token on it.",
       "printings": [
         {
           "num": "008",
@@ -230,6 +324,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SITH"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: Deal 1 damage to a unit and 1 damage to a different unit.\nEpic Action: If you control 6 or more resources, deploy this leader.\nOn Attack: Deal 1 damage to a unit and 1 damage to a different unit.",
       "printings": [
         {
           "num": "009",
@@ -257,6 +362,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 5,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "INQUISITOR"
+      ],
+      "text": "Action [Exhaust]: Play a unit from your hand. It gains Hidden for this phase. (It can't be attacked for this phase unless it has Sentinel.)\nEpic Action: If you control 5 or more resources, deploy this leader.\nHidden (This unit can't be attacked if she was deployed this phase.)\nOn Attack: The next unit you play this phase gains Hidden.",
       "printings": [
         {
           "num": "010",
@@ -284,6 +401,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 1,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Action [C=1, Exhaust]: If you attacked with a Jedi unit this phase, deal 2 damage to a unit.\nEpic Action: If you control 5 or more resources, deploy this leader.\nSaboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)\nThis unit gets +1/+0 for each other friendly Jedi unit.",
       "printings": [
         {
           "num": "011",
@@ -311,6 +440,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 7,
+      "power": 6,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "RESISTANCE"
+      ],
+      "text": "Action [Exhaust]: If you played a non-unit Force card this phase, deal 1 damage to a unit.\nEpic Action: If you control 7 or more resources, deploy this leader.\nWhen Deployed: You may discard your hand. If you do, draw 2 cards.",
       "printings": [
         {
           "num": "012",
@@ -338,6 +478,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: Play an event from your hand. It costs 1 less.\nEpic Action: If you control 6 or more resources, deploy this leader.\nAction [use the Force]: Play an event from your hand. It costs 1 less.",
       "printings": [
         {
           "num": "013",
@@ -365,6 +517,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "INQUISITOR"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: Attack with a friendly unit. The defender gets -2/-0 for this attack.\nEpic Action: If you control 5 or more resources, deploy this leader.\nShielded (When you deploy this leader, give a Shield token to him.)\nOn Attack: The defender gets -2/-0 for this attack.",
       "printings": [
         {
           "num": "014",
@@ -392,6 +556,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: An opponent chooses a ready unit they control. Exhaust that unit.\nEpic Action: If you control 4 or more resources, deploy this leader.\nOn Attack: An opponent chooses a ready unit they control. Exhaust that unit.",
       "printings": [
         {
           "num": "015",
@@ -419,6 +594,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: Return a friendly non-leader unit to its owner's hand. Play a non-Villainy unit that costs less than the returned unit from your hand for free.\nEpic Action: If you control 6 or more resources, deploy this leader.\nWhen this unit completes an attack (and survives): You may return a friendly non-leader unit to its owner's hand. Play a non-Villainy unit that costs less than the returned unit from your hand for free.",
       "printings": [
         {
           "num": "016",
@@ -445,6 +632,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SITH"
+      ],
+      "text": "When a friendly unit attacks and defeats a unit: You may exhaust this leader. If you do, give an Experience token to that friendly unit.\nEpic Action: If you control 5 or more resources, deploy this leader.\nRestore 1 \nWhen a friendly unit attacks and defeats a unit: You may give an Experience token to that friendly unit.",
       "printings": [
         {
           "num": "017",
@@ -471,6 +669,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: Play a Villainy non-unit card from your hand, ignoring its aspect penalties.\nEpic Action: If you control 5 or more resources, deploy this leader.\nAction [use the Force]: Play a Villainy non-unit card from your hand, ignoring its aspect penalties.",
       "printings": [
         {
           "num": "018",
@@ -495,6 +705,8 @@
       "aspects": [
         "Vigilance"
       ],
+      "hp": 25,
+      "text": "When the regroup phase starts: If you control a unit with 4 or more remaining HP, the Force is with you (create your Force token).",
       "printings": [
         {
           "num": "019",
@@ -523,6 +735,8 @@
       "aspects": [
         "Vigilance"
       ],
+      "hp": 28,
+      "text": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "020",
@@ -543,6 +757,8 @@
       "aspects": [
         "Vigilance"
       ],
+      "hp": 28,
+      "text": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "021",
@@ -563,6 +779,8 @@
       "aspects": [
         "Command"
       ],
+      "hp": 25,
+      "text": "Action: The Force is with you (create your Force token). Use this ability no more than 3 times each game.",
       "printings": [
         {
           "num": "022",
@@ -591,6 +809,8 @@
       "aspects": [
         "Command"
       ],
+      "hp": 28,
+      "text": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "023",
@@ -611,6 +831,8 @@
       "aspects": [
         "Command"
       ],
+      "hp": 28,
+      "text": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "024",
@@ -631,6 +853,8 @@
       "aspects": [
         "Aggression"
       ],
+      "hp": 25,
+      "text": "When a friendly unit deals 3 or more combat damage to an enemy base: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "025",
@@ -659,6 +883,8 @@
       "aspects": [
         "Aggression"
       ],
+      "hp": 28,
+      "text": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "026",
@@ -679,6 +905,8 @@
       "aspects": [
         "Aggression"
       ],
+      "hp": 28,
+      "text": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "027",
@@ -699,6 +927,8 @@
       "aspects": [
         "Cunning"
       ],
+      "hp": 25,
+      "text": "Action [exhaust a friendly unit]: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "028",
@@ -727,6 +957,8 @@
       "aspects": [
         "Cunning"
       ],
+      "hp": 28,
+      "text": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "029",
@@ -747,6 +979,8 @@
       "aspects": [
         "Cunning"
       ],
+      "hp": 28,
+      "text": "When a friendly Force unit attacks: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "030",
@@ -769,6 +1003,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "When Defeated: You may use the Force (lose your Force token). If you do, give a unit -2/-2 for this phase.",
       "printings": [
         {
           "num": "031",
@@ -809,6 +1054,17 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
+      ],
+      "text": "Restore 2 (When this unit attacks, heal 2 damage from your base.)",
       "printings": [
         {
           "num": "032",
@@ -837,6 +1093,16 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "When Played: You may exhaust a Force unit. \nOn Attack: Each enemy unit loses the Force trait for this phase.",
       "printings": [
         {
           "num": "033",
@@ -865,6 +1131,18 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "FIRST ORDER",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "034",
@@ -893,6 +1171,17 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "When Played: You may use the Force (lose your Force token). If you do, give a unit -3/-3 for this phase.",
       "printings": [
         {
           "num": "035",
@@ -923,6 +1212,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "When Played: You may defeat a friendly Night unit not named Old Daka. Then, you may play that unit from your discard pile for free.",
       "printings": [
         {
           "num": "036",
@@ -965,6 +1265,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "SITH"
+      ],
+      "text": "When Played: Give a Shield token to a friendly unit and to an enemy unit.\nOn Attack: Defeat an enemy unit with a Shield token on it.",
       "printings": [
         {
           "num": "037",
@@ -1007,6 +1319,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 2,
+      "hp": 9,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Grit \nWhen this unit completes an attack (and survives): You may defeat a unit with less remaining HP than this unit's power.",
       "printings": [
         {
           "num": "038",
@@ -1049,6 +1373,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 6,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SEPARATIST",
+        "SITH"
+      ],
+      "text": "Restore 2 (When this unit attacks, heal 2 damage from your base.) \nWhen Played: You may use the Force. If you do, defeat each non-Sith unit with 3 or less remaining HP.",
       "printings": [
         {
           "num": "039",
@@ -1078,6 +1414,15 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nIf attached unit is a Force unit, it gains: “This unit can't be exhausted by enemy card abilities.”",
       "printings": [
         {
           "num": "040",
@@ -1106,6 +1451,11 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 2,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Deal 2 damage to a unit. The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "041",
@@ -1134,6 +1484,11 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 4,
+      "traits": [
+        "SITH"
+      ],
+      "text": "Choose 2 friendly unique Sith units. If you do, give 2 Shield tokens and 2 Experience tokens to each chosen unit. Defeat all other friendly units.",
       "printings": [
         {
           "num": "042",
@@ -1162,6 +1517,11 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 5,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Choose a friendly unit. For this phase, it can't be defeated by having no remaining HP.\nAn opponent chooses a unit they control. Defeat that unit.",
       "printings": [
         {
           "num": "043",
@@ -1190,6 +1550,16 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.) \nThis unit can't attack.",
       "printings": [
         {
           "num": "044",
@@ -1220,6 +1590,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Restore 1 \nOn Attack: Each other friendly Jedi unit gains Restore 1 for this phase.",
       "printings": [
         {
           "num": "045",
@@ -1262,6 +1644,19 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REBEL",
+        "SPECTRE"
+      ],
+      "text": "On Attack: You may give an Experience token to another Creature or Spectre unit.",
       "printings": [
         {
           "num": "046",
@@ -1304,6 +1699,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "FRINGE",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When this unit is attacked (before damage is dealt): You may give an Experience token to this unit.",
       "printings": [
         {
           "num": "047",
@@ -1332,6 +1739,17 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "Shielded (When you play this unit, give a Shield token to it.) \nWhen Played: You may use the Force (lose your Force token). If you do, heal 3 damage from a base.",
       "printings": [
         {
           "num": "048",
@@ -1360,6 +1778,17 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "While this unit is defending, it gets +2/+0.",
       "printings": [
         {
           "num": "049",
@@ -1390,6 +1819,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 6,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "While the Force is with you, this unit gains Grit. (He gets +1/+0 for each damage on him.)",
       "printings": [
         {
           "num": "050",
@@ -1430,6 +1871,14 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "traits": [
+        "JEDI",
+        "ITEM"
+      ],
+      "text": "Attach to a Force unit.\nAttached unit gains: “On Attack: You may heal 3 damage from another unit.”",
       "printings": [
         {
           "num": "051",
@@ -1458,6 +1907,14 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 0,
+      "traits": [
+        "JEDI",
+        "LEARNED"
+      ],
+      "text": "Attach to a Force unit.\nAttached unit gains: “On Attack: Give an Experience token to this unit.”\nWhile attached unit has 4 or more upgrades on it, it gains the Jedi trait.",
       "printings": [
         {
           "num": "052",
@@ -1486,6 +1943,15 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit. \nIf attached unit is a Force unit, it gains Restore 1. (When this unit attacks, heal 1 damage from your base.)",
       "printings": [
         {
           "num": "053",
@@ -1514,6 +1980,11 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Exhaust a friendly unit. If you do, give a Shield token and 2 Experience tokens to it.",
       "printings": [
         {
           "num": "054",
@@ -1544,6 +2015,17 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 2,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "CREATURE"
+      ],
+      "text": "When the regroup phase starts: Give an Experience token to each other friendly non-Vehicle unit.",
       "printings": [
         {
           "num": "055",
@@ -1584,6 +2066,13 @@
         "Vigilance",
         "Vigilance"
       ],
+      "cost": 3,
+      "power": 0,
+      "hp": 0,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "If you control a Force unit, this upgrade costs 1 less to play.\nAttached unit's printed power is considered to be 5 and its printed HP is considered to be 5.",
       "printings": [
         {
           "num": "056",
@@ -1613,6 +2102,16 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 0,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Restore 2 \nWhen Defeated: Search the top 5 cards of your deck for a Force unit, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order.)",
       "printings": [
         {
           "num": "057",
@@ -1640,6 +2139,17 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "The first upgrade you play on this unit each round costs 1 less.",
       "printings": [
         {
           "num": "058",
@@ -1667,6 +2177,17 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "When Defeated: Draw a card.",
       "printings": [
         {
           "num": "059",
@@ -1694,6 +2215,19 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "JEDI",
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "While you control a Force unit or upgrade, this unit gets +1/+1.",
       "printings": [
         {
           "num": "060",
@@ -1721,6 +2255,17 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "Shielded (When you play this unit, give a Shield token to it.)",
       "printings": [
         {
           "num": "061",
@@ -1750,6 +2295,17 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "TROOPER"
+      ],
+      "text": "Shielded \nThis unit gets +1/+1 for each upgrade on him.",
       "printings": [
         {
           "num": "062",
@@ -1779,6 +2335,16 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "This unit can't attack unless it's damaged. \nWhen this unit attacks and defeats a unit: Heal 2 damage from this unit.",
       "printings": [
         {
           "num": "063",
@@ -1806,6 +2372,16 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "When Defeated: You may give a Shield token to a damaged non-Vehicle unit.",
       "printings": [
         {
           "num": "064",
@@ -1834,6 +2410,16 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 1,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "On Attack: An opponent chooses one: \nYou give an Experience token to a friendly unit. \nYou draw a card.",
       "printings": [
         {
           "num": "065",
@@ -1860,6 +2446,16 @@
       "rarity": "Common",
       "aspects": [
         "Vigilance"
+      ],
+      "cost": 4,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NIGHT",
+        "UNDEAD"
       ],
       "printings": [
         {
@@ -1890,6 +2486,17 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "Sentinel\nWhen this unit is attacked (before damage is dealt): You may use the Force (lose your Force token). If you do, the attacker gets -2/-0 for this attack.",
       "printings": [
         {
           "num": "067",
@@ -1931,6 +2538,16 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL"
+      ],
+      "text": "On Attack: Search the top 5 cards of your deck for an Item upgrade, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order.)",
       "printings": [
         {
           "num": "068",
@@ -1966,6 +2583,16 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 5,
+      "power": 2,
+      "hp": 7,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "069",
@@ -2003,6 +2630,18 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When Played: If there is a Heroism card in your discard pile, you may give a unit -3/-3 for this phase. \nWhen Played: If there is a Villainy card in your discard pile, you may give a unit -3/-3 for this phase.",
       "printings": [
         {
           "num": "070",
@@ -2042,6 +2681,16 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 7,
+      "power": 3,
+      "hp": 9,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "When Played: You may defeat a space unit with 6 or less remaining HP.",
       "printings": [
         {
           "num": "071",
@@ -2071,6 +2720,16 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 6,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "When Played: You may use the Force (lose your Force token). If you do, give a Shield token to each of up to 5 units.",
       "printings": [
         {
           "num": "072",
@@ -2112,6 +2771,17 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 9,
+      "power": 10,
+      "hp": 10,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "CREATURE"
+      ],
+      "text": "Shielded \nFriendly upgraded units can't be exhausted or returned to hand by enemy card abilities.\nFriendly leaders gain the Mandalorian trait.",
       "printings": [
         {
           "num": "073",
@@ -2139,6 +2809,13 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 3,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Attach to a Force unit.",
       "printings": [
         {
           "num": "074",
@@ -2166,6 +2843,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Use the Force (lose your Force token). If you do, heal 6 damage from a unit.",
       "printings": [
         {
           "num": "075",
@@ -2193,6 +2875,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 1,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Play a Force unit from your hand (paying its cost) and give a Shield token to it.",
       "printings": [
         {
           "num": "076",
@@ -2220,6 +2907,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Defeat a non-leader unit that costs 2 or less.",
       "printings": [
         {
           "num": "077",
@@ -2255,6 +2947,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Give a unit –2/–2 for this phase. If you control a Force unit, give it –3/–3 instead.",
       "printings": [
         {
           "num": "078",
@@ -2282,6 +2979,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 4,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Choose one: \nDefeat a non-leader unit with 3 or less remaining HP. \nUse the Force (lose your Force token). If you do, defeat a non-leader unit.",
       "printings": [
         {
           "num": "079",
@@ -2310,6 +3012,19 @@
         "Command",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "FIRST ORDER",
+        "SITH",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "080",
@@ -2338,6 +3053,17 @@
         "Command",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SITH",
+        "TROOPER"
+      ],
+      "text": "While you control another Villainy unit, this unit gets +2/+0.",
       "printings": [
         {
           "num": "081",
@@ -2368,6 +3094,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "SITH",
+        "OFFICIAL"
+      ],
+      "text": "When Played/On Attack: You may defeat an Experience token on a friendly unit. If you do, give an Experience token to a friendly unit.",
       "printings": [
         {
           "num": "082",
@@ -2398,6 +3136,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 1,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
+      ],
+      "text": "This unit gets +1/+0 for each Trooper unit in your discard pile.",
       "printings": [
         {
           "num": "083",
@@ -2425,6 +3174,15 @@
       "aspects": [
         "Command",
         "Villainy"
+      ],
+      "cost": 3,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FIRST ORDER"
       ],
       "printings": [
         {
@@ -2454,6 +3212,16 @@
         "Command",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FIRST ORDER"
+      ],
+      "text": "While you control a unit with 4 or more power, this unit gains Sentinel. (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "085",
@@ -2482,6 +3250,16 @@
         "Command",
         "Villainy"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Overwhelm \nWhen this unit attacks and defeats a unit: Give a number of Experience tokens to this unit equal to the defeated unit's cost.",
       "printings": [
         {
           "num": "086",
@@ -2512,6 +3290,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "INQUISITOR"
+      ],
+      "text": "Ambush (When you play this unit, it may attack an enemy unit.)\nWhen you play another unit: You may use the Force (lose your Force token). If you do, give a unit +2/+2 for this phase.",
       "printings": [
         {
           "num": "087",
@@ -2554,6 +3344,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Hidden\nAmbush\nOverwhelm\nRestore 1",
       "printings": [
         {
           "num": "088",
@@ -2584,6 +3386,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 12,
+      "power": 12,
+      "hp": 12,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "FIRST ORDER",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Ambush \nOther friendly Vehicle units get +6/+6.",
       "printings": [
         {
           "num": "089",
@@ -2612,6 +3426,15 @@
         "Command",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nAttached unit gains: “While attacking a Force unit, this unit gets +2/+0.”",
       "printings": [
         {
           "num": "090",
@@ -2640,6 +3463,13 @@
         "Command",
         "Villainy"
       ],
+      "cost": 5,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "Attach to a friendly unit.\nWhen Played: Deal damage to an enemy unit equal to attached unit's power.",
       "printings": [
         {
           "num": "091",
@@ -2668,6 +3498,18 @@
         "Command",
         "Heroism"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "When Played: If you control a Jedi unit, you may give an Experience token to this unit.",
       "printings": [
         {
           "num": "092",
@@ -2698,6 +3540,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "WOOKIEE"
+      ],
       "printings": [
         {
           "num": "093",
@@ -2746,6 +3599,17 @@
         "Command",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: Play a unit from your hand. It costs 2 less.",
       "printings": [
         {
           "num": "094",
@@ -2784,6 +3648,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "RESISTANCE"
+      ],
+      "text": "When Defeated: You may give an Experience token to a unique (unique) unit.",
       "printings": [
         {
           "num": "095",
@@ -2814,6 +3688,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When you play a Force unit (including this one): This unit gains Sentinel for this phase.",
       "printings": [
         {
           "num": "096",
@@ -2856,6 +3742,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 5,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When Defeated: You may use the Force. If you do, put this card into play as a resource.",
       "printings": [
         {
           "num": "097",
@@ -2898,6 +3796,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "FORCE",
+        "RESISTANCE",
+        "OFFICIAL"
+      ],
+      "text": "While this unit is in the space arena, she can't ready and gains: \"Action [use the Force]: Move this unit to the ground arena and give each friendly Heroism unit +2/+2 for this phase.\"",
       "printings": [
         {
           "num": "098",
@@ -2938,6 +3848,19 @@
         "Command",
         "Heroism"
       ],
+      "cost": 5,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "JEDI",
+        "REPUBLIC",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "When Played: You may give an Experience token to each of up to 3 Force units.",
       "printings": [
         {
           "num": "099",
@@ -2968,6 +3891,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 7,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When Played: Search the top 7 cards of your deck for a unit, reveal it, and play it. It costs 3 less. (Put the other cards on the bottom of your deck in a random order.)",
       "printings": [
         {
           "num": "100",
@@ -3010,6 +3945,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 5,
+      "hp": 9,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When Played: You may use the Force. If you do, heal 5 damage from a base.\nWhen you use the Force: You may deal damage to a unit equal to twice the number of units you control.",
       "printings": [
         {
           "num": "101",
@@ -3059,6 +4006,15 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 3,
+      "hp": 1,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nWhen Played: You may use the Force (lose your Force token). If you do, heal 3 damage from a base.",
       "printings": [
         {
           "num": "102",
@@ -3087,6 +4043,11 @@
         "Command",
         "Heroism"
       ],
+      "cost": 1,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "Search the top 8 cards of your deck for up to 2 Force units, reveal them, and put them on top of your deck in any order. (Put the other cards on the bottom of your deck in a random order.)",
       "printings": [
         {
           "num": "103",
@@ -3115,6 +4076,11 @@
         "Command",
         "Heroism"
       ],
+      "cost": 6,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Put up to 3 Force units from your discard pile on the bottom of your deck in a random order. Give that many units +4/+4 for this phase.",
       "printings": [
         {
           "num": "104",
@@ -3145,6 +4111,18 @@
         "Command"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "This unit gains Ambush while another friendly unit has Ambush. The same is true for Grit, Hidden, Overwhelm, Saboteur, Sentinel, and Shielded.\nThis unit gains Raid 2 while another friendly unit has Raid. The same is true for Restore.",
       "printings": [
         {
           "num": "105",
@@ -3185,6 +4163,18 @@
         "Command",
         "Command"
       ],
+      "cost": 7,
+      "power": 5,
+      "hp": 8,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "On Attack: You may give another unit +5/+5 for this phase.",
       "printings": [
         {
           "num": "106",
@@ -3212,6 +4202,16 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "EWOK"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)\nRestore 1 (When this unit attacks, heal 1 damage from your base.)",
       "printings": [
         {
           "num": "107",
@@ -3241,6 +4241,16 @@
         "Command"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD"
+      ],
+      "text": "The first Creature unit you play each phase costs 1 less. \nIf a friendly Creature unit would deal damage to a friendly unit, prevent that damage.",
       "printings": [
         {
           "num": "108",
@@ -3276,6 +4286,16 @@
       "aspects": [
         "Command"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "109",
@@ -3303,6 +4323,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Restore 1 (When this unit attacks, heal 1 damage from your base.)",
       "printings": [
         {
           "num": "110",
@@ -3332,6 +4364,16 @@
         "Command"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD"
+      ],
+      "text": "When Played: You may attack with a Force unit. It gets +2/+0 for this attack.",
       "printings": [
         {
           "num": "111",
@@ -3358,6 +4400,16 @@
       "rarity": "Common",
       "aspects": [
         "Command"
+      ],
+      "cost": 3,
+      "power": 2,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
       ],
       "printings": [
         {
@@ -3386,6 +4438,17 @@
       "aspects": [
         "Command"
       ],
+      "cost": 4,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "Ambush (When you play this unit, it may attack an enemy unit.)\nRestore 2 (When this unit attacks, heal 2 damage from your base.)",
       "printings": [
         {
           "num": "113",
@@ -3413,6 +4476,16 @@
       "aspects": [
         "Command"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "When Played: You may give another friendly unit Overwhelm for this phase. (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "114",
@@ -3440,6 +4513,16 @@
       "aspects": [
         "Command"
       ],
+      "cost": 5,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "When Played/When Defeated: You may use the Force (lose your Force token). If you do, search the top 5 cards of your deck for a Force unit, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order.)",
       "printings": [
         {
           "num": "115",
@@ -3467,6 +4550,16 @@
       "aspects": [
         "Command"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Restore 2 (When this unit attacks, heal 2 damage from your base.)",
       "printings": [
         {
           "num": "116",
@@ -3495,6 +4588,18 @@
         "Command"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When Defeated: Search the top 8 cards of your deck for any number of Clone units with combined cost 4 or less and discard them. (Put the other cards on the bottom of your deck in a random order.) For this phase, you may play those cards from your discard pile for free.",
       "printings": [
         {
           "num": "117",
@@ -3534,6 +4639,16 @@
       "aspects": [
         "Command"
       ],
+      "cost": 5,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "While an opponent controls a Force unit, this unit gains Ambush (When you play this unit, it may attack an enemy unit.)",
       "printings": [
         {
           "num": "118",
@@ -3560,6 +4675,15 @@
       "rarity": "Common",
       "aspects": [
         "Command"
+      ],
+      "cost": 6,
+      "power": 4,
+      "hp": 10,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "CREATURE"
       ],
       "printings": [
         {
@@ -3588,6 +4712,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 6,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "120",
@@ -3617,6 +4753,16 @@
         "Command"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 4,
+      "hp": 12,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Restore 4\nWhen Played: Draw a card for each friendly unit with 7 or more remaining HP.",
       "printings": [
         {
           "num": "121",
@@ -3645,6 +4791,13 @@
         "Command"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 1,
+      "traits": [
+        "ITEM"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nWhen Played: Search the top 3 cards of your deck for a unit, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order).",
       "printings": [
         {
           "num": "122",
@@ -3672,6 +4825,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "The Force is with you (create your Force token). You may play a unit from your hand (paying its cost).",
       "printings": [
         {
           "num": "123",
@@ -3699,6 +4857,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Attack with a Force unit, even if it's exhausted. It gets +1/+0 and can't attack bases for this attack.",
       "printings": [
         {
           "num": "124",
@@ -3726,6 +4889,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Put a Force unit from your discard pile on the bottom of your deck. If you do, play a unit from your hand and give 2 Experience tokens to it.",
       "printings": [
         {
           "num": "125",
@@ -3753,6 +4921,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "Give a unit +3/+3 and Overwhelm for this phase. (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "126",
@@ -3780,6 +4953,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "Each friendly Creature unit gets +2/+2 for this phase.",
       "printings": [
         {
           "num": "127",
@@ -3807,6 +4985,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 4,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "A friendly non-Vehicle unit deals damage equal to its remaining HP to an enemy unit.",
       "printings": [
         {
           "num": "128",
@@ -3835,6 +5018,16 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SITH"
+      ],
+      "text": "On Attack/When Defeated: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "129",
@@ -3873,6 +5066,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SITH",
+        "DROID"
+      ],
+      "text": "When an enemy unit is defeated: Deal 1 damage to its controller's base.",
       "printings": [
         {
           "num": "130",
@@ -3901,6 +5105,19 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 0,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "FIGHTER",
+        "NIHIL"
+      ],
+      "text": "Raid 3 (This unit gets +3/+0 while attacking.) \nOverwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "131",
@@ -3931,6 +5148,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "INQUISITOR"
+      ],
+      "text": "Hidden\nRaid 1\nOther friendly Inquisitor units gain Hidden.",
       "printings": [
         {
           "num": "132",
@@ -3971,6 +5200,17 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 4,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
+      ],
+      "text": "When Played: You may deal 2 damage to a Force unit.",
       "printings": [
         {
           "num": "133",
@@ -3999,6 +5239,19 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Action [Exhaust]: Deal 2 damage to a ground unit.",
       "printings": [
         {
           "num": "134",
@@ -4029,6 +5282,19 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "TRANSPORT",
+        "INQUISITOR"
+      ],
+      "text": "On Attack: You may give another friendly Inquisitor unit +2/+0 for this phase.",
       "printings": [
         {
           "num": "135",
@@ -4057,6 +5323,16 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 5,
+      "power": 3,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NIGHT"
+      ],
+      "text": "Raid 3 (This unit gets +3/+0 while attacking.)",
       "printings": [
         {
           "num": "136",
@@ -4087,6 +5363,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 9,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)\nWhen Played/When Defeated: You may use the Force (lose your Force token). If you don't, deal 9 damage to your base.",
       "printings": [
         {
           "num": "137",
@@ -4127,6 +5414,14 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "traits": [
+        "SITH",
+        "ITEM"
+      ],
+      "text": "Attach to a Force unit. \nAttached unit gains: \"On Attack: You may deal 2 damage to a friendly unit. If you do, this unit gets +2/+0 for this attack.\"",
       "printings": [
         {
           "num": "138",
@@ -4155,6 +5450,13 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 3,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "Attached unit gains: “On Attack: Discard a card from your hand.”",
       "printings": [
         {
           "num": "139",
@@ -4184,6 +5486,15 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 4,
+      "hp": 2,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a friendly non-Vehicle unit.\nWhen Played: If attached unit is Darth Maul, you may attack with him. For this attack, he gains Overwhelm and can't attack bases.",
       "printings": [
         {
           "num": "140",
@@ -4212,6 +5523,11 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 4,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Deal 2 damage to each non-Vehicle enemy unit. If you control a Force unit, draw a card.",
       "printings": [
         {
           "num": "141",
@@ -4242,6 +5558,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When an opponent plays an event: Deal 1 damage to that player's base.",
       "printings": [
         {
           "num": "142",
@@ -4282,6 +5610,16 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 4,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "143",
@@ -4310,6 +5648,19 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "JEDI",
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "On Attack: You may deal 1 damage to a space unit.",
       "printings": [
         {
           "num": "144",
@@ -4338,6 +5689,17 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "When Played: If you have the initiative, deal 2 damage to an enemy ground unit.",
       "printings": [
         {
           "num": "145",
@@ -4368,6 +5730,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When Played: You may use the Force (lose your Force token). If you do, draw 2 cards.",
       "printings": [
         {
           "num": "146",
@@ -4410,6 +5784,19 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "JEDI",
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Saboteur\nWhen Played: You may defeat any number of upgrades on a unit.",
       "printings": [
         {
           "num": "147",
@@ -4440,6 +5827,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "RESISTANCE"
+      ],
+      "text": "When you draw this card during the action phase: If you control a Aggression leader or base, you may reveal this card from your hand. If you do, deal 2 damage to a unit and 2 damage to a base.",
       "printings": [
         {
           "num": "148",
@@ -4478,6 +5877,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)\nWhen Played: You may use the Force (lose your Force token). If you do, deal 4 damage to a unit.",
       "printings": [
         {
           "num": "149",
@@ -4528,6 +5939,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When Played: You may play a Lightsaber upgrade from your hand for free on this unit. If you do, ready him.",
       "printings": [
         {
           "num": "150",
@@ -4568,6 +5991,15 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a Jedi non-Vehicle unit.",
       "printings": [
         {
           "num": "151",
@@ -4596,6 +6028,11 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Each friendly Force unit gains Raid 1 and Saboteur for this phase.",
       "printings": [
         {
           "num": "152",
@@ -4626,6 +6063,16 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "This unit gets +2/+0 for each damage on him.",
       "printings": [
         {
           "num": "153",
@@ -4653,6 +6100,17 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "154",
@@ -4680,6 +6138,16 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "DROID"
+      ],
+      "text": "When Played: You may defeat a non-unique (non-unique) upgrade.",
       "printings": [
         {
           "num": "155",
@@ -4707,6 +6175,17 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "When Played: You may use the Force (lose your Force token). If you do, give 2 Experience tokens to this unit.\nWhen this unit completes an attack: Defeat an Experience token on it.",
       "printings": [
         {
           "num": "156",
@@ -4742,6 +6221,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Raid 2 (This unit gets +2/+0 while attacking.)",
       "printings": [
         {
           "num": "157",
@@ -4769,6 +6260,19 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Played: If you control another Aggression unit, you may deal 2 damage to a ground unit.",
       "printings": [
         {
           "num": "158",
@@ -4796,6 +6300,17 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)\nWhen Defeated: You may use the Force (lose your Force token). If you do, each opponent discards a card from their hand.",
       "printings": [
         {
           "num": "159",
@@ -4825,6 +6340,17 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "On Attack: You may discard a card from your hand. If you do, deal 2 damage to a unit.",
       "printings": [
         {
           "num": "160",
@@ -4864,6 +6390,16 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "power": 4,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "161",
@@ -4891,6 +6427,16 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "While you control another Aggression unit, this unit gains Raid 2. (It gets +2/+0 while attacking.)",
       "printings": [
         {
           "num": "162",
@@ -4920,6 +6466,18 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "On Attack: If this unit has 6 or more power, you may deal 2 damage to an enemy base.",
       "printings": [
         {
           "num": "163",
@@ -4947,6 +6505,16 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "164",
@@ -4976,6 +6544,18 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT",
+        "BOUNTY HUNTER"
+      ],
+      "text": "When Played/On Attack: Give another friendly Force unit +2/+0 for this phase.",
       "printings": [
         {
           "num": "165",
@@ -5003,6 +6583,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REBEL",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)\nWhen this unit deals combat damage to a base: You may give an Experience token to this unit.",
       "printings": [
         {
           "num": "166",
@@ -5032,6 +6624,18 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When Played: If you have the initiative, deal 1 damage to each of up to 3 units.",
       "printings": [
         {
           "num": "167",
@@ -5071,6 +6675,15 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 6,
+      "power": 8,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
       "printings": [
         {
           "num": "168",
@@ -5098,6 +6711,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 7,
+      "power": 5,
+      "hp": 9,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Friendly Droid units gain Raid 2.",
       "printings": [
         {
           "num": "169",
@@ -5127,6 +6752,17 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 10,
+      "hp": 10,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "CREATURE"
+      ],
+      "text": "On Attack: Deal 3 damage to each other unit.",
       "printings": [
         {
           "num": "170",
@@ -5166,6 +6802,14 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 4,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "ITEM",
+        "WEAPON"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nWhen Played: You may deal 1 damage to a ground unit. Then, deal 1 damage to the same unit. Then, deal 1 damage to the same unit.",
       "printings": [
         {
           "num": "171",
@@ -5193,6 +6837,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Use the Force (lose your Force token). If you do, deal 3 damage to a unit.",
       "printings": [
         {
           "num": "172",
@@ -5220,6 +6869,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Use the Force (lose your Force token). If you do, give a friendly unit +3/+0 for this phase.",
       "printings": [
         {
           "num": "173",
@@ -5247,6 +6901,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Ready a Force unit with 4 or less power.",
       "printings": [
         {
           "num": "174",
@@ -5274,6 +6933,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "You may use the Force (lose your Force token). If you do, draw 2 cards. If you do not, draw a card.",
       "printings": [
         {
           "num": "175",
@@ -5309,6 +6973,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Discard a Lightsaber card from your hand. If you do, deal 4 damage to a ground unit and draw a card.",
       "printings": [
         {
           "num": "176",
@@ -5336,6 +7005,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 4,
+      "traits": [
+        "DISASTER"
+      ],
+      "text": "Each player chooses a unit they control. Deal 3 damage to each unit not chosen this way.",
       "printings": [
         {
           "num": "177",
@@ -5364,6 +7038,17 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "Action [Exhaust, use the Force (lose your Force token)]: Exhaust a unit.",
       "printings": [
         {
           "num": "178",
@@ -5394,6 +7079,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "BOUNTY HUNTER"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)\nRaid 2 (This unit gets +2/+0 while attacking.)",
       "printings": [
         {
           "num": "179",
@@ -5422,6 +7118,17 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SITH",
+        "UNDEAD"
+      ],
+      "text": "When Defeated: The next unit you play this phase gains Ambush for this phase.",
       "printings": [
         {
           "num": "180",
@@ -5450,6 +7157,18 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "181",
@@ -5478,6 +7197,18 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 1,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "TROOPER",
+        "NIHIL"
+      ],
+      "text": "Raid 3 (This unit gets +3/+0 while attacking.)",
       "printings": [
         {
           "num": "182",
@@ -5508,6 +7239,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 4,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)\nShielded (When you play this unit, give a Shield token to her.)",
       "printings": [
         {
           "num": "183",
@@ -5558,6 +7300,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "INQUISITOR"
+      ],
+      "text": "On Attack: You may discard 2 cards from your deck. For each Force card discarded this way, ready a resouce.",
       "printings": [
         {
           "num": "184",
@@ -5600,6 +7354,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "Hidden\nWhen Played: You may use the Force. If you do, return a non-leader unit that costs 4 or less to its owner's hand. Then, its owner may play it for free.",
       "printings": [
         {
           "num": "185",
@@ -5650,6 +7415,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 6,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "NIHIL"
+      ],
+      "text": "Each friendly unit's Raid is doubled.",
       "printings": [
         {
           "num": "186",
@@ -5678,6 +7454,15 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 1,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nIf attached unit is a Force unit, it gains: “On Attack: The defender gets –2/–0 for this attack.”",
       "printings": [
         {
           "num": "187",
@@ -5706,6 +7491,11 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Look at the top card of your deck. You may use the Force (lose your Force token). If you do, play that card. It costs 4 less.",
       "printings": [
         {
           "num": "188",
@@ -5734,6 +7524,11 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 5,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Use the Force (lose your Force token). If you do, take control of a non-leader unit. At the start of the regroup phase, its owner takes control of it.",
       "printings": [
         {
           "num": "189",
@@ -5764,6 +7559,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.) \nShielded (When you play this unit, give a Shield token to him.)",
       "printings": [
         {
           "num": "190",
@@ -5806,6 +7612,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE",
+        "DROID"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)\nWhen Played: Choose another friendly unit. While this unit is in play, the chosen unit gets +1/+0 and gains Saboteur.",
       "printings": [
         {
           "num": "191",
@@ -5842,6 +7659,17 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "NABOO",
+        "VEHICLE",
+        "FIGHTER"
+      ],
       "printings": [
         {
           "num": "192",
@@ -5870,6 +7698,17 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "When Played: The Force is with you (create your Force token).",
       "printings": [
         {
           "num": "193",
@@ -5898,6 +7737,18 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "NABOO",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When Played: Draw a card. \nWhen Defeated: Discard a card from your hand.",
       "printings": [
         {
           "num": "194",
@@ -5936,6 +7787,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "When Played: You may use the Force (lose your Force token). If you do, ready this unit.",
       "printings": [
         {
           "num": "195",
@@ -5976,6 +7838,17 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 4,
+      "power": 5,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "While the Force is with you, this unit gains Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "196",
@@ -6006,6 +7879,19 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "JEDI",
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "On Attack: The next time you use a “When Played” ability this phase, you may use that ability again.",
       "printings": [
         {
           "num": "197",
@@ -6036,6 +7922,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "FRINGE",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When Played: You may deal 2 damage to an exhausted unit.",
       "printings": [
         {
           "num": "198",
@@ -6066,6 +7964,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Ambush (When you play this unit, she may attack an enemy unit.)\nSaboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "199",
@@ -6108,6 +8018,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 7,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Ambush \nWhen Defeated: You may choose a non-leader ground unit. Its owner puts it on the top or bottom of their deck.",
       "printings": [
         {
           "num": "200",
@@ -6149,6 +8071,15 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 3,
+      "hp": 1,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a friendly non-Vehicle unit. \nWhen Played: If attached unit is Qui-Gon Jinn, you may exhaust any number of units with combined cost 6 or less.",
       "printings": [
         {
           "num": "201",
@@ -6177,6 +8108,12 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "FORCE",
+        "TRICK"
+      ],
+      "text": "Exhaust any number of units with a combined power of 4 or less. If you control a Force unit, those units lose all abilities and can't gain abilities for this phase.",
       "printings": [
         {
           "num": "202",
@@ -6213,6 +8150,11 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 3,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "The next time you take the initiative this phase, exhaust all units.",
       "printings": [
         {
           "num": "203",
@@ -6243,6 +8185,17 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "BOUNTY HUNTER"
+      ],
+      "text": "On Attack: Name a card, then discard the top card of the defending player's deck. If a card with that name is discarded, this unit gets +4/+0 for this attack.",
       "printings": [
         {
           "num": "204",
@@ -6283,6 +8236,11 @@
         "Cunning",
         "Cunning"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Attack with a unit. For this attack, it gains: “On Attack: Return any number of non-unique (non-unique) upgrades attached to the defender to their owners' hands.”",
       "printings": [
         {
           "num": "205",
@@ -6312,6 +8270,16 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD"
+      ],
+      "text": "Action [Exhaust]: You may attack with a friendly Droid unit. For this attack, it deals damage equal to its remaining HP instead of its power.",
       "printings": [
         {
           "num": "206",
@@ -6339,6 +8307,16 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "When Played/When Defeated: You may exhaust a ground unit.",
       "printings": [
         {
           "num": "207",
@@ -6374,6 +8352,17 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "Ambush (When you play this unit, it may attack an enemy unit.)",
       "printings": [
         {
           "num": "208",
@@ -6401,6 +8390,16 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "TUSKEN"
+      ],
+      "text": "Raid 2 (This unit gets +2/+0 while attacking.)\nWhen Played: Each enemy unit loses Hidden for this phase.",
       "printings": [
         {
           "num": "209",
@@ -6428,6 +8427,16 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Ambush (When you play this unit, it may attack an enemy unit.)\nHidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "210",
@@ -6457,6 +8466,17 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 5,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)\nWhen Played: Each friendly unit with Hidden can't be attacked for this phase.",
       "printings": [
         {
           "num": "211",
@@ -6496,6 +8516,16 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "While an enemy unit is exhausted, this unit gains Raid 2. (This unit gets +2/+0 while attacking.)",
       "printings": [
         {
           "num": "212",
@@ -6525,6 +8555,18 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When Defeated: Deal 6 damage divided as you choose among enemy units.",
       "printings": [
         {
           "num": "213",
@@ -6552,6 +8594,17 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 6,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "Shielded (When you play this card, give a Shield token to it.)",
       "printings": [
         {
           "num": "214",
@@ -6579,6 +8632,13 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "traits": [
+        "ITEM"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nAttached unit gains Saboteur. (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "215",
@@ -6606,6 +8666,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "If a friendly unit left play this phase, the Force is with you (create your Force token) and you may give a Shield token to a unit.",
       "printings": [
         {
           "num": "216",
@@ -6633,6 +8698,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Give an exhausted unit -8/-0 for this phase.",
       "printings": [
         {
           "num": "217",
@@ -6660,6 +8730,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "You may either exhaust a friendly unit or use the Force (lose your Force token). If you do either, exhaust an enemy unit and draw a card.",
       "printings": [
         {
           "num": "218",
@@ -6687,6 +8762,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Choose another card in your discard pile. Search the top 5 cards of your deck for a card that shares a Trait with the chosen card, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order.)",
       "printings": [
         {
           "num": "219",
@@ -6714,6 +8794,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Play a Force unit from your hand (paying its cost). It gains Ambush for this phase. The next time it would be dealt damage this phase, prevent 2 of that damage.",
       "printings": [
         {
           "num": "220",
@@ -6741,6 +8826,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Use the Force. If you do, attack with a unit. It gets +2/+0 for this attack and deals its combat damage before the defender. (If the defender is defeated, it deals no combat damage.)",
       "printings": [
         {
           "num": "221",
@@ -6768,6 +8858,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "Return an enemy non-leader unit to its owner's hand unless its controller says, \"It could be worse.\" If they do, you may play a card named It's Worse from your hand or resources for free.",
       "printings": [
         {
           "num": "222",
@@ -6795,6 +8890,12 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "traits": [
+        "FORCE",
+        "TRICK"
+      ],
+      "text": "Exhaust an enemy unit. A friendly unit gains Sentinel for this phase.",
       "printings": [
         {
           "num": "223",
@@ -6822,6 +8923,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "Attack with a Creature unit. It gets +4/+0 for this attack.",
       "printings": [
         {
           "num": "224",
@@ -6849,6 +8955,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Play a unit from your hand (paying its cost). It gains Hidden for this phase. Give an Experience token and a Shield token to it.",
       "printings": [
         {
           "num": "225",
@@ -6876,6 +8987,12 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "traits": [
+        "FORCE",
+        "TRICK"
+      ],
+      "text": "Look at an opponent's hand and discard a non-unit card from it.",
       "printings": [
         {
           "num": "226",
@@ -6903,6 +9020,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 4,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Return a non-leader unit to its owner's hand. You may use the Force (lose your Force token). If you do, that player discards a random card from their hand.",
       "printings": [
         {
           "num": "227",
@@ -6930,6 +9052,18 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SITH",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.) \nRaid 1 (This unit gets +1/+0 while attacking.)",
       "printings": [
         {
           "num": "228",
@@ -6959,6 +9093,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FIRST ORDER"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.) \nWhen you play an upgrade on this unit: You may use the Force (lose your Force token). If you do, draw a card.",
       "printings": [
         {
           "num": "229",
@@ -6998,6 +9143,16 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
       "printings": [
         {
           "num": "230",
@@ -7027,6 +9182,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 4,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SEPARATIST",
+        "SITH"
+      ],
+      "text": "Shielded (When you play this unit, give a Shield token to him.)\nWhile the Force is with you, this unit gains Ambush. (When you play this unit, he may attack an enemy unit.)",
       "printings": [
         {
           "num": "231",
@@ -7054,6 +9221,18 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 4,
+      "power": 2,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "CREATURE",
+        "TROOPER"
+      ],
+      "text": "Grit (This unit gets +1/+0 for each damage on it.)",
       "printings": [
         {
           "num": "232",
@@ -7083,6 +9262,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SITH",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "While this unit is damaged, it gets +3/+0.",
       "printings": [
         {
           "num": "233",
@@ -7112,6 +9303,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SITH"
+      ],
+      "text": "Overwhelm \nWhen Played: If you control a Sith leader unit, you may ready this unit.",
       "printings": [
         {
           "num": "234",
@@ -7151,6 +9353,17 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "DROID"
+      ],
+      "text": "When Defeated: Deal 2 damage to each ground unit.",
       "printings": [
         {
           "num": "235",
@@ -7186,6 +9399,16 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 6,
+      "power": 7,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NIGHT",
+        "UNDEAD"
+      ],
       "printings": [
         {
           "num": "236",
@@ -7215,6 +9438,16 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 6,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "While the Force is with you, each friendly unit gets +2/+0.",
       "printings": [
         {
           "num": "237",
@@ -7255,6 +9488,15 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit. \nIf attached unit is a Sith, it gains Grit.",
       "printings": [
         {
           "num": "238",
@@ -7282,6 +9524,11 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 2,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Give 2 Experience tokens to a unit, then deal 2 damage to it.",
       "printings": [
         {
           "num": "239",
@@ -7309,6 +9556,11 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "You may return a Force unit and a Lightsaber upgrade from your discard pile to your hand.",
       "printings": [
         {
           "num": "240",
@@ -7344,6 +9596,11 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 2,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "Give an Experience token to each of up to 3 friendly units with Hidden.",
       "printings": [
         {
           "num": "241",
@@ -7371,6 +9628,17 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "When Played: You may give a Shield token to a unit with Sentinel.",
       "printings": [
         {
           "num": "242",
@@ -7398,6 +9666,16 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 2,
+      "power": 0,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Action [Exhaust]: If you played a Force card this phase, draw a card.",
       "printings": [
         {
           "num": "243",
@@ -7425,6 +9703,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "JEDI",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "This unit gets +1/+0 if you control another Jedi unit and +1/+0 if you control a Lightsaber upgrade.",
       "printings": [
         {
           "num": "244",
@@ -7452,6 +9742,16 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "245",
@@ -7481,6 +9781,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 1,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Hidden \nAction [Exhaust]: Heal up to 2 damage form a unit. If you do, deal that much damage to a unit.",
       "printings": [
         {
           "num": "246",
@@ -7520,6 +9830,17 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "GUNGAN",
+        "TROOPER"
+      ],
+      "text": "Shielded (When you play this unit, give a Shield token to it.)\nRestore 1 (When this unit attacks, heal 1 damage from your base.)",
       "printings": [
         {
           "num": "247",
@@ -7549,6 +9870,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When Played: You may attach a friendly upgrade on a friendly unit to a different eligible unit.",
       "printings": [
         {
           "num": "248",
@@ -7590,6 +9923,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "When you play another unique unit: You may use the Force (lose your Force token). If you do, give an Experience token and a Shield token to this unit.",
       "printings": [
         {
           "num": "249",
@@ -7629,6 +9973,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "On Attack: You may heal 2 damage from another unit.",
       "printings": [
         {
           "num": "250",
@@ -7656,6 +10012,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 5,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Raid 1 (This unit gets +1/+0 while attacking.)",
       "printings": [
         {
           "num": "251",
@@ -7685,6 +10053,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "When damage is dealt to your base: You may use the Force (lose your Force token). If you do, heal 2 damage from your base.",
       "printings": [
         {
           "num": "252",
@@ -7724,6 +10102,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 6,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Restore 1 (When this unit attacks, heal 1 damage from your base.)",
       "printings": [
         {
           "num": "253",
@@ -7749,6 +10139,15 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 0,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
       "printings": [
         {
           "num": "254",
@@ -7774,6 +10173,16 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "When Played: Pay up to 6. For each resource paid this way, give an Experience token to this unit.",
       "printings": [
         {
           "num": "255",
@@ -7799,6 +10208,16 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
       "printings": [
         {
           "num": "256",
@@ -7824,6 +10243,16 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 2,
+      "power": 2,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Ambush (When you play this unit, it may attack an enemy unit.)",
       "printings": [
         {
           "num": "257",
@@ -7851,6 +10280,16 @@
       "rarity": "Uncommon",
       "aspects": [],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "On Attack: Give an Experience token to a friendly Vehicle or Droid unit.",
       "printings": [
         {
           "num": "258",
@@ -7876,6 +10315,16 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 5,
+      "power": 5,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "When Played: Deal 1 damage to a ground unit.",
       "printings": [
         {
           "num": "259",
@@ -7903,6 +10352,16 @@
       "rarity": "Legendary",
       "aspects": [],
       "unique": true,
+      "cost": 8,
+      "power": 5,
+      "hp": 10,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "When you use the Force: You may deal 1 damage to this unit. If you do, the Force is with you.",
       "printings": [
         {
           "num": "260",
@@ -7940,6 +10399,15 @@
       "type": "Upgrade",
       "rarity": "Legendary",
       "aspects": [],
+      "cost": 3,
+      "power": 2,
+      "hp": 3,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a Force unit. \nIf attached unit is a Heroism unit, it gains Restore 2. \nIf attached unit is a Villainy unit, it gains Raid 2. \nIf attached unit is a non-Heroism, non-Villainy unit, it gains Sentinel.",
       "printings": [
         {
           "num": "261",
@@ -7965,6 +10433,11 @@
       "type": "Event",
       "rarity": "Common",
       "aspects": [],
+      "cost": 2,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Choose a unit. It can't be attacked this phase (unless it has Sentinel).",
       "printings": [
         {
           "num": "262",
@@ -7990,6 +10463,11 @@
       "type": "Event",
       "rarity": "Common",
       "aspects": [],
+      "cost": 2,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "If a friendly unit was defeated this phase, give 2 Experience tokens to a unit.",
       "printings": [
         {
           "num": "263",
@@ -8015,6 +10493,11 @@
       "type": "Event",
       "rarity": "Common",
       "aspects": [],
+      "cost": 7,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "Defeat a non-leader unit.",
       "printings": [
         {
           "num": "264",

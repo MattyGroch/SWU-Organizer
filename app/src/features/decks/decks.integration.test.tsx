@@ -168,6 +168,72 @@ describe('decks tab, end to end', () => {
     });
   });
 
+  it('edits a deck: moves a card to the sideboard and adds one from the lookup', async () => {
+    const user = userEvent.setup();
+    await own(1, 1);
+    await own(19, 1);
+    await own(33, 3);
+    await renderDecks();
+    await pasteAndSave(user);
+
+    await user.click(within(myDecks()).getByRole('link', { name: 'Edit' }));
+    const main = await screen.findByRole('region', { name: 'Main deck' }, { timeout: 5000 });
+    await user.click(within(main).getByRole('button', { name: /Move one Death Trooper to/ }));
+    const side = screen.getByRole('region', { name: 'Sideboard' });
+    expect(within(side).getByText('Death Trooper')).toBeInTheDocument();
+
+    // Not owned, so only "All cards" finds it. SOR has rotated, so the deck goes Eternal.
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Format' }), 'eternal');
+    await user.click(screen.getByRole('button', { name: 'All cards' }));
+    await user.click(screen.getByRole('button', { name: 'In aspect' }));
+    await user.type(screen.getByRole('searchbox', { name: 'Search cards' }), 'Vanquish');
+    const results = screen.getByRole('list', { name: 'Search results' });
+    await user.click(within(results).getAllByRole('button', { name: /to the main deck/ })[0]!);
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+
+    await screen.findByRole('heading', { name: 'My decks' });
+    const [deck] = (await readDeckLibrary()).customDecks;
+    expect(deck).toMatchObject({ format: 'eternal', sideboard: [{ baseNumber: 33, count: 1 }] });
+    expect(deck?.mainDeck).toHaveLength(2);
+    expect(deck?.mainDeck[0]).toMatchObject({ baseNumber: 33, count: 2 });
+    expect(within(myDecks()).getByText('Eternal')).toBeInTheDocument();
+  });
+
+  it('editing a built deck lists the dropped copies to put back', async () => {
+    const user = userEvent.setup();
+    await own(1, 1);
+    await own(19, 1);
+    await own(33, 3);
+    await renderDecks();
+    await pasteAndSave(user);
+    await user.click(within(myDecks()).getByRole('button', { name: 'Construct' }));
+    const build = screen.getByRole('dialog', { name: /Construct: Krennic Troopers/ });
+    await user.click(within(build).getByRole('button', { name: 'Mark as built' }));
+    expect(await within(myDecks()).findByText('Built')).toBeInTheDocument();
+
+    await user.click(within(myDecks()).getByRole('link', { name: 'Edit' }));
+    const main = await screen.findByRole('region', { name: 'Main deck' }, { timeout: 5000 });
+    await user.click(within(main).getByRole('button', { name: 'One fewer Death Trooper' }));
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+
+    const putBack = screen.getByRole('dialog', { name: /Put back: Krennic Troopers/ });
+    expect(within(putBack).getByText('Death Trooper')).toBeInTheDocument();
+    await user.click(within(putBack).getByRole('button', { name: 'Save and mark as put back' }));
+
+    await waitFor(async () => {
+      const [deck] = (await readDeckLibrary()).customDecks;
+      expect(deck?.mainDeck).toEqual([{ setKey: 'SOR', baseNumber: 33, count: 2 }]);
+      expect(deck?.constructed).toBe(true);
+      expect(deck?.pulledCards).toContainEqual({
+        setKey: 'SOR',
+        baseNumber: 33,
+        count: 2,
+        variants: { normal: 2 },
+      });
+    });
+    expect(await within(myDecks()).findByText('Built')).toBeInTheDocument();
+  });
+
   it('builds with cards missing, telling owned-elsewhere from not owned', async () => {
     const user = userEvent.setup();
     // Own all three Death Troopers, but deck A already has two in its box.

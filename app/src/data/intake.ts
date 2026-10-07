@@ -7,6 +7,7 @@ import {
 } from '~/domain/deckContents';
 import { formatDeckList, type DeckRole, type ResolvedDeckRow } from '~/domain/decklist';
 import { createSavedDeck, parseDeckLibrary, type SavedDeck } from '~/domain/decks';
+import { newId } from '~/domain/id';
 import {
   NO_HOMES,
   addVariants,
@@ -61,7 +62,7 @@ export async function queueDeck(
     counts.set(key, (counts.get(key) ?? 0) + ref.count);
   }
 
-  const batchId = crypto.randomUUID();
+  const batchId = newId();
   const lines: IntakeLine[] = [];
   let order = 0;
   for (const [key, count] of counts) {
@@ -69,7 +70,7 @@ export async function queueDeck(
     const printing = sourcePrinting(sets.get(setKey)?.printingsByBase.get(baseNumber) ?? []);
     if (!printing) continue;
     lines.push({
-      id: crypto.randomUUID(),
+      id: newId(),
       batchId,
       setKey,
       base: baseNumber,
@@ -132,7 +133,7 @@ export async function queueScan(
     const open = (await database.intakeBatches.toArray())
       .filter((b) => b.kind === kind)
       .sort((a, b) => b.createdAt - a.createdAt)[0];
-    const batchId = open?.id ?? crypto.randomUUID();
+    const batchId = open?.id ?? newId();
     if (!open) {
       await database.intakeBatches.add({
         id: batchId,
@@ -149,7 +150,7 @@ export async function queueScan(
       await database.intakeLines.update(same.id, { count: same.count + 1 });
       return { batchId, lineId: same.id, createdBatch: !open, createdLine: false };
     }
-    const id = crypto.randomUUID();
+    const id = newId();
     await database.intakeLines.add({
       id,
       batchId,
@@ -247,7 +248,7 @@ async function bump(
   if (delta <= 0) return;
   const order = lines.length ? Math.min(...lines.map((l) => l.order)) : Date.now();
   await database.intakeLines.add({
-    id: crypto.randomUUID(),
+    id: newId(),
     ...card,
     num: printing.num,
     variant: printing.variant,

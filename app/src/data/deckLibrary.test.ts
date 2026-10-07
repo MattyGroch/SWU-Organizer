@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import type { SavedDeck } from '~/domain/decks';
 
 import { SwuDatabase } from './db';
-import { deconstructDeck, readDeckLibrary, writeDeckLibraryQuietly } from './deckLibrary';
+import { deconstructDeck, editDeck, readDeckLibrary, writeDeckLibraryQuietly } from './deckLibrary';
 
 const ref = (baseNumber: number, count: number) => ({ setKey: 'SOR', baseNumber, count });
 
@@ -65,5 +65,38 @@ describe('deconstructDeck', () => {
     expect(await deconstructDeck('a', () => 3, database)).toBe(1);
     expect(await row('298')).toEqual([2, 0]);
     expect(await row('033')).toEqual([3, 2]);
+  });
+});
+
+describe('editDeck', () => {
+  let database: SwuDatabase;
+
+  beforeEach(async () => {
+    database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+    await writeDeckLibraryQuietly({ customDecks: [deck], preconOwnership: {} }, database);
+  });
+
+  const edit = (mainDeck: Array<{ setKey: string; baseNumber: number; count: number }>) => ({
+    contents: { leader: ref(1, 1), base: ref(19, 1), mainDeck, sideboard: [] },
+    format: 'eternal' as const,
+    name: 'A',
+    sourceText: '',
+  });
+
+  it('saves the list and returns the copies it dropped, bulk copy first', async () => {
+    await database.owned.put({
+      id: 'SOR:298',
+      setKey: 'SOR',
+      base: 33,
+      num: '298',
+      variant: 'hyperspace',
+      count: 2,
+      updatedAt: 0,
+    });
+    expect(await editDeck('a', edit([ref(33, 2)]), () => 3, database)).toBe(0);
+    const saved = (await readDeckLibrary(database)).customDecks[0]!;
+    expect(saved).toMatchObject({ constructed: true, format: 'eternal', mainDeck: [ref(33, 2)] });
+    expect(saved.pulledCards).toEqual([{ ...ref(33, 2), variants: { hyperspace: 2 } }]);
   });
 });

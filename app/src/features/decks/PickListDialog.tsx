@@ -35,6 +35,11 @@ type Props = {
   onConstruct: (pulls: DeckCardRef[], takes: TakeFromDeck[]) => void;
   /** Resolves to how many copies went to bulk because their pocket had filled up. */
   onDeconstruct: () => Promise<number>;
+  /**
+   * Deconstruct mode for an edited deck: only the copies leaving its box, and the library
+   * once they have. Without it, the whole box goes back.
+   */
+  putBack?: { refs: DeckCardRef[]; after: DeckLibrary };
 };
 
 type Named = { name: string; subtitle?: string; aspects?: string[] };
@@ -62,6 +67,7 @@ export function PickListDialog({
   onClose,
   onConstruct,
   onDeconstruct,
+  putBack,
 }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const showToast = useToast();
@@ -177,11 +183,16 @@ export function PickListDialog({
       showToast({
         tone: 'success',
         message:
-          `“${deck.name}” put away.` +
+          (putBack ? `“${deck.name}” saved, cards put back.` : `“${deck.name}” put away.`) +
           (moved ? ` ${moved} ${moved === 1 ? 'copy' : 'copies'} went to the bulk box.` : ''),
       });
     } catch {
-      showToast({ tone: 'danger', message: `“${deck.name}” could not be put away.` });
+      showToast({
+        tone: 'danger',
+        message: putBack
+          ? `“${deck.name}” could not be saved.`
+          : `“${deck.name}” could not be put away.`,
+      });
     }
   }
 
@@ -189,14 +200,14 @@ export function PickListDialog({
     if (mode !== 'deconstruct') return null;
     const toBinder: DeckCardRef[] = [];
     const toBulk: PrintedLine[] = [];
-    for (const ref of deck.pulledCards) {
+    for (const ref of putBack?.refs ?? deck.pulledCards) {
       const bulk = ref.fromBulk ?? {};
       const binder = sumVariants(subtractVariants(ref.variants ?? { normal: ref.count }, bulk));
       if (binder > 0) toBinder.push({ ...ref, count: binder });
       if (sumVariants(bulk) > 0) toBulk.push({ ...ref, printings: bulk });
     }
     // Pockets that filled up while these were out keep only their best playset.
-    const heldAfter = heldByHome(applyDeconstruct(library, deck.id));
+    const heldAfter = heldByHome(putBack?.after ?? applyDeconstruct(library, deck.id));
     const overflow: PrintedLine[] = [];
     for (const ref of toBinder) {
       const key = cardKey(ref.setKey, ref.baseNumber);
@@ -213,7 +224,7 @@ export function PickListDialog({
       bulk: inCardOrder(toBulk, setOrder),
       overflow: inCardOrder(overflow, setOrder),
     };
-  }, [mode, deck, library, homes, quotaOf, lookup, setOrder]);
+  }, [mode, deck, library, homes, quotaOf, lookup, setOrder, putBack]);
 
   return (
     <dialog
@@ -224,8 +235,14 @@ export function PickListDialog({
     >
       <div className={styles.header}>
         <h2 id="pick-list-title" className={styles.title}>
-          {mode === 'deconstruct' ? 'Deconstruct' : deck.constructed ? 'Complete' : 'Construct'}:{' '}
-          {deck.name}
+          {mode === 'deconstruct'
+            ? putBack
+              ? 'Put back'
+              : 'Deconstruct'
+            : deck.constructed
+              ? 'Complete'
+              : 'Construct'}
+          : {deck.name}
         </h2>
         <button type="button" className={styles.secondary} onClick={close}>
           Close
@@ -235,7 +252,9 @@ export function PickListDialog({
       {mode === 'deconstruct' && putAway ? (
         <div className={styles.body}>
           <p className={styles.lead}>
-            Flip through your binders front to back and put each card below back in its slot.
+            {putBack
+              ? 'The edited list no longer holds these. Take them out of the deck box and put each one back in its slot, front to back through your binders.'
+              : 'Flip through your binders front to back and put each card below back in its slot.'}
           </p>
           <p className={styles.totals}>
             <strong>{putAway.binderCount}</strong> to the binder
@@ -277,7 +296,7 @@ export function PickListDialog({
           )}
           <div className={styles.buttons}>
             <button type="button" className={styles.primary} onClick={() => void markReturned()}>
-              Mark as put away
+              {putBack ? 'Save and mark as put back' : 'Mark as put away'}
             </button>
           </div>
         </div>

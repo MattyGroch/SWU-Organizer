@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { checkDeckLegality, deckStats, detectPlayFormat } from './deckLegality';
+import {
+  buildCardPool,
+  checkDeckLegality,
+  deckStats,
+  detectPlayFormat,
+  isLegalIn,
+} from './deckLegality';
 import type { ResolvedDeckRow } from './decklist';
 
 function row(
@@ -224,5 +230,40 @@ describe('checkDeckLegality — explicit format choice', () => {
   it('judges a Twin Suns deck against Premier rules when asked', () => {
     const result = checkDeckLegality(twinSunsDeck, 'premier');
     expect(result.issues.map((i) => i.code)).toEqual(['leader-count']);
+  });
+});
+
+describe('Premier rotation', () => {
+  const card = (Name: string, Number: number) => ({ Name, Number, Set: '' });
+  const pool = buildCardPool([
+    { setKey: 'SOR', baseCards: [card('Card 1', 1), card('Card 2', 2), card('Vanquish', 3)] },
+    { setKey: 'LAW', baseCards: [card('Vanquish', 90)] },
+  ]);
+
+  it('a card printed only in a rotated set is not Premier-legal; a reprint keeps it legal', () => {
+    expect(isLegalIn('premier', { name: 'Card 1', setKey: 'SOR' }, pool)).toBe(false);
+    expect(isLegalIn('premier', { name: 'Vanquish', setKey: 'SOR' }, pool)).toBe(true);
+    expect(isLegalIn('eternal', { name: 'Card 1', setKey: 'SOR' }, pool)).toBe(true);
+    expect(isLegalIn('twinSuns', { name: 'Card 1', setKey: 'SOR' }, pool)).toBe(true);
+  });
+
+  it('flags rotated cards in Premier only, once per title', () => {
+    const rows = [
+      row({ role: 'leader', setKey: 'SOR', baseNumber: 1, count: 1, name: 'Card 1' }),
+      row({ role: 'base', setKey: 'LAW', baseNumber: 2, count: 1, name: 'Card 2' }),
+      ...Array.from({ length: 17 }, () =>
+        row({ role: 'deck', setKey: 'SOR', baseNumber: 3, count: 3, name: 'Vanquish' }),
+      ),
+    ];
+    const premier = checkDeckLegality(rows, 'premier', pool).issues.filter(
+      (i) => i.code === 'rotated',
+    );
+    expect(premier.map((i) => i.message)).toEqual([
+      'Card 1 has rotated out of Premier — none of its sets are legal.',
+      'Card 2 has rotated out of Premier — none of its sets are legal.',
+    ]);
+    expect(checkDeckLegality(rows, 'eternal', pool).issues.some((i) => i.code === 'rotated')).toBe(
+      false,
+    );
   });
 });

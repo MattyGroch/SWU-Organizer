@@ -1,13 +1,10 @@
 import { useNavigate } from '@tanstack/react-router';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { queueDeck } from '~/data/intake';
 
 import type { LoadedSet } from '~/domain/catalog';
-import { available, type HomeLookup, type OwnedLookup } from '~/domain/deckBuild';
-import type { DeckLookupSet } from '~/domain/decklist';
 import type { SavedDeck } from '~/domain/decks';
-import { homesOf, NO_HOMES, type OwnedCounts, quotaForCard } from '~/domain/ownership';
 import type { PreconCatalogEntry } from '~/domain/precons';
 import type { SetKey } from '~/domain/types';
 import { useToast } from '~/ui/toastContext';
@@ -17,11 +14,12 @@ import styles from './DecksPage.module.css';
 import { PickListDialog } from './PickListDialog';
 import { PreconList } from './PreconList';
 import { SavedDecks } from './SavedDecks';
+import { useDeckCollection, type OwnershipBySet } from './useDeckCollection';
 import { useDeckLibrary } from './useDeckLibrary';
 
 type Props = {
   sets: Map<SetKey, LoadedSet>;
-  binderOwnership: Map<SetKey, ReadonlyMap<number, OwnedCounts>>;
+  binderOwnership: OwnershipBySet;
   precons: PreconCatalogEntry[];
 };
 
@@ -35,43 +33,11 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
     mode: 'construct' | 'deconstruct';
   } | null>(null);
 
-  const lookup = useMemo<Map<SetKey, DeckLookupSet>>(() => {
-    const map = new Map<SetKey, DeckLookupSet>();
-    for (const [setKey, set] of sets) {
-      map.set(setKey, { byNumber: set.byNumber, baseCards: set.baseCards });
-    }
-    return map;
-  }, [sets]);
-  const setOrder = useMemo(() => [...sets.keys()], [sets]);
-
-  /**
-   * Copies you can build with: the whole collection, bulk box and cards already in built
-   * decks included. Precons are left out on purpose — they stay sealed, so their cards are
-   * owned but never available to a deck.
-   */
-  const owned = useMemo<OwnedLookup>(
-    () => (setKey, base) => binderOwnership.get(setKey)?.get(base)?.total ?? 0,
-    [binderOwnership],
+  const { lookup, setOrder, owned, homes, pullable, quotaOf } = useDeckCollection(
+    sets,
+    binderOwnership,
+    library,
   );
-  /** The same, per home and printing — where a deck takes copies from, and returns them. */
-  const homes = useMemo<HomeLookup>(
-    () => (setKey, base) => {
-      const counts = binderOwnership.get(setKey)?.get(base);
-      return counts ? homesOf(counts) : NO_HOMES;
-    },
-    [binderOwnership],
-  );
-  const pullable = useMemo<OwnedLookup>(() => {
-    const free = available(homes, library);
-    return (setKey, base) => {
-      const { binder, bulk } = free(setKey, base);
-      return binder + bulk;
-    };
-  }, [homes, library]);
-  const quotaOf = (setKey: SetKey, base: number) => {
-    const card = sets.get(setKey)?.cardsByBase.get(base);
-    return card ? quotaForCard(card) : Infinity;
-  };
 
   function onDelete(deck: SavedDeck, index: number) {
     void deckLibrary.deleteDeck(deck.id);

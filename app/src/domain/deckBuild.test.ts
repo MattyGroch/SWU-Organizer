@@ -3,9 +3,11 @@ import { describe, expect, it } from 'vitest';
 import {
   adjustInBox,
   applyConstruct,
+  applyDeckEdit,
   applyDeconstruct,
   available,
   deckStatus,
+  editReturns,
   heldVariants,
   inPlace,
   planConstruct,
@@ -343,5 +345,80 @@ describe('the bulk box', () => {
       homes,
     );
     expect(boxOf(lib, 'b')).toEqual([ref(33, 1, { hyperspace: 1 }, { hyperspace: 1 })]);
+  });
+});
+
+describe('editing a deck', () => {
+  const contents = (
+    mainDeck: ReturnType<typeof ref>[],
+    sideboard: ReturnType<typeof ref>[] = [],
+  ) => ({
+    leader: ref(1, 1),
+    base: ref(19, 1),
+    mainDeck,
+    sideboard,
+  });
+  const edit = (c: ReturnType<typeof contents>) => ({
+    contents: c,
+    format: 'premier' as const,
+    name: 'A',
+    sourceText: 'new',
+  });
+  // Built with sideboard: 3× #33 (2 Hyperspace, 1 Normal) and #40, a Prestige from bulk.
+  const built = deck('a', {
+    constructed: true,
+    pulledCards: [
+      ref(1, 1, { normal: 1 }),
+      ref(19, 1, { normal: 1 }),
+      ref(33, 3, { hyperspace: 2, normal: 1 }),
+      ref(40, 1, { prestige: 1 }, { prestige: 1 }),
+    ],
+  });
+
+  it('returns nothing for a deck that is not built', () => {
+    expect(editReturns(library(deck('a')), 'a', contents([]))).toEqual([]);
+  });
+
+  it('moving a card between main deck and sideboard leaves the box alone', () => {
+    const moved = contents([ref(33, 2), ref(40, 1)], [ref(33, 1)]);
+    expect(editReturns(library(built), 'a', moved)).toEqual([]);
+    const next = applyDeckEdit(library(built), 'a', edit(moved));
+    expect(boxOf(next, 'a')).toEqual(built.pulledCards);
+    expect(next.customDecks[0]).toMatchObject({ format: 'premier', sourceText: 'new' });
+  });
+
+  it('a dropped card goes back with its printing and home; the least valuable first', () => {
+    const returns = editReturns(library(built), 'a', contents([ref(33, 1)]));
+    expect(returns).toEqual([
+      ref(33, 2, { normal: 1, hyperspace: 1 }),
+      ref(40, 1, { prestige: 1 }, { prestige: 1 }),
+    ]);
+    const next = applyDeckEdit(library(built), 'a', edit(contents([ref(33, 1)])));
+    expect(boxOf(next, 'a')).toEqual([
+      ref(1, 1, { normal: 1 }),
+      ref(19, 1, { normal: 1 }),
+      ref(33, 1, { hyperspace: 1 }),
+    ]);
+  });
+
+  it('a new card leaves the deck built and missing it', () => {
+    const next = applyDeckEdit(library(built), 'a', edit(contents([ref(33, 3), ref(50, 2)])));
+    const after = next.customDecks[0]!;
+    expect(after.constructed).toBe(true);
+    expect(deckStatus(after, next, owning({ 50: 2 }))).toMatchObject({
+      state: 'partial',
+      missingOwned: 2,
+    });
+  });
+
+  it('a new leader replaces the old one, and the old one comes home', () => {
+    const swapped = { ...contents([ref(33, 3)], [ref(40, 1)]), leader: ref(2, 1) };
+    expect(editReturns(library(built), 'a', swapped)).toEqual([ref(1, 1, { normal: 1 })]);
+    const twin = applyDeckEdit(
+      library(deck('t', { secondLeader: ref(3, 1) })),
+      't',
+      edit(contents([])),
+    );
+    expect(twin.customDecks[0]).not.toHaveProperty('secondLeader');
   });
 });

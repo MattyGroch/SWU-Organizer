@@ -1,5 +1,7 @@
 import type { DBCore, DBCoreTable, Middleware } from 'dexie';
 
+import { newId } from '~/domain/id';
+
 /**
  * Whether the app's storage is answering — and whether another copy of the app is open.
  *
@@ -119,7 +121,7 @@ export function startInstanceWatch(
   { locks = globalThis.navigator?.locks, recheckMs = 15_000 } = {},
 ): () => void {
   if (!locks) return () => {};
-  const name = `${INSTANCE_LOCK}${crypto.randomUUID()}`;
+  const name = `${INSTANCE_LOCK}${newId()}`;
   let release: () => void = () => {};
   let stopped = false;
   const channel = 'BroadcastChannel' in globalThis ? new BroadcastChannel(INSTANCE_LOCK) : null;

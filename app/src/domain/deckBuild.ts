@@ -1,5 +1,6 @@
 import type { VariantSlug } from './catalog';
 import type { DeckCardRef, DeckContents } from './deckContents';
+import type { PlayFormat } from './deckLegality';
 import type { DeckLibrary, SavedDeck } from './decks';
 import {
   DECK_PULL_ORDER,
@@ -417,6 +418,90 @@ export function adjustInBox(
     ...library,
     customDecks: library.customDecks.map((d) =>
       d.id === deckId ? touch(d, { pulledCards: boxToRefs(box) }, now) : d,
+    ),
+  };
+}
+
+/** `count` copies to send back from a box: bulk-box copies first, then the least valuable. */
+function takeBack(from: Homes, count: number): Homes {
+  const bulk = takeVariants(from.bulk, count, RETURN_ORDER);
+  return { binder: takeVariants(from.binder, count - sumVariants(bulk), RETURN_ORDER), bulk };
+}
+
+/**
+ * What leaves a built deck's box when its list changes to `contents`: every copy beyond
+ * what the new list holds, sideboard included. Each comes back with its printings and the
+ * home it returns to, like a deconstruct. Nothing for a deck that is not built.
+ */
+export function editReturns(
+  library: DeckLibrary,
+  deckId: string,
+  contents: DeckContents,
+): DeckCardRef[] {
+  const deck = library.customDecks.find((d) => d.id === deckId);
+  if (!deck?.constructed) return [];
+  const required = requiredCounts(contents, true);
+  const returns = new Map<CardKey, Homes>();
+  for (const [key, homes] of deckHoldings(library).get(deckId) ?? []) {
+    const extra = sumVariants(homes.binder) + sumVariants(homes.bulk) - (required.get(key) ?? 0);
+    if (extra > 0) returns.set(key, takeBack(homes, extra));
+  }
+  return boxToRefs(returns);
+}
+
+export type DeckEdit = {
+  contents: DeckContents;
+  format: PlayFormat;
+  name: string;
+  sourceText: string;
+};
+
+/**
+ * Saves a new list for a deck. A built deck stays built: copies the list no longer holds
+ * leave its box (`editReturns`), and cards it now lists but the box lacks leave it missing
+ * them, for Complete to pull.
+ */
+export function applyDeckEdit(
+  library: DeckLibrary,
+  deckId: string,
+  edit: DeckEdit,
+  now = new Date().toISOString(),
+): DeckLibrary {
+  const deck = library.customDecks.find((d) => d.id === deckId);
+  if (!deck) return library;
+
+  let pulledCards = deck.pulledCards;
+  if (deck.constructed) {
+    const box = new Map(deckHoldings(library).get(deckId) ?? []);
+    for (const ref of editReturns(library, deckId, edit.contents)) {
+      const key = cardKey(ref.setKey, ref.baseNumber);
+      box.set(key, subtractHomes(box.get(key) ?? NO_HOMES, refHomes(ref)));
+    }
+    pulledCards = boxToRefs(box);
+  }
+
+  const { secondLeader: _old, ...rest } = deck;
+  const { leader, secondLeader, base, mainDeck, sideboard } = edit.contents;
+  return {
+    ...library,
+    customDecks: library.customDecks.map((d) =>
+      d.id === deckId
+        ? touch(
+            rest,
+            {
+              leader,
+              ...(secondLeader && { secondLeader }),
+              base,
+              mainDeck,
+              sideboard,
+              format: edit.format,
+              name: edit.name.trim() || deck.name,
+              sourceText: edit.sourceText,
+              pulledCards,
+            },
+            now,
+          )
+        : d,
     ),
   };
 }

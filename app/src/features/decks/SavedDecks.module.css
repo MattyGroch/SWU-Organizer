@@ -179,6 +179,8 @@
 
 .action {
   composes: ui-btn from global;
+  color: inherit;
+  text-decoration: none;
 }
 
 .action:hover {
