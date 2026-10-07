@@ -19,7 +19,7 @@ import {
   type SetManifestEntry,
 } from '~/domain/catalog';
 import { heldInSet } from '~/domain/deckBuild';
-import { NO_HOMES, ownedFor, pocketCounts, weakestVariant } from '~/domain/ownership';
+import { NO_HOMES, ownedFor, pocketCounts, quotaForCard, weakestVariant } from '~/domain/ownership';
 import type { Card } from '~/domain/types';
 import type { SearchCatalog, SearchSuggestion } from '~/domain/search';
 
@@ -50,7 +50,6 @@ import { BulkEditDialog } from '~/features/bulk/BulkEditDialog';
 import { ImportDialog } from '~/features/import/ImportDialog';
 import { CardSearch } from '~/features/search/CardSearch';
 import { InventoryNav } from '~/features/inventory/InventoryNav';
-import { useQuota } from '~/features/inventory/useQuota';
 import type { InventoryView } from '~/features/inventory/views';
 import { formatUsd } from '~/ui/format';
 import { useToast } from '~/ui/toastContext';
@@ -77,7 +76,6 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   /** Phones get a shorter stack of controls, so the card table has the screen. */
   const narrow = useNarrow();
   const showBinder = view === 'binder';
-  const quota = useQuota();
   const moreRef = useRef<HTMLDetailsElement>(null);
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
@@ -121,8 +119,8 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   const held = useMemo(() => heldInSet(library, set.setKey), [library, set.setKey]);
 
   const rows = useMemo(
-    () => buildCardRows(set, ownership, filters, held, quota),
-    [set, ownership, filters, held, quota],
+    () => buildCardRows(set, ownership, filters, held),
+    [set, ownership, filters, held],
   );
 
   /**
@@ -136,7 +134,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
         void removeFromPocket(set.setKey, base, printing.variant);
         return;
       }
-      const playset = quota({ type: card.Type, maxCopies: card.MaxCopies });
+      const playset = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
       void addToPocket(set.setKey, base, printing, playset).then((result) => {
         if (result.kind === 'full') {
           showToast({
@@ -153,7 +151,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
         }
       });
     },
-    [set.setKey, quota, showToast],
+    [set.setKey, showToast],
   );
   const totals = useMemo(() => collectionTotals(rows), [rows]);
   // The copy buttons take exactly the rows the table shows, so filters decide what goes
@@ -227,9 +225,9 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     const printing = defaultPrinting(set, card.Number);
     if (!printing) return;
 
-    const playset = quota({ type: card.Type, maxCopies: card.MaxCopies });
+    const playset = quotaForCard({ type: card.Type, maxCopies: card.MaxCopies });
     void fillPocket(set.setKey, card.Number, printing, playset);
-  }, [binder.active, set, quota]);
+  }, [binder.active, set]);
 
   /**
    * Shift+minus — empty the pocket, with undo rather than a confirmation prompt. Bulk and
@@ -566,7 +564,10 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
           held={(binder.active && held.get(binder.active.card.Number)) || NO_HOMES}
           quota={
             binder.active
-              ? quota({ type: binder.active.card.Type, maxCopies: binder.active.card.MaxCopies })
+              ? quotaForCard({
+                  type: binder.active.card.Type,
+                  maxCopies: binder.active.card.MaxCopies,
+                })
               : 0
           }
           onAdjust={adjustDefault}

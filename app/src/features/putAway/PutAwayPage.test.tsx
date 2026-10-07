@@ -369,7 +369,8 @@ describe('PutAwayPage', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Wrong card?' }));
     await userEvent.click(screen.getByRole('button', { name: /There’s another copy/ }));
     await waitFor(async () => expect(await queued()).toEqual(['001×2', '059×1', '080×1']));
-    expect(await screen.findByText(/Step 1 of 8/)).toBeInTheDocument();
+    // A Leader's pocket holds one, so the second Krennic joins the scout in the bulk box.
+    expect(await screen.findByText(/Step 1 of 7/)).toBeInTheDocument();
     expect((await stackCards(stackId)).map((c) => c.base)).toEqual([80, 59, 1, 1]);
   });
 });
