@@ -176,6 +176,8 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     [visibleEntries, set.setKey, navigate, view],
   );
 
+  const setIndex = visibleEntries.findIndex((e) => e.key === set.setKey);
+
   const adjustDefault = useCallback(
     (delta: number) => {
       const card = binder.active?.card;
@@ -434,6 +436,14 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     </dl>
   );
 
+  const table = (
+    <CardTable
+      rows={rows}
+      selectedBase={binder.active?.card.Number ?? null}
+      onSelect={binder.selectNumber}
+    />
+  );
+
   /** Run a More-menu action and fold the menu away. */
   function fromMore(action: () => void) {
     if (moreRef.current) moreRef.current.open = false;
@@ -648,11 +658,19 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
             </div>
           )}
 
-          <CardTable
-            rows={rows}
-            selectedBase={binder.active?.card.Number ?? null}
-            onSelect={binder.selectNumber}
-          />
+          {narrow ? (
+            // Swiping the list turns to the next set, wrapping from the last to the first.
+            <SwipePage
+              page={setIndex}
+              canPrev={visibleEntries.length > 1}
+              canNext={visibleEntries.length > 1}
+              onStep={goToSet}
+            >
+              {table}
+            </SwipePage>
+          ) : (
+            table
+          )}
         </>
       )}
     </div>

@@ -3,7 +3,11 @@ import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 're
 import styles from './SwipePage.module.css';
 
 type Props = {
-  /** The page on screen; when it changes, the new page slides in from that side. */
+  /**
+   * The page on screen; when it changes, the new page slides in from that side. A swipe
+   * sets the side itself, so a list that wraps (last set → first) still slides the way
+   * the finger went.
+   */
   page: number;
   canPrev: boolean;
   canNext: boolean;
@@ -47,6 +51,8 @@ export function SwipePage({ page, canPrev, canNext, onStep, children }: Props) {
   const dragged = useRef(false);
   const turning = useRef(false);
   const previous = useRef(page);
+  /** The direction of the swipe that asked for the page now arriving. */
+  const swiped = useRef<1 | -1 | null>(null);
 
   const width = () => ref.current?.offsetWidth || window.innerWidth;
 
@@ -55,13 +61,15 @@ export function SwipePage({ page, canPrev, canNext, onStep, children }: Props) {
     const from = previous.current;
     previous.current = page;
     turning.current = false;
+    const direction = swiped.current ?? (page > from ? 1 : -1);
+    swiped.current = null;
     if (from === page || reducedMotion()) {
       setAnimate(false);
       setOffset(0);
       return;
     }
     setAnimate(false);
-    setOffset((page > from ? 1 : -1) * width());
+    setOffset(direction * width());
   }, [page]);
 
   // …then glides to rest on the next frame, once the starting position has painted.
@@ -120,6 +128,7 @@ export function SwipePage({ page, canPrev, canNext, onStep, children }: Props) {
     }
     // Off it goes; the new page slides in from the far side once this one has left.
     turning.current = true;
+    swiped.current = direction;
     setAnimate(true);
     setOffset(-direction * width());
     window.setTimeout(() => onStep(direction), TURN_MS);
