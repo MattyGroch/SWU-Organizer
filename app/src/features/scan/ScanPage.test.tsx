@@ -193,6 +193,29 @@ describe('ScanPage', () => {
     await waitFor(async () => expect(await stack()).toEqual([]));
   });
 
+  it('scans a deck into its own batch, with no stack and no bulk to mind', async () => {
+    await fillPocket();
+    renderPage();
+    await userEvent.click(await screen.findByRole('radio', { name: 'Scan a deck' }));
+    await waitFor(() => expect(fire).not.toBeNull());
+    await act(async () => {
+      fire!({
+        matches: [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)],
+        at: 1,
+        afterGap: true,
+        tooClose: false,
+      });
+    });
+    expect(await screen.findByText('Added to the scanned deck')).toBeInTheDocument();
+    await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
+    expect((await db.intakeBatches.toArray()).map((b) => b.kind)).toEqual(['deckScan']);
+    expect(await stack()).toEqual([]);
+
+    // Rescan takes it back out of the deck.
+    await userEvent.click(screen.getByRole('button', { name: 'Rescan' }));
+    await waitFor(async () => expect(await db.intakeBatches.count()).toBe(0));
+  });
+
   it('logs every scan in order, one per copy, and corrects one in place', async () => {
     renderPage();
     await waitFor(() => expect(fire).not.toBeNull());

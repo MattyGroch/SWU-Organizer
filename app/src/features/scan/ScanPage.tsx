@@ -3,7 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { db } from '~/data/db';
-import { sourcePrinting, unqueueScan, type ScanReceipt } from '~/data/intake';
+import { queueScan, sourcePrinting, unqueueScan, type ScanReceipt } from '~/data/intake';
 import { dropScan, logScan, updateScan } from '~/data/stacks';
 import { binderLayout } from '~/domain/binder';
 import {
@@ -31,7 +31,11 @@ import { stackEntry, usePlaceScan, type Printing } from './usePlaceScan';
 import { useScanIndex } from './useScanIndex';
 import { useScanner, type ScanResult } from './useScanner';
 
-type Mode = 'info' | 'add';
+/**
+ * `add` queues loose cards for the binder; `deck` queues a built deck, kept apart in its own
+ * batch with no stack to put away; `info` only looks cards up.
+ */
+type Mode = 'info' | 'add' | 'deck';
 
 /**
  * How far ahead of every other card the winner must be (in score points) to be added
@@ -155,7 +159,16 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     [sets],
   );
 
-  const place = usePlaceScan(sets);
+  const placeLoose = usePlaceScan(sets);
+  /** Queues a scan for the mode it was made in. A deck's copies have no pocket to mind. */
+  const place = useCallback(
+    async (printing: Printing): Promise<Pick<Item, 'receipt' | 'room'>> =>
+      mode === 'deck'
+        ? { receipt: await queueScan(printing, { kind: 'deckScan' }), room: null }
+        : placeLoose(printing),
+    [mode, placeLoose],
+  );
+  const queuing = mode !== 'info';
 
   /** The printing as recorded: its foil counterpart in Foils mode, where one exists. */
   const asFound = useCallback(
@@ -223,12 +236,12 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       let placed: Pick<Item, 'receipt' | 'room'> = { receipt: null, room: null };
       let stackCardId: string | null = null;
       try {
+        if (queuing && !question) {
+          placed = await place(chosen);
+          // Added, wherever it ends up: binder or bulk is put-away's business, not the scan's.
+          navigator.vibrate?.(40);
+        }
         if (mode === 'add') {
-          if (!question) {
-            placed = await place(chosen);
-            // Added, wherever it ends up: binder or bulk is put-away's business, not the scan's.
-            navigator.vibrate?.(40);
-          }
           // Logged even while unsure: the card is in the stack either way.
           stackCardId = await logScan(
             stackEntry({ chosen, question, ...placed }, sets.get(chosen.setKey)),
@@ -244,7 +257,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         [{ id, result, chosen, question, ...placed, stackCardId }, ...current].slice(0, 8),
       );
     },
-    [asFound, mode, nameOf, place, sameCard, sets],
+    [asFound, mode, nameOf, place, queuing, sameCard, sets],
   );
 
   const latest = cleared ? undefined : items[0];
@@ -275,8 +288,9 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         num: printing.num,
         variant: printing.variant,
       });
-      const placed: Pick<Item, 'receipt' | 'room'> =
-        mode === 'add' ? await place(chosen) : { receipt: null, room: null };
+      const placed: Pick<Item, 'receipt' | 'room'> = queuing
+        ? await place(chosen)
+        : { receipt: null, room: null };
       // Found by search, but still a card in the stack: it keeps its place like any scan.
       const stackCardId =
         mode === 'add'
@@ -300,7 +314,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       );
       resume();
     },
-    [asFound, mode, place, resume, sets],
+    [asFound, mode, place, queuing, resume, sets],
   );
 
   useEffect(() => rearm(), [mode, rearm]);
@@ -318,7 +332,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       // Answering a question picks the card; Foils mode still decides the stock.
       const printing = item.question ? asFound(picked) : picked;
       let placed: Pick<Item, 'receipt' | 'room'> = { receipt: item.receipt, room: null };
-      if (mode === 'add') {
+      if (queuing) {
         if (item.receipt) await unqueueScan(item.receipt);
         placed = await place(printing);
       }
@@ -340,7 +354,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         setItems((current) => current.map((i) => (i.id === item.id ? { ...i, stackCardId } : i)));
       }
     },
-    [asFound, mode, place, sets],
+    [asFound, mode, place, queuing, sets],
   );
 
   /** The latest scan on the other stock — one tap instead of the Correct menu. */
@@ -375,6 +389,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           {(
             [
               ['add', 'Add to Intake'],
+              ['deck', 'Scan a deck'],
               ['info', 'Look up'],
             ] as const
           ).map(([value, label]) => (
@@ -473,6 +488,13 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         </section>
       )}
 
+      {mode === 'deck' && (
+        <p className={styles.footnote}>
+          Scan every card of one built deck: leader, base and the rest. It waits in{' '}
+          <Link to="/intake">Intake</Link>, where you name it and build it. Its cards go straight
+          into the deck’s box, not the binder.
+        </p>
+      )}
       {mode === 'add' && (
         <p className={styles.footnote}>
           Scans wait in <Link to="/intake">Intake</Link> until you review them. The camera can’t
@@ -733,7 +755,7 @@ function LatestScan({
             )}
             <div className={styles.choices}>
               <button type="button" className={styles.primary} onClick={onConfirm}>
-                {mode === 'add' ? 'Yes, add it' : 'Yes'}
+                {mode === 'info' ? 'Yes' : 'Yes, add it'}
               </button>
               <button type="button" className={styles.button} onClick={() => setCorrecting(true)}>
                 No, show others
@@ -742,6 +764,8 @@ function LatestScan({
           </div>
         ) : mode === 'add' ? (
           <p className={styles.added}>Added to Intake</p>
+        ) : mode === 'deck' ? (
+          <p className={styles.added}>Added to the scanned deck</p>
         ) : (
           <p className={styles.meta}>
             You own {owned ?? '…'} · binder page {position.page}, row {position.row}, column{' '}

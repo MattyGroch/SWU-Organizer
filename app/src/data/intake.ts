@@ -1,7 +1,12 @@
 import type { LoadedSet, Printing, VariantSlug } from '~/domain/catalog';
 import { applyConstruct, cardKey, parseCardKey } from '~/domain/deckBuild';
-import type { DeckCardRef } from '~/domain/deckContents';
-import { parseDeckLibrary, type SavedDeck } from '~/domain/decks';
+import {
+  deckContentsFromRows,
+  type DeckCardRef,
+  type DeckContentsFailureReason,
+} from '~/domain/deckContents';
+import { formatDeckList, type DeckRole, type ResolvedDeckRow } from '~/domain/decklist';
+import { createSavedDeck, parseDeckLibrary, type SavedDeck } from '~/domain/decks';
 import {
   NO_HOMES,
   addVariants,
@@ -12,6 +17,7 @@ import {
 import type { SetKey } from '~/domain/types';
 
 import { notifyDeckLibraryChanged, notifyInventoryChanged } from './changes';
+import { readDeckLibrary, writeDeckLibraryQuietly } from './deckLibrary';
 import {
   db,
   emptyOwnedRow,
@@ -97,27 +103,41 @@ export type ScanReceipt = {
 
 type QueuedPrinting = { setKey: SetKey; base: number; num: string; variant: VariantSlug };
 
+/** What the scanner is filling: loose cards for the binder, or one built deck. */
+export type ScanKind = 'scan' | 'deckScan';
+
+const SCAN_LABEL: Record<ScanKind, string> = {
+  scan: 'Scanned cards',
+  deckScan: 'Scanned deck',
+};
+
 /**
- * Adds one scanned copy to the open "Scanned cards" batch, creating the batch on first
- * use. A second copy of the same printing bumps that line's count. Nothing counts as owned
- * until the batch is reviewed and committed — the camera cannot tell foil from non-foil, so
- * that review is where finishes get set. Whether a copy ends up in the binder or the bulk
- * box is settled then too (see `commitBatch`).
+ * Adds one scanned copy to the open "Scanned cards" batch — or, with `kind: 'deckScan'`,
+ * the open "Scanned deck" batch — creating the batch on first use. A second copy of the
+ * same printing bumps that line's count. Nothing counts as owned until the batch is
+ * reviewed and committed — the camera cannot tell foil from non-foil, so that review is
+ * where finishes get set. Whether a copy ends up in the binder or the bulk box is settled
+ * then too (see `commitBatch`); a scanned deck's copies go into its box instead (see
+ * `buildScannedDeck`).
  */
 export async function queueScan(
   printing: QueuedPrinting,
-  { database = db, now = Date.now() }: { database?: SwuDatabase; now?: number } = {},
+  {
+    database = db,
+    now = Date.now(),
+    kind = 'scan',
+  }: { database?: SwuDatabase; now?: number; kind?: ScanKind } = {},
 ): Promise<ScanReceipt> {
   return database.transaction('rw', database.intakeBatches, database.intakeLines, async () => {
     const open = (await database.intakeBatches.toArray())
-      .filter((b) => b.kind === 'scan')
+      .filter((b) => b.kind === kind)
       .sort((a, b) => b.createdAt - a.createdAt)[0];
     const batchId = open?.id ?? crypto.randomUUID();
     if (!open) {
       await database.intakeBatches.add({
         id: batchId,
-        kind: 'scan',
-        label: 'Scanned cards',
+        kind,
+        label: SCAN_LABEL[kind],
         createdAt: now,
       });
     }
@@ -341,7 +361,8 @@ export async function bulkPreview(
 
 /**
  * What a card's binder pocket would hold if everything waiting in Intake went into it:
- * copies whose home is the binder, less those out in built decks, plus every queued copy.
+ * copies whose home is the binder, less those out in built decks, plus every scanned copy
+ * queued for it.
  * The scanner ranks a new copy against the best `quota` of these; the rest go to bulk on
  * commit.
  */
@@ -357,8 +378,12 @@ export async function queuedPocket(
   }
   const held = heldFromBinder(await readLibrary(database), setKey, base);
   let pocket = subtractVariants(home, held);
+  // Only loose scans are headed for the binder; a deck's copies go into its box.
+  const loose = new Set(
+    (await database.intakeBatches.toArray()).filter((b) => b.kind === 'scan').map((b) => b.id),
+  );
   for (const line of await database.intakeLines.toArray()) {
-    if (line.setKey !== setKey || line.base !== base) continue;
+    if (line.setKey !== setKey || line.base !== base || !loose.has(line.batchId)) continue;
     pocket = addVariants(pocket, { [line.variant]: line.count });
   }
   return pocket;
@@ -494,4 +519,124 @@ export async function commitBatch(
   for (const setKey of touched) notifyInventoryChanged(setKey);
   if (deckBuilt) notifyDeckLibraryChanged();
   return { copies, toBulk, deckBuilt };
+}
+
+/**
+ * Scanned cards were a built deck after all: the batch becomes a scanned deck, to be built
+ * rather than filed. Its open stack goes, since none of its cards go to the binder.
+ */
+export async function convertToDeckScan(
+  batchId: string,
+  database: SwuDatabase = db,
+): Promise<void> {
+  await database.transaction(
+    'rw',
+    [database.intakeBatches, database.stacks, database.stackCards],
+    async () => {
+      const batch = await database.intakeBatches.get(batchId);
+      if (batch?.kind !== 'scan') return;
+      await database.intakeBatches.update(batchId, {
+        kind: 'deckScan',
+        label: SCAN_LABEL.deckScan,
+      });
+      await discardOpenStack(database);
+    },
+  );
+}
+
+function roleOf(type: string | undefined): DeckRole {
+  const t = (type ?? '').trim().toLowerCase();
+  return t === 'leader' ? 'leader' : t === 'base' ? 'base' : 'deck';
+}
+
+/**
+ * The deck a scanned batch makes: leaders and the base by card type, every other card in
+ * the main deck. A card the catalog does not know is left out.
+ */
+export function scannedDeckRows(
+  lines: readonly IntakeLine[],
+  sets: ReadonlyMap<SetKey, LoadedSet>,
+): ResolvedDeckRow[] {
+  const rows: ResolvedDeckRow[] = [];
+  for (const ofCard of groupLines(lines).values()) {
+    const { setKey, base } = ofCard[0]!;
+    const card = sets.get(setKey)?.byNumber.get(base);
+    const count = ofCard.reduce((sum, l) => sum + l.count, 0);
+    if (!card || count <= 0) continue;
+    rows.push({
+      role: roleOf(card.Type),
+      count,
+      setKey,
+      baseNumber: base,
+      name: card.Name,
+      subtitle: card.Subtitle,
+      type: card.Type,
+      aspects: card.Aspects,
+      price: card.MarketPrice ?? 0,
+      maxCopies: card.MaxCopies,
+      ambiguous: false,
+    });
+  }
+  return rows;
+}
+
+/** Why a scanned batch cannot be a deck yet, or null when it can. */
+export function scannedDeckProblem(
+  lines: readonly IntakeLine[],
+  sets: ReadonlyMap<SetKey, LoadedSet>,
+): DeckContentsFailureReason | null {
+  const result = deckContentsFromRows(scannedDeckRows(lines, sets));
+  return result.ok ? null : result.reason;
+}
+
+export type BuildDeckResult =
+  | { ok: true; deck: SavedDeck; report: CommitReport }
+  | { ok: false; reason: DeckContentsFailureReason };
+
+/**
+ * Saves a scanned deck as a deck and builds it: the cards are added to the collection and
+ * go straight into its box, at the printings reviewed in Intake (see `commitBatch`).
+ *
+ * The deck is saved and the batch made its deck batch first, then committed. Should the
+ * commit fail, the deck is saved unbuilt and its batch waits in Intake like any deck's.
+ */
+export async function buildScannedDeck(
+  batchId: string,
+  name: string,
+  sets: ReadonlyMap<SetKey, LoadedSet>,
+  {
+    database = db,
+    now = Date.now(),
+    quotaOf,
+  }: { database?: SwuDatabase; now?: number; quotaOf?: QuotaOf } = {},
+): Promise<BuildDeckResult> {
+  const batch = await database.intakeBatches.get(batchId);
+  if (batch?.kind !== 'deckScan') throw new Error('That batch is not a scanned deck.');
+  const lines = await database.intakeLines.where('batchId').equals(batchId).toArray();
+  const rows = scannedDeckRows(lines, sets);
+  const created = createSavedDeck(
+    rows,
+    { name, physical: false, copies: 1, sourceText: formatDeckList(rows) },
+    { now: () => new Date(now).toISOString() },
+  );
+  if (!created.ok) return created;
+  const { deck } = created;
+
+  await database.transaction('rw', database.deckLibrary, database.intakeBatches, async () => {
+    const library = await readDeckLibrary(database);
+    await writeDeckLibraryQuietly(
+      { ...library, customDecks: [...library.customDecks, deck] },
+      database,
+      now,
+    );
+    await database.intakeBatches.update(batchId, {
+      kind: 'deck',
+      deckId: deck.id,
+      label: deck.name,
+    });
+  });
+  notifyDeckLibraryChanged();
+
+  const report = await commitBatch(batchId, { database, now, quotaOf });
+  return { ok: true, deck, report };
 }

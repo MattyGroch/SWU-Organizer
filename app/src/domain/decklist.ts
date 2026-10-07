@@ -694,3 +694,25 @@ export function formatMissingLine(
   const namePart = subtitle ? `${name} - ${subtitle}` : name;
   return `${qty} ${namePart} [${setKey}]`;
 }
+
+// ---------------------------------------------------------------------------
+// A deck as Melee text — the source kept for a deck saved without a pasted list
+// ---------------------------------------------------------------------------
+
+const DECK_SECTIONS: ReadonlyArray<[DeckRole, string]> = [
+  ['leader', 'Leaders'],
+  ['base', 'Base'],
+  ['deck', 'Deck'],
+  ['sideboard', 'Sideboard'],
+];
+
+export function formatDeckList(rows: readonly ResolvedDeckRow[]): string {
+  return DECK_SECTIONS.flatMap(([role, header]) => {
+    const section = rows.filter((r) => r.role === role);
+    if (!section.length) return [];
+    const lines = section.map(
+      (r) => `${r.count} | ${r.name}${r.subtitle ? ` | ${r.subtitle}` : ''}`,
+    );
+    return [[header, ...lines].join('\n')];
+  }).join('\n\n');
+}

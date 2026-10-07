@@ -1,18 +1,21 @@
 import { Link } from '@tanstack/react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import type { IntakeLine } from '~/data/db';
 import { quotaForCard } from '~/domain/ownership';
 import {
   adjustCardCount,
+  buildScannedDeck,
   bulkPreview,
   commitBatch,
+  convertToDeckScan,
   discardBatch,
   moveCopy,
   removeCard,
   resetCard,
+  scannedDeckRows,
   sourcePrinting,
 } from '~/data/intake';
 import {
@@ -24,6 +27,7 @@ import {
   type LoadedSet,
   type Printing,
 } from '~/domain/catalog';
+import { deckContentsFromRows, type DeckContentsFailureReason } from '~/domain/deckContents';
 import type { SetKey } from '~/domain/types';
 import { StackList } from '~/features/putAway/StackList';
 import { useToast } from '~/ui/toastContext';
@@ -64,8 +68,8 @@ export function IntakePage({ sets }: Props) {
       {!loading && batches.length === 0 && (
         <div className={styles.empty}>
           <p>
-            Nothing queued. Scanned cards land here; so do a saved deck’s cards when you use{' '}
-            <strong>Add to collection</strong> on it.
+            Nothing queued. Scanned cards and scanned decks land here; so do a saved deck’s cards
+            when you use <strong>Add to collection</strong> on it.
           </p>
           <Link to="/scan" className={styles.primary}>
             Start scanning
@@ -82,8 +86,15 @@ export function IntakePage({ sets }: Props) {
 
 function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, LoadedSet> }) {
   const showToast = useToast();
-  const [confirmDiscard, setConfirmDiscard] = useState(false);
+  const [confirming, setConfirming] = useState<'discard' | 'deck' | null>(null);
   const [busy, setBusy] = useState(false);
+  const [nameDraft, setNameDraft] = useState<string | null>(null);
+  const deckScan = batch.kind === 'deckScan';
+  const scannedDeck = useMemo(
+    () => (deckScan ? scannedDeckOf(batch.lines, sets) : null),
+    [deckScan, batch.lines, sets],
+  );
+  const deckName = nameDraft ?? scannedDeck?.suggestedName ?? '';
   const cards = groupByCard(batch.lines);
   const changed = batch.lines
     .filter((l) => l.variant !== 'normal')
@@ -92,6 +103,25 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
     const card = sets.get(setKey)?.cardsByBase.get(base);
     return card ? quotaForCard(card) : Infinity;
   };
+
+  async function build() {
+    setBusy(true);
+    try {
+      const result = await buildScannedDeck(batch.id, deckName, sets, { quotaOf });
+      if (!result.ok) {
+        showToast({ tone: 'danger', message: SCANNED_DECK_PROBLEM[result.reason] });
+        setBusy(false);
+        return;
+      }
+      showToast({
+        tone: 'success',
+        message: `Saved “${result.deck.name}” and marked it built with ${result.report.copies} cards.`,
+      });
+    } catch {
+      showToast({ tone: 'danger', message: 'Could not build the deck.' });
+      setBusy(false);
+    }
+  }
 
   async function commit() {
     setBusy(true);
@@ -119,7 +149,7 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
         <h2 id={`batch-${batch.id}`} className={styles.batchTitle}>
           {batch.label}
         </h2>
-        <span className={styles.badge}>{batch.kind === 'deck' ? 'Deck' : 'Scanned'}</span>
+        <span className={styles.badge}>{BADGE[batch.kind]}</span>
         <span className={styles.meta}>
           {batch.copies} {batch.copies === 1 ? 'card' : 'cards'}
           {changed > 0 && ` · ${changed} non-Normal`}
@@ -129,6 +159,12 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
         <p className={styles.note}>
           These go straight into the deck’s box: the deck is marked built, and your binder counts do
           not change.
+        </p>
+      )}
+      {deckScan && (
+        <p className={styles.note}>
+          One built deck, scanned. Check the printings, name it and build it: the cards go straight
+          into the deck’s box, and your binder counts do not change.
         </p>
       )}
 
@@ -165,18 +201,76 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
         </table>
       </div>
 
+      {scannedDeck && (
+        <div className={styles.deckForm}>
+          <p className={styles.deckSummary}>{scannedDeck.summary}</p>
+          {scannedDeck.problem && (
+            <p className={styles.problem} role="status">
+              {SCANNED_DECK_PROBLEM[scannedDeck.problem]}
+            </p>
+          )}
+          <label className={styles.nameField}>
+            <span>Deck name</span>
+            <input
+              className={styles.input}
+              value={deckName}
+              placeholder="Untitled deck"
+              onChange={(event) => setNameDraft(event.target.value)}
+            />
+          </label>
+        </div>
+      )}
+
       <div className={styles.footer}>
-        <button
-          type="button"
-          className={styles.primary}
-          disabled={busy || batch.copies === 0}
-          onClick={() => void commit()}
-        >
-          {batch.kind === 'deck'
-            ? `Add ${batch.copies} ${batch.copies === 1 ? 'card' : 'cards'} & mark deck built`
-            : `Add ${batch.copies} ${batch.copies === 1 ? 'card' : 'cards'} to collection`}
-        </button>
-        {confirmDiscard ? (
+        {deckScan ? (
+          <button
+            type="button"
+            className={styles.primary}
+            disabled={busy || batch.copies === 0 || Boolean(scannedDeck?.problem)}
+            onClick={() => void build()}
+          >
+            {`Build deck with ${batch.copies} ${batch.copies === 1 ? 'card' : 'cards'}`}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className={styles.primary}
+            disabled={busy || batch.copies === 0}
+            onClick={() => void commit()}
+          >
+            {batch.kind === 'deck'
+              ? `Add ${batch.copies} ${batch.copies === 1 ? 'card' : 'cards'} & mark deck built`
+              : `Add ${batch.copies} ${batch.copies === 1 ? 'card' : 'cards'} to collection`}
+          </button>
+        )}
+        {confirming === 'deck' ? (
+          <span className={styles.confirm}>
+            Build these into a deck instead?
+            <button
+              type="button"
+              className={styles.primary}
+              onClick={() => {
+                setConfirming(null);
+                void convertToDeckScan(batch.id);
+              }}
+            >
+              Make it a deck
+            </button>
+            <button type="button" className={styles.action} onClick={() => setConfirming(null)}>
+              Cancel
+            </button>
+          </span>
+        ) : confirming === null && batch.kind === 'scan' ? (
+          <button
+            type="button"
+            className={styles.action}
+            title="These cards are one built deck: build it instead of filing them"
+            onClick={() => setConfirming('deck')}
+          >
+            It’s a deck
+          </button>
+        ) : null}
+        {confirming === 'discard' ? (
           <span className={styles.confirm}>
             Discard this batch?
             <button
@@ -186,22 +280,57 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
             >
               Discard
             </button>
-            <button
-              type="button"
-              className={styles.action}
-              onClick={() => setConfirmDiscard(false)}
-            >
+            <button type="button" className={styles.action} onClick={() => setConfirming(null)}>
               Keep
             </button>
           </span>
-        ) : (
-          <button type="button" className={styles.action} onClick={() => setConfirmDiscard(true)}>
+        ) : confirming === null ? (
+          <button type="button" className={styles.action} onClick={() => setConfirming('discard')}>
             Discard batch
           </button>
-        )}
+        ) : null}
       </div>
     </section>
   );
+}
+
+const BADGE: Record<BatchWithLines['kind'], string> = {
+  deck: 'Deck',
+  scan: 'Scanned',
+  deckScan: 'Scanned deck',
+};
+
+const SCANNED_DECK_PROBLEM: Record<DeckContentsFailureReason, string> = {
+  'missing-leader': 'No leader scanned yet: scan it to build the deck.',
+  'missing-base': 'No base scanned yet: scan it to build the deck.',
+  'too-many-leaders':
+    'Too many leaders: a deck takes one, or two different ones for Twin Suns. Remove the extra.',
+  'too-many-bases': 'More than one base: a deck takes one. Remove the extra.',
+};
+
+/** What a scanned deck adds up to so far, and why it cannot be built yet, if it cannot. */
+function scannedDeckOf(lines: IntakeLine[], sets: Map<SetKey, LoadedSet>) {
+  const rows = scannedDeckRows(lines, sets);
+  const result = deckContentsFromRows(rows);
+  const titled = (role: 'leader' | 'base') =>
+    rows
+      .filter((r) => r.role === role)
+      .map((r) => (r.subtitle ? `${r.name}, ${r.subtitle}` : r.name));
+  const leaders = titled('leader');
+  const bases = titled('base');
+  const main = rows.filter((r) => r.role === 'deck').reduce((sum, r) => sum + r.count, 0);
+  const summary = [
+    `${leaders.length > 1 ? 'Leaders' : 'Leader'}: ${leaders.join(' & ') || 'none yet'}`,
+    `Base: ${bases.join(', ') || 'none yet'}`,
+    `${main} in the main deck`,
+  ].join(' · ');
+  const leader = rows.find((r) => r.role === 'leader');
+  const base = rows.find((r) => r.role === 'base');
+  return {
+    summary,
+    problem: result.ok ? null : result.reason,
+    suggestedName: leader ? (base ? `${leader.name} – ${base.name}` : leader.name) : '',
+  };
 }
 
 type CardGroup = { setKey: SetKey; base: number; lines: IntakeLine[] };
