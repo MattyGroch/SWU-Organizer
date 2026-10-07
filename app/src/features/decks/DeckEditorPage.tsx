@@ -412,7 +412,9 @@ function Slot({
       <span className={styles.slotLabel}>{label}</span>
       {card && refCard ? (
         <span className={styles.slotCard}>
-          <AspectIcons className={styles.lineAspects} aspects={card.Aspects} />
+          <span className={styles.lineAspects}>
+            <AspectIcons aspects={card.Aspects} />
+          </span>
           <span className={styles.lineName}>
             {card.Name}
             {card.Subtitle && <span className={styles.subtitle}>{card.Subtitle}</span>}
@@ -504,7 +506,9 @@ function ZoneList({
                 return (
                   <li key={`${ref.setKey}:${ref.baseNumber}`} className={styles.line}>
                     <CostBadge cost={c?.Cost} />
-                    <AspectIcons className={styles.lineAspects} aspects={c?.Aspects} />
+                    <span className={styles.lineAspects}>
+                      <AspectIcons aspects={c?.Aspects} />
+                    </span>
                     <span className={styles.lineName}>
                       {name}
                       <span className={styles.subtitle}>

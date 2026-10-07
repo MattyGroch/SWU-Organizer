@@ -172,7 +172,9 @@ export function CardSearch({
             <li key={key} className={styles.hit}>
               <div className={styles.hitRow}>
                 {mode === 'cards' && <CostBadge cost={hit.card.Cost} />}
-                <AspectIcons className={styles.aspects} aspects={hit.card.Aspects} />
+                <span className={styles.aspects}>
+                  <AspectIcons aspects={hit.card.Aspects} />
+                </span>
                 <button
                   type="button"
                   className={styles.name}
