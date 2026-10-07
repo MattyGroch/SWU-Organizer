@@ -32,6 +32,11 @@ type Props = {
   onAdd: (hit: SearchHit, zone: DeckZone) => void;
   onChoose: (hit: SearchHit) => void;
   onCancelChoose: () => void;
+  /** The leader/base mode's way out: Cancel in the editor, Back in the builder. */
+  cancelLabel?: string;
+  /** Where Owned / All cards starts, and a way to remember the choice for the next search. */
+  initialOwnedOnly?: boolean;
+  onOwnedOnlyChange?: (ownedOnly: boolean) => void;
 };
 
 const MODE_TITLE: Record<SearchMode, string> = {
@@ -55,8 +60,14 @@ export function CardSearch({
   onAdd,
   onChoose,
   onCancelChoose,
+  cancelLabel = 'Cancel',
+  initialOwnedOnly = DEFAULT_FILTERS.ownedOnly,
+  onOwnedOnlyChange,
 }: Props) {
-  const [filters, setFilters] = useState<SearchFilters>(DEFAULT_FILTERS);
+  const [filters, setFilters] = useState<SearchFilters>({
+    ...DEFAULT_FILTERS,
+    ownedOnly: initialOwnedOnly,
+  });
   const [shown, setShown] = useState(PAGE);
   const [openKey, setOpenKey] = useState<string | null>(null);
 
@@ -66,6 +77,7 @@ export function CardSearch({
   );
 
   function update(patch: Partial<SearchFilters>) {
+    if (patch.ownedOnly !== undefined) onOwnedOnlyChange?.(patch.ownedOnly);
     setFilters((current) => ({ ...current, ...patch }));
     setShown(PAGE);
   }
@@ -82,7 +94,7 @@ export function CardSearch({
         </h2>
         {mode !== 'cards' && (
           <button type="button" className={styles.secondary} onClick={onCancelChoose}>
-            Cancel
+            {cancelLabel}
           </button>
         )}
       </div>

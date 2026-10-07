@@ -21,7 +21,7 @@ import { BinderRoute } from '~/routes/BinderRoute';
 import { BulkPage } from '~/features/inventory/BulkPage';
 import { isInventoryView, type InventoryView } from '~/features/inventory/views';
 import { NARROW_QUERY } from '~/ui/useNarrow';
-import { DeckEditRoute, DecksRoute } from '~/routes/DecksRoute';
+import { DeckEditRoute, DecksRoute, NewDeckRoute } from '~/routes/DecksRoute';
 import { IntakePage } from '~/features/intake/IntakePage';
 import { PutAwayPage } from '~/features/putAway/PutAwayPage';
 import { ScanPage } from '~/features/scan/ScanPage';
@@ -162,6 +162,22 @@ const decksRoute = createRoute({
   },
 });
 
+/** The deck builder: format, leaders and base, then the editor. Static, so it wins over `$deckId`. */
+const newDeckRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/decks/new',
+  loader: async ({ context }) => {
+    const entries = await context.queryClient.ensureQueryData(manifestQuery());
+    await Promise.all(entries.map((entry) => context.queryClient.ensureQueryData(setQuery(entry))));
+    return { entries };
+  },
+  component: function NewDeckRouteComponent() {
+    const { entries } = newDeckRoute.useLoaderData();
+    const { queryClient } = newDeckRoute.useRouteContext();
+    return <NewDeckRoute sets={loadedSets(queryClient, entries)} />;
+  },
+});
+
 /** One saved deck in the editor. */
 const deckEditRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -236,6 +252,7 @@ const routeTree = rootRoute.addChildren([
   setViewRoute,
   legacyBinderRoute,
   decksRoute,
+  newDeckRoute,
   deckEditRoute,
   intakeRoute,
   scanRoute,

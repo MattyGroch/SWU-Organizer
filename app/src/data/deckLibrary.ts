@@ -1,5 +1,5 @@
 import { applyDeckEdit, applyDeconstruct, editReturns, type DeckEdit } from '~/domain/deckBuild';
-import { parseDeckLibrary, type DeckLibrary } from '~/domain/decks';
+import { parseDeckLibrary, type DeckLibrary, type SavedDeck } from '~/domain/decks';
 
 import { notifyDeckLibraryChanged, notifyInventoryChanged } from './changes';
 import { db, type SwuDatabase } from './db';
@@ -113,4 +113,35 @@ export async function editDeck(
   if (moved)
     for (const setKey of new Set(cards.map((c) => c.setKey))) notifyInventoryChanged(setKey);
   return moved;
+}
+
+/** Saves a deck made in the builder, with the list the editor gave it. */
+export async function addNewDeck(
+  deck: SavedDeck,
+  edit: DeckEdit,
+  database: SwuDatabase = db,
+  now = Date.now(),
+): Promise<void> {
+  const { secondLeader: _none, ...rest } = deck;
+  const { leader, secondLeader, base, mainDeck, sideboard } = edit.contents;
+  const saved: SavedDeck = {
+    ...rest,
+    leader,
+    ...(secondLeader && { secondLeader }),
+    base,
+    mainDeck,
+    sideboard,
+    format: edit.format,
+    name: edit.name.trim() || deck.name,
+    sourceText: edit.sourceText,
+    updatedAt: new Date(now).toISOString(),
+  };
+  await updateDeckLibrary(
+    (current) =>
+      current.customDecks.some((d) => d.id === deck.id)
+        ? current
+        : { ...current, customDecks: [...current.customDecks, saved] },
+    database,
+    now,
+  );
 }

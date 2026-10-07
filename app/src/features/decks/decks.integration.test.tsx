@@ -199,6 +199,50 @@ describe('decks tab, end to end', () => {
     expect(within(myDecks()).getByText('Eternal')).toBeInTheDocument();
   });
 
+  it('builds a new deck: format, leader, base, then cards', async () => {
+    const user = userEvent.setup();
+    await own(1, 1);
+    await own(19, 1);
+    await renderDecks();
+
+    // No library saved yet still counts as loaded: the empty state shows.
+    expect(await within(myDecks()).findByText(/No saved decks yet/)).toBeInTheDocument();
+    await user.click(within(myDecks()).getByRole('link', { name: 'New deck' }));
+    // SOR has rotated out of Premier, so this deck is Eternal.
+    await user.click(await screen.findByRole('button', { name: /^Eternal/ }, { timeout: 5000 }));
+
+    // Owned cards by default: Krennic is the only leader owned.
+    const leaders = screen.getByRole('list', { name: 'Search results' });
+    expect(within(leaders).getByText('Director Krennic')).toBeInTheDocument();
+    await user.click(within(leaders).getByRole('button', { name: 'Choose' }));
+    const bases = screen.getByRole('list', { name: 'Search results' });
+    await user.click(within(bases).getByRole('button', { name: 'Choose' }));
+
+    // The editor, unsaved until Save.
+    expect(await screen.findByText('New deck — not saved yet')).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Deck name' })).toHaveValue('Director Krennic');
+    expect((await readDeckLibrary()).customDecks).toHaveLength(0);
+
+    await user.click(screen.getByRole('button', { name: 'All cards' }));
+    await user.click(screen.getByRole('button', { name: 'In aspect' }));
+    await user.type(screen.getByRole('searchbox', { name: 'Search cards' }), 'Death Trooper');
+    const results = screen.getByRole('list', { name: 'Search results' });
+    await user.click(within(results).getAllByRole('button', { name: /to the main deck/ })[0]!);
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+
+    await screen.findByRole('heading', { name: 'My decks' });
+    const [deck] = (await readDeckLibrary()).customDecks;
+    expect(deck).toMatchObject({
+      name: 'Director Krennic',
+      format: 'eternal',
+      constructed: false,
+      leader: { setKey: 'SOR', baseNumber: 1, count: 1 },
+      base: { setKey: 'SOR', baseNumber: 19, count: 1 },
+      mainDeck: [{ count: 1 }],
+      sideboard: [],
+    });
+  }, 30_000);
+
   it('editing a built deck lists the dropped copies to put back', async () => {
     const user = userEvent.setup();
     await own(1, 1);

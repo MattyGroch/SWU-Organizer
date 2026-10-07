@@ -19,6 +19,19 @@
   font-weight: 700;
 }
 
+.newDeck {
+  composes: ui-btn ui-primary from global;
+  margin-left: auto;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
 .count {
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);

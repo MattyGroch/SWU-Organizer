@@ -103,6 +103,48 @@ export function createSavedDeck(
   };
 }
 
+export type NewDeckInput = {
+  name: string;
+  format: PlayFormat;
+  leader: DeckCardRef;
+  secondLeader?: DeckCardRef;
+  base: DeckCardRef;
+};
+
+/**
+ * A deck started in the builder: its format, leaders and base, and nothing else yet. It
+ * is not in the library until the editor saves it.
+ */
+export function newDeck(
+  input: NewDeckInput,
+  deps: { now?: () => string; makeId?: () => string } = {},
+): SavedDeck {
+  const timestamp = (deps.now ?? (() => new Date().toISOString()))();
+  const one = (ref: DeckCardRef): DeckCardRef => ({
+    setKey: ref.setKey,
+    baseNumber: ref.baseNumber,
+    count: 1,
+  });
+  return {
+    id: (deps.makeId ?? newId)(),
+    name: input.name.trim() || 'Untitled deck',
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    physical: false,
+    copies: 1,
+    sourceText: '',
+    constructed: false,
+    pulledCards: [],
+    format: input.format,
+    leader: one(input.leader),
+    ...(input.format === 'twinSuns' &&
+      input.secondLeader && { secondLeader: one(input.secondLeader) }),
+    base: one(input.base),
+    mainDeck: [],
+    sideboard: [],
+  };
+}
+
 /** Owned totals contributed by the deck library: owned precons + physical custom decks, uncapped. */
 export function deriveOwnedTotals(
   library: DeckLibrary,
