@@ -17,6 +17,8 @@
 .table th {
   position: sticky;
   top: 0;
+  /* Above the aspect icons, whose drop-shadow filter puts them on their own layer. */
+  z-index: 1;
   padding: var(--space-2) var(--space-3);
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
@@ -33,6 +35,12 @@
   color: var(--color-warning-fg);
 }
 
+/* The cell sets the column's width; the narrow-screen role line inside a card cell is not a td. */
+.table td.role {
+  width: 1%;
+  white-space: nowrap;
+}
+
 .role {
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
@@ -40,9 +48,23 @@
   letter-spacing: 0.04em;
 }
 
-.numeric {
-  text-align: right;
+/* Only as wide as their numbers, so the card name gets the room. */
+.table .numeric {
+  width: 1%;
+  padding-inline: var(--space-4);
+  text-align: center;
+  white-space: nowrap;
   font-variant-numeric: tabular-nums;
+}
+
+/* Only as wide as the icons; the cell's own font-size sizes them. */
+.table .aspects {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.table td.aspects {
+  font-size: 1.1em;
 }
 
 .subtitle {
@@ -118,9 +140,8 @@
     padding: var(--space-2) 4px;
   }
 
-  .numeric {
-    width: 1%;
-    white-space: nowrap;
+  .table .numeric {
+    padding-inline: 6px;
   }
 
   .table th {

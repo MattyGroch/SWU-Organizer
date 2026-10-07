@@ -52,6 +52,8 @@ export type ResolvedDeckRow = {
   name: string;
   subtitle?: string;
   type?: string;
+  /** As the card prints them, e.g. ['Vigilance', 'Heroism']. */
+  aspects?: string[];
   price: number;
   /** Per-card deck-building override from the card's own text (e.g. Swarming Vulture Droid's 15), when it has one. */
   maxCopies?: number;
@@ -614,6 +616,7 @@ export function resolveDeckList(
         name: resolved.card.Name,
         subtitle: resolved.card.Subtitle,
         type: resolved.card.Type,
+        aspects: resolved.card.Aspects,
         price: Number(resolved.card.MarketPrice ?? 0),
         maxCopies: resolved.card.MaxCopies,
         ambiguous,

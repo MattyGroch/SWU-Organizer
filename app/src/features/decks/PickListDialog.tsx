@@ -19,6 +19,7 @@ import { buildPutBackList } from '~/domain/pickList';
 import type { SetKey } from '~/domain/types';
 import { useToast } from '~/ui/toastContext';
 
+import { AspectIcons } from '../binder/AspectIcons';
 import styles from './PickListDialog.module.css';
 
 type Props = {
@@ -36,7 +37,7 @@ type Props = {
   onDeconstruct: () => Promise<number>;
 };
 
-type Named = { name: string; subtitle?: string };
+type Named = { name: string; subtitle?: string; aspects?: string[] };
 
 /**
  * Walk-the-binder list for building a deck, completing a partly built one, or filing one
@@ -75,7 +76,9 @@ export function PickListDialog({
 
   const card = (setKey: SetKey, baseNumber: number): Named => {
     const found = lookup.get(setKey)?.byNumber.get(baseNumber);
-    return found ? { name: found.Name, subtitle: found.Subtitle } : { name: `#${baseNumber}` };
+    return found
+      ? { name: found.Name, subtitle: found.Subtitle, aspects: found.Aspects }
+      : { name: `#${baseNumber}` };
   };
 
   const plan = useMemo(
@@ -248,7 +251,10 @@ export function PickListDialog({
               key={group.setKey}
               setKey={group.setKey}
               verb="Put back"
-              items={group.items.map((item) => ({ ...item, count: item.count }))}
+              items={group.items.map((item) => ({
+                ...item,
+                ...card(item.setKey, item.baseNumber),
+              }))}
             />
           ))}
           {putAway.overflow.length > 0 && (
@@ -346,7 +352,10 @@ export function PickListDialog({
               </p>
               <ul className={styles.offers}>
                 {deckOffers.map((offer) => {
-                  const { name, subtitle } = card(offer.line.setKey, offer.line.baseNumber);
+                  const { name, subtitle, aspects } = card(
+                    offer.line.setKey,
+                    offer.line.baseNumber,
+                  );
                   return (
                     <li key={offer.id}>
                       <label className={styles.checkbox}>
@@ -356,7 +365,8 @@ export function PickListDialog({
                           onChange={() => toggleTake(offer.id)}
                         />
                         <span>
-                          Take <strong>{offer.source.available}×</strong> {name}
+                          Take <strong>{offer.source.available}×</strong>{' '}
+                          <AspectIcons className={styles.aspects} aspects={aspects} /> {name}
                           {subtitle ? ` - ${subtitle}` : ''} ({offer.line.setKey}) from{' '}
                           <strong>{offer.source.deckName}</strong>
                         </span>
@@ -375,10 +385,11 @@ export function PickListDialog({
               </h3>
               <ul className={styles.plain}>
                 {unowned.map((line) => {
-                  const { name, subtitle } = card(line.setKey, line.baseNumber);
+                  const { name, subtitle, aspects } = card(line.setKey, line.baseNumber);
                   return (
                     <li key={cardKey(line.setKey, line.baseNumber)}>
-                      {line.unowned}× {name}
+                      {line.unowned}× <AspectIcons className={styles.aspects} aspects={aspects} />{' '}
+                      {name}
                       {subtitle ? ` - ${subtitle}` : ''} ({line.setKey})
                     </li>
                   );
@@ -467,6 +478,9 @@ function BinderTable({
               <th scope="col" className={styles.numeric}>
                 Col
               </th>
+              <th scope="col" className={styles.aspectCol}>
+                Aspect
+              </th>
               <th scope="col">Card</th>
               <th scope="col" className={styles.numeric}>
                 {verb}
@@ -479,6 +493,9 @@ function BinderTable({
                 <td className={styles.numeric}>{item.page}</td>
                 <td className={styles.numeric}>{item.row}</td>
                 <td className={styles.numeric}>{item.column}</td>
+                <td className={styles.aspectCol}>
+                  <AspectIcons aspects={item.aspects} />
+                </td>
                 <td>
                   {item.name}
                   {item.subtitle && <span className={styles.subtitle}>{item.subtitle}</span>}
@@ -539,10 +556,11 @@ function PrintedList({
       <p className={styles.muted}>{note}</p>
       <ul className={styles.plain}>
         {lines.map((line) => {
-          const { name, subtitle } = card(line.setKey, line.baseNumber);
+          const { name, subtitle, aspects } = card(line.setKey, line.baseNumber);
           return (
             <li key={cardKey(line.setKey, line.baseNumber)}>
-              {sumVariants(line.printings)}× {name}
+              {sumVariants(line.printings)}×{' '}
+              <AspectIcons className={styles.aspects} aspects={aspects} /> {name}
               {subtitle ? ` - ${subtitle}` : ''} ({line.setKey} #{line.baseNumber}) —{' '}
               {printingsLabel(line.printings)}
             </li>

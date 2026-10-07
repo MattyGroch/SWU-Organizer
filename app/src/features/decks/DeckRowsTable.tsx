@@ -1,6 +1,7 @@
 import type { DeckRole, DeckRowWithNeed } from '~/domain/decklist';
 import { formatUsd } from '~/ui/format';
 
+import { AspectIcons } from '../binder/AspectIcons';
 import styles from './DeckRowsTable.module.css';
 
 const ROLE_LABEL: Record<DeckRole, string> = {
@@ -39,6 +40,9 @@ export function DeckRowsTable({ rows, label, box }: Props) {
             <th scope="col" className={styles.numeric}>
               Qty
             </th>
+            <th scope="col" className={styles.aspects}>
+              Aspect
+            </th>
             <th scope="col">Card</th>
             <th scope="col" className={styles.wideOnly}>
               Set
@@ -68,6 +72,9 @@ export function DeckRowsTable({ rows, label, box }: Props) {
             >
               <td className={`${styles.role} ${styles.wideOnly}`}>{ROLE_LABEL[row.role]}</td>
               <td className={styles.numeric}>{row.count}</td>
+              <td className={styles.aspects}>
+                <AspectIcons aspects={row.aspects} />
+              </td>
               <td>
                 {row.name}
                 {row.ambiguous && (

@@ -73,6 +73,10 @@
   cursor: pointer;
 }
 
+.aspects {
+  font-size: 1.25em;
+}
+
 .chevron {
   width: 1em;
   color: var(--color-text-muted);

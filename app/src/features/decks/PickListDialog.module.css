@@ -126,6 +126,20 @@
   white-space: nowrap;
 }
 
+.aspects {
+  font-size: 1.1em;
+}
+
+/* Only as wide as the icons; the cell's own font-size sizes them. */
+.table .aspectCol {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.table td.aspectCol {
+  font-size: 1.1em;
+}
+
 .subtitle {
   display: block;
   color: var(--color-text-muted);
@@ -181,4 +195,16 @@
 .primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Phones: tight cells, so the card name keeps its room next to the aspect column. */
+@media (max-width: 760px) {
+  .table th,
+  .table td {
+    padding: var(--space-2) 4px;
+  }
+
+  .table th {
+    font-size: var(--font-size-xs);
+  }
 }

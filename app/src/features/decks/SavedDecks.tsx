@@ -16,8 +16,16 @@ import type { DeckLibrary, SavedDeck } from '~/domain/decks';
 import type { SetKey } from '~/domain/types';
 import { useToast } from '~/ui/toastContext';
 
+import { AspectIcons } from '../binder/AspectIcons';
+
 import { DeckRowsTable, type BoxColumn } from './DeckRowsTable';
-import { cardsNeeded, contentsToRows, formatLabel, type OwnedLookup } from './deckRows';
+import {
+  cardsNeeded,
+  contentsToRows,
+  deckAspects,
+  formatLabel,
+  type OwnedLookup,
+} from './deckRows';
 import styles from './SavedDecks.module.css';
 
 type DeckPatch = Partial<Pick<SavedDeck, 'name'>>;
@@ -281,6 +289,7 @@ function SavedDeckItem({
             <span className={styles.chevron} aria-hidden="true">
               {expanded ? '▾' : '▸'}
             </span>
+            <AspectIcons className={styles.aspects} aspects={deckAspects(deck, lookup)} />
             {deck.name}
           </button>
         )}
