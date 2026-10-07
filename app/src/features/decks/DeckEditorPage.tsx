@@ -33,6 +33,7 @@ import { useNarrow } from '~/ui/useNarrow';
 
 import { AspectIcons } from '../binder/AspectIcons';
 import { CardSearch } from './CardSearch';
+import { CostBadge } from './CostBadge';
 import styles from './DeckEditorPage.module.css';
 import { contentsToRows, deckAspects, type OwnedLookup } from './deckRows';
 import type { SearchHit, SearchMode } from './deckSearch';
@@ -502,7 +503,7 @@ function ZoneList({
                 const name = c?.Name ?? `#${ref.baseNumber}`;
                 return (
                   <li key={`${ref.setKey}:${ref.baseNumber}`} className={styles.line}>
-                    <span className={styles.cost}>{c?.Cost ?? '–'}</span>
+                    <CostBadge cost={c?.Cost} />
                     <AspectIcons className={styles.lineAspects} aspects={c?.Aspects} />
                     <span className={styles.lineName}>
                       {name}

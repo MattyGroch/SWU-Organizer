@@ -73,18 +73,6 @@
   padding: var(--space-2) 0;
 }
 
-.cost {
-  flex: none;
-  width: 1.6em;
-  height: 1.6em;
-  border-radius: 50%;
-  background: var(--color-surface-raised);
-  font-weight: 700;
-  line-height: 1.6em;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
 .aspects {
   flex: none;
   font-size: 1.1em;
@@ -154,7 +142,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  padding: 0 0 var(--space-2) calc(1.6em + var(--space-2));
+  padding: 0 0 var(--space-2) calc(1.65em + var(--space-2));
   color: var(--color-text-subtle);
   font-size: var(--font-size-sm);
 }
