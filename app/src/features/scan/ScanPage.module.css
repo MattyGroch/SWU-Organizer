@@ -203,7 +203,6 @@
 
 .button,
 .primary {
-  composes: ui-btn ui-primary from global;
   min-height: 40px;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-md);
@@ -219,6 +218,7 @@
 }
 
 .primary {
+  composes: ui-btn ui-primary from global;
   border: none;
   background: var(--color-accent);
   color: var(--color-accent-text);

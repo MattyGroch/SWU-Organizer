@@ -49,7 +49,6 @@
 .primary,
 .action,
 .danger {
-  composes: ui-btn ui-danger from global;
   display: inline-flex;
   align-items: center;
   min-height: 48px;
@@ -75,6 +74,7 @@
 }
 
 .danger {
+  composes: ui-btn ui-danger from global;
   border: 1px solid var(--color-danger);
   background: var(--color-danger-bg);
   color: var(--color-danger-fg);
