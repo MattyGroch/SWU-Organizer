@@ -1,0 +1,218 @@
+/*
+ * A reticle locking on: a ticked outer ring turning slowly, two arcs counter-rotating
+ * inside it, a radar sweep behind and a pulsing core. Everything glows in --hud, so the
+ * inventory's loader takes the set's accent like the rest of the HUD.
+ */
+
+.loader {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  /* Clears the corner brackets, which sit outside the reticle. */
+  gap: calc(var(--space-5) + 14px);
+  /* Fills the page area under the header, so the reticle sits mid-screen. */
+  min-height: 70dvh;
+  animation: fadeIn 0.3s ease-out both;
+}
+
+.reticle {
+  position: relative;
+  width: 132px;
+  aspect-ratio: 1;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--hud) 55%, transparent));
+}
+
+.svg {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  fill: none;
+  stroke: var(--hud);
+}
+
+.svg * {
+  transform-origin: 60px 60px;
+  transform-box: view-box;
+}
+
+/* ---- Rings ----------------------------------------------------------------------------- */
+.ticks circle {
+  stroke-width: 3;
+  stroke-dasharray: 0.25 0.75;
+  opacity: 0.45;
+}
+
+.ticks,
+.majorTicks {
+  animation: spin 14s linear infinite;
+}
+
+.majorTicks circle {
+  stroke-width: 7;
+  stroke-dasharray: 0.06 0.94;
+}
+
+.arcOuter {
+  stroke-width: 2.5;
+  stroke-dasharray: 22 3 0 25;
+  stroke-linecap: square;
+  animation: spin 2.4s cubic-bezier(0.6, 0.1, 0.4, 0.9) infinite;
+}
+
+.arcInner {
+  stroke-width: 1.5;
+  stroke-dasharray: 12 38;
+  opacity: 0.75;
+  animation: spin 1.6s linear infinite reverse;
+}
+
+.crosshair {
+  stroke-width: 1;
+  opacity: 0.4;
+}
+
+.core {
+  fill: var(--hud);
+  stroke: none;
+  rotate: 45deg;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+/* ---- Sweep ----------------------------------------------------------------------------- */
+.sweep {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0 270deg,
+    color-mix(in srgb, var(--hud) 8%, transparent) 300deg,
+    color-mix(in srgb, var(--hud) 38%, transparent) 360deg
+  );
+  mask: radial-gradient(circle, black 60%, transparent 71%);
+  animation: spin 2s linear infinite;
+}
+
+/* ---- Frame ----------------------------------------------------------------------------- */
+.bracket {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 0 solid var(--hud);
+  opacity: 0.8;
+  animation: lock 2.4s ease-in-out infinite;
+}
+
+.tl {
+  top: -14px;
+  left: -14px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+  --dx: -1;
+  --dy: -1;
+}
+
+.tr {
+  top: -14px;
+  right: -14px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+  --dx: 1;
+  --dy: -1;
+}
+
+.bl {
+  bottom: -14px;
+  left: -14px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+  --dx: -1;
+  --dy: 1;
+}
+
+.br {
+  bottom: -14px;
+  right: -14px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+  --dx: 1;
+  --dy: 1;
+}
+
+/* ---- Readout --------------------------------------------------------------------------- */
+.label {
+  margin: 0;
+  color: var(--hud);
+  font-family: var(--font-mono-ui);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--hud) 60%, transparent);
+}
+
+.dots span {
+  animation: blink 1.2s ease-in-out infinite;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* ---- Motion ---------------------------------------------------------------------------- */
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+    scale: 0.7;
+  }
+}
+
+/* The brackets draw in on the reticle, then ease back out: a lock that keeps re-acquiring. */
+@keyframes lock {
+  0%,
+  100% {
+    translate: calc(var(--dx) * 6px) calc(var(--dy) * 6px);
+    opacity: 0.35;
+  }
+  50% {
+    translate: 0 0;
+    opacity: 0.9;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+/* A still reticle and a steady label: the wait still reads as a wait. */
+@media (prefers-reduced-motion: reduce) {
+  .loader,
+  .loader * {
+    animation: none;
+  }
+
+  .sweep {
+    display: none;
+  }
+}
