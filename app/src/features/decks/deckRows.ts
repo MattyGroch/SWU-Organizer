@@ -25,6 +25,7 @@ function refToRow(
     name: card.Name,
     subtitle: card.Subtitle,
     type: card.Type,
+    aspects: card.Aspects,
     price,
     ambiguous: false,
     have,
@@ -66,4 +67,22 @@ export function cardsNeeded(contents: DeckContents, owned: OwnedLookup): number 
 /** Two leaders is what makes a deck Twin Suns — readable from the stored contents alone. */
 export function formatLabel(contents: DeckContents): string {
   return contents.secondLeader ? FORMAT_RULES.twinSuns.label : FORMAT_RULES.premier.label;
+}
+
+const AFFILIATIONS = new Set(['Heroism', 'Villainy']);
+
+/**
+ * The aspects a deck plays: its leader's and base's primary aspects, in that order, then
+ * Heroism or Villainy last. Duplicates stay — a Vigilance leader on a Vigilance base pays
+ * for double-Vigilance cards, so the deck shows two.
+ */
+export function deckAspects(contents: DeckContents, lookup: Map<SetKey, DeckLookupSet>): string[] {
+  const refs = [contents.leader, contents.secondLeader, contents.base];
+  const aspects = refs.flatMap((ref) =>
+    ref ? (lookup.get(ref.setKey)?.byNumber.get(ref.baseNumber)?.Aspects ?? []) : [],
+  );
+  const primary = aspects.filter((aspect) => !AFFILIATIONS.has(aspect));
+  // Twin Suns leaders can share an affiliation; one symbol says it.
+  const affiliation = [...new Set(aspects.filter((aspect) => AFFILIATIONS.has(aspect)))];
+  return [...primary, ...affiliation];
 }
