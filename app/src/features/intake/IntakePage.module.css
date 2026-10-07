@@ -23,6 +23,10 @@
 }
 
 .empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
   padding: var(--space-5);
   border: 1px dashed var(--color-border-strong);
   border-radius: var(--radius-lg);
@@ -246,6 +250,7 @@
 .primary {
   composes: ui-btn ui-primary from global;
   border: none;
+  text-decoration: none;
   background: var(--color-accent);
   color: var(--color-accent-text);
   font-weight: 700;
