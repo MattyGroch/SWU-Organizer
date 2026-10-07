@@ -32,7 +32,9 @@ export function AccountMenu() {
         title="The sync server could not be reached. Everything still saves on this device."
       >
         <span className={styles.long}>Sync unavailable</span>
-        <span className={styles.short}>No sync</span>
+        <span className={styles.short} role="img" aria-label="Sync unavailable">
+          🚫
+        </span>
       </span>
     );
   }
