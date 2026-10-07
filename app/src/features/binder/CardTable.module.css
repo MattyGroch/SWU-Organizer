@@ -188,6 +188,7 @@
   }
 
   .aspects {
+    gap: 2px;
     font-size: 17px;
   }
 
