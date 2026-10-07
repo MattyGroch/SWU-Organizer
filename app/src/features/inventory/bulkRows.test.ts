@@ -77,4 +77,25 @@ describe('compareBulkRows', () => {
       'SHD#1',
     ]);
   });
+
+  it('puts Villainy before Heroism within an aspect, as the sets number them', () => {
+    const rows = [
+      row('LOF', 18, 'Leader', 'Rare', ['Heroism']),
+      row('LOF', 17, 'Leader', 'Rare', ['Villainy']),
+      row('TWI', 18, 'Leader', 'Rare', ['Cunning', 'Heroism']),
+      row('TWI', 17, 'Leader', 'Rare', ['Cunning', 'Heroism', 'Villainy']),
+      row('TWI', 3, 'Leader', 'Rare', ['Vigilance', 'Heroism']),
+      row('TWI', 14, 'Leader', 'Rare', ['Cunning', 'Villainy']),
+      row('TWI', 1, 'Leader', 'Rare', ['Vigilance', 'Villainy']),
+    ];
+    expect(rows.sort(compareBulkRows(['TWI', 'LOF'])).map(label)).toEqual([
+      'TWI#14',
+      'TWI#17',
+      'TWI#18',
+      'TWI#1',
+      'TWI#3',
+      'LOF#17',
+      'LOF#18',
+    ]);
+  });
 });

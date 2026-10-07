@@ -92,13 +92,16 @@ function section(row: BulkRow): number {
 
 /**
  * Where a leader or base sits within its set: dual-aspect cards first, then single-aspect,
- * then those with no primary aspect; alphabetical by first aspect within each.
+ * then those with no primary aspect; alphabetical by first aspect within each, then
+ * Villainy before Heroism, as the sets number them (a card with both or neither between).
  */
-function aspectKey(row: BulkRow): [number, string] {
+function aspectKey(row: BulkRow): [number, string, number] {
   const primaries = [...new Set(row.aspects.filter((a) => PRIMARY_ASPECTS.has(a)))];
-  if (primaries.length >= 2) return [0, primaries[0] ?? ''];
-  if (primaries.length === 1) return [1, primaries[0] ?? ''];
-  return [2, row.aspects[0] ?? ''];
+  const villain = row.aspects.includes('Villainy');
+  const hero = row.aspects.includes('Heroism');
+  const affiliation = villain === hero ? 1 : villain ? 0 : 2;
+  const group = Math.min(2, 2 - primaries.length);
+  return [group, primaries[0] ?? '', affiliation];
 }
 
 /**
@@ -116,9 +119,9 @@ export function compareBulkRows(setOrder: readonly SetKey[]): (a: BulkRow, b: Bu
     const bySet = rank(a.setKey) - rank(b.setKey);
     if (bySet) return bySet;
     if (section(a) <= 1) {
-      const [aGroup, aAspect] = aspectKey(a);
-      const [bGroup, bAspect] = aspectKey(b);
-      const byAspect = aGroup - bGroup || aAspect.localeCompare(bAspect);
+      const [aGroup, aAspect, aSide] = aspectKey(a);
+      const [bGroup, bAspect, bSide] = aspectKey(b);
+      const byAspect = aGroup - bGroup || aAspect.localeCompare(bAspect) || aSide - bSide;
       if (byAspect) return byAspect;
     }
     return a.base - b.base;
