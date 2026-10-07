@@ -173,11 +173,16 @@
   white-space: nowrap;
 }
 
+.action {
+  composes: ui-btn from global;
+}
+
 .action:hover {
   background: var(--color-surface-raised);
 }
 
 .primary {
+  composes: ui-btn ui-primary from global;
   border-color: transparent;
   background: var(--color-accent);
   color: var(--color-accent-text);
@@ -185,12 +190,9 @@
 }
 
 .danger {
+  composes: ui-btn ui-danger from global;
   border-color: var(--color-danger);
   color: var(--color-danger-fg);
-}
-
-.danger:hover {
-  background: var(--color-danger-bg);
 }
 
 /* Phones: nested panels each give up some padding, so a deck's card table has room. */

@@ -31,6 +31,7 @@
 
 /* Big enough for a fingertip: the only way to change a printing on a phone. */
 .step {
+  composes: ui-btn from global;
   min-width: 32px;
   min-height: 32px;
   border: none;
@@ -41,11 +42,6 @@
   line-height: 1;
   cursor: pointer;
   transition: background-color var(--transition-fast);
-}
-
-.step:hover:not(:disabled) {
-  background: var(--color-surface-raised);
-  color: var(--color-text);
 }
 
 .step:disabled {

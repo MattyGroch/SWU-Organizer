@@ -137,6 +137,7 @@
 }
 
 .primary {
+  composes: ui-btn ui-primary from global;
   padding: var(--space-2) var(--space-4);
   border: none;
   border-radius: var(--radius-md);

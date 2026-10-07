@@ -76,6 +76,7 @@ export type CardRow = {
   subtitle?: string;
   type?: string;
   rarity?: string;
+  unique?: boolean;
   aspects: string[];
   quota: number;
   /** Every copy owned, across printings: binder, bulk box and decks. */
@@ -144,6 +145,7 @@ export function buildCardRows(
       subtitle: card.subtitle,
       type: card.type,
       rarity: card.rarity,
+      unique: card.unique,
       aspects: card.aspects,
       quota,
       total: counts.total,

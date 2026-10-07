@@ -145,6 +145,7 @@
 
 .primary,
 .secondary {
+  composes: ui-btn from global;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
@@ -152,6 +153,7 @@
 }
 
 .primary {
+  composes: ui-btn ui-primary from global;
   border: none;
   background: var(--color-accent);
   color: var(--color-accent-text);
@@ -161,10 +163,6 @@
 .secondary {
   border: 1px solid var(--color-border-interactive);
   background: var(--color-surface-sunken);
-}
-
-.secondary:hover {
-  background: var(--color-surface-raised);
 }
 
 .offers {

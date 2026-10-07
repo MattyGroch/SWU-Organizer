@@ -6,6 +6,7 @@
 }
 
 .step {
+  composes: ui-btn from global;
   display: inline-flex;
   gap: var(--space-1);
   align-items: center;
@@ -14,10 +15,6 @@
   border-radius: var(--radius-md);
   background: var(--color-surface-sunken);
   cursor: pointer;
-}
-
-.step:hover:not(:disabled) {
-  background: var(--color-surface-raised);
 }
 
 .step:disabled {

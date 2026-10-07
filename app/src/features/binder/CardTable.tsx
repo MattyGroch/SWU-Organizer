@@ -2,10 +2,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { formatUsd } from '~/ui/format';
 
-import { aspectSwatchBackground } from './aspect';
 import { STATUS_GLYPH, STATUS_LABEL, type CardRow } from './cardRows';
 import styles from './CardTable.module.css';
+import { AspectIcons } from './AspectIcons';
 import { RarityBadge } from './RarityBadge';
+import { UniqueMark } from './UniqueMark';
 
 const ROW_HEIGHT = 44;
 const OVERSCAN = 8;
@@ -147,11 +148,7 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
                   </button>
                 </td>
                 <td className={styles.dotCol}>
-                  <span
-                    className={styles.swatch}
-                    style={{ background: aspectSwatchBackground(row.aspects) }}
-                    aria-hidden="true"
-                  />
+                  <AspectIcons className={styles.aspects} aspects={row.aspects} />
                 </td>
                 <td className={styles.rarCol}>
                   <RarityBadge className={styles.rarity} rarity={row.rarity} title={row.rarity}>
@@ -159,6 +156,7 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
                   </RarityBadge>
                 </td>
                 <td className={styles.nameCell}>
+                  {row.unique && <UniqueMark />}
                   {row.name}
                   {row.subtitle && <span className={styles.subtitle}>{row.subtitle}</span>}
                 </td>

@@ -9,8 +9,9 @@ import {
 } from '~/domain/ownership';
 import type { ActiveSelection } from '~/domain/types';
 
-import { aspectSwatchBackground } from './aspect';
+import { AspectIcons } from './AspectIcons';
 import styles from './SelectedCardPanel.module.css';
+import { UniqueMark } from './UniqueMark';
 import { VariantStrip } from './VariantStrip';
 
 type Props = {
@@ -65,13 +66,12 @@ export function SelectedCardPanel({
   return (
     <div className={styles.panel}>
       <div className={styles.identity}>
-        <span
-          className={styles.swatch}
-          style={{ background: aspectSwatchBackground(card.Aspects) }}
-          aria-hidden="true"
-        />
+        <AspectIcons className={styles.aspects} aspects={card.Aspects} />
         <div className={styles.names}>
-          <h2 className={styles.name}>{card.Name}</h2>
+          <h2 className={styles.name}>
+            {card.Unique && <UniqueMark />}
+            {card.Name}
+          </h2>
           {card.Subtitle && <p className={styles.subtitle}>{card.Subtitle}</p>}
         </div>
         {onClose && (

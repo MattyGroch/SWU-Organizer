@@ -14,6 +14,7 @@
 }
 
 .segmented {
+  composes: ui-seg from global;
   display: inline-flex;
   overflow: hidden;
   border: 1px solid var(--color-border-strong);
@@ -21,6 +22,7 @@
 }
 
 .segment {
+  composes: ui-seg-item from global;
   min-height: 40px;
   padding: var(--space-2) var(--space-3);
   border: none;
@@ -29,11 +31,6 @@
   font-size: var(--font-size-sm);
   font-weight: 700;
   cursor: pointer;
-}
-
-.segment[aria-checked='true'] {
-  background: var(--color-accent);
-  color: var(--color-accent-text);
 }
 
 .viewfinder {
@@ -178,6 +175,7 @@
 }
 
 .inlineButton {
+  composes: ui-btn from global;
   margin-left: var(--space-1);
   padding: 2px var(--space-2);
   border: 1px solid var(--color-border-interactive);
@@ -214,15 +212,13 @@
 }
 
 .button {
+  composes: ui-btn from global;
   border: 1px solid var(--color-border-interactive);
   background: var(--color-surface-sunken);
 }
 
-.button[aria-pressed='true'] {
-  border-color: var(--color-warning);
-}
-
 .primary {
+  composes: ui-btn ui-primary from global;
   border: none;
   background: var(--color-accent);
   color: var(--color-accent-text);
@@ -249,6 +245,7 @@
 }
 
 .chip {
+  composes: ui-chip from global;
   min-width: 44px;
   min-height: 40px;
   border: 1px solid var(--color-border-strong);
@@ -256,11 +253,6 @@
   background: var(--color-surface-sunken);
   font-weight: 800;
   cursor: pointer;
-}
-
-.chip[aria-pressed='true'] {
-  border-color: var(--color-focus);
-  background: var(--color-surface-raised);
 }
 
 .alternatives {

@@ -65,16 +65,6 @@ export function aspectBackground(aspects: readonly string[] | undefined): string
   );
 }
 
-/** Table swatch: a diagonal split rather than a horizontal blend, so it reads at 12px. */
-export function aspectSwatchBackground(aspects: readonly string[] | undefined): string {
-  const vars = aspectFillVars(aspects);
-  if (vars.length === 0) return cssVar(NEUTRAL_VAR);
-  if (vars.length === 1) return cssVar(vars[0]!);
-
-  const [first, second] = vars;
-  return `linear-gradient(135deg, ${cssVar(first!)} 0 50%, ${cssVar(second!)} 50% 100%)`;
-}
-
 /** Heroism's near-white fill is the only one that needs dark text on top. */
 export function isLightFill(aspects: readonly string[] | undefined): boolean {
   const vars = aspectFillVars(aspects);

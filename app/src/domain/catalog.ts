@@ -347,6 +347,7 @@ export function toLoadedSet(catalog: SetCatalog, prices: Map<string, number>): L
       Aspects: card.aspects,
       Type: card.type,
       Rarity: card.rarity,
+      Unique: card.unique,
       MarketPrice: basePrice(card, prices),
       MaxCopies: card.maxCopies,
       Set: catalog.setKey,
