@@ -557,8 +557,17 @@ describe('the bulk box', () => {
 
     const table = screen.getByRole('table', { name: 'Bulk box' });
     expect(within(table).getByRole('link', { name: 'Inferno Four' })).toBeInTheDocument();
-    expect(within(table).getAllByRole('row')).toHaveLength(2);
+    // The header row, the section's row, and the card's.
+    expect(within(table).getAllByRole('row')).toHaveLength(3);
     expect(screen.getByRole('status')).toHaveTextContent('2 copies of 1 card in the bulk box');
+
+    const section = within(table).getByRole('button', { name: /^Common & Uncommon/ });
+    expect(section).toHaveAttribute('aria-expanded', 'true');
+    await user.click(section);
+    expect(section).toHaveAttribute('aria-expanded', 'false');
+    expect(within(table).queryByRole('link', { name: 'Inferno Four' })).not.toBeInTheDocument();
+    await user.click(section);
+    expect(within(table).getByRole('link', { name: 'Inferno Four' })).toBeInTheDocument();
 
     await user.type(screen.getByRole('searchbox', { name: 'Search the bulk box' }), 'krennic');
     expect(screen.queryByRole('table', { name: 'Bulk box' })).not.toBeInTheDocument();

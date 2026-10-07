@@ -79,11 +79,74 @@
   vertical-align: top;
 }
 
+.table .sectionRow th {
+  position: static;
+  padding: 0;
+  background: var(--color-surface-sunken);
+}
+
+.sectionToggle {
+  display: flex;
+  gap: var(--space-2);
+  align-items: baseline;
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sectionToggle:hover {
+  background: var(--color-surface);
+}
+
+.chevron {
+  flex: none;
+  align-self: center;
+  width: 0.45em;
+  height: 0.45em;
+  margin-right: 0.15em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.15s;
+}
+
+.sectionToggle[aria-expanded='true'] .chevron {
+  transform: rotate(45deg);
+}
+
+.sectionCount {
+  margin-left: auto;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+  font-weight: 400;
+}
+
 .where {
   width: 96px;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
   color: var(--color-text-subtle);
+}
+
+.aspectCol,
+.rarityCol {
+  width: 1px;
+  white-space: nowrap;
+}
+
+.table td.aspectCol {
+  padding-right: 0;
+}
+
+.aspects {
+  gap: 3px;
+  font-size: 20px;
 }
 
 .name a {
@@ -125,5 +188,18 @@
 
   .narrowWhere {
     display: block;
+  }
+
+  .table th.aspectCol,
+  .table td.aspectCol,
+  .table th.rarityCol,
+  .table td.rarityCol {
+    padding-left: var(--space-2);
+    padding-right: 0;
+  }
+
+  .aspects {
+    gap: 1px;
+    font-size: 17px;
   }
 }
