@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 
 import {
@@ -328,6 +329,14 @@ function SavedDeckItem({
               Add to collection
             </button>
           )}
+          <Link
+            to="/decks/$deckId"
+            params={{ deckId: deck.id }}
+            className={styles.action}
+            title="Change the list: move cards between main deck and sideboard, add or remove cards"
+          >
+            Edit
+          </Link>
           <button type="button" className={styles.action} onClick={() => void copyMissing()}>
             Copy missing
           </button>

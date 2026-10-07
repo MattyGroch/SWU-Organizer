@@ -14,6 +14,16 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "Action [Exhaust]: Play an upgrade from your resources on a unit that entered play this phase (paying its cost). If you do, resource the top card of your deck.\nEpic Action: If you control 5 or more resources, deploy this leader.\nWhen Attack Ends: You may play an upgrade from your resources on a friendly unit. If you do, resource the top card of your deck.",
       "printings": [
         {
           "num": "001",
@@ -41,6 +51,16 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD"
+      ],
+      "text": "Action [C=1, Exhaust, exhaust a friendly unit]: Play a unit from your hand (paying its cost). It enters play ready.\nEpic Action: If you control 4 or more resources, deploy this leader.\nSaboteur\nAction [C=1, exhaust a friendly unit]: Play a unit from your hand. It enters play ready.",
       "printings": [
         {
           "num": "002",
@@ -68,6 +88,16 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Action [C=1, Exhaust]: Give a friendly unit +2/+2 for this phase if it's the only unit you control in its arena.\nEpic Action: If you control 5 or more resources, deploy this leader.\nOn Attack: You may give a friendly unit +2/+2 and Sentinel for this phase if it's the only non-leader unit you control in its arena. (Enemy units in its arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "003",
@@ -95,6 +125,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 8,
+      "power": 5,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "OFFICIAL"
+      ],
+      "text": "Action [Exhaust]: Attack with a unit. It gains Restore 2 for this attack if you control the same number of units as the defending player.\nEpic Action: If you control 8 or more resources, deploy this leader.\nRestore 2\nOn Attack: If you control more units than the defending player, you may defeat a non-leader unit they control.",
       "printings": [
         {
           "num": "004",
@@ -122,6 +163,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 7,
+      "power": 6,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REBEL"
+      ],
+      "text": "When a friendly unit's attack ends: You may exhaust this leader. If you do, heal 1 damage from that unit.\nEpic Action: If you control 7 or more resources, deploy this leader.\nWhen a friendly unit's attack ends: Heal 2 damage from that unit or from your base.",
       "printings": [
         {
           "num": "005",
@@ -149,6 +202,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "JEDI",
+        "MANDALORIAN",
+        "SPECTRE"
+      ],
+      "text": "Action [Exhaust]: An opponent gives 2 Advantage tokens to a unit they control. If they do, the next unit you play this phase gains Shielded for this phase. (When you play that unit, give a Shield token to it.)\nEpic Action: If you control 5 or more resources, deploy this leader.\nOn Attack: The next unit you play this phase gains Shielded for this phase.",
       "printings": [
         {
           "num": "006",
@@ -176,6 +241,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "OFFICIAL"
+      ],
+      "text": "Action [Exhaust]: Choose One:\nGive each ground unit Sentinel and Overwhelm for this phase.\nGive each space unit Sentinel and Overwhelm for this phase.\nEpic Action: If you control 5 or more resources, deploy this leader.\nOverwhelm\nEach other friendly unit gains Overwhelm and Sentinel.",
       "printings": [
         {
           "num": "007",
@@ -203,6 +279,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 7,
+      "power": 5,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "OFFICIAL"
+      ],
+      "text": "Action [Exhaust]: If a friendly Imperial unit was defeated this phase, play a unit from your hand. It costs 1 less.\nEpic Action: If you control 7 or more resources, deploy this leader.\nThis unit gains each of the following Keywords if it is on an Imperial unit in your discard pile: Ambush, Grit, Hidden, Overwhelm, Saboteur, Sentinel, Shielded, Support.",
       "printings": [
         {
           "num": "008",
@@ -230,6 +317,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "Action [Exhaust]: Choose a unit with less power than a friendly unit. It gets +2/+0 for this phase.\nEpic Action: If you control 6 or more resources, deploy this leader.\nSupport (When you deploy this leader, you may attack with another unit. It gains this unit's other abilities for this attack.)\nOn Attack: You may give a unit with less power than this unit +2/+0 for this phase.",
       "printings": [
         {
           "num": "009",
@@ -257,6 +355,16 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 10,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "Action [C=2, Exhaust]: If you control a unit in each arena, create a Mandalorian token.\nEpic Action: If the number of resources you control plus the number of friendly Mandalorian units is 10 or more, deploy this leader.\nOther friendly Mandalorian units get +1/+0.\nOn Attack: If you control a unit in each arena, create a Mandalorian token.",
       "printings": [
         {
           "num": "010",
@@ -284,6 +392,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "BOUNTY HUNTER"
+      ],
+      "text": "Action [Exhaust]: Deal 1 damage to a unit with 2 or more remaining HP.\nEpic Action: If you control 6 or more resources, deploy this leader.\nOverwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)\nOn Attack: You may deal 1 damage to a unit with 2 or more remaining HP.",
       "printings": [
         {
           "num": "011",
@@ -311,6 +430,16 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD"
+      ],
+      "text": "Action [Exhaust, defeat a friendly upgrade]: Deal 2 damage to a base.\nEpic Action: If you control 5 or more resources, deploy this leader.\nOn Attack: You may defeat a friendly upgrade. If you do, deal 2 damage to the defending unit or a base.",
       "printings": [
         {
           "num": "012",
@@ -338,6 +467,19 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REBEL",
+        "SPECTRE"
+      ],
+      "text": "When a friendly unit's attack ends: If it dealt 3 or more combat damage to a base, you may exhaust this leader. If you do, give an Advantage token to a different unit.\nEpic Action: If you control 5 or more resources, deploy this leader.\nSaboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)\nWhen a friendly unit's attack ends: If it dealt 3 or more combat damage to a base, you may give an Advantage token to a different unit.",
       "printings": [
         {
           "num": "013",
@@ -365,6 +507,16 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "When you take the initiative: You may pay 1. If you do, draw a card.\nEpic Action: If you control 6 or more resources, deploy this leader.\nSupport (When you deploy this leader, you may attack with another unit. It gains this unit's other abilities for this attack.)\nOn Attack: If you have the initiative, you may draw a card.",
       "printings": [
         {
           "num": "014",
@@ -392,6 +544,19 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 7,
+      "power": 4,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "SITH",
+        "OFFICIAL"
+      ],
+      "text": "Action [Exhaust]: Choose an exhausted friendly unit. Give an Advantage token to it for each other friendly unit.\nEpic Action: If you control 7 or more resources, deploy this leader.\nOn Attack: You may choose another exhausted friendly unit. If you do, give an Advantage token to it for each other friendly unit.",
       "printings": [
         {
           "num": "015",
@@ -419,6 +584,16 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "When a friendly unit's attack ends: You may exhaust this leader. If you do, exhaust a unit that costs less than the amount of combat damage dealt to a base this attack.\nEpic Action: If you control 6 or more resources, deploy this leader.\nWhen a friendly unit's attack ends: You may exhaust a unit that costs less than the amount of combat damage dealt to a base this attack. Use this ability only once each round.",
       "printings": [
         {
           "num": "016",
@@ -446,6 +621,16 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "OFFICIAL"
+      ],
+      "text": "When you play or create a unit: You may exhaust this leader. If you do, give an Advantage token to that unit.\nEpic Action: If you control 6 or more resources, deploy this leader.\nWhen you play or create a unit: Give an Advantage token to that unit.",
       "printings": [
         {
           "num": "017",
@@ -473,6 +658,16 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 4,
+      "power": 0,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "When you play a Unique unit that costs 4 or more: If this leader is ready, you may deploy him.\nWhile another friendly unit is defending, it gets +1/+0.\nWhile another friendly unit is attacking, the defending unit gets -1/-0.",
       "printings": [
         {
           "num": "018",
@@ -497,6 +692,7 @@
       "aspects": [
         "Vigilance"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "019",
@@ -517,6 +713,7 @@
       "aspects": [
         "Vigilance"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "020",
@@ -537,6 +734,7 @@
       "aspects": [
         "Command"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "021",
@@ -557,6 +755,7 @@
       "aspects": [
         "Command"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "022",
@@ -577,6 +776,7 @@
       "aspects": [
         "Aggression"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "023",
@@ -597,6 +797,7 @@
       "aspects": [
         "Aggression"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "024",
@@ -617,6 +818,7 @@
       "aspects": [
         "Cunning"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "025",
@@ -637,6 +839,7 @@
       "aspects": [
         "Cunning"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "026",
@@ -660,6 +863,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
+      ],
+      "text": "When Defeated: You may deal up to 6 damage to your base. The next unit you play this phase costs 1 less for every 2 damage dealt this way.",
       "printings": [
         {
           "num": "027",
@@ -695,6 +909,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "Sentinel \nWhen Defeated: If this unit wasn't defeated by combat damage, create 2 Mandalorian tokens.",
       "printings": [
         {
           "num": "028",
@@ -731,6 +955,17 @@
         "Vigilance",
         "Command"
       ],
+      "cost": 6,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "DROID"
+      ],
+      "text": "Sentinel \nShielded \nOverwhelm",
       "printings": [
         {
           "num": "029",
@@ -766,6 +1001,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "INQUISITOR"
+      ],
+      "text": "Sentinel\nWhile this unit is upgraded, he loses Sentinel and gains Saboteur.",
       "printings": [
         {
           "num": "030",
@@ -805,6 +1051,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NEW REPUBLIC",
+        "TWI'LEK",
+        "SPECTRE"
+      ],
+      "text": "When Attack Ends: If this unit dealt combat damage to a base, heal that much damage from your base.",
       "printings": [
         {
           "num": "031",
@@ -841,6 +1099,16 @@
         "Vigilance",
         "Aggression"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD"
+      ],
+      "text": "When a friendly unit is dealt damage and survives: Deal 1 damage to any number of bases. Use this ability only once each round.",
       "printings": [
         {
           "num": "032",
@@ -868,6 +1136,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "OFFICIAL"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nWhen Attack Ends: If the defending unit was defeated, ready this unit.",
       "printings": [
         {
           "num": "033",
@@ -907,6 +1186,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "EWOK"
+      ],
+      "text": "Saboteur\nThis unit can't attack bases.",
       "printings": [
         {
           "num": "034",
@@ -951,6 +1240,18 @@
         "Command",
         "Aggression"
       ],
+      "cost": 7,
+      "power": 8,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "SPEEDER"
+      ],
+      "text": "This unit can't be attacked while you control 2 or more exhausted units (unless it gains Sentinel).\nOn Attack: Deal 2 damage to a ground unit for each friendly exhausted unit.",
       "printings": [
         {
           "num": "035",
@@ -978,6 +1279,16 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 1,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nWhen Attack Ends: If the defending unit was defeated, you may give 3 Advantage tokens to a unit.",
       "printings": [
         {
           "num": "036",
@@ -1005,6 +1316,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REBEL",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nThis unit may attack units in either arena.",
       "printings": [
         {
           "num": "037",
@@ -1041,6 +1364,16 @@
         "Command",
         "Cunning"
       ],
+      "cost": 8,
+      "power": 6,
+      "hp": 10,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "When Played/When Defeated: You may return another friendly non-leader unit to its owner's hand. If you do, deal damage to a unit equal to the returned unit's cost.",
       "printings": [
         {
           "num": "038",
@@ -1080,6 +1413,16 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Overwhelm\nWhen Played/When Attack Ends: If an enemy base was damaged this phase, give an Advantage token to a unit. If a friendly upgrade was defeated this phase, you may exhaust a unit.",
       "printings": [
         {
           "num": "039",
@@ -1119,6 +1462,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "RESISTANCE"
+      ],
+      "text": "All units lose Sentinel.",
       "printings": [
         {
           "num": "040",
@@ -1145,6 +1498,18 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When a friendly unit enters play (including this one): It gets +1/+0 for this phase.",
       "printings": [
         {
           "num": "041",
@@ -1172,6 +1537,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 2,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "HUTT"
+      ],
+      "text": "Restore 2\nWhen Played: You may return an upgrade to its owner's hand. If it's returned to your hand, you may play it for free.",
       "printings": [
         {
           "num": "042",
@@ -1199,6 +1575,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REBEL",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "On Attack: You may give a unit -2/-0 for this phase.\nWhen Defeated: You may defeat a non‑leader unit with 0 power.",
       "printings": [
         {
           "num": "043",
@@ -1225,6 +1613,17 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "FRINGE"
+      ],
+      "text": "When Played: Heal up to 2 damage from a unit. Give an Advantage token to it for each damage healed this way.",
       "printings": [
         {
           "num": "044",
@@ -1257,6 +1656,19 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 1,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "NIGHT",
+        "UNDEAD",
+        "TROOPER"
+      ],
+      "text": "When Defeated: Look at the top card of a deck. You may discard it.",
       "printings": [
         {
           "num": "045",
@@ -1291,6 +1703,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nWhile this unit is attacking, the defending unit gets -1/-1.",
       "printings": [
         {
           "num": "046",
@@ -1317,6 +1741,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "TROOPER"
+      ],
+      "text": "When you play an upgrade on this unit: You may create a Mandalorian token. Use this ability only once each round.",
       "printings": [
         {
           "num": "047",
@@ -1341,6 +1776,17 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)\nShielded (When you play this unit, give a Shield token to it.)",
       "printings": [
         {
           "num": "048",
@@ -1367,6 +1813,16 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE"
+      ],
+      "text": "While this is the only friendly non-leader ground unit, she gains Sentinel. (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "049",
@@ -1405,6 +1861,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nWhen Defeated: You may give a unit -2/-2 for this phase.",
       "printings": [
         {
           "num": "050",
@@ -1449,6 +1916,18 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 6,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Restore 1 (When this unit attacks, heal 1 damage from your base.)\nWhen Played: You may exhaust a unit.",
       "printings": [
         {
           "num": "051",
@@ -1475,6 +1954,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "When Played: You may choose a friendly unit and an enemy non-leader unit. If you do, defeat those units.\nWhen an enemy unit is defeated: Heal 2 damage from your base.",
       "printings": [
         {
           "num": "052",
@@ -1501,6 +1992,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "OFFICIAL"
+      ],
+      "text": "When Played: Defeat any number of non-leader units with a total of 6 or less remaining HP. Create a Mandalorian token for each unit defeated this way.",
       "printings": [
         {
           "num": "053",
@@ -1525,6 +2027,13 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 0,
+      "traits": [
+        "CONDITION"
+      ],
+      "text": "Attached unit gets -3/-0 while attacking a base.",
       "printings": [
         {
           "num": "054",
@@ -1551,6 +2060,15 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 1,
+      "traits": [
+        "NIGHT",
+        "ITEM",
+        "WEAPON"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nWhen Defeated: If this upgrade was on a friendly Night unit, return this upgrade from your discard pile to your hand.",
       "printings": [
         {
           "num": "055",
@@ -1589,6 +2107,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "JEDI",
+        "DROID"
+      ],
+      "text": "On Attack: You may give an upgraded unit -4/-0 for this phase.",
       "printings": [
         {
           "num": "056",
@@ -1613,6 +2142,18 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "NEW REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "While an enemy unit is upgraded, this unit gains Restore 2. (When this unit attacks, heal 2 damage from your base.)",
       "printings": [
         {
           "num": "057",
@@ -1637,6 +2178,16 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "When Defeated: Create a Mandalorian token.",
       "printings": [
         {
           "num": "058",
@@ -1663,6 +2214,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL",
+        "OFFICIAL"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nOn Attack: You may deal 1 damage to this unit. If you do, heal 2 damage from your base.",
       "printings": [
         {
           "num": "059",
@@ -1701,6 +2263,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 2,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "OFFICIAL"
+      ],
+      "text": "Grit\nWhen you play another unit: You may deal 2 damage to this unit. If you do, give a Shield token to that unit.",
       "printings": [
         {
           "num": "060",
@@ -1737,6 +2309,16 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 4,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL",
+        "TROOPER"
+      ],
       "printings": [
         {
           "num": "061",
@@ -1763,6 +2345,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 5,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "Shielded\nIf damage would be dealt to another friendly unit, you may defeat a Shield token on this unit. If you do, prevent that damage.",
       "printings": [
         {
           "num": "062",
@@ -1801,6 +2393,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Restore 1\nEach other friendly non-token unit gains: “When Defeated: Create a Mandalorian token.”",
       "printings": [
         {
           "num": "063",
@@ -1839,6 +2443,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "Shielded (When you play this unit, give a Shield token to her.)\nWhen Played: Give a Shield token to each friendly unit with Shielded (including this one).",
       "printings": [
         {
           "num": "064",
@@ -1885,6 +2499,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 7,
+      "hp": 10,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REBEL",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)\nWhen Played: Heal all damage from each friendly unit.",
       "printings": [
         {
           "num": "065",
@@ -1923,6 +2549,15 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nIf attached unit is Luke Skywalker, he gains Sentinel. (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "066",
@@ -1947,6 +2582,11 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 4,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Defeat an upgraded non-leader unit.",
       "printings": [
         {
           "num": "067",
@@ -1978,6 +2618,16 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Enemy units lose Ambush and Support.",
       "printings": [
         {
           "num": "068",
@@ -2001,6 +2651,16 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Shielded (When you play this unit, give a Shield token to it.)",
       "printings": [
         {
           "num": "069",
@@ -2024,6 +2684,17 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "DROID"
+      ],
+      "text": "If your base would be dealt more than 4 damage, prevent all but 4 of that damage.",
       "printings": [
         {
           "num": "070",
@@ -2047,6 +2718,17 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When Played: Deal 1 damage to this unit and 1 damage to an enemy space unit.",
       "printings": [
         {
           "num": "071",
@@ -2072,6 +2754,16 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 0,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NEW REPUBLIC"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nOn Attack: If this unit has 3 or more remaining HP, draw a card.",
       "printings": [
         {
           "num": "072",
@@ -2095,6 +2787,17 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "power": 0,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "DROID"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)\nThis unit gets +2/+0 while defending.",
       "printings": [
         {
           "num": "073",
@@ -2126,6 +2829,16 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nGrit (This unit gets +1/+0 for each damage on it.)",
       "printings": [
         {
           "num": "074",
@@ -2149,6 +2862,16 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "DROID"
+      ],
+      "text": "The first upgrade you play on another friendly unit each phase costs 1 less.",
       "printings": [
         {
           "num": "075",
@@ -2172,6 +2895,17 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "OFFICIAL"
+      ],
+      "text": "Restore 2 (When this unit attacks, heal 2 damage from your base.)",
       "printings": [
         {
           "num": "076",
@@ -2197,6 +2931,17 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NEW REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "Restore 1\nWhen Played: Name a card. While this unit is in play, opponents can't play cards with that name.",
       "printings": [
         {
           "num": "077",
@@ -2220,6 +2965,18 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REBEL",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "While you control a ground unit, this unit gains Sentinel. (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "078",
@@ -2245,6 +3002,16 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "While you control a token unit, this unit gains Sentinel.\nWhen Played: If a friendly unit was defeated this phase, create a Mandalorian token.",
       "printings": [
         {
           "num": "079",
@@ -2268,6 +3035,16 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "When Defeated: Create a Mandalorian token.",
       "printings": [
         {
           "num": "080",
@@ -2291,6 +3068,18 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NEW REPUBLIC",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "When Played: You may heal 3 damage from a unit or base.",
       "printings": [
         {
           "num": "081",
@@ -2314,6 +3103,18 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 6,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "TANK"
+      ],
+      "text": "Grit (This unit gets +1/+0 for each damage on it.)\nWhen Played: You may give a Shield token to a unit that costs 3 or less.",
       "printings": [
         {
           "num": "082",
@@ -2337,6 +3138,16 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 12,
+      "power": 15,
+      "hp": 15,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Sentinel\nOn Attack: Defeat all other space units.",
       "printings": [
         {
           "num": "083",
@@ -2374,6 +3185,13 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 0,
+      "hp": 3,
+      "traits": [
+        "ITEM"
+      ],
+      "text": "Attached unit gains: “If you would search a number of cards from your deck, search twice that number of cards instead.”",
       "printings": [
         {
           "num": "084",
@@ -2409,6 +3227,15 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 0,
+      "traits": [
+        "CONDITION",
+        "ITEM",
+        "WEAPON"
+      ],
+      "text": "When attached unit's attack ends: Deal 4 damage to it and defeat this upgrade.",
       "printings": [
         {
           "num": "085",
@@ -2432,6 +3259,13 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 1,
+      "traits": [
+        "ARMOR"
+      ],
+      "text": "When Played: Give a Shield token to attached unit.",
       "printings": [
         {
           "num": "086",
@@ -2455,6 +3289,13 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "MODIFICATION"
+      ],
+      "text": "When Played: Draw a card.",
       "printings": [
         {
           "num": "087",
@@ -2478,6 +3319,13 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "power": 0,
+      "hp": 0,
+      "traits": [
+        "CONDITION"
+      ],
+      "text": "Attached unit gains: \"When this unit readies: You may pay 3. If you don't, exhaust this unit.\"",
       "printings": [
         {
           "num": "088",
@@ -2501,6 +3349,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "Heal 3 damage from a unit and give a Shield token to it.",
       "printings": [
         {
           "num": "089",
@@ -2524,6 +3377,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Defeat an upgrade on a friendly unit. If you do, search the top 8 cards of your deck for an upgrade that can attach to that unit, reveal it, and play it on that unit. It costs 4 less.",
       "printings": [
         {
           "num": "090",
@@ -2547,6 +3405,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Create a Mandalorian token and give it Sentinel for this phase. (Enemy units in its arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "091",
@@ -2570,6 +3433,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 4,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "You may defeat a unit with 2 or less remaining HP.\nCreate a Mandalorian token.",
       "printings": [
         {
           "num": "092",
@@ -2596,6 +3464,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "OFFICIAL"
+      ],
+      "text": "While a leader unit has been defeated this phase, this unit gains Raid 3. (He gets +3/+0 while attacking.)",
       "printings": [
         {
           "num": "093",
@@ -2622,6 +3501,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "OFFICIAL"
+      ],
+      "text": "If you would create a number of tokens, you may defeat this unit. If you do, create twice that number of tokens instead.",
       "printings": [
         {
           "num": "094",
@@ -2646,6 +3536,18 @@
         "Command",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nRestore 1 (When this unit attacks, heal 1 damage from your base.)",
       "printings": [
         {
           "num": "095",
@@ -2670,6 +3572,17 @@
         "Command",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)\nRestore 1 (When this unit attacks, heal 1 damage from your base.)",
       "printings": [
         {
           "num": "096",
@@ -2696,6 +3609,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "OFFICIAL"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)\nWhen Defeated: You may return a non-unique Imperial unit from your discard pile to your hand.",
       "printings": [
         {
           "num": "097",
@@ -2732,6 +3656,17 @@
         "Command",
         "Villainy"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "VEHICLE",
+        "WALKER"
+      ],
+      "text": "While you control another non-unique unit, this unit gains Ambush. (When you play this unit, it may attack an enemy unit.)",
       "printings": [
         {
           "num": "098",
@@ -2756,6 +3691,18 @@
         "Command",
         "Villainy"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nOn Attack: This unit gains Sentinel for this phase.",
       "printings": [
         {
           "num": "099",
@@ -2782,6 +3729,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "OFFICIAL"
+      ],
+      "text": "Other friendly units with 2 or more different Keywords get +2/+2.",
       "printings": [
         {
           "num": "100",
@@ -2808,6 +3766,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 6,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "Support\nWhen Attack Ends: If this unit dealt combat damage to 1 or more non-leader units, defeat those units.",
       "printings": [
         {
           "num": "101",
@@ -2834,6 +3803,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 9,
+      "power": 8,
+      "hp": 10,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Restore 2\nWhen you play a unit: You may have it deal damage equal to its power to a unit in the same arena.",
       "printings": [
         {
           "num": "102",
@@ -2858,6 +3839,11 @@
         "Command",
         "Villainy"
       ],
+      "cost": 2,
+      "traits": [
+        "IMPERIAL"
+      ],
+      "text": "Defeat a friendly Imperial unit. If you do, resource the top card of your deck.",
       "printings": [
         {
           "num": "103",
@@ -2882,6 +3868,11 @@
         "Command",
         "Villainy"
       ],
+      "cost": 6,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "If you control a Force unit, this event costs 1 less to play.\nPlay up to 3 non-Vehicle units that each cost 2 or less from your discard pile for free.",
       "printings": [
         {
           "num": "104",
@@ -2908,6 +3899,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "While you control another Mandalorian unit, this unit gains Raid 2.",
       "printings": [
         {
           "num": "105",
@@ -2932,6 +3933,17 @@
         "Command",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL",
+        "TROOPER"
+      ],
+      "text": "Ambush (When you play this unit, it may attack an enemy unit.)\nRestore 1 (When this unit attacks, heal 1 damage from your base.)",
       "printings": [
         {
           "num": "106",
@@ -2956,6 +3968,17 @@
         "Command",
         "Heroism"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "TROOPER"
+      ],
+      "text": "When Played: Search the top 5 cards of your deck for a card that shares a Trait with a unit you control, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order.)",
       "printings": [
         {
           "num": "107",
@@ -2982,6 +4005,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL",
+        "OFFICIAL"
+      ],
+      "text": "When Played: You may play a Heroism unit from your hand. It costs 2 less for each arena in which you control the most units.",
       "printings": [
         {
           "num": "108",
@@ -3020,6 +4054,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 2,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "JEDI",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)\nAction [Exhaust]: Give another unit +2/+2 for this phase. You may attack with that unit.",
       "printings": [
         {
           "num": "109",
@@ -3066,6 +4112,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL",
+        "OFFICIAL"
+      ],
+      "text": "When Played: You may defeat this unit. If you do, search the top 10 cards of your deck for any number of space units with combined cost 5 or less and play each of them for free.",
       "printings": [
         {
           "num": "110",
@@ -3102,6 +4159,16 @@
         "Command",
         "Heroism"
       ],
+      "cost": 6,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "When Played: Create 2 Mandalorian tokens.",
       "printings": [
         {
           "num": "111",
@@ -3128,6 +4195,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "Restore 1\nWhen Played: If you control at least 4 units, deal 3 damage to each enemy unit.",
       "printings": [
         {
           "num": "112",
@@ -3166,6 +4244,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 4,
+      "hp": 8,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "While you control a leader unit, this unit gains Ambush. (When you play this unit, it may attack an enemy unit.)\nThis unit gets +1/+0 for each other friendly Mandalorian unit.",
       "printings": [
         {
           "num": "113",
@@ -3192,6 +4282,15 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nIf attached unit is Sabine Wren or a Force unit, it gains Restore 2.",
       "printings": [
         {
           "num": "114",
@@ -3216,6 +4315,11 @@
         "Command",
         "Heroism"
       ],
+      "cost": 1,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Give a friendly unit +1/+0 for this phase for each other friendly unit with less power than it.",
       "printings": [
         {
           "num": "115",
@@ -3239,6 +4343,16 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "DROID"
+      ],
+      "text": "When Defeated: Draw a card.",
       "printings": [
         {
           "num": "116",
@@ -3262,6 +4376,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "117",
@@ -3287,6 +4413,17 @@
         "Command"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "DROID"
+      ],
+      "text": "Hidden\nAction [Exhaust]: Deal 1 damage to another friendly unit. If you do, search the top 5 cards of your deck for a unit, reveal it, and draw it.",
       "printings": [
         {
           "num": "118",
@@ -3312,6 +4449,16 @@
         "Command"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "OFFICIAL"
+      ],
+      "text": "Action [C=1, Exhaust]: If your base was attacked this phase, create a Mandalorian token.",
       "printings": [
         {
           "num": "119",
@@ -3355,6 +4502,17 @@
       "aspects": [
         "Command"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "TROOPER"
+      ],
+      "text": "While you control another exhausted unit, this unit gains Sentinel. (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "120",
@@ -3378,6 +4536,16 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nOverwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "121",
@@ -3409,6 +4577,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "FRINGE",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "While you have the initiative, this unit gains RESTORE 2. (When this unit attacks, heal 2 damage from your base.)",
       "printings": [
         {
           "num": "122",
@@ -3434,6 +4614,16 @@
         "Command"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Action [Exhaust]: This unit deals damage equal to his power to a ground unit.",
       "printings": [
         {
           "num": "123",
@@ -3457,6 +4647,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Played: If you control a unique unit, create a Mandalorian token.",
       "printings": [
         {
           "num": "124",
@@ -3480,6 +4682,17 @@
       "aspects": [
         "Command"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)\nWhile you have the initiative, this unit gets +2/+0.",
       "printings": [
         {
           "num": "125",
@@ -3503,6 +4716,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "VEHICLE",
+        "SPEEDER"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "126",
@@ -3528,6 +4753,17 @@
         "Command"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 2,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "HUTT"
+      ],
+      "text": "When Played/On Attack: You may give another friendly unit Sentinel for this phase.\nWhen another friendly unit is defeated: Heal 1 damage from your base.",
       "printings": [
         {
           "num": "127",
@@ -3553,6 +4789,18 @@
         "Command"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "NEW REPUBLIC",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When another friendly non-Vehicle unit is defeated: You may have this unit capture that unit from your discard pile. Use this ability only once each round.",
       "printings": [
         {
           "num": "128",
@@ -3576,6 +4824,16 @@
       "aspects": [
         "Command"
       ],
+      "cost": 5,
+      "power": 5,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "EWOK"
+      ],
+      "text": "Ambush (When you play this unit, it may attack an enemy unit.)\nOverwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "129",
@@ -3599,6 +4857,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 5,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)",
       "printings": [
         {
           "num": "130",
@@ -3621,6 +4891,15 @@
       "rarity": "Common",
       "aspects": [
         "Command"
+      ],
+      "cost": 6,
+      "power": 7,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
       ],
       "printings": [
         {
@@ -3655,6 +4934,17 @@
         "Command"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NABOO",
+        "OFFICIAL"
+      ],
+      "text": "When Played/On Attack: You may reveal a unit from your hand. If you do, deal 3 damage to a unit with the same cost as the revealed unit.",
       "printings": [
         {
           "num": "132",
@@ -3678,6 +4968,17 @@
       "aspects": [
         "Command"
       ],
+      "cost": 8,
+      "power": 5,
+      "hp": 9,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "VEHICLE",
+        "WALKER"
+      ],
+      "text": "When Played/On Attack: Choose a unit in your discard pile that costs 7 or less. Either put that card on the bottom of your deck and heal 3 damage from your base or return it to your hand.",
       "printings": [
         {
           "num": "133",
@@ -3701,6 +5002,13 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 1,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Attached unit gains: “When Defeated: Create a Mandalorian token.”",
       "printings": [
         {
           "num": "134",
@@ -3726,6 +5034,15 @@
         "Command"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 4,
+      "hp": 2,
+      "traits": [
+        "MANDALORIAN",
+        "ITEM",
+        "WEAPON"
+      ],
+      "text": "Attach to a unique non-Vehicle unit.\nAttached unit is a leader unit and gains the Mandalorian trait.\nAttached unit gains: “While you are paying costs, this unit provides its aspect icons.”",
       "printings": [
         {
           "num": "135",
@@ -3769,6 +5086,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Give a unit +3/+3 for this phase.",
       "printings": [
         {
           "num": "136",
@@ -3792,6 +5114,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Attack with a unit. For this attack, you may deal its excess damage to another unit in the same arena.",
       "printings": [
         {
           "num": "137",
@@ -3815,6 +5142,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Choose a unit. Deal 1 damage to it for each friendly unit.",
       "printings": [
         {
           "num": "138",
@@ -3838,6 +5170,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 4,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Choose a friendly unit. That unit deals damage equal to its power divided as you choose among any number of units in its arena.",
       "printings": [
         {
           "num": "139",
@@ -3861,6 +5198,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 4,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Create 2 Mandalorian tokens.",
       "printings": [
         {
           "num": "140",
@@ -3885,6 +5227,18 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 1,
+      "power": 2,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "141",
@@ -3909,6 +5263,17 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
+      ],
+      "text": "Action [Exhaust]: Deal 1 damage to each of up to 3 ground units.",
       "printings": [
         {
           "num": "142",
@@ -3933,6 +5298,17 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "143",
@@ -3959,6 +5335,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When a friendly unit's attack ends: If it dealt combat damage to a base, give an Advantage token to this unit.",
       "printings": [
         {
           "num": "144",
@@ -3983,6 +5371,16 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 4,
+      "power": 5,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL"
+      ],
+      "text": "Grit (This unit gets +1/+0 for each damage on it.)",
       "printings": [
         {
           "num": "145",
@@ -4009,6 +5407,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When Played/On Attack: You may deal 1 damage to a unit. If that unit is defeated this way, give an Advantage token to a unit.",
       "printings": [
         {
           "num": "146",
@@ -4035,6 +5445,16 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 3,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Grit (This unit gets +1/+0 for each damage on it.) \nWhen Played: Either deal 2 damage to an undamaged ground unit or 5 damage to a damaged ground unit.",
       "printings": [
         {
           "num": "147",
@@ -4069,6 +5489,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 8,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "INQUISITOR"
+      ],
+      "text": "Overwhelm\nWhen Played: An opponent discards a card from their hand. You may deal damage equal to its cost divided as you choose among any number of units.",
       "printings": [
         {
           "num": "148",
@@ -4095,6 +5527,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 9,
+      "hp": 7,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Advantage tokens on friendly units lose all abilities. (They aren't defeated after combat.)\nWhen Played/On Attack: Give 2 Advantage tokens to each other friendly unit.",
       "printings": [
         {
           "num": "149",
@@ -4119,6 +5563,13 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 0,
+      "traits": [
+        "CONDITION"
+      ],
+      "text": "If attached unit would take damage, it takes twice as much damage instead. \nWhile attached unit is defending, the attacker loses Overwhelm.",
       "printings": [
         {
           "num": "150",
@@ -4143,6 +5594,12 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 6,
+      "traits": [
+        "DISASTER",
+        "PLAN"
+      ],
+      "text": "Deal 5 damage to your base. Then, deal 5 damage to each unit.",
       "printings": [
         {
           "num": "151",
@@ -4166,6 +5623,16 @@
       "aspects": [
         "Aggression",
         "Heroism"
+      ],
+      "cost": 1,
+      "power": 3,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL",
+        "TROOPER"
       ],
       "printings": [
         {
@@ -4193,6 +5660,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 3,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REBEL",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Defeated: You may deal 2 damage to a unit.",
       "printings": [
         {
           "num": "153",
@@ -4217,6 +5696,17 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "TROOPER"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nRaid 1 (This unit gets +1/+0 while attacking.)",
       "printings": [
         {
           "num": "154",
@@ -4243,6 +5733,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "DROID"
+      ],
+      "text": "When you take the initiative: You may attack with a unit.",
       "printings": [
         {
           "num": "155",
@@ -4281,6 +5782,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "DROID"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nOn Attack: Defeat all upgrades on the defending unit.",
       "printings": [
         {
           "num": "156",
@@ -4305,6 +5816,18 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REBEL",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "On Attack: You may give an Advantage token to another unit.",
       "printings": [
         {
           "num": "157",
@@ -4331,6 +5854,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL",
+        "OFFICIAL"
+      ],
+      "text": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)\nWhen Played: Deal 3 damage to this unit. Give 3 Advantage tokens to a unit.",
       "printings": [
         {
           "num": "158",
@@ -4369,6 +5903,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REBEL",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)\nWhen the regroup phase starts: Give an Advantage token to a unit.",
       "printings": [
         {
           "num": "159",
@@ -4393,6 +5939,17 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "WOOKIEE",
+        "TROOPER"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)\nWhen an enemy ground unit attacks your base: Ready this unit. Use this ability only once each round.",
       "printings": [
         {
           "num": "160",
@@ -4419,6 +5976,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL",
+        "SPECTRE"
+      ],
+      "text": "When Played: Give 3 Advantage tokens to another unit.\nWhen a friendly upgrade is defeated: Deal 1 damage to a base.",
       "printings": [
         {
           "num": "161",
@@ -4455,6 +6023,11 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Attack with a unit. For this attack, it gets +1/+0 and gains: \"When Attack Ends: If this unit dealt combat damage to an opponent's base, that opponent discards a card.\"",
       "printings": [
         {
           "num": "162",
@@ -4479,6 +6052,11 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "GAMBIT"
+      ],
+      "text": "Discard a unit from your hand. Deal 5 damage to a unit that costs more than the discarded card.",
       "printings": [
         {
           "num": "163",
@@ -4502,6 +6080,16 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "164",
@@ -4525,6 +6113,17 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "TROOPER"
+      ],
+      "text": "When Defeated: You may defeat an upgrade.",
       "printings": [
         {
           "num": "165",
@@ -4548,6 +6147,16 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "EWOK"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "166",
@@ -4571,6 +6180,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Played/When Defeated: You may give an Advantage token to a unit.",
       "printings": [
         {
           "num": "167",
@@ -4596,6 +6217,16 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Support\nOn Attack: Deal 1 damage to the defending unit. If this unit is upgraded, deal 2 damage to the defending unit instead.",
       "printings": [
         {
           "num": "168",
@@ -4621,6 +6252,16 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "When you draw 1 or more cards (including during the regroup phase): Give an Advantage token to this unit.",
       "printings": [
         {
           "num": "169",
@@ -4644,6 +6285,17 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "TWI'LEK",
+        "BOUNTY HUNTER"
+      ],
+      "text": "When Played: You may deal 2 damage to an upgraded ground unit.",
       "printings": [
         {
           "num": "170",
@@ -4667,6 +6319,17 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Played: You may defeat a friendly upgrade. If you do, ready this unit.",
       "printings": [
         {
           "num": "171",
@@ -4692,6 +6355,18 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)\nOn Attack: You may discard a card from your hand. If you do, this unit gets +2/+0 for this attack.",
       "printings": [
         {
           "num": "172",
@@ -4727,6 +6402,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "173",
@@ -4750,6 +6437,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 5,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "RESISTANCE",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When Played: You may deal 6 damage to a non-unique ground unit.",
       "printings": [
         {
           "num": "174",
@@ -4773,6 +6472,16 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "WOOKIEE"
+      ],
+      "text": "Grit (This unit gets +1/+0 for each damage on it.)",
       "printings": [
         {
           "num": "175",
@@ -4796,6 +6505,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 6,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "WALKER"
+      ],
+      "text": "When Played: You may deal 3 damage to a ground unit. If it's defeated this way, give 3 Advantage tokens to this unit.",
       "printings": [
         {
           "num": "176",
@@ -4820,6 +6541,17 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 6,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Hidden\nOther friendly units gain Hidden.",
       "printings": [
         {
           "num": "177",
@@ -4843,6 +6575,16 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 7,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)\nWhen Played: For each enemy unit, give an Advantage token to this unit.",
       "printings": [
         {
           "num": "178",
@@ -4868,6 +6610,17 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 8,
+      "hp": 9,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "CREATURE"
+      ],
+      "text": "When Played: Deal 5 damage to your base. Then, deal 5 damage to an enemy ground unit. Then, deal 5 damage to the same unit.\nOn Attack: You may deal 1 damage to a base for every 5 damage on your base.",
       "printings": [
         {
           "num": "179",
@@ -4903,6 +6656,14 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "traits": [
+        "ITEM",
+        "WEAPON"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nAttached unit gains: “When Attack Ends: Give an Advantage token to this unit.”",
       "printings": [
         {
           "num": "180",
@@ -4926,6 +6687,13 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 1,
+      "power": 2,
+      "hp": 0,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Attach to a damaged unit.\nAttached unit gains Overwhelm. (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "181",
@@ -4949,6 +6717,13 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 1,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "When Played: For each upgrade on attached unit not named Advantage (including this one), give an Advantage token to attached unit.",
       "printings": [
         {
           "num": "182",
@@ -4972,6 +6747,14 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "ITEM",
+        "WEAPON"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nAttached unit gains: “When Attack Ends: If this unit dealt combat damage to an opponent's base, deal 2 damage to each unit that opponent controls in this unit's arena.”",
       "printings": [
         {
           "num": "183",
@@ -5007,6 +6790,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 1,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Attack with a unit. After completing the attack, give 3 Advantage tokens to a unit.",
       "printings": [
         {
           "num": "184",
@@ -5030,6 +6818,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "If you control a unit with 4 or more power, draw 2 cards.",
       "printings": [
         {
           "num": "185",
@@ -5053,6 +6846,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "Choose an arena. For this phase, each unit in that arena gains: “On Attack: Deal 2 damage to this unit.”",
       "printings": [
         {
           "num": "186",
@@ -5076,6 +6874,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "Deal damage to a unit equal to the total amount of damage on all units you control.",
       "printings": [
         {
           "num": "187",
@@ -5099,6 +6902,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 4,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Ready a unit that was damaged this phase.",
       "printings": [
         {
           "num": "188",
@@ -5123,6 +6931,17 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "DROID"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nOn Attack: Ready a resource.",
       "printings": [
         {
           "num": "189",
@@ -5155,6 +6974,15 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 4,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
       "printings": [
         {
           "num": "190",
@@ -5181,6 +7009,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 3,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Defeated: You may give 2 Advantage tokens to a unit. If this unit wasn't defeated by combat damage, you may give 3 Advantage tokens to that unit instead.",
       "printings": [
         {
           "num": "191",
@@ -5207,6 +7046,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "BOUNTY HUNTER"
+      ],
+      "text": "Ambush (When you play this unit, she may attack an enemy unit.)\nSaboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "192",
@@ -5251,6 +7101,16 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL"
+      ],
+      "text": "Shielded (When you play this unit, give a Shield token to it.)\nSaboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "193",
@@ -5275,6 +7135,18 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Ambush (When you play this unit, it may attack an enemy unit.)\nWhen Played: Deal 1 damage to a space unit.",
       "printings": [
         {
           "num": "194",
@@ -5301,6 +7173,16 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 6,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST"
+      ],
+      "text": "When Defeated: You may distribute a number of Advantage tokens equal to this unit's power among friendly units (divided as you choose).",
       "printings": [
         {
           "num": "195",
@@ -5327,6 +7209,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 6,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Damage dealt by friendly Underworld cards is unpreventable.\nWhen Played/On Attack: You may deal 2 damage to a unit.",
       "printings": [
         {
           "num": "196",
@@ -5365,6 +7259,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 5,
+      "hp": 12,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "This unit gets +1/+0 for each upgrade on other friendly units.\nWhen Played: Give an Advantage token to each other friendly unit.",
       "printings": [
         {
           "num": "197",
@@ -5389,6 +7295,12 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 2,
+      "hp": 0,
+      "traits": [
+        "CONDITION"
+      ],
+      "text": "Attached unit gains Sentinel. (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "198",
@@ -5413,6 +7325,13 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "When Played: Return any number of other upgrades on attached unit to their owners' hands.",
       "printings": [
         {
           "num": "199",
@@ -5437,6 +7356,11 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 5,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Choose a non-leader unit. Give that unit -3/-0 for this phase, then take control of it. At the start of the regroup phase, its owner takes control of it.",
       "printings": [
         {
           "num": "200",
@@ -5460,6 +7384,17 @@
       "aspects": [
         "Cunning",
         "Heroism"
+      ],
+      "cost": 1,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
       ],
       "printings": [
         {
@@ -5487,6 +7422,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NEW REPUBLIC"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nWhile attacking, this unit deals combat damage before the defender.",
       "printings": [
         {
           "num": "202",
@@ -5525,6 +7470,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Support \nOn Attack: You may exhaust a friendly (non-upgrade) leader. If you do, this unit gets +2/+0 for this attack.",
       "printings": [
         {
           "num": "203",
@@ -5571,6 +7528,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REBEL",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When your base is dealt damage: Give an Advantage token to this unit.",
       "printings": [
         {
           "num": "204",
@@ -5607,6 +7576,17 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "RESISTANCE",
+        "TROOPER"
+      ],
+      "text": "When Played: Give an Advantage token to each of up to 3 exhausted units.",
       "printings": [
         {
           "num": "205",
@@ -5633,6 +7613,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "Ambush\nThis unit gets +1/+0 for each other unit (friendly and enemy) with 0 power.",
       "printings": [
         {
           "num": "206",
@@ -5657,6 +7648,16 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Ambush (When you play this unit, it may attack an enemy unit.)\nWhile attacking using Ambush, this unit gets +2/+0.",
       "printings": [
         {
           "num": "207",
@@ -5683,6 +7684,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "JEDI",
+        "MANDALORIAN",
+        "SPECTRE"
+      ],
+      "text": "Shielded (When you play this unit, give a Shield token to her.)\nWhen 1 or more upgrades attach to this unit (including from Shielded): You may exhaust a ground unit.",
       "printings": [
         {
           "num": "208",
@@ -5721,6 +7734,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "SPECTRE"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nOn Attack: If this unit is upgraded, you may give a unit -3/-0 for this phase.",
       "printings": [
         {
           "num": "209",
@@ -5757,6 +7782,14 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 0,
+      "traits": [
+        "ITEM",
+        "WEAPON"
+      ],
+      "text": "Attach to a non-Vehicle unit.\nAttached unit gains: “On Defense: You may deal 1 damage to a unit in this unit's arena and exhaust it.”",
       "printings": [
         {
           "num": "210",
@@ -5781,6 +7814,11 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "If a friendly unit left play this phase, distribute 3 Advantage tokens among friendly units. If a friendly leader unit left play this phase, distribute 5 Advantage tokens instead.",
       "printings": [
         {
           "num": "211",
@@ -5806,6 +7844,16 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Shielded\nIgnore the aspect penalties of the first non‑unit card you play each phase.",
       "printings": [
         {
           "num": "212",
@@ -5829,6 +7877,16 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "power": 2,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "213",
@@ -5852,6 +7910,17 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NEW REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "When Played: You may exhaust a unit with one or more Keywords.",
       "printings": [
         {
           "num": "214",
@@ -5875,6 +7944,18 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)",
       "printings": [
         {
           "num": "215",
@@ -5898,6 +7979,16 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "When Defeated: Exhaust a ready friendly resource.",
       "printings": [
         {
           "num": "216",
@@ -5923,6 +8014,16 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "OFFICIAL"
+      ],
+      "text": "Action [Exhaust, discard a card from your hand]: Exhaust a unit.",
       "printings": [
         {
           "num": "217",
@@ -5946,6 +8047,16 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 3,
+      "power": 1,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "DROID"
+      ],
+      "text": "When Played: Give 4 Advantage tokens to this unit.",
       "printings": [
         {
           "num": "218",
@@ -5971,6 +8082,17 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 4,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "UNDERWORLD"
+      ],
+      "text": "Sentinel\nWhen Played: You may pay 4. If you do, choose an arena. Exhaust each unit in that arena.",
       "printings": [
         {
           "num": "219",
@@ -5994,6 +8116,17 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
+      ],
+      "text": "When Played: Look at an opponent's hand. You may discard a card from it. If you do, they draw a card.",
       "printings": [
         {
           "num": "220",
@@ -6017,6 +8150,18 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Played: If an opponent controls a space unit, give a Shield token to this unit. Otherwise, give 2 Advantage tokens to this unit.",
       "printings": [
         {
           "num": "221",
@@ -6040,6 +8185,18 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "RESISTANCE",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nSaboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "222",
@@ -6065,6 +8222,18 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\nWhen Attack Ends: If the defending unit was defeated, give a Shield token to this unit.",
       "printings": [
         {
           "num": "223",
@@ -6090,6 +8259,17 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 3,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "While you control a Force leader, this unit enters play ready. \nWhen Played: Distribute up to 5 Advantage tokens among other friendly units. Then, an opponent searches twice that many cards from the top of their deck for an event, reveals it, and draws it.",
       "printings": [
         {
           "num": "224",
@@ -6125,6 +8305,16 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 6,
+      "power": 8,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "225",
@@ -6158,6 +8348,16 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 9,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD"
+      ],
+      "text": "This unit gets -1/-0 for each card in your hand.\nWhen Played: You may discard a card from your hand. If you do, deal 3 damage to a unit.",
       "printings": [
         {
           "num": "226",
@@ -6181,6 +8381,13 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 2,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Attached unit gains: “When the regroup phase starts: Give an Advantage token to this unit.”",
       "printings": [
         {
           "num": "227",
@@ -6204,6 +8411,13 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "power": 2,
+      "hp": 1,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "When Played: Exhaust attached unit.",
       "printings": [
         {
           "num": "228",
@@ -6227,6 +8441,13 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 0,
+      "hp": 0,
+      "traits": [
+        "ITEM"
+      ],
+      "text": "Attached unit gains: “When Attack Ends: Look at the top card of your deck. If it costs 2 or less, you may play it for free.”",
       "printings": [
         {
           "num": "229",
@@ -6250,6 +8471,13 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 0,
+      "hp": 3,
+      "traits": [
+        "GAMBIT"
+      ],
+      "text": "Attach to a ground unit.\nAttached unit gains: “Action: Search the top 3 cards of your deck for a ground unit and discard it. Then, you may attack with this unit. For this attack, this unit gains the discarded unit's abilities. Use this ability only once each round.”",
       "printings": [
         {
           "num": "230",
@@ -6273,6 +8501,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "traits": [
+        "LAW"
+      ],
+      "text": "Exhaust a friendly unit and an enemy unit. If you do, give 2 Advantage tokens to a friendly unit.",
       "printings": [
         {
           "num": "231",
@@ -6296,6 +8529,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "Return an upgrade that costs 2 or less to its owner's hand.\nGive a Shield token to a unit.",
       "printings": [
         {
           "num": "232",
@@ -6319,6 +8557,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "Exhaust up to 2 units that each cost 3 or less.",
       "printings": [
         {
           "num": "233",
@@ -6342,6 +8585,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Attack with a unit. It gets +1/+0 for this attack for each unit the defending player controls in its arena.",
       "printings": [
         {
           "num": "234",
@@ -6365,6 +8613,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Choose a number, then search the top 5 cards of your deck for a card, reveal it, and draw it. If its cost is the chosen number, you may give 3 Advantage tokens to a Force unit.",
       "printings": [
         {
           "num": "235",
@@ -6400,6 +8653,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 3,
+      "traits": [
+        "GAMBIT"
+      ],
+      "text": "Return a friendly non-leader unit to its owner's hand. If you do, return an enemy non-leader unit to its owner's hand.",
       "printings": [
         {
           "num": "236",
@@ -6435,6 +8693,17 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "DROID"
+      ],
+      "text": "Raid 1 (This unit gets +1/+0 while attacking.) \nWhen Played: The next Imperial unit you play this phase costs 1 less.",
       "printings": [
         {
           "num": "237",
@@ -6466,6 +8735,16 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FIRST ORDER"
+      ],
+      "text": "When Played: You may give 2 Advantage tokens to a space unit.",
       "printings": [
         {
           "num": "238",
@@ -6489,6 +8768,16 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "239",
@@ -6512,6 +8801,17 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "TROOPER"
+      ],
+      "text": "While you control a leader unit, this unit gets +2/+0.",
       "printings": [
         {
           "num": "240",
@@ -6537,6 +8837,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Support\nOverwhelm\nThis unit gets +2/+0 while attacking a damaged unit.",
       "printings": [
         {
           "num": "241",
@@ -6559,6 +8870,16 @@
       "rarity": "Common",
       "aspects": [
         "Villainy"
+      ],
+      "cost": 4,
+      "power": 5,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
       ],
       "printings": [
         {
@@ -6585,6 +8906,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "SITH"
+      ],
+      "text": "Shielded\nWhile this unit is ready, he gains Sentinel.",
       "printings": [
         {
           "num": "243",
@@ -6620,6 +8953,17 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 5,
+      "power": 6,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "TROOPER"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "244",
@@ -6645,6 +8989,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 5,
+      "hp": 8,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Action [Exhaust]: Search the top 8 cards of your deck for a unit that costs the same as or less than this unit's power. Play it for free. It enters play ready.",
       "printings": [
         {
           "num": "245",
@@ -6680,6 +9036,11 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Defeat a friendly upgrade. If you do, draw 2 cards.",
       "printings": [
         {
           "num": "246",
@@ -6703,6 +9064,11 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 3,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "Defeat a friendly non-leader unit. Then, you may play that unit from your discard pile for free.",
       "printings": [
         {
           "num": "247",
@@ -6740,6 +9106,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "When Played/On Attack: The next unit you play this phase with 1 or less power enters play ready.",
       "printings": [
         {
           "num": "248",
@@ -6763,6 +9139,16 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "Hidden (This unit can't be attacked if it was played this phase.)",
       "printings": [
         {
           "num": "249",
@@ -6786,6 +9172,17 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "IMPERIAL",
+        "REBEL"
+      ],
+      "text": "When Played: Look at an opponent's hand.",
       "printings": [
         {
           "num": "250",
@@ -6809,6 +9206,17 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL",
+        "TROOPER"
+      ],
+      "text": "When Played: Give an Advantage token to this unit.",
       "printings": [
         {
           "num": "251",
@@ -6832,6 +9240,17 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 3,
+      "power": 4,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NEW REPUBLIC",
+        "DROID"
+      ],
+      "text": "Sentinel (Enemy units in this arena must attack a Sentinel when they attack you.)",
       "printings": [
         {
           "num": "252",
@@ -6855,6 +9274,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "NEW REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Support (When you play this unit, you may attack with another unit. It gains this unit's other abilities for this attack.)\n\nOn Attack: If this unit is upgraded, deal 2 damage to a base.",
       "printings": [
         {
           "num": "253",
@@ -6878,6 +9309,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REBEL",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When Defeated: Give 2 Advantage tokens to a friendly unit.",
       "printings": [
         {
           "num": "254",
@@ -6903,6 +9346,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 6,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI"
+      ],
+      "text": "Hidden\nSaboteur\nWhen Played: Give a Shield token to another friendly unit.",
       "printings": [
         {
           "num": "255",
@@ -6938,6 +9392,17 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL",
+        "TROOPER"
+      ],
+      "text": "Restore 1 (When this unit attacks, heal 1 damage from your base.)\nSaboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "256",
@@ -6961,6 +9426,12 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "FORCE",
+        "MANDALORIAN"
+      ],
+      "text": "Choose one:\nIf you control a Force unit, heal 5 damage from your base.\nIf you control a Mandalorian unit, create a Mandalorian token and give an Advantage token to it.",
       "printings": [
         {
           "num": "257",
@@ -6996,6 +9467,11 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 4,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Deal 3 damage to a unit.\nHeal 3 damage from your base.",
       "printings": [
         {
           "num": "258",
@@ -7017,6 +9493,16 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "DROID"
+      ],
+      "text": "When Played: You may deal 1 damage to a ground unit.",
       "printings": [
         {
           "num": "259",
@@ -7038,6 +9524,16 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "When Played: You may draw a card. If you do, discard a card.",
       "printings": [
         {
           "num": "260",
@@ -7059,6 +9555,16 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "VEHICLE",
+        "TRANSPORT"
+      ],
       "printings": [
         {
           "num": "261",
@@ -7080,6 +9586,13 @@
       "type": "Upgrade",
       "rarity": "Common",
       "aspects": [],
+      "cost": 2,
+      "power": 1,
+      "hp": 2,
+      "traits": [
+        "IMPERIAL"
+      ],
+      "text": "This upgrade costs 1 less to play on an Imperial unit.",
       "printings": [
         {
           "num": "262",
@@ -7101,6 +9614,13 @@
       "type": "Upgrade",
       "rarity": "Common",
       "aspects": [],
+      "cost": 2,
+      "power": 2,
+      "hp": 0,
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "This upgrade costs 1 less to play on a Mandalorian unit.",
       "printings": [
         {
           "num": "263",
@@ -7122,6 +9642,11 @@
       "type": "Event",
       "rarity": "Common",
       "aspects": [],
+      "cost": 1,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "Give an Advantage token to each of up to 2 units.",
       "printings": [
         {
           "num": "264",

@@ -1,4 +1,4 @@
-import { applyDeconstruct } from '~/domain/deckBuild';
+import { applyDeckEdit, applyDeconstruct, editReturns, type DeckEdit } from '~/domain/deckBuild';
 import { parseDeckLibrary, type DeckLibrary } from '~/domain/decks';
 
 import { notifyDeckLibraryChanged, notifyInventoryChanged } from './changes';
@@ -75,6 +75,37 @@ export async function deconstructDeck(
     if (!deck) return;
     cards = deck.pulledCards.map((ref) => ({ setKey: ref.setKey, base: ref.baseNumber }));
     const next = applyDeconstruct(library, deckId, new Date(now).toISOString());
+    await writeDeckLibraryQuietly(next, database, now);
+    moved = await spillCards(database, cards, quotaOf, now);
+  });
+  notifyDeckLibraryChanged();
+  if (moved)
+    for (const setKey of new Set(cards.map((c) => c.setKey))) notifyInventoryChanged(setKey);
+  return moved;
+}
+
+/**
+ * Saves a deck's edited list. On a built deck, copies the list no longer holds go back
+ * where they came from, and a pocket that filled up meanwhile spills its weakest extras to
+ * the bulk box, as on a deconstruct. Returns how many copies that sent to bulk.
+ */
+export async function editDeck(
+  deckId: string,
+  edit: DeckEdit,
+  quotaOf: QuotaOf,
+  database: SwuDatabase = db,
+  now = Date.now(),
+): Promise<number> {
+  let cards: Array<{ setKey: string; base: number }> = [];
+  let moved = 0;
+  await database.transaction('rw', database.owned, database.deckLibrary, async () => {
+    const library = await readDeckLibrary(database);
+    if (!library.customDecks.some((d) => d.id === deckId)) return;
+    cards = editReturns(library, deckId, edit.contents).map((ref) => ({
+      setKey: ref.setKey,
+      base: ref.baseNumber,
+    }));
+    const next = applyDeckEdit(library, deckId, edit, new Date(now).toISOString());
     await writeDeckLibraryQuietly(next, database, now);
     moved = await spillCards(database, cards, quotaOf, now);
   });

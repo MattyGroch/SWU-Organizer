@@ -186,6 +186,20 @@ export function backArtUrl(setKey, printingNumber) {
 
 const variantOrder = new Map(VARIANTS.map((slug, index) => [slug, index]));
 
+function stringList(value) {
+  return Array.isArray(value)
+    ? value.filter((v) => typeof v === 'string' && v.trim()).map((v) => v.trim())
+    : [];
+}
+
+/** Front text, epic action and a leader's back, one per line — what a deck search reads. */
+function rulesText(raw) {
+  return [raw.FrontText, raw.EpicAction, raw.BackText]
+    .map((t) => String(t ?? '').trim())
+    .filter(Boolean)
+    .join('\n');
+}
+
 /**
  * Build the v2 card-centric catalog for one set.
  *
@@ -230,6 +244,21 @@ export function buildSetCatalog(setKey, rawCards) {
     if (representative.DoubleSided === true) card.doubleSided = true;
     const maxCopies = Number(representative.MaxCopies);
     if (Number.isFinite(maxCopies) && maxCopies > 0) card.maxCopies = maxCopies;
+    // Deck-building stats. Leaders and bases print no cost; bases print no power.
+    for (const [field, from] of [
+      ['cost', 'Cost'],
+      ['power', 'Power'],
+      ['hp', 'HP'],
+    ]) {
+      const raw = String(representative[from] ?? '').trim();
+      if (/^\d+$/.test(raw)) card[field] = Number(raw);
+    }
+    const arenas = stringList(representative.Arenas);
+    if (arenas.length) card.arenas = arenas;
+    const traits = stringList(representative.Traits);
+    if (traits.length) card.traits = traits;
+    const text = rulesText(representative);
+    if (text) card.text = text;
     card.printings = printings
       .map((p) => ({ num: String(p.Number).trim(), variant: variantSlug(p.VariantType) }))
       .sort(

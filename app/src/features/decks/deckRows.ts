@@ -1,7 +1,8 @@
 import { parseCardKey, requiredCounts, type OwnedLookup } from '~/domain/deckBuild';
 import type { DeckCardRef, DeckContents } from '~/domain/deckContents';
 import type { DeckRole, DeckLookupSet, DeckRowWithNeed } from '~/domain/decklist';
-import { FORMAT_RULES } from '~/domain/deckLegality';
+import { FORMAT_RULES, type PlayFormat } from '~/domain/deckLegality';
+import { deckFormat } from '~/domain/decks';
 import type { SetKey } from '~/domain/types';
 
 export type { OwnedLookup };
@@ -27,6 +28,7 @@ function refToRow(
     type: card.Type,
     aspects: card.Aspects,
     price,
+    maxCopies: card.MaxCopies,
     ambiguous: false,
     have,
     needed,
@@ -64,9 +66,8 @@ export function cardsNeeded(contents: DeckContents, owned: OwnedLookup): number 
   return needed;
 }
 
-/** Two leaders is what makes a deck Twin Suns — readable from the stored contents alone. */
-export function formatLabel(contents: DeckContents): string {
-  return contents.secondLeader ? FORMAT_RULES.twinSuns.label : FORMAT_RULES.premier.label;
+export function formatLabel(deck: DeckContents & { format?: PlayFormat }): string {
+  return FORMAT_RULES[deckFormat(deck)].label;
 }
 
 const AFFILIATIONS = new Set(['Heroism', 'Villainy']);

@@ -14,6 +14,16 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 4,
+      "power": 1,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "KAMINOAN"
+      ],
+      "text": "Ignore the aspect penalty on Clone units you play.\nEpic Action: If you control 6 or more resources, deploy this leader.\nIgnore the aspect penalty on Clone units you play.\nEach friendly Clone unit gains: \"When Defeated: Heal 2 damage from your base.\"",
       "printings": [
         {
           "num": "001",
@@ -41,6 +51,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 2,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "Action [Exhaust]: If 2 or more friendly units were defeated this phase, create a Battle Droid token.\nEpic Action: If you control 6 or more resources, deploy this leader.\nOn Attack: Create a Battle Droid token.",
       "printings": [
         {
           "num": "002",
@@ -68,6 +89,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Action [Exhaust]: Heal 1 damage from a unit.\nEpic Action: If you control 6 or more resources, deploy this leader.\nSentinel (Units in this arena can't attack your non-Sentinel units or your base.)\nOn Attack: Heal 1 damage from a unit. If you do, deal 1 damage to a different unit.",
       "printings": [
         {
           "num": "003",
@@ -95,6 +128,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 7,
+      "power": 4,
+      "hp": 9,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Action [Exhaust]: If a unit left play this phase, draw a card, then put a card from your hand on the top or bottom of your deck.\nEpic Action: If you control 7 or more resources, deploy this leader.\nRestore 2\nWhen Deployed: You may discard a card from your deck. If you do, defeat an enemy non-leader unit that costs the same as or less than the discarded card.",
       "printings": [
         {
           "num": "004",
@@ -122,6 +167,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 7,
+      "power": 5,
+      "hp": 9,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SEPARATIST",
+        "SITH"
+      ],
+      "text": "Action [Exhaust]: Play a Separatist card from your hand. It gains Exploit 1. (You may defeat 1 unit you control. If you do, that card costs 2 less.)\nEpic Action: If you control 7 or more resources, deploy this leader.\nOverwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)\nOn Attack: The next Separatist card you play this phase gains Exploit 3.",
       "printings": [
         {
           "num": "005",
@@ -149,6 +206,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "Action [Exhaust]: If a friendly unit was defeated this phase, give a unit +2/+2 for this phase.\nEpic Action: If you control 5 or more resources, deploy this leader.\nOn Attack: If a friendly unit was defeated this phase, you may give another unit +2/+2 for this phase.",
       "printings": [
         {
           "num": "006",
@@ -176,6 +244,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 2,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Action [C=2, Exhaust]: If a friendly unit attacked this phase, create a Clone Trooper token.\nEpic Action: If you control 5 or more resources, deploy this leader.\nWhen Deployed: Create a Clone Trooper token.\nEach other friendly Trooper unit gets +0/+1.",
       "printings": [
         {
           "num": "007",
@@ -203,6 +283,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 2,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NABOO",
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "Coordinate — Action [C=1, Exhaust]: Search the top 3 cards of your deck for a Republic card, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order. Gain this ability while you control 3 or more units.)\nEpic Action: If you control 5 or more resources, deploy this leader.\nRestore 1 (When this unit attacks, heal 1 damage from your base.)\nCoordinate - On Attack: Search the top 3 cards of your deck for a Republic card, reveal it, and draw it.",
       "printings": [
         {
           "num": "008",
@@ -230,6 +322,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "UNDERWORLD"
+      ],
+      "text": "Action [Exhaust]: Attack with a unit. It gains Overwhelm for this attack. (When attacking an enemy unit, deal excess damage to the opponent’s base.)\nEpic Action: If you control 6 or more resources, deploy this leader.\nOverwhelm\nEach other friendly unit gains Overwhelm.",
       "printings": [
         {
           "num": "009",
@@ -257,6 +360,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "TROOPER"
+      ],
+      "text": "Action [C=1, Exhaust]: Deal damage to a unit equal to the number of cards you’ve drawn this phase. (This doesn’t include cards drawn in the regroup phase.)\nEpic Action: If you control 5 or more resources, deploy this leader.\nWhile you have 3 or more cards in your hand, this unit gains Saboteur.\nWhile you have 6 or more cards in your hand, this unit gets +2/+0.",
       "printings": [
         {
           "num": "010",
@@ -284,6 +398,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Coordinate — Action [Exhaust]: Attack with a unit. It gets +1/+0 for this attack. (Gain this ability while you control 3 or more units.)\nEpic Action: If you control 5 or more resources, deploy this leader. (Flip her, ready her, and move her to the ground arena.)\nCoordinate — This unit gets +2/+0.",
       "printings": [
         {
           "num": "011",
@@ -307,6 +433,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Action [Exhaust, deal 2 damage to your base]: Attack with a unit. If it’s attacking a unit, it gets +2/+0 for this attack.\nEpic Action: If you control 6 or more resources, deploy this leader.\nOverwhelm (When attacking an enemy unit, deal excess damage to the opponent’s base.)\nThis unit gets +1/+0 for every 5 damage on your base.",
       "printings": [
         {
           "num": "012",
@@ -334,6 +472,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 7,
+      "power": 5,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Action [C=1, Exhaust]: Deal 1 damage to a damaged enemy unit. Then, if it has 5 or more damage on it, deal 1 damage to it.\nEpic Action: If you control 7 or more resources, deploy this leader.\nWhen Deployed: Deal 2 damage to each damaged enemy unit.",
       "printings": [
         {
           "num": "013",
@@ -361,6 +511,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SEPARATIST",
+        "SITH"
+      ],
+      "text": "Action [Exhaust]: Attack with a unit. If you played an event this phase, it gets +1/+0 for this attack.\nEpic Action: If you control 4 or more resources, deploy this leader.\nOn Attack: If you played an event this phase, this unit gets +1/+0 for this attack and deals combat damage before the defender. (If the defender is defeated, it deals no combat damage.)",
       "printings": [
         {
           "num": "014",
@@ -388,6 +550,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "Action [Exhaust]: Give a Droid unit Sentinel for this phase. (Units in its arena can't attack your non-Sentinel units or your base.)\nEpic Action: If you control 6 or more resources, deploy this leader. (Flip him, ready him, and move him to the ground arena.)\nOn Attack: You may give a Droid unit +1/+0 and Sentinel for this phase.",
       "printings": [
         {
           "num": "015",
@@ -411,6 +584,17 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "BOUNTY HUNTER"
+      ],
+      "text": "When a friendly unit deals damage to an enemy unit: You may exhaust this leader. If you do, exhaust that enemy unit.\nEpic Action: If you control 5 or more resources, deploy this leader.\nWhen a friendly unit deals damage to an enemy unit: You may exhaust that unit.",
       "printings": [
         {
           "num": "016",
@@ -439,6 +623,20 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 0,
+      "power": 0,
+      "hp": 0,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SEPARATIST",
+        "SITH",
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "This leader starts the game with this side faceup.\nAction [Exhaust]: If a friendly Heroism unit was defeated this phase, draw a card, heal 2 damage from your base, then flip this leader.\nAction [Exhaust]: If you played a Villainy card this phase, create a Clone Trooper token, deal 2 damage to each enemy base, then flip this leader.",
       "printings": [
         {
           "num": "017",
@@ -466,6 +664,18 @@
       ],
       "unique": true,
       "doubleSided": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When you play a unit: You may exhaust this leader. If you do, deal 1 damage to an enemy unit that costs the same as the played unit.\nEpic Action: If you control 5 or more resources, deploy this leader.\nWhen you play a unit: You may deal 1 damage to an enemy unit that costs the same as or less than the played unit.",
       "printings": [
         {
           "num": "018",
@@ -490,6 +700,8 @@
       "aspects": [
         "Vigilance"
       ],
+      "hp": 26,
+      "text": "Each leader unit you control gets +0/+1.",
       "printings": [
         {
           "num": "019",
@@ -518,6 +730,7 @@
       "aspects": [
         "Vigilance"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "020",
@@ -538,6 +751,7 @@
       "aspects": [
         "Vigilance"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "021",
@@ -558,6 +772,8 @@
       "aspects": [
         "Command"
       ],
+      "hp": 24,
+      "text": "When you deploy a leader: Create 2 Battle Droid tokens.",
       "printings": [
         {
           "num": "022",
@@ -586,6 +802,7 @@
       "aspects": [
         "Command"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "023",
@@ -606,6 +823,7 @@
       "aspects": [
         "Command"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "024",
@@ -626,6 +844,8 @@
       "aspects": [
         "Aggression"
       ],
+      "hp": 25,
+      "text": "When you deploy a leader: Draw a card.",
       "printings": [
         {
           "num": "025",
@@ -654,6 +874,7 @@
       "aspects": [
         "Aggression"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "026",
@@ -674,6 +895,7 @@
       "aspects": [
         "Aggression"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "027",
@@ -694,6 +916,8 @@
       "aspects": [
         "Cunning"
       ],
+      "hp": 26,
+      "text": "Each leader unit you control gets +1/+0.",
       "printings": [
         {
           "num": "028",
@@ -722,6 +946,7 @@
       "aspects": [
         "Cunning"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "029",
@@ -742,6 +967,7 @@
       "aspects": [
         "Cunning"
       ],
+      "hp": 30,
       "printings": [
         {
           "num": "030",
@@ -764,6 +990,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "When Played: If a friendly unit was defeated this phase, you may give a unit -1/-1 for this phase.",
       "printings": [
         {
           "num": "031",
@@ -792,6 +1029,17 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "When Defeated: Create a Battle Droid token.",
       "printings": [
         {
           "num": "032",
@@ -820,6 +1068,17 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID"
+      ],
+      "text": "When Played/When a friendly unit is defeated: This unit gains Sentinel for this phase. (Units in this arena can't attack your non-Sentinel units or your base.)",
       "printings": [
         {
           "num": "033",
@@ -850,6 +1109,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "Ignore the aspect penalty on each Lightsaber upgrade you play on this unit. \nOn Attack: If this unit has 4 or more Lightsaber upgrades attached to him, defeat 4 enemy units.",
       "printings": [
         {
           "num": "034",
@@ -880,6 +1150,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "IMPERIAL",
+        "OFFICIAL"
+      ],
+      "text": "Restore 1 \nOn Attack: You may defeat another friendly unit. If you do, draw a card.",
       "printings": [
         {
           "num": "035",
@@ -908,6 +1190,19 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 5,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Grit (This unit gets +1/+0 for each damage on it.) \nWhen Played: Defeat an enemy unit with 2 or less remaining HP.",
       "printings": [
         {
           "num": "036",
@@ -936,6 +1231,17 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 6,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID"
+      ],
+      "text": "Exploit 2 (While playing this card, defeat up to 2 units you control. This card costs 2 less for each unit defeated this way.) \nSentinel (Units in this arena can't attack your non-Sentinel units or your base.)",
       "printings": [
         {
           "num": "037",
@@ -968,6 +1274,18 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 8,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Exploit 2 (While playing this card, defeat up to 2 units you control. This card costs 2 less for each unit defeated this way.) \nOn Attack: Give an enemy space unit -2/-2 for this phase.",
       "printings": [
         {
           "num": "038",
@@ -998,6 +1316,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 9,
+      "power": 7,
+      "hp": 7,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Exploit 4 \nRestore 2 \nWhen Played: Give an enemy unit -4/-0 for this phase. It can't attack for this phase.",
       "printings": [
         {
           "num": "039",
@@ -1026,6 +1356,11 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 0,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "If an enemy unit was defeated this phase, play an upgrade from your hand or from any player's discard pile, ignoring its aspect penalty.",
       "printings": [
         {
           "num": "040",
@@ -1054,6 +1389,11 @@
         "Vigilance",
         "Villainy"
       ],
+      "cost": 4,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Defeat a non-leader unit. Deal damage to your base equal to that unit's power.",
       "printings": [
         {
           "num": "041",
@@ -1084,6 +1424,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Each friendly unit that was healed this phase gets +1/+0.",
       "printings": [
         {
           "num": "042",
@@ -1112,6 +1464,17 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 0,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "While you control another Republic unit, this unit gains Sentinel. (Units in this arena can't attack your non-Sentinel units or your base.) \nWhen Defeated: Create a Clone Trooper token.",
       "printings": [
         {
           "num": "043",
@@ -1140,6 +1503,16 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 0,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "WOOKIEE"
+      ],
+      "text": "Grit (This unit gets +1/+0 for each damage on it.) \nWhen Played: Heal up to 2 damage from another unit and deal that much damage to this unit.",
       "printings": [
         {
           "num": "044",
@@ -1168,6 +1541,18 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Coordinate - This unit gets +0/+3. (Gain this ability while you control 3 or more units.)",
       "printings": [
         {
           "num": "045",
@@ -1198,6 +1583,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NABOO",
+        "REPUBLIC",
+        "TROOPER"
+      ],
+      "text": "When Played/On Attack: Give a unit Sentinel for this phase.",
       "printings": [
         {
           "num": "046",
@@ -1228,6 +1625,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 0,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "OFFICIAL"
+      ],
+      "text": "Each unit (including enemy units) gains: \"Action [exhaust]: Discard cards from an opponent's deck equal to half this unit's remaining HP, rounded up.\"",
       "printings": [
         {
           "num": "047",
@@ -1258,6 +1666,19 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "JEDI",
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Played/On Attack: You may deal 1 damage to this unit and 2 damage to another space unit.",
       "printings": [
         {
           "num": "048",
@@ -1286,6 +1707,18 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 6,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "When this unit is attacked: Create a Clone Trooper token.",
       "printings": [
         {
           "num": "049",
@@ -1316,6 +1749,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 4,
+      "hp": 9,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Coordinate - Grit (Gain this keyword while you control 3 or more units. This unit gets +1/+0 for each damage on her.) \nWhen Played: Choose a base. Heal 1 damage from it for each unit you control.",
       "printings": [
         {
           "num": "050",
@@ -1344,6 +1789,13 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "REPUBLIC"
+      ],
+      "text": "If you control 3 or more Republic units, this upgrade costs 2 less to play. \nAttached unit gains: \"Coordinate - Restore 2.\"",
       "printings": [
         {
           "num": "051",
@@ -1372,6 +1824,11 @@
         "Vigilance",
         "Heroism"
       ],
+      "cost": 3,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "Choose a unit that entered play this phase. It gets -4/-4 for this phase.",
       "printings": [
         {
           "num": "052",
@@ -1410,6 +1867,17 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE",
+        "TROOPER"
+      ],
+      "text": "When this unit completes an attack: Choose a unique unit. For this phase, if damage would be dealt to that unit, prevent 1 of that damage.",
       "printings": [
         {
           "num": "053",
@@ -1438,6 +1906,16 @@
         "Vigilance",
         "Vigilance"
       ],
+      "cost": 3,
+      "power": 1,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN"
+      ],
+      "text": "While an opponent controls 3 or more units, this unit gains Sentinel. (Units in this arena can't attack your non-Sentinel units or your base.)",
       "printings": [
         {
           "num": "054",
@@ -1466,6 +1944,11 @@
         "Vigilance",
         "Vigilance"
       ],
+      "cost": 3,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Give a unit -2/-2 for this phase. Then, if you control fewer units than that unit's controller, give another unit -2/-2 for this phase.",
       "printings": [
         {
           "num": "055",
@@ -1493,6 +1976,17 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "Action [c=2, exhaust]: Heal 2 damage from a unit or base.",
       "printings": [
         {
           "num": "056",
@@ -1519,6 +2013,15 @@
       "rarity": "Common",
       "aspects": [
         "Vigilance"
+      ],
+      "cost": 1,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST"
       ],
       "printings": [
         {
@@ -1547,6 +2050,19 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "JEDI",
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "While you control a Force unit or a Force upgrade, this unit gets +1/+1.",
       "printings": [
         {
           "num": "058",
@@ -1574,6 +2090,17 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NABOO",
+        "TROOPER"
+      ],
+      "text": "When Played: Deal 2 damage to this unit.",
       "printings": [
         {
           "num": "059",
@@ -1601,6 +2128,18 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "When Played: If you control a damaged unit, create a Battle Droid token.",
       "printings": [
         {
           "num": "060",
@@ -1628,6 +2167,18 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Coordinate - Sentinel (Gain this keyword while you control 3 or more units. Units in this arena can't attack your non-Sentinel units or your base.)",
       "printings": [
         {
           "num": "061",
@@ -1655,6 +2206,17 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT"
+      ],
+      "text": "While this unit is undamaged, it gains Restore 2. (When this unit attacks, heal 2 damage from your base.)",
       "printings": [
         {
           "num": "062",
@@ -1682,6 +2244,19 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "On Attack: Give an enemy unit -1/-1 for this phase.",
       "printings": [
         {
           "num": "063",
@@ -1711,6 +2286,18 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Coordinate - When an opponent plays their second card each phase: You may draw 2 cards.",
       "printings": [
         {
           "num": "064",
@@ -1738,6 +2325,18 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 6,
+      "power": 4,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "TANK"
+      ],
+      "text": "Sentinel (Units in this arena can't attack your non-Sentinel units or your base.)",
       "printings": [
         {
           "num": "065",
@@ -1765,6 +2364,18 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 7,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "TANK"
+      ],
+      "text": "Exploit 2 (While playing this card, defeat up to 2 units you control. This card costs 2 less for each unit defeated this way.)\nOn Attack: Create a Battle Droid token.",
       "printings": [
         {
           "num": "066",
@@ -1794,6 +2405,16 @@
         "Vigilance"
       ],
       "unique": true,
+      "cost": 9,
+      "power": 10,
+      "hp": 10,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CREATURE"
+      ],
+      "text": "When Played: Give each enemy ground unit -5/-0 for this phase. \nWhen the regroup phase starts: Heal 5 damage from this unit.",
       "printings": [
         {
           "num": "067",
@@ -1821,6 +2442,13 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 2,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Attached unit gains: \"When the regroup phase starts (before drawing cards): Name a card, then look at the top card of your deck. If it's the named card, you may reveal and draw it.\"",
       "printings": [
         {
           "num": "068",
@@ -1848,6 +2476,13 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "When Defeated: Attach this upgrade to a friendly Battle Droid token.",
       "printings": [
         {
           "num": "069",
@@ -1875,6 +2510,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "traits": [
+        "CONDITION"
+      ],
+      "text": "When Played: Exhaust attached unit.",
       "printings": [
         {
           "num": "070",
@@ -1906,6 +2546,13 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 4,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "Attached unit gains Sentinel. (Units in this arena can't attack your non-Sentinel units or your base.)",
       "printings": [
         {
           "num": "071",
@@ -1933,6 +2580,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 1,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Choose a friendly unit. Each enemy unit gets -4/-0 while attacking that unit this phase.",
       "printings": [
         {
           "num": "072",
@@ -1960,6 +2612,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Heal 3 damage from a unit. Create a Battle Droid token.",
       "printings": [
         {
           "num": "073",
@@ -1987,6 +2644,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Give a unit Sentinel for this phase. (Units in this arena can't attack your non-Sentinel units or your base.) If you have the initiative, also give that unit +2/+2 for this phase.",
       "printings": [
         {
           "num": "074",
@@ -2014,6 +2676,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 3,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Give each enemy unit -1/-1 for this phase.",
       "printings": [
         {
           "num": "075",
@@ -2049,6 +2716,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 5,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Defeat a unit that costs 3 or less. Create 2 Battle Droid tokens.",
       "printings": [
         {
           "num": "076",
@@ -2076,6 +2748,11 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 5,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Defeat a non-leader unit.",
       "printings": [
         {
           "num": "077",
@@ -2103,6 +2780,12 @@
       "aspects": [
         "Vigilance"
       ],
+      "cost": 15,
+      "traits": [
+        "SEPARATIST",
+        "PLAN"
+      ],
+      "text": "Exploit 4 \nChoose an opponent. Defeat each unit that player controls.",
       "printings": [
         {
           "num": "078",
@@ -2131,6 +2814,18 @@
         "Command",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Defeated: Create a Battle Droid token.",
       "printings": [
         {
           "num": "079",
@@ -2169,6 +2864,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "When you play another unit: You may exhaust this unit. If you do, create a Battle Droid token.",
       "printings": [
         {
           "num": "080",
@@ -2197,6 +2903,18 @@
         "Command",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 4,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "TROOPER"
+      ],
+      "text": "While you control another Separatist unit, this unit gains Ambush. (When you play this unit, it may ready and attack an enemy unit.)",
       "printings": [
         {
           "num": "081",
@@ -2225,6 +2943,18 @@
         "Command",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Action: Attack with a Droid unit. Then, attack with another Droid unit. Use this ability only once each round.",
       "printings": [
         {
           "num": "082",
@@ -2253,6 +2983,17 @@
         "Command",
         "Villainy"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID"
+      ],
+      "text": "When this unit is attacked: Create a Battle Droid token.",
       "printings": [
         {
           "num": "083",
@@ -2275,6 +3016,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID"
+      ],
+      "text": "When Played: Create 2 Battle Droid tokens. \nOn Attack: Give each friendly token unit +1/+1 for this phase.",
       "printings": [
         {
           "num": "084",
@@ -2305,6 +3057,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID"
+      ],
+      "text": "On Attack: You may choose another unit. If you have the initiative, you may choose up to 2 other units instead. Give each chosen unit +2/+2 for this phase.",
       "printings": [
         {
           "num": "085",
@@ -2343,6 +3106,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "Exploit 1 \nWhen Played: Return up to 3 units that were defeated this phase from your discard pile to your hand.",
       "printings": [
         {
           "num": "086",
@@ -2371,6 +3145,18 @@
         "Command",
         "Villainy"
       ],
+      "cost": 9,
+      "power": 8,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "TANK"
+      ],
+      "text": "Exploit 3 (While playing this card, defeat up to 3 units you control. This card costs 2 less for each unit defeated this way.)",
       "printings": [
         {
           "num": "087",
@@ -2399,6 +3185,11 @@
         "Command",
         "Villainy"
       ],
+      "cost": 3,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Choose up to 4 units in your discard pile. Put them on the bottom of your deck in a random order and create that many Battle Droid tokens.",
       "printings": [
         {
           "num": "088",
@@ -2427,6 +3218,11 @@
         "Command",
         "Villainy"
       ],
+      "cost": 6,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "Choose any number of friendly units. You may play a unit from your hand if its cost is less than or equal to the combined power of the chosen units for free. Then, defeat the chosen units.",
       "printings": [
         {
           "num": "089",
@@ -2457,6 +3253,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Coordinate - This unit gets +2/+2. (Gain this ability while you control 3 or more units.)",
       "printings": [
         {
           "num": "090",
@@ -2485,6 +3293,17 @@
         "Command",
         "Heroism"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE"
+      ],
+      "text": "When Played: You may attack with a Republic unit. It gets +2/+0 for this attack.",
       "printings": [
         {
           "num": "091",
@@ -2515,6 +3334,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "Restore 1 \nEach other friendly Heroism unit gets +0/+1.",
       "printings": [
         {
           "num": "092",
@@ -2543,6 +3373,18 @@
         "Command",
         "Heroism"
       ],
+      "cost": 3,
+      "power": 4,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "093",
@@ -2573,6 +3415,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Each friendly token unit gets +1/+0. \nOn Attack: Create a Clone Trooper token.",
       "printings": [
         {
           "num": "094",
@@ -2609,6 +3463,18 @@
         "Command",
         "Heroism"
       ],
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Coordinate - When Played: Create a Clone Trooper token. (Gain this ability while you control 3 or more units, including this one.)",
       "printings": [
         {
           "num": "095",
@@ -2639,6 +3505,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 6,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Coordinate — On Attack: Prevent all combat damage that would be dealt to this unit for this attack.",
       "printings": [
         {
           "num": "096",
@@ -2669,6 +3547,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "When Played: Create 2 Clone Trooper tokens.",
       "printings": [
         {
           "num": "097",
@@ -2689,6 +3579,18 @@
         "Command",
         "Heroism"
       ],
+      "cost": 11,
+      "power": 6,
+      "hp": 7,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "This unit costs 1 less to play for each unit controlled by the opponent who controls the most units. Sentinel (Units in this arena can't attack your non-Sentinel units or your base.)",
       "printings": [
         {
           "num": "098",
@@ -2717,6 +3619,11 @@
         "Command",
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Deal damage to an enemy unit equal to the number of units you control in its arena.",
       "printings": [
         {
           "num": "099",
@@ -2745,6 +3652,11 @@
         "Command",
         "Heroism"
       ],
+      "cost": 3,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "If you control 3 or more Official units, draw 3 cards.",
       "printings": [
         {
           "num": "100",
@@ -2775,6 +3687,17 @@
         "Command"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 0,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "When you play another unit: You may exhaust this unit. If you do, search the top 4 cards of your deck for a unit, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order.)",
       "printings": [
         {
           "num": "101",
@@ -2803,6 +3726,11 @@
         "Command",
         "Command"
       ],
+      "cost": 3,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Choose one: \nCreate 2 Clone Trooper tokens. \nCreate 3 Battle Droid tokens.",
       "printings": [
         {
           "num": "102",
@@ -2831,6 +3759,11 @@
         "Command",
         "Command"
       ],
+      "cost": 3,
+      "traits": [
+        "DISASTER"
+      ],
+      "text": "For this phase, each friendly unit gains: \"When Defeated: Deal 2 damage to an enemy unit.\"",
       "printings": [
         {
           "num": "103",
@@ -2858,6 +3791,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "TROOPER"
+      ],
+      "text": "Raid 1 (This unit gets +1/+0 while attacking.) \nWhen Defeated: You may give a Trooper unit +2/+2 for this phase.",
       "printings": [
         {
           "num": "104",
@@ -2885,6 +3830,17 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "Action [c=2, exhaust]: Attack with a unit. It gets +2/+0 for this attack.",
       "printings": [
         {
           "num": "105",
@@ -2912,6 +3868,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Coordinate - Ambush (Gain this keyword while you control 3 or more units, including this one. When you play this unit, it may ready and attack an enemy unit.)",
       "printings": [
         {
           "num": "106",
@@ -2939,6 +3907,17 @@
       "aspects": [
         "Command"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Played: Draw a card.",
       "printings": [
         {
           "num": "107",
@@ -2954,6 +3933,17 @@
       "aspects": [
         "Command"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "TWI'LEK",
+        "TROOPER"
+      ],
+      "text": "Raid 1 (This unit gets +1/+0 while attacking.)",
       "printings": [
         {
           "num": "108",
@@ -2981,6 +3971,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "When Played: If you control another Republic unit, you may heal 3 damage from a base.",
       "printings": [
         {
           "num": "109",
@@ -3010,6 +4012,17 @@
         "Command"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "JEDI",
+        "DROID"
+      ],
+      "text": "When Played: Choose another friendly unit. While this unit is in play, the chosen unit gets +2/+2.",
       "printings": [
         {
           "num": "110",
@@ -3036,6 +4049,17 @@
       "rarity": "Common",
       "aspects": [
         "Command"
+      ],
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
       ],
       "printings": [
         {
@@ -3064,6 +4088,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Ambush (When you play this unit, it may ready and attack an enemy unit.) \nWhen Played: If you have the initiative, create a Battle Droid token.",
       "printings": [
         {
           "num": "112",
@@ -3091,6 +4127,18 @@
       "aspects": [
         "Command"
       ],
+      "cost": 5,
+      "power": 5,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "TROOPER"
+      ],
+      "text": "Sentinel (Units in this arena can't attack your non-Sentinel units or your base.) \nOverwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "113",
@@ -3120,6 +4168,18 @@
         "Command"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.) \nCoordinate - Each other friendly unit gets +1/+1 and gains Overwhelm. (Gain this ability while you control 3 or more units.)",
       "printings": [
         {
           "num": "114",
@@ -3149,6 +4209,16 @@
         "Command"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST"
+      ],
+      "text": "Exploit 3 \nWhen Played: This unit captures an enemy non-leader ground unit with cost equal to or less than the number of resources paid to play this unit.",
       "printings": [
         {
           "num": "115",
@@ -3176,6 +4246,16 @@
       "aspects": [
         "Command"
       ],
+      "cost": 7,
+      "power": 0,
+      "hp": 0,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "CLONE"
+      ],
+      "text": "You may have this unit enter play as a copy of a non-leader, non-Vehicle unit in play, except it gains the Clone trait and is not unique. (Only the card's printed attributes are copied.)",
       "printings": [
         {
           "num": "116",
@@ -3204,6 +4284,18 @@
         "Command"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "WALKER"
+      ],
+      "text": "Exploit 2 (While playing this card, defeat up to 2 units you control. This card costs 2 less for each unit defeated this way.) \nAmbush (When you play this unit, it may ready and attack an enemy unit.)",
       "printings": [
         {
           "num": "117",
@@ -3233,6 +4325,17 @@
         "Command"
       ],
       "unique": true,
+      "cost": 12,
+      "power": 7,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "CREATURE"
+      ],
+      "text": "Exploit 3\nSentinel\nAmbush\nOverwhelm",
       "printings": [
         {
           "num": "118",
@@ -3260,6 +4363,13 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Attach to a token unit. \nAttached unit gains Overwhelm. (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "119",
@@ -3287,6 +4397,13 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 2,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Attached unit gains: \"Action [exhaust]: Play a unit from your hand. It costs 1 less.\"",
       "printings": [
         {
           "num": "120",
@@ -3314,6 +4431,15 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit. \nIf attached unit is a Jedi, it gains: \"On Attack: The next unit you play this phase costs 2 less.\"",
       "printings": [
         {
           "num": "121",
@@ -3341,6 +4467,13 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "power": 0,
+      "hp": 0,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Attach to a non-leader unit. \nAttached unit gains: \"This unit gets +1/+1 for each Trooper unit you control.\"",
       "printings": [
         {
           "num": "122",
@@ -3368,6 +4501,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Attack with 2 units (one at a time).",
       "printings": [
         {
           "num": "123",
@@ -3383,6 +4521,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 1,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Give a unit +2/+2 for this phase.",
       "printings": [
         {
           "num": "124",
@@ -3398,6 +4541,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 2,
+      "traits": [
+        "DISASTER"
+      ],
+      "text": "Pay any number of resources. Create that many Clone Trooper tokens. Each opponent creates that many Battle Droid tokens.",
       "printings": [
         {
           "num": "125",
@@ -3425,6 +4573,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "traits": [
+        "LEARNED"
+      ],
+      "text": "Give each friendly unit +1/+1 for this phase.",
       "printings": [
         {
           "num": "126",
@@ -3452,6 +4605,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Put this event into play as a resource.",
       "printings": [
         {
           "num": "127",
@@ -3479,6 +4637,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 3,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "A friendly unit captures an enemy non-leader unit in the same arena. (Put the captured card facedown under that unit until that unit leaves play.)",
       "printings": [
         {
           "num": "128",
@@ -3506,6 +4669,11 @@
       "aspects": [
         "Command"
       ],
+      "cost": 4,
+      "traits": [
+        "REPUBLIC"
+      ],
+      "text": "For this phase, each friendly Republic unit gains Restore 2 and: \"When Defeated: Create a Clone Trooper token.\"",
       "printings": [
         {
           "num": "129",
@@ -3536,6 +4704,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "MANDALORIAN",
+        "TROOPER"
+      ],
+      "text": "While you control another Mandalorian unit, this unit gains Overwhelm and Saboteur. While you control another Trooper unit, this unit gets +1/+0.",
       "printings": [
         {
           "num": "130",
@@ -3564,6 +4743,17 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID"
+      ],
+      "text": "When Defeated: Deal 2 damage to a base.",
       "printings": [
         {
           "num": "131",
@@ -3592,6 +4782,19 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Bases can't be healed.",
       "printings": [
         {
           "num": "132",
@@ -3619,6 +4822,17 @@
       "aspects": [
         "Aggression",
         "Villainy"
+      ],
+      "cost": 3,
+      "power": 5,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "TROOPER"
       ],
       "printings": [
         {
@@ -3650,6 +4864,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SEPARATIST",
+        "SITH"
+      ],
+      "text": "Exploit 2 (While playing this card, defeat up to 2 units you control. This card costs 2 less for each unit defeated this way.) \nOn Attack: If you've attacked with another Separatist unit this phase, this unit gets +3/+0 for this phase.",
       "printings": [
         {
           "num": "134",
@@ -3680,6 +4906,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 5,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SITH"
+      ],
+      "text": "This unit can attack 2 units instead of 1. (This unit deals its combat damage to both defenders and they both deal their combat damage to this unit. All damage is dealt simultaneously.)",
       "printings": [
         {
           "num": "135",
@@ -3708,6 +4945,19 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 6,
+      "power": 5,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Exploit 3 (While playing this card, defeat up to 3 units you control. This card costs 2 less for each unit defeated this way.)",
       "printings": [
         {
           "num": "136",
@@ -3738,6 +4988,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 7,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "NIGHT",
+        "UNDERWORLD"
+      ],
+      "text": "When Played: If you control fewer units (including this unit) than an opponent, ready this unit.",
       "printings": [
         {
           "num": "137",
@@ -3768,6 +5030,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 8,
+      "power": 6,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "SEPARATIST",
+        "SITH"
+      ],
+      "text": "Exploit 2 \nOverwhelm \nWhen Played: For each unit you exploited while playing this card, you may deal damage to an enemy unit equal to the power of the exploited unit.",
       "printings": [
         {
           "num": "138",
@@ -3796,6 +5070,11 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 1,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Attack with a unit. It gets +1/+0 for this attack for each damage on the defender at the start of this attack.",
       "printings": [
         {
           "num": "139",
@@ -3824,6 +5103,11 @@
         "Aggression",
         "Villainy"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Defeat a friendly unit. If you do, deal 4 damage to a unit.",
       "printings": [
         {
           "num": "140",
@@ -3852,6 +5136,18 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Raid 1 (This unit gets +1/+0 while attacking.)",
       "printings": [
         {
           "num": "141",
@@ -3882,6 +5178,19 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "JEDI",
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "While your base has 15 or more damage on it, this unit gets +2/+0.",
       "printings": [
         {
           "num": "142",
@@ -3912,6 +5221,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REBEL"
+      ],
+      "text": "While an enemy unit has been defeated this phase, this unit gets +1/+0 and gains Saboteur.",
       "printings": [
         {
           "num": "143",
@@ -3940,6 +5259,18 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "When Played: Create a Clone Trooper token.",
       "printings": [
         {
           "num": "144",
@@ -3970,6 +5301,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Raid 1 (This unit gets +1/+0 while attacking.) \nWhen Played: An opponent creates 2 Battle Droid tokens.",
       "printings": [
         {
           "num": "145",
@@ -4000,6 +5343,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 4,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "When Played/When Defeated: You may deal 2 damage to your base. If you do, search the top 8 cards of your deck for a Tactic card, reveal it, and draw it. (Put the other cards on the bottom of your deck in a random order.)",
       "printings": [
         {
           "num": "146",
@@ -4030,6 +5383,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 6,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Coordinate - On Attack: Draw a card. (Gain this ability while you control 3 or more units.)",
       "printings": [
         {
           "num": "147",
@@ -4050,6 +5415,18 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 5,
+      "power": 5,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.) \nWhen Defeated: Each opponent discards a card from their hand.",
       "printings": [
         {
           "num": "148",
@@ -4078,6 +5455,18 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 6,
+      "power": 6,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.) \nWhen Played: Choose an enemy unit. Deal 1 damage to it for each friendly Republic unit.",
       "printings": [
         {
           "num": "149",
@@ -4108,6 +5497,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 4,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE",
+        "TROOPER"
+      ],
+      "text": "Raid 2 \nOn Attack: If your base has 15 or more damage on it, deal 1 damage to each enemy ground unit.",
       "printings": [
         {
           "num": "150",
@@ -4138,6 +5538,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 10,
+      "power": 8,
+      "hp": 8,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "This unit costs 1 less to play for every 5 damage on your base. \nWhen Played/On Attack: Deal 2 damage to an enemy unit and each other enemy unit with the same name as that unit.",
       "printings": [
         {
           "num": "151",
@@ -4167,6 +5579,15 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit. \nWhen Played: If attached unit is Mace Windu, draw 2 cards.",
       "printings": [
         {
           "num": "152",
@@ -4195,6 +5616,11 @@
         "Aggression",
         "Heroism"
       ],
+      "cost": 3,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Choose up to 3 units that share the same Trait. Each of those units gets +2/+0 for this phase.",
       "printings": [
         {
           "num": "153",
@@ -4225,6 +5651,17 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 3,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE",
+        "DROID"
+      ],
+      "text": "On Attack: If you have no cards in your hand, you may deal 3 damage to a ground unit.",
       "printings": [
         {
           "num": "154",
@@ -4253,6 +5690,13 @@
         "Aggression",
         "Aggression"
       ],
+      "cost": 2,
+      "power": 4,
+      "hp": 0,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "When Played: Deal 2 damage to attached unit.",
       "printings": [
         {
           "num": "155",
@@ -4281,6 +5725,11 @@
         "Aggression",
         "Aggression"
       ],
+      "cost": 6,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Deal 4 damage to a unit, 3 damage to a second unit, 2 damage to a third unit, and 1 damage to a fourth unit. (All damage is dealt simultaneously.)",
       "printings": [
         {
           "num": "156",
@@ -4308,6 +5757,17 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "Action [c=2, exhaust]: Deal 2 damage to a base.",
       "printings": [
         {
           "num": "157",
@@ -4335,6 +5795,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Coordinate — This unit gets +2/+0. (Gain this ability while you control 3 or more units.)",
       "printings": [
         {
           "num": "158",
@@ -4362,6 +5834,17 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE",
+        "TROOPER"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.)",
       "printings": [
         {
           "num": "159",
@@ -4389,6 +5872,19 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Played: If you control another Separatist unit, deal 2 damage to an enemy base.",
       "printings": [
         {
           "num": "160",
@@ -4416,6 +5912,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "161",
@@ -4443,6 +5951,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Coordinate - When Played: You may deal 2 damage to a friendly unit and 2 damage to an enemy unit in the same arena. (Gain this ability while you control 3 or more units, including this one.)",
       "printings": [
         {
           "num": "162",
@@ -4470,6 +5990,18 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "TROOPER"
+      ],
+      "text": "While you control another Trooper unit, this unit gets +2/+0.",
       "printings": [
         {
           "num": "163",
@@ -4499,6 +6031,18 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Coordinate - Raid 2 (Gain this keyword while you control 3 or more units. This unit gets +2/+0 while attacking.) \nWhen Defeated: Deal 1 damage to each enemy ground unit.",
       "printings": [
         {
           "num": "164",
@@ -4528,6 +6072,18 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 7,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Saboteur\nCoordinate — On Attack: You may deal 3 damage to a ground unit. (Gain this ability while you control 3 or more units.)",
       "printings": [
         {
           "num": "165",
@@ -4557,6 +6113,17 @@
         "Aggression"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 7,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "BOUNTY HUNTER"
+      ],
+      "text": "Overwhelm (When attacking an enemy unit, deal excess damage to the opponent's base.) \nWhen an enemy ground unit attacks your base: Ready this unit.",
       "printings": [
         {
           "num": "166",
@@ -4584,6 +6151,19 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 7,
+      "power": 6,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "TANK"
+      ],
+      "text": "Exploit 2 (While playing this card, defeat up to 2 units you control. This card costs 2 less for each unit defeated this way.) \nWhen Played: You may deal 2 damage to a ground unit.",
       "printings": [
         {
           "num": "167",
@@ -4611,6 +6191,13 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 0,
+      "traits": [
+        "ITEM"
+      ],
+      "text": "When Played: If an opponent controls more units than you, draw a card.",
       "printings": [
         {
           "num": "168",
@@ -4638,6 +6225,13 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "power": 0,
+      "hp": 0,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Attached unit gains Raid 2 and: \"When Defeated: Create a Clone Trooper token.\"",
       "printings": [
         {
           "num": "169",
@@ -4673,6 +6267,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 1,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Deal 2 damage to a unit or base.",
       "printings": [
         {
           "num": "170",
@@ -4700,6 +6299,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Deal 2 damage to a unit. You may deal 1 damage to another unit in the same arena.",
       "printings": [
         {
           "num": "171",
@@ -4727,6 +6331,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Attack with a non-leader unit. It gains Grit for this attack. (It gets +1/+0 for each damage on it.)",
       "printings": [
         {
           "num": "172",
@@ -4754,6 +6363,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Deal 2 damage to each ground unit.",
       "printings": [
         {
           "num": "173",
@@ -4781,6 +6395,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 3,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Deal 4 damage to a unit.",
       "printings": [
         {
           "num": "174",
@@ -4796,6 +6415,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 5,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "Draw 3 cards.",
       "printings": [
         {
           "num": "175",
@@ -4823,6 +6447,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 6,
+      "traits": [
+        "DISASTER"
+      ],
+      "text": "Choose 2 enemy units in the same arena. Each of those units deals damage equal to its power to the other.",
       "printings": [
         {
           "num": "176",
@@ -4850,6 +6479,11 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 8,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Each player defeats a resource they control and discards 2 cards from their hand. Deal 4 damage to each ground unit.",
       "printings": [
         {
           "num": "177",
@@ -4877,6 +6511,12 @@
       "aspects": [
         "Aggression"
       ],
+      "cost": 12,
+      "traits": [
+        "SEPARATIST",
+        "PLAN"
+      ],
+      "text": "Exploit 3 \nReady up to 3 units. Each of those units gets +1/+0 and gains Overwhelm for this phase.",
       "printings": [
         {
           "num": "178",
@@ -4907,6 +6547,18 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 1,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "On Attack: You may exhaust a friendly Droid unit or General Grievous (leader or unit). If you do, this unit gets +2/+0 for this attack.",
       "printings": [
         {
           "num": "179",
@@ -4935,6 +6587,18 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "TROOPER"
+      ],
+      "text": "While you control another Separatist unit, this unit gains Raid 2. (It gets +2/+0 while attacking.)",
       "printings": [
         {
           "num": "180",
@@ -4955,6 +6619,18 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Played/When Defeated: You may deal 1 damage to a unit.",
       "printings": [
         {
           "num": "181",
@@ -4983,6 +6659,17 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID"
+      ],
+      "text": "Exploit 1 (While playing this card, defeat up to 1 unit you control. This card costs 2 less for each unit defeated this way.) \nSaboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "182",
@@ -5013,6 +6700,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "Raid 2 \nOn Attack: If the defending player controls no ready resources, create a Battle Droid token.",
       "printings": [
         {
           "num": "183",
@@ -5041,6 +6739,17 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID"
+      ],
+      "text": "Exploit 2 \nWhen you play another Separatist unit: You may exhaust a unit that costs the same as or less than the played unit.",
       "printings": [
         {
           "num": "184",
@@ -5071,6 +6780,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 2,
+      "hp": 8,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "HUTT"
+      ],
+      "text": "When Played: For each opponent, you may exhaust a unit that player controls. \nOn Attack: For each opponent, you may exhaust a resource that player controls.",
       "printings": [
         {
           "num": "185",
@@ -5101,6 +6821,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 6,
+      "power": 3,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "Exploit 3 (While playing this card, defeat up to 3 units you control. This card costs 2 less for each unit defeated this way.) \nOn Attack: For each friendly unit that was defeated this phase, ready a friendly resource.",
       "printings": [
         {
           "num": "186",
@@ -5131,6 +6862,17 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 7,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD",
+        "BOUNTY HUNTER"
+      ],
+      "text": "When Played: This unit captures up to 3 enemy non-leader units with a total of 8 or less remaining HP.\n On Attack: The defending player may rescue a card they own guarded by this unit. If they do, draw 2 cards.",
       "printings": [
         {
           "num": "187",
@@ -5159,6 +6901,11 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 1,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Look at cards from the top of your deck equal to the number of units that were defeated this phase. Draw 1 and put the others on the bottom of your deck in a random order.",
       "printings": [
         {
           "num": "188",
@@ -5187,6 +6934,11 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 3,
+      "traits": [
+        "FORCE"
+      ],
+      "text": "Play a unit that was defeated this phase from your discard pile. It costs 2 less and enters play ready. At the start of the regroup phase, defeat it.",
       "printings": [
         {
           "num": "189",
@@ -5215,6 +6967,11 @@
         "Cunning",
         "Villainy"
       ],
+      "cost": 4,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Create 3 Battle Droid tokens and ready them.",
       "printings": [
         {
           "num": "190",
@@ -5243,6 +7000,18 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 1,
+      "power": 2,
+      "hp": 1,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "When Played: You may return a friendly non-leader, non-Vehicle unit to its owner's hand.",
       "printings": [
         {
           "num": "191",
@@ -5273,6 +7042,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "NABOO",
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "Coordinate - On Attack: Give an enemy unit -3/-0 for this phase. (Gain this ability while you control 3 or more units.)",
       "printings": [
         {
           "num": "192",
@@ -5303,6 +7084,17 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "DROID"
+      ],
+      "text": "When Played: You may discard a card from your hand. If you do, search the top 3 cards of your deck for a card and draw it. (Put the other cards on the bottom of your deck in a random order.)",
       "printings": [
         {
           "num": "193",
@@ -5341,6 +7133,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "While you control fewer units than an opponent (including this unit), this unit gains Ambush.\n Action [c=2]: Return this unit and each upgrade on her to their owners' hands.",
       "printings": [
         {
           "num": "194",
@@ -5371,6 +7175,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 4,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE",
+        "MANDALORIAN",
+        "SPECTRE"
+      ],
+      "text": "While this unit is exhausted, she can't be attacked (unless she gains Sentinel). \nOn Attack: You may discard a card from your deck. If it doesn't share an aspect with your base, deal 2 damage to a ground unit.",
       "printings": [
         {
           "num": "195",
@@ -5401,6 +7217,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 3,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FORCE",
+        "JEDI",
+        "REPUBLIC"
+      ],
+      "text": "Ambush (When you play this unit, it may ready and attack an enemy unit.) \nCoordinate - Raid 3 (Gain this keyword while you control 3 or more units. This unit gets +3/+0 while attacking.)",
       "printings": [
         {
           "num": "196",
@@ -5429,6 +7257,18 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 6,
+      "power": 6,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "WALKER"
+      ],
+      "text": "If you control 3 or more units, this unit costs 1 less to play.",
       "printings": [
         {
           "num": "197",
@@ -5459,6 +7299,16 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 5,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD"
+      ],
+      "text": "Saboteur \nWhen Played/On Attack: You may return an enemy non-leader unit with less power than this unit to its owner's hand.",
       "printings": [
         {
           "num": "198",
@@ -5487,6 +7337,11 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Choose a non-leader unit that costs 3 or less. Return it and each enemy non-leader unit with the same name as it to their owners' hands.",
       "printings": [
         {
           "num": "199",
@@ -5515,6 +7370,11 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "Exhaust a non-unique unit. \nCreate a Clone Trooper token.",
       "printings": [
         {
           "num": "200",
@@ -5543,6 +7403,11 @@
         "Cunning",
         "Heroism"
       ],
+      "cost": 5,
+      "traits": [
+        "GAMBIT"
+      ],
+      "text": "Search the top 10 cards of your deck for 2 Heroism non-unit cards and discard them. (Put the other cards on the bottom of your deck in a random order.) \nFor this phase, you may play the discarded cards, and they each cost 2 less.",
       "printings": [
         {
           "num": "201",
@@ -5573,6 +7438,16 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "GUNGAN"
+      ],
+      "text": "On Attack: Deal 2 damage to a random unit or base.",
       "printings": [
         {
           "num": "202",
@@ -5603,6 +7478,17 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 2,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "Each token unit you create enters play ready. \nOn Attack: If a unit left play this phase, create a Clone Trooper token.",
       "printings": [
         {
           "num": "203",
@@ -5631,6 +7517,11 @@
         "Cunning",
         "Cunning"
       ],
+      "cost": 4,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "Choose a ready non-leader unit controlled by each player. If you do, each player takes control of the chosen unit controlled by the player to their right. At the start of the regroup phase, each player takes control of each unit they own that was chosen for this ability.",
       "printings": [
         {
           "num": "204",
@@ -5658,6 +7549,18 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "power": 2,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Coordinate - While this unit is attacking, the defender gets -2/-0. (Gain this ability while you control 3 or more units.)",
       "printings": [
         {
           "num": "205",
@@ -5685,6 +7588,17 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "power": 0,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "Action [c=2, exhaust]: Exhaust a unit with 4 or less power.",
       "printings": [
         {
           "num": "206",
@@ -5712,6 +7626,18 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 3,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "TROOPER"
+      ],
+      "text": "Sentinel (Units in this arena can't attack your non-Sentinel units or your base.)",
       "printings": [
         {
           "num": "207",
@@ -5747,6 +7673,17 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 1,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "When Played: Draw a card. \nWhen Defeated: Discard a card from your hand.",
       "printings": [
         {
           "num": "208",
@@ -5773,6 +7710,17 @@
       "rarity": "Common",
       "aspects": [
         "Cunning"
+      ],
+      "cost": 2,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
       ],
       "printings": [
         {
@@ -5803,6 +7751,16 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST"
+      ],
+      "text": "When an opponent plays a card: If that opponent paid less than the card's cost to play it, ready or exhaust a unit.",
       "printings": [
         {
           "num": "210",
@@ -5832,6 +7790,17 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 3,
+      "power": 3,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "OFFICIAL"
+      ],
+      "text": "When Played: Take control of an enemy token unit and ready it. At the start of the regroup phase, that token unit's owner takes control of it.",
       "printings": [
         {
           "num": "211",
@@ -5859,6 +7828,16 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 3,
+      "power": 4,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "UNDERWORLD"
+      ],
+      "text": "When Played: You may pay 2. If you do, deal 2 damage to a unit.",
       "printings": [
         {
           "num": "212",
@@ -5886,6 +7865,18 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "TRANSPORT"
+      ],
+      "text": "Coordinate - When Played: This unit captures an enemy non-leader unit that costs 3 or less. (Gain this ability while you control 3 or more units, including this one.)",
       "printings": [
         {
           "num": "213",
@@ -5913,6 +7904,18 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 4,
+      "power": 4,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Ambush (When you play this unit, it may ready and attack an enemy unit.)",
       "printings": [
         {
           "num": "214",
@@ -5940,6 +7943,18 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 5,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Exploit 2 (While playing this card, defeat up to 2 units you control. This card costs 2 less for each unit defeated this way.) \nWhen Played: You may return a non-leader unit that costs 3 or less to its owner's hand.",
       "printings": [
         {
           "num": "215",
@@ -5969,6 +7984,18 @@
         "Cunning"
       ],
       "unique": true,
+      "cost": 5,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Saboteur \nWhen you play an event: You may put a Clone unit from your discard pile on the bottom of your deck. If you do, draw a card.",
       "printings": [
         {
           "num": "216",
@@ -5996,6 +8023,19 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 7,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "WALKER"
+      ],
+      "text": "Exploit 2 (While playing this card, defeat up to 2 units you control. This card costs 2 less for each unit defeated this way.) \nWhen Played: Exhaust an enemy ground unit.",
       "printings": [
         {
           "num": "217",
@@ -6023,6 +8063,13 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 1,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Attached unit gains, \"When Defeated: Create a Battle Droid token.\"",
       "printings": [
         {
           "num": "218",
@@ -6050,6 +8097,13 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "power": 2,
+      "hp": 0,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "When Played: Attached unit can't be attacked this phase (unless it has Sentinel).",
       "printings": [
         {
           "num": "219",
@@ -6085,6 +8139,13 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 3,
+      "power": 0,
+      "hp": 0,
+      "traits": [
+        "INNATE"
+      ],
+      "text": "Attached unit gains: \"This unit can't be captured, defeated, or returned to its owner's hand by enemy card abilities.\"",
       "printings": [
         {
           "num": "220",
@@ -6112,6 +8173,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 0,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Exhaust a friendly unit. If you do, exhaust an enemy unit.",
       "printings": [
         {
           "num": "221",
@@ -6139,6 +8205,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "Choose an opponent. They may discard a random card from their hand. If they don't, create 2 Battle Droid tokens.",
       "printings": [
         {
           "num": "222",
@@ -6166,6 +8237,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 1,
+      "traits": [
+        "GAMBIT"
+      ],
+      "text": "Discard a card from your hand. If you do, look at an opponent's hand and discard a card from it.",
       "printings": [
         {
           "num": "223",
@@ -6193,6 +8269,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 2,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Attack with a unit. It gets +2/+0 and gains Saboteur for this attack. (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "224",
@@ -6220,6 +8301,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 3,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "If you control exactly one unit, play a non-Vehicle unit from your hand that shares a Trait with the unit you control. It costs 5 less.",
       "printings": [
         {
           "num": "225",
@@ -6247,6 +8333,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 3,
+      "traits": [
+        "TRICK"
+      ],
+      "text": "Return a non-leader unit to its owner's hand.",
       "printings": [
         {
           "num": "226",
@@ -6262,6 +8353,11 @@
       "aspects": [
         "Cunning"
       ],
+      "cost": 4,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "A friendly unit captures an enemy non-leader, non-Vehicle unit. If the enemy unit costs less than the friendly unit, create 2 Battle Droid tokens. (Put the captured card facedown under the friendly unit until that unit leaves play.)",
       "printings": [
         {
           "num": "227",
@@ -6289,6 +8385,19 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 2,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Saboteur (When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "228",
@@ -6316,6 +8425,18 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 3,
+      "power": 1,
+      "hp": 1,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "TROOPER"
+      ],
+      "text": "When Played/When Defeated: Create a Battle Droid token.",
       "printings": [
         {
           "num": "229",
@@ -6334,6 +8455,17 @@
       "rarity": "Common",
       "aspects": [
         "Villainy"
+      ],
+      "cost": 3,
+      "power": 4,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "TROOPER"
       ],
       "printings": [
         {
@@ -6362,6 +8494,17 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 4,
+      "power": 3,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID"
+      ],
+      "text": "Grit (This unit gets +1/+0 for each damage on it.)",
       "printings": [
         {
           "num": "231",
@@ -6389,6 +8532,18 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 5,
+      "power": 4,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "TANK"
+      ],
+      "text": "Sentinel (Units in this arena can't attack your non-Sentinel units or your base.)",
       "printings": [
         {
           "num": "232",
@@ -6416,6 +8571,19 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 8,
+      "power": 7,
+      "hp": 6,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "VEHICLE",
+        "TANK"
+      ],
+      "text": "Exploit 2 (While playing this card, defeat up to 2 units you control. This card costs 2 less for each unit defeated this way.)",
       "printings": [
         {
           "num": "233",
@@ -6444,6 +8612,18 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 8,
+      "power": 4,
+      "hp": 7,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "When Played: Create 4 Battle Droid tokens. \nOn Attack: Exhaust any number of friendly Separatist units. Deal 1 damage to the defending player's base for each unit exhausted this way.",
       "printings": [
         {
           "num": "234",
@@ -6471,6 +8651,18 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 9,
+      "power": 6,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "DROID",
+        "TROOPER"
+      ],
+      "text": "Exploit 2 (While playing this card, defeat up to 2 units you control. This card costs 2 less for each unit defeated this way.)\nWhen Defeated: Create 3 Battle Droid tokens.",
       "printings": [
         {
           "num": "235",
@@ -6507,6 +8699,13 @@
         "Villainy"
       ],
       "unique": true,
+      "cost": 4,
+      "power": 3,
+      "hp": 3,
+      "traits": [
+        "VEHICLE"
+      ],
+      "text": "While playing this upgrade on General Grievous, it costs 2 less to play. \nAttach to a non-Vehicle unit. \nAttached unit gains Overwhelm.",
       "printings": [
         {
           "num": "236",
@@ -6526,6 +8725,11 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 2,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Create 2 Battle Droid tokens.",
       "printings": [
         {
           "num": "237",
@@ -6553,6 +8757,11 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 3,
+      "traits": [
+        "TACTIC"
+      ],
+      "text": "Each player chooses a non-leader unit they control. Defeat those units.",
       "printings": [
         {
           "num": "238",
@@ -6580,6 +8789,11 @@
       "aspects": [
         "Villainy"
       ],
+      "cost": 4,
+      "traits": [
+        "PLAN"
+      ],
+      "text": "Deal 6 damage to each Jedi unit. For each unit defeated this way, its controller creates a Clone Trooper token.",
       "printings": [
         {
           "num": "239",
@@ -6607,6 +8821,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 1,
+      "power": 1,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Coordinate - This unit gets +1/+1. (Gain this ability while you control 3 or more units.)",
       "printings": [
         {
           "num": "240",
@@ -6625,6 +8851,17 @@
       "rarity": "Common",
       "aspects": [
         "Heroism"
+      ],
+      "cost": 2,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
       ],
       "printings": [
         {
@@ -6653,6 +8890,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 3,
+      "power": 3,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Ambush (When you play this unit, it may ready and attack an enemy unit.)",
       "printings": [
         {
           "num": "242",
@@ -6680,6 +8929,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 3,
+      "power": 2,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "CLONE",
+        "TROOPER"
+      ],
+      "text": "Coordinate - Saboteur (Gain this ability while you control 3 or more units. When this unit attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "243",
@@ -6707,6 +8968,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 5,
+      "power": 3,
+      "hp": 5,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
+      "text": "Restore 2 (When this unit attacks, heal 2 damage from your base.)",
       "printings": [
         {
           "num": "244",
@@ -6734,6 +9007,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 6,
+      "power": 5,
+      "hp": 5,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "TANK"
+      ],
+      "text": "Sentinel (Units in this arena can't attack your non-Sentinel units or your base.)",
       "printings": [
         {
           "num": "245",
@@ -6763,6 +9048,18 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 7,
+      "power": 7,
+      "hp": 6,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "CAPITAL SHIP"
+      ],
+      "text": "When Played: You may return a Republic unit from your discard pile to your hand. \nOn Attack: Each of the next 3 Republic cards you play this phase costs 1 less.",
       "printings": [
         {
           "num": "246",
@@ -6790,6 +9087,18 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 8,
+      "power": 6,
+      "hp": 9,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "WALKER"
+      ],
+      "text": "Restore 3 (When this unit attacks, heal 3 damage from your base.) \nWhen Defeated: Create 2 Clone Trooper tokens.",
       "printings": [
         {
           "num": "247",
@@ -6818,6 +9127,15 @@
         "Heroism"
       ],
       "unique": true,
+      "cost": 1,
+      "power": 2,
+      "hp": 0,
+      "traits": [
+        "ITEM",
+        "WEAPON",
+        "LIGHTSABER"
+      ],
+      "text": "Attach to a non-Vehicle unit. \nWhen Played: If attached unit is Ahsoka Tano, you may attack with a unit.",
       "printings": [
         {
           "num": "248",
@@ -6837,6 +9155,12 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "REPUBLIC",
+        "SEPARATIST"
+      ],
+      "text": "Choose up to 1 Republic unit and up to 1 Separatist unit. Give each chosen unit +2/+2 and Saboteur for this phase. (When either of those units attacks, ignore Sentinel and defeat the defender's Shields.)",
       "printings": [
         {
           "num": "249",
@@ -6864,6 +9188,13 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 2,
+      "traits": [
+        "JEDI",
+        "REPUBLIC",
+        "TACTIC"
+      ],
+      "text": "Give each friendly Trooper unit Raid 1 for this phase. \nGive each friendly Jedi unit Sentinel for this phase.",
       "printings": [
         {
           "num": "250",
@@ -6891,6 +9222,11 @@
       "aspects": [
         "Heroism"
       ],
+      "cost": 4,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Create 2 Clone Trooper tokens.",
       "printings": [
         {
           "num": "251",
@@ -6916,6 +9252,17 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 2,
+      "power": 2,
+      "hp": 2,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "SEPARATIST",
+        "OFFICIAL"
+      ],
+      "text": "When Played: Choose an opponent. They shuffle their discard pile and put it on the bottom of their deck.",
       "printings": [
         {
           "num": "252",
@@ -6941,6 +9288,17 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 2,
+      "power": 1,
+      "hp": 4,
+      "arenas": [
+        "Space"
+      ],
+      "traits": [
+        "REPUBLIC",
+        "VEHICLE",
+        "FIGHTER"
+      ],
       "printings": [
         {
           "num": "253",
@@ -6966,6 +9324,16 @@
       "type": "Unit",
       "rarity": "Common",
       "aspects": [],
+      "cost": 3,
+      "power": 2,
+      "hp": 3,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "TROOPER"
+      ],
+      "text": "Raid 1 (This unit gets +1/+0 while attacking.) \nIf you control a Trooper unit, this unit costs 1 less to play.",
       "printings": [
         {
           "num": "254",
@@ -6991,6 +9359,16 @@
       "type": "Unit",
       "rarity": "Rare",
       "aspects": [],
+      "cost": 4,
+      "power": 2,
+      "hp": 4,
+      "arenas": [
+        "Ground"
+      ],
+      "traits": [
+        "FRINGE"
+      ],
+      "text": "Each leader loses all abilities except for epic actions and can't gain abilities.",
       "printings": [
         {
           "num": "255",
@@ -7016,6 +9394,14 @@
       "type": "Upgrade",
       "rarity": "Common",
       "aspects": [],
+      "cost": 1,
+      "power": 1,
+      "hp": 0,
+      "traits": [
+        "ITEM",
+        "WEAPON"
+      ],
+      "text": "Attach to a non-Vehicle unit. \nWhen Played: You may have attached unit deal 1 damage to a ground unit.",
       "printings": [
         {
           "num": "256",
@@ -7041,6 +9427,11 @@
       "type": "Event",
       "rarity": "Uncommon",
       "aspects": [],
+      "cost": 2,
+      "traits": [
+        "SUPPLY"
+      ],
+      "text": "Draw 2 cards. If you control no token units, put 2 cards from your hand on the bottom of your deck in any order.",
       "printings": [
         {
           "num": "257",

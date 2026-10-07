@@ -21,7 +21,7 @@ import { BinderRoute } from '~/routes/BinderRoute';
 import { BulkPage } from '~/features/inventory/BulkPage';
 import { isInventoryView, type InventoryView } from '~/features/inventory/views';
 import { NARROW_QUERY } from '~/ui/useNarrow';
-import { DecksRoute } from '~/routes/DecksRoute';
+import { DeckEditRoute, DecksRoute } from '~/routes/DecksRoute';
 import { IntakePage } from '~/features/intake/IntakePage';
 import { PutAwayPage } from '~/features/putAway/PutAwayPage';
 import { ScanPage } from '~/features/scan/ScanPage';
@@ -162,6 +162,24 @@ const decksRoute = createRoute({
   },
 });
 
+/** One saved deck in the editor. */
+const deckEditRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/decks/$deckId',
+  loader: async ({ context }) => {
+    const entries = await context.queryClient.ensureQueryData(manifestQuery());
+    // The card lookup searches every set.
+    await Promise.all(entries.map((entry) => context.queryClient.ensureQueryData(setQuery(entry))));
+    return { entries };
+  },
+  component: function DeckEditRouteComponent() {
+    const { entries } = deckEditRoute.useLoaderData();
+    const { deckId } = deckEditRoute.useParams();
+    const { queryClient } = deckEditRoute.useRouteContext();
+    return <DeckEditRoute sets={loadedSets(queryClient, entries)} deckId={deckId} />;
+  },
+});
+
 const intakeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/intake',
@@ -218,6 +236,7 @@ const routeTree = rootRoute.addChildren([
   setViewRoute,
   legacyBinderRoute,
   decksRoute,
+  deckEditRoute,
   intakeRoute,
   scanRoute,
   putAwayRoute,

@@ -11,6 +11,14 @@ export type Card = {
   Set: string;
   /** Overrides the default type-based playset quota (3, or 1 for leader/base) for cards whose text allows more/fewer copies, e.g. Swarming Vulture Droid (15). */
   MaxCopies?: number;
+  Cost?: number;
+  Power?: number;
+  HP?: number;
+  /** Ground and/or Space; absent for events, upgrades, leaders' fronts and bases. */
+  Arenas?: string[];
+  Traits?: string[];
+  /** Rules text, one ability per line. */
+  Text?: string;
 };
 
 export type Inventory = Record<number, number>;

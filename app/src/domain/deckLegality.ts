@@ -1,9 +1,23 @@
 import type { ResolvedDeckRow } from './decklist';
 import { normalize } from './search';
+import type { Card, SetKey } from './types';
 
-export type PlayFormat = 'premier' | 'twinSuns';
+export type PlayFormat = 'premier' | 'eternal' | 'twinSuns';
 /** What the user picked in the UI; 'auto' infers the format from the decklist's leader count. */
 export type FormatChoice = 'auto' | PlayFormat;
+
+export const PLAY_FORMATS: readonly PlayFormat[] = ['premier', 'eternal', 'twinSuns'];
+
+export function isPlayFormat(value: unknown): value is PlayFormat {
+  return typeof value === 'string' && (PLAY_FORMATS as readonly string[]).includes(value);
+}
+
+/**
+ * Sets that have rotated out of Premier. Rotation began with A Lawless Time (March 2026),
+ * which took the first three sets out; newer sets are legal until a later rotation adds
+ * them here. Eternal and Twin Suns allow every set.
+ */
+export const ROTATED_FROM_PREMIER: ReadonlySet<SetKey> = new Set(['SOR', 'SHD', 'TWI']);
 
 export type FormatRules = {
   label: string;
@@ -18,8 +32,39 @@ export type FormatRules = {
 
 export const FORMAT_RULES: Record<PlayFormat, FormatRules> = {
   premier: { label: 'Premier', leaders: 1, minDeck: 50, copyLimit: 3, maxSideboard: 10 },
+  eternal: { label: 'Eternal', leaders: 1, minDeck: 50, copyLimit: 3, maxSideboard: 10 },
   twinSuns: { label: 'Twin Suns', leaders: 2, minDeck: 80, copyLimit: 1, maxSideboard: 10 },
 };
+
+/** Every set each card title is printed in — a reprint keeps a rotated card legal. */
+export type CardPool = ReadonlyMap<string, ReadonlySet<SetKey>>;
+
+export function buildCardPool(sets: Iterable<{ setKey: SetKey; baseCards: Card[] }>): CardPool {
+  const pool = new Map<string, Set<SetKey>>();
+  for (const set of sets) {
+    for (const card of set.baseCards) {
+      const key = titleKeyOf(card.Name, card.Subtitle);
+      const printedIn = pool.get(key) ?? new Set<SetKey>();
+      printedIn.add(set.setKey);
+      pool.set(key, printedIn);
+    }
+  }
+  return pool;
+}
+
+/**
+ * Is this card legal in the format? Premier needs a printing in a set that has not rotated;
+ * every other format takes any set. A card missing from the pool is judged by its own set.
+ */
+export function isLegalIn(
+  format: PlayFormat,
+  card: { name: string; subtitle?: string; setKey: SetKey },
+  pool?: CardPool,
+): boolean {
+  if (format !== 'premier') return true;
+  const printedIn = pool?.get(titleKeyOf(card.name, card.subtitle)) ?? [card.setKey];
+  return [...printedIn].some((setKey) => !ROTATED_FROM_PREMIER.has(setKey));
+}
 
 export type DeckLegalityIssueCode =
   | 'leader-count'
@@ -28,7 +73,8 @@ export type DeckLegalityIssueCode =
   | 'base-copies'
   | 'deck-size'
   | 'copy-limit'
-  | 'sideboard-size';
+  | 'sideboard-size'
+  | 'rotated';
 
 export type DeckLegalityIssue = {
   code: DeckLegalityIssueCode;
@@ -59,7 +105,11 @@ export type DeckLegality = {
 
 /** Cards are unique by title (name + subtitle), not by printing — the same card from two sets is still one card. */
 function titleKey(row: ResolvedDeckRow): string {
-  return `${normalize(row.name)}|${normalize(row.subtitle ?? '')}`;
+  return titleKeyOf(row.name, row.subtitle);
+}
+
+function titleKeyOf(name: string, subtitle: string | undefined): string {
+  return `${normalize(name)}|${normalize(subtitle ?? '')}`;
 }
 
 function displayTitle(row: ResolvedDeckRow): string {
@@ -95,7 +145,8 @@ export function deckStats(rows: ResolvedDeckRow[]): DeckStats {
 }
 
 /**
- * Checks a resolved decklist against a format's deck-building rules.
+ * Checks a resolved decklist against a format's deck-building rules. Pass the card pool
+ * to check Premier rotation too.
  *
  * The copy limit is applied per card title across main deck and sideboard combined, and a card
  * whose own text overrides the limit (`maxCopies`, e.g. Swarming Vulture Droid) keeps its override
@@ -104,6 +155,7 @@ export function deckStats(rows: ResolvedDeckRow[]): DeckStats {
 export function checkDeckLegality(
   rows: ResolvedDeckRow[],
   choice: FormatChoice = 'auto',
+  pool?: CardPool,
 ): DeckLegality {
   const format = choice === 'auto' ? detectPlayFormat(rows) : choice;
   const rules = FORMAT_RULES[format];
@@ -177,6 +229,20 @@ export function checkDeckLegality(
         entry.limit === 1
           ? `${entry.title} appears ${entry.count}× — ${rules.label} allows only 1 copy of each card.`
           : `${entry.title} appears ${entry.count}× — the limit is ${entry.limit}.`,
+    });
+  }
+
+  // Rotation needs to know every set a title is printed in, so it is checked only with a pool.
+  const rotated = new Set<string>();
+  for (const row of pool ? rows : []) {
+    if (isLegalIn(format, row, pool)) continue;
+    rotated.add(displayTitle(row));
+  }
+  for (const title of rotated) {
+    issues.push({
+      code: 'rotated',
+      severity: 'error',
+      message: `${title} has rotated out of ${rules.label} — none of its sets are legal.`,
     });
   }
 

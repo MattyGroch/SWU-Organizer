@@ -198,6 +198,34 @@ describe('buildSetCatalog', () => {
     expect(cards[0].doubleSided).toBeUndefined();
   });
 
+  it('carries deck-building stats, arenas, traits and rules text', () => {
+    const { cards } = buildSetCatalog('LAW', [
+      printing('020', 'Normal', {
+        Cost: '5',
+        Power: '3',
+        HP: '6',
+        Arenas: ['Ground'],
+        Traits: ['IMPERIAL', 'TROOPER'],
+        FrontText: 'Action [C=1, Exhaust]: Play a card.',
+        EpicAction: 'Epic Action: Deploy this leader.',
+        BackText: '',
+      }),
+      printing('021', 'Normal', { Name: 'A Base', Subtitle: '', Type: 'Base', HP: '28' }),
+    ]);
+    expect(cards[0]).toMatchObject({
+      cost: 5,
+      power: 3,
+      hp: 6,
+      arenas: ['Ground'],
+      traits: ['IMPERIAL', 'TROOPER'],
+      text: 'Action [C=1, Exhaust]: Play a card.\nEpic Action: Deploy this leader.',
+    });
+    expect(cards[1].cost).toBeUndefined();
+    expect(cards[1].power).toBeUndefined();
+    expect(cards[1].hp).toBe(28);
+    expect(cards[1].arenas).toBeUndefined();
+  });
+
   it('sorts cards by base number so binder order is stable', () => {
     const { cards } = buildSetCatalog('SOR', [
       printing('200', 'Normal', { Name: 'Zeb', Subtitle: '' }),

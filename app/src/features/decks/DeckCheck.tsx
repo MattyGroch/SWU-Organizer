@@ -8,7 +8,13 @@ import {
   summarizeDeck,
   type DeckLookupSet,
 } from '~/domain/decklist';
-import { checkDeckLegality, type FormatChoice } from '~/domain/deckLegality';
+import {
+  buildCardPool,
+  checkDeckLegality,
+  FORMAT_RULES,
+  PLAY_FORMATS,
+  type FormatChoice,
+} from '~/domain/deckLegality';
 import {
   deckContentsFailureMessage,
   type CreateSavedDeckResult,
@@ -50,6 +56,7 @@ export function DeckCheck({ sets, lookup, owned, onSave }: Props) {
 
   const setOrder = useMemo(() => [...sets.keys()], [sets]);
   const canonical = useMemo(() => toCanonicalCatalog(sets.values()), [sets]);
+  const pool = useMemo(() => buildCardPool(sets.values()), [sets]);
 
   const analysis = useMemo(() => {
     if (!text.trim()) return null;
@@ -58,10 +65,10 @@ export function DeckCheck({ sets, lookup, owned, onSave }: Props) {
     const resolution = resolveDeckList(parsed, canonical, lookup, setOrder, owned);
     const rows = computeDeckRows(resolution.rows, owned);
     const summary = summarizeDeck(rows, includeSideboard);
-    const legality = checkDeckLegality(resolution.rows, format);
+    const legality = checkDeckLegality(resolution.rows, format, pool);
 
     return { parsed, resolution, rows, summary, legality };
-  }, [text, canonical, lookup, setOrder, owned, includeSideboard, format]);
+  }, [text, canonical, lookup, setOrder, owned, includeSideboard, format, pool]);
 
   const name = nameDraft ?? analysis?.resolution.deckName ?? '';
 
@@ -73,6 +80,7 @@ export function DeckCheck({ sets, lookup, owned, onSave }: Props) {
       physical: false,
       copies: 1,
       sourceText: text,
+      format: analysis.legality.format,
     });
     if (!result.ok) {
       setSaveError(`${deckContentsFailureMessage(result.reason)} It can't be saved yet.`);
@@ -117,8 +125,11 @@ export function DeckCheck({ sets, lookup, owned, onSave }: Props) {
             onChange={(event) => setFormat(event.target.value as FormatChoice)}
           >
             <option value="auto">Detect automatically</option>
-            <option value="premier">Premier</option>
-            <option value="twinSuns">Twin Suns</option>
+            {PLAY_FORMATS.map((f) => (
+              <option key={f} value={f}>
+                {FORMAT_RULES[f].label}
+              </option>
+            ))}
           </select>
         </label>
 
@@ -158,9 +169,7 @@ export function DeckCheck({ sets, lookup, owned, onSave }: Props) {
           </dl>
 
           <p className={analysis.legality.legal ? styles.legal : styles.illegal}>
-            {analysis.legality.legal
-              ? `Legal for ${analysis.legality.format === 'twinSuns' ? 'Twin Suns' : 'Premier'}.`
-              : `Not legal for ${analysis.legality.format === 'twinSuns' ? 'Twin Suns' : 'Premier'}.`}
+            {analysis.legality.legal ? 'Legal' : 'Not legal'} for {analysis.legality.rules.label}.
           </p>
 
           {analysis.legality.issues.length > 0 && (

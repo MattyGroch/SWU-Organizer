@@ -212,6 +212,14 @@ export type CatalogCard = {
   unique?: boolean;
   doubleSided?: boolean;
   maxCopies?: number;
+  /** Deck-building stats; leaders and bases print no cost, bases no power. */
+  cost?: number;
+  power?: number;
+  hp?: number;
+  arenas?: string[];
+  traits?: string[];
+  /** Front text, epic action and a leader's back, one per line. */
+  text?: string;
   printings: Printing[];
 };
 
@@ -241,6 +249,16 @@ export function parseSetManifest(payload: unknown): SetManifestEntry[] {
     (entry): entry is SetManifestEntry =>
       isRecord(entry) && typeof entry.key === 'string' && typeof entry.file === 'string',
   );
+}
+
+function wholeNumber(value: unknown): number | undefined {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0 ? value : undefined;
+}
+
+function stringList(value: unknown): string[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const list = value.filter((v): v is string => typeof v === 'string');
+  return list.length ? list : undefined;
 }
 
 export function parseSetCatalog(payload: unknown): SetCatalog {
@@ -276,6 +294,12 @@ export function parseSetCatalog(payload: unknown): SetCatalog {
       unique: raw.unique === true ? true : undefined,
       doubleSided: raw.doubleSided === true ? true : undefined,
       maxCopies: Number.isFinite(Number(raw.maxCopies)) ? Number(raw.maxCopies) : undefined,
+      cost: wholeNumber(raw.cost),
+      power: wholeNumber(raw.power),
+      hp: wholeNumber(raw.hp),
+      arenas: stringList(raw.arenas),
+      traits: stringList(raw.traits),
+      text: typeof raw.text === 'string' && raw.text ? raw.text : undefined,
       printings,
     });
   }
@@ -350,6 +374,12 @@ export function toLoadedSet(catalog: SetCatalog, prices: Map<string, number>): L
       Unique: card.unique,
       MarketPrice: basePrice(card, prices),
       MaxCopies: card.maxCopies,
+      Cost: card.cost,
+      Power: card.power,
+      HP: card.hp,
+      Arenas: card.arenas,
+      Traits: card.traits,
+      Text: card.text,
       Set: catalog.setKey,
     });
   }
