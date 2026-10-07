@@ -5,6 +5,7 @@ import type { Card, SetKey } from '~/domain/types';
 
 import { AspectIcons } from '../binder/AspectIcons';
 import styles from './CardSearch.module.css';
+import { CostBadge } from './CostBadge';
 import type { OwnedLookup } from './deckRows';
 import {
   COST_CHIPS,
@@ -170,8 +171,10 @@ export function CardSearch({
           return (
             <li key={key} className={styles.hit}>
               <div className={styles.hitRow}>
-                {mode === 'cards' && <span className={styles.cost}>{hit.card.Cost ?? '–'}</span>}
-                <AspectIcons className={styles.aspects} aspects={hit.card.Aspects} />
+                {mode === 'cards' && <CostBadge cost={hit.card.Cost} />}
+                <span className={styles.aspects}>
+                  <AspectIcons aspects={hit.card.Aspects} />
+                </span>
                 <button
                   type="button"
                   className={styles.name}

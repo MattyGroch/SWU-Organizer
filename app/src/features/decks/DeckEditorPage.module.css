@@ -246,21 +246,13 @@
   border-bottom: 1px solid var(--color-border);
 }
 
-.cost {
-  flex: none;
-  width: 1.6em;
-  height: 1.6em;
-  border-radius: 50%;
-  background: var(--color-surface-raised);
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  line-height: 1.6em;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
 .lineAspects {
+  /* A column three icons wide (the most any card has), so names line up whatever the
+     aspect count, and neutral cards keep the gap too. */
+  display: flex;
   flex: none;
+  align-items: center;
+  width: 3.2em;
   font-size: 1.05em;
 }
 
@@ -345,4 +337,15 @@
   min-width: 0;
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
+}
+
+/* Phones: two icons wide, so names keep their room; a three-aspect card wraps its third. */
+@media (max-width: 760px) {
+  .lineAspects {
+    width: 2.2em;
+  }
+
+  .lineAspects > span {
+    flex-wrap: wrap;
+  }
 }

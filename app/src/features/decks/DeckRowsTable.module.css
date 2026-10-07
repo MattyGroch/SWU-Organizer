@@ -35,6 +35,12 @@
   color: var(--color-warning-fg);
 }
 
+/* Just wide enough for the badge; padding stays tight beside the aspect column. */
+.table .costCol {
+  width: 1%;
+  padding-right: 0;
+}
+
 /* The cell sets the column's width; the narrow-screen role line inside a card cell is not a td. */
 .table td.role {
   width: 1%;

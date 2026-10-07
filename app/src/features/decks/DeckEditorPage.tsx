@@ -33,6 +33,7 @@ import { useNarrow } from '~/ui/useNarrow';
 
 import { AspectIcons } from '../binder/AspectIcons';
 import { CardSearch } from './CardSearch';
+import { CostBadge } from './CostBadge';
 import styles from './DeckEditorPage.module.css';
 import { contentsToRows, deckAspects, type OwnedLookup } from './deckRows';
 import type { SearchHit, SearchMode } from './deckSearch';
@@ -411,7 +412,9 @@ function Slot({
       <span className={styles.slotLabel}>{label}</span>
       {card && refCard ? (
         <span className={styles.slotCard}>
-          <AspectIcons className={styles.lineAspects} aspects={card.Aspects} />
+          <span className={styles.lineAspects}>
+            <AspectIcons aspects={card.Aspects} />
+          </span>
           <span className={styles.lineName}>
             {card.Name}
             {card.Subtitle && <span className={styles.subtitle}>{card.Subtitle}</span>}
@@ -502,8 +505,10 @@ function ZoneList({
                 const name = c?.Name ?? `#${ref.baseNumber}`;
                 return (
                   <li key={`${ref.setKey}:${ref.baseNumber}`} className={styles.line}>
-                    <span className={styles.cost}>{c?.Cost ?? '–'}</span>
-                    <AspectIcons className={styles.lineAspects} aspects={c?.Aspects} />
+                    <CostBadge cost={c?.Cost} />
+                    <span className={styles.lineAspects}>
+                      <AspectIcons aspects={c?.Aspects} />
+                    </span>
                     <span className={styles.lineName}>
                       {name}
                       <span className={styles.subtitle}>
