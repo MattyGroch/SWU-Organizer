@@ -8,6 +8,7 @@ import type { SetKey } from '~/domain/types';
 import { AspectIcons } from '~/features/binder/AspectIcons';
 import { RarityBadge } from '~/features/binder/RarityBadge';
 import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
+import { Loader } from '~/ui/Loader';
 
 import styles from './BulkPage.module.css';
 import {
@@ -101,13 +102,15 @@ export function BulkPage({ entries, sets }: Props) {
         </label>
       </div>
 
-      <p className={styles.summary} role="status">
-        {owned === undefined
-          ? 'Loading…'
-          : `${copies} ${copies === 1 ? 'copy' : 'copies'} of ${rows.length} ${
-              rows.length === 1 ? 'card' : 'cards'
-            } in the bulk box${setFilter || query ? ' match' : ''}.`}
-      </p>
+      {owned === undefined ? (
+        <Loader label="Opening the bulk box" />
+      ) : (
+        <p className={styles.summary} role="status">
+          {`${copies} ${copies === 1 ? 'copy' : 'copies'} of ${rows.length} ${
+            rows.length === 1 ? 'card' : 'cards'
+          } in the bulk box${setFilter || query ? ' match' : ''}.`}
+        </p>
+      )}
 
       {owned !== undefined && all.length === 0 && (
         <p className={styles.empty}>

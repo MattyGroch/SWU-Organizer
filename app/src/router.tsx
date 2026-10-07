@@ -26,6 +26,7 @@ import { IntakePage } from '~/features/intake/IntakePage';
 import { PutAwayPage } from '~/features/putAway/PutAwayPage';
 import { ScanPage } from '~/features/scan/ScanPage';
 import { AppShell } from '~/ui/AppShell';
+import { Loader } from '~/ui/Loader';
 
 /**
  * Routing exists so the app has addressable state. The legacy app held its view in
@@ -228,6 +229,12 @@ export function buildRouter(queryClient: QueryClient, history?: RouterHistory) {
     routeTree,
     context: { queryClient },
     defaultPreload: 'intent',
+    // A route waiting on its sets shows the loader rather than a blank page. It appears
+    // after a beat, so a quick load never flashes it, and stays long enough to read once
+    // it does.
+    defaultPendingComponent: () => <Loader label="Loading card data" />,
+    defaultPendingMs: 250,
+    defaultPendingMinMs: 600,
     ...(history && { history }),
   });
 }
