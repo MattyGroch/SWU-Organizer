@@ -2,6 +2,7 @@ import type { DeckRole, DeckRowWithNeed } from '~/domain/decklist';
 import { formatUsd } from '~/ui/format';
 
 import { AspectIcons } from '../binder/AspectIcons';
+import { CostBadge } from './CostBadge';
 import styles from './DeckRowsTable.module.css';
 
 const ROLE_LABEL: Record<DeckRole, string> = {
@@ -40,6 +41,9 @@ export function DeckRowsTable({ rows, label, box }: Props) {
             <th scope="col" className={styles.numeric}>
               Qty
             </th>
+            <th scope="col" className={`${styles.costCol} ${styles.wideOnly}`}>
+              <span className="visually-hidden">Card cost</span>
+            </th>
             <th scope="col" className={styles.aspects}>
               Aspect
             </th>
@@ -53,8 +57,12 @@ export function DeckRowsTable({ rows, label, box }: Props) {
             <th scope="col" className={styles.numeric}>
               Need
             </th>
-            <th scope="col" className={`${styles.numeric} ${styles.wideOnly}`}>
-              Cost
+            <th
+              scope="col"
+              className={`${styles.numeric} ${styles.wideOnly}`}
+              title="What the copies you still need would cost"
+            >
+              To buy
             </th>
             {box && (
               <th scope="col" className={styles.boxCol}>
@@ -72,6 +80,9 @@ export function DeckRowsTable({ rows, label, box }: Props) {
             >
               <td className={`${styles.role} ${styles.wideOnly}`}>{ROLE_LABEL[row.role]}</td>
               <td className={styles.numeric}>{row.count}</td>
+              <td className={`${styles.costCol} ${styles.wideOnly}`}>
+                <CostBadge cost={row.cost} />
+              </td>
               <td className={styles.aspects}>
                 <AspectIcons aspects={row.aspects} />
               </td>

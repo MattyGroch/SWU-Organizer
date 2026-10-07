@@ -244,7 +244,7 @@ export function buildSetCatalog(setKey, rawCards) {
     if (representative.DoubleSided === true) card.doubleSided = true;
     const maxCopies = Number(representative.MaxCopies);
     if (Number.isFinite(maxCopies) && maxCopies > 0) card.maxCopies = maxCopies;
-    // Deck-building stats. Leaders and bases print no cost; bases print no power.
+    // Deck-building stats. Bases print no cost or power; a leader's cost is to deploy it.
     for (const [field, from] of [
       ['cost', 'Cost'],
       ['power', 'Power'],

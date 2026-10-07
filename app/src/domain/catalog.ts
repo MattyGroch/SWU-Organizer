@@ -212,7 +212,7 @@ export type CatalogCard = {
   unique?: boolean;
   doubleSided?: boolean;
   maxCopies?: number;
-  /** Deck-building stats; leaders and bases print no cost, bases no power. */
+  /** Deck-building stats; bases print no cost or power, and a leader's cost is to deploy it. */
   cost?: number;
   power?: number;
   hp?: number;

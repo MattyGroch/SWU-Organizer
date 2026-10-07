@@ -27,6 +27,7 @@ function refToRow(
     subtitle: card.Subtitle,
     type: card.Type,
     aspects: card.Aspects,
+    cost: card.Cost,
     price,
     maxCopies: card.MaxCopies,
     ambiguous: false,
