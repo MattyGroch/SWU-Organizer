@@ -2,9 +2,10 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { formatUsd } from '~/ui/format';
 
-import { aspectSwatchBackground, rarityStyle } from './aspect';
+import { aspectSwatchBackground } from './aspect';
 import { STATUS_GLYPH, STATUS_LABEL, type CardRow } from './cardRows';
 import styles from './CardTable.module.css';
+import { RarityBadge } from './RarityBadge';
 
 const ROW_HEIGHT = 44;
 const OVERSCAN = 8;
@@ -128,7 +129,6 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
           )}
 
           {visibleRows.map((row) => {
-            const rarity = rarityStyle(row.rarity);
             return (
               <tr
                 key={row.base}
@@ -154,17 +154,9 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
                   />
                 </td>
                 <td className={styles.rarCol}>
-                  {rarity && (
-                    <span
-                      className={styles.rarity}
-                      data-rarity={row.rarity}
-                      style={{ color: `var(${rarity.colorVar})` }}
-                      title={row.rarity}
-                    >
-                      {rarity.letter}
-                      <span className="visually-hidden">{row.rarity}</span>
-                    </span>
-                  )}
+                  <RarityBadge className={styles.rarity} rarity={row.rarity} title={row.rarity}>
+                    <span className="visually-hidden">{row.rarity}</span>
+                  </RarityBadge>
                 </td>
                 <td className={styles.nameCell}>
                   {row.name}

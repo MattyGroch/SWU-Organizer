@@ -113,14 +113,7 @@
 }
 
 .rarity {
-  font-weight: 900;
-}
-
-/* Special is pure black, which disappears on the dark table — same white outline the
-   binder cells give it. */
-.rarity[data-rarity='Special'] {
-  -webkit-text-stroke: 1.2px #ffffff;
-  paint-order: stroke fill;
+  font-size: 0.85em;
 }
 
 .nameCell {
