@@ -70,12 +70,38 @@ const sor = toLoadedSet(
   new Map(),
 );
 
-function renderPage() {
+/** The droid again, reprinted in SHD with the same art. */
+const shd = toLoadedSet(
+  parseSetCatalog({
+    setKey: 'SHD',
+    label: 'Shadows of the Galaxy',
+    cards: [
+      {
+        base: 200,
+        name: '2-1B Surgical Droid',
+        type: 'Unit',
+        aspects: [],
+        printings: [{ num: '200', variant: 'normal' }],
+      },
+      {
+        base: 201,
+        name: 'Some Other Card',
+        type: 'Unit',
+        aspects: [],
+        printings: [{ num: '201', variant: 'normal' }],
+      },
+    ],
+  }),
+  new Map(),
+);
+
+/** The page, with SOR and any `more` sets. */
+function renderPage(more: [string, ReturnType<typeof toLoadedSet>][] = []) {
   const root = createRootRoute();
   const scan = createRoute({
     getParentRoute: () => root,
     path: '/scan',
-    component: () => <ScanPage sets={new Map([['SOR', sor]])} />,
+    component: () => <ScanPage sets={new Map([['SOR', sor], ...more])} />,
   });
   const router = createRouter({
     routeTree: root.addChildren([scan]),
@@ -271,6 +297,52 @@ describe('ScanPage', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Yes, add it' }));
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
     expect(await stack()).toEqual([['059', 'binder', null]]);
+    expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+  });
+
+  it('asks which set when the index knows the same art in another set, however sure the read', async () => {
+    renderPage([['SHD', shd]]);
+    await waitFor(() => expect(fire).not.toBeNull());
+    await act(async () => {
+      fire!({
+        // A confident read: the SHD copy never even made the shortlist.
+        matches: [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)],
+        at: 1,
+        afterGap: true,
+        tooClose: false,
+        twins: [
+          { setKey: 'SHD', num: '200', base: 200, variant: 'normal' },
+          // Close art, but a different card: never offered.
+          { setKey: 'SHD', num: '201', base: 201, variant: 'normal' },
+        ],
+      });
+    });
+    expect(await screen.findByText(/looks the same in more than one set/)).toBeInTheDocument();
+    expect(await db.intakeLines.count()).toBe(0);
+    const choices = screen.getAllByRole('button', { name: /^S[OH][RD] #/ });
+    expect(choices.map((b) => b.textContent)).toEqual(['SOR #059', 'SHD #200']);
+
+    await userEvent.click(screen.getByRole('button', { name: 'SHD #200' }));
+    await waitFor(async () =>
+      expect((await db.intakeLines.toArray()).map((l) => `${l.setKey}:${l.num}`)).toEqual([
+        'SHD:200',
+      ]),
+    );
+    expect(await stack()).toEqual([['200', 'binder', null]]);
+  });
+
+  it('adds a scan straight away when its only twin is a different card', async () => {
+    renderPage([['SHD', shd]]);
+    await waitFor(() => expect(fire).not.toBeNull());
+    await act(async () => {
+      fire!({
+        matches: [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)],
+        at: 1,
+        afterGap: true,
+        tooClose: false,
+        twins: [{ setKey: 'SHD', num: '201', base: 201, variant: 'normal' }],
+      });
+    });
     expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
   });
 

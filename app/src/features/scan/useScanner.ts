@@ -1,7 +1,13 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from 'react';
 
 import { hammingDistance, type Descriptor, type SamplePixels } from '~/domain/scan/descriptor';
-import { rankMatches, type Match, type ScanIndex } from '~/domain/scan/index';
+import {
+  rankMatches,
+  twinsOf,
+  type Match,
+  type ScanEntry,
+  type ScanIndex,
+} from '~/domain/scan/index';
 import { GUIDE, cardOverflows, describePlacement, locateCard } from '~/domain/scan/locate';
 import {
   MAX_MISSES,
@@ -35,6 +41,11 @@ export type ScanResult = {
   afterGap: boolean;
   /** The card ran past the captured frame — the phone is too close for a sure read. */
   tooClose: boolean;
+  /**
+   * Pictures in other sets that look just like the top match's — the same art reprinted,
+   * which the camera can't tell apart (see `twinsOf`).
+   */
+  twins?: ScanEntry[];
 };
 
 /**
@@ -151,11 +162,13 @@ export function useScanner({
         setPhase('fired');
         const afterGap = gapRef.current;
         gapRef.current = false;
+        const matches = rankMatches(index, located.descriptor, 8);
         onResultRef.current({
-          matches: rankMatches(index, located.descriptor, 8),
+          matches,
           at: Date.now(),
           afterGap,
           tooClose: cardOverflows(scene),
+          twins: matches[0] ? twinsOf(index, matches[0]) : [],
         });
       } catch (error) {
         console.error('Scan failed', error);

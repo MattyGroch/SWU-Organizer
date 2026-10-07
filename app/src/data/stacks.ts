@@ -142,14 +142,15 @@ export async function resetPutAway(id: string, database: SwuDatabase = db): Prom
 
 /**
  * Takes the card in hand at step `at` out of the plan: corrected to `entry`, to be filed
- * at the end, or — with `null` — not in the stack at all (scanned twice).
+ * at the end, or — with `null` — not in the stack at all (scanned twice). With `now`, the
+ * card was being filed: a corrected card is filed at that step instead (see `Pull`).
  */
 export async function pullCard(
   stackId: string,
   cardId: string,
   at: number,
   entry: ScanEntry | null,
-  database: SwuDatabase = db,
+  { database = db, now = false }: { database?: SwuDatabase; now?: boolean } = {},
 ): Promise<void> {
   await database.transaction('rw', database.stacks, database.stackCards, async () => {
     const stack = await database.stacks.get(stackId);
@@ -161,7 +162,9 @@ export async function pullCard(
     const pulled = pulls.some((p) => p.id === cardId) || !plan.some((c) => c.id === cardId);
     await database.stacks.update(stackId, {
       plan,
-      pulls: pulled ? pulls : [...pulls, { id: cardId, at }],
+      pulls: pulled
+        ? pulls
+        : [...pulls, { id: cardId, at, ...(now ? { now: true as const } : {}) }],
     });
     if (entry) await updateScan(cardId, entry, database);
     else await database.stackCards.delete(cardId);

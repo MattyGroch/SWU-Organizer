@@ -18,7 +18,7 @@ import {
   type VariantSlug,
 } from '~/domain/catalog';
 import type { PocketRoom } from '~/domain/ownership';
-import { cardLead, type Match } from '~/domain/scan/index';
+import { cardLead, type Match, type ScanEntry as IndexEntry } from '~/domain/scan/index';
 import type { SearchSuggestion } from '~/domain/search';
 import type { SetKey } from '~/domain/types';
 import { CardSearch } from '~/features/search/CardSearch';
@@ -39,7 +39,10 @@ type Mode = 'info' | 'add';
  * index builder's robustness test.
  */
 const CARD_MARGIN = 12;
-/** Score gap under which the same card from two sets counts as indistinguishable. */
+/**
+ * Score gap under which the same card from two sets counts as indistinguishable, when the
+ * index doesn't already say they are (`ScanResult.twins`).
+ */
 const REPRINT_GAP = 3;
 
 type Item = {
@@ -62,11 +65,11 @@ type Item = {
 };
 
 const cardKey = (p: { setKey: string; base: number }) => `${p.setKey}:${p.base}`;
-const asPrinting = (m: Match): Printing => ({
-  setKey: m.entry.setKey,
-  base: m.entry.base,
-  num: m.entry.num,
-  variant: m.entry.variant as VariantSlug,
+const asPrinting = ({ entry }: { entry: IndexEntry }): Printing => ({
+  setKey: entry.setKey,
+  base: entry.base,
+  num: entry.num,
+  variant: entry.variant as VariantSlug,
 });
 
 /** The best match per different card, best first — the "not this card?" alternatives. */
@@ -136,6 +139,15 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       sets.get(p.setKey)?.byNumber.get(p.base)?.Name ?? `#${p.base}`,
     [sets],
   );
+  /** The same card in another set: same name and subtitle. */
+  const sameCard = useCallback(
+    (a: { setKey: string; base: number }, b: { setKey: string; base: number }) => {
+      const x = sets.get(a.setKey)?.byNumber.get(a.base);
+      const y = sets.get(b.setKey)?.byNumber.get(b.base);
+      return Boolean(x && y && x.Name === y.Name && (x.Subtitle ?? '') === (y.Subtitle ?? ''));
+    },
+    [sets],
+  );
 
   const place = usePlaceScan(sets);
 
@@ -177,13 +189,16 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           .filter((m) => cardKey(m.entry) === cardKey(top.entry))
           .map((m) => m.cardScore),
       );
-      const reprint = cards.find(
-        (m, i) =>
-          i > 0 &&
-          m.entry.setKey !== top.entry.setKey &&
-          nameOf(m.entry) === nameOf(top.entry) &&
-          m.cardScore - topCardScore <= REPRINT_GAP,
-      );
+      // The same art in another set: the index knows its twins, whatever this read was like.
+      const reprint =
+        (result.twins ?? []).some((t) => sameCard(t, top.entry)) ||
+        cards.some(
+          (m, i) =>
+            i > 0 &&
+            m.entry.setKey !== top.entry.setKey &&
+            nameOf(m.entry) === nameOf(top.entry) &&
+            m.cardScore - topCardScore <= REPRINT_GAP,
+        );
       const question: Item['question'] = reprint
         ? 'set'
         : runnerUp && cardLead(result.matches) < CARD_MARGIN
@@ -212,7 +227,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         ].slice(0, 8),
       );
     },
-    [asFound, mode, nameOf, place, sets],
+    [asFound, mode, nameOf, place, sameCard, sets],
   );
 
   const latest = cleared ? undefined : items[0];
@@ -402,6 +417,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           mode={mode}
           sets={sets}
           nameOf={nameOf}
+          sameCard={sameCard}
           onChoose={(p) => void choose(latest, p).catch(failed)}
           onRescan={() => void remove(latest, true).catch(failed)}
           onConfirm={() => void choose(latest, latest.chosen).catch(failed)}
@@ -597,6 +613,7 @@ function LatestScan({
   mode,
   sets,
   nameOf,
+  sameCard,
   onChoose,
   onRescan,
   onConfirm,
@@ -606,6 +623,7 @@ function LatestScan({
   mode: Mode;
   sets: Map<SetKey, LoadedSet>;
   nameOf: (p: { setKey: string; base: number }) => string;
+  sameCard: (a: { setKey: string; base: number }, b: { setKey: string; base: number }) => boolean;
   onChoose: (p: Printing) => void;
   onRescan: () => void;
   onConfirm: () => void;
@@ -622,7 +640,14 @@ function LatestScan({
   const alternatives = cardsIn(item.result.matches).filter(
     (m) => cardKey(m.entry) !== cardKey(chosen),
   );
-  const reprints = alternatives.filter((m) => nameOf(m.entry) === nameOf(chosen));
+  /** Which set it is, when the same art is in several: one choice per set, this one first. */
+  const setChoices = [
+    chosen,
+    ...(item.result.twins ?? [])
+      .filter((t) => sameCard(t, chosen))
+      .map((entry) => asPrinting({ entry })),
+    ...alternatives.filter((m) => nameOf(m.entry) === nameOf(chosen)).map(asPrinting),
+  ].filter((p, i, all) => all.findIndex((q) => q.setKey === p.setKey) === i);
   const position = binderLayout(chosen.base);
   const owned = useLiveQuery(
     async () =>
@@ -658,18 +683,17 @@ function LatestScan({
           <div className={styles.question}>
             <p>This card looks the same in more than one set. Which is it?</p>
             <div className={styles.choices}>
-              {[{ entry: chosen }, ...reprints.map((m) => ({ entry: asPrinting(m) }))].map(
-                ({ entry }) => (
-                  <button
-                    key={cardKey(entry)}
-                    type="button"
-                    className={styles.button}
-                    onClick={() => onChoose(entry)}
-                  >
-                    {entry.setKey}
-                  </button>
-                ),
-              )}
+              {setChoices.map((p) => (
+                <button
+                  key={cardKey(p)}
+                  type="button"
+                  className={styles.button}
+                  title={sets.get(p.setKey)?.label}
+                  onClick={() => onChoose(p)}
+                >
+                  {p.setKey} #{p.num}
+                </button>
+              ))}
             </div>
           </div>
         ) : item.question === 'card' ? (

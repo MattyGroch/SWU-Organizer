@@ -114,16 +114,17 @@ describe('scanned stacks', () => {
     await startPutAway(stack.id, 1, { database });
     expect((await only()).plan?.map((c) => c.base)).toEqual([1, 2, 3]);
 
-    await pullCard(stack.id, second, 4, scan(20), database);
-    await pullCard(stack.id, third, 5, null, database);
+    // Corrected while being filed: noted, so it is filed at that step.
+    await pullCard(stack.id, second, 4, scan(20), { database, now: true });
+    await pullCard(stack.id, third, 5, null, { database });
     const extra = await addMissedCopy(stack.id, scan(1), database);
     // Correcting a card already to one side drops nothing more.
-    await pullCard(stack.id, second, 7, scan(21), database);
+    await pullCard(stack.id, second, 7, scan(21), { database });
 
     const after = await only();
     expect(after.plan?.map((c) => c.base)).toEqual([1, 2, 3]);
     expect(after.pulls).toEqual([
-      { id: second, at: 4 },
+      { id: second, at: 4, now: true },
       { id: third, at: 5 },
     ]);
     expect(await bases(stack.id)).toEqual([1, 21, 1]);
@@ -135,7 +136,7 @@ describe('scanned stacks', () => {
     await logScan(scan(2), { database });
     const stack = await only();
     await database.stacks.update(stack.id, { sorters: 1 });
-    await pullCard(stack.id, first, 0, null, database);
+    await pullCard(stack.id, first, 0, null, { database });
     expect((await only()).plan?.map((c) => c.base)).toEqual([1, 2]);
     expect(await bases(stack.id)).toEqual([2]);
   });
@@ -144,7 +145,7 @@ describe('scanned stacks', () => {
     const first = await logScan(scan(1), { database });
     const stack = await only();
     await startPutAway(stack.id, 1, { database });
-    await pullCard(stack.id, first, 0, scan(9), database);
+    await pullCard(stack.id, first, 0, scan(9), { database });
     await resetPutAway(stack.id, database);
     const reset = await only();
     expect(reset.plan).toBeUndefined();

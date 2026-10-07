@@ -369,6 +369,67 @@ describe('planPutAway, pulling cards partway through', () => {
     ]);
   });
 
+  it('files a card corrected while filing at that same step, binder open', () => {
+    const cards = [card('SOR', 1), card('SOR', 2), card('SOR', 30)];
+    const before = planPutAway(cards, { setOrder: SET_ORDER, sorters: 1 });
+    expect(before.every((s) => s.kind === 'file')).toBe(true);
+    // The second card filed is really a twin from another set.
+    const pull = { ...pullAt(before, 1), now: true as const };
+    const fixed = { ...cards.find((c) => c.id === pull.id)!, setKey: 'SHD' };
+    const after = planPutAway(cards, {
+      setOrder: SET_ORDER,
+      sorters: 1,
+      pulls: [pull],
+      toOneSide: [fixed],
+    });
+    expect(after.map((s) => s.kind === 'file' && [s.card.id, s.spot.setKey, s.fromSide])).toEqual([
+      [cards[0]!.id, 'SOR', undefined],
+      [fixed.id, 'SHD', undefined],
+      [cards[2]!.id, 'SOR', undefined],
+    ]);
+    // Over to the other binder, then back.
+    expect(after.map((s) => s.kind === 'file' && s.turnTo?.setKey)).toEqual(['SOR', 'SHD', 'SOR']);
+  });
+
+  it('puts a card corrected while filing to one side when it misses the binder', () => {
+    const cards = [card('SOR', 1), card('SOR', 2)];
+    const before = planPutAway(cards, { setOrder: SET_ORDER, sorters: 1 });
+    const pull = { ...pullAt(before, 0), now: true as const };
+    const fixed = { ...cards[0]!, fate: 'bulk' as const };
+    const after = planPutAway(cards, {
+      setOrder: SET_ORDER,
+      sorters: 1,
+      pulls: [pull],
+      toOneSide: [fixed],
+    });
+    expect(after.map((s) => s.kind)).toEqual(['file', 'bulk']);
+    const last = after.at(-1)!;
+    expect(last.kind === 'bulk' && last.cards.map((l) => [l.card.id, l.fromSide])).toEqual([
+      [fixed.id, true],
+    ]);
+  });
+
+  it('still files a card corrected while dealing at the end', () => {
+    const cards = shuffled(
+      Array.from({ length: 30 }, (_, i) => card('SOR', 1 + ((i * 37) % 260))),
+      3,
+    );
+    const before = planPutAway(cards, { setOrder: SET_ORDER, sorters: 1 });
+    expect(before[0]!.kind).toBe('deal');
+    const pull = { ...pullAt(before, 0), now: true as const };
+    const fixed = cards.find((c) => c.id === pull.id)!;
+    const after = planPutAway(cards, {
+      setOrder: SET_ORDER,
+      sorters: 1,
+      pulls: [pull],
+      toOneSide: [fixed],
+    });
+    const filed = after.filter((s) => s.kind === 'file' && s.card.id === fixed.id);
+    expect(filed).toHaveLength(1);
+    expect(filed[0]!.kind === 'file' && filed[0]!.fromSide).toBe(true);
+    expect(after.at(-1)).toBe(filed[0]);
+  });
+
   it('takes a pulled card off the leftover list', () => {
     const cards = [card('SOR', 1), card('SOR', 5, 'bulk')];
     const steps = planPutAway(cards, {
