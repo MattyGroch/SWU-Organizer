@@ -445,7 +445,13 @@ function Slot({
           </span>
           <span className={styles.lineName}>
             {card.Name}
-            {card.Subtitle && <span className={styles.subtitle}>{card.Subtitle}</span>}
+            {(card.Subtitle || card.Type === 'Base') && (
+              <span className={styles.subtitle}>
+                {[card.Subtitle, card.Type === 'Base' && card.HP !== undefined && `${card.HP} HP`]
+                  .filter(Boolean)
+                  .join(' · ')}
+              </span>
+            )}
             {have === 0 && <span className={styles.unowned}>not owned</span>}
           </span>
         </span>

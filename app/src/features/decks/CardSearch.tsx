@@ -182,8 +182,9 @@ export function CardSearch({
           const side = inDeck(hit.setKey, hit.card.Number, 'side');
           return (
             <li key={key} className={styles.hit}>
-              <div className={styles.hitRow}>
+              <div className={styles.hitRow} data-mode={mode}>
                 {mode === 'cards' && <CostBadge cost={hit.card.Cost} />}
+                {mode === 'base' && <BaseHp hp={hit.card.HP} />}
                 <span className={styles.aspects}>
                   <AspectIcons aspects={hit.card.Aspects} />
                 </span>
@@ -204,6 +205,13 @@ export function CardSearch({
                     {hit.owned > 0 ? `own ${hit.owned}` : 'not owned'}
                     {main + side > 0 && ` · in deck ${main}${side ? ` + ${side} side` : ''}`}
                   </span>
+                  {/* A base's ability is why you'd pick it over a 30 HP one: always shown. */}
+                  {mode === 'base' &&
+                    hit.card.Text?.split('\n').map((line, i) => (
+                      <span key={i} className={styles.baseText}>
+                        {line}
+                      </span>
+                    ))}
                 </button>
                 {mode === 'cards' ? (
                   <span className={styles.adds}>
@@ -230,7 +238,7 @@ export function CardSearch({
                   </button>
                 )}
               </div>
-              {open && <CardText card={hit.card} />}
+              {mode !== 'base' && open && <CardText card={hit.card} />}
             </li>
           );
         })}
@@ -259,5 +267,17 @@ function CardText({ card }: { card: Card }) {
         <p key={i}>{line}</p>
       ))}
     </div>
+  );
+}
+
+/** A base's HP, in the slot a card's cost badge takes. */
+function BaseHp({ hp }: { hp: number | undefined }) {
+  return (
+    <span className={styles.hp} aria-label={hp === undefined ? undefined : `${hp} HP`}>
+      {hp ?? '–'}
+      <span className={styles.hpUnit} aria-hidden="true">
+        HP
+      </span>
+    </span>
   );
 }
