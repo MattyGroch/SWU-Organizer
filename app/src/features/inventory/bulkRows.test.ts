@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { compareBulkRows, type BulkRow } from './bulkRows';
+import { compareBulkRows, groupBulkRows, type BulkRow } from './bulkRows';
 
 function row(setKey: string, base: number, type: string, rarity: string, aspects: string[] = []) {
   return {
@@ -96,6 +96,22 @@ describe('compareBulkRows', () => {
       'TWI#3',
       'LOF#17',
       'LOF#18',
+    ]);
+  });
+});
+
+describe('groupBulkRows', () => {
+  it('splits sorted rows into their non-empty sections, in order', () => {
+    const rows = [
+      row('SOR', 5, 'Leader', 'Rare', ['Vigilance', 'Heroism']),
+      row('SOR', 50, 'Event', 'Legendary'),
+      row('SOR', 20, 'Unit', 'Uncommon'),
+      row('SOR', 30, 'Unit', 'Common'),
+    ].sort(compareBulkRows(['SOR']));
+    expect(groupBulkRows(rows).map((s) => [s.label, s.rows.map(label)])).toEqual([
+      ['Leaders', ['SOR#5']],
+      ['Legendary', ['SOR#50']],
+      ['Common & Uncommon', ['SOR#20', 'SOR#30']],
     ]);
   });
 });

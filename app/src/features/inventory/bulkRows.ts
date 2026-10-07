@@ -71,10 +71,19 @@ export function buildBulkRows(
 /** Vigilance / Command / Aggression / Cunning; Heroism and Villainy are affiliations. */
 const PRIMARY_ASPECTS = new Set(['Vigilance', 'Command', 'Aggression', 'Cunning']);
 
-/**
- * The bulk list's sections, in order: leaders, bases, Legendaries, Rares, Specials, then
- * Commons and Uncommons together.
- */
+/** The bulk list's sections, in display order. */
+export const BULK_SECTIONS = [
+  { key: 'leaders', label: 'Leaders' },
+  { key: 'bases', label: 'Bases' },
+  { key: 'legendary', label: 'Legendary' },
+  { key: 'rare', label: 'Rare' },
+  { key: 'special', label: 'Special' },
+  { key: 'common', label: 'Common & Uncommon' },
+] as const;
+
+export type BulkSectionKey = (typeof BULK_SECTIONS)[number]['key'];
+
+/** Index into {@link BULK_SECTIONS}. */
 function section(row: BulkRow): number {
   if (row.type === 'Leader') return 0;
   if (row.type === 'Base') return 1;
@@ -88,6 +97,19 @@ function section(row: BulkRow): number {
     default:
       return 5;
   }
+}
+
+export type BulkSection = {
+  key: BulkSectionKey;
+  label: string;
+  rows: BulkRow[];
+};
+
+/** Splits already-sorted rows into their non-empty sections, keeping their order. */
+export function groupBulkRows(rows: readonly BulkRow[]): BulkSection[] {
+  const sections: BulkSection[] = BULK_SECTIONS.map((s) => ({ ...s, rows: [] }));
+  for (const row of rows) sections[section(row)]?.rows.push(row);
+  return sections.filter((s) => s.rows.length > 0);
 }
 
 /**

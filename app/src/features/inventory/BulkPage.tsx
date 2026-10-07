@@ -10,8 +10,33 @@ import { RarityBadge } from '~/features/binder/RarityBadge';
 import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
 
 import styles from './BulkPage.module.css';
-import { buildBulkRows, matchesBulkSearch, printingsLabel } from './bulkRows';
+import {
+  buildBulkRows,
+  groupBulkRows,
+  matchesBulkSearch,
+  printingsLabel,
+  type BulkSectionKey,
+} from './bulkRows';
 import { InventoryNav } from './InventoryNav';
+
+const COLLAPSED_KEY = 'bulk:collapsed';
+
+function readCollapsed(): Set<BulkSectionKey> {
+  try {
+    const raw = localStorage.getItem(COLLAPSED_KEY);
+    return new Set(raw ? (JSON.parse(raw) as BulkSectionKey[]) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function writeCollapsed(collapsed: Set<BulkSectionKey>) {
+  try {
+    localStorage.setItem(COLLAPSED_KEY, JSON.stringify([...collapsed]));
+  } catch {
+    // A remembered fold is a convenience; losing it is fine.
+  }
+}
 
 type Props = {
   entries: SetManifestEntry[];
@@ -38,6 +63,14 @@ export function BulkPage({ entries, sets }: Props) {
     (row) => (!setFilter || row.setKey === setFilter) && matchesBulkSearch(row, query),
   );
   const copies = rows.reduce((sum, row) => sum + row.boxCount, 0);
+  const sections = groupBulkRows(rows);
+  const [collapsed, setCollapsed] = useState(readCollapsed);
+  const toggle = (key: BulkSectionKey) => {
+    const next = new Set(collapsed);
+    if (!next.delete(key)) next.add(key);
+    writeCollapsed(next);
+    setCollapsed(next);
+  };
   const setsInBox = new Set(all.map((row) => row.setKey));
 
   return (
@@ -104,43 +137,67 @@ export function BulkPage({ entries, sets }: Props) {
                 </th>
               </tr>
             </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr key={`${row.setKey}:${row.base}`}>
-                  <td className={styles.where}>
-                    {row.setKey} #{row.base}
-                  </td>
-                  <td className={styles.aspectCol}>
-                    <AspectIcons className={styles.aspects} aspects={row.aspects} />
-                  </td>
-                  <td className={styles.rarityCol}>
-                    <RarityBadge rarity={row.rarity} title={row.rarity}>
-                      <span className="visually-hidden">{row.rarity}</span>
-                    </RarityBadge>
-                  </td>
-                  <td className={styles.name}>
-                    <Link
-                      to="/inventory/$setKey/$view"
-                      params={{ setKey: row.setKey, view: 'list' }}
-                      search={{ card: row.base }}
-                    >
-                      {row.name}
-                    </Link>
-                    {row.subtitle && <span className={styles.subtitle}>{row.subtitle}</span>}
-                    <span className={styles.narrowWhere}>
-                      {row.setKey} #{row.base}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={styles.count}>{row.boxCount}</span>
-                    {row.boxCount > 0 && (
-                      <span className={styles.printings}>{printingsLabel(row.inBox)}</span>
-                    )}
-                  </td>
-                  <td className={styles.decks}>{row.inDecks || ''}</td>
-                </tr>
-              ))}
-            </tbody>
+            {sections.map((section) => {
+              const open = !collapsed.has(section.key);
+              const sectionCopies = section.rows.reduce((sum, row) => sum + row.boxCount, 0);
+              return (
+                <tbody key={section.key}>
+                  <tr className={styles.sectionRow}>
+                    <th scope="rowgroup" colSpan={6}>
+                      <button
+                        type="button"
+                        className={styles.sectionToggle}
+                        aria-expanded={open}
+                        onClick={() => toggle(section.key)}
+                      >
+                        <span className={styles.chevron} aria-hidden="true" />
+                        {section.label}
+                        <span className={styles.sectionCount}>
+                          {section.rows.length} {section.rows.length === 1 ? 'card' : 'cards'} ·{' '}
+                          {sectionCopies} {sectionCopies === 1 ? 'copy' : 'copies'}
+                        </span>
+                      </button>
+                    </th>
+                  </tr>
+                  {open &&
+                    section.rows.map((row) => (
+                      <tr key={`${row.setKey}:${row.base}`}>
+                        <td className={styles.where}>
+                          {row.setKey} #{row.base}
+                        </td>
+                        <td className={styles.aspectCol}>
+                          <AspectIcons className={styles.aspects} aspects={row.aspects} />
+                        </td>
+                        <td className={styles.rarityCol}>
+                          <RarityBadge rarity={row.rarity} title={row.rarity}>
+                            <span className="visually-hidden">{row.rarity}</span>
+                          </RarityBadge>
+                        </td>
+                        <td className={styles.name}>
+                          <Link
+                            to="/inventory/$setKey/$view"
+                            params={{ setKey: row.setKey, view: 'list' }}
+                            search={{ card: row.base }}
+                          >
+                            {row.name}
+                          </Link>
+                          {row.subtitle && <span className={styles.subtitle}>{row.subtitle}</span>}
+                          <span className={styles.narrowWhere}>
+                            {row.setKey} #{row.base}
+                          </span>
+                        </td>
+                        <td>
+                          <span className={styles.count}>{row.boxCount}</span>
+                          {row.boxCount > 0 && (
+                            <span className={styles.printings}>{printingsLabel(row.inBox)}</span>
+                          )}
+                        </td>
+                        <td className={styles.decks}>{row.inDecks || ''}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              );
+            })}
           </table>
         </div>
       )}
