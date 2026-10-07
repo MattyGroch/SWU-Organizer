@@ -28,6 +28,7 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
   const { library, loading } = deckLibrary;
   const showToast = useToast();
   const navigate = useNavigate();
+  const [importing, setImporting] = useState(false);
   const [pickList, setPickList] = useState<{
     id: string;
     mode: 'construct' | 'deconstruct';
@@ -74,12 +75,21 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
         onDelete={onDelete}
         onOpenPickList={(deck, mode) => setPickList({ id: deck.id, mode })}
         onQueue={(deck) => void onQueue(deck)}
+        onImport={() => setImporting(true)}
         onAdjustBox={(deck, row, delta, max) =>
           void deckLibrary.adjustBox(deck.id, row.setKey, row.baseNumber, delta, max, homes)
         }
       />
 
-      <DeckCheck sets={sets} lookup={lookup} owned={owned} onSave={deckLibrary.addDeck} />
+      {importing && (
+        <DeckCheck
+          sets={sets}
+          lookup={lookup}
+          owned={owned}
+          onSave={deckLibrary.addDeck}
+          onClose={() => setImporting(false)}
+        />
+      )}
 
       <PreconList
         precons={precons}

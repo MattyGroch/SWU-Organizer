@@ -58,6 +58,7 @@ async function renderDecks() {
 
 /** Pastes the deck and saves it. `fireEvent` because typing JSON braces through userEvent is lossy. */
 async function pasteAndSave(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(within(myDecks()).getByRole('button', { name: 'Import' }));
   const box = screen.getByRole('textbox', { name: 'Decklist' });
   fireEvent.change(box, { target: { value: DECK } });
   // Resolving runs over every set; under a loaded run that can outlast the 1s default.
@@ -126,8 +127,8 @@ describe('decks tab, end to end', () => {
     // 3 Death Troopers wanted, 1 owned.
     expect(within(item).getByText('Need 2 to buy')).toBeInTheDocument();
     expect(within(item).getByText('Premier')).toBeInTheDocument();
-    // The paste box resets for the next deck.
-    expect(screen.getByRole('textbox', { name: 'Decklist' })).toHaveValue('');
+    // Saving closes the Import popup.
+    expect(screen.queryByRole('dialog', { name: 'Import a decklist' })).not.toBeInTheDocument();
   });
 
   it('constructs a deck from the binder, then puts it back', async () => {

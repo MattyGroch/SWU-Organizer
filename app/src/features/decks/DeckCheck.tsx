@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { toCanonicalCatalog, type LoadedSet } from '~/domain/catalog';
 import {
@@ -35,18 +35,25 @@ type Props = {
   /** Copies owned across the collection, spares and cards in built decks included. */
   owned: OwnedLookup;
   onSave: (rows: ResolvedDeckRow[], input: NewSavedDeckInput) => Promise<CreateSavedDeckResult>;
+  onClose: () => void;
 };
 
 /**
- * Pastes a decklist, reports what it would cost to build from the collection, and saves it
- * to My decks.
+ * The Import popup: pastes a decklist, reports what it would cost to build from the
+ * collection and whether it is legal, and saves it to My decks, which closes it.
  *
  * All four decklist formats (swudb JSON, Melee, picklist, plain text) are handled by the
  * ported `decklist.ts`, unchanged from the legacy app and still covered by its original
  * tests.
  */
-export function DeckCheck({ sets, lookup, owned, onSave }: Props) {
+export function DeckCheck({ sets, lookup, owned, onSave, onClose }: Props) {
   const showToast = useToast();
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (dialog && !dialog.open) dialog.showModal();
+  }, []);
   const [text, setText] = useState('');
   const [format, setFormat] = useState<FormatChoice>('auto');
   const [includeSideboard, setIncludeSideboard] = useState(true);
@@ -96,138 +103,152 @@ export function DeckCheck({ sets, lookup, owned, onSave }: Props) {
       return;
     }
     showToast({ tone: 'success', message: `Saved “${result.deck.name}” to My decks.` });
-    setText('');
-    setNameDraft(null);
-    setSaveError('');
+    dialogRef.current?.close();
   }
 
   return (
-    <section className={styles.panel} aria-labelledby="deck-check-title">
-      <h2 id="deck-check-title" className={styles.title}>
-        Add or check a deck
-      </h2>
-      <p className={styles.lead}>
-        Paste a decklist — swudb JSON, a Melee export, a picklist, or one card per line — to see
-        what you have, what it would cost to finish, and whether it is legal. Save it to keep it in
-        My decks.
-      </p>
-
-      <label className={styles.field}>
-        <span className="visually-hidden">Decklist</span>
-        <textarea
-          className={styles.textarea}
-          rows={8}
-          value={text}
-          placeholder={'3 Vanquish (SOR)\n2 Daring Raid (SOR)\n…'}
-          onChange={(event) => {
-            setText(event.target.value);
-            setSaveError('');
-          }}
-        />
-      </label>
-
-      <div className={styles.controls}>
-        <label className={styles.control}>
-          <span>Format</span>
-          <select
-            value={format}
-            onChange={(event) => setFormat(event.target.value as FormatChoice)}
-          >
-            <option value="auto">Detect automatically</option>
-            {PLAY_FORMATS.map((f) => (
-              <option key={f} value={f}>
-                {FORMAT_RULES[f].label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className={styles.checkbox}>
-          <input
-            type="checkbox"
-            checked={includeSideboard}
-            onChange={(event) => setIncludeSideboard(event.target.checked)}
-          />
-          <span>Include sideboard</span>
-        </label>
+    <dialog
+      ref={dialogRef}
+      className={styles.dialog}
+      onClose={onClose}
+      aria-labelledby="deck-check-title"
+    >
+      <div className={styles.header}>
+        <h2 id="deck-check-title" className={styles.title}>
+          Import a decklist
+        </h2>
+        <button
+          type="button"
+          className={styles.secondary}
+          onClick={() => dialogRef.current?.close()}
+        >
+          Close
+        </button>
       </div>
+      <div className={styles.panel}>
+        <p className={styles.lead}>
+          Paste a decklist — swudb JSON, a Melee export, a picklist, or one card per line — to see
+          what you have, what it would cost to finish, and whether it is legal. Save it to keep it
+          in My decks.
+        </p>
 
-      {analysis && (
-        <div className={styles.results}>
-          <dl className={styles.summary}>
-            <div>
-              <dt>Format read as</dt>
-              <dd>{analysis.parsed.format}</dd>
-            </div>
-            <div>
-              <dt>Cards needed</dt>
-              <dd>{analysis.summary.totalNeededCards}</dd>
-            </div>
-            <div>
-              <dt>Cost to finish</dt>
-              <dd>{formatUsd(analysis.summary.totalCost)}</dd>
-            </div>
-            <div>
-              <dt>Leader</dt>
-              <dd>{ownedLabel(analysis.summary.leaderOwned)}</dd>
-            </div>
-            <div>
-              <dt>Base</dt>
-              <dd>{ownedLabel(analysis.summary.baseOwned)}</dd>
-            </div>
-          </dl>
+        <label className={styles.field}>
+          <span className="visually-hidden">Decklist</span>
+          <textarea
+            className={styles.textarea}
+            rows={8}
+            value={text}
+            placeholder={'3 Vanquish (SOR)\n2 Daring Raid (SOR)\n…'}
+            onChange={(event) => {
+              setText(event.target.value);
+              setSaveError('');
+            }}
+          />
+        </label>
 
-          <p className={analysis.legality.legal ? styles.legal : styles.illegal}>
-            {analysis.legality.legal ? 'Legal' : 'Not legal'} for {analysis.legality.rules.label}.
-          </p>
-
-          {analysis.legality.issues.length > 0 && (
-            <ul className={styles.issues}>
-              {analysis.legality.issues.map((issue, index) => (
-                <li key={`${issue.code}-${index}`}>{issue.message}</li>
+        <div className={styles.controls}>
+          <label className={styles.control}>
+            <span>Format</span>
+            <select
+              value={format}
+              onChange={(event) => setFormat(event.target.value as FormatChoice)}
+            >
+              <option value="auto">Detect automatically</option>
+              {PLAY_FORMATS.map((f) => (
+                <option key={f} value={f}>
+                  {FORMAT_RULES[f].label}
+                </option>
               ))}
-            </ul>
-          )}
+            </select>
+          </label>
 
-          {analysis.resolution.unresolved.length > 0 && (
-            <details className={styles.unresolved}>
-              <summary>{analysis.resolution.unresolved.length} line(s) not matched</summary>
-              <ul>
-                {analysis.resolution.unresolved.map((entry, index) => (
-                  <li key={index}>
-                    {entry.count}× {entry.name}
-                    {entry.subtitle ? ` — ${entry.subtitle}` : ''} ({entry.reason})
-                  </li>
+          <label className={styles.checkbox}>
+            <input
+              type="checkbox"
+              checked={includeSideboard}
+              onChange={(event) => setIncludeSideboard(event.target.checked)}
+            />
+            <span>Include sideboard</span>
+          </label>
+        </div>
+
+        {analysis && (
+          <div className={styles.results}>
+            <dl className={styles.summary}>
+              <div>
+                <dt>Format read as</dt>
+                <dd>{analysis.parsed.format}</dd>
+              </div>
+              <div>
+                <dt>Cards needed</dt>
+                <dd>{analysis.summary.totalNeededCards}</dd>
+              </div>
+              <div>
+                <dt>Cost to finish</dt>
+                <dd>{formatUsd(analysis.summary.totalCost)}</dd>
+              </div>
+              <div>
+                <dt>Leader</dt>
+                <dd>{ownedLabel(analysis.summary.leaderOwned)}</dd>
+              </div>
+              <div>
+                <dt>Base</dt>
+                <dd>{ownedLabel(analysis.summary.baseOwned)}</dd>
+              </div>
+            </dl>
+
+            <p className={analysis.legality.legal ? styles.legal : styles.illegal}>
+              {analysis.legality.legal ? 'Legal' : 'Not legal'} for {analysis.legality.rules.label}.
+            </p>
+
+            {analysis.legality.issues.length > 0 && (
+              <ul className={styles.issues}>
+                {analysis.legality.issues.map((issue, index) => (
+                  <li key={`${issue.code}-${index}`}>{issue.message}</li>
                 ))}
               </ul>
-            </details>
-          )}
+            )}
 
-          <DeckRowsTable rows={analysis.rows} label="Decklist cards" />
+            {analysis.resolution.unresolved.length > 0 && (
+              <details className={styles.unresolved}>
+                <summary>{analysis.resolution.unresolved.length} line(s) not matched</summary>
+                <ul>
+                  {analysis.resolution.unresolved.map((entry, index) => (
+                    <li key={index}>
+                      {entry.count}× {entry.name}
+                      {entry.subtitle ? ` — ${entry.subtitle}` : ''} ({entry.reason})
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            )}
 
-          <div className={styles.save}>
-            <label className={styles.control}>
-              <span>Name</span>
-              <input
-                type="text"
-                className={styles.input}
-                value={name}
-                placeholder="Untitled deck"
-                onChange={(event) => setNameDraft(event.target.value)}
-              />
-            </label>
-            <button type="button" className={styles.primary} onClick={() => void save()}>
-              Save to My decks
-            </button>
+            <DeckRowsTable rows={analysis.rows} label="Decklist cards" />
+
+            <div className={styles.save}>
+              <label className={styles.control}>
+                <span>Name</span>
+                <input
+                  type="text"
+                  className={styles.input}
+                  value={name}
+                  placeholder="Untitled deck"
+                  onChange={(event) => setNameDraft(event.target.value)}
+                />
+              </label>
+              <button type="button" className={styles.primary} onClick={() => void save()}>
+                Save to My decks
+              </button>
+            </div>
+            {saveError && (
+              <p role="alert" className={styles.illegal}>
+                {saveError}
+              </p>
+            )}
           </div>
-          {saveError && (
-            <p role="alert" className={styles.illegal}>
-              {saveError}
-            </p>
-          )}
-        </div>
-      )}
-    </section>
+        )}
+      </div>
+    </dialog>
   );
 }
 
