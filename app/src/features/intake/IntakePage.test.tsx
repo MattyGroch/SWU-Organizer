@@ -1,3 +1,10 @@
+import {
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
+  RouterProvider,
+} from '@tanstack/react-router';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -80,5 +87,35 @@ describe('Intake on a phone: the Fix sheet', () => {
 
     await userEvent.click(within(sheet).getByRole('button', { name: 'Remove from batch' }));
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(0));
+  });
+});
+
+describe('Intake with nothing queued', () => {
+  beforeEach(async () => {
+    await db.open();
+    await db.intakeBatches.clear();
+    await db.intakeLines.clear();
+  });
+
+  it('offers a way to the scanner', async () => {
+    const root = createRootRoute();
+    const intake = createRoute({
+      getParentRoute: () => root,
+      path: '/intake',
+      component: () => <IntakePage sets={sets} />,
+    });
+    const scan = createRoute({
+      getParentRoute: () => root,
+      path: '/scan',
+      component: () => 'Scanner',
+    });
+    const router = createRouter({
+      routeTree: root.addChildren([intake, scan]),
+      history: createMemoryHistory({ initialEntries: ['/intake'] }),
+    });
+    render(<RouterProvider router={router} />);
+
+    await userEvent.click(await screen.findByRole('link', { name: 'Start scanning' }));
+    expect(await screen.findByText('Scanner')).toBeInTheDocument();
   });
 });

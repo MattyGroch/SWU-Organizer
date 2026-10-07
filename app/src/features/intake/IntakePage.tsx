@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -61,10 +62,15 @@ export function IntakePage({ sets }: Props) {
       <StackList />
 
       {!loading && batches.length === 0 && (
-        <p className={styles.empty}>
-          Nothing queued. Use <strong>Add to collection</strong> on a saved deck to queue its cards
-          here; scanned cards will land here too.
-        </p>
+        <div className={styles.empty}>
+          <p>
+            Nothing queued. Scanned cards land here; so do a saved deck’s cards when you use{' '}
+            <strong>Add to collection</strong> on it.
+          </p>
+          <Link to="/scan" className={styles.primary}>
+            Start scanning
+          </Link>
+        </div>
       )}
 
       {batches.map((batch) => (
