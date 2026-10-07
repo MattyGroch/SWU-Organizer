@@ -15,7 +15,7 @@
   flex-wrap: wrap;
   gap: var(--space-3);
   align-items: center;
-  margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-4)) 0;
+  margin: calc(-1 * var(--gutter)) calc(-1 * var(--gutter)) 0;
   padding: var(--space-3) var(--space-4);
   background: var(--set-accent, transparent);
 }

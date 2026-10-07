@@ -11,10 +11,17 @@ import { FAKE_CAMERA, UNKNOWN_CAMERA } from './e2e/paths';
  */
 const PORT = 4173;
 
+/**
+ * Matt's Pixel 11 Pro as the installed app sees it: 411×816, measured on the phone with
+ * display magnification on. Layout bugs show up at exactly this size, so the tests
+ * use it rather than Playwright's Pixel 7.
+ */
+const PHONE = { ...devices['Pixel 7'], viewport: { width: 411, height: 816 } };
+
 /** A phone whose camera is Chromium's fake device playing `video`. */
 function phoneWithCamera(video: string) {
   return {
-    ...devices['Pixel 7'],
+    ...PHONE,
     permissions: ['camera'],
     launchOptions: {
       args: [
