@@ -133,6 +133,12 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   );
   const [view, setView] = useState<View | null>(null);
   const nextId = useRef(1);
+  /**
+   * The read being saved right now. The scanner doesn't wait for one read to be saved
+   * before sending the next, and `items` only shows a read once it is saved and rendered:
+   * until then, this is the latest card.
+   */
+  const pendingRef = useRef<Pick<Item, 'id' | 'result' | 'chosen' | 'question'> | null>(null);
 
   const nameOf = useCallback(
     (p: { setKey: string; base: number }) =>
@@ -166,7 +172,13 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     async (result: ScanResult) => {
       const [top] = result.matches;
       if (!top) return;
-      const latest = clearedRef.current ? undefined : itemsRef.current[0];
+      const pending = pendingRef.current;
+      const latest =
+        pending && !itemsRef.current.some((i) => i.id === pending.id)
+          ? pending
+          : clearedRef.current
+            ? undefined
+            : itemsRef.current[0];
       // A question waits for its answer: the scanner is paused for it, and a read already
       // under way when it opened must not replace it either.
       if (latest?.question) return;
@@ -206,25 +218,30 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           : null;
 
       const chosen = asFound(asPrinting(top));
+      const id = nextId.current++;
+      pendingRef.current = { id, result, chosen, question };
       let placed: Pick<Item, 'receipt' | 'room'> = { receipt: null, room: null };
       let stackCardId: string | null = null;
-      if (mode === 'add') {
-        if (!question) {
-          placed = await place(chosen);
-          // Added, wherever it ends up: binder or bulk is put-away's business, not the scan's.
-          navigator.vibrate?.(40);
+      try {
+        if (mode === 'add') {
+          if (!question) {
+            placed = await place(chosen);
+            // Added, wherever it ends up: binder or bulk is put-away's business, not the scan's.
+            navigator.vibrate?.(40);
+          }
+          // Logged even while unsure: the card is in the stack either way.
+          stackCardId = await logScan(
+            stackEntry({ chosen, question, ...placed }, sets.get(chosen.setKey)),
+          );
         }
-        // Logged even while unsure: the card is in the stack either way.
-        stackCardId = await logScan(
-          stackEntry({ chosen, question, ...placed }, sets.get(chosen.setKey)),
-        );
+      } catch (error) {
+        // Never shown, so it must not stand in for the latest card either.
+        if (pendingRef.current?.id === id) pendingRef.current = null;
+        throw error;
       }
       setCleared(false);
       setItems((current) =>
-        [
-          { id: nextId.current++, result, chosen, question, ...placed, stackCardId },
-          ...current,
-        ].slice(0, 8),
+        [{ id, result, chosen, question, ...placed, stackCardId }, ...current].slice(0, 8),
       );
     },
     [asFound, mode, nameOf, place, sameCard, sets],
