@@ -1,13 +1,17 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { parseSetCatalog, toLoadedSet } from '~/domain/catalog';
+import { parseDeckList } from '~/domain/decklist';
 import type { SavedDeck } from '~/domain/decks';
 
 import { SwuDatabase } from './db';
+import { logScan } from './stacks';
 import { readDeckLibrary, writeDeckLibraryQuietly } from './deckLibrary';
 import {
   adjustCardCount,
+  buildScannedDeck,
   commitBatch,
+  convertToDeckScan,
   discardBatch,
   moveCopy,
   bulkPreview,
@@ -16,6 +20,7 @@ import {
   queueDeck,
   removeCard,
   resetCard,
+  scannedDeckProblem,
   unqueueScan,
   unqueuePrinting,
 } from './intake';
@@ -321,5 +326,98 @@ describe('scanned cards', () => {
     const queued = await database.intakeLines.where('batchId').equals(batchId).toArray();
     expect(await bulkPreview(queued, 3, database)).toEqual({ normal: 2 });
     expect(await database.owned.count()).toBe(1);
+  });
+});
+
+describe('scanned decks', () => {
+  let database: SwuDatabase;
+
+  beforeEach(async () => {
+    database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+  });
+
+  const krennic = { setKey: 'SOR', base: 1, num: '001', variant: 'normal' as const };
+  const complex = { setKey: 'SOR', base: 19, num: '019', variant: 'normal' as const };
+  const trooper = { setKey: 'SOR', base: 33, num: '033', variant: 'normal' as const };
+  const hyper = { setKey: 'SOR', base: 33, num: '298', variant: 'hyperspace' as const };
+  const scanDeck = async (...printings: Array<typeof trooper | typeof hyper>) => {
+    let batchId = '';
+    for (const p of printings) ({ batchId } = await queueScan(p, { database, kind: 'deckScan' }));
+    return batchId;
+  };
+  const linesOf = (batchId: string) =>
+    database.intakeLines.where('batchId').equals(batchId).toArray();
+
+  it('queue apart from loose scans', async () => {
+    const loose = await queueScan(trooper, { database });
+    const deckBatch = await scanDeck(trooper);
+    expect(deckBatch).not.toBe(loose.batchId);
+    expect((await database.intakeBatches.get(deckBatch))?.label).toBe('Scanned deck');
+  });
+
+  it('take no room in the binder pocket', async () => {
+    await scanDeck(trooper, trooper);
+    await queueScan(trooper, { database });
+    expect(await queuedPocket('SOR', 33, database)).toEqual({ normal: 1 });
+  });
+
+  it('need a leader and a base before they can be built', async () => {
+    const batchId = await scanDeck(krennic, trooper);
+    expect(scannedDeckProblem(await linesOf(batchId), sets)).toBe('missing-base');
+    expect(await buildScannedDeck(batchId, 'Troopers', sets, { database })).toEqual({
+      ok: false,
+      reason: 'missing-base',
+    });
+    expect(await database.intakeBatches.get(batchId)).toMatchObject({ kind: 'deckScan' });
+    expect((await readDeckLibrary(database)).customDecks).toEqual([]);
+  });
+
+  it('build into a saved deck, its box holding the printings scanned', async () => {
+    const batchId = await scanDeck(krennic, complex, trooper, trooper, hyper);
+    expect(scannedDeckProblem(await linesOf(batchId), sets)).toBeNull();
+
+    const result = await buildScannedDeck(batchId, 'Krennic Troopers', sets, {
+      database,
+      quotaOf: () => 3,
+    });
+
+    expect(result).toMatchObject({ ok: true, report: { copies: 5, toBulk: 0, deckBuilt: true } });
+    const [built] = (await readDeckLibrary(database)).customDecks;
+    expect(built).toMatchObject({
+      name: 'Krennic Troopers',
+      constructed: true,
+      physical: false,
+      leader: ref(1, 1),
+      base: ref(19, 1),
+      mainDeck: [ref(33, 3)],
+      sideboard: [],
+    });
+    expect(built!.pulledCards).toContainEqual({
+      ...ref(33, 3),
+      variants: { normal: 2, hyperspace: 1 },
+    });
+    expect((await database.owned.get('SOR:298'))?.count).toBe(1);
+    expect(await database.intakeBatches.count()).toBe(0);
+    // The kept source reads back as the same deck.
+    const parsed = parseDeckList(built!.sourceText);
+    expect(parsed.format).toBe('melee');
+    expect(parsed.entries.map((e) => [e.role, e.name, e.count])).toEqual([
+      ['leader', 'Krennic', 1],
+      ['base', 'Security Complex', 1],
+      ['deck', 'Death Trooper', 3],
+    ]);
+  });
+
+  it('can be made from scanned cards, dropping their stack', async () => {
+    const { batchId } = await queueScan(trooper, { database });
+    await logScan({ ...trooper, fate: 'binder' }, { database });
+    await convertToDeckScan(batchId, database);
+    expect(await database.intakeBatches.get(batchId)).toMatchObject({
+      kind: 'deckScan',
+      label: 'Scanned deck',
+    });
+    expect(await database.stacks.count()).toBe(0);
+    expect(await database.stackCards.count()).toBe(0);
   });
 });

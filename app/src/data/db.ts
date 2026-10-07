@@ -64,10 +64,12 @@ export type CardImageRow = {
  *
  * `deck` batches come from "Add to collection" on a saved deck: committing adds the cards
  * and marks that deck built with them in its box. `scan` batches are for the scanner.
+ * `deckScan` batches are a built deck run through the scanner: building one saves it as a
+ * deck, then commits it like a `deck` batch.
  */
 export type IntakeBatch = {
   id: string;
-  kind: 'deck' | 'scan';
+  kind: 'deck' | 'scan' | 'deckScan';
   label: string;
   deckId?: string;
   createdAt: number;
