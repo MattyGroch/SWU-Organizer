@@ -16,6 +16,7 @@ import {
 } from '~/data/stacks';
 import { pageSide } from '~/domain/binder';
 import { artUrl, variantLabel, type LoadedSet } from '~/domain/catalog';
+import { quotaForCard } from '~/domain/ownership';
 import {
   PILES_PER_SORTER,
   nextInHand,
@@ -30,7 +31,6 @@ import {
   type StackCardInput,
 } from '~/domain/putAway';
 import type { SetKey } from '~/domain/types';
-import { useQuota } from '~/features/inventory/useQuota';
 import { stackEntry, usePlaceScan, type Printing } from '~/features/scan/usePlaceScan';
 import { useToast } from '~/ui/toastContext';
 
@@ -290,14 +290,13 @@ function Walk({
   const scanned = useScanned();
   const otherStacks = useLiveQuery(async () => (await db.stacks.count()) - 1, []);
   const toAdd = otherStacks === 0 && scanned?.copies ? scanned : null;
-  const quota = useQuota();
   const [adding, setAdding] = useState(false);
   async function addAndFinish(batchIds: readonly string[]) {
     setAdding(true);
     try {
       const quotaOf = (setKey: SetKey, base: number) => {
         const card = sets.get(setKey)?.cardsByBase.get(base);
-        return card ? quota(card) : Infinity;
+        return card ? quotaForCard(card) : Infinity;
       };
       let copies = 0;
       let toBulk = 0;

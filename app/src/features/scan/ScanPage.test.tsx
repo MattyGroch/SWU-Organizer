@@ -376,6 +376,19 @@ describe('ScanPage', () => {
     await waitFor(async () => expect((await db.intakeLines.toArray())[0]!.count).toBe(2));
   });
 
+  it('treats a re-read that lands while the first read is still being saved as the same card', async () => {
+    renderPage();
+    await waitFor(() => expect(fire).not.toBeNull());
+    const confident = [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)];
+    // The camera re-fires as fast as it likes: the second read arrives before the first is saved.
+    await act(async () => {
+      fire!({ matches: confident, at: 1, afterGap: true, tooClose: false });
+      fire!({ matches: confident, at: 2, afterGap: false, tooClose: false });
+    });
+    await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
+    expect((await db.intakeLines.toArray())[0]!.count).toBe(1);
+  });
+
   it('keeps an open "Not sure" question when the same card is read again, so Yes still works', async () => {
     renderPage();
     await waitFor(() => expect(fire).not.toBeNull());
