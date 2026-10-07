@@ -31,7 +31,8 @@ export function AccountMenu() {
         className={styles.unavailable}
         title="The sync server could not be reached. Everything still saves on this device."
       >
-        Sync unavailable
+        <span className={styles.long}>Sync unavailable</span>
+        <span className={styles.short}>No sync</span>
       </span>
     );
   }

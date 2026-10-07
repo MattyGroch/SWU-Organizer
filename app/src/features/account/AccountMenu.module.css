@@ -125,7 +125,8 @@
     display: inline;
   }
 
-  .signIn {
+  .signIn,
+  .unavailable {
     padding: var(--space-2);
   }
 
