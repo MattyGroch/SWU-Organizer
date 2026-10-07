@@ -29,7 +29,9 @@ import type { SetKey } from '~/domain/types';
  * sync pull — re-renders without explicit notification plumbing.
  */
 export function useDeckLibrary() {
-  const row = useLiveQuery(() => db.deckLibrary.get('library'), []);
+  // `null` when no library has been saved yet: `undefined` must mean only "not read yet",
+  // or a device that has never saved a deck would wait on it forever.
+  const row = useLiveQuery(async () => (await db.deckLibrary.get('library')) ?? null, []);
 
   const library = useMemo<DeckLibrary>(
     () => (row === undefined ? emptyDeckLibrary : parseDeckLibrary(row?.json ?? null)),

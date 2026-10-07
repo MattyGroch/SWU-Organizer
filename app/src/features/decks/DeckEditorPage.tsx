@@ -1,7 +1,7 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 
-import { editDeck } from '~/data/deckLibrary';
+import { addNewDeck, editDeck } from '~/data/deckLibrary';
 import type { LoadedSet } from '~/domain/catalog';
 import { applyDeckEdit, deckStatus, editReturns, type DeckEdit } from '~/domain/deckBuild';
 import type { DeckCardRef, DeckContents } from '~/domain/deckContents';
@@ -77,7 +77,7 @@ export function DeckEditorPage({ sets, binderOwnership, deckId }: Props) {
   }
   // Keyed by deck so a different deck starts a fresh draft.
   return (
-    <Editor
+    <DeckEditor
       key={deck.id}
       sets={sets}
       binderOwnership={binderOwnership}
@@ -87,16 +87,22 @@ export function DeckEditorPage({ sets, binderOwnership, deckId }: Props) {
   );
 }
 
-function Editor({
+/**
+ * The editor itself. `isNew` is a deck from the builder that is not saved yet: Save adds
+ * it to My decks, and Cancel just drops it.
+ */
+export function DeckEditor({
   sets,
   binderOwnership,
   library,
   deck,
+  isNew = false,
 }: {
   sets: Map<SetKey, LoadedSet>;
   binderOwnership: OwnershipBySet;
   library: DeckLibrary;
   deck: SavedDeck;
+  isNew?: boolean;
 }) {
   const { lookup, setOrder, owned, homes, quotaOf } = useDeckCollection(
     sets,
@@ -127,6 +133,7 @@ function Editor({
 
   const saved = draftOf(deck);
   const dirty =
+    isNew ||
     !sameList(saved.contents, draft.contents) ||
     saved.format !== draft.format ||
     saved.name !== draft.name.trim();
@@ -152,7 +159,11 @@ function Editor({
   }
 
   function cancel() {
-    if (dirty && !window.confirm('Discard your changes to this deck?')) return;
+    const message = isNew ? 'Discard this new deck?' : 'Discard your changes to this deck?';
+    const worthAsking = isNew
+      ? draft.contents.mainDeck.length + draft.contents.sideboard.length > 0
+      : dirty;
+    if (worthAsking && !window.confirm(message)) return;
     void navigate({ to: '/decks' });
   }
 
@@ -163,6 +174,23 @@ function Editor({
       name: draft.name,
       sourceText: formatDeckList(rows),
     };
+    if (isNew) {
+      try {
+        await addNewDeck(deck, next);
+      } catch (error) {
+        showToast({
+          tone: 'danger',
+          message: `The deck could not be saved: ${error instanceof Error ? error.message : error}`,
+        });
+        return;
+      }
+      showToast({
+        tone: 'success',
+        message: `Saved “${next.name.trim() || deck.name}” to My decks.`,
+      });
+      void navigate({ to: '/decks' });
+      return;
+    }
     const refs = editReturns(library, deck.id, next.contents);
     if (refs.length) {
       setPutBack({ refs, edit: next });
@@ -349,7 +377,7 @@ function Editor({
 
       <footer className={styles.footer}>
         <span className={styles.footerNote}>
-          {dirty ? 'Unsaved changes' : 'No changes'}
+          {isNew ? 'New deck — not saved yet' : dirty ? 'Unsaved changes' : 'No changes'}
           {deck.constructed && dirty && ' · built deck: removed cards get a put-back list'}
         </span>
         <button type="button" className={styles.secondary} onClick={cancel}>
@@ -418,8 +446,8 @@ function Slot({
           <span className={styles.lineName}>
             {card.Name}
             {card.Subtitle && <span className={styles.subtitle}>{card.Subtitle}</span>}
+            {have === 0 && <span className={styles.unowned}>not owned</span>}
           </span>
-          {have === 0 && <span className={styles.unowned}>not owned</span>}
         </span>
       ) : (
         <span className={styles.slotEmpty}>None</span>

@@ -78,11 +78,15 @@ export function SavedDecks({
           My decks
         </h2>
         <span className={styles.count}>{decks.length || ''}</span>
+        <Link to="/decks/new" className={styles.newDeck}>
+          New deck
+        </Link>
       </div>
 
       {!loading && decks.length === 0 && (
         <p className={styles.empty}>
-          No saved decks yet. Paste a decklist below and choose <strong>Save to My decks</strong>.
+          No saved decks yet. Choose <strong>New deck</strong> to build one, or paste a decklist
+          below and choose <strong>Save to My decks</strong>.
         </p>
       )}
 

@@ -1,9 +1,15 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import type { SavedDeck } from '~/domain/decks';
+import { newDeck, type SavedDeck } from '~/domain/decks';
 
 import { SwuDatabase } from './db';
-import { deconstructDeck, editDeck, readDeckLibrary, writeDeckLibraryQuietly } from './deckLibrary';
+import {
+  addNewDeck,
+  deconstructDeck,
+  editDeck,
+  readDeckLibrary,
+  writeDeckLibraryQuietly,
+} from './deckLibrary';
 
 const ref = (baseNumber: number, count: number) => ({ setKey: 'SOR', baseNumber, count });
 
@@ -98,5 +104,41 @@ describe('editDeck', () => {
     const saved = (await readDeckLibrary(database)).customDecks[0]!;
     expect(saved).toMatchObject({ constructed: true, format: 'eternal', mainDeck: [ref(33, 2)] });
     expect(saved.pulledCards).toEqual([{ ...ref(33, 2), variants: { hyperspace: 2 } }]);
+  });
+});
+
+describe('addNewDeck', () => {
+  it('adds the deck with the list the editor gave it, once', async () => {
+    const database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+    const fresh = newDeck(
+      {
+        name: 'Fresh',
+        format: 'twinSuns',
+        leader: ref(1, 1),
+        secondLeader: ref(2, 1),
+        base: ref(19, 1),
+      },
+      { makeId: () => 'n', now: () => 't' },
+    );
+    const edit = {
+      contents: { ...fresh, mainDeck: [ref(33, 1)] },
+      format: 'twinSuns' as const,
+      name: ' Renamed ',
+      sourceText: 'list',
+    };
+    await addNewDeck(fresh, edit, database);
+    await addNewDeck(fresh, edit, database);
+    const decks = (await readDeckLibrary(database)).customDecks;
+    expect(decks).toHaveLength(1);
+    expect(decks[0]).toMatchObject({
+      id: 'n',
+      name: 'Renamed',
+      format: 'twinSuns',
+      secondLeader: ref(2, 1),
+      mainDeck: [ref(33, 1)],
+      sourceText: 'list',
+      constructed: false,
+    });
   });
 });
