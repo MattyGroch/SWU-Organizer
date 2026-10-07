@@ -270,6 +270,19 @@ describe('ScanPage', () => {
     expect(await stack()).toEqual([['059', 'binder', null]]);
   });
 
+  it('marks the last result as the previous card while stuck on a new one', async () => {
+    await scan('059', 'normal');
+    expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+    expect(screen.queryByText(/Previous card/)).not.toBeInTheDocument();
+    // The next card won't read: the droid still shows, but plainly as the card before.
+    phase = 'stuck';
+    // Any re-render picks the new phase up from the mocked scanner.
+    await userEvent.click(screen.getByRole('radio', { name: 'Look up' }));
+    await userEvent.click(screen.getByRole('radio', { name: 'Add to Intake' }));
+    expect(await screen.findByText('Previous card — not the one in view')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /2-1B Surgical Droid/ })).toBeInTheDocument();
+  });
+
   it('or skips it, adding nothing', async () => {
     phase = 'stuck';
     renderPage();

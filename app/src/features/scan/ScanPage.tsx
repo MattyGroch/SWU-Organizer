@@ -418,6 +418,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           sets={sets}
           nameOf={nameOf}
           sameCard={sameCard}
+          previous={phase === 'stuck'}
           onChoose={(p) => void choose(latest, p).catch(failed)}
           onRescan={() => void remove(latest, true).catch(failed)}
           onConfirm={() => void choose(latest, latest.chosen).catch(failed)}
@@ -614,6 +615,7 @@ function LatestScan({
   sets,
   nameOf,
   sameCard,
+  previous = false,
   onChoose,
   onRescan,
   onConfirm,
@@ -624,6 +626,11 @@ function LatestScan({
   sets: Map<SetKey, LoadedSet>;
   nameOf: (p: { setKey: string; base: number }) => string;
   sameCard: (a: { setKey: string; base: number }, b: { setKey: string; base: number }) => boolean;
+  /**
+   * The scanner has given up on the card now in view: this result is the card before it,
+   * and must not read as a guess at the new one.
+   */
+  previous?: boolean;
   onChoose: (p: Printing) => void;
   onRescan: () => void;
   onConfirm: () => void;
@@ -663,6 +670,7 @@ function LatestScan({
       className={styles.result}
       aria-labelledby="latest-scan"
       data-question={item.question ?? undefined}
+      data-previous={previous || undefined}
     >
       <img
         className={styles.art}
@@ -670,6 +678,7 @@ function LatestScan({
         alt=""
       />
       <div className={styles.details}>
+        {previous && <p className={styles.previous}>Previous card — not the one in view</p>}
         <h2 id="latest-scan" className={styles.name}>
           {card?.Name ?? nameOf(chosen)}
           {card?.Subtitle && <span className={styles.subtitle}>{card.Subtitle}</span>}

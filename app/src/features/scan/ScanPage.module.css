@@ -111,6 +111,17 @@
   border-color: var(--color-warning);
 }
 
+/* The card before the one the scanner is stuck on: plainly not a guess at it. */
+.result[data-previous] .art {
+  opacity: 0.45;
+}
+
+.previous {
+  color: var(--color-warning-fg);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+}
+
 .art {
   width: 100%;
   border-radius: var(--radius-md);
