@@ -223,8 +223,8 @@ export function useScanner({
 
   /**
    * Quick Scan's "Scan another": the card was swapped while scanning was paused, so the
-   * scanner never saw it leave. The user's say-so counts as that gap — the card that fires next
-   * even if it is another copy of the same one. The tracker stays fired on the old view, so
+   * scanner never saw it leave. The user's say-so counts as that gap — a card that fires
+   * counts, even if it is another copy of the same one. The tracker stays fired on the old view, so
    * a card left in place still does not fire again.
    */
   const next = useCallback(() => {
