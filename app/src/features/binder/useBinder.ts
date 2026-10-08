@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   binderLayout,
@@ -9,7 +9,8 @@ import {
 } from '~/domain/binder';
 import type { LoadedSet } from '~/domain/catalog';
 import { selectionAfterMove } from '~/domain/selection';
-import type { ActiveSelection, Card } from '~/domain/types';
+import type { ActiveSelection, Card, SetKey } from '~/domain/types';
+import { readPosition, rememberPosition } from '~/features/inventory/lastPlace';
 
 const SLOTS_PER_PAGE = 12;
 
@@ -62,10 +63,21 @@ export type BinderState = {
   stepPage: (delta: number) => void;
 };
 
+/** Where the set was left: its page and selected card, or page 1 with nothing selected. */
+function rememberedState(set: LoadedSet, totalPages: number) {
+  const { page, card } = readPosition(set.setKey);
+  const selected = card === undefined ? undefined : set.byNumber.get(card);
+  return {
+    active: selected ? selectionForCard(selected) : null,
+    page: page && page >= 1 ? Math.min(page, totalPages) : 1,
+  };
+}
+
 export function useBinder(set: LoadedSet): BinderState {
   const geometry = useMemo(() => binderGeometry(set), [set]);
-  const [active, setActive] = useState<ActiveSelection | null>(null);
-  const [viewPage, setViewPage] = useState(1);
+  const [initial] = useState(() => rememberedState(set, geometry.totalPages));
+  const [active, setActive] = useState<ActiveSelection | null>(initial.active);
+  const [viewPage, setViewPage] = useState(initial.page);
   const viewSpread = pageToSpread(viewPage);
   const clampPage = useCallback(
     (page: number) => Math.max(1, Math.min(geometry.totalPages, page)),
@@ -73,20 +85,31 @@ export function useBinder(set: LoadedSet): BinderState {
   );
 
   /**
-   * Reset when the set changes.
+   * Switch to the new set's own page and selection when the set changes.
    *
    * The route reuses this component across sets, so without this the binder keeps the
    * previous set's open spread and a selection pointing at a card that is not on the
    * page — switching from SOR page 12 to another set would land you on its page 12 with
-   * a stale highlight. Adjusting state during render is React's documented pattern for
-   * this; an effect would paint the wrong page first.
+   * a stale highlight. Each set instead opens where it was last left. Adjusting state
+   * during render is React's documented pattern for this; an effect would paint the wrong
+   * page first.
    */
-  const [renderedSetKey, setRenderedSetKey] = useState(set.setKey);
+  const [renderedSetKey, setRenderedSetKey] = useState<SetKey>(set.setKey);
   if (renderedSetKey !== set.setKey) {
+    const next = rememberedState(set, geometry.totalPages);
     setRenderedSetKey(set.setKey);
-    setActive(null);
-    setViewPage(1);
+    setActive(next.active);
+    setViewPage(next.page);
   }
+
+  // Record the place as it changes, so leaving the tab and coming back returns here. Only
+  // once the render above has caught up with the set, so one set's page is never filed
+  // under another.
+  const activeNumber = active?.number;
+  useEffect(() => {
+    if (renderedSetKey !== set.setKey) return;
+    rememberPosition(set.setKey, { page: viewPage, card: activeNumber });
+  }, [renderedSetKey, set.setKey, viewPage, activeNumber]);
   const focusRequestRef = useRef(0);
   const [focusRequest, setFocusRequest] = useState(0);
 

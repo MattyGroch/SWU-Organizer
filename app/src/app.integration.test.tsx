@@ -597,3 +597,58 @@ describe('the bulk box', () => {
     expect(screen.queryByRole('table', { name: 'Bulk box' })).not.toBeInTheDocument();
   });
 });
+
+describe('the Inventory tab remembers where it was left', () => {
+  /** Out to Decks and back in through the main nav's Inventory tab. */
+  async function leaveAndReturn(user: ReturnType<typeof userEvent.setup>, landmark: string) {
+    const nav = screen.getByRole('navigation', { name: 'Main' });
+    await user.click(within(nav).getByRole('link', { name: 'Decks' }));
+    await waitFor(() => expect(screen.queryByRole(landmark)).not.toBeInTheDocument(), {
+      timeout: 5000,
+    });
+    await user.click(within(nav).getByRole('link', { name: /Inventory/ }));
+    await waitFor(() => expect(screen.getByRole(landmark)).toBeInTheDocument(), {
+      timeout: 5000,
+    });
+  }
+
+  it('returns to the same set, binder page and selected card', async () => {
+    const user = userEvent.setup();
+    const { router } = await renderApp('/inventory/SOR/binder');
+
+    await user.keyboard('.');
+    await waitFor(() =>
+      expect(screen.getByRole('grid')).toHaveAccessibleName('Binder spread, pages 2 and 3'),
+    );
+    // Inferno Four is #31, on page 3.
+    await user.click(cell(/Inferno Four/));
+
+    await leaveAndReturn(user, 'grid');
+
+    expect(router.state.location.pathname).toBe('/inventory/SOR/binder');
+    expect(screen.getByRole('grid')).toHaveAccessibleName('Binder spread, pages 2 and 3');
+    expect(screen.getByRole('heading', { name: 'Inferno Four' })).toBeInTheDocument();
+  });
+
+  it('returns to the List rather than the Binder', async () => {
+    const user = userEvent.setup();
+    const { router } = await renderApp('/inventory/SOR/list');
+
+    await leaveAndReturn(user, 'table');
+
+    expect(router.state.location.pathname).toBe('/inventory/SOR/list');
+  });
+
+  it('keeps the list filters', async () => {
+    const user = userEvent.setup();
+    await renderApp('/inventory/SOR/list');
+
+    await user.type(screen.getByRole('searchbox', { name: 'Filter cards by name' }), 'Krennic');
+    await waitFor(() => expect(screen.getByRole('table')).toHaveAccessibleName(/1 rows/));
+
+    await leaveAndReturn(user, 'table');
+
+    expect(screen.getByRole('searchbox', { name: 'Filter cards by name' })).toHaveValue('Krennic');
+    expect(screen.getByRole('table')).toHaveAccessibleName(/1 rows/);
+  });
+});

@@ -4,16 +4,7 @@ import { useEffect, type ReactNode } from 'react';
 import type { SetKey } from '~/domain/types';
 
 import styles from './InventoryNav.module.css';
-
-const LAST_SET_KEY = 'inventory:lastSet';
-
-function readLastSet(): SetKey | undefined {
-  try {
-    return localStorage.getItem(LAST_SET_KEY) ?? undefined;
-  } catch {
-    return undefined;
-  }
-}
+import { readLastSet, rememberPlace } from './lastPlace';
 
 /**
  * Binder · List · Bulk. Binder and List show one set; Bulk shows the whole box, so leaving
@@ -27,14 +18,10 @@ export function InventoryNav({
   setKey?: SetKey;
   current: 'binder' | 'list' | 'bulk';
 }) {
+  // Coming back to the Inventory tab, or reopening the app, returns to this page.
   useEffect(() => {
-    if (!setKey) return;
-    try {
-      localStorage.setItem(LAST_SET_KEY, setKey);
-    } catch {
-      // A convenience only: without storage, leaving Bulk opens the newest set instead.
-    }
-  }, [setKey]);
+    rememberPlace(current, setKey);
+  }, [current, setKey]);
 
   const key = setKey ?? readLastSet();
   const setLink = (view: 'binder' | 'list') =>

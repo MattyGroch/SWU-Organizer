@@ -4,10 +4,23 @@ import 'fake-indexeddb/auto';
 import { cleanup } from '@testing-library/react';
 import { afterEach } from 'vitest';
 
+import { resetLastPlaceForTests } from '~/features/inventory/lastPlace';
+
 // Testing Library only auto-cleans when vitest runs with `globals: true`. This config
 // does not, so unmount explicitly — otherwise every render accumulates in the document
 // and queries start matching elements from previous tests.
 afterEach(cleanup);
+
+// The Inventory tab remembers where it was left, in memory and in localStorage; each test
+// starts from a fresh app.
+afterEach(() => {
+  resetLastPlaceForTests();
+  try {
+    localStorage.clear();
+  } catch {
+    // No storage in this environment.
+  }
+});
 
 // jsdom implements no layout, so `scrollIntoView` is absent entirely. Components that
 // keep a focused item visible would throw without it; tests that care about the call
