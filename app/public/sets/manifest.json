@@ -6,7 +6,7 @@
       "label": "Spark of Rebellion (SOR)",
       "file": "SWU-SOR.json",
       "cards": 252,
-      "printings": 1003,
+      "printings": 1035,
       "promoSet": "SOROP",
       "eventPromoSets": [
         "SS1",
@@ -25,7 +25,7 @@
       "label": "Shadows of the Galaxy (SHD)",
       "file": "SWU-SHD.json",
       "cards": 262,
-      "printings": 1002,
+      "printings": 1029,
       "promoSet": "SHDOP",
       "eventPromoSets": [
         "PSHD",
@@ -46,7 +46,7 @@
       "label": "Twilight of the Republic (TWI)",
       "file": "SWU-TWI.json",
       "cards": 257,
-      "printings": 999,
+      "printings": 1025,
       "promoSet": "TWIOP",
       "eventPromoSets": [
         "PTWIJ",
@@ -65,7 +65,7 @@
       "label": "Jump To Lightspeed (JTL)",
       "file": "SWU-JTL.json",
       "cards": 262,
-      "printings": 1183,
+      "printings": 1204,
       "promoSet": "JTLOP",
       "eventPromoSets": [
         "P26",
@@ -79,7 +79,7 @@
       "label": "Legends of the Force (LOF)",
       "file": "SWU-LOF.json",
       "cards": 264,
-      "printings": 1237,
+      "printings": 1272,
       "promoSet": "LOFOP",
       "eventPromoSets": [
         "P26",
@@ -101,7 +101,7 @@
       "label": "Secrets of Power (SEC)",
       "file": "SWU-SEC.json",
       "cards": 264,
-      "printings": 1215,
+      "printings": 1231,
       "promoSet": "SECOP",
       "eventPromoSets": [
         "P26",
@@ -115,7 +115,7 @@
       "label": "A Lawless Time (LAW)",
       "file": "SWU-LAW.json",
       "cards": 264,
-      "printings": 976,
+      "printings": 1001,
       "promoSet": "LAWP",
       "eventPromoSets": [
         "P26",
@@ -137,7 +137,7 @@
       "label": "Ashes of the Empire (ASH)",
       "file": "SWU-ASH.json",
       "cards": 264,
-      "printings": 1003,
+      "printings": 1029,
       "promoSet": "ASHOP",
       "eventPromoSets": [
         "P26",
@@ -151,7 +151,7 @@
       "label": "Homeworlds (HMW)",
       "file": "SWU-HMW.json",
       "cards": 272,
-      "printings": 988,
+      "printings": 992,
       "promoSet": "HMWP",
       "eventPromoSets": [
         "P26",

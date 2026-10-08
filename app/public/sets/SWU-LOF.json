@@ -620,6 +620,10 @@
           "variant": "promo"
         },
         {
+          "num": "G25-1F",
+          "variant": "promo-foil"
+        },
+        {
           "num": "1020",
           "variant": "showcase"
         }
@@ -1045,6 +1049,15 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P26-70F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-151F",
+            "P25-161F",
+            "P26-86F"
+          ]
+        },
+        {
           "num": "1029",
           "variant": "prestige"
         },
@@ -1318,6 +1331,16 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P26-72F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-152F",
+            "P25-162F",
+            "P25-75F",
+            "P26-88F"
+          ]
+        },
+        {
           "num": "1024",
           "variant": "prestige"
         },
@@ -1431,6 +1454,13 @@
         {
           "num": "779",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-95F",
+          "variant": "promo-foil",
+          "aliases": [
+            "G25-2F"
+          ]
         }
       ]
     },
@@ -1473,6 +1503,10 @@
         {
           "num": "780",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-104F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1546,6 +1580,13 @@
         {
           "num": "782",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-73F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-89F"
+          ]
         }
       ]
     },
@@ -1668,6 +1709,13 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P25-143F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-144F"
+          ]
+        },
+        {
           "num": "1055",
           "variant": "prestige"
         },
@@ -1725,6 +1773,10 @@
         {
           "num": "786",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-77F",
+          "variant": "promo-foil"
         },
         {
           "num": "1032",
@@ -1954,6 +2006,13 @@
         {
           "num": "791",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-13F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-14F"
+          ]
         }
       ]
     },
@@ -2031,6 +2090,10 @@
         {
           "num": "793",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-105F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2394,6 +2457,15 @@
         {
           "num": "802",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-39F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-120F",
+            "P25-132F",
+            "P26-51F"
+          ]
         }
       ]
     },
@@ -2437,6 +2509,10 @@
         {
           "num": "803",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J25-10F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2647,7 +2723,10 @@
         },
         {
           "num": "LOFOP-21",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-01F"
+          ]
         }
       ]
     },
@@ -2692,7 +2771,10 @@
         },
         {
           "num": "LOFOP-22",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-02F"
+          ]
         }
       ]
     },
@@ -2745,6 +2827,17 @@
         {
           "num": "810",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-145F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-146F",
+            "P25-147F",
+            "P25-148F",
+            "P25-149F",
+            "P25-87F"
+          ]
         },
         {
           "num": "1067",
@@ -3022,7 +3115,10 @@
         },
         {
           "num": "LOFOP-23",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-03F"
+          ]
         }
       ]
     },
@@ -3096,6 +3192,15 @@
         {
           "num": "819",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-74F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-153F",
+            "P25-163F",
+            "P26-90F"
+          ]
         }
       ]
     },
@@ -3551,6 +3656,10 @@
         {
           "num": "830",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-106F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3680,7 +3789,14 @@
         },
         {
           "num": "LOFOP-24",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-04F",
+            "P25-121F",
+            "P25-133F",
+            "P26-40F",
+            "P26-52F"
+          ]
         },
         {
           "num": "1037",
@@ -3739,7 +3855,10 @@
         },
         {
           "num": "LOFOP-25",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-05F"
+          ]
         }
       ]
     },
@@ -3829,6 +3948,13 @@
         {
           "num": "836",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-79F",
+          "variant": "promo-foil",
+          "aliases": [
+            "G25-3F"
+          ]
         },
         {
           "num": "1050",
@@ -3945,6 +4071,14 @@
         {
           "num": "838",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-102F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-80F",
+            "P26-103F"
+          ]
         },
         {
           "num": "1036",
@@ -4104,7 +4238,11 @@
         },
         {
           "num": "LOFOP-26",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "J25-11F",
+            "LOFOP-06F"
+          ]
         },
         {
           "num": "1057",
@@ -4159,6 +4297,10 @@
         {
           "num": "842",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-107F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4402,7 +4544,10 @@
         },
         {
           "num": "LOFOP-27",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-07F"
+          ]
         }
       ]
     },
@@ -5179,7 +5324,10 @@
         },
         {
           "num": "LOFOP-28",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-08F"
+          ]
         }
       ]
     },
@@ -5231,6 +5379,16 @@
         {
           "num": "870",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-41F",
+          "variant": "promo-foil",
+          "aliases": [
+            "J25-12F",
+            "P25-123F",
+            "P25-135F",
+            "P26-53F"
+          ]
         }
       ]
     },
@@ -5324,6 +5482,16 @@
         {
           "num": "872",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-15F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-16F",
+            "P25-17F",
+            "P25-18F",
+            "P25-81F"
+          ]
         },
         {
           "num": "1031",
@@ -5663,6 +5831,10 @@
         {
           "num": "880",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-108F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6018,7 +6190,12 @@
         },
         {
           "num": "LOFOP-29",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "J25-13F",
+            "LOFOP-09F",
+            "P25-71F"
+          ]
         }
       ]
     },
@@ -6071,7 +6248,11 @@
         },
         {
           "num": "LOFOP-30",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-10F",
+            "P25-69F"
+          ]
         },
         {
           "num": "1056",
@@ -6179,6 +6360,10 @@
         {
           "num": "891",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-109F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6372,7 +6557,10 @@
         },
         {
           "num": "LOFOP-31",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-11F"
+          ]
         }
       ]
     },
@@ -6661,6 +6849,10 @@
         {
           "num": "903",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-85F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6743,6 +6935,10 @@
         {
           "num": "905",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-84F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7132,7 +7328,10 @@
         },
         {
           "num": "LOFOP-32",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-12F"
+          ]
         }
       ]
     },
@@ -7286,6 +7485,15 @@
         {
           "num": "919",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-46F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-128F",
+            "P25-140F",
+            "P26-58F"
+          ]
         }
       ]
     },
@@ -7456,7 +7664,11 @@
         },
         {
           "num": "LOFOP-33",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-13F",
+            "P25-70F"
+          ]
         },
         {
           "num": "1066",
@@ -7571,7 +7783,10 @@
         },
         {
           "num": "LOFOP-34",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-14F"
+          ]
         },
         {
           "num": "1065",
@@ -7666,6 +7881,10 @@
         {
           "num": "927",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-110F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7836,7 +8055,11 @@
         },
         {
           "num": "LOFOP-35",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "C25-4F",
+            "LOFOP-15F"
+          ]
         }
       ]
     },
@@ -7962,7 +8185,10 @@
         },
         {
           "num": "LOFOP-36",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-16F"
+          ]
         }
       ]
     },
@@ -8013,6 +8239,15 @@
         {
           "num": "935",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-48F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-129F",
+            "P25-141F",
+            "P26-60F"
+          ]
         },
         {
           "num": "1035",
@@ -8258,6 +8493,17 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P26-64F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-94F",
+            "P26-65F",
+            "P26-66F",
+            "P26-67F",
+            "P26-68F"
+          ]
+        },
+        {
           "num": "1051",
           "variant": "prestige"
         },
@@ -8310,6 +8556,10 @@
         {
           "num": "941",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-111F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -8351,7 +8601,10 @@
         },
         {
           "num": "LOFOP-37",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-17F"
+          ]
         }
       ]
     },
@@ -8554,7 +8807,10 @@
         },
         {
           "num": "LOFOP-38",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-18F"
+          ]
         }
       ]
     },
@@ -8807,7 +9063,11 @@
         },
         {
           "num": "P26-162",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-150F",
+            "P26-174F"
+          ]
         }
       ]
     },
@@ -9351,6 +9611,10 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P25-72F",
+          "variant": "promo-foil"
+        },
+        {
           "num": "1030",
           "variant": "prestige"
         },
@@ -9446,6 +9710,13 @@
         {
           "num": "971",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-118F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-96F"
+          ]
         }
       ]
     },
@@ -9577,6 +9848,15 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P25-21F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-22F",
+            "P25-23F",
+            "P25-24F"
+          ]
+        },
+        {
           "num": "1068",
           "variant": "prestige"
         },
@@ -9632,7 +9912,10 @@
         },
         {
           "num": "LOFOP-39",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-19F"
+          ]
         }
       ]
     },
@@ -9829,7 +10112,10 @@
         },
         {
           "num": "LOFOP-40",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "LOFOP-20F"
+          ]
         }
       ]
     },
@@ -10061,6 +10347,13 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P26-49F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-61F"
+          ]
+        },
+        {
           "num": "1039",
           "variant": "prestige"
         },
@@ -10206,6 +10499,10 @@
         {
           "num": "989",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J25-14F",
+          "variant": "promo-foil"
         },
         {
           "num": "1033",
@@ -10684,6 +10981,10 @@
         {
           "num": "1001",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-112F",
+          "variant": "promo-foil"
         }
       ]
     },

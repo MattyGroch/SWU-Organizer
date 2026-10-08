@@ -256,6 +256,25 @@ describe('buildPriceTable', () => {
     expect(prices).toEqual({ 142: 0.35, 1152: 210 });
   });
 
+  it("prices a plain promo's foil twin from the row's foil price", () => {
+    const prices = buildPriceTable(
+      [
+        printing('16', 'Store Showdown Top 8', { MarketPrice: '3.21', LowFoilPrice: '1.90' }),
+        printing('015', 'OP Promo', { MarketPrice: '0.50', LowPrice: '0.40', FoilPrice: '2.00' }),
+        printing('015F', 'OP Promo Foil', { MarketPrice: '2.50' }),
+        printing('020', 'OP Promo', { MarketPrice: '0.30', LowPrice: '0.25' }),
+      ],
+      'P26',
+    );
+    expect(prices).toEqual({
+      'P26-16': 3.21,
+      'P26-16F': 3.21,
+      'P26-015': 0.5,
+      'P26-015F': 2.5,
+      'P26-020': 0.3,
+    });
+  });
+
   it('skips tokens and unpriced printings', () => {
     const prices = buildPriceTable([
       printing('059', 'Normal', { MarketPrice: '0.05' }),
@@ -306,7 +325,23 @@ describe('attachPromos', () => {
       { num: 'SOROP-015', variant: 'promo' },
       { num: 'SOROP-015F', variant: 'promo-foil' },
     ]);
-    expect(cat.cards[1].printings.at(-1)).toEqual({ num: 'SOROP-013', variant: 'promo' });
+    expect(cat.cards[1].printings.slice(-2)).toEqual([
+      { num: 'SOROP-013', variant: 'promo' },
+      { num: 'SOROP-013F', variant: 'promo-foil' },
+    ]);
+  });
+
+  it('offers a Promo Foil beside every plain promo, since labels miss which are foil', () => {
+    const cat = catalog();
+    attachEventPromos([cat], 'P26', [
+      promo('16', 'Bossk', 'Deadly Stalker', 'Store Showdown Top 8'),
+      promo('17', 'Bossk', 'Deadly Stalker', 'Store Showdown Top 4'),
+    ]);
+    expect(cat.cards[0].printings).toEqual([
+      { num: '015', variant: 'normal' },
+      { num: 'P26-16', variant: 'promo', aliases: ['P26-17'] },
+      { num: 'P26-16F', variant: 'promo-foil', aliases: ['P26-17F'] },
+    ]);
   });
 
   it('reports a promo that matches no card instead of dropping it', () => {
@@ -339,9 +374,13 @@ describe('attachPromos', () => {
     ]);
     expect(unmatched).toEqual(['P26 999 Bossk — Leader Side']);
     expect([...touched].sort()).toEqual(['ASH', 'SOR']);
-    expect(ash.cards[0].printings.at(-1)).toEqual({ num: 'P26-14', variant: 'promo' });
+    expect(ash.cards[0].printings.slice(-2)).toEqual([
+      { num: 'P26-14', variant: 'promo' },
+      { num: 'P26-14F', variant: 'promo-foil' },
+    ]);
     expect(later.cards[0].printings).toHaveLength(1);
     expect(sor.cards[0].printings.map((p) => p.num)).toEqual(['015', 'P26-233', 'P26-164']);
+    expect(sor.cards[0].printings[2].aliases).toEqual(['P26-233F']);
     expect(sor.cards[1].printings.at(-1)).toEqual({ num: 'P26-140', variant: 'promo-foil' });
   });
 
@@ -356,7 +395,7 @@ describe('attachPromos', () => {
     expect(cat.cards[0].printings).toEqual([
       { num: '015', variant: 'normal' },
       { num: 'SOROP-015', variant: 'promo', aliases: ['P26-14', 'P26-15'] },
-      { num: 'P26-16', variant: 'promo-foil' },
+      { num: 'SOROP-015F', variant: 'promo-foil', aliases: ['P26-14F', 'P26-15F', 'P26-16'] },
     ]);
   });
 

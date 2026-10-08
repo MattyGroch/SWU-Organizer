@@ -1593,7 +1593,10 @@
         },
         {
           "num": "HMWP-21",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-01F"
+          ]
         }
       ]
     },
@@ -1862,6 +1865,13 @@
         {
           "num": "563",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-32F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-33F"
+          ]
         },
         {
           "num": "843",
@@ -2285,7 +2295,10 @@
         },
         {
           "num": "HMWP-22",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-02F"
+          ]
         },
         {
           "num": "804",
@@ -2773,7 +2786,10 @@
         },
         {
           "num": "HMWP-23",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-03F"
+          ]
         },
         {
           "num": "806",
@@ -2882,6 +2898,15 @@
         {
           "num": "588",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-34F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-35F",
+            "P26-36F",
+            "P26-37F"
+          ]
         },
         {
           "num": "837",
@@ -3085,7 +3110,10 @@
         },
         {
           "num": "HMWP-24",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-04F"
+          ]
         }
       ]
     },
@@ -3126,7 +3154,10 @@
         },
         {
           "num": "HMWP-25",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-05F"
+          ]
         }
       ]
     },
@@ -3628,7 +3659,10 @@
         },
         {
           "num": "HMWP-26",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-06F"
+          ]
         }
       ]
     },
@@ -4038,6 +4072,15 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P26-28F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-29F",
+            "P26-30F",
+            "P26-31F"
+          ]
+        },
+        {
           "num": "836",
           "variant": "prestige"
         },
@@ -4091,7 +4134,10 @@
         },
         {
           "num": "HMWP-27",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-07F"
+          ]
         },
         {
           "num": "827",
@@ -4505,7 +4551,10 @@
         },
         {
           "num": "HMWP-28",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-08F"
+          ]
         },
         {
           "num": "812",
@@ -4760,6 +4809,13 @@
         {
           "num": "638",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-26F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-27F"
+          ]
         }
       ]
     },
@@ -4975,7 +5031,11 @@
         },
         {
           "num": "HMWP-29",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "C26-3F",
+            "HMWP-09F"
+          ]
         }
       ]
     },
@@ -5741,7 +5801,10 @@
         },
         {
           "num": "HMWP-30",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-10F"
+          ]
         },
         {
           "num": "815",
@@ -5880,7 +5943,10 @@
         },
         {
           "num": "HMWP-31",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-11F"
+          ]
         },
         {
           "num": "816",
@@ -5995,7 +6061,10 @@
         },
         {
           "num": "HMWP-32",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-12F"
+          ]
         },
         {
           "num": "817",
@@ -6084,7 +6153,10 @@
         },
         {
           "num": "HMWP-33",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-13F"
+          ]
         },
         {
           "num": "818",
@@ -6572,7 +6644,10 @@
         },
         {
           "num": "HMWP-34",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-14F"
+          ]
         }
       ]
     },
@@ -7443,7 +7518,10 @@
         },
         {
           "num": "HMWP-35",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-15F"
+          ]
         }
       ]
     },
@@ -7867,7 +7945,10 @@
         },
         {
           "num": "HMWP-36",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-16F"
+          ]
         }
       ]
     },
@@ -8006,7 +8087,10 @@
         },
         {
           "num": "HMWP-37",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-17F"
+          ]
         }
       ]
     },
@@ -8044,7 +8128,10 @@
         },
         {
           "num": "HMWP-38",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-18F"
+          ]
         }
       ]
     },
@@ -8256,7 +8343,10 @@
         },
         {
           "num": "HMWP-39",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-19F"
+          ]
         }
       ]
     },
@@ -8965,7 +9055,10 @@
         },
         {
           "num": "HMWP-40",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "HMWP-20F"
+          ]
         }
       ]
     },

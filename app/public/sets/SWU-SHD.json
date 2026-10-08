@@ -265,6 +265,13 @@
           ]
         },
         {
+          "num": "PSHD-001F",
+          "variant": "promo-foil",
+          "aliases": [
+            "PSHDJ-001F"
+          ]
+        },
+        {
           "num": "269",
           "variant": "showcase"
         }
@@ -680,6 +687,13 @@
           ]
         },
         {
+          "num": "PSHD-002F",
+          "variant": "promo-foil",
+          "aliases": [
+            "PSHDJ-002F"
+          ]
+        },
+        {
           "num": "280",
           "variant": "showcase"
         }
@@ -974,6 +988,10 @@
         {
           "num": "307F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-04F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1293,6 +1311,13 @@
         {
           "num": "314F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-76F",
+          "variant": "promo-foil",
+          "aliases": [
+            "J24-3F"
+          ]
         }
       ]
     },
@@ -1353,6 +1378,10 @@
         {
           "num": "SHDOP-10",
           "variant": "promo"
+        },
+        {
+          "num": "SHDOP-10F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1555,6 +1584,13 @@
           "aliases": [
             "P25-67"
           ]
+        },
+        {
+          "num": "SHDOP-09F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-67F"
+          ]
         }
       ]
     },
@@ -1647,6 +1683,17 @@
         {
           "num": "321F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-59F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-60F",
+            "P25-61F",
+            "P25-62F",
+            "P25-63F",
+            "P25-64F"
+          ]
         }
       ]
     },
@@ -1773,6 +1820,13 @@
         {
           "num": "324F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-101F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-102F"
+          ]
         }
       ]
     },
@@ -2638,6 +2692,10 @@
         {
           "num": "346F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-52F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3003,6 +3061,10 @@
         {
           "num": "SHDOP-12",
           "variant": "promo"
+        },
+        {
+          "num": "SHDOP-12F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3238,6 +3300,14 @@
         {
           "num": "359F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-155F",
+          "variant": "promo-foil",
+          "aliases": [
+            "J24-4F",
+            "P25-165F"
+          ]
         }
       ]
     },
@@ -4341,6 +4411,10 @@
         {
           "num": "388F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-03F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4530,6 +4604,13 @@
         {
           "num": "393F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDPQJ-1F",
+          "variant": "promo-foil",
+          "aliases": [
+            "SHDPQ-1F"
+          ]
         }
       ]
     },
@@ -4766,6 +4847,10 @@
         {
           "num": "400F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-02F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5184,6 +5269,18 @@
         {
           "num": "410F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-46F",
+          "variant": "promo-foil",
+          "aliases": [
+            "C24-004F",
+            "P25-47F",
+            "P25-48F",
+            "P25-49F",
+            "P25-50F",
+            "P25-51F"
+          ]
         }
       ]
     },
@@ -5489,6 +5586,10 @@
         {
           "num": "418F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDOP-01F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5656,6 +5757,13 @@
         {
           "num": "422F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-158F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-168F"
+          ]
         }
       ]
     },
@@ -5705,6 +5813,14 @@
         {
           "num": "423F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-125F",
+          "variant": "promo-foil",
+          "aliases": [
+            "J24-5F",
+            "P25-137F"
+          ]
         }
       ]
     },
@@ -6853,6 +6969,16 @@
         {
           "num": "454F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SHDPQ-2-16F",
+          "variant": "promo-foil",
+          "aliases": [
+            "SHDPQ-2-4F",
+            "SHDPQ-2-8F",
+            "SHDPQ-2-CF",
+            "SHDPQ-2-FF"
+          ]
         }
       ]
     },
@@ -7279,6 +7405,13 @@
           "variant": "promo",
           "aliases": [
             "ESHD-001"
+          ]
+        },
+        {
+          "num": "SHDOP-07F",
+          "variant": "promo-foil",
+          "aliases": [
+            "ESHD-001F"
           ]
         }
       ]
@@ -8423,6 +8556,15 @@
         {
           "num": "493F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SS2-2-4F",
+          "variant": "promo-foil",
+          "aliases": [
+            "SS2-2-8F",
+            "SS2-2-CF",
+            "SS2-2-FF"
+          ]
         }
       ]
     },
@@ -8686,6 +8828,10 @@
         {
           "num": "SHDOP-06",
           "variant": "promo"
+        },
+        {
+          "num": "SHDOP-06F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -8963,6 +9109,10 @@
         {
           "num": "SHDOP-05",
           "variant": "promo"
+        },
+        {
+          "num": "SHDOP-05F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -9059,6 +9209,10 @@
         {
           "num": "SHDOP-08",
           "variant": "promo"
+        },
+        {
+          "num": "SHDOP-08F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -9179,6 +9333,10 @@
         {
           "num": "510F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J24-6F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -9283,6 +9441,10 @@
         {
           "num": "SHDOP-11",
           "variant": "promo"
+        },
+        {
+          "num": "SHDOP-11F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -9426,6 +9588,13 @@
         {
           "num": "516F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SS2J-1F",
+          "variant": "promo-foil",
+          "aliases": [
+            "SS2-1F"
+          ]
         }
       ]
     },

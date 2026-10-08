@@ -416,7 +416,10 @@
         },
         {
           "num": "P26-216",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-204F"
+          ]
         }
       ]
     },
@@ -1035,7 +1038,10 @@
         },
         {
           "num": "P26-219",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-207F"
+          ]
         }
       ]
     },
@@ -1402,7 +1408,10 @@
         },
         {
           "num": "P26-224",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-212F"
+          ]
         }
       ]
     },
@@ -1559,7 +1568,10 @@
         },
         {
           "num": "P26-225",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-213F"
+          ]
         }
       ]
     },

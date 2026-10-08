@@ -364,24 +364,37 @@ function attachPromoRows(catalogs, promoSet, promoRows, { variantOf, fallbackByT
     }
     const { catalog, card } = found;
     const num = promoNumber(promoSet, raw.Number);
-    if (card.printings.some((p) => p.num === num || p.aliases?.includes(num))) continue;
     const variant = variantOf(raw);
     touched.add(catalog.setKey);
-    // One Promo and one Promo Foil per card: the rest differ only by the badge printed on
-    // them (Top 8, Judge, …), so they are aliases of the first, not printings of their own.
-    const promo = card.printings.find((p) => p.variant === variant && promoParts(p.num));
-    if (promo) {
-      promo.aliases = [...(promo.aliases ?? []), num].sort();
-      continue;
-    }
-    card.printings.push({ num, variant });
-    card.printings.sort(
-      (a, b) =>
-        (variantOrder.get(a.variant) ?? 99) - (variantOrder.get(b.variant) ?? 99) ||
-        a.num.localeCompare(b.num),
-    );
+    attachPromoPrinting(card, num, variant);
+    // Upstream labels don't say reliably which promos come foil (a Store Showdown Top 8 is
+    // foil but labelled plainly), so every plain promo also offers a Promo Foil, numbered
+    // like upstream's own foils (`SOROP-015F`). Picking the right one is left to entry.
+    if (variant === 'promo') attachPromoPrinting(card, foilTwinNumber(num), 'promo-foil');
   }
   return { unmatched, touched };
+}
+
+/** The Promo Foil number paired with a plain promo's: `P26-16` → `P26-16F`. */
+export function foilTwinNumber(num) {
+  return `${num}F`;
+}
+
+function attachPromoPrinting(card, num, variant) {
+  if (card.printings.some((p) => p.num === num || p.aliases?.includes(num))) return;
+  // One Promo and one Promo Foil per card: the rest differ only by the badge printed on
+  // them (Top 8, Judge, …), so they are aliases of the first, not printings of their own.
+  const promo = card.printings.find((p) => p.variant === variant && promoParts(p.num));
+  if (promo) {
+    promo.aliases = [...(promo.aliases ?? []), num].sort();
+    return;
+  }
+  card.printings.push({ num, variant });
+  card.printings.sort(
+    (a, b) =>
+      (variantOrder.get(a.variant) ?? 99) - (variantOrder.get(b.variant) ?? 99) ||
+      a.num.localeCompare(b.num),
+  );
 }
 
 /**
@@ -419,5 +432,27 @@ export function buildPriceTable(rawCards, promoSet) {
     const num = promoSet ? promoNumber(promoSet, raw.Number) : String(raw.Number).trim();
     if (Number.isFinite(price) && price > 0) prices[num] = price;
   }
+  // A plain promo's foil twin has no row of its own; it takes the row's foil price, unless
+  // upstream lists that foil itself (`SOROP-015F`).
+  if (promoSet) {
+    for (const raw of rawCards) {
+      if (isToken(raw) || /foil|showcase/i.test(String(raw.VariantType ?? ''))) continue;
+      const twin = foilTwinNumber(promoNumber(promoSet, raw.Number));
+      const foil = foilPrice(raw);
+      if (foil && !(twin in prices)) prices[twin] = foil;
+    }
+  }
   return prices;
+}
+
+/**
+ * A row's foil price, if TCGplayer lists it as foil. A row listed only as foil (no plain
+ * `LowPrice`) has its foil market price in `MarketPrice`; otherwise the foil low is the
+ * best there is.
+ */
+function foilPrice(raw) {
+  const num = (value) => (Number.isFinite(Number(value)) && Number(value) > 0 ? Number(value) : 0);
+  if (num(raw.FoilPrice)) return num(raw.FoilPrice);
+  if (!num(raw.LowFoilPrice)) return undefined;
+  return !num(raw.LowPrice) && num(raw.MarketPrice) ? num(raw.MarketPrice) : num(raw.LowFoilPrice);
 }
