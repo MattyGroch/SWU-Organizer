@@ -291,10 +291,20 @@
   color: var(--color-text-muted);
 }
 
+/* Copies out in built decks: top-right, clear of the count row along the bottom. */
 .inDecks {
-  margin-left: 4px;
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  z-index: 1;
+  padding: 1px var(--space-1);
+  border-radius: var(--radius-sm);
+  background: rgb(0 0 0 / 0.75);
   color: var(--color-warning-fg);
-  font-size: 0.72em;
+  font-size: clamp(11px, 1.5cqi, 14px);
+  font-weight: 800;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
 }
 
 .spares {

@@ -133,6 +133,14 @@ export function BinderCell({
           </span>
         )}
 
+        {/* A corner badge rather than part of the count: in the bottom row it widened the
+            pill enough to push the rarity badge off the card on a phone. */}
+        {inDecks > 0 && (
+          <span className={styles.inDecks} title={`${inDecks} pulled into built decks`}>
+            ⇢{inDecks}
+          </span>
+        )}
+
         <span className={styles.overlay}>
           <span
             className={styles.qty}
@@ -140,11 +148,6 @@ export function BinderCell({
             data-empty={inBinder === 0}
           >
             {inBinder}/{quota}
-            {inDecks > 0 && (
-              <span className={styles.inDecks} title={`${inDecks} pulled into built decks`}>
-                ⇢{inDecks}
-              </span>
-            )}
           </span>
           <span className={styles.number}>{card.Number}</span>
           <RarityBadge className={styles.rarity} rarity={card.Rarity} />
