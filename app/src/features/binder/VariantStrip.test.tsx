@@ -102,8 +102,9 @@ describe('VariantStrip', () => {
     expect(within(foil).getByRole('button', { name: /^Remove one Foil/ })).toBeDisabled();
   });
 
-  it('is hidden for a card with only one printing', () => {
-    renderStrip([{ num: '001', variant: 'normal' }]);
-    expect(screen.queryByRole('list')).toBeNull();
+  it('still shows the strip for a card with only one printing', () => {
+    renderStrip([{ num: '010', variant: 'normal' }]);
+    expect(screen.getAllByRole('listitem')).toHaveLength(1);
+    expect(screen.getByRole('button', { name: /^Add one Normal/ })).toBeInTheDocument();
   });
 });

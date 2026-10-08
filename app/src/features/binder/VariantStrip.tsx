@@ -18,9 +18,12 @@ type Props = {
  * and LAW/ASH/HMW list no plain Foil — so the strip doubles as the discoverable form of
  * the keyboard mapping. The explicit − matters on touch screens, where neither
  * Shift+digit nor a right-click exists.
+ *
+ * A card with a single printing (SOR's starter-deck Vader, #010) still gets its one-chip
+ * strip: hiding it made that card look broken next to its neighbours.
  */
 export function VariantStrip({ printings, counts, cardName, onAdjust }: Props) {
-  if (printings.length <= 1) return null;
+  if (printings.length === 0) return null;
 
   return (
     <ul className={styles.strip} aria-label={`Printings of ${cardName}`}>
