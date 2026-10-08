@@ -19,6 +19,9 @@ let fire: ((r: ScanResult) => void) | null = null;
 let phase = 'holding';
 const resume = vi.fn();
 const retry = vi.fn();
+const next = vi.fn();
+/** Whether the page has the frame loop running. */
+let active = false;
 vi.mock('./useCamera', () => ({
   useCamera: () => ({
     videoRef: { current: null },
@@ -34,9 +37,10 @@ vi.mock('./useScanIndex', () => ({
   useScanIndex: () => ({ data: { entries: [] }, isError: false }),
 }));
 vi.mock('./useScanner', () => ({
-  useScanner: ({ onResult }: { onResult: (r: ScanResult) => void }) => {
-    fire = onResult;
-    return { phase, rearm: vi.fn(), resume, retry };
+  useScanner: (opts: { onResult: (r: ScanResult) => void; active: boolean }) => {
+    fire = opts.onResult;
+    active = opts.active;
+    return { phase, rearm: vi.fn(), resume, retry, next };
   },
 }));
 
@@ -185,6 +189,9 @@ describe('ScanPage', () => {
     expect(screen.getByText('Added to Intake')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Correct' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Rescan' })).toBeInTheDocument();
+    // Bulk Scan keeps going: only Quick Scan pauses on each card.
+    expect(active).toBe(true);
+    expect(screen.queryByRole('button', { name: 'Scan another' })).not.toBeInTheDocument();
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
     expect(await stack()).toEqual([['059', 'binder', null]]);
 
@@ -573,6 +580,38 @@ describe('ScanPage', () => {
       expect(await owned()).toEqual({ '059': [3, 1], '324': [1, 0] });
       await userEvent.click(screen.getByRole('button', { name: 'Undo' }));
       await waitFor(async () => expect(await owned()).toEqual({ '059': [3, 0] }));
+    });
+
+    it('pauses on each card until Scan another, so a card in view is read once', async () => {
+      await scan('059', 'normal');
+      await screen.findByRole('heading', { name: '2-1B Surgical Droid' });
+      expect(active).toBe(false);
+      // Another read while paused is ignored: the card shown stays the card shown.
+      await act(async () => {
+        fire!({
+          matches: [match('080', 80, 'normal', 10), match('059', 59, 'normal', 90)],
+          at: 2,
+          afterGap: true,
+          tooClose: false,
+        });
+      });
+      expect(screen.queryByRole('heading', { name: 'Nameless Scout' })).not.toBeInTheDocument();
+      expect(screen.queryByText('Earlier scans')).not.toBeInTheDocument();
+
+      await userEvent.click(screen.getByRole('button', { name: 'Scan another' }));
+      expect(next).toHaveBeenCalled();
+      expect(active).toBe(true);
+      expect(screen.queryByRole('button', { name: 'Scan another' })).not.toBeInTheDocument();
+      await act(async () => {
+        fire!({
+          matches: [match('080', 80, 'normal', 10), match('059', 59, 'normal', 90)],
+          at: 3,
+          afterGap: true,
+          tooClose: false,
+        });
+      });
+      expect(await screen.findByRole('heading', { name: 'Nameless Scout' })).toBeInTheDocument();
+      expect(active).toBe(false);
     });
 
     it('moves an added card to the printing it is corrected to', async () => {

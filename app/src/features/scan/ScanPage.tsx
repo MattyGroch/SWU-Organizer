@@ -154,6 +154,13 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const [cleared, setCleared] = useState(false);
   const clearedRef = useRef(cleared);
   clearedRef.current = cleared;
+  /**
+   * Quick Scan stops after each card, with the picture frozen, until "Scan another": one
+   * card at a time, so a card still in view can't be read twice while its result is up.
+   */
+  const [held, setHeld] = useState(false);
+  const heldRef = useRef(held);
+  heldRef.current = held;
   const showToast = useToast();
   /** Never fail silently: a scan that cannot be saved says so. */
   const failed = useCallback(
@@ -233,8 +240,8 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
             ? undefined
             : itemsRef.current[0];
       // A question waits for its answer: the scanner is paused for it, and a read already
-      // under way when it opened must not replace it either.
-      if (latest?.question) return;
+      // under way when it opened must not replace it either. So does a held Quick Scan.
+      if (latest?.question || heldRef.current) return;
       // The same card again with no gap since — it was never lifted — is that card re-read
       // (refocusing, re-exposing), not a second copy: leave its result as it is.
       const latestTop = latest?.result.matches[0];
@@ -293,6 +300,10 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         throw error;
       }
       setCleared(false);
+      if (mode === 'info') {
+        heldRef.current = true;
+        setHeld(true);
+      }
       setItems((current) =>
         [{ id, result, chosen, question, ...placed, stackCardId, added: null }, ...current].slice(
           0,
@@ -306,12 +317,13 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const latest = cleared ? undefined : items[0];
   /** An open question pauses scanning, and freezes the picture, until it is answered. */
   const asking = Boolean(latest?.question);
+  const holding = held && mode === 'info';
   const scanning = camera.state === 'live' && Boolean(index.data);
-  const { phase, rearm, resume, retry } = useScanner({
+  const { phase, rearm, resume, retry, next } = useScanner({
     videoRef: camera.videoRef,
     index: index.data,
     view,
-    active: scanning && !asking,
+    active: scanning && !asking && !holding,
     onResult: (r) => void onResult(r).catch(failed),
   });
 
@@ -342,6 +354,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
             )
           : null;
       setCleared(false);
+      if (mode === 'info') setHeld(true);
       setItems((current) =>
         [
           {
@@ -363,12 +376,19 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
 
   useEffect(() => rearm(), [mode, rearm]);
 
+  const frozen = asking || holding;
   useEffect(() => {
     const video = camera.videoRef.current;
     if (!video || camera.state !== 'live') return;
-    if (asking) video.pause();
+    if (frozen) video.pause();
     else if (video.paused) void Promise.resolve(video.play()).catch(() => {});
-  }, [asking, camera.state, camera.videoRef]);
+  }, [frozen, camera.state, camera.videoRef]);
+
+  /** "Scan another": the card was swapped while paused, so this is the gap between them. */
+  const scanNext = useCallback(() => {
+    next();
+    setHeld(false);
+  }, [next]);
 
   /** Replace what a scan records — a different printing, or a different card entirely. */
   const choose = useCallback(
@@ -436,6 +456,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       setItems((current) => current.filter((i) => i.id !== item.id));
       if (again) {
         setCleared(true);
+        setHeld(false);
         rearm();
       }
     },
@@ -454,7 +475,10 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           <select
             className={styles.mode}
             value={mode}
-            onChange={(event) => setMode(event.target.value as Mode)}
+            onChange={(event) => {
+              setMode(event.target.value as Mode);
+              setHeld(false);
+            }}
           >
             {MODES.map((value) => (
               <option key={value} value={value}>
@@ -490,8 +514,9 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       <Viewfinder
         camera={camera}
         indexState={index.isError ? 'error' : index.data ? 'ready' : 'loading'}
-        phase={asking ? 'asking' : phase}
+        phase={asking ? 'asking' : holding ? 'held' : phase}
         onView={setView}
+        onNext={holding && !asking ? scanNext : undefined}
       />
 
       {phase === 'stuck' && (
@@ -630,11 +655,14 @@ function Viewfinder({
   indexState,
   phase,
   onView,
+  onNext,
 }: {
   camera: ReturnType<typeof useCamera>;
   indexState: 'loading' | 'ready' | 'error';
   phase: string;
   onView: (view: View) => void;
+  /** Quick Scan, paused on a result: carry on scanning. */
+  onNext?: () => void;
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
   const [guide, setGuide] = useState<Rect | null>(null);
@@ -677,9 +705,11 @@ function Viewfinder({
                   ? 'Not recognised — look it up below, or skip it'
                   : phase === 'asking'
                     ? 'Paused — answer below to carry on scanning'
-                    : phase === 'tooClose'
-                      ? 'Too close — fit the whole card inside the frame'
-                      : 'Hold a card inside the frame';
+                    : phase === 'held'
+                      ? 'Paused — tap Scan another when you’re ready'
+                      : phase === 'tooClose'
+                        ? 'Too close — fit the whole card inside the frame'
+                        : 'Hold a card inside the frame';
 
   return (
     <div className={styles.viewfinder} ref={frameRef}>
@@ -690,6 +720,11 @@ function Viewfinder({
           data-phase={phase}
           style={{ left: guide.x, top: guide.y, width: guide.width, height: guide.height }}
         />
+      )}
+      {camera.state === 'live' && onNext && (
+        <button type="button" className={styles.next} onClick={onNext}>
+          Scan another
+        </button>
       )}
       {camera.state === 'live' ? (
         <p className={styles.hint}>{hint}</p>

@@ -65,6 +65,26 @@
   border-color: var(--color-success);
 }
 
+/* Quick Scan, paused on a result: a big target in the middle of the frozen picture. */
+.next {
+  composes: ui-btn ui-primary from global;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-height: 56px;
+  padding: var(--space-3) var(--space-5);
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.5);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
 .hint {
   position: absolute;
   right: 0;
