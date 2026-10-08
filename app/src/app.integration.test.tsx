@@ -638,4 +638,17 @@ describe('the Inventory tab remembers where it was left', () => {
 
     expect(router.state.location.pathname).toBe('/inventory/SOR/list');
   });
+
+  it('keeps the list filters', async () => {
+    const user = userEvent.setup();
+    await renderApp('/inventory/SOR/list');
+
+    await user.type(screen.getByRole('searchbox', { name: 'Filter cards by name' }), 'Krennic');
+    await waitFor(() => expect(screen.getByRole('table')).toHaveAccessibleName(/1 rows/));
+
+    await leaveAndReturn(user, 'table');
+
+    expect(screen.getByRole('searchbox', { name: 'Filter cards by name' })).toHaveValue('Krennic');
+    expect(screen.getByRole('table')).toHaveAccessibleName(/1 rows/);
+  });
 });

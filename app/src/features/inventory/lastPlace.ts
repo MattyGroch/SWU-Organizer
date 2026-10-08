@@ -1,4 +1,5 @@
 import type { SetKey } from '~/domain/types';
+import { EMPTY_FILTERS, type Filters } from '~/features/binder/cardRows';
 
 import { isInventoryView, type InventoryView } from './views';
 
@@ -6,9 +7,10 @@ import { isInventoryView, type InventoryView } from './views';
  * Where you were in the Inventory tab, so leaving it and coming back (or reopening the
  * app) lands there again rather than on the newest set's first binder page.
  *
- * Two things are remembered: the place — which set, and Binder, List or Bulk — and, per
- * set, the binder page, the selected card and how far the list was scrolled. Positions are
- * per set so `[`/`]` and swiping between sets also return to where each one was left.
+ * Three things are remembered: the place — which set, and Binder, List or Bulk; per set,
+ * the binder page, the selected card and how far the list was scrolled; and the list's
+ * filters. Positions are per set so `[`/`]` and swiping between sets also return to where
+ * each one was left. Filters are not: they already carry over from set to set.
  *
  * Kept in memory and mirrored to localStorage. Storage is a convenience: without it, the
  * place still holds for as long as the app stays open.
@@ -28,10 +30,12 @@ export type SetPosition = {
 const LAST_SET_KEY = 'inventory:lastSet';
 const LAST_VIEW_KEY = 'inventory:lastView';
 const POSITIONS_KEY = 'inventory:positions';
+const FILTERS_KEY = 'inventory:filters';
 
 let lastSet: SetKey | undefined;
 let lastView: InventoryPlace | undefined;
 let positions: Record<SetKey, SetPosition> | undefined;
+let filters: Filters | undefined;
 let flushTimer: ReturnType<typeof setTimeout> | undefined;
 
 function read(key: string): string | undefined {
@@ -117,11 +121,42 @@ if (typeof document !== 'undefined') {
   window.addEventListener('pagehide', flushPositions);
 }
 
+const stringList = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((item) => typeof item === 'string');
+
+/** The list's filters as last left, with anything unreadable reset to empty. */
+export function readFilters(): Filters {
+  if (filters) return filters;
+  filters = EMPTY_FILTERS;
+  const stored = read(FILTERS_KEY);
+  if (!stored) return filters;
+  try {
+    const parsed = JSON.parse(stored) as Partial<Record<keyof Filters, unknown>>;
+    filters = {
+      aspect: stringList(parsed.aspect) ? parsed.aspect : [],
+      rarity: stringList(parsed.rarity) ? parsed.rarity : [],
+      type: stringList(parsed.type) ? parsed.type : [],
+      status: stringList(parsed.status) ? (parsed.status as Filters['status']) : [],
+      text: typeof parsed.text === 'string' ? parsed.text : '',
+      hideInDecks: parsed.hideInDecks === true,
+    };
+  } catch {
+    // Corrupt: start unfiltered.
+  }
+  return filters;
+}
+
+export function rememberFilters(next: Filters) {
+  filters = next;
+  write(FILTERS_KEY, JSON.stringify(next));
+}
+
 /** Tests only: forget everything held in memory, so the next read goes to storage. */
 export function resetLastPlaceForTests() {
   lastSet = undefined;
   lastView = undefined;
   positions = undefined;
+  filters = undefined;
   if (flushTimer !== undefined) clearTimeout(flushTimer);
   flushTimer = undefined;
 }

@@ -29,7 +29,6 @@ import {
   activeFilterCount,
   buildCardRows,
   collectionTotals,
-  EMPTY_FILTERS,
   missingListSummary,
   missingListText,
   type Filters,
@@ -59,7 +58,12 @@ import { BulkEditDialog } from '~/features/bulk/BulkEditDialog';
 import { ImportDialog } from '~/features/import/ImportDialog';
 import { CardSearch } from '~/features/search/CardSearch';
 import { InventorySubnav } from '~/features/inventory/InventoryNav';
-import { readPosition, rememberPosition } from '~/features/inventory/lastPlace';
+import {
+  readFilters,
+  readPosition,
+  rememberFilters,
+  rememberPosition,
+} from '~/features/inventory/lastPlace';
 import type { InventoryView } from '~/features/inventory/views';
 import { formatUsd } from '~/ui/format';
 import { useToast } from '~/ui/toastContext';
@@ -87,7 +91,12 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   const narrow = useNarrow();
   const showBinder = view === 'binder';
   const moreRef = useRef<HTMLDetailsElement>(null);
-  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
+  const [filters, setFiltersState] = useState<Filters>(readFilters);
+  /** Filters survive leaving the tab: they are kept for the next visit. */
+  const setFilters = useCallback((next: Filters) => {
+    setFiltersState(next);
+    rememberFilters(next);
+  }, []);
   const activeFilters = activeFilterCount(filters);
   const [bulkOpen, setBulkOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);

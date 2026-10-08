@@ -1,9 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { EMPTY_FILTERS } from '~/features/binder/cardRows';
+
 import {
   readLastSet,
   readLastView,
+  readFilters,
   readPosition,
+  rememberFilters,
   rememberPlace,
   rememberPosition,
   resetLastPlaceForTests,
@@ -53,5 +57,22 @@ describe('lastPlace', () => {
   it('starts from the top when the stored positions are corrupt', () => {
     localStorage.setItem('inventory:positions', '{not json');
     expect(readPosition('SOR')).toEqual({});
+  });
+
+  it('keeps the filters, and starts unfiltered when they are unreadable', () => {
+    expect(readFilters()).toEqual(EMPTY_FILTERS);
+
+    rememberFilters({ ...EMPTY_FILTERS, rarity: ['Rare'], text: 'vader', hideInDecks: true });
+    resetLastPlaceForTests();
+    expect(readFilters()).toEqual({
+      ...EMPTY_FILTERS,
+      rarity: ['Rare'],
+      text: 'vader',
+      hideInDecks: true,
+    });
+
+    localStorage.setItem('inventory:filters', JSON.stringify({ rarity: 'Rare', text: 7 }));
+    resetLastPlaceForTests();
+    expect(readFilters()).toEqual(EMPTY_FILTERS);
   });
 });
