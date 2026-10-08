@@ -192,7 +192,12 @@
         },
         {
           "num": "P25-73",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "ESOR-001F",
+            "PSOR-002F",
+            "PSORJ-002F"
+          ]
         }
       ]
     },
@@ -390,7 +395,12 @@
         },
         {
           "num": "P25-74",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "ESOR-002F",
+            "PSOR-001F",
+            "PSORJ-001F"
+          ]
         }
       ]
     },
@@ -1332,6 +1342,10 @@
         {
           "num": "304F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "C24-001F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1418,6 +1432,10 @@
         {
           "num": "306F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J24-1F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1522,6 +1540,10 @@
         {
           "num": "309F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-66F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1778,6 +1800,13 @@
         {
           "num": "315F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-44F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-45F"
+          ]
         }
       ]
     },
@@ -1873,6 +1902,16 @@
         {
           "num": "317F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-173F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-174F",
+            "P25-175F",
+            "P25-176F",
+            "P25-177F"
+          ]
         }
       ]
     },
@@ -1945,6 +1984,10 @@
         {
           "num": "SOROP-008",
           "variant": "promo"
+        },
+        {
+          "num": "SOROP-008F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2131,6 +2174,13 @@
         {
           "num": "323F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-119F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-131F"
+          ]
         }
       ]
     },
@@ -2813,6 +2863,13 @@
         {
           "num": "342F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SS1-1F",
+          "variant": "promo-foil",
+          "aliases": [
+            "SS1J-1F"
+          ]
         }
       ]
     },
@@ -3075,6 +3132,10 @@
         {
           "num": "SOROP-006",
           "variant": "promo"
+        },
+        {
+          "num": "SOROP-006F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3209,6 +3270,18 @@
         {
           "num": "351F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-103F",
+          "variant": "promo-foil",
+          "aliases": [
+            "C24-002F",
+            "P25-113F",
+            "P25-114F",
+            "P25-115F",
+            "P25-116F",
+            "P25-117F"
+          ]
         }
       ]
     },
@@ -3521,6 +3594,10 @@
         {
           "num": "359F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-001F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3607,6 +3684,10 @@
         {
           "num": "361F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-39F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3992,6 +4073,13 @@
         {
           "num": "371F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-122F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-134F"
+          ]
         }
       ]
     },
@@ -4305,6 +4393,10 @@
         {
           "num": "379F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-40F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5069,6 +5161,14 @@
         {
           "num": "399F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-57F",
+          "variant": "promo-foil",
+          "aliases": [
+            "C24-003F",
+            "P25-58F"
+          ]
         }
       ]
     },
@@ -5099,6 +5199,10 @@
         {
           "num": "SOROP-004",
           "variant": "promo"
+        },
+        {
+          "num": "SOROP-004F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5285,6 +5389,10 @@
         {
           "num": "404F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-002F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5420,6 +5528,10 @@
         {
           "num": "407F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-41F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5465,6 +5577,10 @@
         {
           "num": "408F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J24-2F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -5639,6 +5755,15 @@
         {
           "num": "412F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SS1-2-4F",
+          "variant": "promo-foil",
+          "aliases": [
+            "SS1-2-8F",
+            "SS1-2-CF",
+            "SS1-2-FF"
+          ]
         }
       ]
     },
@@ -5851,6 +5976,13 @@
         {
           "num": "418F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-126F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-138F"
+          ]
         }
       ]
     },
@@ -6930,6 +7062,10 @@
         {
           "num": "447F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-55F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7113,6 +7249,10 @@
         {
           "num": "SOROP-011",
           "variant": "promo"
+        },
+        {
+          "num": "SOROP-011F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7279,6 +7419,10 @@
         {
           "num": "455F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-92F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7402,6 +7546,10 @@
         {
           "num": "458F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-42F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7487,6 +7635,10 @@
         {
           "num": "460F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-43F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7672,6 +7824,13 @@
         {
           "num": "465F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-130F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-142F"
+          ]
         }
       ]
     },
@@ -8355,6 +8514,10 @@
         {
           "num": "484F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "SOROP-003F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -8489,6 +8652,10 @@
         {
           "num": "SOROP-007",
           "variant": "promo"
+        },
+        {
+          "num": "SOROP-007F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -8753,6 +8920,10 @@
         {
           "num": "SOROP-005",
           "variant": "promo"
+        },
+        {
+          "num": "SOROP-005F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -8850,6 +9021,10 @@
         {
           "num": "SOROP-010",
           "variant": "promo"
+        },
+        {
+          "num": "SOROP-010F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -8920,6 +9095,10 @@
         {
           "num": "SOROP-009",
           "variant": "promo"
+        },
+        {
+          "num": "SOROP-009F",
+          "variant": "promo-foil"
         }
       ]
     },

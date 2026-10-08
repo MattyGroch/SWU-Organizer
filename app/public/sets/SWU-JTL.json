@@ -735,6 +735,10 @@
         {
           "num": "P25-97",
           "variant": "promo"
+        },
+        {
+          "num": "P25-97F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -811,6 +815,10 @@
         {
           "num": "P25-98",
           "variant": "promo"
+        },
+        {
+          "num": "P25-98F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -896,6 +904,10 @@
         {
           "num": "P25-99",
           "variant": "promo"
+        },
+        {
+          "num": "P25-99F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -993,6 +1005,10 @@
         {
           "num": "P25-100",
           "variant": "promo"
+        },
+        {
+          "num": "P25-100F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -1071,7 +1087,11 @@
         },
         {
           "num": "JTLOP-21",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-01F",
+            "P25-65F"
+          ]
         }
       ]
     },
@@ -1119,7 +1139,10 @@
         },
         {
           "num": "JTLOP-22",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-02F"
+          ]
         }
       ]
     },
@@ -1649,7 +1672,10 @@
         },
         {
           "num": "JTLOP-23",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-03F"
+          ]
         }
       ]
     },
@@ -1780,7 +1806,10 @@
         },
         {
           "num": "JTLOP-24",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-04F"
+          ]
         }
       ]
     },
@@ -1827,6 +1856,10 @@
         {
           "num": "783",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "C25-1F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2012,6 +2045,13 @@
         {
           "num": "787",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J25-1F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-86F"
+          ]
         },
         {
           "num": "1020",
@@ -3253,6 +3293,13 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P25-154F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-164F"
+          ]
+        },
+        {
           "num": "1023",
           "variant": "prestige"
         },
@@ -3433,6 +3480,10 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P25-78F",
+          "variant": "promo-foil"
+        },
+        {
           "num": "1024",
           "variant": "prestige"
         },
@@ -3489,6 +3540,10 @@
         {
           "num": "824",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-88F",
+          "variant": "promo-foil"
         },
         {
           "num": "1025",
@@ -3657,6 +3712,13 @@
         {
           "num": "828",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J25-4F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-89F"
+          ]
         }
       ]
     },
@@ -3798,7 +3860,10 @@
         },
         {
           "num": "JTLOP-25",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-05F"
+          ]
         }
       ]
     },
@@ -3929,7 +3994,11 @@
         },
         {
           "num": "JTLOP-26",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-06F",
+            "P25-90F"
+          ]
         }
       ]
     },
@@ -4076,7 +4145,11 @@
         },
         {
           "num": "JTLOP-27",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-07F",
+            "P25-68F"
+          ]
         }
       ]
     },
@@ -5240,7 +5313,10 @@
         },
         {
           "num": "JTLOP-28",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-08F"
+          ]
         }
       ]
     },
@@ -5509,6 +5585,15 @@
           "variant": "hyperspace-foil"
         },
         {
+          "num": "P26-43F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-124F",
+            "P25-136F",
+            "P26-55F"
+          ]
+        },
+        {
           "num": "1031",
           "variant": "prestige"
         },
@@ -5569,7 +5654,10 @@
         },
         {
           "num": "JTLOP-29",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-09F"
+          ]
         }
       ]
     },
@@ -5621,6 +5709,14 @@
         {
           "num": "876",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J25-6F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-171F",
+            "P25-172F"
+          ]
         }
       ]
     },
@@ -5672,6 +5768,15 @@
         {
           "num": "877",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-03F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-04F",
+            "P25-05F",
+            "P25-06F"
+          ]
         },
         {
           "num": "1032",
@@ -5769,7 +5874,11 @@
         },
         {
           "num": "JTLOP-30",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "C25-2F",
+            "JTLOP-10F"
+          ]
         }
       ]
     },
@@ -5861,6 +5970,17 @@
         {
           "num": "881",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-76F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-07F",
+            "P25-08F",
+            "P25-157F",
+            "P25-167F",
+            "P26-92F"
+          ]
         },
         {
           "num": "1033",
@@ -5961,7 +6081,10 @@
         },
         {
           "num": "JTLOP-31",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-11F"
+          ]
         }
       ]
     },
@@ -6052,7 +6175,10 @@
         },
         {
           "num": "JTLOP-32",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-12F"
+          ]
         },
         {
           "num": "1034",
@@ -6194,6 +6320,13 @@
         {
           "num": "888",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-159F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-169F"
+          ]
         },
         {
           "num": "1035",
@@ -6475,7 +6608,10 @@
         },
         {
           "num": "JTLOP-33",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-13F"
+          ]
         }
       ]
     },
@@ -7046,7 +7182,10 @@
         },
         {
           "num": "JTLOP-34",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-14F"
+          ]
         }
       ]
     },
@@ -7216,6 +7355,15 @@
         {
           "num": "915",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-45F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-127F",
+            "P25-139F",
+            "P26-57F"
+          ]
         }
       ]
     },
@@ -7507,6 +7655,13 @@
         {
           "num": "921",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-01F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-02F"
+          ]
         }
       ]
     },
@@ -7600,7 +7755,11 @@
         },
         {
           "num": "JTLOP-35",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-15F",
+            "P25-82F"
+          ]
         }
       ]
     },
@@ -7917,7 +8076,10 @@
         },
         {
           "num": "JTLOP-36",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-16F"
+          ]
         }
       ]
     },
@@ -8117,6 +8279,16 @@
         {
           "num": "935",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-78F",
+          "variant": "promo-foil",
+          "aliases": [
+            "J25-8F",
+            "P25-160F",
+            "P25-170F",
+            "P26-94F"
+          ]
         }
       ]
     },
@@ -8208,7 +8380,11 @@
         },
         {
           "num": "JTLOP-37",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-17F",
+            "P25-93F"
+          ]
         }
       ]
     },
@@ -8260,6 +8436,15 @@
         {
           "num": "938",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-09F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-10F",
+            "P25-11F",
+            "P25-12F"
+          ]
         },
         {
           "num": "1043",
@@ -9625,7 +9810,10 @@
         },
         {
           "num": "JTLOP-38",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-18F"
+          ]
         },
         {
           "num": "1046",
@@ -9846,6 +10034,10 @@
         {
           "num": "979",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "C25-3F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -10010,7 +10202,10 @@
         },
         {
           "num": "JTLOP-39",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-19F"
+          ]
         },
         {
           "num": "1048",
@@ -10072,6 +10267,13 @@
         {
           "num": "984",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P26-101F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-85F"
+          ]
         },
         {
           "num": "1049",
@@ -10322,7 +10524,10 @@
         },
         {
           "num": "JTLOP-40",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "JTLOP-20F"
+          ]
         }
       ]
     },

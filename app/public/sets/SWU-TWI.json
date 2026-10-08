@@ -423,6 +423,13 @@
           ]
         },
         {
+          "num": "PTWIJ-001F",
+          "variant": "promo-foil",
+          "aliases": [
+            "PTWI-001F"
+          ]
+        },
+        {
           "num": "268",
           "variant": "showcase"
         }
@@ -578,6 +585,13 @@
           "variant": "promo",
           "aliases": [
             "PTWI-002"
+          ]
+        },
+        {
+          "num": "PTWIJ-002F",
+          "variant": "promo-foil",
+          "aliases": [
+            "PTWI-002F"
           ]
         },
         {
@@ -1276,6 +1290,10 @@
         {
           "num": "310F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-02F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2332,6 +2350,10 @@
         {
           "num": "337F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J25-2F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2555,6 +2577,10 @@
         {
           "num": "343F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIOP-01F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -2915,6 +2941,10 @@
         {
           "num": "353F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J25-3F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3026,6 +3056,10 @@
         {
           "num": "TWIOP-10",
           "variant": "promo"
+        },
+        {
+          "num": "TWIOP-10F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -3591,6 +3625,10 @@
         {
           "num": "TWIOP-09",
           "variant": "promo"
+        },
+        {
+          "num": "TWIOP-09F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4385,6 +4423,15 @@
         {
           "num": "388F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWISS-2-4F",
+          "variant": "promo-foil",
+          "aliases": [
+            "TWISS-2-8F",
+            "TWISS-2-CF",
+            "TWISS-2-FF"
+          ]
         }
       ]
     },
@@ -4496,6 +4543,13 @@
         {
           "num": "391F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-156F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-166F"
+          ]
         }
       ]
     },
@@ -4936,6 +4990,10 @@
         {
           "num": "402F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "C24-005F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -4985,6 +5043,14 @@
         {
           "num": "403F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J25-5F",
+          "variant": "promo-foil",
+          "aliases": [
+            "C24-006F",
+            "P25-91F"
+          ]
         }
       ]
     },
@@ -5075,6 +5141,13 @@
         {
           "num": "405F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWISSJ-1F",
+          "variant": "promo-foil",
+          "aliases": [
+            "TWISS-1F"
+          ]
         }
       ]
     },
@@ -5124,6 +5197,13 @@
         {
           "num": "406F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J25-7F",
+          "variant": "promo-foil",
+          "aliases": [
+            "P25-53F"
+          ]
         }
       ]
     },
@@ -5469,6 +5549,10 @@
         {
           "num": "TWIOP-08",
           "variant": "promo"
+        },
+        {
+          "num": "TWIOP-08F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6170,6 +6254,10 @@
         {
           "num": "432F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-54F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -6677,6 +6765,10 @@
         {
           "num": "TWIOP-07",
           "variant": "promo"
+        },
+        {
+          "num": "TWIOP-07F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7029,6 +7121,10 @@
         {
           "num": "454F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-56F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7239,6 +7335,10 @@
         {
           "num": "459F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "P25-83F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -7407,6 +7507,10 @@
         {
           "num": "463F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "J25-9F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -8527,6 +8631,10 @@
         {
           "num": "TWIOP-05",
           "variant": "promo"
+        },
+        {
+          "num": "TWIOP-05F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -8729,6 +8837,13 @@
         {
           "num": "497F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIPQ-1F",
+          "variant": "promo-foil",
+          "aliases": [
+            "TWIPQJ-1F"
+          ]
         }
       ]
     },
@@ -8803,6 +8918,10 @@
         {
           "num": "TWIOP-06",
           "variant": "promo"
+        },
+        {
+          "num": "TWIOP-06F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -8930,6 +9049,10 @@
         {
           "num": "TWIOP-04",
           "variant": "promo"
+        },
+        {
+          "num": "TWIOP-04F",
+          "variant": "promo-foil"
         }
       ]
     },
@@ -9175,6 +9298,16 @@
         {
           "num": "507F",
           "variant": "hyperspace-foil"
+        },
+        {
+          "num": "TWIPQ-2-16F",
+          "variant": "promo-foil",
+          "aliases": [
+            "TWIPQ-2-4F",
+            "TWIPQ-2-8F",
+            "TWIPQ-2-CF",
+            "TWIPQ-2-FF"
+          ]
         }
       ]
     },
@@ -9243,6 +9376,10 @@
         {
           "num": "TWIOP-03",
           "variant": "promo"
+        },
+        {
+          "num": "TWIOP-03F",
+          "variant": "promo-foil"
         }
       ]
     },
