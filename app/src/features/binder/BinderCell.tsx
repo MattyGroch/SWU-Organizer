@@ -138,7 +138,10 @@ export function BinderCell({
         {/* A corner badge rather than part of the count: in the bottom row it widened the
             pill enough to push the rarity badge off the card on a phone. */}
         {inDecks > 0 && (
-          <span className={styles.inDecks} title={`${inDecks} missing from this pocket, out in built decks`}>
+          <span
+            className={styles.inDecks}
+            title={`${inDecks} missing from this pocket, out in built decks`}
+          >
             ⇢{inDecks}
           </span>
         )}
