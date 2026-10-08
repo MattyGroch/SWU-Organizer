@@ -26,6 +26,7 @@ import type { SearchCatalog, SearchSuggestion } from '~/domain/search';
 import { AddToBulkDialog } from './AddToBulkDialog';
 import { BinderGrid } from './BinderGrid';
 import {
+  activeFilterCount,
   buildCardRows,
   collectionTotals,
   EMPTY_FILTERS,
@@ -37,6 +38,7 @@ import { CardTable } from './CardTable';
 import { CollectionProgress } from './CollectionProgress';
 import { FilterBar } from './FilterBar';
 import { SelectedCardPanel } from './SelectedCardPanel';
+import { BuyListDialog } from './BuyListDialog';
 import { SetVisibility } from './SetVisibility';
 import { ShortcutsDialog } from './ShortcutsDialog';
 import { SpreadPager } from './SpreadPager';
@@ -49,7 +51,7 @@ import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
 import { BulkEditDialog } from '~/features/bulk/BulkEditDialog';
 import { ImportDialog } from '~/features/import/ImportDialog';
 import { CardSearch } from '~/features/search/CardSearch';
-import { InventoryNav } from '~/features/inventory/InventoryNav';
+import { InventorySubnav } from '~/features/inventory/InventoryNav';
 import type { InventoryView } from '~/features/inventory/views';
 import { formatUsd } from '~/ui/format';
 import { useToast } from '~/ui/toastContext';
@@ -78,10 +80,14 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   const showBinder = view === 'binder';
   const moreRef = useRef<HTMLDetailsElement>(null);
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
-  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle');
+  const activeFilters = activeFilterCount(filters);
   const [bulkOpen, setBulkOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
+  const [hideSetsOpen, setHideSetsOpen] = useState(false);
+  const [buyListOpen, setBuyListOpen] = useState(false);
+  /** The filter panel, opened from the funnel: open to start with on desktop, where it fits. */
+  const [filtersOpen, setFiltersOpen] = useState(() => !narrow);
   /** A copy refused by a full pocket, waiting for confirmation to go in the bulk box. */
   const [pendingBulk, setPendingBulk] = useState<{ card: Card; printing: Printing } | null>(null);
   const hasQueryRef = useRef(false);
@@ -385,42 +391,12 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [binder, goToSet, adjustDefault, adjustVariant, fillSelectedPlayset, clearSelectedSlot]);
 
-  async function copyMissing(mode: 'fullNeeded' | 'oneEach') {
-    const text = missingListText(rows, set.setKey, mode);
-    if (!text) return;
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopyState('copied');
-    } catch {
-      setCopyState('failed');
-    }
-    window.setTimeout(() => setCopyState('idle'), 2400);
-  }
-
-  /** Copy-for-TCGplayer buttons and value totals: beside the progress on desktop, in More on a phone. */
-  const copyButtons = (
-    <div className={styles.copyGroup} role="group" aria-label="Copy for TCGplayer mass entry">
-      <button
-        type="button"
-        className={styles.action}
-        disabled={toOrder.cards === 0}
-        onClick={() => copyMissing('fullNeeded')}
-        title="Every copy still needed for the cards shown, in TCGplayer mass-entry format"
-      >
-        Copy full need{toOrder.cards > 0 && ` (${toOrder.copies})`}
+  /** Copy buy list: beside the progress on desktop, in More on a phone. */
+  const buyListButton = (onClick: () => void) => (
+    <div className={styles.copyGroup}>
+      <button type="button" className={styles.action} onClick={onClick}>
+        Copy buy list
       </button>
-      <button
-        type="button"
-        className={styles.action}
-        disabled={toOrder.cards === 0}
-        onClick={() => copyMissing('oneEach')}
-        title="One copy of each card shown that is still needed"
-      >
-        Copy 1 each{toOrder.cards > 0 && ` (${toOrder.cards})`}
-      </button>
-      <span role="status" className={styles.copyStatus}>
-        {copyState === 'copied' ? 'Copied' : copyState === 'failed' ? 'Copy failed' : ''}
-      </span>
     </div>
   );
   const totalsList = (
@@ -444,6 +420,34 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     />
   );
 
+  const hideSetsButton = (onClick: () => void) => (
+    <button type="button" className={styles.action} onClick={onClick}>
+      Hide sets
+      {hidden.size > 0 && <span className={styles.badge}>{hidden.size} hidden</span>}
+    </button>
+  );
+
+  const setSelect = (
+    <select
+      className={styles.setSelect}
+      aria-label="Card set"
+      value={set.setKey}
+      onChange={(event) =>
+        navigate({
+          to: '/inventory/$setKey/$view',
+          params: { setKey: event.target.value, view },
+          search: {},
+        })
+      }
+    >
+      {visibleEntries.map((entry) => (
+        <option key={entry.key} value={entry.key}>
+          {entry.label}
+        </option>
+      ))}
+    </select>
+  );
+
   /** Run a More-menu action and fold the menu away. */
   function fromMore(action: () => void) {
     if (moreRef.current) moreRef.current.open = false;
@@ -453,29 +457,36 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   return (
     <div className={styles.page}>
       <div className={styles.toolbar}>
-        <InventoryNav setKey={set.setKey} current={view} />
-
-        <label className={styles.setPicker}>
-          <span className="visually-hidden">Card set</span>
-          <select
-            value={set.setKey}
-            onChange={(event) =>
-              navigate({
-                to: '/inventory/$setKey/$view',
-                params: { setKey: event.target.value, view },
-                search: {},
-              })
-            }
-          >
-            {visibleEntries.map((entry) => (
-              <option key={entry.key} value={entry.key}>
-                {entry.label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <SetVisibility entries={entries} hidden={hidden} />
+        <InventorySubnav setKey={set.setKey} current={view}>
+          {/* The set's name, with a step either way. The picker lies invisibly over the
+              name, so clicking the name opens it. */}
+          <div className={styles.setHeader}>
+            <button
+              type="button"
+              className={styles.setStep}
+              aria-label="Previous set"
+              title="Previous set — ["
+              disabled={visibleEntries.length < 2}
+              onClick={() => goToSet(-1)}
+            >
+              ‹
+            </button>
+            <label className={styles.setTitle}>
+              <span aria-hidden="true">{set.label}</span>
+              {setSelect}
+            </label>
+            <button
+              type="button"
+              className={styles.setStep}
+              aria-label="Next set"
+              title="Next set — ]"
+              disabled={visibleEntries.length < 2}
+              onClick={() => goToSet(1)}
+            >
+              ›
+            </button>
+          </div>
+        </InventorySubnav>
 
         <CardSearch
           catalogs={searchCatalogs}
@@ -488,57 +499,94 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
           wideResults
         />
 
-        {narrow ? (
-          <>
-            {!showBinder && (
-              <FilterBar filters={filters} onChange={setFilters} className={styles.inlineFilters} />
+        {!showBinder && (
+          <button
+            type="button"
+            className={styles.filterButton}
+            aria-expanded={filtersOpen}
+            aria-label={activeFilters > 0 ? `Filters, ${activeFilters} active` : 'Filters'}
+            title="Filters"
+            onClick={() => setFiltersOpen((open) => !open)}
+          >
+            <FunnelIcon />
+            {activeFilters > 0 && <span className={styles.filterCount}>{activeFilters}</span>}
+          </button>
+        )}
+
+        {!narrow && (
+          <button type="button" className={styles.action} onClick={() => setBulkOpen(true)}>
+            Bulk edit
+          </button>
+        )}
+
+        <details className={styles.more} ref={moreRef}>
+          <summary
+            className={styles.moreSummary}
+            aria-label={
+              narrow
+                ? 'More: hide sets, bulk edit, import, copy'
+                : 'More: hide sets, shortcuts, import'
+            }
+          >
+            ⋯
+          </summary>
+          <div className={styles.morePanel}>
+            {hideSetsButton(() => fromMore(() => setHideSetsOpen(true)))}
+            {narrow ? (
+              <button
+                type="button"
+                className={styles.action}
+                onClick={() => fromMore(() => setBulkOpen(true))}
+              >
+                Bulk edit
+              </button>
+            ) : (
+              <button
+                type="button"
+                className={styles.action}
+                onClick={() => fromMore(() => setHelpOpen(true))}
+                aria-keyshortcuts="Shift+?"
+              >
+                Keyboard shortcuts
+                <span className={styles.badge}>?</span>
+              </button>
             )}
-            <details className={styles.more} ref={moreRef}>
-              <summary className={styles.moreSummary} aria-label="More: bulk edit, import, copy">
-                ⋯
-              </summary>
-              <div className={styles.morePanel}>
-                <button
-                  type="button"
-                  className={styles.action}
-                  onClick={() => fromMore(() => setBulkOpen(true))}
-                >
-                  Bulk edit
-                </button>
-                <button
-                  type="button"
-                  className={styles.action}
-                  onClick={() => fromMore(() => setImportOpen(true))}
-                >
-                  Import / export
-                </button>
-                {copyButtons}
-                {totalsList}
-              </div>
-            </details>
-          </>
-        ) : (
-          <>
-            <button type="button" className={styles.action} onClick={() => setBulkOpen(true)}>
-              Bulk edit
-            </button>
             <button
               type="button"
-              className={`${styles.action} ${styles.keyboardOnly}`}
-              onClick={() => setHelpOpen(true)}
-              title="Keyboard shortcuts — ?"
-              aria-keyshortcuts="Shift+?"
+              className={styles.action}
+              onClick={() => fromMore(() => setImportOpen(true))}
             >
-              Shortcuts
-            </button>
-            <button type="button" className={styles.action} onClick={() => setImportOpen(true)}>
               Import / export
             </button>
-          </>
+            {/* Beside the progress bar on desktop. */}
+            {narrow && buyListButton(() => fromMore(() => setBuyListOpen(true)))}
+            {narrow && totalsList}
+          </div>
+        </details>
+
+        {/* Phones: opened, the filters take a full row under search, the funnel and ⋯. */}
+        {narrow && !showBinder && filtersOpen && (
+          <FilterBar
+            filters={filters}
+            onChange={setFilters}
+            className={styles.inlineFilters}
+            bare
+          />
         )}
       </div>
 
       {helpOpen && <ShortcutsDialog onClose={() => setHelpOpen(false)} />}
+      {buyListOpen && (
+        <BuyListDialog
+          copies={toOrder.copies}
+          cards={toOrder.cards}
+          listText={(mode) => missingListText(rows, set.setKey, mode)}
+          onClose={() => setBuyListOpen(false)}
+        />
+      )}
+      {hideSetsOpen && (
+        <SetVisibility entries={entries} hidden={hidden} onClose={() => setHideSetsOpen(false)} />
+      )}
       {bulkOpen && (
         <BulkEditDialog
           set={set}
@@ -640,7 +688,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
         </div>
       ) : (
         <>
-          {!narrow && <FilterBar filters={filters} onChange={setFilters} />}
+          {!narrow && filtersOpen && <FilterBar filters={filters} onChange={setFilters} bare />}
 
           {narrow ? (
             <div className={styles.progressSlot}>
@@ -648,7 +696,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
             </div>
           ) : (
             <div className={styles.listHeader}>
-              {copyButtons}
+              {buyListButton(() => setBuyListOpen(true))}
 
               <div className={styles.progressSlot}>
                 <CollectionProgress totals={totals} />
@@ -674,5 +722,20 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
         </>
       )}
     </div>
+  );
+}
+
+/** The usual funnel, for the phone's filter button. */
+function FunnelIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+      <path
+        d="M3 4h18l-7 8.5V19l-4 2v-8.5L3 4z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

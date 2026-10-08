@@ -186,3 +186,8 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* Bare (no summary above it): the groups need their own top padding. */
+.panel > .bar:first-child {
+  padding-top: var(--space-3);
+}

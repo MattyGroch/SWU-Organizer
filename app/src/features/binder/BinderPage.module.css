@@ -20,14 +20,6 @@
   background: var(--set-accent, transparent);
 }
 
-.setPicker select {
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface-sunken);
-  font-size: var(--font-size-sm);
-}
-
 /*
  * Copy buttons | progress | totals. The two outer columns share the leftover space
  * equally, so the progress bar sits centred over the table rather than just centred in
@@ -78,11 +70,6 @@
 .action:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.copyStatus {
-  color: var(--color-success-fg);
-  font-size: var(--font-size-xs);
 }
 
 .totals {
@@ -140,22 +127,8 @@
  * of the screen so they stay reachable while scrolling the table.
  */
 @media (max-width: 760px) {
-  .keyboardOnly {
-    display: none;
-  }
-
   .binderArea {
     gap: var(--space-2);
-  }
-
-  /* The set picker shares its row with the Sets button instead of taking one alone. */
-  .setPicker {
-    flex: 1 1 10rem;
-    min-width: 0;
-  }
-
-  .setPicker select {
-    width: 100%;
   }
 
   /* Placed last in the column so `sticky; bottom` pins it while the table scrolls by. */
@@ -178,14 +151,9 @@
     gap: var(--space-2);
   }
 
-  /* Filters sit beside the search box while folded, and take a full row when opened. */
+  /* Opened from the funnel: a full row under search, the funnel and ⋯. */
   .inlineFilters {
-    flex: 0 0 auto;
-  }
-
-  .inlineFilters[open] {
-    flex-basis: 100%;
-    order: 1;
+    flex: 0 0 100%;
   }
 
   .progressSlot {
@@ -244,7 +212,134 @@
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
 }
 
+.badge {
+  margin-left: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+/* Desktop: a dropdown under the ⋯ button, at its right edge. */
+@media (min-width: 761px) {
+  .more {
+    position: relative;
+  }
+
+  .moreSummary {
+    height: auto;
+  }
+
+  .morePanel {
+    right: 0;
+    left: auto;
+    width: 260px;
+  }
+}
+
 .morePanel .copyGroup {
   flex-direction: column;
   align-items: stretch;
+}
+
+/* The set's name with a step either way, centred in the sub-nav strip. */
+.setHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-2);
+}
+
+.setStep {
+  flex: none;
+  width: 44px;
+  height: 40px;
+  border: none;
+  background: none;
+  color: var(--color-text-subtle);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.setStep:disabled {
+  opacity: 0.3;
+}
+
+/* The name, in the deck view's role-label caps; the picker sits invisibly on top of it. */
+.setTitle {
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: 0 var(--space-2);
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.setTitle::after {
+  content: ' ▾';
+  color: var(--color-text-muted);
+  font-size: 0.8em;
+}
+
+.setSelect {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.filterButton {
+  composes: ui-btn from global;
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 40px;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  cursor: pointer;
+}
+
+.filterButton[aria-expanded='true'] {
+  --edge: var(--hud);
+  color: var(--color-text);
+}
+
+.filterCount {
+  margin-left: 4px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--color-focus);
+  color: #ffffff;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+/* Phones (after the rules above, which it adjusts). */
+@media (max-width: 760px) {
+  /* The chevrons go to the screen's edges; the name takes the room between. */
+  .setHeader {
+    justify-content: space-between;
+  }
+
+  /* A long name ("Twilight of the Republic (TWI)") wraps to a second line, not cut off. */
+  .setTitle {
+    flex: 1;
+    font-size: var(--font-size-sm);
+    letter-spacing: 0.05em;
+    line-height: 1.25;
+    white-space: normal;
+  }
 }

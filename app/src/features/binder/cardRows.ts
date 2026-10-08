@@ -239,3 +239,15 @@ export function missingListText(
     .map((row) => formatMissingLine(row, setKey, mode === 'oneEach' ? 1 : row.needed))
     .join('\n');
 }
+
+/** How many filters are on: each chip, the text box and Hide in decks count one. */
+export function activeFilterCount(filters: Filters): number {
+  return (
+    filters.aspect.length +
+    filters.rarity.length +
+    filters.type.length +
+    filters.status.length +
+    (filters.text.trim() ? 1 : 0) +
+    (filters.hideInDecks ? 1 : 0)
+  );
+}
