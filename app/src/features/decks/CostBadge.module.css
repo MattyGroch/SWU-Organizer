@@ -1,10 +1,13 @@
-/* Sized in em, so the badge scales with the row's text. 88×96 art. */
+/*
+ * Sized in em, so the badge scales with the row's text. A row can set --icon-size to
+ * match its aspect icons; the art is 88×96.
+ */
 .badge,
 .none,
 .text {
   flex: none;
-  width: 1.65em;
-  height: 1.8em;
+  width: calc(var(--icon-size, 1.8em) * 0.917);
+  height: var(--icon-size, 1.8em);
 }
 
 .badge {
@@ -14,7 +17,7 @@
 
 .text {
   font-weight: 700;
-  line-height: 1.8em;
+  line-height: var(--icon-size, 1.8em);
   text-align: center;
   font-variant-numeric: tabular-nums;
 }

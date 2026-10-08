@@ -23,6 +23,6 @@
 }
 
 .stats .badge {
-  width: 1.9em;
-  height: 1.9em;
+  width: var(--icon-size, 1.9em);
+  height: var(--icon-size, 1.9em);
 }
