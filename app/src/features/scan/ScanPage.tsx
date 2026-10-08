@@ -2,10 +2,12 @@ import { Link } from '@tanstack/react-router';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
+import { DEFAULT_HIDDEN_SETS, useHiddenSets } from '~/data/binderSettings';
 import { db } from '~/data/db';
 import { queueScan, sourcePrinting, unqueueScan, type ScanReceipt } from '~/data/intake';
+import { quickAdd, undoQuickAdd, type QuickAdded } from '~/data/quickAdd';
 import { dropScan, logScan, updateScan } from '~/data/stacks';
-import { binderLayout } from '~/domain/binder';
+import { binderLayout, pageSide } from '~/domain/binder';
 import {
   artNumber,
   artUrl,
@@ -17,10 +19,11 @@ import {
   type LoadedSet,
   type VariantSlug,
 } from '~/domain/catalog';
-import type { PocketRoom } from '~/domain/ownership';
+import { quotaForCard, type PocketRoom } from '~/domain/ownership';
 import { cardLead, type Match, type ScanEntry as IndexEntry } from '~/domain/scan/index';
 import type { SearchSuggestion } from '~/domain/search';
 import type { SetKey } from '~/domain/types';
+import { Pocket } from '~/features/putAway/Pocket';
 import { CardSearch } from '~/features/search/CardSearch';
 import { useToast } from '~/ui/toastContext';
 
@@ -32,10 +35,20 @@ import { useScanIndex } from './useScanIndex';
 import { useScanner, type ScanResult } from './useScanner';
 
 /**
- * `add` queues loose cards for the binder; `deck` queues a built deck, kept apart in its own
- * batch with no stack to put away; `info` only looks cards up.
+ * `add` (Bulk Scan) queues loose cards for the binder; `deck` (Deck Scan) queues a built
+ * deck, kept apart in its own batch with no stack to put away; `info` (Quick Scan) looks
+ * cards up, and adds one straight to the collection with no Intake, saying where it goes —
+ * for a single booster.
  */
 type Mode = 'info' | 'add' | 'deck';
+
+const MODES: readonly Mode[] = ['info', 'add', 'deck'];
+
+const MODE_LABEL: Record<Mode, string> = {
+  info: 'Quick Scan',
+  add: 'Bulk Scan',
+  deck: 'Deck Scan',
+};
 
 /**
  * How far ahead of every other card the winner must be (in score points) to be added
@@ -66,6 +79,8 @@ type Item = {
   room: PocketRoom | null;
   /** This scan's card in the scanned stack (Add mode), so putting away knows its place. */
   stackCardId: string | null;
+  /** Look up mode: added straight to the collection, and where it goes. */
+  added: QuickAdded | null;
 };
 
 const cardKey = (p: { setKey: string; base: number }) => `${p.setKey}:${p.base}`;
@@ -90,7 +105,22 @@ function cardsIn(matches: Match[]): Match[] {
 export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const camera = useCamera();
   const index = useScanIndex();
-  const [mode, setMode] = useState<Mode>('add');
+  /** Remembered on the device, like Foils: a booster opener goes back to Look up. */
+  const [mode, setMode] = useState<Mode>(() => {
+    try {
+      const saved = localStorage.getItem('scan.mode');
+      return MODES.find((m) => m === saved) ?? 'add';
+    } catch {
+      return 'add';
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem('scan.mode', mode);
+    } catch {
+      // private mode: the setting lasts for this visit
+    }
+  }, [mode]);
   /**
    * Foils mode: every scan is recorded on foil stock, for running a stack of foils
    * through. The camera can't tell foil, so this is the user's say — remembered on the
@@ -111,7 +141,8 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     }
   }, [foils]);
   const foilsRef = useRef(foils);
-  foilsRef.current = foils;
+  // Only Bulk Scan has the switch; elsewhere each card's printing is set on its own.
+  foilsRef.current = foils && mode === 'add';
   const [items, setItems] = useState<Item[]>([]);
   /** The latest items, for the scanner's callback (which outlives a render). */
   const itemsRef = useRef(items);
@@ -155,6 +186,15 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       const x = sets.get(a.setKey)?.byNumber.get(a.base);
       const y = sets.get(b.setKey)?.byNumber.get(b.base);
       return Boolean(x && y && x.Name === y.Name && (x.Subtitle ?? '') === (y.Subtitle ?? ''));
+    },
+    [sets],
+  );
+
+  /** How many copies of the card the binder holds: a playset, or one leader or base. */
+  const quotaOf = useCallback(
+    (p: { setKey: string; base: number }) => {
+      const card = sets.get(p.setKey)?.byNumber.get(p.base);
+      return card ? quotaForCard({ type: card.Type, maxCopies: card.MaxCopies }) : Infinity;
     },
     [sets],
   );
@@ -254,7 +294,10 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       }
       setCleared(false);
       setItems((current) =>
-        [{ id, result, chosen, question, ...placed, stackCardId }, ...current].slice(0, 8),
+        [{ id, result, chosen, question, ...placed, stackCardId, added: null }, ...current].slice(
+          0,
+          8,
+        ),
       );
     },
     [asFound, mode, nameOf, place, queuing, sameCard, sets],
@@ -308,6 +351,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
             question: null,
             ...placed,
             stackCardId,
+            added: null,
           },
           ...current,
         ].slice(0, 8),
@@ -336,10 +380,16 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         if (item.receipt) await unqueueScan(item.receipt);
         placed = await place(printing);
       }
+      // Already in the collection: the corrected printing takes its place there.
+      let added = item.added;
+      if (added) {
+        await undoQuickAdd(added);
+        added = await quickAdd(printing, quotaOf(printing));
+      }
       // The screen first, as soon as Intake has it; the stack is brought into line after.
       setItems((current) =>
         current.map((i) =>
-          i.id === item.id ? { ...i, chosen: printing, question: null, ...placed } : i,
+          i.id === item.id ? { ...i, chosen: printing, question: null, ...placed, added } : i,
         ),
       );
       if (mode !== 'add') return;
@@ -354,7 +404,18 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         setItems((current) => current.map((i) => (i.id === item.id ? { ...i, stackCardId } : i)));
       }
     },
-    [asFound, mode, place, queuing, sets],
+    [asFound, mode, place, queuing, quotaOf, sets],
+  );
+
+  /** Look up mode: the scan, as it stands, straight into the collection. */
+  const addNow = useCallback(
+    async (item: Item) => {
+      if (item.added || item.question) return;
+      const added = await quickAdd(item.chosen, quotaOf(item.chosen));
+      navigator.vibrate?.(40);
+      setItems((current) => current.map((i) => (i.id === item.id ? { ...i, added } : i)));
+    },
+    [quotaOf],
   );
 
   /** The latest scan on the other stock — one tap instead of the Correct menu. */
@@ -371,6 +432,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       // The stack first: the screen updates as soon as Intake does, as before the stack.
       if (item.stackCardId) await dropScan(item.stackCardId);
       if (item.receipt) await unqueueScan(item.receipt);
+      if (item.added) await undoQuickAdd(item.added);
       setItems((current) => current.filter((i) => i.id !== item.id));
       if (again) {
         setCleared(true);
@@ -381,39 +443,38 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   );
 
   const earlier = latest ? items.slice(1) : items;
+  const hiddenSets = useHiddenSets();
+  const hidden = hiddenSets ?? new Set<SetKey>(DEFAULT_HIDDEN_SETS);
 
   return (
     <div className={styles.page}>
       <div className={styles.controls}>
-        <div className={styles.segmented} role="radiogroup" aria-label="Scan mode">
-          {(
-            [
-              ['add', 'Add to Intake'],
-              ['deck', 'Scan a deck'],
-              ['info', 'Look up'],
-            ] as const
-          ).map(([value, label]) => (
-            <button
-              key={value}
-              type="button"
-              role="radio"
-              aria-checked={mode === value}
-              className={styles.segment}
-              onClick={() => setMode(value)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-        <button
-          type="button"
-          className={styles.foilMode}
-          aria-pressed={foils}
-          onClick={() => setFoils((on) => !on)}
-          title="Record every scan as its foil printing — for running a stack of foils through"
-        >
-          ✦ Foils {foils ? 'on' : 'off'}
-        </button>
+        <label className={styles.modeLabel}>
+          <span className="visually-hidden">Scan mode</span>
+          <select
+            className={styles.mode}
+            value={mode}
+            onChange={(event) => setMode(event.target.value as Mode)}
+          >
+            {MODES.map((value) => (
+              <option key={value} value={value}>
+                {MODE_LABEL[value]}
+              </option>
+            ))}
+          </select>
+        </label>
+        {/* Only a bulk run has stacks of foils to put through. */}
+        {mode === 'add' && (
+          <button
+            type="button"
+            className={styles.foilMode}
+            aria-pressed={foils}
+            onClick={() => setFoils((on) => !on)}
+            title="Record every scan as its foil printing — for running a stack of foils through"
+          >
+            ✦ Foils {foils ? 'on' : 'off'}
+          </button>
+        )}
         {camera.torchAvailable && (
           <button
             type="button"
@@ -455,6 +516,8 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           onRescan={() => void remove(latest, true).catch(failed)}
           onConfirm={() => void choose(latest, latest.chosen).catch(failed)}
           onToggleFoil={foilToggle(latest)}
+          onAdd={() => void addNow(latest).catch(failed)}
+          hidden={hidden}
         />
       )}
 
@@ -471,9 +534,10 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
                   <span className={styles.muted}>
                     {item.chosen.setKey} · {variantLabel(item.chosen.variant)}
                     {item.question && ' · not added'}
+                    {item.added && ` · added, ${FATE_SHORT[item.added.fate.kind]}`}
                   </span>
                 </span>
-                {(item.receipt || item.stackCardId) && (
+                {(item.receipt || item.stackCardId || item.added) && (
                   <button
                     type="button"
                     className={styles.link}
@@ -498,7 +562,14 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       {mode === 'add' && (
         <p className={styles.footnote}>
           Scans wait in <Link to="/intake">Intake</Link> until you review them. The camera can’t
-          tell foil: tap ✦ Foil on a scan, or turn on ✦ Foils to run a stack of foils through.
+          tell foil: tap ✦ Foil on a scan, or turn on ✦ Foils to run a stack of foils through. For a
+          single booster, Quick Scan files each card as you go.
+        </p>
+      )}
+      {mode === 'info' && (
+        <p className={styles.footnote}>
+          Add to collection puts a card straight in, no Intake, and says where it goes. The camera
+          can’t tell foil: tap ✦ Foil before adding.
         </p>
       )}
       <span className="visually-hidden" aria-live="polite">
@@ -659,6 +730,8 @@ function LatestScan({
   onRescan,
   onConfirm,
   onToggleFoil,
+  onAdd,
+  hidden,
 }: {
   item: Item;
   mode: Mode;
@@ -675,6 +748,10 @@ function LatestScan({
   onConfirm: () => void;
   /** Flip the scan to its foil / non-foil printing; absent when it has none. */
   onToggleFoil?: () => void;
+  /** Look up mode: add it to the collection now. */
+  onAdd: () => void;
+  /** Sets with no binder: their cards are set aside, not filed. */
+  hidden: ReadonlySet<SetKey>;
 }) {
   const [correcting, setCorrecting] = useState(false);
   const { chosen } = item;
@@ -766,18 +843,25 @@ function LatestScan({
           <p className={styles.added}>Added to Intake</p>
         ) : mode === 'deck' ? (
           <p className={styles.added}>Added to the scanned deck</p>
+        ) : item.added ? (
+          <Placement added={item.added} hidden={hidden.has(chosen.setKey)} />
         ) : (
-          <p className={styles.meta}>
-            You own {owned ?? '…'} · binder page {position.page}, row {position.row}, column{' '}
-            {position.column} ·{' '}
-            <Link
-              to="/inventory/$setKey/$view"
-              params={{ setKey: chosen.setKey, view: 'binder' }}
-              search={{ card: chosen.base }}
-            >
-              Open in binder
-            </Link>
-          </p>
+          <>
+            <p className={styles.meta}>
+              You own {owned ?? '…'} · binder page {position.page}, row {position.row}, column{' '}
+              {position.column} ·{' '}
+              <Link
+                to="/inventory/$setKey/$view"
+                params={{ setKey: chosen.setKey, view: 'binder' }}
+                search={{ card: chosen.base }}
+              >
+                Open in binder
+              </Link>
+            </p>
+            <button type="button" className={styles.primary} onClick={onAdd}>
+              Add to collection
+            </button>
+          </>
         )}
 
         <div className={styles.actions}>
@@ -800,7 +884,7 @@ function LatestScan({
             Correct
           </button>
           <button type="button" className={styles.button} onClick={onRescan}>
-            Rescan
+            {item.added ? 'Undo' : 'Rescan'}
           </button>
         </div>
 
@@ -855,5 +939,52 @@ function LatestScan({
         )}
       </div>
     </section>
+  );
+}
+
+/** The history's word for where an added copy went. */
+const FATE_SHORT: Record<QuickAdded['fate']['kind'], string> = {
+  binder: 'binder',
+  bulk: 'bulk',
+  swap: 'binder, swapped',
+};
+
+const SIDE = { left: 'Left', right: 'Right' } as const;
+
+/** Where a copy just added goes: its pocket (maybe in place of a weaker copy), or bulk. */
+function Placement({ added, hidden }: { added: QuickAdded; hidden: boolean }) {
+  const { fate, printing } = added;
+  if (fate.kind === 'bulk') {
+    return (
+      <div className={styles.placement} data-fate="bulk" role="status">
+        <p className={styles.placeTitle}>Bulk box</p>
+        <p className={styles.meta}>The binder already has a playset at least as good.</p>
+      </div>
+    );
+  }
+  if (hidden) {
+    return (
+      <div className={styles.placement} data-fate="aside" role="status">
+        <p className={styles.placeTitle}>Set it aside</p>
+        <p className={styles.meta}>{printing.setKey} has no binder.</p>
+      </div>
+    );
+  }
+  const { page, row, column } = binderLayout(printing.base);
+  return (
+    <div className={styles.placement} data-fate="binder" role="status">
+      <p className={styles.placeTitle}>
+        <span className={styles.placeSet}>
+          {printing.setKey} · Page {page} · {SIDE[pageSide(page)]}
+        </span>
+        Row {row} · Column {column}
+      </p>
+      <Pocket page={page} row={row} column={column} />
+      {fate.kind === 'swap' && (
+        <p className={styles.swap}>
+          Take out the {variantLabel(fate.swapOut.variant)} copy — it goes to bulk.
+        </p>
+      )}
+    </div>
   );
 }

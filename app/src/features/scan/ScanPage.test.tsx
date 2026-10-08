@@ -196,7 +196,10 @@ describe('ScanPage', () => {
   it('scans a deck into its own batch, with no stack and no bulk to mind', async () => {
     await fillPocket();
     renderPage();
-    await userEvent.click(await screen.findByRole('radio', { name: 'Scan a deck' }));
+    await userEvent.selectOptions(
+      await screen.findByRole('combobox', { name: 'Scan mode' }),
+      'Deck Scan',
+    );
     await waitFor(() => expect(fire).not.toBeNull());
     await act(async () => {
       fire!({
@@ -253,7 +256,7 @@ describe('ScanPage', () => {
     await scan('059', 'normal');
     // Nothing to do about it while scanning: Put away deals with bulk.
     expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
-    expect(screen.queryByText(/bulk/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/bulk/i, { ignore: 'option' })).not.toBeInTheDocument();
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
     // Still in the stack in your hand: Put away sets it aside for the bulk box.
     await waitFor(async () => expect(await stack()).toEqual([['059', 'bulk', null]]));
@@ -263,7 +266,7 @@ describe('ScanPage', () => {
     await fillPocket();
     await scan('324', 'hyperspace');
     expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
-    expect(screen.queryByText(/bulk/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/bulk/i, { ignore: 'option' })).not.toBeInTheDocument();
     await waitFor(async () => {
       const lines = await db.intakeLines.toArray();
       expect(lines.map((l) => l.num)).toEqual(['324']);
@@ -300,8 +303,9 @@ describe('ScanPage', () => {
     // The next card won't read: the droid still shows, but plainly as the card before.
     phase = 'stuck';
     // Any re-render picks the new phase up from the mocked scanner.
-    await userEvent.click(screen.getByRole('radio', { name: 'Look up' }));
-    await userEvent.click(screen.getByRole('radio', { name: 'Add to Intake' }));
+    const mode = screen.getByRole('combobox', { name: 'Scan mode' });
+    await userEvent.selectOptions(mode, 'Quick Scan');
+    await userEvent.selectOptions(mode, 'Bulk Scan');
     expect(await screen.findByText('Previous card — not the one in view')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /2-1B Surgical Droid/ })).toBeInTheDocument();
   });
@@ -533,5 +537,50 @@ describe('ScanPage', () => {
     expect(retry).toHaveBeenCalled();
     expect(resume).not.toHaveBeenCalled();
     expect(await db.intakeLines.count()).toBe(0);
+  });
+
+  describe('Quick Scan', () => {
+    beforeEach(() => localStorage.setItem('scan.mode', 'info'));
+
+    const owned = async () =>
+      Object.fromEntries((await db.owned.toArray()).map((r) => [r.num, [r.count, r.bulk ?? 0]]));
+
+    it('adds a card straight to the collection and shows its pocket', async () => {
+      await scan('059', 'normal');
+      expect(screen.queryByRole('button', { name: /Foils/ })).not.toBeInTheDocument();
+      await userEvent.click(await screen.findByRole('button', { name: 'Add to collection' }));
+      expect(await screen.findByText('Row 3 · Column 3')).toBeInTheDocument();
+      expect(screen.getByText('SOR · Page 5 · Right')).toBeInTheDocument();
+      expect(await owned()).toEqual({ '059': [1, 0] });
+      // No Intake and nothing to put away: it was filed as it was scanned.
+      expect(await db.intakeLines.count()).toBe(0);
+      expect(await stack()).toEqual([]);
+    });
+
+    it('says bulk box when the pocket already has a playset', async () => {
+      await fillPocket();
+      await scan('059', 'normal');
+      await userEvent.click(await screen.findByRole('button', { name: 'Add to collection' }));
+      expect(await screen.findByText('Bulk box')).toBeInTheDocument();
+      expect(await owned()).toEqual({ '059': [4, 1] });
+    });
+
+    it('swaps a better printing in, and Undo puts everything back', async () => {
+      await fillPocket();
+      await scan('324', 'hyperspace');
+      await userEvent.click(await screen.findByRole('button', { name: 'Add to collection' }));
+      expect(await screen.findByText(/Take out the Normal copy/)).toBeInTheDocument();
+      expect(await owned()).toEqual({ '059': [3, 1], '324': [1, 0] });
+      await userEvent.click(screen.getByRole('button', { name: 'Undo' }));
+      await waitFor(async () => expect(await owned()).toEqual({ '059': [3, 0] }));
+    });
+
+    it('moves an added card to the printing it is corrected to', async () => {
+      await scan('059', 'normal');
+      await userEvent.click(await screen.findByRole('button', { name: 'Add to collection' }));
+      await screen.findByText('Row 3 · Column 3');
+      await userEvent.click(screen.getByRole('button', { name: '✦ Foil' }));
+      await waitFor(async () => expect(await owned()).toEqual({ '059F': [1, 0] }));
+    });
   });
 });

@@ -292,44 +292,6 @@
   font-weight: 700;
 }
 
-.spread {
-  display: flex;
-  gap: var(--space-2);
-}
-
-.pocket {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  width: 140px;
-  padding: 6px;
-  border: 2px solid var(--color-border-interactive);
-  border-radius: var(--radius-md);
-  opacity: 0.55;
-}
-
-.pocket[data-target] {
-  border-color: var(--color-text);
-  opacity: 1;
-}
-
-.cover {
-  width: 140px;
-  border: 2px dashed var(--color-border-interactive);
-  border-radius: var(--radius-md);
-  opacity: 0.55;
-}
-
-.pocketCell {
-  aspect-ratio: 5 / 7;
-  border-radius: 3px;
-  background: var(--color-border-interactive);
-}
-
-.pocketCell[data-target] {
-  background: var(--color-text);
-}
-
 .done {
   display: flex;
   flex-direction: column;

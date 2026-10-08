@@ -35,6 +35,7 @@ import { stackEntry, usePlaceScan, type Printing } from '~/features/scan/usePlac
 import { useToast } from '~/ui/toastContext';
 
 import { FixCardSheet } from './FixCardSheet';
+import { Pocket } from './Pocket';
 import styles from './PutAwayPage.module.css';
 import { speechSupported, useSpeech, useWakeLock } from './speech';
 
@@ -794,36 +795,6 @@ function Sorters({ sorters, used, target }: { sorters: number; used: number; tar
 }
 
 const SIDE = { left: 'Left', right: 'Right' } as const;
-
-/**
- * The open spread's two pages of 3×4 pockets, with the card's page outlined and its pocket
- * lit. Page 1 has the inside cover, not a page, to its left.
- */
-function Pocket({ page, row, column }: { page: number; row: number; column: number }) {
-  const side = pageSide(page);
-  return (
-    <div className={styles.spread} aria-hidden="true">
-      {(['left', 'right'] as const).map((s) =>
-        s === 'left' && page === 1 ? (
-          <div key={s} className={styles.cover} />
-        ) : (
-          <div key={s} className={styles.pocket} data-target={s === side || undefined}>
-            {Array.from({ length: 12 }, (_, i) => (
-              <span
-                key={i}
-                className={styles.pocketCell}
-                data-target={
-                  (s === side && Math.floor(i / 4) + 1 === row && (i % 4) + 1 === column) ||
-                  undefined
-                }
-              />
-            ))}
-          </div>
-        ),
-      )}
-    </div>
-  );
-}
 
 /** "Spark of Rebellion (SOR)"; `spokenName` drops the code, which is no use read aloud. */
 function setName(setKey: SetKey, sets: Map<SetKey, LoadedSet>): string {

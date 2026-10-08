@@ -13,24 +13,20 @@
   align-items: center;
 }
 
-.segmented {
-  composes: ui-seg from global;
-  display: inline-flex;
-  overflow: hidden;
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-lg);
+.modeLabel {
+  flex: 1 1 10rem;
+  min-width: 0;
 }
 
-.segment {
-  composes: ui-seg-item from global;
+.mode {
+  width: 100%;
   min-height: 40px;
   padding: var(--space-2) var(--space-3);
-  border: none;
-  background: transparent;
-  color: var(--color-text-subtle);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
   font-size: var(--font-size-sm);
   font-weight: 700;
-  cursor: pointer;
 }
 
 .viewfinder {
@@ -320,6 +316,43 @@
   color: var(--color-text-subtle);
   text-decoration: underline;
   cursor: pointer;
+}
+
+/* Quick Scan: where the copy just added goes. */
+.placement {
+  --pocket-width: 104px;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.placeTitle {
+  color: var(--color-success-fg);
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.placement[data-fate='bulk'] .placeTitle,
+.placement[data-fate='aside'] .placeTitle {
+  color: var(--color-warning-fg);
+}
+
+.placeSet {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.swap {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
 }
 
 .footnote {
