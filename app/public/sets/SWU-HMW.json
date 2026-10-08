@@ -1854,11 +1854,10 @@
         },
         {
           "num": "P26-32",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-33",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-33"
+          ]
         },
         {
           "num": "563",
@@ -2873,19 +2872,12 @@
         },
         {
           "num": "P26-34",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-35",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-36",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-37",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-35",
+            "P26-36",
+            "P26-37"
+          ]
         },
         {
           "num": "588",
@@ -4034,19 +4026,12 @@
         },
         {
           "num": "P26-28",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-29",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-30",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-31",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-29",
+            "P26-30",
+            "P26-31"
+          ]
         },
         {
           "num": "620",
@@ -4767,11 +4752,10 @@
         },
         {
           "num": "P26-26",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-27",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-27"
+          ]
         },
         {
           "num": "638",
@@ -4979,12 +4963,11 @@
           "variant": "hyperspace"
         },
         {
-          "num": "C26-3",
-          "variant": "promo"
-        },
-        {
           "num": "HMWP-09",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "C26-3"
+          ]
         },
         {
           "num": "644",

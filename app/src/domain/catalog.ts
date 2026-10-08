@@ -200,7 +200,21 @@ export function promoParts(printingNumber: string): { set: string; number: strin
   return match ? { set: match[1]!, number: match[2]! } : undefined;
 }
 
-export type Printing = { num: string; variant: VariantSlug };
+export type Printing = {
+  num: string;
+  variant: VariantSlug;
+  /**
+   * Other promo numbers that are this same printing to the collection — `P26-14` and
+   * `P26-15` (Store Showdown participation and judge) beside `ASHOP-014`. They differ only
+   * by a badge, so copies are stored under `num` and these just resolve to it.
+   */
+  aliases?: readonly string[];
+};
+
+/** Every number a printing answers to: its own, then its promo aliases. */
+export function printingNumbers(printing: Printing): readonly string[] {
+  return printing.aliases?.length ? [printing.num, ...printing.aliases] : [printing.num];
+}
 
 export type CatalogCard = {
   base: number;
@@ -285,7 +299,14 @@ export function parseSetCatalog(payload: unknown): SetCatalog {
         // Loud on purpose: a new upstream variant must be taught to the app, not dropped.
         throw new Error(`Unknown variant "${String(p.variant)}" on ${payload.setKey}#${base}`);
       }
-      printings.push({ num: p.num, variant: p.variant });
+      const aliases = Array.isArray(p.aliases)
+        ? p.aliases.filter((a): a is string => typeof a === 'string')
+        : [];
+      printings.push(
+        aliases.length
+          ? { num: p.num, variant: p.variant, aliases }
+          : { num: p.num, variant: p.variant },
+      );
     }
     if (!printings.length) continue;
 
@@ -367,7 +388,9 @@ export function toLoadedSet(catalog: SetCatalog, prices: Map<string, number>): L
   for (const card of catalog.cards) {
     cardsByBase.set(card.base, card);
     printingsByBase.set(card.base, card.printings);
-    for (const printing of card.printings) baseByPrinting.set(printing.num, card.base);
+    for (const printing of card.printings) {
+      for (const num of printingNumbers(printing)) baseByPrinting.set(num, card.base);
+    }
 
     baseCards.push({
       Name: card.name,
@@ -414,11 +437,11 @@ export function toCanonicalCatalog(sets: Iterable<LoadedSet>): CanonicalCatalog 
 
   for (const set of sets) {
     for (const card of set.cardsByBase.values()) {
-      for (const printing of card.printings) {
+      for (const num of card.printings.flatMap(printingNumbers)) {
         // A promo is filed under its own set code (`SOROP:15`), pointing at the base card.
-        const promo = promoParts(printing.num);
+        const promo = promoParts(num);
         const code = promo?.set ?? set.setKey;
-        const number = numericPart(promo?.number ?? printing.num);
+        const number = numericPart(promo?.number ?? num);
         catalog.set(`${code}:${number}`, {
           setKey: set.setKey,
           printingNumber: number,
@@ -454,12 +477,13 @@ export function toSearchCatalog(set: LoadedSet) {
 
   const promosByBase = new Map<number, Array<{ set: string; number: number }>>();
   for (const [base, printings] of set.printingsByBase) {
-    const promos = printings.flatMap((p) => {
-      const parts = promoParts(p.num);
-      return parts && p.variant === 'promo'
-        ? [{ set: parts.set, number: numericPart(parts.number) }]
-        : [];
-    });
+    const promos = printings
+      .filter((p) => p.variant === 'promo')
+      .flatMap(printingNumbers)
+      .flatMap((num) => {
+        const parts = promoParts(num);
+        return parts ? [{ set: parts.set, number: numericPart(parts.number) }] : [];
+      });
     if (promos.length) promosByBase.set(base, promos);
   }
 

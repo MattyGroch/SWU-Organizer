@@ -8,6 +8,7 @@ import {
   buildSetCatalog,
   eventPromoVariant,
   isEventPromoSet,
+  keepPromoNumbers,
   hasOwnArtwork,
   isToken,
   numericPart,
@@ -342,6 +343,38 @@ describe('attachPromos', () => {
     expect(later.cards[0].printings).toHaveLength(1);
     expect(sor.cards[0].printings.map((p) => p.num)).toEqual(['015', 'P26-233', 'P26-164']);
     expect(sor.cards[1].printings.at(-1)).toEqual({ num: 'P26-140', variant: 'promo-foil' });
+  });
+
+  it('folds a second promo of the same finish into the first as an alias', () => {
+    const cat = catalog();
+    attachPromos(cat, 'SOROP', [promo('015', 'Bossk', 'Deadly Stalker')]);
+    attachEventPromos([cat], 'P26', [
+      promo('15', 'Bossk', 'Deadly Stalker', 'Store Showdown Judge'),
+      promo('14', 'Bossk', 'Deadly Stalker', 'Store Showdown Participation'),
+      promo('16', 'Bossk', 'Deadly Stalker', 'SQ Prize Wall Foil'),
+    ]);
+    expect(cat.cards[0].printings).toEqual([
+      { num: '015', variant: 'normal' },
+      { num: 'SOROP-015', variant: 'promo', aliases: ['P26-14', 'P26-15'] },
+      { num: 'P26-16', variant: 'promo-foil' },
+    ]);
+  });
+
+  it('keeps the promo number the previous catalog stored copies under', () => {
+    const cat = catalog();
+    attachEventPromos([cat], 'C25', [
+      promo('3', 'Bossk', 'Deadly Stalker', 'Convention Exclusive'),
+    ]);
+    attachEventPromos([cat], 'P26', [promo('14', 'Bossk', 'Deadly Stalker', 'SS Participation')]);
+    const previous = {
+      cards: [{ base: 15, printings: [{ num: 'P26-14', variant: 'promo' }] }],
+    };
+    keepPromoNumbers(cat, previous);
+    expect(cat.cards[0].printings[1]).toEqual({
+      num: 'P26-14',
+      variant: 'promo',
+      aliases: ['C25-3'],
+    });
   });
 
   it('reads event promo variants by finish', () => {

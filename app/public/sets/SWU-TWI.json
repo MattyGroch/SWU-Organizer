@@ -416,12 +416,11 @@
           "variant": "normal"
         },
         {
-          "num": "PTWI-001",
-          "variant": "promo"
-        },
-        {
           "num": "PTWIJ-001",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "PTWI-001"
+          ]
         },
         {
           "num": "268",
@@ -575,12 +574,11 @@
           "variant": "normal"
         },
         {
-          "num": "PTWI-002",
-          "variant": "promo"
-        },
-        {
           "num": "PTWIJ-002",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "PTWI-002"
+          ]
         },
         {
           "num": "272",
@@ -4377,19 +4375,12 @@
         },
         {
           "num": "TWISS-2-4",
-          "variant": "promo"
-        },
-        {
-          "num": "TWISS-2-8",
-          "variant": "promo"
-        },
-        {
-          "num": "TWISS-2-C",
-          "variant": "promo"
-        },
-        {
-          "num": "TWISS-2-F",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "TWISS-2-8",
+            "TWISS-2-C",
+            "TWISS-2-F"
+          ]
         },
         {
           "num": "388F",
@@ -4497,11 +4488,10 @@
         },
         {
           "num": "P25-156",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-166",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-166"
+          ]
         },
         {
           "num": "391F",
@@ -4985,16 +4975,12 @@
           "variant": "hyperspace"
         },
         {
-          "num": "C24-006",
-          "variant": "promo"
-        },
-        {
           "num": "J25-5",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-91",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "C24-006",
+            "P25-91"
+          ]
         },
         {
           "num": "403F",
@@ -5080,12 +5066,11 @@
           "variant": "hyperspace"
         },
         {
-          "num": "TWISS-1",
-          "variant": "promo"
-        },
-        {
           "num": "TWISSJ-1",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "TWISS-1"
+          ]
         },
         {
           "num": "405F",
@@ -5131,11 +5116,10 @@
         },
         {
           "num": "J25-7",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-53",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-53"
+          ]
         },
         {
           "num": "406F",
@@ -8737,11 +8721,10 @@
         },
         {
           "num": "TWIPQ-1",
-          "variant": "promo"
-        },
-        {
-          "num": "TWIPQJ-1",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "TWIPQJ-1"
+          ]
         },
         {
           "num": "497F",
@@ -9181,23 +9164,13 @@
         },
         {
           "num": "TWIPQ-2-16",
-          "variant": "promo"
-        },
-        {
-          "num": "TWIPQ-2-4",
-          "variant": "promo"
-        },
-        {
-          "num": "TWIPQ-2-8",
-          "variant": "promo"
-        },
-        {
-          "num": "TWIPQ-2-C",
-          "variant": "promo"
-        },
-        {
-          "num": "TWIPQ-2-F",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "TWIPQ-2-4",
+            "TWIPQ-2-8",
+            "TWIPQ-2-C",
+            "TWIPQ-2-F"
+          ]
         },
         {
           "num": "507F",

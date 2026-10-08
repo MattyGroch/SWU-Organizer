@@ -1060,11 +1060,10 @@
         },
         {
           "num": "JTLOP-01",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-65",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-65"
+          ]
         },
         {
           "num": "766",
@@ -2005,11 +2004,10 @@
         },
         {
           "num": "J25-1",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-86",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-86"
+          ]
         },
         {
           "num": "787",
@@ -3245,11 +3243,10 @@
         },
         {
           "num": "P25-154",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-164",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-164"
+          ]
         },
         {
           "num": "819",
@@ -3652,11 +3649,10 @@
         },
         {
           "num": "J25-4",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-89",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-89"
+          ]
         },
         {
           "num": "828",
@@ -3922,11 +3918,10 @@
         },
         {
           "num": "JTLOP-06",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-90",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-90"
+          ]
         },
         {
           "num": "834",
@@ -4070,11 +4065,10 @@
         },
         {
           "num": "JTLOP-07",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-68",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-68"
+          ]
         },
         {
           "num": "837",
@@ -5502,20 +5496,13 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-124",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-136",
-          "variant": "promo"
-        },
-        {
           "num": "P26-43",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-55",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-124",
+            "P25-136",
+            "P26-55"
+          ]
         },
         {
           "num": "874",
@@ -5625,15 +5612,11 @@
         },
         {
           "num": "J25-6",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-171",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-172",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-171",
+            "P25-172"
+          ]
         },
         {
           "num": "876",
@@ -5679,19 +5662,12 @@
         },
         {
           "num": "P25-03",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-04",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-05",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-06",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-04",
+            "P25-05",
+            "P25-06"
+          ]
         },
         {
           "num": "877",
@@ -5781,12 +5757,11 @@
           "variant": "hyperspace"
         },
         {
-          "num": "C25-2",
-          "variant": "promo"
-        },
-        {
           "num": "JTLOP-10",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "C25-2"
+          ]
         },
         {
           "num": "879",
@@ -5873,28 +5848,15 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-07",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-08",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-157",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-167",
-          "variant": "promo"
-        },
-        {
           "num": "P26-76",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-92",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-07",
+            "P25-08",
+            "P25-157",
+            "P25-167",
+            "P26-92"
+          ]
         },
         {
           "num": "881",
@@ -6224,11 +6186,10 @@
         },
         {
           "num": "P25-159",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-169",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-169"
+          ]
         },
         {
           "num": "888",
@@ -7244,20 +7205,13 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-127",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-139",
-          "variant": "promo"
-        },
-        {
           "num": "P26-45",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-57",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-127",
+            "P25-139",
+            "P26-57"
+          ]
         },
         {
           "num": "915",
@@ -7545,11 +7499,10 @@
         },
         {
           "num": "P25-01",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-02",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-02"
+          ]
         },
         {
           "num": "921",
@@ -7636,11 +7589,10 @@
         },
         {
           "num": "JTLOP-15",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-82",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-82"
+          ]
         },
         {
           "num": "923",
@@ -8153,24 +8105,14 @@
           "variant": "hyperspace"
         },
         {
-          "num": "J25-8",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-160",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-170",
-          "variant": "promo"
-        },
-        {
           "num": "P26-78",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-94",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "J25-8",
+            "P25-160",
+            "P25-170",
+            "P26-94"
+          ]
         },
         {
           "num": "935",
@@ -8255,11 +8197,10 @@
         },
         {
           "num": "JTLOP-17",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-93",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-93"
+          ]
         },
         {
           "num": "937",
@@ -8309,19 +8250,12 @@
         },
         {
           "num": "P25-09",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-10",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-11",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-12",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-10",
+            "P25-11",
+            "P25-12"
+          ]
         },
         {
           "num": "938",
@@ -10130,11 +10064,10 @@
         },
         {
           "num": "P26-101",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-85",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-85"
+          ]
         },
         {
           "num": "984",

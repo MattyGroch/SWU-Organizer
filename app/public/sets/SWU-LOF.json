@@ -1032,20 +1032,13 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-151",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-161",
-          "variant": "promo"
-        },
-        {
           "num": "P26-70",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-86",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-151",
+            "P25-161",
+            "P26-86"
+          ]
         },
         {
           "num": "771",
@@ -1311,24 +1304,14 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-152",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-162",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-75",
-          "variant": "promo"
-        },
-        {
           "num": "P26-72",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-88",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-152",
+            "P25-162",
+            "P25-75",
+            "P26-88"
+          ]
         },
         {
           "num": "777",
@@ -1439,12 +1422,11 @@
           "variant": "hyperspace"
         },
         {
-          "num": "G25-2",
-          "variant": "promo"
-        },
-        {
           "num": "P25-95",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "G25-2"
+          ]
         },
         {
           "num": "779",
@@ -1556,11 +1538,10 @@
         },
         {
           "num": "P26-73",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-89",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-89"
+          ]
         },
         {
           "num": "782",
@@ -1677,11 +1658,10 @@
         },
         {
           "num": "P25-143",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-144",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-144"
+          ]
         },
         {
           "num": "785",
@@ -1966,11 +1946,10 @@
         },
         {
           "num": "P25-13",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-14",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-14"
+          ]
         },
         {
           "num": "791",
@@ -2404,20 +2383,13 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-120",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-132",
-          "variant": "promo"
-        },
-        {
           "num": "P26-39",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-51",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-120",
+            "P25-132",
+            "P26-51"
+          ]
         },
         {
           "num": "802",
@@ -2761,27 +2733,14 @@
         },
         {
           "num": "P25-145",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-146",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-147",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-148",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-149",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-87",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-146",
+            "P25-147",
+            "P25-148",
+            "P25-149",
+            "P25-87"
+          ]
         },
         {
           "num": "810",
@@ -3126,20 +3085,13 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-153",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-163",
-          "variant": "promo"
-        },
-        {
           "num": "P26-74",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-90",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-153",
+            "P25-163",
+            "P26-90"
+          ]
         },
         {
           "num": "819",
@@ -3714,23 +3666,13 @@
         },
         {
           "num": "LOFOP-04",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-121",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-133",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-40",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-52",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-121",
+            "P25-133",
+            "P26-40",
+            "P26-52"
+          ]
         },
         {
           "num": "833",
@@ -3878,12 +3820,11 @@
           "variant": "hyperspace"
         },
         {
-          "num": "G25-3",
-          "variant": "promo"
-        },
-        {
           "num": "P25-79",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "G25-3"
+          ]
         },
         {
           "num": "836",
@@ -3994,16 +3935,12 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-80",
-          "variant": "promo"
-        },
-        {
           "num": "P26-102",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-103",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-80",
+            "P26-103"
+          ]
         },
         {
           "num": "838",
@@ -4155,12 +4092,11 @@
           "variant": "hyperspace"
         },
         {
-          "num": "J25-11",
-          "variant": "promo"
-        },
-        {
           "num": "LOFOP-06",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "J25-11"
+          ]
         },
         {
           "num": "841",
@@ -5283,24 +5219,14 @@
           "variant": "hyperspace"
         },
         {
-          "num": "J25-12",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-123",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-135",
-          "variant": "promo"
-        },
-        {
           "num": "P26-41",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-53",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "J25-12",
+            "P25-123",
+            "P25-135",
+            "P26-53"
+          ]
         },
         {
           "num": "870",
@@ -5387,23 +5313,13 @@
         },
         {
           "num": "P25-15",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-16",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-17",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-18",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-81",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-16",
+            "P25-17",
+            "P25-18",
+            "P25-81"
+          ]
         },
         {
           "num": "872",
@@ -6089,16 +6005,12 @@
           "variant": "hyperspace"
         },
         {
-          "num": "J25-13",
-          "variant": "promo"
-        },
-        {
           "num": "LOFOP-09",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-71",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "J25-13",
+            "P25-71"
+          ]
         },
         {
           "num": "888",
@@ -6148,11 +6060,10 @@
         },
         {
           "num": "LOFOP-10",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-69",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-69"
+          ]
         },
         {
           "num": "889",
@@ -7364,20 +7275,13 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-128",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-140",
-          "variant": "promo"
-        },
-        {
           "num": "P26-46",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-58",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-128",
+            "P25-140",
+            "P26-58"
+          ]
         },
         {
           "num": "919",
@@ -7541,11 +7445,10 @@
         },
         {
           "num": "LOFOP-13",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-70",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-70"
+          ]
         },
         {
           "num": "923",
@@ -7921,12 +7824,11 @@
           "variant": "hyperspace"
         },
         {
-          "num": "C25-4",
-          "variant": "promo"
-        },
-        {
           "num": "LOFOP-15",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "C25-4"
+          ]
         },
         {
           "num": "931",
@@ -8100,20 +8002,13 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-129",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-141",
-          "variant": "promo"
-        },
-        {
           "num": "P26-48",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-60",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-129",
+            "P25-141",
+            "P26-60"
+          ]
         },
         {
           "num": "935",
@@ -8348,28 +8243,15 @@
           "variant": "hyperspace"
         },
         {
-          "num": "P25-94",
-          "variant": "promo"
-        },
-        {
           "num": "P26-64",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-65",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-66",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-67",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-68",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-94",
+            "P26-65",
+            "P26-66",
+            "P26-67",
+            "P26-68"
+          ]
         },
         {
           "num": "940",
@@ -8914,11 +8796,10 @@
         },
         {
           "num": "P26-150",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-174",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-174"
+          ]
         },
         {
           "num": "953",
@@ -9557,11 +9438,10 @@
         },
         {
           "num": "P25-118",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-96",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-96"
+          ]
         },
         {
           "num": "971",
@@ -9685,19 +9565,12 @@
         },
         {
           "num": "P25-21",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-22",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-23",
-          "variant": "promo"
-        },
-        {
-          "num": "P25-24",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P25-22",
+            "P25-23",
+            "P25-24"
+          ]
         },
         {
           "num": "974",
@@ -10178,11 +10051,10 @@
         },
         {
           "num": "P26-49",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-61",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-61"
+          ]
         },
         {
           "num": "986",

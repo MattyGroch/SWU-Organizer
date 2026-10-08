@@ -29,7 +29,7 @@ function makeCatalog(): Map<SetKey, LoadedSet> {
             { num: '001', variant: 'normal' },
             { num: '269', variant: 'hyperspace' },
             { num: '253', variant: 'showcase' },
-            { num: 'P26-14', variant: 'promo' },
+            { num: 'P26-14', variant: 'promo', aliases: ['G25-1'] },
           ],
         },
         {
@@ -256,10 +256,10 @@ describe('SWUDB CSV import', () => {
     expect(result.skipped).toHaveLength(2);
   });
 
-  it('finds an event promo on whichever set holds its card', () => {
-    const result = importText('Set,CardNumber,Count\nP26,14,1\nP26,003,2', catalog);
+  it('finds an event promo on whichever set holds its card, aliases included', () => {
+    const result = importText('Set,CardNumber,Count\nP26,14,1\nP26,003,2\nG25,1,1', catalog);
     expect(result.printings).toEqual([
-      { setKey: 'SOR', base: 1, num: 'P26-14', variant: 'promo', count: 1 },
+      { setKey: 'SOR', base: 1, num: 'P26-14', variant: 'promo', count: 2 },
       { setKey: 'LOF', base: 142, num: 'P26-3', variant: 'promo', count: 2 },
     ]);
   });

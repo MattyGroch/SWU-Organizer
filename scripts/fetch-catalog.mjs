@@ -20,6 +20,7 @@ import {
   attachPromos,
   buildSetCatalog,
   isEventPromoSet,
+  keepPromoNumbers,
 } from './lib/catalog.mjs';
 
 const NODE_MAJOR = Number(process.versions.node.split('.')[0]);
@@ -208,6 +209,13 @@ async function fetchJSON(url, timeoutMs = 45000) {
 
   const manifest = [];
   for (const { key, label, file, catalog, promoSet, eventPromoSets } of built) {
+    let previous;
+    try {
+      previous = JSON.parse(await fs.readFile(path.join(OUT_DIR, file), 'utf8'));
+    } catch {
+      // a new set
+    }
+    keepPromoNumbers(catalog, previous);
     await fs.writeFile(path.join(OUT_DIR, file), JSON.stringify(catalog, null, 2) + '\n');
     const printings = catalog.cards.reduce((n, c) => n + c.printings.length, 0);
     manifest.push({

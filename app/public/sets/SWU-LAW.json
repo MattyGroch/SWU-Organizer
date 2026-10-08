@@ -1058,16 +1058,12 @@
           "variant": "hyperspace"
         },
         {
-          "num": "C26-5",
-          "variant": "promo"
-        },
-        {
           "num": "P26-80",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-96",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "C26-5",
+            "P26-96"
+          ]
         },
         {
           "num": "534",
@@ -1180,19 +1176,12 @@
         },
         {
           "num": "P26-10",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-11",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-12",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-13",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-11",
+            "P26-12",
+            "P26-13"
+          ]
         },
         {
           "num": "536",
@@ -1334,11 +1323,10 @@
         },
         {
           "num": "P26-81",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-97",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-97"
+          ]
         },
         {
           "num": "539",
@@ -1669,15 +1657,11 @@
         },
         {
           "num": "LAWP-03",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-147",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-165",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-147",
+            "P26-165"
+          ]
         },
         {
           "num": "547",
@@ -1685,11 +1669,10 @@
         },
         {
           "num": "LAWP-23",
-          "variant": "promo-foil"
-        },
-        {
-          "num": "P26-159",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-159"
+          ]
         },
         {
           "num": "797",
@@ -2074,19 +2057,12 @@
         },
         {
           "num": "P26-4",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-5",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-6",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-7",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-5",
+            "P26-6",
+            "P26-7"
+          ]
         },
         {
           "num": "556",
@@ -2247,11 +2223,10 @@
         },
         {
           "num": "P26-8",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-9",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-9"
+          ]
         },
         {
           "num": "559",
@@ -2661,11 +2636,10 @@
         },
         {
           "num": "P26-144",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-166",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-166"
+          ]
         },
         {
           "num": "569",
@@ -2724,15 +2698,11 @@
         },
         {
           "num": "LAWP-05",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-141",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-167",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-141",
+            "P26-167"
+          ]
         },
         {
           "num": "570",
@@ -2740,11 +2710,10 @@
         },
         {
           "num": "LAWP-25",
-          "variant": "promo-foil"
-        },
-        {
-          "num": "P26-153",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-153"
+          ]
         },
         {
           "num": "812",
@@ -2920,11 +2889,10 @@
         },
         {
           "num": "P26-82",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-98",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-98"
+          ]
         },
         {
           "num": "574",
@@ -3281,23 +3249,13 @@
         },
         {
           "num": "P26-112",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-113",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-114",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-115",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-116",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-113",
+            "P26-114",
+            "P26-115",
+            "P26-116"
+          ]
         },
         {
           "num": "582",
@@ -3528,11 +3486,10 @@
         },
         {
           "num": "P26-110",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-111",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-111"
+          ]
         },
         {
           "num": "588",
@@ -3851,11 +3808,10 @@
         },
         {
           "num": "P26-2",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-3",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-3"
+          ]
         },
         {
           "num": "595",
@@ -4167,11 +4123,10 @@
         },
         {
           "num": "P26-83",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-99",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-99"
+          ]
         },
         {
           "num": "603",
@@ -4422,11 +4377,10 @@
         },
         {
           "num": "P26-143",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-169",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-169"
+          ]
         },
         {
           "num": "610",
@@ -8090,16 +8044,12 @@
           "variant": "hyperspace"
         },
         {
-          "num": "C26-1",
-          "variant": "promo"
-        },
-        {
           "num": "P26-120",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-184",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "C26-1",
+            "P26-184"
+          ]
         },
         {
           "num": "716",
@@ -9436,11 +9386,10 @@
         },
         {
           "num": "P26-151",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-175",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-175"
+          ]
         },
         {
           "num": "754",

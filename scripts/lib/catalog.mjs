@@ -364,16 +364,49 @@ function attachPromoRows(catalogs, promoSet, promoRows, { variantOf, fallbackByT
     }
     const { catalog, card } = found;
     const num = promoNumber(promoSet, raw.Number);
-    if (card.printings.some((p) => p.num === num)) continue;
-    card.printings.push({ num, variant: variantOf(raw) });
+    if (card.printings.some((p) => p.num === num || p.aliases?.includes(num))) continue;
+    const variant = variantOf(raw);
+    touched.add(catalog.setKey);
+    // One Promo and one Promo Foil per card: the rest differ only by the badge printed on
+    // them (Top 8, Judge, …), so they are aliases of the first, not printings of their own.
+    const promo = card.printings.find((p) => p.variant === variant && promoParts(p.num));
+    if (promo) {
+      promo.aliases = [...(promo.aliases ?? []), num].sort();
+      continue;
+    }
+    card.printings.push({ num, variant });
     card.printings.sort(
       (a, b) =>
         (variantOrder.get(a.variant) ?? 99) - (variantOrder.get(b.variant) ?? 99) ||
         a.num.localeCompare(b.num),
     );
-    touched.add(catalog.setKey);
   }
   return { unmatched, touched };
+}
+
+/**
+ * Keeps each promo printing's number from the previous catalog. Which promo becomes the
+ * printing and which its aliases depends on attach order, which a new promo set can
+ * change; but owned copies are stored by printing number, so it must not move.
+ */
+export function keepPromoNumbers(catalog, previous) {
+  const before = new Map();
+  for (const card of previous?.cards ?? []) {
+    for (const p of card.printings) if (promoParts(p.num)) before.set(p.num, card.base);
+  }
+  for (const card of catalog.cards) {
+    for (const printing of card.printings) {
+      const kept = printing.aliases?.find((num) => before.get(num) === card.base);
+      if (!kept || before.get(printing.num) === card.base) continue;
+      printing.aliases = [...printing.aliases.filter((n) => n !== kept), printing.num].sort();
+      printing.num = kept;
+    }
+    card.printings.sort(
+      (a, b) =>
+        (variantOrder.get(a.variant) ?? 99) - (variantOrder.get(b.variant) ?? 99) ||
+        a.num.localeCompare(b.num),
+    );
+  }
 }
 
 /** `{ "059": 0.05, "059F": 0.10 }` — keyed by string printing number, not base number. */

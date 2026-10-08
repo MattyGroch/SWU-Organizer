@@ -1031,15 +1031,11 @@
         },
         {
           "num": "P26-177",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-20",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-21",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-20",
+            "P26-21"
+          ]
         },
         {
           "num": "532",
@@ -1094,15 +1090,11 @@
         },
         {
           "num": "P26-14",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-15",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-228",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-15",
+            "P26-228"
+          ]
         },
         {
           "num": "533",
@@ -1243,11 +1235,10 @@
         },
         {
           "num": "ASHOP-003",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-178",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-178"
+          ]
         },
         {
           "num": "536",
@@ -1947,15 +1938,11 @@
         },
         {
           "num": "ASHOP-006",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-142",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-168",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-142",
+            "P26-168"
+          ]
         },
         {
           "num": "552",
@@ -1963,11 +1950,10 @@
         },
         {
           "num": "ASHOP-026",
-          "variant": "promo-foil"
-        },
-        {
-          "num": "P26-154",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-154"
+          ]
         },
         {
           "num": "792",
@@ -2094,15 +2080,11 @@
         },
         {
           "num": "P26-121",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-179",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-235",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-179",
+            "P26-235"
+          ]
         },
         {
           "num": "555",
@@ -2331,12 +2313,11 @@
           "variant": "hyperspace"
         },
         {
-          "num": "CST-002",
-          "variant": "promo"
-        },
-        {
           "num": "P26-238",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "CST-002"
+          ]
         },
         {
           "num": "561",
@@ -2478,11 +2459,10 @@
         },
         {
           "num": "P26-119",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-191",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-191"
+          ]
         },
         {
           "num": "564",
@@ -2592,11 +2572,10 @@
         },
         {
           "num": "ASHOP-007",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-192",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-192"
+          ]
         },
         {
           "num": "566",
@@ -3767,11 +3746,10 @@
         },
         {
           "num": "P26-118",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-195",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-195"
+          ]
         },
         {
           "num": "599",
@@ -4369,23 +4347,13 @@
         },
         {
           "num": "P26-188",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-22",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-23",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-24",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-25",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-22",
+            "P26-23",
+            "P26-24",
+            "P26-25"
+          ]
         },
         {
           "num": "614",
@@ -5226,11 +5194,10 @@
         },
         {
           "num": "ASHOP-014",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-196",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-196"
+          ]
         },
         {
           "num": "637",
@@ -5939,23 +5906,13 @@
         },
         {
           "num": "P26-16",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-17",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-18",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-19",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-197",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-17",
+            "P26-18",
+            "P26-19",
+            "P26-197"
+          ]
         },
         {
           "num": "657",
@@ -6079,12 +6036,11 @@
           "variant": "hyperspace"
         },
         {
-          "num": "CST-003",
-          "variant": "promo"
-        },
-        {
           "num": "P26-236",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "CST-003"
+          ]
         },
         {
           "num": "660",
@@ -6589,12 +6545,11 @@
           "variant": "hyperspace"
         },
         {
-          "num": "MV26-2",
-          "variant": "promo"
-        },
-        {
           "num": "P26-198",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "MV26-2"
+          ]
         },
         {
           "num": "674",
@@ -7288,11 +7243,10 @@
         },
         {
           "num": "ASHOP-017",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-214",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-214"
+          ]
         },
         {
           "num": "694",
@@ -7300,11 +7254,10 @@
         },
         {
           "num": "ASHOP-037",
-          "variant": "promo-foil"
-        },
-        {
-          "num": "P26-226",
-          "variant": "promo-foil"
+          "variant": "promo-foil",
+          "aliases": [
+            "P26-226"
+          ]
         },
         {
           "num": "828",
@@ -9170,11 +9123,10 @@
         },
         {
           "num": "P26-1",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-239",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-239"
+          ]
         },
         {
           "num": "745",
@@ -9625,11 +9577,10 @@
         },
         {
           "num": "P26-152",
-          "variant": "promo"
-        },
-        {
-          "num": "P26-176",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "P26-176"
+          ]
         },
         {
           "num": "757",

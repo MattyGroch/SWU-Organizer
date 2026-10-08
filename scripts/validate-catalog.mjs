@@ -97,6 +97,12 @@ function v2Key(card) {
             );
           }
           promoPrintings += 1;
+          for (const alias of printing.aliases ?? []) {
+            if (promoParts(alias)?.set === undefined)
+              fail(`${key}#${card.base}: promo alias ${alias} is malformed`);
+            if (seenPrintings.has(alias)) fail(`${key}: printing ${alias} appears on two cards`);
+            seenPrintings.add(alias);
+          }
           continue;
         }
 
@@ -150,6 +156,19 @@ function v2Key(card) {
       compared += 1;
       if (before !== card.base) {
         fail(`${key}: BASE DRIFT for "${card.name}" — was ${before}, now ${card.base}`);
+      }
+    }
+    // Owned copies are stored by printing number: a promo printing must stay a printing
+    // (not become another's alias) on the same card.
+    const printingBase = new Map(
+      catalog.cards.flatMap((card) => card.printings.map((p) => [p.num, card.base])),
+    );
+    for (const card of reference.cards ?? []) {
+      for (const p of card.printings) {
+        if (printingBase.has(p.num) && printingBase.get(p.num) !== card.base)
+          fail(`${key}: printing ${p.num} moved from #${card.base} to #${printingBase.get(p.num)}`);
+        else if (!printingBase.has(p.num) && promoParts(p.num))
+          fail(`${key}#${card.base}: promo printing ${p.num} is no longer a printing`);
       }
     }
     if (compared === 0) notes.push(`${key}: matched no cards in the previous catalog`);

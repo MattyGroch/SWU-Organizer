@@ -1,4 +1,4 @@
-import { promoParts, type LoadedSet, type VariantSlug } from '~/domain/catalog';
+import { printingNumbers, promoParts, type LoadedSet, type VariantSlug } from '~/domain/catalog';
 import type { SetKey } from '~/domain/types';
 
 import { RESERVED_SET_KEYS, type ImportSkip, type ImportedPrinting } from './types';
@@ -25,8 +25,8 @@ export class PrintingResolver {
   constructor(private readonly catalog: CatalogLookup) {
     for (const set of catalog.values()) {
       for (const printings of set.printingsByBase.values()) {
-        for (const printing of printings) {
-          const promo = promoParts(printing.num);
+        for (const num of printings.flatMap(printingNumbers)) {
+          const promo = promoParts(num);
           if (!promo) continue;
           const sets = this.promoSets.get(promo.set) ?? [];
           if (!sets.includes(set.setKey)) sets.push(set.setKey);
@@ -144,7 +144,7 @@ export class PrintingResolver {
       return this.skip('unknown-card', detail);
 
     const card = set.cardsByBase.get(base);
-    const printing = card?.printings.find((p) => p.num === matched);
+    const printing = card?.printings.find((p) => printingNumbers(p).includes(matched));
     if (!printing) return this.skip('unknown-card', detail);
 
     this.record(set.setKey, base, printing.num, printing.variant, count);

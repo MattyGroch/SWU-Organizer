@@ -41,7 +41,9 @@ describe('committed catalog', () => {
     const set = toLoadedSet(catalog, prices);
 
     expect(set.baseCards.length).toBe(entry.cards);
-    expect(set.baseByPrinting.size).toBe(entry.printings);
+    // Every printing resolves, and so does each promo alias (a badge variant of a promo).
+    const aliases = catalog.cards.flatMap((c) => c.printings.flatMap((p) => p.aliases ?? []));
+    expect(set.baseByPrinting.size).toBe(entry.printings + aliases.length);
 
     for (const card of catalog.cards) {
       // Every card files into a binder slot at or below its lowest printing number.

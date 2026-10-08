@@ -63,7 +63,7 @@ type CatalogFile = {
     name: string;
     type: string;
     doubleSided?: boolean;
-    printings: Array<{ num: string; variant: string }>;
+    printings: Array<{ num: string; variant: string; aliases?: string[] }>;
   }>;
 };
 /**
@@ -101,22 +101,26 @@ async function references(): Promise<Ref[]> {
       for (const printing of card.printings) {
         if (!INDEXED.has(printing.variant)) continue;
         const faces = card.doubleSided ? (['front', 'back'] as const) : (['front'] as const);
-        for (const face of faces) {
-          const promo = /^([A-Z0-9]+)-(.+)$/.exec(printing.num);
-          const path = promo ? `${promo[1]}/${promo[2]}` : `${set.key}/${printing.num}`;
-          const remote = face === 'back' ? `${path}-b` : path;
-          refs.push({
-            setKey: set.key,
-            num: printing.num,
-            base: card.base,
-            variant: printing.variant,
-            ...(face === 'back' ? { face } : {}),
-            name: card.name,
-            remote,
-            file: join(CACHE_DIR, `${remote}.png`),
-            sideways: face === 'front' && (card.type === 'Leader' || card.type === 'Base'),
-            turn: 0,
-          });
+        // A promo's aliases (the same card with another event badge) are indexed under the
+        // printing itself, so a scan of any of them records the one stored printing.
+        for (const art of [printing.num, ...(printing.aliases ?? [])]) {
+          for (const face of faces) {
+            const promo = /^([A-Z0-9]+)-(.+)$/.exec(art);
+            const path = promo ? `${promo[1]}/${promo[2]}` : `${set.key}/${art}`;
+            const remote = face === 'back' ? `${path}-b` : path;
+            refs.push({
+              setKey: set.key,
+              num: printing.num,
+              base: card.base,
+              variant: printing.variant,
+              ...(face === 'back' ? { face } : {}),
+              name: card.name,
+              remote,
+              file: join(CACHE_DIR, `${remote}.png`),
+              sideways: face === 'front' && (card.type === 'Leader' || card.type === 'Base'),
+              turn: 0,
+            });
+          }
         }
       }
     }
