@@ -24,6 +24,9 @@ type Props = {
   quota: number;
   onAdjust: (delta: number) => void;
   onAdjustPrinting: (printing: Printing, delta: number) => void;
+  /** The promo picture chosen for this card's binder pocket, if any. */
+  promoArt?: string;
+  onChoosePromoArt?: (num: string | undefined) => void;
   /** Deselects the card. Phones show a close button for it: they have no Escape key. */
   onClose?: () => void;
 };
@@ -44,6 +47,8 @@ export function SelectedCardPanel({
   quota,
   onAdjust,
   onAdjustPrinting,
+  promoArt,
+  onChoosePromoArt,
   onClose,
 }: Props) {
   if (!active) {
@@ -145,6 +150,8 @@ export function SelectedCardPanel({
         counts={pocket}
         cardName={card.Name}
         onAdjust={onAdjustPrinting}
+        promoArt={promoArt}
+        onChoosePromoArt={onChoosePromoArt}
       />
     </div>
   );

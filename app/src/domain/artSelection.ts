@@ -1,5 +1,6 @@
 import {
   isFoilPrinting,
+  printingNumbers,
   variantAxes,
   type CatalogCard,
   type Printing,
@@ -41,6 +42,19 @@ const TREATMENT_RANK: Record<Treatment, number> = {
  */
 export function hasOwnArtwork(printing: Printing): boolean {
   return variantAxes(printing.variant).hasArt;
+}
+
+/**
+ * The pictures a printing can be shown with. A Promo's aliases (the same card given out
+ * at another event, with another badge or art) are all candidates; anything else has one.
+ */
+export function promoArtOptions(printing: Printing): readonly string[] {
+  return printing.variant === 'promo' ? printingNumbers(printing) : [printing.num];
+}
+
+/** The number whose picture shows `printing`: the chosen promo art when it is one of its. */
+export function shownArtNumber(printing: Printing, chosen: string | undefined): string {
+  return chosen && promoArtOptions(printing).includes(chosen) ? chosen : printing.num;
 }
 
 /**
