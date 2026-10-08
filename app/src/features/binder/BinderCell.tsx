@@ -63,7 +63,6 @@ export function BinderCell({
   // emptied by decks looks exactly like a card you do not have.
   const pocket = pocketCounts(counts, held);
   // The slot shows its pocket only: bulk-box copies live in the List and Bulk pages.
-  const inDecks = sumVariants(held.binder);
   const choice = catalogCard ? selectArtPrinting(catalogCard, pocket) : undefined;
   const { src, state } = useCardImage(
     choice ? artUrl(setKey, shownArtNumber(choice.printing, promoArt)) : undefined,
@@ -71,6 +70,9 @@ export function BinderCell({
 
   const onHand = pocket.total;
   const inBinder = binderCount(onHand, quota);
+  // Copies out in decks that this pocket is missing. Once the pocket is full again, any
+  // more out in decks are headed for the bulk box when they come back, so they don't count.
+  const inDecks = Math.min(sumVariants(held.binder), quota - inBinder);
   const pocketEmpty = onHand === 0;
   const light = isLightFill(card.Aspects);
   const showArt = state === 'ready' && src;
@@ -138,6 +140,17 @@ export function BinderCell({
           </span>
         )}
 
+        {/* A corner badge rather than part of the count: in the bottom row it widened the
+            pill enough to push the rarity badge off the card on a phone. */}
+        {inDecks > 0 && (
+          <span
+            className={styles.inDecks}
+            title={`${inDecks} missing from this pocket, out in built decks`}
+          >
+            ⇢{inDecks}
+          </span>
+        )}
+
         <span className={styles.overlay}>
           <span
             className={styles.qty}
@@ -145,11 +158,6 @@ export function BinderCell({
             data-empty={inBinder === 0}
           >
             {inBinder}/{quota}
-            {inDecks > 0 && (
-              <span className={styles.inDecks} title={`${inDecks} pulled into built decks`}>
-                ⇢{inDecks}
-              </span>
-            )}
           </span>
           <span className={styles.number}>{card.Number}</span>
           <RarityBadge className={styles.rarity} rarity={card.Rarity} />

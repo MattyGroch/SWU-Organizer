@@ -107,6 +107,51 @@ describe('editDeck', () => {
   });
 });
 
+describe('a deck copy that outranks a full pocket', () => {
+  // The deck holds the Hyperspace; while it was out, the pocket filled with three Normals.
+  const hyperspaceDeck: SavedDeck = {
+    ...deck,
+    pulledCards: [{ ...ref(33, 1), variants: { hyperspace: 1 } }],
+    mainDeck: [ref(33, 1)],
+  };
+  let database: SwuDatabase;
+
+  beforeEach(async () => {
+    database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+    await writeDeckLibraryQuietly({ customDecks: [hyperspaceDeck], preconOwnership: {} }, database);
+    const owned = { setKey: 'SOR', base: 33, updatedAt: 0 };
+    await database.owned.put({
+      ...owned,
+      id: 'SOR:298',
+      num: '298',
+      variant: 'hyperspace',
+      count: 1,
+    });
+    await database.owned.put({ ...owned, id: 'SOR:033', num: '033', variant: 'normal', count: 3 });
+  });
+
+  const bulkOf = async (num: string) => (await database.owned.get(`SOR:${num}`))?.bulk ?? 0;
+
+  it('takes its place back on deconstruct, bumping a Normal to bulk', async () => {
+    expect(await deconstructDeck('a', () => 3, database)).toBe(1);
+    expect(await bulkOf('298')).toBe(0);
+    expect(await bulkOf('033')).toBe(1);
+  });
+
+  it('does the same when an edit drops it from the deck', async () => {
+    const dropped = {
+      contents: { leader: ref(1, 1), base: ref(19, 1), mainDeck: [], sideboard: [] },
+      format: 'eternal' as const,
+      name: 'A',
+      sourceText: '',
+    };
+    expect(await editDeck('a', dropped, () => 3, database)).toBe(1);
+    expect(await bulkOf('298')).toBe(0);
+    expect(await bulkOf('033')).toBe(1);
+  });
+});
+
 describe('addNewDeck', () => {
   it('adds the deck with the list the editor gave it, once', async () => {
     const database = new SwuDatabase(`test-${crypto.randomUUID()}`);
