@@ -395,21 +395,45 @@ describe('sets hidden from the binder', () => {
     expect(options).toContain('SOR');
   });
 
-  it('can be shown again from the Sets menu', async () => {
+  // jsdom implements <dialog> but not its modal API.
+  beforeEach(() => {
+    HTMLDialogElement.prototype.showModal ??= function showModal(this: HTMLDialogElement) {
+      this.open = true;
+    };
+    HTMLDialogElement.prototype.close ??= function close(this: HTMLDialogElement) {
+      this.open = false;
+      this.dispatchEvent(new Event('close'));
+    };
+  });
+
+  const pickerSets = () =>
+    within(screen.getByRole('combobox', { name: 'Card set' }))
+      .getAllByRole('option')
+      .map((o) => o.getAttribute('value'));
+
+  it('can be shown again from Hide sets: Apply saves and closes', async () => {
     const user = userEvent.setup();
     await renderApp();
 
-    await user.click(screen.getByText('Settings'));
+    await user.click(screen.getByRole('button', { name: /Hide sets/ }));
     await user.click(screen.getByRole('checkbox', { name: /TS26/ }));
+    // Only a draft until Apply.
+    expect(pickerSets()).not.toContain('TS26');
+    await user.click(screen.getByRole('button', { name: 'Apply' }));
+    await waitFor(() => expect(pickerSets()).toContain('TS26'));
+    // Apply saves and closes.
+    expect(screen.queryByRole('button', { name: 'Apply' })).not.toBeInTheDocument();
+  });
 
-    const picker = screen.getByRole('combobox', { name: 'Card set' });
-    await waitFor(() =>
-      expect(
-        within(picker)
-          .getAllByRole('option')
-          .map((o) => o.getAttribute('value')),
-      ).toContain('TS26'),
-    );
+  it('drops unapplied ticks on Cancel', async () => {
+    const user = userEvent.setup();
+    await renderApp();
+
+    await user.click(screen.getByRole('button', { name: /Hide sets/ }));
+    await user.click(screen.getByRole('checkbox', { name: /TS26/ }));
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    expect(screen.queryByRole('button', { name: 'Apply' })).not.toBeInTheDocument();
+    expect(pickerSets()).not.toContain('TS26');
   });
 });
 

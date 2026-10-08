@@ -18,7 +18,7 @@ import {
   printingsLabel,
   type BulkSectionKey,
 } from './bulkRows';
-import { InventoryNav } from './InventoryNav';
+import { InventorySubnav } from './InventoryNav';
 
 const COLLAPSED_KEY = 'bulk:collapsed';
 
@@ -77,7 +77,7 @@ export function BulkPage({ entries, sets }: Props) {
   return (
     <div className={styles.page}>
       <div className={styles.toolbar}>
-        <InventoryNav current="bulk" />
+        <InventorySubnav current="bulk" />
         <label className={styles.setPicker}>
           <span className="visually-hidden">Set</span>
           <select value={setFilter} onChange={(event) => setSetFilter(event.target.value)}>

@@ -102,7 +102,10 @@ export function CardSearch({
   }
 
   return (
-    <div ref={containerRef} className={styles.container}>
+    <div
+      ref={containerRef}
+      className={wideResults ? `${styles.container} ${styles.wideContainer}` : styles.container}
+    >
       <input
         ref={inputRef}
         type="text"

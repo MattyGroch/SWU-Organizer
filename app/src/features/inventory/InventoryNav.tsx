@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { useEffect } from 'react';
+import { useEffect, type ReactNode } from 'react';
 
 import type { SetKey } from '~/domain/types';
 
@@ -65,5 +65,27 @@ export function InventoryNav({
         Bulk
       </Link>
     </nav>
+  );
+}
+
+/**
+ * The inventory's sub-nav: a dark strip hanging from the app bar, with Binder · List · Bulk
+ * and, beside them (below them on a phone), whatever the page puts there — the set's name.
+ * It cancels its toolbar's padding to sit flush under the bar.
+ */
+export function InventorySubnav({
+  setKey,
+  current,
+  children,
+}: {
+  setKey?: SetKey;
+  current: 'binder' | 'list' | 'bulk';
+  children?: ReactNode;
+}) {
+  return (
+    <div className={styles.strip}>
+      <InventoryNav setKey={setKey} current={current} />
+      {children && <div className={styles.extra}>{children}</div>}
+    </div>
   );
 }

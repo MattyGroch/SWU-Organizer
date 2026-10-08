@@ -119,9 +119,21 @@
 /* Phones: the type is the first thing to go, and the box shares its row with Filters and
    More, so it gives up its desktop minimum width. */
 @media (max-width: 760px) {
-  /* The box starts at the page's left gutter, so its results can run to the right one. */
+  /* The results hang from the toolbar (the positioned parent) instead of the box, wherever
+     the box lands in its row, the screen's width less the toolbar's padding. */
+  .wideContainer {
+    position: static;
+  }
+
+  /* No keyboard to press / on, and with the box static it would float off over the toolbar. */
+  .wideContainer .hint {
+    display: none;
+  }
+
   .wideList {
-    width: calc(100vw - 2 * var(--space-3));
+    right: var(--space-4);
+    left: var(--space-4);
+    width: auto;
   }
 
   /* Two lines per result: the name, then the subtitle in full — the subtitle is what tells

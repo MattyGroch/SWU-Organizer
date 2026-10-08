@@ -203,3 +203,24 @@
     font-size: 17px;
   }
 }
+
+/* Phones: the set picker and search share the row under the Binder | List | Bulk tabs. */
+@media (max-width: 760px) {
+  .toolbar {
+    gap: var(--space-2);
+  }
+
+  .setPicker {
+    flex: 1 1 7rem;
+    min-width: 0;
+  }
+
+  .setPicker select {
+    width: 100%;
+  }
+
+  .search {
+    flex: 1 1 9rem;
+    min-width: 0;
+  }
+}
