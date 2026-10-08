@@ -38,27 +38,39 @@
   color: var(--color-warning-fg);
 }
 
-/* Power and HP badges, a little larger than the text beside them. */
-.table .statsCol {
+/* Cost, power, HP and rarity: just wide enough for the badge, centred under the heading. */
+.table .icon {
   width: 1%;
-  font-size: var(--font-size-md);
+  padding-inline: var(--space-2);
+  text-align: center;
   white-space: nowrap;
 }
 
-.inlineStats {
-  margin-right: var(--space-1);
+/* A block, so the badge centres on the row like the aspect icons. */
+.table td.icon > * {
+  display: flex;
+  margin-inline: auto;
+}
+
+/* The rarity tile is sized in em: about as tall as the other badges' art. */
+.table td.icon > [data-rarity] {
+  display: grid;
+  font-size: calc(var(--icon-size) * 0.75);
+}
+
+/* Phones: aspects, cost, power and HP in a line of badges above the name. */
+.badges {
+  --icon-size: 1.6em;
+
+  margin-bottom: 4px;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
   font-size: var(--font-size-xs);
 }
 
-/* Phones: "Leader · LAW" never splits; the stats can sit above it if room runs out. */
-.roleSet {
-  white-space: nowrap;
-}
-
-/* Just wide enough for the badge; padding stays tight beside the aspect column. */
-.table .costCol {
-  width: 1%;
-  padding-right: 0;
+.badgeAspects {
+  font-size: var(--icon-size);
 }
 
 /* The cell sets the column's width; the narrow-screen role line inside a card cell is not a td. */
@@ -91,6 +103,14 @@
 
 .table td.aspects {
   font-size: var(--icon-size, 1.1em);
+}
+
+/*
+ * A block, like the cost badge beside it: inline, the icons sit on this cell's text line,
+ * and how high that puts them depends on the device's font, a pixel or two off the badge.
+ */
+.table td.aspects > * {
+  display: flex;
 }
 
 .subtitle {
@@ -159,6 +179,15 @@
 
   .narrowOnly {
     display: block;
+  }
+
+  .badges.narrowOnly {
+    display: flex;
+  }
+
+  /* A built deck's "In box" 3/3 already says what Have and Need would. */
+  .table[data-box] .wideWithBox {
+    display: none;
   }
 
   .table th,

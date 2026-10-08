@@ -30,6 +30,7 @@ function refToRow(
     cost: card.Cost,
     power: card.Power,
     hp: card.HP,
+    rarity: card.Rarity,
     price,
     maxCopies: card.MaxCopies,
     ambiguous: false,

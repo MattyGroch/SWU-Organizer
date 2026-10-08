@@ -349,13 +349,12 @@
   font-size: var(--font-size-xs);
 }
 
-/* Phones: two icons wide, so names keep their room; a three-aspect card wraps its third. */
+/* Phones: just the name and subtitle, so names keep their room beside the controls. */
 @media (max-width: 760px) {
-  .lineAspects {
-    width: 2.2em;
-  }
-
-  .lineAspects > span {
-    flex-wrap: wrap;
+  /* Doubled up to outrank the badges' own display rules. */
+  .lineCost.lineCost,
+  .lineAspects,
+  .lineStats.lineStats {
+    display: none;
   }
 }

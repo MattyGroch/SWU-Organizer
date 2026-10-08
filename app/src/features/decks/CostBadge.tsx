@@ -15,9 +15,10 @@ function badgeFor(cost: number): string | undefined {
 }
 
 /** A card's cost as its badge. A cost without one (none above 20) shows as plain text. */
-export function CostBadge({ cost }: { cost: number | undefined }) {
-  if (cost === undefined) return <span className={styles.none} aria-hidden="true" />;
+export function CostBadge({ cost, className }: { cost: number | undefined; className?: string }) {
+  const classes = (base: string | undefined) => [base, className].filter(Boolean).join(' ');
+  if (cost === undefined) return <span className={classes(styles.none)} aria-hidden="true" />;
   const src = badgeFor(cost);
-  if (!src) return <span className={styles.text}>{cost}</span>;
-  return <img className={styles.badge} src={src} alt={`Cost ${cost}`} draggable={false} />;
+  if (!src) return <span className={classes(styles.text)}>{cost}</span>;
+  return <img className={classes(styles.badge)} src={src} alt={`Cost ${cost}`} draggable={false} />;
 }
