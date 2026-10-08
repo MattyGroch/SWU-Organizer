@@ -2,8 +2,8 @@
 .badge {
   display: block;
   flex: none;
-  width: 2em;
-  height: 2em;
+  width: var(--icon-size, 2em);
+  height: var(--icon-size, 2em);
   overflow: visible;
 }
 
