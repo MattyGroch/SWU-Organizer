@@ -1,9 +1,17 @@
-import { mkdtempSync, readdirSync, rmSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdtempSync, readdirSync, rmSync, statSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import Database from 'better-sqlite3'
 import { afterEach, describe, expect, it } from 'vitest'
-import { BASELINE_VERSION, MIGRATIONS, migrate, openDb, userVersion, type Db } from '../src/db.js'
+import {
+  BASELINE_VERSION,
+  MIGRATIONS,
+  closeDb,
+  migrate,
+  openDb,
+  userVersion,
+  type Db,
+} from '../src/db.js'
 
 const dirs: string[] = []
 afterEach(() => {
@@ -99,5 +107,41 @@ describe('migrate', () => {
   it('refuses steps out of order', () => {
     const db = openDb(':memory:')
     expect(() => migrate(db, [{ ...addNote, to: BASELINE_VERSION + 2 }])).toThrow(/expected v3/)
+  })
+})
+
+/** Opens a copy of the main database file alone, as a backup that skipped the -wal would. */
+function mainFileAlone(path: string, dir: string): Db {
+  const copy = join(dir, 'alone.db')
+  copyFileSync(path, copy)
+  return new Database(copy, { readonly: true })
+}
+
+describe('self-contained database file', () => {
+  it('folds writes a killed server left in the WAL into the main file on open', () => {
+    const { path, dir } = existingDb()
+    // Still open, as if killed: its last write sits in the WAL.
+    const killed = openDb(path)
+    killed.prepare("UPDATE inventories SET data_json = '{\"1\":5}'").run()
+    expect(statSync(`${path}-wal`).size).toBeGreaterThan(0)
+
+    const db = openDb(path)
+    expect(statSync(`${path}-wal`).size).toBe(0)
+    expect(mainFileAlone(path, dir).prepare('SELECT data_json FROM inventories').get()).toEqual({
+      data_json: '{"1":5}',
+    })
+    db.close()
+    killed.close()
+  })
+
+  it('closeDb leaves every write in the main file', () => {
+    const { path, dir } = existingDb()
+    const db = openDb(path)
+    db.prepare("UPDATE inventories SET data_json = '{\"1\":7}'").run()
+    closeDb(db)
+    expect(!existsSync(`${path}-wal`) || statSync(`${path}-wal`).size === 0).toBe(true)
+    expect(mainFileAlone(path, dir).prepare('SELECT data_json FROM inventories').get()).toEqual({
+      data_json: '{"1":7}',
+    })
   })
 })

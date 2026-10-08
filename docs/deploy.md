@@ -23,7 +23,7 @@ The app service is labelled `com.centurylinklabs.watchtower.enable=true`; the AP
 
 ## Snapshot the database
 
-Do this before merging or deploying anything that changes stored data. SQLite keeps recent writes in the `-wal` file, so stop the API and copy all three files together:
+Do this before merging or deploying anything that changes stored data. SQLite keeps recent writes in the `-wal` file. A cleanly stopped API folds them into `swu.db` and leaves it on its own, but copy all three files together anyway, in case it was killed:
 
 ```bash
 cd /opt/swu-organizer
