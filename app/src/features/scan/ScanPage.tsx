@@ -155,7 +155,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const clearedRef = useRef(cleared);
   clearedRef.current = cleared;
   /**
-   * Quick Scan stops after each card, with the picture frozen, until "Scan next card": one
+   * Quick Scan stops after each card, with the picture frozen, until "Scan another": one
    * card at a time, so a card still in view can't be read twice while its result is up.
    */
   const [held, setHeld] = useState(false);
@@ -384,7 +384,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     else if (video.paused) void Promise.resolve(video.play()).catch(() => {});
   }, [frozen, camera.state, camera.videoRef]);
 
-  /** "Scan next card": the card was swapped while paused, so this is the gap between them. */
+  /** "Scan another": the card was swapped while paused, so this is the gap between them. */
   const scanNext = useCallback(() => {
     next();
     setHeld(false);
@@ -661,7 +661,7 @@ function Viewfinder({
   indexState: 'loading' | 'ready' | 'error';
   phase: string;
   onView: (view: View) => void;
-  /** Quick Scan, paused on a result: carry on with the next card. */
+  /** Quick Scan, paused on a result: carry on scanning. */
   onNext?: () => void;
 }) {
   const frameRef = useRef<HTMLDivElement>(null);
@@ -706,7 +706,7 @@ function Viewfinder({
                   : phase === 'asking'
                     ? 'Paused — answer below to carry on scanning'
                     : phase === 'held'
-                      ? 'Paused — put the next card in, then tap Scan next card'
+                      ? 'Paused — tap Scan another when you’re ready'
                       : phase === 'tooClose'
                         ? 'Too close — fit the whole card inside the frame'
                         : 'Hold a card inside the frame';
@@ -723,7 +723,7 @@ function Viewfinder({
       )}
       {camera.state === 'live' && onNext && (
         <button type="button" className={styles.next} onClick={onNext}>
-          Scan next card
+          Scan another
         </button>
       )}
       {camera.state === 'live' ? (

@@ -191,7 +191,7 @@ describe('ScanPage', () => {
     expect(screen.getByRole('button', { name: 'Rescan' })).toBeInTheDocument();
     // Bulk Scan keeps going: only Quick Scan pauses on each card.
     expect(active).toBe(true);
-    expect(screen.queryByRole('button', { name: 'Scan next card' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Scan another' })).not.toBeInTheDocument();
     await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
     expect(await stack()).toEqual([['059', 'binder', null]]);
 
@@ -582,7 +582,7 @@ describe('ScanPage', () => {
       await waitFor(async () => expect(await owned()).toEqual({ '059': [3, 0] }));
     });
 
-    it('pauses on each card until Scan next card, so a card in view is read once', async () => {
+    it('pauses on each card until Scan another, so a card in view is read once', async () => {
       await scan('059', 'normal');
       await screen.findByRole('heading', { name: '2-1B Surgical Droid' });
       expect(active).toBe(false);
@@ -598,10 +598,10 @@ describe('ScanPage', () => {
       expect(screen.queryByRole('heading', { name: 'Nameless Scout' })).not.toBeInTheDocument();
       expect(screen.queryByText('Earlier scans')).not.toBeInTheDocument();
 
-      await userEvent.click(screen.getByRole('button', { name: 'Scan next card' }));
+      await userEvent.click(screen.getByRole('button', { name: 'Scan another' }));
       expect(next).toHaveBeenCalled();
       expect(active).toBe(true);
-      expect(screen.queryByRole('button', { name: 'Scan next card' })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'Scan another' })).not.toBeInTheDocument();
       await act(async () => {
         fire!({
           matches: [match('080', 80, 'normal', 10), match('059', 59, 'normal', 90)],
