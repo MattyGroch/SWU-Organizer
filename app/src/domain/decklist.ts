@@ -59,6 +59,7 @@ export type ResolvedDeckRow = {
   /** An upgrade's are bonuses, and can be negative. */
   power?: number;
   hp?: number;
+  rarity?: string;
   price: number;
   /** Per-card deck-building override from the card's own text (e.g. Swarming Vulture Droid's 15), when it has one. */
   maxCopies?: number;
@@ -625,6 +626,7 @@ export function resolveDeckList(
         cost: resolved.card.Cost,
         power: resolved.card.Power,
         hp: resolved.card.HP,
+        rarity: resolved.card.Rarity,
         price: Number(resolved.card.MarketPrice ?? 0),
         maxCopies: resolved.card.MaxCopies,
         ambiguous,

@@ -542,7 +542,7 @@ function ZoneList({
                 const name = c?.Name ?? `#${ref.baseNumber}`;
                 return (
                   <li key={`${ref.setKey}:${ref.baseNumber}`} className={styles.line}>
-                    <CostBadge cost={c?.Cost} />
+                    <CostBadge cost={c?.Cost} className={styles.lineCost} />
                     <span className={styles.lineAspects}>
                       <AspectIcons aspects={c?.Aspects} />
                     </span>
