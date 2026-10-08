@@ -78,20 +78,59 @@ describe('applyInventoryPayload', () => {
     expect(rows[0]).toMatchObject({ num: '324', variant: 'hyperspace', count: 2 });
   });
 
-  it('drops entries that no longer resolve, without failing the rest', async () => {
-    await applyInventoryPayload('SOR', { '059': 2, '9999': 1, bad: 3 }, set, database);
+  it('refuses a payload with printings this catalog does not know, changing nothing', async () => {
+    await adjustPrinting('SOR', 59, printingFor(set, 59, 'normal')!, 3, database);
+    // Another device on a newer catalog. Storing only the known part, and then claiming
+    // the server's version, is how a whole set was lost.
+    await expect(
+      applyInventoryPayload('SOR', { '059': 2, '9999': 1 }, set, database),
+    ).rejects.toThrow(/9999/);
 
     const rows = await database.owned.toArray();
     expect(rows).toHaveLength(1);
-    expect(rows[0]!.num).toBe('059');
+    expect(rows[0]).toMatchObject({ num: '059', count: 3 });
   });
 
-  it('leaves the set alone when the catalog is unavailable', async () => {
+  it('refuses when the catalog is unavailable, leaving the set alone', async () => {
     await adjustPrinting('SOR', 59, printingFor(set, 59, 'normal')!, 3, database);
-    await applyInventoryPayload('SOR', { '324': 9 }, undefined, database);
+    await expect(applyInventoryPayload('SOR', { '324': 9 }, undefined, database)).rejects.toThrow(
+      /not loaded/,
+    );
 
-    // A catalog that failed to load must not be able to wipe a collection.
     expect((await database.owned.toArray())[0]!.count).toBe(3);
+  });
+
+  it('stores a promo alias under the printing it belongs to', async () => {
+    const withPromo = toLoadedSet(
+      parseSetCatalog({
+        setKey: 'LOF',
+        label: 'LOF',
+        cards: [
+          {
+            base: 79,
+            name: 'Promo Card',
+            type: 'Unit',
+            aspects: [],
+            printings: [
+              { num: '079', variant: 'normal' },
+              { num: 'P25-79', variant: 'promo', aliases: ['1050'] },
+            ],
+          },
+        ],
+      }),
+      new Map(),
+    );
+    // An older device still writes the alias; a newer one the printing's own number.
+    await applyInventoryPayload(
+      'LOF',
+      { '1050': 1, '1050@bulk': 1, 'P25-79': 1 },
+      withPromo,
+      database,
+    );
+
+    const rows = await database.owned.toArray();
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ num: 'P25-79', variant: 'promo', base: 79, count: 2, bulk: 1 });
   });
 
   it('ignores non-positive counts', async () => {

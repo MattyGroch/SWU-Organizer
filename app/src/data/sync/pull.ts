@@ -104,7 +104,12 @@ export async function applyPull(
   database: SwuDatabase = db,
 ): Promise<void> {
   for (const [setKey, record] of Object.entries(snapshot.inventories)) {
-    await bundle.inventory.receive(setKey, record.data, record.version);
+    try {
+      await bundle.inventory.receive(setKey, record.data, record.version);
+    } catch (error) {
+      // That set stays at its old version, to be tried again next pull; the rest go on.
+      console.warn('Sync: could not apply a pulled set', error);
+    }
   }
   for (const setKey of await localSetKeys(database)) {
     if (snapshot.inventories[setKey]) continue;
