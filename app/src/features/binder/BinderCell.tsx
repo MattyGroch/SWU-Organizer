@@ -60,12 +60,14 @@ export function BinderCell({
   // emptied by decks looks exactly like a card you do not have.
   const pocket = pocketCounts(counts, held);
   // The slot shows its pocket only: bulk-box copies live in the List and Bulk pages.
-  const inDecks = sumVariants(held.binder);
   const choice = catalogCard ? selectArtPrinting(catalogCard, pocket) : undefined;
   const { src, state } = useCardImage(choice ? artUrl(setKey, choice.printing.num) : undefined);
 
   const onHand = pocket.total;
   const inBinder = binderCount(onHand, quota);
+  // Copies out in decks that this pocket is missing. Once the pocket is full again, any
+  // more out in decks are headed for the bulk box when they come back, so they don't count.
+  const inDecks = Math.min(sumVariants(held.binder), quota - inBinder);
   const pocketEmpty = onHand === 0;
   const light = isLightFill(card.Aspects);
   const showArt = state === 'ready' && src;
@@ -136,7 +138,7 @@ export function BinderCell({
         {/* A corner badge rather than part of the count: in the bottom row it widened the
             pill enough to push the rarity badge off the card on a phone. */}
         {inDecks > 0 && (
-          <span className={styles.inDecks} title={`${inDecks} pulled into built decks`}>
+          <span className={styles.inDecks} title={`${inDecks} missing from this pocket, out in built decks`}>
             ⇢{inDecks}
           </span>
         )}

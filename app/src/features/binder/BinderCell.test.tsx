@@ -209,3 +209,22 @@ describe('copies out in decks', () => {
     expect(screen.getByRole('button')).toHaveAttribute('data-foil', 'false');
   });
 });
+
+describe('the in-decks marker', () => {
+  it('counts copies out in decks that the pocket is missing', () => {
+    renderCell(unit, unitCatalog, [['normal', 3]], { normal: 2 });
+    expect(screen.getByTitle(/2 missing from this pocket/)).toHaveTextContent('⇢2');
+    expect(screen.getByRole('button')).toHaveAccessibleName(/1 of 3 in binder, 2 in decks\./);
+  });
+
+  it('counts only up to the gap: the rest are bulk-bound when they come back', () => {
+    renderCell(unit, unitCatalog, [['normal', 4]], { normal: 2 });
+    expect(screen.getByTitle(/1 missing from this pocket/)).toHaveTextContent('⇢1');
+  });
+
+  it('is left off a full pocket', () => {
+    renderCell(unit, unitCatalog, [['normal', 4]], { normal: 1 });
+    expect(screen.queryByTitle(/missing from this pocket/)).not.toBeInTheDocument();
+    expect(screen.getByRole('button')).toHaveAccessibleName(/3 of 3 in binder\./);
+  });
+});
