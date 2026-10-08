@@ -7296,6 +7296,7 @@
         "Villainy"
       ],
       "cost": 2,
+      "power": -2,
       "hp": 0,
       "traits": [
         "CONDITION"

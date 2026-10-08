@@ -164,6 +164,8 @@
 }
 
 .slot {
+  --icon-size: var(--deck-icon-size);
+
   display: flex;
   gap: var(--space-2);
   align-items: center;
@@ -239,6 +241,9 @@
 }
 
 .line {
+  /* Cost, aspects, power and HP: one size. */
+  --icon-size: var(--deck-icon-size);
+
   display: flex;
   gap: var(--space-2);
   align-items: center;
@@ -253,7 +258,7 @@
   flex: none;
   align-items: center;
   width: 3.2em;
-  font-size: 1.05em;
+  font-size: var(--icon-size, 1.05em);
 }
 
 .lineName {
@@ -272,6 +277,11 @@
   font-weight: 400;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.lineStats {
+  margin-right: var(--space-1);
+  font-size: var(--font-size-sm);
 }
 
 .unowned {

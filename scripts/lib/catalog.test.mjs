@@ -226,6 +226,13 @@ describe('buildSetCatalog', () => {
     expect(cards[1].arenas).toBeUndefined();
   });
 
+  it("keeps an upgrade's negative power and HP bonus", () => {
+    const { cards } = buildSetCatalog('LAW', [
+      printing('050', 'Normal', { Type: 'Upgrade', Power: '-1', HP: '-1' }),
+    ]);
+    expect(cards[0]).toMatchObject({ power: -1, hp: -1 });
+  });
+
   it('sorts cards by base number so binder order is stable', () => {
     const { cards } = buildSetCatalog('SOR', [
       printing('200', 'Normal', { Name: 'Zeb', Subtitle: '' }),

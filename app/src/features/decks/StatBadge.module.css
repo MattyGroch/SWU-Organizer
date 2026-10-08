@@ -1,0 +1,28 @@
+/* Sized in em, so the badge scales with the row's text; a touch larger than a cost badge. */
+.badge {
+  display: block;
+  flex: none;
+  width: var(--icon-size, 2em);
+  height: var(--icon-size, 2em);
+  overflow: visible;
+}
+
+.number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+/* Power and HP side by side, inline with a line of text. */
+.stats {
+  display: inline-flex;
+  flex: none;
+  gap: 0.15em;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.stats .badge {
+  width: var(--icon-size, 1.9em);
+  height: var(--icon-size, 1.9em);
+}

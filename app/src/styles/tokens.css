@@ -107,6 +107,8 @@
   --font-size-xs: 13px;
   --font-size-sm: 15px;
   --font-size-md: 17px;
+  /* Card icons in deck views — cost, aspects, power, HP — share one size. */
+  --deck-icon-size: calc(var(--font-size-sm) * 1.9);
   --font-size-lg: 22px;
   --font-size-xl: 30px;
 
@@ -125,5 +127,12 @@
   :root {
     --transition-fast: 0ms;
     --transition-base: 0ms;
+  }
+}
+
+/* Phones: deck icons a little smaller, so card names keep their room. */
+@media (max-width: 760px) {
+  :root {
+    --deck-icon-size: calc(var(--font-size-sm) * 1.6);
   }
 }

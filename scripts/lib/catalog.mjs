@@ -251,7 +251,8 @@ export function buildSetCatalog(setKey, rawCards) {
       ['hp', 'HP'],
     ]) {
       const raw = String(representative[from] ?? '').trim();
-      if (/^\d+$/.test(raw)) card[field] = Number(raw);
+      // An upgrade's power and HP are bonuses, and can be negative (Kill Switch: -1/-1).
+      if (/^[-+]?\d+$/.test(raw)) card[field] = Number(raw);
     }
     const arenas = stringList(representative.Arenas);
     if (arenas.length) card.arenas = arenas;

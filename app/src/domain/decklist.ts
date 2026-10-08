@@ -56,6 +56,9 @@ export type ResolvedDeckRow = {
   aspects?: string[];
   /** Resources to play it (a leader's is its deploy cost); bases have none. */
   cost?: number;
+  /** An upgrade's are bonuses, and can be negative. */
+  power?: number;
+  hp?: number;
   price: number;
   /** Per-card deck-building override from the card's own text (e.g. Swarming Vulture Droid's 15), when it has one. */
   maxCopies?: number;
@@ -620,6 +623,8 @@ export function resolveDeckList(
         type: resolved.card.Type,
         aspects: resolved.card.Aspects,
         cost: resolved.card.Cost,
+        power: resolved.card.Power,
+        hp: resolved.card.HP,
         price: Number(resolved.card.MarketPrice ?? 0),
         maxCopies: resolved.card.MaxCopies,
         ambiguous,

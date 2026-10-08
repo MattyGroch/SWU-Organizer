@@ -3,6 +3,7 @@ import { formatUsd } from '~/ui/format';
 
 import { AspectIcons } from '../binder/AspectIcons';
 import { CostBadge } from './CostBadge';
+import { CardStats } from './StatBadge';
 import styles from './DeckRowsTable.module.css';
 
 const ROLE_LABEL: Record<DeckRole, string> = {
@@ -48,6 +49,9 @@ export function DeckRowsTable({ rows, label, box }: Props) {
               Aspect
             </th>
             <th scope="col">Card</th>
+            <th scope="col" className={`${styles.statsCol} ${styles.wideOnly}`}>
+              <span className="visually-hidden">Power and HP</span>
+            </th>
             <th scope="col" className={styles.wideOnly}>
               Set
             </th>
@@ -103,8 +107,19 @@ export function DeckRowsTable({ rows, label, box }: Props) {
                 )}
                 {row.subtitle && <span className={styles.subtitle}>{row.subtitle}</span>}
                 <span className={`${styles.role} ${styles.narrowOnly}`}>
-                  {ROLE_LABEL[row.role]} · {row.setKey}
+                  <CardStats
+                    type={row.type}
+                    power={row.power}
+                    hp={row.hp}
+                    className={styles.inlineStats}
+                  />
+                  <span className={styles.roleSet}>
+                    {ROLE_LABEL[row.role]} · {row.setKey}
+                  </span>
                 </span>
+              </td>
+              <td className={`${styles.statsCol} ${styles.wideOnly}`}>
+                <CardStats type={row.type} power={row.power} hp={row.hp} />
               </td>
               <td className={styles.wideOnly}>{row.setKey}</td>
               <td className={styles.numeric}>{row.have}</td>
