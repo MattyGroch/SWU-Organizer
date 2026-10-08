@@ -232,7 +232,14 @@ describe('cards pulled into built decks', () => {
 
   it('leaves the binder, but still counts as owned', () => {
     const row = buildCardRows(set, ownership, filters(), inDecks).find((r) => r.base === 59)!;
-    expect(row).toMatchObject({ inBinder: 1, inDecks: 2, status: 'partial', needed: 0 });
+    expect(row).toMatchObject({ inBinder: 1, inDecks: 2, status: 'complete', needed: 0 });
+    expect(row.pocketInDecks).toBe(2);
+  });
+
+  it('badges only the deck copies the pocket is missing', () => {
+    const extra = indexOwnership([{ base: 59, variant: 'normal', count: 5 }]);
+    const row = buildCardRows(set, extra, filters(), inDecks).find((r) => r.base === 59)!;
+    expect(row).toMatchObject({ inBinder: 3, pocketInDecks: 0 });
   });
 
   it('can be hidden when only short because of decks', () => {

@@ -91,6 +91,14 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Mirrors the binder cell's ⇢ badge, pointing back at the pocket the copies left. */
+.inDecks {
+  margin-right: var(--space-1);
+  color: var(--color-warning);
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+}
+
 .jump {
   padding: 2px var(--space-1);
   border: none;
