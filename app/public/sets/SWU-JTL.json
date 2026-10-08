@@ -731,6 +731,10 @@
         {
           "num": "282",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P25-97",
+          "variant": "promo"
         }
       ]
     },
@@ -803,6 +807,10 @@
         {
           "num": "285",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P25-98",
+          "variant": "promo"
         }
       ]
     },
@@ -884,6 +892,10 @@
         {
           "num": "288",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P25-99",
+          "variant": "promo"
         }
       ]
     },
@@ -977,6 +989,10 @@
         {
           "num": "292",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P25-100",
+          "variant": "promo"
         }
       ]
     },
@@ -1044,6 +1060,10 @@
         },
         {
           "num": "JTLOP-01",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-65",
           "variant": "promo"
         },
         {
@@ -1802,6 +1822,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "C25-1",
+          "variant": "promo"
+        },
+        {
           "num": "783",
           "variant": "hyperspace-foil"
         }
@@ -1978,6 +2002,14 @@
         {
           "num": "315",
           "variant": "hyperspace"
+        },
+        {
+          "num": "J25-1",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-86",
+          "variant": "promo"
         },
         {
           "num": "787",
@@ -3212,6 +3244,14 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P25-154",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-164",
+          "variant": "promo"
+        },
+        {
           "num": "819",
           "variant": "hyperspace-foil"
         },
@@ -3388,6 +3428,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P25-78",
+          "variant": "promo"
+        },
+        {
           "num": "823",
           "variant": "hyperspace-foil"
         },
@@ -3440,6 +3484,10 @@
         {
           "num": "352",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P25-88",
+          "variant": "promo"
         },
         {
           "num": "824",
@@ -3601,6 +3649,14 @@
         {
           "num": "356",
           "variant": "hyperspace"
+        },
+        {
+          "num": "J25-4",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-89",
+          "variant": "promo"
         },
         {
           "num": "828",
@@ -3869,6 +3925,10 @@
           "variant": "promo"
         },
         {
+          "num": "P25-90",
+          "variant": "promo"
+        },
+        {
           "num": "834",
           "variant": "hyperspace-foil"
         },
@@ -4010,6 +4070,10 @@
         },
         {
           "num": "JTLOP-07",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-68",
           "variant": "promo"
         },
         {
@@ -5438,6 +5502,22 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P25-124",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-136",
+          "variant": "promo"
+        },
+        {
+          "num": "P26-43",
+          "variant": "promo"
+        },
+        {
+          "num": "P26-55",
+          "variant": "promo"
+        },
+        {
           "num": "874",
           "variant": "hyperspace-foil"
         },
@@ -5544,6 +5624,18 @@
           "variant": "hyperspace"
         },
         {
+          "num": "J25-6",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-171",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-172",
+          "variant": "promo"
+        },
+        {
           "num": "876",
           "variant": "hyperspace-foil"
         }
@@ -5584,6 +5676,22 @@
         {
           "num": "405",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P25-03",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-04",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-05",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-06",
+          "variant": "promo"
         },
         {
           "num": "877",
@@ -5673,6 +5781,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "C25-2",
+          "variant": "promo"
+        },
+        {
           "num": "JTLOP-10",
           "variant": "promo"
         },
@@ -5759,6 +5871,30 @@
         {
           "num": "409",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P25-07",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-08",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-157",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-167",
+          "variant": "promo"
+        },
+        {
+          "num": "P26-76",
+          "variant": "promo"
+        },
+        {
+          "num": "P26-92",
+          "variant": "promo"
         },
         {
           "num": "881",
@@ -6085,6 +6221,14 @@
         {
           "num": "416",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P25-159",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-169",
+          "variant": "promo"
         },
         {
           "num": "888",
@@ -7100,6 +7244,22 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P25-127",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-139",
+          "variant": "promo"
+        },
+        {
+          "num": "P26-45",
+          "variant": "promo"
+        },
+        {
+          "num": "P26-57",
+          "variant": "promo"
+        },
+        {
           "num": "915",
           "variant": "hyperspace-foil"
         }
@@ -7384,6 +7544,14 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P25-01",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-02",
+          "variant": "promo"
+        },
+        {
           "num": "921",
           "variant": "hyperspace-foil"
         }
@@ -7468,6 +7636,10 @@
         },
         {
           "num": "JTLOP-15",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-82",
           "variant": "promo"
         },
         {
@@ -7981,6 +8153,26 @@
           "variant": "hyperspace"
         },
         {
+          "num": "J25-8",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-160",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-170",
+          "variant": "promo"
+        },
+        {
+          "num": "P26-78",
+          "variant": "promo"
+        },
+        {
+          "num": "P26-94",
+          "variant": "promo"
+        },
+        {
           "num": "935",
           "variant": "hyperspace-foil"
         }
@@ -8066,6 +8258,10 @@
           "variant": "promo"
         },
         {
+          "num": "P25-93",
+          "variant": "promo"
+        },
+        {
           "num": "937",
           "variant": "hyperspace-foil"
         },
@@ -8110,6 +8306,22 @@
         {
           "num": "466",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P25-09",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-10",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-11",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-12",
+          "variant": "promo"
         },
         {
           "num": "938",
@@ -9694,6 +9906,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "C25-3",
+          "variant": "promo"
+        },
+        {
           "num": "979",
           "variant": "hyperspace-foil"
         }
@@ -9911,6 +10127,14 @@
         {
           "num": "512",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P26-101",
+          "variant": "promo"
+        },
+        {
+          "num": "P26-85",
+          "variant": "promo"
         },
         {
           "num": "984",

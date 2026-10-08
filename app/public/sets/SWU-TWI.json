@@ -416,6 +416,14 @@
           "variant": "normal"
         },
         {
+          "num": "PTWI-001",
+          "variant": "promo"
+        },
+        {
+          "num": "PTWIJ-001",
+          "variant": "promo"
+        },
+        {
           "num": "268",
           "variant": "showcase"
         }
@@ -565,6 +573,14 @@
         {
           "num": "015",
           "variant": "normal"
+        },
+        {
+          "num": "PTWI-002",
+          "variant": "promo"
+        },
+        {
+          "num": "PTWIJ-002",
+          "variant": "promo"
         },
         {
           "num": "272",
@@ -2312,6 +2328,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "J25-2",
+          "variant": "promo"
+        },
+        {
           "num": "337F",
           "variant": "hyperspace-foil"
         }
@@ -2889,6 +2909,10 @@
         {
           "num": "353",
           "variant": "hyperspace"
+        },
+        {
+          "num": "J25-3",
+          "variant": "promo"
         },
         {
           "num": "353F",
@@ -4352,6 +4376,22 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWISS-2-4",
+          "variant": "promo"
+        },
+        {
+          "num": "TWISS-2-8",
+          "variant": "promo"
+        },
+        {
+          "num": "TWISS-2-C",
+          "variant": "promo"
+        },
+        {
+          "num": "TWISS-2-F",
+          "variant": "promo"
+        },
+        {
           "num": "388F",
           "variant": "hyperspace-foil"
         }
@@ -4454,6 +4494,14 @@
         {
           "num": "391",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P25-156",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-166",
+          "variant": "promo"
         },
         {
           "num": "391F",
@@ -4892,6 +4940,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "C24-005",
+          "variant": "promo"
+        },
+        {
           "num": "402F",
           "variant": "hyperspace-foil"
         }
@@ -4931,6 +4983,18 @@
         {
           "num": "403",
           "variant": "hyperspace"
+        },
+        {
+          "num": "C24-006",
+          "variant": "promo"
+        },
+        {
+          "num": "J25-5",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-91",
+          "variant": "promo"
         },
         {
           "num": "403F",
@@ -5016,6 +5080,14 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWISS-1",
+          "variant": "promo"
+        },
+        {
+          "num": "TWISSJ-1",
+          "variant": "promo"
+        },
+        {
           "num": "405F",
           "variant": "hyperspace-foil"
         }
@@ -5056,6 +5128,14 @@
         {
           "num": "406",
           "variant": "hyperspace"
+        },
+        {
+          "num": "J25-7",
+          "variant": "promo"
+        },
+        {
+          "num": "P25-53",
+          "variant": "promo"
         },
         {
           "num": "406F",
@@ -6100,6 +6180,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P25-54",
+          "variant": "promo"
+        },
+        {
           "num": "432F",
           "variant": "hyperspace-foil"
         }
@@ -6955,6 +7039,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P25-56",
+          "variant": "promo"
+        },
+        {
           "num": "454F",
           "variant": "hyperspace-foil"
         }
@@ -7161,6 +7249,10 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P25-83",
+          "variant": "promo"
+        },
+        {
           "num": "459F",
           "variant": "hyperspace-foil"
         }
@@ -7323,6 +7415,10 @@
         {
           "num": "463",
           "variant": "hyperspace"
+        },
+        {
+          "num": "J25-9",
+          "variant": "promo"
         },
         {
           "num": "463F",
@@ -8640,6 +8736,14 @@
           "variant": "hyperspace"
         },
         {
+          "num": "TWIPQ-1",
+          "variant": "promo"
+        },
+        {
+          "num": "TWIPQJ-1",
+          "variant": "promo"
+        },
+        {
           "num": "497F",
           "variant": "hyperspace-foil"
         }
@@ -9074,6 +9178,26 @@
         {
           "num": "507",
           "variant": "hyperspace"
+        },
+        {
+          "num": "TWIPQ-2-16",
+          "variant": "promo"
+        },
+        {
+          "num": "TWIPQ-2-4",
+          "variant": "promo"
+        },
+        {
+          "num": "TWIPQ-2-8",
+          "variant": "promo"
+        },
+        {
+          "num": "TWIPQ-2-C",
+          "variant": "promo"
+        },
+        {
+          "num": "TWIPQ-2-F",
+          "variant": "promo"
         },
         {
           "num": "507F",

@@ -16,15 +16,21 @@ export class PrintingResolver {
   readonly skipped: ImportSkip[] = [];
   recognized = 0;
 
-  /** Promo set code (`SOROP`) → the base set its printings belong to (`SOR`). */
-  private readonly promoSets = new Map<string, SetKey>();
+  /**
+   * Promo set code → the sets whose cards carry its printings: one for a weekly OP set
+   * (`SOROP` → `SOR`), several for an event promo set (`P26` → `ASH`, `LOF`, …).
+   */
+  private readonly promoSets = new Map<string, SetKey[]>();
 
   constructor(private readonly catalog: CatalogLookup) {
     for (const set of catalog.values()) {
       for (const printings of set.printingsByBase.values()) {
         for (const printing of printings) {
           const promo = promoParts(printing.num);
-          if (promo) this.promoSets.set(promo.set, set.setKey);
+          if (!promo) continue;
+          const sets = this.promoSets.get(promo.set) ?? [];
+          if (!sets.includes(set.setKey)) sets.push(set.setKey);
+          this.promoSets.set(promo.set, sets);
         }
       }
     }
@@ -101,10 +107,12 @@ export class PrintingResolver {
     const raw = String(rawPrintingNumber ?? '').trim();
     if (!raw) return this.skip('malformed', detail);
 
-    // A weekly-play promo set (`SOROP 015`) is a printing of its base set's card.
-    const promoBase = this.promoSets.get(setKey);
-    const set = this.catalog.get(promoBase ?? setKey);
-    if (!set) return this.skip('unknown-set', detail);
+    // A promo set (`SOROP 015`, `P26 14`) holds printings of other sets' cards.
+    const promoBases = this.promoSets.get(setKey);
+    const sets = (promoBases ?? [setKey])
+      .map((key) => this.catalog.get(key))
+      .filter((s) => s !== undefined);
+    if (!sets.length) return this.skip('unknown-set', detail);
 
     // Accept "059", "59" and "059F" alike — exports disagree about leading zeros.
     const numbers = [raw, raw.toUpperCase(), raw.replace(/^0+/, '')];
@@ -116,19 +124,24 @@ export class PrintingResolver {
         String(asNumber),
       );
     }
-    const candidates = promoBase ? numbers.map((n) => `${setKey}-${n}`) : numbers;
+    const candidates = promoBases ? numbers.map((n) => `${setKey}-${n}`) : numbers;
 
+    let set: LoadedSet | undefined;
     let base: number | undefined;
     let matched: string | undefined;
-    for (const candidate of candidates) {
-      const found = set.baseByPrinting.get(candidate);
-      if (found !== undefined) {
-        base = found;
-        matched = candidate;
-        break;
+    search: for (const candidateSet of sets) {
+      for (const candidate of candidates) {
+        const found = candidateSet.baseByPrinting.get(candidate);
+        if (found !== undefined) {
+          set = candidateSet;
+          base = found;
+          matched = candidate;
+          break search;
+        }
       }
     }
-    if (base === undefined || matched === undefined) return this.skip('unknown-card', detail);
+    if (!set || base === undefined || matched === undefined)
+      return this.skip('unknown-card', detail);
 
     const card = set.cardsByBase.get(base);
     const printing = card?.printings.find((p) => p.num === matched);

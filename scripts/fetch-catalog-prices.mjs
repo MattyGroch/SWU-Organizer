@@ -45,10 +45,13 @@ async function readConfig() {
   } catch {
     // no manifest yet: base printings only
   }
-  const promoSets = new Map(manifest.sets.map((s) => [s.key, s.promoSet]));
+  const entries = new Map(manifest.sets.map((s) => [s.key, s]));
   const all = Object.keys(JSON.parse(raw)).map((key) => ({
     key,
-    promoSet: promoSets.get(key),
+    promoSet: entries.get(key)?.promoSet,
+    // Event promo sets span many sets, so each set takes only the printings it holds.
+    eventPromoSets: entries.get(key)?.eventPromoSets ?? [],
+    catalogFile: entries.get(key)?.file,
     pricesFile: `SWU-${key}.prices.json`,
   }));
   return KEYS_FILTER.length ? all.filter((s) => KEYS_FILTER.includes(s.key)) : all;
@@ -95,7 +98,19 @@ async function fetchWithRetry(url) {
 
   const rowsOf = (payload) =>
     Array.isArray(payload) ? payload : (payload?.data ?? payload?.cards ?? []);
-  for (const { key, promoSet, pricesFile } of sets) {
+  // Event promo sets are shared between sets: fetch each once.
+  const eventRows = new Map();
+  const eventRowsOf = async (promoSet) => {
+    if (!eventRows.has(promoSet)) {
+      eventRows.set(
+        promoSet,
+        fetchWithRetry(`${API_BASE}/${encodeURIComponent(promoSet)}`).then(rowsOf),
+      );
+    }
+    return eventRows.get(promoSet);
+  };
+
+  for (const { key, promoSet, eventPromoSets, catalogFile, pricesFile } of sets) {
     process.stdout.write(`→ ${key} prices … `);
     try {
       const payload = await fetchWithRetry(`${API_BASE}/${encodeURIComponent(key)}`);
@@ -103,6 +118,14 @@ async function fetchWithRetry(url) {
       if (promoSet) {
         const promoPayload = await fetchWithRetry(`${API_BASE}/${encodeURIComponent(promoSet)}`);
         Object.assign(prices, buildPriceTable(rowsOf(promoPayload), promoSet));
+      }
+      if (eventPromoSets.length && catalogFile) {
+        const catalog = JSON.parse(await fs.readFile(path.join(OUT_DIR, catalogFile), 'utf8'));
+        const nums = new Set(catalog.cards.flatMap((c) => c.printings.map((p) => p.num)));
+        for (const eventSet of eventPromoSets) {
+          const table = buildPriceTable(await eventRowsOf(eventSet), eventSet);
+          for (const [num, price] of Object.entries(table)) if (nums.has(num)) prices[num] = price;
+        }
       }
       const outPath = path.join(OUT_DIR, pricesFile);
       await fs.writeFile(

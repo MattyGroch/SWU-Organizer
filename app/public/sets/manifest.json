@@ -6,40 +6,88 @@
       "label": "Spark of Rebellion (SOR)",
       "file": "SWU-SOR.json",
       "cards": 252,
-      "printings": 975,
-      "promoSet": "SOROP"
+      "printings": 1028,
+      "promoSet": "SOROP",
+      "eventPromoSets": [
+        "SS1",
+        "PSORJ",
+        "P25",
+        "GG",
+        "C24",
+        "SS1J",
+        "J24",
+        "PSOR",
+        "ESOR"
+      ]
     },
     {
       "key": "SHD",
       "label": "Shadows of the Galaxy (SHD)",
       "file": "SWU-SHD.json",
       "cards": 262,
-      "printings": 986,
-      "promoSet": "SHDOP"
+      "printings": 1033,
+      "promoSet": "SHDOP",
+      "eventPromoSets": [
+        "PSHD",
+        "ESHD",
+        "P25",
+        "SHDPQJ",
+        "SS2J",
+        "GG",
+        "PSHDJ",
+        "SHDPQ",
+        "C24",
+        "J24",
+        "SS2"
+      ]
     },
     {
       "key": "TWI",
       "label": "Twilight of the Republic (TWI)",
       "file": "SWU-TWI.json",
       "cards": 257,
-      "printings": 983,
-      "promoSet": "TWIOP"
+      "printings": 1014,
+      "promoSet": "TWIOP",
+      "eventPromoSets": [
+        "PTWIJ",
+        "J25",
+        "TWISSJ",
+        "PTWI",
+        "P25",
+        "TWIPQ",
+        "TWISS",
+        "TWIPQJ",
+        "C24"
+      ]
     },
     {
       "key": "JTL",
       "label": "Jump To Lightspeed (JTL)",
       "file": "SWU-JTL.json",
       "cards": 262,
-      "printings": 1162,
-      "promoSet": "JTLOP"
+      "printings": 1218,
+      "promoSet": "JTLOP",
+      "eventPromoSets": [
+        "P26",
+        "J25",
+        "P25",
+        "C25"
+      ]
     },
     {
       "key": "LOF",
       "label": "Legends of the Force (LOF)",
       "file": "SWU-LOF.json",
       "cards": 264,
-      "printings": 1200,
-      "promoSet": "LOFOP"
+      "printings": 1297,
+      "promoSet": "LOFOP",
+      "eventPromoSets": [
+        "P26",
+        "J25",
+        "P25",
+        "C25",
+        "G25"
+      ]
     },
     {
       "key": "IBH",
@@ -53,39 +101,62 @@
       "label": "Secrets of Power (SEC)",
       "file": "SWU-SEC.json",
       "cards": 264,
-      "printings": 1191,
-      "promoSet": "SECOP"
+      "printings": 1252,
+      "promoSet": "SECOP",
+      "eventPromoSets": [
+        "P26",
+        "J25",
+        "P25",
+        "C25"
+      ]
     },
     {
       "key": "LAW",
       "label": "A Lawless Time (LAW)",
       "file": "SWU-LAW.json",
       "cards": 264,
-      "printings": 941,
-      "promoSet": "LAWP"
+      "printings": 1005,
+      "promoSet": "LAWP",
+      "eventPromoSets": [
+        "P26",
+        "C26"
+      ]
     },
     {
       "key": "TS26",
       "label": "Twin Suns 2026 (TS26)",
       "file": "SWU-TS26.json",
       "cards": 84,
-      "printings": 84
+      "printings": 100,
+      "eventPromoSets": [
+        "P26"
+      ]
     },
     {
       "key": "ASH",
       "label": "Ashes of the Empire (ASH)",
       "file": "SWU-ASH.json",
       "cards": 264,
-      "printings": 965,
-      "promoSet": "ASHOP"
+      "printings": 1032,
+      "promoSet": "ASHOP",
+      "eventPromoSets": [
+        "P26",
+        "CST",
+        "C26",
+        "MV26"
+      ]
     },
     {
       "key": "HMW",
       "label": "Homeworlds (HMW)",
       "file": "SWU-HMW.json",
       "cards": 272,
-      "printings": 984,
-      "promoSet": "HMWP"
+      "printings": 997,
+      "promoSet": "HMWP",
+      "eventPromoSets": [
+        "P26",
+        "C26"
+      ]
     }
   ]
 }

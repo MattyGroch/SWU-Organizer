@@ -85,9 +85,9 @@ function v2Key(card) {
           fail(`${key}: printing ${printing.num} appears on two cards`);
         seenPrintings.add(printing.num);
 
-        if (/F$/.test(printing.num)) suffixFoils += 1;
+        if (/^\d+F$/.test(printing.num)) suffixFoils += 1;
 
-        // A weekly-play promo is numbered in its own promo set's run, so it is checked for
+        // A promo is numbered in its own promo set's run, so it is checked for
         // shape and kind only: its number says nothing about the base card's slot.
         const promo = promoParts(printing.num);
         if (promo || printing.variant === 'promo' || printing.variant === 'promo-foil') {
@@ -158,9 +158,7 @@ function v2Key(card) {
   console.log(
     `Validated ${manifest.sets.length} sets • ${totalCards} cards • ${totalPrintings} printings`,
   );
-  console.log(
-    `Suffix-numbered foils present: ${suffixFoils} • weekly-play promo printings: ${promoPrintings}`,
-  );
+  console.log(`Suffix-numbered foils present: ${suffixFoils} • promo printings: ${promoPrintings}`);
   for (const note of notes) console.log(`  note: ${note}`);
 
   if (failures.length) {

@@ -1,10 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  attachEventPromos,
   attachPromos,
   artUrl,
   buildPriceTable,
   buildSetCatalog,
+  eventPromoVariant,
+  isEventPromoSet,
   hasOwnArtwork,
   isToken,
   numericPart,
@@ -309,6 +312,63 @@ describe('attachPromos', () => {
     expect(attachPromos(catalog(), 'SOROP', [promo('099', 'Nobody', 'At All')])).toEqual([
       'SOROP 099 Nobody — At All',
     ]);
+  });
+
+  it('files event promos on the earliest set with the card, and says which sets', () => {
+    const ash = {
+      setKey: 'ASH',
+      cards: [
+        {
+          base: 31,
+          name: 'Hera Syndulla',
+          subtitle: 'Renegade General',
+          type: 'Unit',
+          printings: [{ num: '031', variant: 'normal' }],
+        },
+      ],
+    };
+    const later = { setKey: 'TS26', cards: [structuredClone(ash.cards[0])] };
+    const sor = catalog();
+    const { unmatched, touched } = attachEventPromos([sor, ash, later], 'P26', [
+      promo('14', 'Hera Syndulla', 'Renegade General', 'Store Showdown Participation'),
+      promo('164', 'Bossk', 'Deadly Stalker', 'GC Prize Wall Foil'),
+      promo('140', 'Death Trooper', undefined, 'Showcase'),
+      promo('233', 'Bossk', 'Some Other Subtitle', 'SQ Silver Pack'),
+      { ...promo('999', 'Bossk', 'Leader Side'), Type: 'Leader' },
+    ]);
+    expect(unmatched).toEqual(['P26 999 Bossk — Leader Side']);
+    expect([...touched].sort()).toEqual(['ASH', 'SOR']);
+    expect(ash.cards[0].printings.at(-1)).toEqual({ num: 'P26-14', variant: 'promo' });
+    expect(later.cards[0].printings).toHaveLength(1);
+    expect(sor.cards[0].printings.map((p) => p.num)).toEqual(['015', 'P26-233', 'P26-164']);
+    expect(sor.cards[1].printings.at(-1)).toEqual({ num: 'P26-140', variant: 'promo-foil' });
+  });
+
+  it('reads event promo variants by finish', () => {
+    expect(eventPromoVariant('Gift Box')).toBe('promo');
+    expect(eventPromoVariant('Store Showdown Judge')).toBe('promo');
+    expect(eventPromoVariant('SQ Prize Wall Foil')).toBe('promo-foil');
+    expect(eventPromoVariant('Showcase')).toBe('promo-foil');
+  });
+
+  it('treats promo products as event promo sets, but not main or weekly OP sets', () => {
+    const main = new Set(['SOR', 'ASH']);
+    const set = (setId, fullName, parentSetId) => ({ setId, fullName, parentSetId });
+    expect(isEventPromoSet(set('G25', '2025 Gift Box'), main)).toBe(true);
+    expect(isEventPromoSet(set('P26', '2026 Promos'), main)).toBe(true);
+    expect(isEventPromoSet(set('SS1', 'Store Showdown - 1'), main)).toBe(true);
+    expect(isEventPromoSet(set('GG', 'Gamegenic'), main)).toBe(true);
+    expect(
+      isEventPromoSet(set('PSOR', 'Spark of Rebellion - Prerelease Promos', 'SOR'), main),
+    ).toBe(true);
+    expect(
+      isEventPromoSet(set('SOROPJ', 'Spark of Rebellion - OP Promo - Judge', 'SOR'), main),
+    ).toBe(true);
+    expect(isEventPromoSet(set('ASHOP', 'Ashes of the Empire - OP Promo', 'ASH'), main)).toBe(
+      false,
+    );
+    expect(isEventPromoSet(set('ASH', 'Ashes of the Empire'), main)).toBe(false);
+    expect(isEventPromoSet(set('IC27', 'Icons 2027'), main)).toBe(false);
   });
 
   it('finds promo art under the promo set code', () => {

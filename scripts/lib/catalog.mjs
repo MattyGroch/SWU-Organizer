@@ -282,38 +282,98 @@ export function buildSetCatalog(setKey, rawCards) {
  * Returns the rows that matched nothing — the caller fails on those rather than drop them.
  */
 export function attachPromos(catalog, promoSet, promoRows) {
+  return attachPromoRows([catalog], promoSet, promoRows, {
+    variantOf: (raw) => variantSlug(raw.VariantType),
+  }).unmatched;
+}
+
+/**
+ * Promo sets beyond the weekly OP ones: event, judge, prerelease, convention, gift box,
+ * Store Showdown and retail promos (`P26`, `G25`, `SOROPJ`, …). Every set `GET /sets`
+ * lists that is neither a main set (`mainKeys`) nor a weekly OP set, and that is either a
+ * child of a set or named like a promo product — so a new main set such as `IC27` stays
+ * out until it is configured as a set of its own.
+ */
+export function isEventPromoSet(row, mainKeys) {
+  const id = String(row?.setId ?? '')
+    .trim()
+    .toUpperCase();
+  const name = String(row?.fullName ?? '').trim();
+  if (!id || mainKeys.has(id)) return false;
+  if (/- OP Promo$/i.test(name)) return false;
+  const hasParent = String(row?.parentSetId ?? '').trim() !== '';
+  return (
+    hasParent ||
+    /promo|judge|exclusive|gift box|showdown|gamegenic|qualifier|prerelease/i.test(name)
+  );
+}
+
+/**
+ * Event promo sets label each printing by how it was given out (`Store Showdown Judge`,
+ * `GC Prize Wall Foil`, `Gift Box`), not by treatment. They are all promos of the card;
+ * the foil ones (and Showcase, which is always foil) are Promo Foil.
+ */
+export function eventPromoVariant(apiVariantType) {
+  return /foil|showcase/i.test(String(apiVariantType ?? '')) ? 'promo-foil' : 'promo';
+}
+
+/**
+ * Attaches an event promo set's rows to whichever set's card they reprint. These sets
+ * span every main set (`P26` holds ASH's Hera and LOF's Obi-Wan alike), so every catalog
+ * is searched, earliest first: a card reprinted in a later set keeps its promos on the
+ * original. The name-only fallback also requires the type to agree, since it looks across
+ * every set. Returns the unmatched rows and the set keys that gained printings.
+ */
+export function attachEventPromos(catalogs, promoSet, promoRows) {
+  return attachPromoRows(catalogs, promoSet, promoRows, {
+    variantOf: (raw) => eventPromoVariant(raw.VariantType),
+    fallbackByType: true,
+  });
+}
+
+function attachPromoRows(catalogs, promoSet, promoRows, { variantOf, fallbackByType = false }) {
   const norm = (value) =>
     String(value ?? '')
       .trim()
       .toLowerCase();
   const byKey = new Map();
   const byName = new Map();
-  for (const card of catalog.cards) {
-    byKey.set(`${norm(card.name)}|${norm(card.subtitle)}|${norm(card.type)}`, card);
-    byName.set(norm(card.name), [...(byName.get(norm(card.name)) ?? []), card]);
+  for (const catalog of catalogs) {
+    for (const card of catalog.cards) {
+      const entry = { catalog, card };
+      const key = `${norm(card.name)}|${norm(card.subtitle)}|${norm(card.type)}`;
+      if (!byKey.has(key)) byKey.set(key, entry);
+      byName.set(norm(card.name), [...(byName.get(norm(card.name)) ?? []), entry]);
+    }
   }
   const unmatched = [];
+  const touched = new Set();
   for (const raw of promoRows) {
     if (isToken(raw)) continue;
     const key = `${norm(raw.Name)}|${norm(raw.Subtitle)}|${norm(normalizeType(raw.Type))}`;
-    const named = byName.get(norm(raw.Name)) ?? [];
-    const card = byKey.get(key) ?? (named.length === 1 ? named[0] : undefined);
-    if (!card) {
+    const type = norm(normalizeType(raw.Type));
+    const named = (byName.get(norm(raw.Name)) ?? []).filter(
+      ({ card }) => !fallbackByType || norm(card.type) === type,
+    );
+    const found = byKey.get(key) ?? (named.length === 1 ? named[0] : undefined);
+    if (!found) {
       unmatched.push(
         `${promoSet} ${raw.Number} ${raw.Name}${raw.Subtitle ? ` — ${raw.Subtitle}` : ''}`,
       );
       continue;
     }
+    const { catalog, card } = found;
     const num = promoNumber(promoSet, raw.Number);
     if (card.printings.some((p) => p.num === num)) continue;
-    card.printings.push({ num, variant: variantSlug(raw.VariantType) });
+    card.printings.push({ num, variant: variantOf(raw) });
     card.printings.sort(
       (a, b) =>
         (variantOrder.get(a.variant) ?? 99) - (variantOrder.get(b.variant) ?? 99) ||
         a.num.localeCompare(b.num),
     );
+    touched.add(catalog.setKey);
   }
-  return unmatched;
+  return { unmatched, touched };
 }
 
 /** `{ "059": 0.05, "059F": 0.10 }` — keyed by string printing number, not base number. */

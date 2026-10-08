@@ -74,7 +74,7 @@ describe('committed catalog', () => {
 
   it('recovers the suffix-numbered foils the legacy pipeline dropped', () => {
     const sor = parseSetCatalog(readJson('SWU-SOR.json'));
-    const suffixFoils = sor.cards.flatMap((c) => c.printings.filter((p) => /F$/.test(p.num)));
+    const suffixFoils = sor.cards.flatMap((c) => c.printings.filter((p) => /^\d+F$/.test(p.num)));
 
     expect(suffixFoils.length).toBeGreaterThan(0);
     // Each one collapses onto the same binder slot as its non-foil sibling.
