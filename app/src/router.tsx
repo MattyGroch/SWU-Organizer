@@ -19,6 +19,7 @@ import {
 import { binderEntries, readHiddenSets } from '~/data/binderSettings';
 import { BinderRoute } from '~/routes/BinderRoute';
 import { BulkPage } from '~/features/inventory/BulkPage';
+import { readLastSet, readLastView } from '~/features/inventory/lastPlace';
 import { isInventoryView, type InventoryView } from '~/features/inventory/views';
 import { NARROW_QUERY } from '~/ui/useNarrow';
 import { DeckEditRoute, DecksRoute, NewDeckRoute } from '~/routes/DecksRoute';
@@ -62,16 +63,23 @@ function defaultView(): InventoryView {
     : 'binder';
 }
 
-/** The Inventory tab: the newest set with a binder. */
+/**
+ * The Inventory tab: wherever you last were in it — the set, and Binder, List or Bulk —
+ * or, the first time (or if that set has since been hidden), the newest set with a binder.
+ */
 const inventoryIndexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/inventory',
   beforeLoad: async ({ context }) => {
+    const lastView = readLastView();
+    if (lastView === 'bulk') throw redirect({ to: '/inventory/bulk' });
     const entries = await context.queryClient.ensureQueryData(manifestQuery());
-    const key = newestSetKey(binderEntries(entries, await readHiddenSets()));
+    const visible = binderEntries(entries, await readHiddenSets());
+    const lastSet = readLastSet();
+    const key = visible.some((e) => e.key === lastSet) ? lastSet : newestSetKey(visible);
     throw redirect({
       to: '/inventory/$setKey/$view',
-      params: { setKey: key ?? 'SOR', view: defaultView() },
+      params: { setKey: key ?? 'SOR', view: lastView ?? defaultView() },
     });
   },
 });

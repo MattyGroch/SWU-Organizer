@@ -59,6 +59,7 @@ import { BulkEditDialog } from '~/features/bulk/BulkEditDialog';
 import { ImportDialog } from '~/features/import/ImportDialog';
 import { CardSearch } from '~/features/search/CardSearch';
 import { InventorySubnav } from '~/features/inventory/InventoryNav';
+import { readPosition, rememberPosition } from '~/features/inventory/lastPlace';
 import type { InventoryView } from '~/features/inventory/views';
 import { formatUsd } from '~/ui/format';
 import { useToast } from '~/ui/toastContext';
@@ -421,10 +422,14 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   );
 
   const table = (
+    // Keyed by set so each set's list opens at its own scroll position.
     <CardTable
+      key={set.setKey}
       rows={rows}
       selectedBase={binder.active?.card.Number ?? null}
       onSelect={binder.selectNumber}
+      initialScrollTop={readPosition(set.setKey).listTop}
+      onScrollTopChange={(listTop) => rememberPosition(set.setKey, { listTop })}
     />
   );
 

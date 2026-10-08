@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import { formatUsd } from '~/ui/format';
 
@@ -15,6 +15,9 @@ type Props = {
   rows: CardRow[];
   selectedBase: number | null;
   onSelect: (base: number) => void;
+  /** Where to scroll to on mount, so the list reopens where it was left. */
+  initialScrollTop?: number;
+  onScrollTopChange?: (scrollTop: number) => void;
 };
 
 /**
@@ -27,9 +30,27 @@ type Props = {
  * Virtualization is hand-rolled rather than pulled from a library: rows are a fixed
  * height, so the whole implementation is a slice and two spacer rows.
  */
-export function CardTable({ rows, selectedBase, onSelect }: Props) {
+export function CardTable({
+  rows,
+  selectedBase,
+  onSelect,
+  initialScrollTop = 0,
+  onScrollTopChange,
+}: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [scrollTop, setScrollTop] = useState(0);
+  const [scrollTop, setScrollTop] = useState(initialScrollTop);
+
+  // Before paint, so a restored list never flashes its first rows. The browser clamps an
+  // offset past the end, e.g. when filters have since shortened the list.
+  useLayoutEffect(() => {
+    const element = scrollRef.current;
+    if (element && initialScrollTop > 0) {
+      element.scrollTop = initialScrollTop;
+      setScrollTop(element.scrollTop);
+    }
+    // Mount only: later changes come from the user scrolling.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [viewportHeight, setViewportHeight] = useState(600);
 
   useEffect(() => {
@@ -60,7 +81,10 @@ export function CardTable({ rows, selectedBase, onSelect }: Props) {
     <div
       ref={scrollRef}
       className={styles.scroller}
-      onScroll={(event) => setScrollTop(event.currentTarget.scrollTop)}
+      onScroll={(event) => {
+        setScrollTop(event.currentTarget.scrollTop);
+        onScrollTopChange?.(event.currentTarget.scrollTop);
+      }}
     >
       <table className={styles.table}>
         <caption className="visually-hidden">Cards in this set — {rows.length} rows</caption>
