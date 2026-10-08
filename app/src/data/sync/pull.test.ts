@@ -34,6 +34,7 @@ const card = (setKey: string) =>
 const sets = new Map([
   ['SOR', card('SOR')],
   ['HMW', card('HMW')],
+  ['LAW', card('LAW')],
 ]);
 
 function memoryStorage(): Storage {

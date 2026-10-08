@@ -288,18 +288,39 @@ export function createSyncEngine<T>(options: SyncEngineOptions<T>) {
     }
   }
 
-  async function applyRemote(key: string, data: T, version: number): Promise<void> {
-    clearPending(key, version, data);
+  /**
+   * Stores a server copy locally, then records its version — in that order. Recording it
+   * first let a failed or skipped apply leave this device claiming a version it never held,
+   * so its next write replaced the server's copy with what it did hold: a whole set lost.
+   * If `onApply` throws, nothing is recorded and the next pull tries again.
+   */
+  async function adoptRemote(key: string, data: T, version: number): Promise<void> {
+    const before = JSON.stringify(readState().pending[key]);
     await options.onApply(key, data);
+    // A local write queued while applying was made on top of this copy: keep it, to push
+    // at the new version.
+    if (JSON.stringify(readState().pending[key]) === before) {
+      clearPending(key, version, data);
+    } else {
+      mutate((s) => ({
+        ...s,
+        versions: { ...s.versions, [key]: version },
+        base: { ...s.base, [key]: data },
+      }));
+    }
     emit({ type: 'pulled', key, data, version });
+  }
+
+  async function applyRemote(key: string, data: T, version: number): Promise<void> {
+    await adoptRemote(key, data, version);
     options.broadcast?.postMessage({ key, data, version });
   }
 
   function onBroadcast(payload: BroadcastPayload<T>): void {
     // Another tab already persisted this; adopt its version without re-broadcasting.
-    clearPending(payload.key, payload.version, payload.data);
-    void options.onApply(payload.key, payload.data);
-    emit({ type: 'pulled', key: payload.key, data: payload.data, version: payload.version });
+    void adoptRemote(payload.key, payload.data, payload.version).catch(() => {
+      // Left at the old version; the next pull applies it.
+    });
   }
 
   function setSignedIn(value: boolean): void {

@@ -1,4 +1,4 @@
-import type { LoadedSet } from '~/domain/catalog';
+import { printingNumbers, type LoadedSet } from '~/domain/catalog';
 import { BULK_KEY_SUFFIX } from '~/domain/ownership';
 import { mergeInventory } from '~/domain/syncMerge';
 import type { SetKey } from '~/domain/types';
@@ -35,9 +35,13 @@ export async function snapshotSet(
 /**
  * Writes a server payload into the local database, replacing that set.
  *
- * Entries that no longer resolve against the catalog are dropped rather than written as
- * orphans — but the set is only replaced when at least something resolved, so a catalog
- * that failed to load cannot wipe a set.
+ * A promo alias (`1050`, written by a device on an older catalog) is stored under the
+ * printing it now belongs to (`P25-79`).
+ *
+ * Throws rather than store part of the payload: when the set's catalog is not loaded, or
+ * a printing is one this catalog does not know (another device on a newer catalog). The
+ * sync engine then leaves this device at its old version, so its next write merges with
+ * the server's copy instead of replacing it with one missing those cards.
  */
 export async function applyInventoryPayload(
   setKey: SetKey,
@@ -46,32 +50,45 @@ export async function applyInventoryPayload(
   database: SwuDatabase = db,
   now = Date.now(),
 ): Promise<number> {
-  if (!set) return 0;
+  if (!set) throw new Error(`Cannot apply ${setKey}: its catalog is not loaded.`);
 
-  const rows: OwnedPrinting[] = [];
+  const byNum = new Map<string, OwnedPrinting>();
+  const unknown: string[] = [];
   for (const [num, rawCount] of Object.entries(payload)) {
     if (num.endsWith(BULK_KEY_SUFFIX)) continue;
     const count = Number(rawCount);
     if (!Number.isFinite(count) || count <= 0) continue;
 
     const base = set.baseByPrinting.get(num);
-    if (base === undefined) continue;
-    const printing = set.cardsByBase.get(base)?.printings.find((p) => p.num === num);
-    if (!printing) continue;
+    const printing =
+      base === undefined
+        ? undefined
+        : set.cardsByBase.get(base)?.printings.find((p) => printingNumbers(p).includes(num));
+    if (base === undefined || !printing) {
+      unknown.push(num);
+      continue;
+    }
 
     // Two devices' merged edits can leave more in bulk than owned; the total wins.
     const bulk = Math.min(Number(payload[num + BULK_KEY_SUFFIX]) || 0, count);
-    rows.push({
+    const seen = byNum.get(printing.num);
+    const total = (seen?.count ?? 0) + count;
+    const totalBulk = (seen?.bulk ?? 0) + bulk;
+    byNum.set(printing.num, {
       id: printingId(setKey, printing.num),
       setKey,
       base,
       num: printing.num,
       variant: printing.variant,
-      count,
-      ...(bulk > 0 && { bulk }),
+      count: total,
+      ...(totalBulk > 0 && { bulk: totalBulk }),
       updatedAt: now,
     });
   }
+  if (unknown.length) {
+    throw new Error(`Cannot apply ${setKey}: unknown printings ${unknown.join(', ')}.`);
+  }
+  const rows = [...byNum.values()];
 
   await database.transaction('rw', database.owned, async () => {
     await database.owned.where('setKey').equals(setKey).delete();

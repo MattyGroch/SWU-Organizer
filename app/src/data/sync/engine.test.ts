@@ -234,6 +234,63 @@ describe('merging with another device', () => {
     expect(local.applied).toHaveLength(1);
   });
 
+  it('records no version for a pulled copy it could not store, so a later write merges', async () => {
+    // The incident: a device "received" SOR without storing it, so it claimed the server's
+    // version while holding no SOR cards. Its next tap replaced the server's SOR with one
+    // card, then none, and every other device pulled the empty set.
+    const server: Payload = { '093': 1, '094F': 1 };
+    let applyFails = true;
+    const applied: Payload[] = [];
+    const fetchFn = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ current: { data: server, version: 1 } }), { status: 409 }),
+      )
+      .mockResolvedValueOnce(ok(2));
+    const local = makeHarness(
+      {
+        merge,
+        onApply: (_key, data) => {
+          if (applyFails) throw new Error('catalog not loaded');
+          applied.push(data);
+        },
+      },
+      fetchFn,
+    );
+
+    await expect(local.engine.receive('SOR', server, 1)).rejects.toThrow();
+    expect(local.engine.getState().versions.SOR).toBeUndefined();
+
+    // A tap in the (wrongly) empty binder, once the device can store SOR again.
+    applyFails = false;
+    local.engine.setSignedIn(true);
+    local.engine.queue('SOR', { '236': 1 });
+    await local.clock.advance(1000);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    // Pushed at version 0, refused, merged: the server's cards survive alongside the tap.
+    expect(fetchFn.mock.calls[0]![1].headers['if-match']).toBe('0');
+    const lastBody = JSON.parse(fetchFn.mock.calls.at(-1)![1].body as string) as { data: Payload };
+    expect(lastBody.data).toEqual({ '093': 1, '094F': 1, '236': 1 });
+    expect(applied.at(-1)).toEqual({ '093': 1, '094F': 1, '236': 1 });
+  });
+
+  it('keeps a write queued while a pulled copy was being stored', async () => {
+    let queueDuringApply: (() => void) | undefined;
+    const local = makeHarness({
+      merge,
+      onApply: () => {
+        queueDuringApply?.();
+        queueDuringApply = undefined;
+      },
+    });
+    queueDuringApply = () => local.engine.queue('SOR', { '059': 4, '080': 1 });
+
+    await local.engine.receive('SOR', { '059': 4 }, 3);
+    expect(local.engine.getState().versions.SOR).toBe(3);
+    expect(local.engine.getState().pending.SOR).toEqual({ '059': 4, '080': 1 });
+  });
+
   it('merges a pulled copy into a pending write instead of dropping it', async () => {
     const local = makeHarness({ merge });
     await local.engine.receive('SOR', { '059': 2 }, 1);
@@ -324,6 +381,8 @@ describe('cross-tab broadcast', () => {
 
     local.engine.queue('SOR', { '059': 1 });
     handler?.({ key: 'SOR', data: { '059': 5 }, version: 3 });
+    // Stored first, then its version recorded.
+    await new Promise((resolve) => setTimeout(resolve, 0));
 
     expect(local.applied).toEqual([{ key: 'SOR', data: { '059': 5 } }]);
     expect(local.engine.getState().versions.SOR).toBe(3);
