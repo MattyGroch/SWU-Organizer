@@ -221,6 +221,16 @@ export function useScanner({
     setPhase('holding');
   }, []);
 
+  /**
+   * Quick Scan's "Scan next card": the card was swapped while scanning was paused, so the
+   * scanner never saw it leave. The user's say-so counts as that gap — the next card fires
+   * even if it is another copy of the same one. The tracker stays fired on the old view, so
+   * a card left in place still does not fire again.
+   */
+  const next = useCallback(() => {
+    gapRef.current = true;
+  }, []);
+
   /** "Rescan" on the prompt: try again now, on whatever is in view. */
   const retry = useCallback(() => {
     missesRef.current.reset();
@@ -231,5 +241,5 @@ export function useScanner({
     setPhase('moving');
   }, []);
 
-  return { phase, rearm, resume, retry };
+  return { phase, rearm, resume, retry, next };
 }
