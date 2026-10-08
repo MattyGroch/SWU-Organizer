@@ -1,5 +1,5 @@
 import { artUrl, type CatalogCard } from '~/domain/catalog';
-import { isLandscapeArt, selectArtPrinting } from '~/domain/artSelection';
+import { isLandscapeArt, selectArtPrinting, shownArtNumber } from '~/domain/artSelection';
 import {
   binderCount,
   pocketCounts,
@@ -29,6 +29,8 @@ type Props = {
   held: Homes;
   /** The card's binder playset. */
   quota: number;
+  /** The promo picture chosen for this card, if any (see binderSettings). */
+  promoArt?: string;
   onSelect: (card: Card) => void;
 };
 
@@ -53,6 +55,7 @@ export function BinderCell({
   counts,
   held,
   quota,
+  promoArt,
   onSelect,
 }: Props) {
   // The cell mirrors the physical pocket. Copies out in decks leave most valuable first,
@@ -62,7 +65,9 @@ export function BinderCell({
   // The slot shows its pocket only: bulk-box copies live in the List and Bulk pages.
   const inDecks = sumVariants(held.binder);
   const choice = catalogCard ? selectArtPrinting(catalogCard, pocket) : undefined;
-  const { src, state } = useCardImage(choice ? artUrl(setKey, choice.printing.num) : undefined);
+  const { src, state } = useCardImage(
+    choice ? artUrl(setKey, shownArtNumber(choice.printing, promoArt)) : undefined,
+  );
 
   const onHand = pocket.total;
   const inBinder = binderCount(onHand, quota);

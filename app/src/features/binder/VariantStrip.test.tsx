@@ -107,4 +107,40 @@ describe('VariantStrip', () => {
     expect(screen.getAllByRole('listitem')).toHaveLength(1);
     expect(screen.getByRole('button', { name: /^Add one Normal/ })).toBeInTheDocument();
   });
+
+  it("steps a promo's name through its pictures, back round to the default", async () => {
+    const user = userEvent.setup();
+    const promo: Printing = { num: 'P26-14', variant: 'promo', aliases: ['G25-3', 'P26-228'] };
+    const onChoosePromoArt = vi.fn();
+    const props = {
+      printings: [{ num: '031', variant: 'normal' } as Printing, promo],
+      counts: { total: 1, byVariant: { promo: 1 } },
+      cardName: 'Hera Syndulla',
+      onAdjust: vi.fn(),
+      onChoosePromoArt,
+    };
+    const { rerender } = render(<VariantStrip {...props} />);
+
+    await user.click(screen.getByRole('button', { name: /^Promo art 1 of 3/ }));
+    expect(onChoosePromoArt).toHaveBeenLastCalledWith('G25-3');
+
+    rerender(<VariantStrip {...props} promoArt="P26-228" />);
+    await user.click(screen.getByRole('button', { name: /^Promo art 3 of 3/ }));
+    expect(onChoosePromoArt).toHaveBeenLastCalledWith(undefined);
+    // The count is unaffected: the picture is cosmetic.
+    expect(screen.getByText('Promo').closest('li')).toHaveTextContent('1');
+  });
+
+  it('offers no picker for a promo with one picture', () => {
+    render(
+      <VariantStrip
+        printings={[{ num: 'SOROP-015', variant: 'promo' }]}
+        counts={{ total: 0, byVariant: {} }}
+        cardName="Bossk"
+        onAdjust={vi.fn()}
+        onChoosePromoArt={vi.fn()}
+      />,
+    );
+    expect(screen.queryByRole('button', { name: /art 1 of/ })).toBeNull();
+  });
 });

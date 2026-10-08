@@ -1853,6 +1853,13 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P26-32",
+          "variant": "promo",
+          "aliases": [
+            "P26-33"
+          ]
+        },
+        {
           "num": "563",
           "variant": "hyperspace-foil"
         },
@@ -2862,6 +2869,15 @@
         {
           "num": "350",
           "variant": "hyperspace"
+        },
+        {
+          "num": "P26-34",
+          "variant": "promo",
+          "aliases": [
+            "P26-35",
+            "P26-36",
+            "P26-37"
+          ]
         },
         {
           "num": "588",
@@ -4009,6 +4025,15 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P26-28",
+          "variant": "promo",
+          "aliases": [
+            "P26-29",
+            "P26-30",
+            "P26-31"
+          ]
+        },
+        {
           "num": "620",
           "variant": "hyperspace-foil"
         },
@@ -4726,6 +4751,13 @@
           "variant": "hyperspace"
         },
         {
+          "num": "P26-26",
+          "variant": "promo",
+          "aliases": [
+            "P26-27"
+          ]
+        },
+        {
           "num": "638",
           "variant": "hyperspace-foil"
         }
@@ -4932,7 +4964,10 @@
         },
         {
           "num": "HMWP-09",
-          "variant": "promo"
+          "variant": "promo",
+          "aliases": [
+            "C26-3"
+          ]
         },
         {
           "num": "644",

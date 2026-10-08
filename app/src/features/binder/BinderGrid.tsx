@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 import { numberFromPagePosition, spreadToPrimaryPage } from '~/domain/binder';
+import { promoArtKey, type PromoArtChoices } from '~/data/binderSettings';
 import type { LoadedSet } from '~/domain/catalog';
 import { type Homes, NO_HOMES, type OwnedCounts, ownedFor, quotaForCard } from '~/domain/ownership';
 import type { ActiveSelection, Card } from '~/domain/types';
@@ -20,6 +21,7 @@ type Props = {
   /** Base number → printings pulled into built decks. */
   held: ReadonlyMap<number, Homes>;
   focusRequest: number;
+  promoArt?: PromoArtChoices;
   onSelect: (card: Card) => void;
   /** On a phone: show only this page, four columns wide, instead of the spread. */
   singlePage?: number;
@@ -43,6 +45,7 @@ export function BinderGrid({
   ownership,
   held,
   focusRequest,
+  promoArt,
   onSelect,
   singlePage,
 }: Props) {
@@ -130,6 +133,7 @@ export function BinderGrid({
                   counts={ownedFor(ownership, card.Number)}
                   held={held.get(card.Number) ?? NO_HOMES}
                   quota={quotaForCard({ type: card.Type, maxCopies: card.MaxCopies })}
+                  promoArt={promoArt?.[promoArtKey(set.setKey, card.Number)]}
                   onSelect={onSelect}
                 />
               );

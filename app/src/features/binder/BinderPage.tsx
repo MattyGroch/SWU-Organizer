@@ -46,7 +46,14 @@ import { SwipePage } from './SwipePage';
 import { isTypingTarget, resolveShortcut } from './shortcuts';
 import { useBinder } from './useBinder';
 import { useSetOwnership } from './useOwnership';
-import { binderEntries, DEFAULT_HIDDEN_SETS, useHiddenSets } from '~/data/binderSettings';
+import {
+  binderEntries,
+  DEFAULT_HIDDEN_SETS,
+  promoArtKey,
+  useHiddenSets,
+  usePromoArt,
+  writePromoArt,
+} from '~/data/binderSettings';
 import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
 import { BulkEditDialog } from '~/features/bulk/BulkEditDialog';
 import { ImportDialog } from '~/features/import/ImportDialog';
@@ -94,6 +101,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   const showToast = useToast();
 
   const hiddenSets = useHiddenSets();
+  const promoArt = usePromoArt();
   const hidden = useMemo(() => hiddenSets ?? new Set(DEFAULT_HIDDEN_SETS), [hiddenSets]);
   /** Sets with a binder — the picker, `[`/`]` and search only ever go to these. */
   const visibleEntries = useMemo(() => binderEntries(entries, hidden), [entries, hidden]);
@@ -630,6 +638,14 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
           }
           onAdjust={adjustDefault}
           onAdjustPrinting={adjustPrinting_}
+          promoArt={
+            binder.active
+              ? promoArt?.[promoArtKey(set.setKey, binder.active.card.Number)]
+              : undefined
+          }
+          onChoosePromoArt={(num) =>
+            binder.active && void writePromoArt(set.setKey, binder.active.card.Number, num)
+          }
           onClose={binder.clearSelection}
         />
       </div>
@@ -670,6 +686,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
                 ownership={ownership}
                 held={held}
                 focusRequest={binder.focusRequest}
+                promoArt={promoArt}
                 onSelect={binder.selectCard}
                 singlePage={binder.viewPage}
               />
@@ -682,6 +699,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
               ownership={ownership}
               held={held}
               focusRequest={binder.focusRequest}
+              promoArt={promoArt}
               onSelect={binder.selectCard}
             />
           )}

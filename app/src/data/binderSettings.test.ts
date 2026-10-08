@@ -2,7 +2,13 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import type { SetManifestEntry } from '~/domain/catalog';
 
-import { binderEntries, readHiddenSets, writeHiddenSets } from './binderSettings';
+import {
+  binderEntries,
+  readHiddenSets,
+  readPromoArt,
+  writeHiddenSets,
+  writePromoArt,
+} from './binderSettings';
 import { SwuDatabase } from './db';
 
 const entry = (key: string) => ({ key, label: key, file: `SWU-${key}.json` }) as SetManifestEntry;
@@ -34,5 +40,20 @@ describe('binder set visibility', () => {
       'TS26',
       'HMW',
     ]);
+  });
+});
+
+describe('binder promo art', () => {
+  it('remembers a picture per card and forgets it on undefined', async () => {
+    const database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+    expect(await readPromoArt(database)).toEqual({});
+
+    await writePromoArt('ASH', 31, 'P26-228', database);
+    await writePromoArt('LOF', 96, 'G25-3', database);
+    expect(await readPromoArt(database)).toEqual({ 'ASH:31': 'P26-228', 'LOF:96': 'G25-3' });
+
+    await writePromoArt('ASH', 31, undefined, database);
+    expect(await readPromoArt(database)).toEqual({ 'LOF:96': 'G25-3' });
   });
 });

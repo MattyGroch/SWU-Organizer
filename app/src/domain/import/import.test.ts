@@ -29,6 +29,7 @@ function makeCatalog(): Map<SetKey, LoadedSet> {
             { num: '001', variant: 'normal' },
             { num: '269', variant: 'hyperspace' },
             { num: '253', variant: 'showcase' },
+            { num: 'P26-14', variant: 'promo', aliases: ['G25-1'] },
           ],
         },
         {
@@ -66,6 +67,7 @@ function makeCatalog(): Map<SetKey, LoadedSet> {
             { num: '1060', variant: 'prestige' },
             { num: '1106', variant: 'prestige-foil' },
             { num: '1152', variant: 'prestige-serialized' },
+            { num: 'P26-3', variant: 'promo' },
           ],
         },
       ],
@@ -252,6 +254,14 @@ describe('SWUDB CSV import', () => {
     expect(byNum(result)).toEqual({ '059': 1 });
     expect(result.recognized).toBe(1);
     expect(result.skipped).toHaveLength(2);
+  });
+
+  it('finds an event promo on whichever set holds its card, aliases included', () => {
+    const result = importText('Set,CardNumber,Count\nP26,14,1\nP26,003,2\nG25,1,1', catalog);
+    expect(result.printings).toEqual([
+      { setKey: 'SOR', base: 1, num: 'P26-14', variant: 'promo', count: 2 },
+      { setKey: 'LOF', base: 142, num: 'P26-3', variant: 'promo', count: 2 },
+    ]);
   });
 
   it('merges duplicate rows for the same printing', () => {

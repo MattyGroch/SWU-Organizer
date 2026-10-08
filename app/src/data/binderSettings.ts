@@ -50,3 +50,49 @@ export function binderEntries(
   // Never hide everything — with no binder left, show them all rather than nothing.
   return visible.length ? visible : [...entries];
 }
+
+/**
+ * Which promo picture each binder pocket shows: purely cosmetic.
+ *
+ * A card's promos (`ASHOP-014`, `P26-14`, `P26-228`) are one printing to the collection —
+ * they differ by an event badge, sometimes by art — so which one you own is not recorded.
+ * This only picks the picture. Keyed `SET:base`, so a choice never follows a card's art
+ * number if the catalog ever renames it: an unknown number just falls back.
+ */
+const PROMO_ART_KEY = 'binder:promoArt';
+
+export type PromoArtChoices = Readonly<Record<string, string>>;
+
+export const promoArtKey = (setKey: SetKey, base: number) => `${setKey}:${base}`;
+
+export async function readPromoArt(database: SwuDatabase = db): Promise<PromoArtChoices> {
+  const raw = await readMeta(database, PROMO_ART_KEY);
+  try {
+    const parsed: unknown = raw === undefined ? {} : JSON.parse(raw);
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+      ? (parsed as PromoArtChoices)
+      : {};
+  } catch {
+    return {};
+  }
+}
+
+/** Sets the picture for one card; `undefined` goes back to the default. */
+export async function writePromoArt(
+  setKey: SetKey,
+  base: number,
+  num: string | undefined,
+  database: SwuDatabase = db,
+): Promise<void> {
+  await database.transaction('rw', database.meta, async () => {
+    const next: Record<string, string> = { ...(await readPromoArt(database)) };
+    if (num === undefined) delete next[promoArtKey(setKey, base)];
+    else next[promoArtKey(setKey, base)] = num;
+    await writeMeta(database, PROMO_ART_KEY, JSON.stringify(next));
+  });
+}
+
+/** `undefined` while the first read is in flight. */
+export function usePromoArt(): PromoArtChoices | undefined {
+  return useLiveQuery(() => readPromoArt(), []);
+}

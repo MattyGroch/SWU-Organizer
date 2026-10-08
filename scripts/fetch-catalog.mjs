@@ -15,7 +15,13 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 
-import { attachPromos, buildSetCatalog } from './lib/catalog.mjs';
+import {
+  attachEventPromos,
+  attachPromos,
+  buildSetCatalog,
+  isEventPromoSet,
+  keepPromoNumbers,
+} from './lib/catalog.mjs';
 
 const NODE_MAJOR = Number(process.versions.node.split('.')[0]);
 if (NODE_MAJOR < 18) {
@@ -32,18 +38,18 @@ const SETS_API = process.env.SWU_SETS_API || 'https://api.swu-db.com/sets';
 
 /**
  * Each set's weekly-play promo set (`SOR` → `SOROP`, `HMW` → `HMWP`): the child set whose
- * name ends "OP Promo". Judge, prerelease and event promos are not tracked.
+ * name ends "OP Promo".
  */
-async function promoSetsByParent() {
-  const rows = await fetchJSON(SETS_API);
+function promoSetsByParent(setRows) {
   const map = new Map();
-  for (const row of Array.isArray(rows) ? rows : []) {
+  for (const row of setRows) {
     if (row.parentSetId && /- OP Promo$/i.test(String(row.fullName ?? '').trim())) {
       map.set(String(row.parentSetId).toUpperCase(), String(row.setId));
     }
   }
   return map;
 }
+
 const OVERRIDES_PATH = path.resolve(
   process.env.SWU_CARD_OVERRIDES || 'scripts/card-overrides.json',
 );
@@ -121,14 +127,16 @@ async function fetchJSON(url, timeoutMs = 45000) {
   }
 
   const overridesBySet = await readOverrides();
-  const promoSets = await promoSetsByParent();
-  const manifest = [];
+  const setRows = await fetchJSON(SETS_API);
+  const promoSets = promoSetsByParent(Array.isArray(setRows) ? setRows : []);
+  const rowsOf = (payload) =>
+    Array.isArray(payload) ? payload : (payload?.data ?? payload?.cards ?? []);
+  const built = [];
 
   for (const { key, label, file } of sets) {
     process.stdout.write(`→ ${key} ${label} … `);
     try {
-      const payload = await fetchJSON(`${API_BASE}/${encodeURIComponent(key)}`);
-      const rows = Array.isArray(payload) ? payload : (payload?.data ?? payload?.cards ?? []);
+      const rows = rowsOf(await fetchJSON(`${API_BASE}/${encodeURIComponent(key)}`));
 
       const overridesForSet = overridesBySet.get(key);
       const appliedRules = new Set();
@@ -142,10 +150,7 @@ async function fetchJSON(url, timeoutMs = 45000) {
       const promoSet = promoSets.get(key.toUpperCase());
       let promoCount = 0;
       if (promoSet) {
-        const promoPayload = await fetchJSON(`${API_BASE}/${encodeURIComponent(promoSet)}`);
-        const promoRows = Array.isArray(promoPayload)
-          ? promoPayload
-          : (promoPayload?.data ?? promoPayload?.cards ?? []);
+        const promoRows = rowsOf(await fetchJSON(`${API_BASE}/${encodeURIComponent(promoSet)}`));
         const unmatched = attachPromos(catalog, promoSet, promoRows);
         if (unmatched.length) {
           throw new Error(`${promoSet} promos match no ${key} card: ${unmatched.join('; ')}`);
@@ -153,18 +158,7 @@ async function fetchJSON(url, timeoutMs = 45000) {
         promoCount = promoRows.length;
       }
 
-      const outPath = path.join(OUT_DIR, file);
-      await fs.writeFile(outPath, JSON.stringify(catalog, null, 2) + '\n');
-
-      const printings = catalog.cards.reduce((n, c) => n + c.printings.length, 0);
-      manifest.push({
-        key,
-        label,
-        file,
-        cards: catalog.cards.length,
-        printings,
-        ...(promoSet ? { promoSet } : {}),
-      });
+      built.push({ key, label, file, catalog, promoSet, eventPromoSets: [] });
 
       if (overridesForSet?.length && overridesForSet.length !== appliedRules.size) {
         const stale = overridesForSet.filter((o) => !appliedRules.has(o));
@@ -175,6 +169,7 @@ async function fetchJSON(url, timeoutMs = 45000) {
         process.stdout.write('  ');
       }
 
+      const printings = catalog.cards.reduce((n, c) => n + c.printings.length, 0);
       const overrideNote = appliedRules.size ? `, ${appliedRules.size} override rule(s)` : '';
       const promoNote = promoSet ? `, ${promoCount} ${promoSet} promos` : '';
       console.log(
@@ -184,6 +179,54 @@ async function fetchJSON(url, timeoutMs = 45000) {
       console.log(`failed: ${e.message}`);
       process.exitCode = 1;
     }
+  }
+
+  // Event, judge, convention, gift box and other promos reprint cards from any set, so
+  // they attach once every set is built. Unlike weekly OP promos they only warn when they
+  // match nothing: they often promote a card from a set that isn't out yet.
+  const mainKeys = new Set(Object.keys(JSON.parse(await fs.readFile(CONFIG_PATH, 'utf8'))));
+  const eventSets = (Array.isArray(setRows) ? setRows : []).filter((row) =>
+    isEventPromoSet(row, mainKeys),
+  );
+  const catalogs = built.map((b) => b.catalog);
+  for (const row of eventSets) {
+    const promoSet = String(row.setId).trim().toUpperCase();
+    process.stdout.write(`→ ${promoSet} ${row.fullName} … `);
+    try {
+      const promoRows = rowsOf(await fetchJSON(`${API_BASE}/${encodeURIComponent(promoSet)}`));
+      const { unmatched, touched } = attachEventPromos(catalogs, promoSet, promoRows);
+      for (const b of built) if (touched.has(b.key)) b.eventPromoSets.push(promoSet);
+      console.log(`attached to ${[...touched].join(', ') || 'nothing'}`);
+      // A filtered run only builds some sets, so most rows are expected to miss.
+      if (unmatched.length && !KEYS_FILTER.length) {
+        console.log(`  ⚠ ${unmatched.length} match no card: ${unmatched.join('; ')}`);
+      }
+    } catch (e) {
+      console.log(`failed: ${e.message}`);
+      process.exitCode = 1;
+    }
+  }
+
+  const manifest = [];
+  for (const { key, label, file, catalog, promoSet, eventPromoSets } of built) {
+    let previous;
+    try {
+      previous = JSON.parse(await fs.readFile(path.join(OUT_DIR, file), 'utf8'));
+    } catch {
+      // a new set
+    }
+    keepPromoNumbers(catalog, previous);
+    await fs.writeFile(path.join(OUT_DIR, file), JSON.stringify(catalog, null, 2) + '\n');
+    const printings = catalog.cards.reduce((n, c) => n + c.printings.length, 0);
+    manifest.push({
+      key,
+      label,
+      file,
+      cards: catalog.cards.length,
+      printings,
+      ...(promoSet ? { promoSet } : {}),
+      ...(eventPromoSets.length ? { eventPromoSets } : {}),
+    });
   }
 
   const manifestPath = path.join(OUT_DIR, 'manifest.json');

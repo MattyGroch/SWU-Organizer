@@ -115,3 +115,20 @@
     min-height: 40px;
   }
 }
+
+/* A Promo with several pictures: its name steps through them (cosmetic only). */
+.artButton {
+  composes: ui-btn from global;
+  border: none;
+  border-inline: 1px dashed var(--color-border-interactive);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.artIndex {
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
