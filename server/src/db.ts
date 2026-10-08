@@ -36,7 +36,21 @@ export function openDb(dbPath: string): Db {
   db.pragma('foreign_keys = ON')
   bootstrap(db)
   migrate(db, MIGRATIONS, dbPath === ':memory:' ? undefined : dbPath)
+  // Writes left in the WAL by a server that was killed rather than closed go into the main
+  // file now, so swu.db on its own holds everything.
+  checkpoint(db)
   return db
+}
+
+/** Folds the WAL into the main file and empties it. */
+export function checkpoint(db: Db): void {
+  db.pragma('wal_checkpoint(TRUNCATE)')
+}
+
+/** Closes the database with every write in the main file, ready to copy on its own. */
+export function closeDb(db: Db): void {
+  checkpoint(db)
+  db.close()
 }
 
 export function userVersion(db: Db): number {
