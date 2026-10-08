@@ -87,6 +87,8 @@ export type CardRow = {
   inBulk: number;
   /** Copies pulled into built decks, from the binder or the bulk box. */
   inDecks: number;
+  /** Copies out in decks that the binder pocket is missing — the binder's ⇢ badge. */
+  pocketInDecks: number;
   needed: number;
   status: CollectionStatus;
   counts: OwnedCounts;
@@ -126,12 +128,12 @@ export function buildCardRows(
   for (const card of set.cardsByBase.values()) {
     const counts = ownedFor(ownership, card.base);
     const quota = quotaOf(card);
-    // Status follows the binder pocket, as in v1, while "needed" follows everything owned —
-    // a card out in a deck or in the bulk box is not one to buy.
+    // Status, like "needed", follows everything owned — a card out in a deck or in the bulk
+    // box is not one to buy. The Binder column and its ⇠ badge show where the copies are.
     const held = heldByBase.get(card.base) ?? NO_HOMES;
     const inDecks = sumVariants(held.binder) + sumVariants(held.bulk);
     const inBinder = binderCount(pocketCounts(counts, held).total, quota);
-    const status = collectionStatus(inBinder, quota);
+    const status = collectionStatus(counts.total, quota);
     if (!matchesFilters(card, status, filters)) continue;
     if (filters.hideInDecks && inDecks > 0 && counts.total >= quota) continue;
 
@@ -151,6 +153,9 @@ export function buildCardRows(
       total: counts.total,
       inBinder,
       inDecks,
+      // As on the binder cell: once the pocket is full again, more out in decks are bound
+      // for the bulk box when they come back, so they don't count against it.
+      pocketInDecks: Math.min(sumVariants(held.binder), quota - inBinder),
       inBulk: sumVariants(boxCounts(counts, held)),
       needed,
       status,

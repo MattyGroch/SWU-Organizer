@@ -197,6 +197,14 @@ export function CardTable({
                 </td>
 
                 <td className={`${styles.numericCol} ${styles.owned}`} data-status={row.status}>
+                  {row.pocketInDecks > 0 && (
+                    <span
+                      className={styles.inDecks}
+                      title={`${row.pocketInDecks} missing from the pocket, out in built decks`}
+                    >
+                      {row.pocketInDecks}⇠<span className="visually-hidden"> in decks, </span>
+                    </span>
+                  )}
                   {row.inBinder}/{row.quota}
                 </td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.inBulk || ''}</td>
