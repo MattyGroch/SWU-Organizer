@@ -34,6 +34,7 @@ import { useNarrow } from '~/ui/useNarrow';
 import { AspectIcons } from '../binder/AspectIcons';
 import { CardSearch } from './CardSearch';
 import { CostBadge } from './CostBadge';
+import { CardStats } from './StatBadge';
 import styles from './DeckEditorPage.module.css';
 import { contentsToRows, deckAspects, type OwnedLookup } from './deckRows';
 import type { SearchHit, SearchMode } from './deckSearch';
@@ -445,13 +446,15 @@ function Slot({
           </span>
           <span className={styles.lineName}>
             {card.Name}
-            {(card.Subtitle || card.Type === 'Base') && (
-              <span className={styles.subtitle}>
-                {[card.Subtitle, card.Type === 'Base' && card.HP !== undefined && `${card.HP} HP`]
-                  .filter(Boolean)
-                  .join(' · ')}
-              </span>
-            )}
+            <span className={styles.subtitle}>
+              <CardStats
+                type={card.Type}
+                power={card.Power}
+                hp={card.HP}
+                className={styles.lineStats}
+              />
+              {card.Subtitle}
+            </span>
             {have === 0 && <span className={styles.unowned}>not owned</span>}
           </span>
         </span>
@@ -546,6 +549,12 @@ function ZoneList({
                     <span className={styles.lineName}>
                       {name}
                       <span className={styles.subtitle}>
+                        <CardStats
+                          type={c?.Type}
+                          power={c?.Power}
+                          hp={c?.HP}
+                          className={styles.lineStats}
+                        />
                         {c?.Subtitle ? `${c.Subtitle} · ` : ''}
                         {ref.setKey}
                         {have < ref.count && (

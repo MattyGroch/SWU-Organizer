@@ -28,6 +28,8 @@ function refToRow(
     type: card.Type,
     aspects: card.Aspects,
     cost: card.Cost,
+    power: card.Power,
+    hp: card.HP,
     price,
     maxCopies: card.MaxCopies,
     ambiguous: false,

@@ -6,7 +6,7 @@ import type { Card, SetKey } from '~/domain/types';
 import { AspectIcons } from '../binder/AspectIcons';
 import styles from './CardSearch.module.css';
 import { CostBadge } from './CostBadge';
-import { HpBadge } from './StatBadge';
+import { CardStats, HpBadge } from './StatBadge';
 import type { OwnedLookup } from './deckRows';
 import {
   COST_CHIPS,
@@ -200,6 +200,14 @@ export function CardSearch({
                     <span className={styles.subtitle}>{hit.card.Subtitle}</span>
                   )}
                   <span className={styles.meta}>
+                    {mode !== 'base' && (
+                      <CardStats
+                        type={hit.card.Type}
+                        power={hit.card.Power}
+                        hp={hit.card.HP}
+                        className={styles.metaStats}
+                      />
+                    )}
                     {hit.setKey} #{hit.card.Number}
                     {hit.card.Arenas?.length ? ` · ${hit.card.Arenas.join('/')}` : ''}
                     {' · '}

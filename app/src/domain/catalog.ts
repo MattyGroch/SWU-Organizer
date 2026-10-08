@@ -255,6 +255,11 @@ function wholeNumber(value: unknown): number | undefined {
   return typeof value === 'number' && Number.isInteger(value) && value >= 0 ? value : undefined;
 }
 
+/** Power and HP: an upgrade's are bonuses, which can be negative. */
+function integer(value: unknown): number | undefined {
+  return typeof value === 'number' && Number.isInteger(value) ? value : undefined;
+}
+
 function stringList(value: unknown): string[] | undefined {
   if (!Array.isArray(value)) return undefined;
   const list = value.filter((v): v is string => typeof v === 'string');
@@ -295,8 +300,8 @@ export function parseSetCatalog(payload: unknown): SetCatalog {
       doubleSided: raw.doubleSided === true ? true : undefined,
       maxCopies: Number.isFinite(Number(raw.maxCopies)) ? Number(raw.maxCopies) : undefined,
       cost: wholeNumber(raw.cost),
-      power: wholeNumber(raw.power),
-      hp: wholeNumber(raw.hp),
+      power: integer(raw.power),
+      hp: integer(raw.hp),
       arenas: stringList(raw.arenas),
       traits: stringList(raw.traits),
       text: typeof raw.text === 'string' && raw.text ? raw.text : undefined,

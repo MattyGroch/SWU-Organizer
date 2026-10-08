@@ -116,6 +116,11 @@
   white-space: normal;
 }
 
+.metaStats {
+  margin-right: var(--space-1);
+  font-size: var(--font-size-sm);
+}
+
 .adds {
   display: flex;
   flex: none;

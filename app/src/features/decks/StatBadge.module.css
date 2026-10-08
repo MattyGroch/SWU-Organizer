@@ -12,3 +12,17 @@
   font-weight: 700;
   letter-spacing: -1px;
 }
+
+/* Power and HP side by side, inline with a line of text. */
+.stats {
+  display: inline-flex;
+  flex: none;
+  gap: 0.15em;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.stats .badge {
+  width: 1.9em;
+  height: 1.9em;
+}

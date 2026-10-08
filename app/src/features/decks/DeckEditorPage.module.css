@@ -274,6 +274,11 @@
   white-space: nowrap;
 }
 
+.lineStats {
+  margin-right: var(--space-1);
+  font-size: var(--font-size-sm);
+}
+
 .unowned {
   color: var(--color-warning-fg);
   font-size: var(--font-size-xs);

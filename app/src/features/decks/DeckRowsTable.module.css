@@ -35,6 +35,23 @@
   color: var(--color-warning-fg);
 }
 
+/* Power and HP badges, a little larger than the text beside them. */
+.table .statsCol {
+  width: 1%;
+  font-size: var(--font-size-md);
+  white-space: nowrap;
+}
+
+.inlineStats {
+  margin-right: var(--space-1);
+  font-size: var(--font-size-xs);
+}
+
+/* Phones: "Leader · LAW" never splits; the stats can sit above it if room runs out. */
+.roleSet {
+  white-space: nowrap;
+}
+
 /* Just wide enough for the badge; padding stays tight beside the aspect column. */
 .table .costCol {
   width: 1%;
