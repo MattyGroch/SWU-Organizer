@@ -1,0 +1,14 @@
+/* Sized in em, so the badge scales with the row's text; a touch larger than a cost badge. */
+.badge {
+  display: block;
+  flex: none;
+  width: 2em;
+  height: 2em;
+  overflow: visible;
+}
+
+.number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -1px;
+}

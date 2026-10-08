@@ -6,6 +6,7 @@ import type { Card, SetKey } from '~/domain/types';
 import { AspectIcons } from '../binder/AspectIcons';
 import styles from './CardSearch.module.css';
 import { CostBadge } from './CostBadge';
+import { HpBadge } from './StatBadge';
 import type { OwnedLookup } from './deckRows';
 import {
   COST_CHIPS,
@@ -184,7 +185,7 @@ export function CardSearch({
             <li key={key} className={styles.hit}>
               <div className={styles.hitRow} data-mode={mode}>
                 {mode === 'cards' && <CostBadge cost={hit.card.Cost} />}
-                {mode === 'base' && <BaseHp hp={hit.card.HP} />}
+                {mode === 'base' && <HpBadge value={hit.card.HP} />}
                 <span className={styles.aspects}>
                   <AspectIcons aspects={hit.card.Aspects} />
                 </span>
@@ -267,17 +268,5 @@ function CardText({ card }: { card: Card }) {
         <p key={i}>{line}</p>
       ))}
     </div>
-  );
-}
-
-/** A base's HP, in the slot a card's cost badge takes. */
-function BaseHp({ hp }: { hp: number | undefined }) {
-  return (
-    <span className={styles.hp} aria-label={hp === undefined ? undefined : `${hp} HP`}>
-      {hp ?? '–'}
-      <span className={styles.hpUnit} aria-hidden="true">
-        HP
-      </span>
-    </span>
   );
 }
