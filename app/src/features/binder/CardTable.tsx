@@ -5,7 +5,7 @@ import { formatUsd } from '~/ui/format';
 
 import { STATUS_GLYPH, STATUS_LABEL, type CardRow } from './cardRows';
 import styles from './CardTable.module.css';
-import { pocketDecksTitle } from './deckHolds';
+import { allDecksTitle, pocketDecksTitle } from './deckHolds';
 import { AspectIcons } from './AspectIcons';
 import { RarityBadge } from './RarityBadge';
 import { UniqueMark } from './UniqueMark';
@@ -213,7 +213,12 @@ export function CardTable({
                   {row.inBinder}/{row.quota}
                 </td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.inBulk || ''}</td>
-                <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.inDecks || ''}</td>
+                <td
+                  className={`${styles.numericCol} ${styles.wideOnly}`}
+                  title={row.inDecks ? allDecksTitle(decks.get(row.base) ?? []) : undefined}
+                >
+                  {row.inDecks || ''}
+                </td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.needed || ''}</td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>
                   {row.value ? formatUsd(row.value) : ''}

@@ -116,45 +116,43 @@ export function SelectedCardPanel({
         </div>
       </dl>
 
-      <div className={styles.quantity}>
-        <button
-          type="button"
-          className={styles.qtyButton}
-          onClick={() => onAdjust(-1)}
-          disabled={pocket.total === 0}
-          aria-label={`Remove one ${card.Name}`}
-          title="Remove one — keyboard -"
-        >
-          −
-        </button>
+      <div className={styles.side}>
+        <div className={styles.quantity}>
+          <button
+            type="button"
+            className={styles.qtyButton}
+            onClick={() => onAdjust(-1)}
+            disabled={pocket.total === 0}
+            aria-label={`Remove one ${card.Name}`}
+            title="Remove one — keyboard -"
+          >
+            −
+          </button>
 
-        <p className={styles.qtyValue} aria-live="polite">
-          <span className={styles.qtyNumbers}>
-            {inBinder}
-            <span className={styles.qtyOf}>/{quota}</span>
-          </span>
-          <span className={styles.qtyCaption}>
-            in binder
-            {inBulk > 0 && ` · ${inBulk} in bulk`}
-            {inDecks > 0 && ` · ${inDecks} in decks`}
-          </span>
-        </p>
+          <p className={styles.qtyValue} aria-live="polite">
+            <span className={styles.qtyNumbers}>
+              {inBinder}
+              <span className={styles.qtyOf}>/{quota}</span>
+            </span>
+            <span className={styles.qtyCaption}>
+              in binder
+              {inBulk > 0 && ` · ${inBulk} in bulk`}
+              {inDecks > 0 && ` · ${inDecks} in decks`}
+            </span>
+          </p>
 
-        <button
-          type="button"
-          className={styles.qtyButton}
-          onClick={() => onAdjust(1)}
-          aria-label={`Add one ${card.Name}`}
-          title="Add one — keyboard +"
-        >
-          +
-        </button>
-      </div>
-
-      {decks.length > 0 && (
-        <div className={styles.decks}>
-          <span className={styles.decksLabel}>In decks</span>
-          <ul className={styles.deckList}>
+          <button
+            type="button"
+            className={styles.qtyButton}
+            onClick={() => onAdjust(1)}
+            aria-label={`Add one ${card.Name}`}
+            title="Add one — keyboard +"
+          >
+            +
+          </button>
+        </div>
+        {decks.length > 0 && (
+          <ul className={styles.deckList} aria-label="In decks">
             {decks.map((d) => (
               <li key={d.deckId}>
                 <Link to="/decks/$deckId" params={{ deckId: d.deckId }} className={styles.deckLink}>
@@ -172,8 +170,8 @@ export function SelectedCardPanel({
               </li>
             ))}
           </ul>
-        </div>
-      )}
+        )}
+      </div>
 
       <VariantStrip
         printings={printings}
