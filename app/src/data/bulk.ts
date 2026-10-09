@@ -1,4 +1,4 @@
-import { VALUE_ORDER } from '~/domain/ownership';
+import { VALUE_ORDER, type VariantCounts } from '~/domain/ownership';
 import type { LoadedSet, VariantSlug } from '~/domain/catalog';
 import { applyDeconstruct, cardKey } from '~/domain/deckBuild';
 import { parseDeckLibrary } from '~/domain/decks';
@@ -193,6 +193,48 @@ export async function resetCollection(
     decksUnbuilt,
     undo: { scope: setKey ? { setKey } : 'all', rows, deckLibraryJson },
   };
+}
+
+/**
+ * Takes copies out of the bulk box and out of the collection — sold, traded or given away.
+ * `remove` is how many of each printing to take; the caller caps it at what is physically
+ * in the box, since bulk copies out in decks are not there to hand over. Binder copies are
+ * never touched. Returns how many copies went, and what to restore on Undo.
+ */
+export async function removeFromBulkBox(
+  setKey: SetKey,
+  base: number,
+  remove: VariantCounts,
+  { database = db, now = Date.now() }: { database?: SwuDatabase; now?: number } = {},
+): Promise<{ removed: number; undo: Snapshot }> {
+  let before: OwnedPrinting[] = [];
+  let removed = 0;
+
+  await database.transaction('rw', database.owned, async () => {
+    before = await database.owned.where({ setKey, base }).toArray();
+    const left: VariantCounts = { ...remove };
+    for (const row of before) {
+      const inBulk = Math.min(row.bulk ?? 0, row.count);
+      const take = Math.min(left[row.variant] ?? 0, inBulk);
+      if (take <= 0) continue;
+      left[row.variant] = (left[row.variant] ?? 0) - take;
+      removed += take;
+
+      const count = row.count - take;
+      const bulk = inBulk - take;
+      if (count <= 0) {
+        await database.owned.delete(row.id);
+        continue;
+      }
+      const { bulk: _old, ...rest } = row;
+      await database.owned.put(
+        bulk > 0 ? { ...rest, count, bulk, updatedAt: now } : { ...rest, count, updatedAt: now },
+      );
+    }
+  });
+
+  if (removed) notifyInventoryChanged(setKey);
+  return { removed, undo: { scope: { setKey, bases: [base] }, rows: before } };
 }
 
 /** Everything `eraseEverything` removed, to put back on Undo. */

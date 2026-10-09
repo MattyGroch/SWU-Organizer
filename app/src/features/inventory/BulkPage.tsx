@@ -16,9 +16,11 @@ import {
   groupBulkRows,
   matchesBulkSearch,
   printingsLabel,
+  type BulkRow,
   type BulkSectionKey,
 } from './bulkRows';
 import { InventorySubnav } from './InventoryNav';
+import { RemoveFromBulkDialog } from './RemoveFromBulkDialog';
 
 const COLLAPSED_KEY = 'bulk:collapsed';
 
@@ -73,6 +75,7 @@ export function BulkPage({ entries, sets }: Props) {
     setCollapsed(next);
   };
   const setsInBox = new Set(all.map((row) => row.setKey));
+  const [removing, setRemoving] = useState<BulkRow | null>(null);
 
   return (
     <div className={styles.page}>
@@ -190,10 +193,27 @@ export function BulkPage({ entries, sets }: Props) {
                           </span>
                         </td>
                         <td>
-                          <span className={styles.count}>{row.boxCount}</span>
-                          {row.boxCount > 0 && (
-                            <span className={styles.printings}>{printingsLabel(row.inBox)}</span>
-                          )}
+                          <div className={styles.boxCell}>
+                            <span>
+                              <span className={styles.count}>{row.boxCount}</span>
+                              {row.boxCount > 0 && (
+                                <span className={styles.printings}>
+                                  {printingsLabel(row.inBox)}
+                                </span>
+                              )}
+                            </span>
+                            {row.boxCount > 0 && (
+                              <button
+                                type="button"
+                                className={styles.remove}
+                                title="Remove from the bulk box (sold, traded, given away)"
+                                aria-label={`Remove ${row.name} from the bulk box`}
+                                onClick={() => setRemoving(row)}
+                              >
+                                −
+                              </button>
+                            )}
+                          </div>
                         </td>
                         <td className={styles.decks}>{row.inDecks || ''}</td>
                       </tr>
@@ -203,6 +223,14 @@ export function BulkPage({ entries, sets }: Props) {
             })}
           </table>
         </div>
+      )}
+
+      {removing && (
+        <RemoveFromBulkDialog
+          key={`${removing.setKey}:${removing.base}`}
+          row={removing}
+          onClose={() => setRemoving(null)}
+        />
       )}
     </div>
   );

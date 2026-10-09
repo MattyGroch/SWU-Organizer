@@ -172,6 +172,32 @@
   font-variant-numeric: tabular-nums;
 }
 
+.boxCell {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.remove {
+  composes: ui-btn from global;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.remove:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger-fg);
+}
+
 .decks {
   width: 96px;
   text-align: right;
