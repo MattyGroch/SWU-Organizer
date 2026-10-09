@@ -19,8 +19,12 @@ import {
   type BulkRow,
   type BulkSectionKey,
 } from './bulkRows';
+import { BulkSelectionBar } from './BulkSelectionBar';
+import { isSelectable, rowId } from './bulkSelection';
 import { InventorySubnav } from './InventoryNav';
 import { RemoveFromBulkDialog } from './RemoveFromBulkDialog';
+import { SelectBox } from './SelectBox';
+import { useBulkSelection } from './useBulkSelection';
 
 const COLLAPSED_KEY = 'bulk:collapsed';
 
@@ -76,6 +80,8 @@ export function BulkPage({ entries, sets }: Props) {
   };
   const setsInBox = new Set(all.map((row) => row.setKey));
   const [removing, setRemoving] = useState<BulkRow | null>(null);
+  // Fed the rows as shown, after every filter, so check-all means "all you can see".
+  const selection = useBulkSelection(rows);
 
   return (
     <div className={styles.page}>
@@ -127,6 +133,14 @@ export function BulkPage({ entries, sets }: Props) {
           <table className={styles.table} aria-label="Bulk box">
             <thead>
               <tr>
+                <th scope="col" className={styles.pick}>
+                  <SelectBox
+                    state={selection.stateOf(rows)}
+                    label={`Select all ${rows.length} ${rows.length === 1 ? 'card' : 'cards'} shown`}
+                    disabled={!rows.some(isSelectable)}
+                    onChange={() => selection.toggleAll(rows)}
+                  />
+                </th>
                 <th scope="col" className={styles.where}>
                   Card
                 </th>
@@ -149,25 +163,44 @@ export function BulkPage({ entries, sets }: Props) {
               return (
                 <tbody key={section.key}>
                   <tr className={styles.sectionRow}>
-                    <th scope="rowgroup" colSpan={6}>
-                      <button
-                        type="button"
-                        className={styles.sectionToggle}
-                        aria-expanded={open}
-                        onClick={() => toggle(section.key)}
-                      >
-                        <span className={styles.chevron} aria-hidden="true" />
-                        {section.label}
-                        <span className={styles.sectionCount}>
-                          {section.rows.length} {section.rows.length === 1 ? 'card' : 'cards'} ·{' '}
-                          {sectionCopies} {sectionCopies === 1 ? 'copy' : 'copies'}
-                        </span>
-                      </button>
+                    <th scope="rowgroup" colSpan={7}>
+                      <div className={styles.sectionHead}>
+                        <SelectBox
+                          state={selection.stateOf(section.rows)}
+                          label={`Select every card in ${section.label}`}
+                          disabled={!section.rows.some(isSelectable)}
+                          onChange={() => selection.toggleAll(section.rows)}
+                        />
+                        <button
+                          type="button"
+                          className={styles.sectionToggle}
+                          aria-expanded={open}
+                          onClick={() => toggle(section.key)}
+                        >
+                          <span className={styles.chevron} aria-hidden="true" />
+                          {section.label}
+                          <span className={styles.sectionCount}>
+                            {section.rows.length} {section.rows.length === 1 ? 'card' : 'cards'} ·{' '}
+                            {sectionCopies} {sectionCopies === 1 ? 'copy' : 'copies'}
+                          </span>
+                        </button>
+                      </div>
                     </th>
                   </tr>
                   {open &&
                     section.rows.map((row) => (
-                      <tr key={`${row.setKey}:${row.base}`}>
+                      <tr
+                        key={rowId(row)}
+                        className={selection.selected.has(rowId(row)) ? styles.picked : undefined}
+                      >
+                        <td className={styles.pick}>
+                          <SelectBox
+                            state={selection.selected.has(rowId(row))}
+                            label={`Select ${row.name}`}
+                            disabled={!isSelectable(row)}
+                            onChange={() => selection.toggle(rowId(row))}
+                          />
+                        </td>
                         <td className={styles.where}>
                           {row.setKey} #{row.base}
                         </td>
@@ -224,6 +257,8 @@ export function BulkPage({ entries, sets }: Props) {
           </table>
         </div>
       )}
+
+      <BulkSelectionBar selection={selection} />
 
       {removing && (
         <RemoveFromBulkDialog

@@ -8,9 +8,11 @@ import {
   bulkAdjust,
   eraseEverything,
   removeFromBulkBox,
+  removeManyFromBulkBox,
   resetCollection,
   restoreErased,
   restoreSnapshot,
+  restoreSnapshots,
 } from './bulk';
 import { SwuDatabase, type StackCardRow } from './db';
 import { readDeckLibrary, writeDeckLibraryQuietly } from './deckLibrary';
@@ -146,6 +148,169 @@ describe('remove from the bulk box', () => {
     expect(await rows()).toEqual({ 'SOR:059': [3, 1] });
     await restoreSnapshot(undo, database);
     expect(await rows()).toEqual({ 'SOR:059': [4, 2] });
+  });
+});
+
+describe('remove many from the bulk box', () => {
+  let database: SwuDatabase;
+
+  beforeEach(async () => {
+    database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+    await database.owned.bulkPut([
+      // SOR 59: a full binder playset plus two Normals and a Hyperspace in the box.
+      {
+        id: 'SOR:059',
+        setKey: 'SOR',
+        base: 59,
+        num: '059',
+        variant: 'normal',
+        count: 5,
+        bulk: 2,
+        updatedAt: 0,
+      },
+      {
+        id: 'SOR:324',
+        setKey: 'SOR',
+        base: 59,
+        num: '324',
+        variant: 'hyperspace',
+        count: 1,
+        bulk: 1,
+        updatedAt: 0,
+      },
+      // SOR 1: a binder copy only.
+      {
+        id: 'SOR:001',
+        setKey: 'SOR',
+        base: 1,
+        num: '001',
+        variant: 'normal',
+        count: 1,
+        updatedAt: 0,
+      },
+      // SHD 10: everything in the box.
+      {
+        id: 'SHD:010',
+        setKey: 'SHD',
+        base: 10,
+        num: '010',
+        variant: 'normal',
+        count: 2,
+        bulk: 2,
+        updatedAt: 0,
+      },
+      // TWI 7: two in the box, one of them out in a deck (the caller passes only one).
+      {
+        id: 'TWI:007',
+        setKey: 'TWI',
+        base: 7,
+        num: '007',
+        variant: 'foil',
+        count: 2,
+        bulk: 2,
+        updatedAt: 0,
+      },
+    ]);
+  });
+
+  const rows = async () =>
+    Object.fromEntries((await database.owned.toArray()).map((r) => [r.id, [r.count, r.bulk ?? 0]]));
+
+  it('takes every picked card out of the box across sets, leaving binder copies alone', async () => {
+    const { removed, cards } = await removeManyFromBulkBox(
+      [
+        { setKey: 'SOR', base: 59, remove: { normal: 2, hyperspace: 1 } },
+        { setKey: 'SHD', base: 10, remove: { normal: 2 } },
+        { setKey: 'TWI', base: 7, remove: { foil: 1 } },
+      ],
+      { database },
+    );
+    expect(removed).toBe(6);
+    expect(cards).toBe(3);
+    expect(await rows()).toEqual({
+      'SOR:059': [3, 0],
+      'SOR:001': [1, 0],
+      'TWI:007': [1, 1],
+    });
+  });
+
+  it('never takes binder copies, even when asked for more than the box holds', async () => {
+    const { removed, cards } = await removeManyFromBulkBox(
+      [
+        { setKey: 'SOR', base: 1, remove: { normal: 1 } },
+        { setKey: 'SOR', base: 59, remove: { normal: 9 } },
+      ],
+      { database },
+    );
+    expect(removed).toBe(2);
+    expect(cards).toBe(1);
+    expect((await rows())['SOR:001']).toEqual([1, 0]);
+    expect((await rows())['SOR:059']).toEqual([3, 0]);
+  });
+
+  it('takes a card listed twice only once', async () => {
+    const { removed } = await removeManyFromBulkBox(
+      [
+        { setKey: 'SHD', base: 10, remove: { normal: 1 } },
+        { setKey: 'SHD', base: 10, remove: { normal: 1 } },
+      ],
+      { database },
+    );
+    expect(removed).toBe(1);
+    expect((await rows())['SHD:010']).toEqual([1, 1]);
+  });
+
+  it('undo restores exactly what was removed', async () => {
+    const before = await database.owned.toArray();
+    const { undo } = await removeManyFromBulkBox(
+      [
+        { setKey: 'SOR', base: 59, remove: { normal: 2, hyperspace: 1 } },
+        { setKey: 'SHD', base: 10, remove: { normal: 2 } },
+        { setKey: 'TWI', base: 7, remove: { foil: 1 } },
+      ],
+      { database, now: 99 },
+    );
+    expect(undo).toHaveLength(3);
+    await restoreSnapshots(undo, database);
+    const byId = (list: { id: string }[]) => [...list].sort((a, b) => a.id.localeCompare(b.id));
+    expect(byId(await database.owned.toArray())).toEqual(byId(before));
+  });
+
+  it('undo leaves cards that were not removed as they are now', async () => {
+    const { undo } = await removeManyFromBulkBox(
+      [{ setKey: 'SHD', base: 10, remove: { normal: 2 } }],
+      { database },
+    );
+    await database.owned.put({
+      id: 'SOR:001',
+      setKey: 'SOR',
+      base: 1,
+      num: '001',
+      variant: 'normal',
+      count: 2,
+      bulk: 1,
+      updatedAt: 5,
+    });
+    await restoreSnapshots(undo, database);
+    expect(await rows()).toMatchObject({ 'SHD:010': [2, 2], 'SOR:001': [2, 1] });
+  });
+
+  it('a failure part-way removes nothing', async () => {
+    const before = await rows();
+    const removal = [
+      { setKey: 'SOR', base: 59, remove: { normal: 2 } },
+      { setKey: 'SHD', base: 10, remove: { normal: 2 } },
+    ];
+    // Fail the second card's write, after the first card's has gone through.
+    let calls = 0;
+    database.owned.hook('deleting', () => {
+      calls += 1;
+      throw new Error('disk full');
+    });
+    await expect(removeManyFromBulkBox(removal, { database })).rejects.toThrow();
+    expect(calls).toBe(1);
+    expect(await rows()).toEqual(before);
   });
 });
 
