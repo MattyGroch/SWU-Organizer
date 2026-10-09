@@ -13,9 +13,19 @@ Since 2026-10-06 swu.mattyflix.com has held Matt's real collection. Losing or co
 - **Flag destructive or risky changes.** That means anything that deletes, overwrites or rewrites stored data, a schema or format change, or changes to sync, import, export or bulk edits. Say so plainly in chat and under a **Data risk** heading in the PR description. Tell Matt to **snapshot the database before merging** (`docs/deploy.md`, "Snapshot the database"). Do this every time, even when it seems obvious.
 - **Never touch prod data directly.** Don't query, edit or restart the prod database or containers without asking. Don't point a dev server's `VITE_API_PROXY_TARGET` at prod; dev runs against a local API.
 
+## Backlog lives in GitHub Issues
+
+There's no `TODO.md` any more. Matt files ideas and bugs as issues; sessions review them and he decides what gets built.
+
+- **Session opens with a specific request** (a feature, idea, suggestion or bug): start on it. First search open issues (`gh issue list --search "<keywords>"`). If one already covers it, say so and work under that issue (`Closes #N` in the PR). If a related one is outstanding, mention it and keep the work consistent with it. Skip the review pass below.
+- **Session opens without a specific request:** review the backlog. For each open issue with no review comment yet, post one with `gh issue comment`, starting with `🤖 **Claude review**`. Comments post as Matt's account, so the heading is how reviews are told apart from his replies. Cover viability, a critique of the idea, how it fits the existing design (and `CLAUDE.md`, memory and earlier decisions), risks including data risk, rough size, and a recommendation: build, change or drop. Don't write code during the review. Then summarise in chat.
+- **Matt decides in the issue.** A comment from him after the review is his decision: build it, change it or drop it. At the start of a session, list issues where he has replied since the last review as ready. Start building one only once he picks it in the session, because another session may already be on it.
+- **File new bugs, ideas and follow-ups as issues,** not in a file. Labels: `bug`, `enhancement`, `automation`, `ops` (server, deploy, dependencies), `question`, and `needs-matt` (only Matt can do, test or answer it). Priority: `P1 · now`, `P2 · next`, `P3 · someday`. Matt sets these; reviews may suggest one, and an unlabelled issue isn't triaged yet.
+- **Close issues from PRs:** put `Closes #N` in the PR description.
+
 ## One worktree per task
 
-- **Never edit, commit or switch branches in the main checkout** (`~/SWU-Organizer`). It belongs to Matt. He edits `TODO.md` there (in Obsidian), and his dev server on port 5173 runs from it. A branch switch under it changes his files mid-work.
+- **Never edit, commit or switch branches in the main checkout** (`~/SWU-Organizer`). It belongs to Matt. He may have uncommitted edits there, and his dev server on port 5173 runs from it. A branch switch under it changes his files mid-work.
 - **Start every task in its own worktree,** branched from the latest `main`:
   ```bash
   git -C ~/SWU-Organizer fetch origin
