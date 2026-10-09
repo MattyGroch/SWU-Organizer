@@ -182,6 +182,11 @@
   cursor: pointer;
 }
 
+/* Clear all without the Name group around it: level with the bottom of the chip groups. */
+.clearAlone {
+  align-self: flex-end;
+}
+
 .clear:disabled {
   opacity: 0.4;
   cursor: not-allowed;

@@ -98,13 +98,29 @@ export type CardRow = {
   missingCost: number;
 };
 
-function matchesFilters(card: CatalogCard, status: CollectionStatus, filters: Filters): boolean {
+/** What the Aspect, Rarity and Type chips look at: a catalog card, or a row built from one. */
+export type FilterableCard = {
+  aspects: readonly string[];
+  rarity?: string;
+  type?: string;
+};
+
+/**
+ * The Aspect, Rarity and Type chips: any chip lit in a group lets a card through, and
+ * every group with a chip lit must. A card with no aspect counts as Neutral.
+ */
+export function matchesCardTraits(card: FilterableCard, filters: Filters): boolean {
   if (filters.aspect.length) {
     const labels = card.aspects.length ? card.aspects : ['NEUTRAL'];
     if (!labels.some((a) => filters.aspect.includes(a))) return false;
   }
   if (filters.rarity.length && !filters.rarity.includes(card.rarity ?? '')) return false;
   if (filters.type.length && !filters.type.includes(card.type ?? '')) return false;
+  return true;
+}
+
+function matchesFilters(card: CatalogCard, status: CollectionStatus, filters: Filters): boolean {
+  if (!matchesCardTraits(card, filters)) return false;
   if (filters.status.length && !filters.status.includes(status)) return false;
 
   const text = filters.text.trim().toLowerCase();

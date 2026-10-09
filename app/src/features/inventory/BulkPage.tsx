@@ -6,15 +6,17 @@ import { db } from '~/data/db';
 import type { LoadedSet, SetManifestEntry } from '~/domain/catalog';
 import type { SetKey } from '~/domain/types';
 import { AspectIcons } from '~/features/binder/AspectIcons';
+import { EMPTY_FILTERS, hasActiveFilters, type Filters } from '~/features/binder/cardRows';
+import { FilterBar } from '~/features/binder/FilterBar';
 import { RarityBadge } from '~/features/binder/RarityBadge';
 import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
 import { Loader } from '~/ui/Loader';
 
 import styles from './BulkPage.module.css';
+import { filterBulkRows } from './bulkFilters';
 import {
   buildBulkRows,
   groupBulkRows,
-  matchesBulkSearch,
   printingsLabel,
   type BulkRow,
   type BulkSectionKey,
@@ -56,15 +58,14 @@ export function BulkPage({ entries, sets }: Props) {
   const owned = useLiveQuery(() => db.owned.filter((row) => (row.bulk ?? 0) > 0).toArray(), []);
   const [query, setQuery] = useState('');
   const [setFilter, setSetFilter] = useState<SetKey | ''>('');
+  const [chips, setChips] = useState<Filters>(EMPTY_FILTERS);
 
   const setOrder = useMemo(() => entries.map((e) => e.key), [entries]);
   const all = useMemo(
     () => (owned ? buildBulkRows(owned, library, sets, setOrder) : []),
     [owned, library, sets, setOrder],
   );
-  const rows = all.filter(
-    (row) => (!setFilter || row.setKey === setFilter) && matchesBulkSearch(row, query),
-  );
+  const rows = filterBulkRows(all, { setKey: setFilter, query, chips });
   const copies = rows.reduce((sum, row) => sum + row.boxCount, 0);
   const sections = groupBulkRows(rows);
   const [collapsed, setCollapsed] = useState(readCollapsed);
@@ -105,13 +106,15 @@ export function BulkPage({ entries, sets }: Props) {
         </label>
       </div>
 
+      <FilterBar filters={chips} onChange={setChips} omit={['status', 'name']} />
+
       {owned === undefined ? (
         <Loader label="Opening the bulk box" />
       ) : (
         <p className={styles.summary} role="status">
           {`${copies} ${copies === 1 ? 'copy' : 'copies'} of ${rows.length} ${
             rows.length === 1 ? 'card' : 'cards'
-          } in the bulk box${setFilter || query ? ' match' : ''}.`}
+          } in the bulk box${setFilter || query || hasActiveFilters(chips) ? ' match' : ''}.`}
         </p>
       )}
 

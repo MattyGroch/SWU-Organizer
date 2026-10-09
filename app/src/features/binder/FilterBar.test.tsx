@@ -34,3 +34,23 @@ describe('FilterBar', () => {
     expect(screen.getByText('3 active')).toBeInTheDocument();
   });
 });
+
+describe('FilterBar omit', () => {
+  it('leaves out the Status and Name groups, keeping Clear all', async () => {
+    const onChange = vi.fn();
+    render(
+      <FilterBar
+        filters={{ ...EMPTY_FILTERS, rarity: ['Rare'] }}
+        onChange={onChange}
+        omit={['status', 'name']}
+      />,
+    );
+    expect(screen.queryByText('Status')).not.toBeInTheDocument();
+    expect(screen.queryByText('Hide out in decks')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Filter cards by name')).not.toBeInTheDocument();
+    expect(screen.getByText('Aspect')).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Clear all' }));
+    expect(onChange).toHaveBeenCalledWith(EMPTY_FILTERS);
+  });
+});
