@@ -4,11 +4,13 @@ import { numberFromPagePosition, spreadToPrimaryPage } from '~/domain/binder';
 import { promoArtKey, type PromoArtChoices } from '~/data/binderSettings';
 import type { LoadedSet } from '~/domain/catalog';
 import { type Homes, NO_HOMES, type OwnedCounts, ownedFor, quotaForCard } from '~/domain/ownership';
+import type { DeckHold } from '~/domain/deckBuild';
 import type { ActiveSelection, Card } from '~/domain/types';
 
 import { BinderCell } from './BinderCell';
 import styles from './BinderGrid.module.css';
 
+const NO_DECKS: readonly DeckHold[] = [];
 const ROWS = 3;
 const COLS_PER_PAGE = 4;
 const SPREAD_COLS = COLS_PER_PAGE * 2;
@@ -20,6 +22,8 @@ type Props = {
   ownership: ReadonlyMap<number, OwnedCounts>;
   /** Base number → printings pulled into built decks. */
   held: ReadonlyMap<number, Homes>;
+  /** Base number → the built decks holding it. */
+  decks: ReadonlyMap<number, readonly DeckHold[]>;
   focusRequest: number;
   promoArt?: PromoArtChoices;
   onSelect: (card: Card) => void;
@@ -44,6 +48,7 @@ export function BinderGrid({
   active,
   ownership,
   held,
+  decks,
   focusRequest,
   promoArt,
   onSelect,
@@ -132,6 +137,7 @@ export function BinderGrid({
                   }
                   counts={ownedFor(ownership, card.Number)}
                   held={held.get(card.Number) ?? NO_HOMES}
+                  decks={decks.get(card.Number) ?? NO_DECKS}
                   quota={quotaForCard({ type: card.Type, maxCopies: card.MaxCopies })}
                   promoArt={promoArt?.[promoArtKey(set.setKey, card.Number)]}
                   onSelect={onSelect}

@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { CatalogCard } from '~/domain/catalog';
+import type { DeckHold } from '~/domain/deckBuild';
 import {
   indexOwnership,
   quotaForCard,
@@ -77,6 +78,7 @@ function renderCell(
   owned: Array<[string, number]> = [],
   held: VariantCounts = {},
   quota = quotaForCard(catalogCard),
+  decks: DeckHold[] = [],
 ): HTMLElement {
   const counts: OwnedCounts = indexOwnership(
     owned.map(([variant, count]) => ({ base: catalogCard.base, variant: variant as never, count })),
@@ -95,6 +97,7 @@ function renderCell(
       counts={counts}
       held={{ binder: held, bulk: {} }}
       quota={quota}
+      decks={decks}
       onSelect={vi.fn()}
     />,
   ).container;
@@ -215,6 +218,21 @@ describe('the in-decks marker', () => {
     renderCell(unit, unitCatalog, [['normal', 3]], { normal: 2 });
     expect(screen.getByTitle(/2 missing from this pocket/)).toHaveTextContent('⇢2');
     expect(screen.getByRole('button')).toHaveAccessibleName(/1 of 3 in binder, 2 in decks\./);
+  });
+
+  it('names the decks holding the missing copies', () => {
+    renderCell(unit, unitCatalog, [['normal', 3]], { normal: 2 }, undefined, [
+      { deckId: 'a', name: 'Vader Aggro', binder: 1, bulk: 0 },
+      { deckId: 'b', name: 'Sabine Rush', binder: 1, bulk: 1 },
+      { deckId: 'c', name: 'Bulk Only', binder: 0, bulk: 1 },
+    ]);
+    expect(screen.getByTitle(/2 missing from this pocket/)).toHaveAttribute(
+      'title',
+      '2 missing from this pocket, out in built decks:\nVader Aggro\nSabine Rush',
+    );
+    expect(screen.getByRole('button')).toHaveAccessibleName(
+      /2 in decks \(Vader Aggro, Sabine Rush\)\./,
+    );
   });
 
   it('counts only up to the gap: the rest are bulk-bound when they come back', () => {

@@ -7,11 +7,13 @@ import {
   type Homes,
   type OwnedCounts,
 } from '~/domain/ownership';
+import type { DeckHold } from '~/domain/deckBuild';
 import type { Card } from '~/domain/types';
 import type { CSSProperties, PointerEvent } from 'react';
 
 import { aspectBackground, isLightFill } from './aspect';
 import styles from './BinderCell.module.css';
+import { pocketDeckNames, pocketDecksTitle } from './deckHolds';
 import { RarityBadge } from './RarityBadge';
 import { useCardImage } from './useCardImage';
 
@@ -27,6 +29,8 @@ type Props = {
   counts: OwnedCounts;
   /** Printings pulled out into built decks — owned, but not in this pocket. */
   held: Homes;
+  /** The built decks holding this card, named in the ⇢N badge's tooltip. */
+  decks: readonly DeckHold[];
   /** The card's binder playset. */
   quota: number;
   /** The promo picture chosen for this card, if any (see binderSettings). */
@@ -54,6 +58,7 @@ export function BinderCell({
   selected,
   counts,
   held,
+  decks,
   quota,
   promoArt,
   onSelect,
@@ -80,11 +85,13 @@ export function BinderCell({
   const rotated = isLandscapeArt(card.Type);
   const isFoil = !!choice?.foil && !pocketEmpty;
 
+  const deckNames = pocketDeckNames(decks);
   const description =
     `${card.Name}${card.Subtitle ? `, ${card.Subtitle}` : ''}. ` +
     `Number ${card.Number}. Page ${page}, row ${row}, column ${column}. ` +
     `${inBinder} of ${quota} in binder` +
-    `${inDecks > 0 ? `, ${inDecks} in decks` : ''}.` +
+    `${inDecks > 0 ? `, ${inDecks} in decks` : ''}` +
+    `${inDecks > 0 && deckNames ? ` (${deckNames})` : ''}.` +
     // The foil finish is decorative, so it is announced in words instead.
     (isFoil ? ' Includes a foil.' : '');
 
@@ -143,10 +150,7 @@ export function BinderCell({
         {/* A corner badge rather than part of the count: in the bottom row it widened the
             pill enough to push the rarity badge off the card on a phone. */}
         {inDecks > 0 && (
-          <span
-            className={styles.inDecks}
-            title={`${inDecks} missing from this pocket, out in built decks`}
-          >
+          <span className={styles.inDecks} title={pocketDecksTitle(inDecks, decks)}>
             ⇢{inDecks}
           </span>
         )}

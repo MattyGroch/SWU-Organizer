@@ -1,4 +1,7 @@
+import { Link } from '@tanstack/react-router';
+
 import type { LoadedSet, Printing } from '~/domain/catalog';
+import type { DeckHold } from '~/domain/deckBuild';
 import {
   binderCount,
   boxCounts,
@@ -20,6 +23,8 @@ type Props = {
   counts: OwnedCounts;
   /** What built decks hold of this card, by the home each copy returns to. */
   held: Homes;
+  /** The built decks holding this card, most copies first. */
+  decks: readonly DeckHold[];
   /** The card's binder playset. */
   quota: number;
   onAdjust: (delta: number) => void;
@@ -44,6 +49,7 @@ export function SelectedCardPanel({
   active,
   counts,
   held,
+  decks,
   quota,
   onAdjust,
   onAdjustPrinting,
@@ -144,6 +150,30 @@ export function SelectedCardPanel({
           +
         </button>
       </div>
+
+      {decks.length > 0 && (
+        <div className={styles.decks}>
+          <span className={styles.decksLabel}>In decks</span>
+          <ul className={styles.deckList}>
+            {decks.map((d) => (
+              <li key={d.deckId}>
+                <Link to="/decks/$deckId" params={{ deckId: d.deckId }} className={styles.deckLink}>
+                  {d.name}
+                </Link>
+                {d.binder + d.bulk > 1 && (
+                  <span className={styles.deckCount}> ×{d.binder + d.bulk}</span>
+                )}
+                {d.bulk > 0 && (
+                  <span className={styles.deckBulk}>
+                    {' '}
+                    ({d.binder === 0 ? 'from bulk' : `${d.bulk} from bulk`})
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <VariantStrip
         printings={printings}

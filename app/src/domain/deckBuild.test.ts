@@ -7,6 +7,7 @@ import {
   applyDeconstruct,
   available,
   deckStatus,
+  decksHoldingInSet,
   editReturns,
   heldVariants,
   inPlace,
@@ -420,5 +421,27 @@ describe('editing a deck', () => {
       edit(contents([])),
     );
     expect(twin.customDecks[0]).not.toHaveProperty('secondLeader');
+  });
+});
+
+describe('decksHoldingInSet', () => {
+  it('names each built deck holding a card, most copies first, by home', () => {
+    const a = deck('a', { constructed: true, pulledCards: [ref(33, 1)] });
+    const b = deck('b', {
+      constructed: true,
+      pulledCards: [ref(33, 2, { normal: 2 }, { normal: 1 }), ref(40, 1)],
+    });
+    const unbuilt = deck('c', { pulledCards: [ref(33, 3)] });
+    const other = deck('d', {
+      constructed: true,
+      pulledCards: [{ setKey: 'SHD', baseNumber: 33, count: 1 }],
+    });
+    const holds = decksHoldingInSet(library(a, b, unbuilt, other), 'SOR');
+    expect(holds.get(33)).toEqual([
+      { deckId: 'b', name: 'B', binder: 1, bulk: 1 },
+      { deckId: 'a', name: 'A', binder: 1, bulk: 0 },
+    ]);
+    expect(holds.get(40)).toEqual([{ deckId: 'b', name: 'B', binder: 1, bulk: 0 }]);
+    expect(holds.has(1)).toBe(false);
   });
 });

@@ -128,6 +128,32 @@ export function heldInSet(library: DeckLibrary, setKey: SetKey): Map<number, Hom
   return held;
 }
 
+/** One built deck's copies of a card, by the home they return to. */
+export type DeckHold = { deckId: string; name: string; binder: number; bulk: number };
+
+/** Which built decks hold each of one set's cards, by base number, most copies first. */
+export function decksHoldingInSet(library: DeckLibrary, setKey: SetKey): Map<number, DeckHold[]> {
+  const names = new Map(library.customDecks.map((deck) => [deck.id, deck.name]));
+  const byCard = new Map<number, DeckHold[]>();
+  for (const [deckId, holdings] of deckHoldings(library)) {
+    for (const [key, homes] of holdings) {
+      const card = parseCardKey(key);
+      if (card.setKey !== setKey) continue;
+      const hold: DeckHold = {
+        deckId,
+        name: names.get(deckId) ?? '',
+        binder: sumVariants(homes.binder),
+        bulk: sumVariants(homes.bulk),
+      };
+      if (hold.binder + hold.bulk === 0) continue;
+      byCard.set(card.baseNumber, [...(byCard.get(card.baseNumber) ?? []), hold]);
+    }
+  }
+  for (const holds of byCard.values())
+    holds.sort((a, b) => b.binder + b.bulk - (a.binder + a.bulk) || a.name.localeCompare(b.name));
+  return byCard;
+}
+
 /** Every printing out in built decks, per card, wherever it came from. */
 export function heldVariants(library: DeckLibrary): Map<CardKey, VariantCounts> {
   const held = new Map<CardKey, VariantCounts>();
