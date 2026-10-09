@@ -15,7 +15,11 @@ Since 2026-10-06 swu.mattyflix.com has held Matt's real collection. Losing or co
 
 ## Backlog lives in GitHub Issues
 
-- **Check open issues at the start of a task** (`gh issue list`) for anything related to the work. There's no `TODO.md` any more.
+There's no `TODO.md` any more. Matt files ideas and bugs as issues; sessions review them and he decides what gets built.
+
+- **Session opens with a specific request** (a feature, idea, suggestion or bug): start on it. First search open issues (`gh issue list --search "<keywords>"`). If one already covers it, say so and work under that issue (`Closes #N` in the PR). If a related one is outstanding, mention it and keep the work consistent with it. Skip the review pass below.
+- **Session opens without a specific request:** review the backlog. For each open issue with no review comment yet, post one with `gh issue comment`, starting with `🤖 **Claude review**`. Comments post as Matt's account, so the heading is how reviews are told apart from his replies. Cover viability, a critique of the idea, how it fits the existing design (and `CLAUDE.md`, memory and earlier decisions), risks including data risk, rough size, and a recommendation: build, change or drop. Don't write code during the review. Then summarise in chat.
+- **Matt decides in the issue.** A comment from him after the review is his decision: build it, change it or drop it. At the start of a session, list issues where he has replied since the last review as ready. Start building one only once he picks it in the session, because another session may already be on it.
 - **File new bugs, ideas and follow-ups as issues,** not in a file. Labels: `bug`, `enhancement`, `automation`, `ops` (server, deploy, dependencies), `question`, and `needs-matt` (only Matt can do, test or answer it).
 - **Close issues from PRs:** put `Closes #N` in the PR description.
 
