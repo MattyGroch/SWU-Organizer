@@ -253,3 +253,71 @@
     min-width: 0;
   }
 }
+
+/* The tick-box column, and the section headers' check-all beside their fold toggle. */
+.table th.pick,
+.table td.pick {
+  width: 1px;
+  padding-right: 0;
+  padding-left: var(--space-1);
+  vertical-align: middle;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  padding-left: var(--space-1);
+}
+
+.sectionHead .sectionToggle {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+  padding-left: 0;
+}
+
+.picked td {
+  background: color-mix(in srgb, var(--color-link) 8%, transparent);
+}
+
+/* With the tick box in front, a long count wraps under itself rather than off the edge. */
+.table .sectionRow th {
+  white-space: normal;
+}
+
+.sectionHead .sectionCount {
+  text-align: right;
+}
+
+/* Phones: room for the tick box without pushing "In decks" off the right edge. */
+@media (max-width: 760px) {
+  .table th.pick,
+  .table td.pick {
+    padding-left: 0;
+  }
+
+  .pick label {
+    min-width: 36px;
+  }
+
+  /* "In the box" and "In decks" break onto two lines rather than set the columns' width. */
+  .table thead th {
+    white-space: normal;
+  }
+
+  /* The − button sits under the count, so a long name ("Reinforcement") still fits. */
+  .boxCell {
+    flex-direction: column;
+  }
+
+  .name {
+    hyphens: auto;
+  }
+
+  .table th.decks,
+  .table td.decks {
+    width: 1px;
+    padding-left: var(--space-1);
+    padding-right: var(--space-2);
+  }
+}

@@ -211,30 +211,86 @@ export async function removeFromBulkBox(
   let removed = 0;
 
   await database.transaction('rw', database.owned, async () => {
-    before = await database.owned.where({ setKey, base }).toArray();
-    const left: VariantCounts = { ...remove };
-    for (const row of before) {
-      const inBulk = Math.min(row.bulk ?? 0, row.count);
-      const take = Math.min(left[row.variant] ?? 0, inBulk);
-      if (take <= 0) continue;
-      left[row.variant] = (left[row.variant] ?? 0) - take;
-      removed += take;
-
-      const count = row.count - take;
-      const bulk = inBulk - take;
-      if (count <= 0) {
-        await database.owned.delete(row.id);
-        continue;
-      }
-      const { bulk: _old, ...rest } = row;
-      await database.owned.put(
-        bulk > 0 ? { ...rest, count, bulk, updatedAt: now } : { ...rest, count, updatedAt: now },
-      );
-    }
+    ({ before, removed } = await takeFromBox(database, setKey, base, remove, now));
   });
 
   if (removed) notifyInventoryChanged(setKey);
   return { removed, undo: { scope: { setKey, bases: [base] }, rows: before } };
+}
+
+/** One card's share of {@link removeManyFromBulkBox}: how many of each printing to take. */
+export type BulkBoxRemoval = { setKey: SetKey; base: number; remove: VariantCounts };
+
+/**
+ * {@link removeFromBulkBox} for many cards at once, in one transaction: if any write
+ * fails, none of them land. Binder copies are never touched. Undo is one snapshot per set
+ * — restore them together with {@link restoreSnapshots}.
+ */
+export async function removeManyFromBulkBox(
+  removals: readonly BulkBoxRemoval[],
+  { database = db, now = Date.now() }: { database?: SwuDatabase; now?: number } = {},
+): Promise<{ removed: number; cards: number; undo: Snapshot[] }> {
+  const bySet = new Map<SetKey, { bases: number[]; rows: OwnedPrinting[] }>();
+  let removed = 0;
+  let cards = 0;
+
+  await database.transaction('rw', database.owned, async () => {
+    const seen = new Set<string>();
+    for (const { setKey, base, remove } of removals) {
+      // The same card twice would snapshot its already-shrunk rows; take it once.
+      const key = cardKey(setKey, base);
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      const result = await takeFromBox(database, setKey, base, remove, now);
+      if (!result.removed) continue;
+      removed += result.removed;
+      cards += 1;
+      const entry = bySet.get(setKey) ?? { bases: [], rows: [] };
+      entry.bases.push(base);
+      entry.rows.push(...result.before);
+      bySet.set(setKey, entry);
+    }
+  });
+
+  for (const setKey of bySet.keys()) notifyInventoryChanged(setKey);
+  return {
+    removed,
+    cards,
+    undo: [...bySet].map(([setKey, { bases, rows }]) => ({ scope: { setKey, bases }, rows })),
+  };
+}
+
+/** The writes behind a bulk-box removal; the caller holds the transaction. */
+async function takeFromBox(
+  database: SwuDatabase,
+  setKey: SetKey,
+  base: number,
+  remove: VariantCounts,
+  now: number,
+): Promise<{ before: OwnedPrinting[]; removed: number }> {
+  const before = await database.owned.where({ setKey, base }).toArray();
+  let removed = 0;
+  const left: VariantCounts = { ...remove };
+  for (const row of before) {
+    const inBulk = Math.min(row.bulk ?? 0, row.count);
+    const take = Math.min(left[row.variant] ?? 0, inBulk);
+    if (take <= 0) continue;
+    left[row.variant] = (left[row.variant] ?? 0) - take;
+    removed += take;
+
+    const count = row.count - take;
+    const bulk = inBulk - take;
+    if (count <= 0) {
+      await database.owned.delete(row.id);
+      continue;
+    }
+    const { bulk: _old, ...rest } = row;
+    await database.owned.put(
+      bulk > 0 ? { ...rest, count, bulk, updatedAt: now } : { ...rest, count, updatedAt: now },
+    );
+  }
+  return { before, removed };
 }
 
 /** Everything `eraseEverything` removed, to put back on Undo. */
@@ -360,44 +416,52 @@ export async function restoreSnapshot(
   snapshot: Snapshot,
   database: SwuDatabase = db,
 ): Promise<void> {
-  const sets = new Set<SetKey>(snapshot.rows.map((row) => row.setKey));
+  await restoreSnapshots([snapshot], database);
+}
+
+/**
+ * Undoes several bulk edits made together, in one transaction — newest first, so each
+ * restores what it saw. A failure part-way puts nothing back, rather than half.
+ */
+export async function restoreSnapshots(
+  snapshots: readonly Snapshot[],
+  database: SwuDatabase = db,
+): Promise<void> {
+  const sets = new Set<SetKey>();
+  let decksChanged = false;
 
   await database.transaction('rw', database.owned, database.deckLibrary, async () => {
-    const { scope } = snapshot;
-    if (scope === 'all') {
-      for (const row of await database.owned.toArray()) sets.add(row.setKey);
-      await database.owned.clear();
-    } else if (scope.bases) {
-      sets.add(scope.setKey);
-      for (const base of scope.bases) {
-        await database.owned.where({ setKey: scope.setKey, base }).delete();
+    for (const snapshot of [...snapshots].reverse()) {
+      for (const row of snapshot.rows) sets.add(row.setKey);
+      const { scope } = snapshot;
+      if (scope === 'all') {
+        for (const row of await database.owned.toArray()) sets.add(row.setKey);
+        await database.owned.clear();
+      } else if (scope.bases) {
+        sets.add(scope.setKey);
+        for (const base of scope.bases) {
+          await database.owned.where({ setKey: scope.setKey, base }).delete();
+        }
+      } else {
+        sets.add(scope.setKey);
+        await database.owned.where('setKey').equals(scope.setKey).delete();
       }
-    } else {
-      sets.add(scope.setKey);
-      await database.owned.where('setKey').equals(scope.setKey).delete();
-    }
-    if (snapshot.rows.length) await database.owned.bulkPut(snapshot.rows);
+      if (snapshot.rows.length) await database.owned.bulkPut(snapshot.rows);
 
-    if (snapshot.deckLibraryJson !== undefined) {
-      if (snapshot.deckLibraryJson === null) await database.deckLibrary.delete('library');
-      else {
-        await database.deckLibrary.put({
-          id: 'library',
-          json: snapshot.deckLibraryJson,
-          updatedAt: Date.now(),
-        });
+      if (snapshot.deckLibraryJson !== undefined) {
+        decksChanged = true;
+        if (snapshot.deckLibraryJson === null) await database.deckLibrary.delete('library');
+        else {
+          await database.deckLibrary.put({
+            id: 'library',
+            json: snapshot.deckLibraryJson,
+            updatedAt: Date.now(),
+          });
+        }
       }
     }
   });
 
   for (const key of sets) notifyInventoryChanged(key);
-  if (snapshot.deckLibraryJson !== undefined) notifyDeckLibraryChanged();
-}
-
-/** Undoes several bulk edits made together — newest first, so each restores what it saw. */
-export async function restoreSnapshots(
-  snapshots: readonly Snapshot[],
-  database: SwuDatabase = db,
-): Promise<void> {
-  for (const snapshot of [...snapshots].reverse()) await restoreSnapshot(snapshot, database);
+  if (decksChanged) notifyDeckLibraryChanged();
 }
