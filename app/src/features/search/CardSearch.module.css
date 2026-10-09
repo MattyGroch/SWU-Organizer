@@ -60,18 +60,9 @@
   background: var(--color-surface-raised);
 }
 
+/* The badge's look lives in ~/ui/SetBadge; this class only places it in the row. */
 .setBadge {
   flex-shrink: 0;
-  padding: 1px 5px;
-  border: 1px solid currentcolor;
-  border-radius: var(--radius-sm);
-  color: var(--color-text-muted);
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.setBadge[data-current='true'] {
-  color: var(--color-text);
 }
 
 .optionName {

@@ -11,6 +11,7 @@ import {
   restoreCard,
 } from '~/data/pocket';
 import {
+  setNameWithoutKey,
   toSearchCatalog,
   variantForHotkey,
   variantLabel,
@@ -66,6 +67,7 @@ import {
 } from '~/features/inventory/lastPlace';
 import type { InventoryView } from '~/features/inventory/views';
 import { formatUsd } from '~/ui/format';
+import { SetBadge } from '~/ui/SetBadge';
 import { useToast } from '~/ui/toastContext';
 import { useNarrow } from '~/ui/useNarrow';
 import { accentText, setAccent } from './setAccent';
@@ -497,7 +499,10 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
             ‹
           </button>
           <label className={styles.setTitle}>
-            <span aria-hidden="true">{set.label}</span>
+            <span aria-hidden="true">
+              {setNameWithoutKey(set.label, set.setKey)}{' '}
+              <SetBadge setKey={set.setKey} current size="large" />
+            </span>
             {setSelect}
           </label>
           <button

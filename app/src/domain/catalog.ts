@@ -67,6 +67,18 @@ const VARIANT_LABELS: Record<VariantSlug, string> = {
   showcase: 'Showcase',
 };
 
+/**
+ * A set's label without its trailing key, for places that show the key as a badge:
+ * "Spark of Rebellion (SOR)" becomes "Spark of Rebellion". The bracket only goes when it is
+ * exactly the set's key, so "Master and Apprentice (Twin Suns)" keeps its own.
+ */
+export function setNameWithoutKey(label: string, setKey: string): string {
+  const suffix = ` (${setKey})`;
+  if (!setKey || !label.endsWith(suffix)) return label;
+  const name = label.slice(0, -suffix.length).trimEnd();
+  return name || label;
+}
+
 /** Compact labels for tight controls, e.g. the intake allocation buttons. */
 const VARIANT_SHORT_LABELS: Record<VariantSlug, string> = {
   normal: 'N',
