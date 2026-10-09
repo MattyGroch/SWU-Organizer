@@ -6,7 +6,7 @@ import {
   type Printing,
   type Treatment,
 } from './catalog';
-import type { OwnedCounts } from './ownership';
+import { VALUE_ORDER, type OwnedCounts } from './ownership';
 
 /**
  * Which printing's artwork represents a binder slot.
@@ -20,19 +20,6 @@ import type { OwnedCounts } from './ownership';
  * artwork and have no image on the CDN at all (a foil URL 404s). Owning only the foil
  * still shows that treatment, via the sibling.
  */
-
-/**
- * Which picture a pocket shows when you own several treatments: the most valuable, in
- * the collector's ranking — Promo above Hyperspace, Showcase above Prestige (Serialized, a
- * Prestige, ties with Showcase and shows its own stamped art when it is what you own).
- */
-const TREATMENT_RANK: Record<Treatment, number> = {
-  normal: 0,
-  hyperspace: 1,
-  promo: 2,
-  prestige: 3,
-  showcase: 4,
-};
 
 /**
  * True when this printing has artwork of its own on the CDN.
@@ -76,10 +63,11 @@ export type ArtChoice = {
   /** False when you own none of this card — the caller renders it greyscale. */
   owned: boolean;
   /**
-   * True when any copy owned is a foil.
+   * True when you own the shown treatment in foil.
    *
    * Foil and non-foil share identical artwork, so the finish cannot be shown by picking a
-   * different image — it is painted over the art instead.
+   * different image — it is painted over the art instead. A foil of another treatment
+   * doesn't count: Hyperspace Foils don't make a plain Promo's art shine.
    */
   foil: boolean;
   /**
@@ -92,10 +80,13 @@ export type ArtChoice = {
 /** Treatments whose foil printings are foil across the whole card. */
 const FULL_FOIL_TREATMENTS: ReadonlySet<Treatment> = new Set(['prestige', 'showcase']);
 
-/** Does any owned printing of this card have a foil finish? */
-function ownsFoil(card: CatalogCard, counts: OwnedCounts): boolean {
+/** Does an owned printing of this treatment have a foil finish? */
+function ownsFoilOf(card: CatalogCard, counts: OwnedCounts, treatment: Treatment): boolean {
   return card.printings.some(
-    (p) => (counts.byVariant[p.variant] ?? 0) > 0 && isFoilPrinting(p.variant),
+    (p) =>
+      (counts.byVariant[p.variant] ?? 0) > 0 &&
+      isFoilPrinting(p.variant) &&
+      variantAxes(p.variant).treatment === treatment,
   );
 }
 
@@ -109,23 +100,16 @@ export function selectArtPrinting(card: CatalogCard, counts: OwnedCounts): ArtCh
     return { printing: fallback, owned: false, foil: false, fullFoil: false };
   }
 
-  let bestRank = -1;
-  let bestTreatment: Treatment | undefined;
-
-  for (const printing of card.printings) {
-    if ((counts.byVariant[printing.variant] ?? 0) <= 0) continue;
-    const { treatment } = variantAxes(printing.variant);
-    const rank = TREATMENT_RANK[treatment];
-    if (rank > bestRank) {
-      bestRank = rank;
-      bestTreatment = treatment;
-    }
+  // The pocket shows your most valuable copy, in the order used everywhere else (pocket
+  // bumps, deck pulls): a Hyperspace Foil outranks a plain Promo, a Promo Foil outranks it.
+  const best = VALUE_ORDER.find((variant) =>
+    card.printings.some((p) => p.variant === variant && (counts.byVariant[variant] ?? 0) > 0),
+  );
+  if (best === undefined) {
+    return { printing: fallback, owned: true, foil: false, fullFoil: false };
   }
-
-  const foil = ownsFoil(card, counts);
-  if (bestTreatment === undefined) {
-    return { printing: fallback, owned: true, foil, fullFoil: false };
-  }
+  const bestTreatment = variantAxes(best).treatment;
+  const foil = ownsFoilOf(card, counts, bestTreatment);
 
   // Within the winning treatment, take a printing that actually has artwork. Prefer one
   // you own (a Serialized copy shows its own stamped art), else the plain sibling.
@@ -134,14 +118,7 @@ export function selectArtPrinting(card: CatalogCard, counts: OwnedCounts): ArtCh
   );
   const ownedCandidate = candidates.find((p) => (counts.byVariant[p.variant] ?? 0) > 0);
 
-  const fullFoil =
-    FULL_FOIL_TREATMENTS.has(bestTreatment) &&
-    card.printings.some(
-      (p) =>
-        (counts.byVariant[p.variant] ?? 0) > 0 &&
-        isFoilPrinting(p.variant) &&
-        variantAxes(p.variant).treatment === bestTreatment,
-    );
+  const fullFoil = foil && FULL_FOIL_TREATMENTS.has(bestTreatment);
 
   return { printing: ownedCandidate ?? candidates[0] ?? fallback, owned: true, foil, fullFoil };
 }

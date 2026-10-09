@@ -141,7 +141,7 @@ describe('selectArtPrinting', () => {
     expect(choice.printing.variant).toBe('prestige-serialized');
   });
 
-  it('flags foil whenever any owned copy is foil', () => {
+  it('flags foil when the copy shown is foil', () => {
     expect(selectArtPrinting(adiGallia, owned([['hyperspace-foil', 1]])).foil).toBe(true);
     expect(selectArtPrinting(adiGallia, owned([['prestige-foil', 1]])).foil).toBe(true);
     expect(
@@ -204,7 +204,74 @@ describe('selectArtPrinting', () => {
         ['foil', 1],
       ]),
     );
-    expect(mixed.foil).toBe(true);
+    expect(mixed.printing.num).toBe('1060');
+    expect(mixed.foil).toBe(false);
     expect(mixed.fullFoil).toBe(false);
+  });
+});
+
+describe('selectArtPrinting with promos', () => {
+  /** ASH Emperor's Messenger: a card with a promo beside its Hyperspace run. */
+  const messenger: CatalogCard = {
+    base: 189,
+    name: "Emperor's Messenger",
+    type: 'Unit',
+    aspects: [],
+    printings: [
+      { num: '189', variant: 'normal' },
+      { num: '645', variant: 'foil' },
+      { num: '453', variant: 'hyperspace' },
+      { num: 'ASHOP-010', variant: 'promo' },
+      { num: '721', variant: 'hyperspace-foil' },
+      { num: 'ASHOP-010F', variant: 'promo-foil' },
+    ],
+  };
+
+  it('shows a Hyperspace Foil over a plain Promo, without shining the Promo', () => {
+    const choice = selectArtPrinting(
+      messenger,
+      owned([
+        ['promo', 1],
+        ['hyperspace-foil', 2],
+      ]),
+    );
+    expect(choice.printing.num).toBe('453');
+    expect(choice.foil).toBe(true);
+  });
+
+  it('shows a plain Promo over a plain Hyperspace', () => {
+    const choice = selectArtPrinting(
+      messenger,
+      owned([
+        ['promo', 1],
+        ['hyperspace', 1],
+      ]),
+    );
+    expect(choice.printing.num).toBe('ASHOP-010');
+    expect(choice.foil).toBe(false);
+  });
+
+  it('shows a Promo Foil over a Hyperspace Foil, shining', () => {
+    const choice = selectArtPrinting(
+      messenger,
+      owned([
+        ['promo-foil', 1],
+        ['hyperspace-foil', 1],
+      ]),
+    );
+    expect(choice.printing.num).toBe('ASHOP-010');
+    expect(choice.foil).toBe(true);
+  });
+
+  it('does not shine a plain Hyperspace for a foil Normal', () => {
+    const choice = selectArtPrinting(
+      messenger,
+      owned([
+        ['hyperspace', 1],
+        ['foil', 1],
+      ]),
+    );
+    expect(choice.printing.num).toBe('453');
+    expect(choice.foil).toBe(false);
   });
 });
