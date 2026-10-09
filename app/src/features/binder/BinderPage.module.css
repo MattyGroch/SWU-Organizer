@@ -15,7 +15,8 @@
   flex-wrap: wrap;
   gap: var(--space-3);
   align-items: center;
-  margin: calc(-1 * var(--gutter)) calc(-1 * var(--gutter)) 0;
+  /* Full-bleed, meeting the sub-nav above it. */
+  margin: 0 calc(-1 * var(--gutter));
   padding: var(--space-3) var(--space-4);
   background: var(--set-accent, transparent);
 }
@@ -105,14 +106,14 @@
 }
 
 /*
- * Wider screens: a selected card's panel pins just below the app header, so its controls
- * stay in reach when the window is too short for them and the spread together. With
- * nothing selected the placeholder scrolls away with the page.
+ * Wider screens: a selected card's panel pins just below the app header and sub-nav, so
+ * its controls stay in reach when the window is too short for them and the spread
+ * together. With nothing selected the placeholder scrolls away with the page.
  */
 @media (min-width: 761px) {
   .panelSlot[data-active='true'] {
     position: sticky;
-    top: calc(var(--app-header-height, 0px) + var(--space-2));
+    top: calc(var(--app-header-height, 0px) + var(--inventory-subnav-height, 0px) + var(--space-2));
     z-index: 10;
   }
 
@@ -149,6 +150,8 @@
 
   .toolbar {
     gap: var(--space-2);
+    /* The same space under the sub-nav as between the toolbar's own rows. */
+    padding-top: var(--space-2);
   }
 
   /* Opened from the funnel: a full row under search, the funnel and ⋯. */

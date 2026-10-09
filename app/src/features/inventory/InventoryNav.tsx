@@ -3,6 +3,8 @@ import { useEffect, type ReactNode } from 'react';
 
 import type { SetKey } from '~/domain/types';
 
+import { usePublishedHeight } from '~/ui/usePublishedHeight';
+
 import styles from './InventoryNav.module.css';
 import { readLastSet, rememberPlace } from './lastPlace';
 
@@ -58,7 +60,8 @@ export function InventoryNav({
 /**
  * The inventory's sub-nav: a dark strip hanging from the app bar, with Binder · List · Bulk
  * and, beside them (below them on a phone), whatever the page puts there — the set's name.
- * It cancels its toolbar's padding to sit flush under the bar.
+ * It sits first on the page, flush under the bar; on wider screens it pins there as the page
+ * scrolls, and publishes its height so the binder's selected-card panel pins below it.
  */
 export function InventorySubnav({
   setKey,
@@ -69,8 +72,9 @@ export function InventorySubnav({
   current: 'binder' | 'list' | 'bulk';
   children?: ReactNode;
 }) {
+  const strip = usePublishedHeight<HTMLDivElement>('--inventory-subnav-height');
   return (
-    <div className={styles.strip}>
+    <div ref={strip} className={styles.strip}>
       <InventoryNav setKey={setKey} current={current} />
       {children && <div className={styles.extra}>{children}</div>}
     </div>

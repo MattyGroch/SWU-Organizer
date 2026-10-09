@@ -482,38 +482,38 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
 
   return (
     <div className={styles.page}>
-      <div className={styles.toolbar}>
-        <InventorySubnav setKey={set.setKey} current={view}>
-          {/* The set's name, with a step either way. The picker lies invisibly over the
+      <InventorySubnav setKey={set.setKey} current={view}>
+        {/* The set's name, with a step either way. The picker lies invisibly over the
               name, so clicking the name opens it. */}
-          <div className={styles.setHeader}>
-            <button
-              type="button"
-              className={styles.setStep}
-              aria-label="Previous set"
-              title="Previous set — ["
-              disabled={visibleEntries.length < 2}
-              onClick={() => goToSet(-1)}
-            >
-              ‹
-            </button>
-            <label className={styles.setTitle}>
-              <span aria-hidden="true">{set.label}</span>
-              {setSelect}
-            </label>
-            <button
-              type="button"
-              className={styles.setStep}
-              aria-label="Next set"
-              title="Next set — ]"
-              disabled={visibleEntries.length < 2}
-              onClick={() => goToSet(1)}
-            >
-              ›
-            </button>
-          </div>
-        </InventorySubnav>
+        <div className={styles.setHeader}>
+          <button
+            type="button"
+            className={styles.setStep}
+            aria-label="Previous set"
+            title="Previous set — ["
+            disabled={visibleEntries.length < 2}
+            onClick={() => goToSet(-1)}
+          >
+            ‹
+          </button>
+          <label className={styles.setTitle}>
+            <span aria-hidden="true">{set.label}</span>
+            {setSelect}
+          </label>
+          <button
+            type="button"
+            className={styles.setStep}
+            aria-label="Next set"
+            title="Next set — ]"
+            disabled={visibleEntries.length < 2}
+            onClick={() => goToSet(1)}
+          >
+            ›
+          </button>
+        </div>
+      </InventorySubnav>
 
+      <div className={styles.toolbar}>
         <CardSearch
           catalogs={searchCatalogs}
           currentSetKey={set.setKey}

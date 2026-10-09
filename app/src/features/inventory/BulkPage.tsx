@@ -76,8 +76,8 @@ export function BulkPage({ entries, sets }: Props) {
 
   return (
     <div className={styles.page}>
+      <InventorySubnav current="bulk" />
       <div className={styles.toolbar}>
-        <InventorySubnav current="bulk" />
         <label className={styles.setPicker}>
           <span className="visually-hidden">Set</span>
           <select value={setFilter} onChange={(event) => setSetFilter(event.target.value)}>
