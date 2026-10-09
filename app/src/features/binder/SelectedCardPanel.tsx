@@ -1,4 +1,7 @@
+import { Link } from '@tanstack/react-router';
+
 import type { LoadedSet, Printing } from '~/domain/catalog';
+import type { DeckHold } from '~/domain/deckBuild';
 import {
   binderCount,
   boxCounts,
@@ -20,6 +23,8 @@ type Props = {
   counts: OwnedCounts;
   /** What built decks hold of this card, by the home each copy returns to. */
   held: Homes;
+  /** The built decks holding this card, most copies first. */
+  decks: readonly DeckHold[];
   /** The card's binder playset. */
   quota: number;
   onAdjust: (delta: number) => void;
@@ -44,6 +49,7 @@ export function SelectedCardPanel({
   active,
   counts,
   held,
+  decks,
   quota,
   onAdjust,
   onAdjustPrinting,
@@ -110,39 +116,61 @@ export function SelectedCardPanel({
         </div>
       </dl>
 
-      <div className={styles.quantity}>
-        <button
-          type="button"
-          className={styles.qtyButton}
-          onClick={() => onAdjust(-1)}
-          disabled={pocket.total === 0}
-          aria-label={`Remove one ${card.Name}`}
-          title="Remove one — keyboard -"
-        >
-          −
-        </button>
+      <div className={styles.side}>
+        <div className={styles.quantity}>
+          <button
+            type="button"
+            className={styles.qtyButton}
+            onClick={() => onAdjust(-1)}
+            disabled={pocket.total === 0}
+            aria-label={`Remove one ${card.Name}`}
+            title="Remove one — keyboard -"
+          >
+            −
+          </button>
 
-        <p className={styles.qtyValue} aria-live="polite">
-          <span className={styles.qtyNumbers}>
-            {inBinder}
-            <span className={styles.qtyOf}>/{quota}</span>
-          </span>
-          <span className={styles.qtyCaption}>
-            in binder
-            {inBulk > 0 && ` · ${inBulk} in bulk`}
-            {inDecks > 0 && ` · ${inDecks} in decks`}
-          </span>
-        </p>
+          <p className={styles.qtyValue} aria-live="polite">
+            <span className={styles.qtyNumbers}>
+              {inBinder}
+              <span className={styles.qtyOf}>/{quota}</span>
+            </span>
+            <span className={styles.qtyCaption}>
+              in binder
+              {inBulk > 0 && ` · ${inBulk} in bulk`}
+              {inDecks > 0 && ` · ${inDecks} in decks`}
+            </span>
+          </p>
 
-        <button
-          type="button"
-          className={styles.qtyButton}
-          onClick={() => onAdjust(1)}
-          aria-label={`Add one ${card.Name}`}
-          title="Add one — keyboard +"
-        >
-          +
-        </button>
+          <button
+            type="button"
+            className={styles.qtyButton}
+            onClick={() => onAdjust(1)}
+            aria-label={`Add one ${card.Name}`}
+            title="Add one — keyboard +"
+          >
+            +
+          </button>
+        </div>
+        {decks.length > 0 && (
+          <ul className={styles.deckList} aria-label="In decks">
+            {decks.map((d) => (
+              <li key={d.deckId}>
+                <Link to="/decks/$deckId" params={{ deckId: d.deckId }} className={styles.deckLink}>
+                  {d.name}
+                </Link>
+                {d.binder + d.bulk > 1 && (
+                  <span className={styles.deckCount}> ×{d.binder + d.bulk}</span>
+                )}
+                {d.bulk > 0 && (
+                  <span className={styles.deckBulk}>
+                    {' '}
+                    ({d.binder === 0 ? 'from bulk' : `${d.bulk} from bulk`})
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <VariantStrip

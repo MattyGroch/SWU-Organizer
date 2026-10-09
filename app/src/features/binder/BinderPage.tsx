@@ -18,7 +18,7 @@ import {
   type Printing,
   type SetManifestEntry,
 } from '~/domain/catalog';
-import { heldInSet } from '~/domain/deckBuild';
+import { decksHoldingInSet, heldInSet, type DeckHold } from '~/domain/deckBuild';
 import { NO_HOMES, ownedFor, pocketCounts, quotaForCard, weakestVariant } from '~/domain/ownership';
 import type { Card } from '~/domain/types';
 import type { SearchCatalog, SearchSuggestion } from '~/domain/search';
@@ -70,6 +70,8 @@ import { useToast } from '~/ui/toastContext';
 import { useNarrow } from '~/ui/useNarrow';
 import { accentText, setAccent } from './setAccent';
 import styles from './BinderPage.module.css';
+
+const NO_DECKS: readonly DeckHold[] = [];
 
 type Props = {
   set: LoadedSet;
@@ -141,6 +143,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   const { library } = useDeckLibrary();
   /** What built decks hold of this set's cards, by the home each copy returns to. */
   const held = useMemo(() => heldInSet(library, set.setKey), [library, set.setKey]);
+  const deckHolds = useMemo(() => decksHoldingInSet(library, set.setKey), [library, set.setKey]);
 
   const rows = useMemo(
     () => buildCardRows(set, ownership, filters, held),
@@ -437,6 +440,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
       rows={rows}
       selectedBase={binder.active?.card.Number ?? null}
       onSelect={binder.selectNumber}
+      decks={deckHolds}
       initialScrollTop={readPosition(set.setKey).listTop}
       onScrollTopChange={(listTop) => rememberPosition(set.setKey, { listTop })}
     />
@@ -642,6 +646,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
           active={binder.active}
           counts={ownedFor(ownership, binder.active?.card.Number)}
           held={(binder.active && held.get(binder.active.card.Number)) || NO_HOMES}
+          decks={(binder.active && deckHolds.get(binder.active.card.Number)) || NO_DECKS}
           quota={
             binder.active
               ? quotaForCard({
@@ -699,6 +704,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
                 active={binder.active}
                 ownership={ownership}
                 held={held}
+                decks={deckHolds}
                 focusRequest={binder.focusRequest}
                 promoArt={promoArt}
                 onSelect={binder.selectCard}
@@ -712,6 +718,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
               active={binder.active}
               ownership={ownership}
               held={held}
+              decks={deckHolds}
               focusRequest={binder.focusRequest}
               promoArt={promoArt}
               onSelect={binder.selectCard}

@@ -1,9 +1,11 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
+import type { DeckHold } from '~/domain/deckBuild';
 import { formatUsd } from '~/ui/format';
 
 import { STATUS_GLYPH, STATUS_LABEL, type CardRow } from './cardRows';
 import styles from './CardTable.module.css';
+import { allDecksTitle, pocketDecksTitle } from './deckHolds';
 import { AspectIcons } from './AspectIcons';
 import { RarityBadge } from './RarityBadge';
 import { UniqueMark } from './UniqueMark';
@@ -15,6 +17,8 @@ type Props = {
   rows: CardRow[];
   selectedBase: number | null;
   onSelect: (base: number) => void;
+  /** Base number → the built decks holding it, named in the ⇠ badge's tooltip. */
+  decks: ReadonlyMap<number, readonly DeckHold[]>;
   /** Where to scroll to on mount, so the list reopens where it was left. */
   initialScrollTop?: number;
   onScrollTopChange?: (scrollTop: number) => void;
@@ -34,6 +38,7 @@ export function CardTable({
   rows,
   selectedBase,
   onSelect,
+  decks,
   initialScrollTop = 0,
   onScrollTopChange,
 }: Props) {
@@ -200,7 +205,7 @@ export function CardTable({
                   {row.pocketInDecks > 0 && (
                     <span
                       className={styles.inDecks}
-                      title={`${row.pocketInDecks} missing from the pocket, out in built decks`}
+                      title={pocketDecksTitle(row.pocketInDecks, decks.get(row.base) ?? [])}
                     >
                       {row.pocketInDecks}⇠<span className="visually-hidden"> in decks, </span>
                     </span>
@@ -208,7 +213,12 @@ export function CardTable({
                   {row.inBinder}/{row.quota}
                 </td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.inBulk || ''}</td>
-                <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.inDecks || ''}</td>
+                <td
+                  className={`${styles.numericCol} ${styles.wideOnly}`}
+                  title={row.inDecks ? allDecksTitle(decks.get(row.base) ?? []) : undefined}
+                >
+                  {row.inDecks || ''}
+                </td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.needed || ''}</td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>
                   {row.value ? formatUsd(row.value) : ''}

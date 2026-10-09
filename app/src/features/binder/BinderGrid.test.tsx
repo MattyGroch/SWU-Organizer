@@ -42,6 +42,7 @@ function renderGrid(
       active={activeCard ? selectionForCard(activeCard) : null}
       ownership={ownership}
       held={new Map()}
+      decks={new Map()}
       focusRequest={0}
       onSelect={onSelect}
       {...(options.singlePage !== undefined && { singlePage: options.singlePage })}
