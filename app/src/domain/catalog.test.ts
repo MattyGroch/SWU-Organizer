@@ -8,6 +8,7 @@ import {
   parsePriceTable,
   parseSetCatalog,
   parseSetManifest,
+  setNameWithoutKey,
   toLoadedSet,
   toSearchCatalog,
   variantAxes,
@@ -317,5 +318,30 @@ describe('artNumber', () => {
     expect(artNumber(printings, printings[1]!)).toBe('182');
     expect(artNumber(printings, printings[3]!)).toBe('SOROP-015');
     expect(artNumber(printings, printings[0]!)).toBe('182');
+  });
+});
+
+describe('setNameWithoutKey', () => {
+  it('drops a trailing bracket that is the set key', () => {
+    expect(setNameWithoutKey('Spark of Rebellion (SOR)', 'SOR')).toBe('Spark of Rebellion');
+    expect(setNameWithoutKey('Twin Suns 2026 (TS26)', 'TS26')).toBe('Twin Suns 2026');
+  });
+
+  it('keeps a bracket that is not the set key', () => {
+    expect(setNameWithoutKey('Master and Apprentice (Twin Suns)', 'TS26-MA')).toBe(
+      'Master and Apprentice (Twin Suns)',
+    );
+    expect(setNameWithoutKey('Spark of Rebellion (SOR)', 'SHD')).toBe('Spark of Rebellion (SOR)');
+  });
+
+  it('only strips at the end, and matches the key exactly', () => {
+    expect(setNameWithoutKey('Spark (SOR) of Rebellion', 'SOR')).toBe('Spark (SOR) of Rebellion');
+    expect(setNameWithoutKey('Spark of Rebellion (sor)', 'SOR')).toBe('Spark of Rebellion (sor)');
+  });
+
+  it('leaves a label alone when nothing would be left of it', () => {
+    expect(setNameWithoutKey('(SOR)', 'SOR')).toBe('(SOR)');
+    expect(setNameWithoutKey('SOR', 'SOR')).toBe('SOR');
+    expect(setNameWithoutKey('Spark of Rebellion', '')).toBe('Spark of Rebellion');
   });
 });

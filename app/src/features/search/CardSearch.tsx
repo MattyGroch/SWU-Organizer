@@ -7,6 +7,7 @@ import {
   type SearchSuggestion,
 } from '~/domain/search';
 import type { SetKey } from '~/domain/types';
+import { SetBadge } from '~/ui/SetBadge';
 
 import styles from './CardSearch.module.css';
 
@@ -176,9 +177,11 @@ export function CardSearch({
                 choose(suggestion);
               }}
             >
-              <span className={styles.setBadge} data-current={suggestion.setKey === currentSetKey}>
-                {suggestion.setKey}
-              </span>
+              <SetBadge
+                setKey={suggestion.setKey}
+                current={suggestion.setKey === currentSetKey}
+                className={styles.setBadge}
+              />
               <span className={styles.optionName}>
                 {suggestion.name}
                 {suggestion.subtitle && (

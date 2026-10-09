@@ -1,0 +1,25 @@
+.badge {
+  display: inline-block;
+  flex-shrink: 0;
+  padding: 1px 5px;
+  border: 1px solid currentcolor;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.badge[data-current='true'] {
+  color: var(--color-text);
+}
+
+/* Beside a heading: scaled to the surrounding text so it sits level with the words. */
+.large {
+  padding: 0.05em 0.4em;
+  font-size: 0.8em;
+  vertical-align: 0.1em;
+}
