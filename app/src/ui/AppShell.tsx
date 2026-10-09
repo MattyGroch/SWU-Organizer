@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { useLayoutEffect, useRef, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { AccountMenu } from '~/features/account/AccountMenu';
 import { FirstSyncDialog } from '~/features/account/FirstSyncDialog';
@@ -7,10 +7,12 @@ import { useIntakeCount } from '~/features/intake/useIntake';
 
 import styles from './AppShell.module.css';
 import { StorageBanner } from './StorageBanner';
+import { usePublishedHeight } from './usePublishedHeight';
 
 export function AppShell({ children }: { children: ReactNode }) {
   const queued = useIntakeCount();
-  const header = useHeaderHeight();
+  // The binder's selected-card panel and the inventory sub-nav pin just below the header.
+  const header = usePublishedHeight<HTMLElement>('--app-header-height');
   return (
     <div className={styles.shell}>
       <header ref={header} className={styles.header}>
@@ -43,28 +45,4 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main className={styles.main}>{children}</main>
     </div>
   );
-}
-
-/**
- * Publishes the sticky header's height as `--app-header-height` on the root, so anything
- * else pinned to the top of the page (the binder's selected-card panel) can sit just
- * below it. The height changes as the header wraps and as the storage banner comes and goes.
- */
-function useHeaderHeight() {
-  const ref = useRef<HTMLElement>(null);
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const root = document.documentElement;
-    const publish = () => root.style.setProperty('--app-header-height', `${el.offsetHeight}px`);
-    publish();
-    if (typeof ResizeObserver === 'undefined') return;
-    const observer = new ResizeObserver(publish);
-    observer.observe(el);
-    return () => {
-      observer.disconnect();
-      root.style.removeProperty('--app-header-height');
-    };
-  }, []);
-  return ref;
 }
