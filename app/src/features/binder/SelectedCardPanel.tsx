@@ -13,6 +13,7 @@ import {
 import type { ActiveSelection } from '~/domain/types';
 
 import { AspectIcons } from './AspectIcons';
+import { RarityBadge } from './RarityBadge';
 import styles from './SelectedCardPanel.module.css';
 import { UniqueMark } from './UniqueMark';
 import { VariantStrip } from './VariantStrip';
@@ -85,6 +86,9 @@ export function SelectedCardPanel({
           </h2>
           {card.Subtitle && <p className={styles.subtitle}>{card.Subtitle}</p>}
         </div>
+        <RarityBadge className={styles.rarity} rarity={card.Rarity} title={card.Rarity}>
+          <span className="visually-hidden">{card.Rarity}</span>
+        </RarityBadge>
         {onClose && (
           <button
             type="button"

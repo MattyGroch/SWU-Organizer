@@ -38,6 +38,10 @@
   min-width: 0;
 }
 
+.rarity {
+  font-size: 22px;
+}
+
 .name {
   font-size: var(--font-size-lg);
   font-weight: 700;
