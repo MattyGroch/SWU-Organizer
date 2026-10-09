@@ -23,6 +23,11 @@ type Props = {
   className?: string;
   /** Just the filter groups, always shown: the caller has its own button to open them. */
   bare?: boolean;
+  /**
+   * Groups to leave out, for a list they mean nothing to — the bulk box has no collection
+   * status, and searches by name in its own box. Without the Name group, Clear all stands alone.
+   */
+  omit?: ReadonlyArray<'status' | 'name'>;
 };
 
 const ASPECT_VAR: Record<string, string> = {
@@ -69,7 +74,7 @@ function toneStyle(colorVar: string | undefined): CSSProperties | undefined {
   return colorVar ? ({ '--chip-color': `var(${colorVar})` } as CSSProperties) : undefined;
 }
 
-export function FilterBar({ filters, onChange, className, bare = false }: Props) {
+export function FilterBar({ filters, onChange, className, bare = false, omit = [] }: Props) {
   const [open, setOpen] = useState(() => !window.matchMedia?.(NARROW)?.matches);
   const active = activeFilterCount(filters);
   function toggle<K extends 'aspect' | 'rarity' | 'type' | 'status'>(
@@ -82,6 +87,17 @@ export function FilterBar({ filters, onChange, className, bare = false }: Props)
       : [...current, value];
     onChange({ ...filters, [key]: next });
   }
+
+  const clearAll = (
+    <button
+      type="button"
+      className={styles.clear}
+      onClick={() => onChange(EMPTY_FILTERS)}
+      disabled={!hasActiveFilters(filters)}
+    >
+      Clear all
+    </button>
+  );
 
   const bar = (
     <div className={styles.bar}>
@@ -147,50 +163,49 @@ export function FilterBar({ filters, onChange, className, bare = false }: Props)
         ))}
       </FilterGroup>
 
-      <FilterGroup label="Status">
-        {ALL_STATUSES.map((status) => (
+      {!omit.includes('status') && (
+        <FilterGroup label="Status">
+          {ALL_STATUSES.map((status) => (
+            <button
+              key={status}
+              type="button"
+              className={`${styles.chip} ${styles.statusChip}`}
+              data-status={status}
+              aria-pressed={filters.status.includes(status)}
+              title={STATUS_LABEL[status]}
+              aria-label={STATUS_LABEL[status]}
+              onClick={() => toggle('status', status)}
+            >
+              <span aria-hidden="true">{STATUS_GLYPH[status]}</span>
+            </button>
+          ))}
           <button
-            key={status}
             type="button"
-            className={`${styles.chip} ${styles.statusChip}`}
-            data-status={status}
-            aria-pressed={filters.status.includes(status)}
-            title={STATUS_LABEL[status]}
-            aria-label={STATUS_LABEL[status]}
-            onClick={() => toggle('status', status)}
+            className={styles.chip}
+            aria-pressed={filters.hideInDecks}
+            title="Hide cards you own a full playset of, but whose slot is short because copies are in built decks"
+            onClick={() => onChange({ ...filters, hideInDecks: !filters.hideInDecks })}
           >
-            <span aria-hidden="true">{STATUS_GLYPH[status]}</span>
+            Hide out in decks
           </button>
-        ))}
-        <button
-          type="button"
-          className={styles.chip}
-          aria-pressed={filters.hideInDecks}
-          title="Hide cards you own a full playset of, but whose slot is short because copies are in built decks"
-          onClick={() => onChange({ ...filters, hideInDecks: !filters.hideInDecks })}
-        >
-          Hide out in decks
-        </button>
-      </FilterGroup>
+        </FilterGroup>
+      )}
 
-      <FilterGroup label="Name">
-        <input
-          type="search"
-          className={styles.text}
-          placeholder="Filter by name…"
-          aria-label="Filter cards by name"
-          value={filters.text}
-          onChange={(event) => onChange({ ...filters, text: event.target.value })}
-        />
-        <button
-          type="button"
-          className={styles.clear}
-          onClick={() => onChange(EMPTY_FILTERS)}
-          disabled={!hasActiveFilters(filters)}
-        >
-          Clear all
-        </button>
-      </FilterGroup>
+      {omit.includes('name') ? (
+        <div className={styles.clearAlone}>{clearAll}</div>
+      ) : (
+        <FilterGroup label="Name">
+          <input
+            type="search"
+            className={styles.text}
+            placeholder="Filter by name…"
+            aria-label="Filter cards by name"
+            value={filters.text}
+            onChange={(event) => onChange({ ...filters, text: event.target.value })}
+          />
+          {clearAll}
+        </FilterGroup>
+      )}
     </div>
   );
 
