@@ -75,6 +75,7 @@ Not now, but don't lose it.
 - [ ] **Backups don't include the intake queue yet** — only matters if something is mid-review.
 - [ ] **Node 20 is past end of life** (April 2026). The Docker images, CI and local dev all run Node 20; move to Node 24 LTS — check `sharp` and `better-sqlite3` build on it.
 - [ ] **Docker publish actions are several majors behind** (`docker/*` v3–v6 → v4–v7, `setup-qemu`). That workflow only runs after a merge, so bump it on its own and watch the first run.
+- [ ] **"Add to deck…" from the Inventory card window** — parked 2026-10-09: deck building stays on the Decks page for now, so Inventory doesn't grow a second deck editor. If going Inventory → Decks for a single card becomes a habit, build the thin version: the button asks only which deck (existing or new), then opens that deck's editor with one copy already in the draft. Quantity and main/sideboard are set there, and Save gives the usual pick list. No new rules: pulls already take the best printing first (Prestige Foil → … → Normal, never Serialized) and removals return the least valuable.
 
 ---
 
