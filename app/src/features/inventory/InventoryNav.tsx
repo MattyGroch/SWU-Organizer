@@ -37,7 +37,9 @@ export function InventoryNav({
         {view === 'binder' ? 'Binder' : 'List'}
       </Link>
     ) : (
-      <Link to="/inventory" className={styles.tab}>
+      // No set opened yet: /inventory picks one, but it goes to the last view remembered,
+      // which from here is Bulk — so remember the view tapped first, or the tab loops back.
+      <Link to="/inventory" className={styles.tab} onClick={() => rememberPlace(view)}>
         {view === 'binder' ? 'Binder' : 'List'}
       </Link>
     );
