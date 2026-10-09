@@ -7,6 +7,7 @@ import { mergeDeckLibraries } from '~/domain/syncMerge';
 import {
   bulkAdjust,
   eraseEverything,
+  removeFromBulkBox,
   resetCollection,
   restoreErased,
   restoreSnapshot,
@@ -92,6 +93,59 @@ describe('bulk edits', () => {
     expect(await database.owned.count()).toBe(2);
     await restoreSnapshot(undo, database);
     expect(await database.owned.count()).toBe(0);
+  });
+});
+
+describe('remove from the bulk box', () => {
+  let database: SwuDatabase;
+
+  beforeEach(async () => {
+    database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+  });
+
+  const own = (num: string, variant: VariantSlug, count: number, bulk: number) =>
+    database.owned.put({
+      id: `SOR:${num}`,
+      setKey: 'SOR',
+      base: 59,
+      num,
+      variant,
+      count,
+      ...(bulk && { bulk }),
+      updatedAt: 0,
+    });
+  const rows = async () =>
+    Object.fromEntries((await database.owned.toArray()).map((r) => [r.id, [r.count, r.bulk ?? 0]]));
+
+  it('takes copies from the box only, leaving the binder alone', async () => {
+    await own('059', 'normal', 5, 2);
+    await own('324', 'hyperspace', 1, 1);
+    const { removed } = await removeFromBulkBox(
+      'SOR',
+      59,
+      { normal: 2, hyperspace: 1 },
+      {
+        database,
+      },
+    );
+    expect(removed).toBe(3);
+    expect(await rows()).toEqual({ 'SOR:059': [3, 0] });
+  });
+
+  it('never takes more than the box holds', async () => {
+    await own('059', 'normal', 4, 1);
+    const { removed } = await removeFromBulkBox('SOR', 59, { normal: 3 }, { database });
+    expect(removed).toBe(1);
+    expect(await rows()).toEqual({ 'SOR:059': [3, 0] });
+  });
+
+  it('undo puts the copies back in the box', async () => {
+    await own('059', 'normal', 4, 2);
+    const { undo } = await removeFromBulkBox('SOR', 59, { normal: 1 }, { database });
+    expect(await rows()).toEqual({ 'SOR:059': [3, 1] });
+    await restoreSnapshot(undo, database);
+    expect(await rows()).toEqual({ 'SOR:059': [4, 2] });
   });
 });
 
