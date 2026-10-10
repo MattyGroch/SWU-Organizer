@@ -325,11 +325,11 @@ function PackStats({ set, owned }: { set: LoadedSet; owned: ReadonlyMap<number, 
       </div>
       {mix && (
         <p className={styles.note}>
-          {luckLine(actual, expected)} The pack counts are read from your Commons and Uncommons —{' '}
-          {carbonite
-            ? 'plain ones come from boosters, foil and Hyperspace ones mostly from Carbonite — and your Prestige cards.'
-            : 'about 12 a pack.'}{' '}
-          Promos and Special cards aren't counted.
+          {luckLine(actual, expected)} The pack counts come from the copies only packs give: foil
+          and Hyperspace Commons and Uncommons
+          {carbonite ? ', and Prestige cards — a Carbonite pack has far more of each' : ''}. Plain
+          copies aren't counted, since extras get thrown out and singles fill the gaps; nor are
+          promos.
         </p>
       )}
 

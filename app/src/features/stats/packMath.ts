@@ -99,12 +99,18 @@ export type PackMix = { boosters: number; carbonite: number };
 /**
  * About how many boosters and Carbonite packs the collection represents.
  *
- * Each kind of pack leaves its own mix of printings among the Commons and Uncommons — a
- * booster's are nearly all plain, a Carbonite pack's are all foil or Hyperspace — and its
- * own share of Prestige cards. So the copies of each printing are fitted as a blend of
+ * Each kind of pack leaves its own mix of printings — a booster's Commons and Uncommons
+ * are nearly all plain, a Carbonite pack's all foil or Hyperspace, and every Carbonite
+ * pack has a Prestige. So the copies of each special printing are fitted as a blend of
  * the two, by least squares weighted for counting noise (each count's variance is about
  * its mean, so the fit is re-weighted by the counts it predicts a few times over). Sets
- * without Carbonite fit boosters alone. Undefined when there's nothing to go on.
+ * without Carbonite fit boosters alone.
+ *
+ * Plain copies are left out. Extras past a playset get thrown away, and singles bought
+ * to finish a playset are plain, so a set's plain Commons say "a playset's worth" and
+ * nothing about packs. A fit that trusted them saw too few boosters and made up the
+ * difference in Carbonite. Foil, Hyperspace and Prestige copies come out of packs and
+ * get kept. Undefined when there's nothing to go on.
  */
 export function estimatePackMix(
   set: LoadedSet,
@@ -112,28 +118,32 @@ export function estimatePackMix(
   owned: ReadonlyMap<number, OwnedCounts>,
 ): PackMix | undefined {
   const observed = signalCounts(set, owned);
-  const signals = Object.keys(SIGNAL_VARIANTS) as PackSignal[];
-  if (signals.every((signal) => observed[signal] === 0)) return undefined;
+  const fitted = (Object.keys(SIGNAL_VARIANTS) as PackSignal[]).filter(
+    (signal) => signal !== 'normal',
+  );
+  if (fitted.every((signal) => observed[signal] === 0)) return undefined;
 
   const a = profiles.booster.signature;
   const c = profiles.carbonite?.signature;
+  const weight = (signal: PackSignal, mix?: PackMix) =>
+    1 /
+    Math.max(
+      mix ? a[signal] * mix.boosters + (c?.[signal] ?? 0) * mix.carbonite : observed[signal],
+      1,
+    );
+
   let boosters = 0;
   let carbonite = 0;
   for (let round = 0; round < 6; round++) {
     // Neyman weights to start (from what's seen), then Pearson (from what's predicted).
-    const weight = (signal: PackSignal) =>
-      1 /
-      Math.max(
-        round === 0 ? observed[signal] : a[signal] * boosters + (c?.[signal] ?? 0) * carbonite,
-        1,
-      );
+    const mix = round === 0 ? undefined : { boosters, carbonite };
     let aa = 0;
     let ac = 0;
     let cc = 0;
     let ao = 0;
     let co = 0;
-    for (const signal of signals) {
-      const w = weight(signal);
+    for (const signal of fitted) {
+      const w = weight(signal, mix);
       const ai = a[signal];
       const ci = c?.[signal] ?? 0;
       const o = observed[signal];
@@ -160,6 +170,7 @@ export function estimatePackMix(
       carbonite = cc > 0 ? co / cc : 0;
     }
   }
+
   return { boosters, carbonite };
 }
 

@@ -137,9 +137,10 @@ const FROM_LAW: PackProfile = {
   summary:
     '16 cards: a leader, a base, 9 Commons, 3 Uncommons, a Rare or Legendary (1 in 8) and a Hyperspace Foil of any rarity. At least one Hyperspace card besides; no plain foils.',
   pools: FROM_LAW_POOLS,
-  // The Hyperspace Foil is a Common or Uncommon 95% of the time; a Hyperspace Common is
-  // guaranteed, "sometimes more" taken as a tenth of a card.
-  signature: { normal: 10.95, foil: 0, hyperspace: 1.05, hyperspaceFoil: 0.95, prestige: 1 / 18 },
+  // The Hyperspace Foil is a Common or Uncommon 95% of the time. A Hyperspace Common is
+  // guaranteed and FFG says "sometimes more": 1.2 is fitted to a real Homeworlds
+  // collection of known packs (33 boosters, 12 Carbonite).
+  signature: { normal: 10.8, foil: 0, hyperspace: 1.2, hyperspaceFoil: 0.95, prestige: 1 / 18 },
 };
 
 /**

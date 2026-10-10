@@ -76,20 +76,33 @@ describe('pack maths on Spark of Rebellion', () => {
     expect(perPack).toBeLessThan(1 / 6);
   });
 
-  it('counts boosters from commons and uncommons, ignoring promos', () => {
-    // A playset of every common and uncommon is 450 cards: about 35 packs' worth.
-    const owned = own(set, (rarity, type) =>
+  it('counts boosters from foils and Hyperspace, not plain copies or promos', () => {
+    // A playset of every plain common and uncommon could be singles: it says nothing.
+    const playsets = own(set, (rarity, type) =>
       type !== 'Leader' && type !== 'Base' && (rarity === 'Common' || rarity === 'Uncommon')
         ? 3
         : 0,
     );
-    const mix = estimatePackMix(set, packProfiles('SOR')!, owned)!;
-    expect(mix.carbonite).toBe(0);
-    expect(mix.boosters).toBeGreaterThan(30);
-    expect(mix.boosters).toBeLessThan(45);
+    expect(estimatePackMix(set, packProfiles('SOR')!, playsets)).toBeUndefined();
 
     const promoOnly = indexOwnership([{ base: 5, variant: 'promo', count: 10 }]);
     expect(estimatePackMix(set, packProfiles('SOR')!, promoOnly)).toBeUndefined();
+
+    // Fifty boosters' worth of foil and Hyperspace commons and uncommons.
+    const low = [...set.cardsByBase.values()].filter((card) => {
+      const pool = poolOf(card);
+      return pool === 'common' || pool === 'uncommon';
+    });
+    const copies = (variant: VariantSlug, n: number) =>
+      Array.from({ length: n }, (_, i) => ({ base: low[i % low.length]!.base, variant, count: 1 }));
+    const opened = indexOwnership([
+      ...copies('foil', 37),
+      ...copies('hyperspace', 21),
+      ...copies('hyperspace-foil', 8),
+    ]);
+    const mix = estimatePackMix(set, packProfiles('SOR')!, opened)!;
+    expect(mix.carbonite).toBe(0);
+    expect(mix.boosters).toBeCloseTo(50, -1);
   });
 
   it('fills commons long before legendaries', () => {
@@ -150,14 +163,15 @@ describe('telling boosters from Carbonite', () => {
     };
     const [boosters, carbonite] = [33, 12];
     const owned = indexOwnership([
-      ...spread(set, 'normal', boosters * 10.95, lowCard),
-      ...spread(set, 'hyperspace', boosters * 1.05 + carbonite * 6.86, lowCard),
+      ...spread(set, 'normal', boosters * 10.8, lowCard),
+      ...spread(set, 'hyperspace', boosters * 1.2 + carbonite * 6.86, lowCard),
       ...spread(set, 'hyperspace-foil', boosters * 0.95 + carbonite * 5.14, lowCard),
       ...spread(set, 'prestige', boosters / 18 + carbonite, () => true),
     ]);
     const mix = estimatePackMix(set, packProfiles('HMW')!, owned)!;
-    expect(mix.boosters).toBeCloseTo(33, 0);
-    expect(mix.carbonite).toBeCloseTo(12, 0);
+    // Within a few packs: the 14 Prestige weigh a lot, and whole cards round them.
+    expect(Math.abs(mix.boosters - 33)).toBeLessThan(3);
+    expect(Math.abs(mix.carbonite - 12)).toBeLessThan(1.5);
 
     const hsFoil = hitRates(set, packProfiles('HMW')!, owned, mix).find(
       (h) => h.label === 'Hyperspace Foil',
@@ -166,10 +180,14 @@ describe('telling boosters from Carbonite', () => {
   });
 
   it('never fits a negative count', () => {
+    // Hyperspace Foils and no Prestige at all: boosters only, not negative Carbonite.
     const set = realSet('HMW');
-    const owned = indexOwnership(spread(set, 'normal', 300, (card) => poolOf(card) === 'common'));
+    const owned = indexOwnership(
+      spread(set, 'hyperspace-foil', 30, (card) => poolOf(card) === 'common'),
+    );
     const mix = estimatePackMix(set, packProfiles('HMW')!, owned)!;
-    expect(mix.carbonite).toBe(0);
-    expect(mix.boosters).toBeGreaterThan(20);
+    expect(mix.carbonite).toBeGreaterThanOrEqual(0);
+    expect(mix.boosters).toBeGreaterThanOrEqual(0);
+    expect(mix.boosters + mix.carbonite).toBeGreaterThan(0);
   });
 });
