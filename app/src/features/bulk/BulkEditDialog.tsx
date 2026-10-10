@@ -25,7 +25,7 @@ import { collectionRows, type SetRows } from './collectionRows';
 
 type Props = {
   set: LoadedSet;
-  /** The rows the card table is showing — the filters decide what a bulk edit touches. */
+  /** The rows the card table is showing — the filters decide what a mass edit touches. */
   rows: CardRow[];
   filters: Filters;
   /** Every set with a binder, for whole-collection edits. Loaded here if not yet. */
@@ -58,7 +58,7 @@ function describeFilters(filters: Filters): string {
 }
 
 /**
- * Bulk edits for the cards the filters show, and resets for a set or everything.
+ * Mass edits for the cards the filters show, and resets for a set or everything.
  *
  * Replaces the legacy Bulk Actions modal. Instead of fixed rarity/type rows, the filters
  * pick the targets — so "fill every Rare Unit" is two filter clicks and one button. Every
@@ -160,7 +160,7 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
       });
       close();
     } catch {
-      showToast({ tone: 'danger', message: 'The bulk edit could not be saved.' });
+      showToast({ tone: 'danger', message: 'The mass edit could not be saved.' });
       setBusy(false);
     }
   }
@@ -202,7 +202,7 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
     >
       <div className={styles.header}>
         <h2 id="bulk-title" className={styles.title}>
-          Bulk edit
+          Mass edit
         </h2>
         <button type="button" className={styles.secondary} onClick={close}>
           Close
