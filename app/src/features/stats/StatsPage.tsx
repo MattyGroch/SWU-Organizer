@@ -311,7 +311,7 @@ function PackStats({ set, owned }: { set: LoadedSet; owned: ReadonlyMap<number, 
         <strong>Booster:</strong> {booster.summary}
         {carbonite && (
           <>
-            {' '}
+            <br />
             <strong>Carbonite:</strong> {carbonite.summary}
           </>
         )}
