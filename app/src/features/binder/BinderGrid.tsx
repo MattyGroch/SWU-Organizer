@@ -29,6 +29,8 @@ type Props = {
   onSelect: (card: Card) => void;
   /** On a phone: show only this page, four columns wide, instead of the spread. */
   singlePage?: number;
+  /** A desktop's single page as wide as the window, rather than at spread size. */
+  fullWidth?: boolean;
 };
 
 /**
@@ -53,6 +55,7 @@ export function BinderGrid({
   promoArt,
   onSelect,
   singlePage,
+  fullWidth = false,
 }: Props) {
   const primaryPage = spreadToPrimaryPage(viewSpread);
   const leftPage = primaryPage % 2 === 0 ? primaryPage : primaryPage - 1;
@@ -90,6 +93,7 @@ export function BinderGrid({
       aria-colcount={columns}
       className={styles.grid}
       data-single={singlePage !== undefined}
+      data-full={fullWidth}
       data-has-selection={hasVisibleSelection}
     >
       {Array.from({ length: ROWS }, (_, rowIndex) => {

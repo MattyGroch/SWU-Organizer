@@ -301,8 +301,16 @@ describe('binder, end to end', () => {
     await user.keyboard('.');
     await waitFor(() => expect(screen.getByRole('grid')).toHaveAccessibleName('Binder, page 3'));
 
+    // Full Size stretches the page across the window, and is only offered for one page.
+    await user.click(screen.getByRole('radio', { name: /Full Size/ }));
+    expect(screen.getByRole('grid')).toHaveAttribute('data-full', 'true');
+    expect(localStorage.getItem('inventory:binderZoom')).toBe('full');
+    await user.click(screen.getByRole('radio', { name: /Standard/ }));
+    expect(screen.getByRole('grid')).toHaveAttribute('data-full', 'false');
+
     await user.click(screen.getByRole('radio', { name: /Spread/ }));
     expect(screen.getByRole('grid')).toHaveAccessibleName('Binder spread, pages 2 and 3');
+    expect(screen.queryByRole('radiogroup', { name: 'Page size' })).not.toBeInTheDocument();
   });
 
   it('pages the binder to a card chosen from search', async () => {

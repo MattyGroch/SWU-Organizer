@@ -26,7 +26,7 @@ import type { SearchCatalog, SearchSuggestion } from '~/domain/search';
 
 import { AddToBulkDialog } from './AddToBulkDialog';
 import { BinderGrid } from './BinderGrid';
-import { BinderLayoutToggle } from './BinderLayoutToggle';
+import { BinderLayoutToggle, BinderZoomToggle } from './BinderToggles';
 import {
   activeFilterCount,
   buildCardRows,
@@ -62,12 +62,15 @@ import { CardSearch } from '~/features/search/CardSearch';
 import { InventorySubnav } from '~/features/inventory/InventoryNav';
 import {
   readBinderLayout,
+  readBinderZoom,
   readFilters,
   readPosition,
   rememberBinderLayout,
+  rememberBinderZoom,
   rememberFilters,
   rememberPosition,
   type BinderLayout,
+  type BinderZoom,
 } from '~/features/inventory/lastPlace';
 import type { InventoryView } from '~/features/inventory/views';
 import { formatUsd } from '~/ui/format';
@@ -105,6 +108,11 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     rememberBinderLayout(next);
   }, []);
   const onePage = narrow || layout === 'page';
+  const [zoom, setZoomState] = useState<BinderZoom>(readBinderZoom);
+  const setZoom = useCallback((next: BinderZoom) => {
+    setZoomState(next);
+    rememberBinderZoom(next);
+  }, []);
   const moreRef = useRef<HTMLDetailsElement>(null);
   const [filters, setFiltersState] = useState<Filters>(readFilters);
   /** Filters survive leaving the tab: they are kept for the next visit. */
@@ -718,6 +726,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
             )}
             {!narrow && (
               <div className={styles.layoutSlot}>
+                {layout === 'page' && <BinderZoomToggle zoom={zoom} onChange={setZoom} />}
                 <BinderLayoutToggle layout={layout} onChange={setLayout} />
               </div>
             )}
@@ -755,6 +764,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
               promoArt={promoArt}
               onSelect={binder.selectCard}
               singlePage={onePage ? binder.viewPage : undefined}
+              fullWidth={onePage && zoom === 'full'}
             />
           )}
         </div>

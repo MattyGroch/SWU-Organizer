@@ -9,7 +9,7 @@ import { isInventoryView, type InventoryView } from './views';
  *
  * Four things are remembered: the place — which set, and Binder, List or Bulk; per set,
  * the binder page, the selected card and how far the list was scrolled; the list's
- * filters; and whether a desktop binder shows a spread or one page. Positions are per set so `[`/`]` and swiping between sets also return to where
+ * filters; and whether a desktop binder shows a spread or one page, and at what size. Positions are per set so `[`/`]` and swiping between sets also return to where
  * each one was left. Filters are not: they already carry over from set to set.
  *
  * Kept in memory and mirrored to localStorage. Storage is a convenience: without it, the
@@ -20,6 +20,9 @@ export type InventoryPlace = InventoryView | 'bulk';
 
 /** A desktop binder shows a two-page spread, or one page at a time as on a phone. */
 export type BinderLayout = 'spread' | 'page';
+
+/** One page on a desktop: cards at spread size, or the page as wide as the window. */
+export type BinderZoom = 'standard' | 'full';
 
 export type SetPosition = {
   /** The binder page on screen. */
@@ -35,12 +38,14 @@ const LAST_VIEW_KEY = 'inventory:lastView';
 const POSITIONS_KEY = 'inventory:positions';
 const FILTERS_KEY = 'inventory:filters';
 const BINDER_LAYOUT_KEY = 'inventory:binderLayout';
+const BINDER_ZOOM_KEY = 'inventory:binderZoom';
 
 let lastSet: SetKey | undefined;
 let lastView: InventoryPlace | undefined;
 let positions: Record<SetKey, SetPosition> | undefined;
 let filters: Filters | undefined;
 let binderLayout: BinderLayout | undefined;
+let binderZoom: BinderZoom | undefined;
 let flushTimer: ReturnType<typeof setTimeout> | undefined;
 
 function read(key: string): string | undefined {
@@ -166,6 +171,16 @@ export function rememberBinderLayout(next: BinderLayout) {
   write(BINDER_LAYOUT_KEY, next);
 }
 
+/** The desktop single page's size as last chosen; standard until one is. */
+export function readBinderZoom(): BinderZoom {
+  return (binderZoom ??= read(BINDER_ZOOM_KEY) === 'full' ? 'full' : 'standard');
+}
+
+export function rememberBinderZoom(next: BinderZoom) {
+  binderZoom = next;
+  write(BINDER_ZOOM_KEY, next);
+}
+
 /** Tests only: forget everything held in memory, so the next read goes to storage. */
 export function resetLastPlaceForTests() {
   lastSet = undefined;
@@ -173,6 +188,7 @@ export function resetLastPlaceForTests() {
   positions = undefined;
   filters = undefined;
   binderLayout = undefined;
+  binderZoom = undefined;
   if (flushTimer !== undefined) clearTimeout(flushTimer);
   flushTimer = undefined;
 }
