@@ -627,6 +627,45 @@ describe('the bulk box', () => {
   });
 });
 
+describe('the stats page', () => {
+  it('sums the collection, and the Inventory tab comes back to it', async () => {
+    const user = userEvent.setup();
+    await db.owned.put({
+      id: 'SOR:031',
+      setKey: 'SOR',
+      base: 31,
+      num: '031',
+      variant: 'normal',
+      count: 4,
+      updatedAt: 0,
+    });
+    const { router } = await renderApp('/inventory/stats', () =>
+      screen.getByRole('heading', { name: 'Packs' }),
+    );
+
+    const subnav = screen.getByRole('navigation', { name: 'Inventory' });
+    expect(within(subnav).getByRole('link', { name: 'Stats' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+    expect(within(subnav).getByRole('link', { name: 'Binder' })).not.toHaveAttribute(
+      'aria-current',
+    );
+    // Four copies of one SOR card: its playset done, so one card complete across all sets.
+    expect(screen.getByText('All sets')).toBeInTheDocument();
+    expect(screen.getAllByRole('img', { name: /^1 complete/ }).length).toBeGreaterThan(0);
+    expect(screen.getByRole('combobox', { name: 'Set' })).toHaveValue('SOR');
+
+    const nav = screen.getByRole('navigation', { name: 'Main' });
+    await user.click(within(nav).getByRole('link', { name: 'Decks' }));
+    await waitFor(() => expect(router.state.location.pathname).toBe('/decks'), { timeout: 5000 });
+    await user.click(within(nav).getByRole('link', { name: /Inventory/ }));
+    await waitFor(() => expect(router.state.location.pathname).toBe('/inventory/stats'), {
+      timeout: 5000,
+    });
+  });
+});
+
 describe('the Inventory tab remembers where it was left', () => {
   /** Out to Decks and back in through the main nav's Inventory tab. */
   async function leaveAndReturn(user: ReturnType<typeof userEvent.setup>, landmark: string) {

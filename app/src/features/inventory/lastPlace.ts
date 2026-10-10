@@ -7,7 +7,7 @@ import { isInventoryView, type InventoryView } from './views';
  * Where you were in the Inventory tab, so leaving it and coming back (or reopening the
  * app) lands there again rather than on the newest set's first binder page.
  *
- * Four things are remembered: the place — which set, and Binder, List or Bulk; per set,
+ * Four things are remembered: the place — which set, and Binder, List, Bulk or Stats; per set,
  * the binder page, the selected card and how far the list was scrolled; the list's
  * filters; and whether a desktop binder shows a spread or one page, and at what size. Positions are per set so `[`/`]` and swiping between sets also return to where
  * each one was left. Filters are not: they already carry over from set to set.
@@ -16,7 +16,7 @@ import { isInventoryView, type InventoryView } from './views';
  * place still holds for as long as the app stays open.
  */
 
-export type InventoryPlace = InventoryView | 'bulk';
+export type InventoryPlace = InventoryView | 'bulk' | 'stats';
 
 /** A desktop binder shows a two-page spread, or one page at a time as on a phone. */
 export type BinderLayout = 'spread' | 'page';
@@ -71,11 +71,12 @@ export function readLastSet(): SetKey | undefined {
 export function readLastView(): InventoryPlace | undefined {
   if (lastView) return lastView;
   const stored = read(LAST_VIEW_KEY);
-  if (stored && (stored === 'bulk' || isInventoryView(stored))) lastView = stored;
+  if (stored && (stored === 'bulk' || stored === 'stats' || isInventoryView(stored)))
+    lastView = stored;
   return lastView;
 }
 
-/** Records the page on screen. `setKey` is absent on Bulk, which keeps the last set. */
+/** Records the page on screen. `setKey` is absent on Bulk and Stats, which keep the last set. */
 export function rememberPlace(view: InventoryPlace, setKey?: SetKey) {
   lastView = view;
   write(LAST_VIEW_KEY, view);

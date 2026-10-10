@@ -113,6 +113,8 @@
 
   .strip:has(.actions) .nav.nav {
     grid-column: 1 / -1;
+    /* Else the desktop's start alignment leaves the tabs bunched at the left. */
+    justify-self: stretch;
   }
 
   .strip:has(.actions) .extra {
