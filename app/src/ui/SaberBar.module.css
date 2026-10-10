@@ -1,0 +1,76 @@
+.saber {
+  --blade-h: 8px;
+  --hilt-w: 30px;
+  display: flex;
+  align-items: center;
+  height: calc(var(--blade-h) + 8px);
+}
+
+.saber[data-compact] {
+  --blade-h: 5px;
+  --hilt-w: 20px;
+}
+
+/* Brushed metal with grip ridges and a dark emitter collar at the blade end. */
+.hilt {
+  flex: none;
+  width: var(--hilt-w);
+  height: 100%;
+  border-radius: 2px 1px 1px 2px;
+  background:
+    linear-gradient(to right, transparent 0 calc(100% - 5px), #1a1f26 calc(100% - 5px)),
+    repeating-linear-gradient(to right, transparent 0 3px, rgb(0 0 0 / 0.45) 3px 5px) 4px 0 /
+      calc(100% - 13px) 100% no-repeat,
+    linear-gradient(to bottom, #d5dce4, #7d8794 45%, #3a414b 100%);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.4);
+}
+
+/* The unlit length: a faint channel the blade fills. */
+.track {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: var(--blade-h);
+  border-radius: 0 999px 999px 0;
+  background: color-mix(in srgb, var(--hud) 8%, var(--color-surface-sunken));
+}
+
+.blade {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  transform-origin: left;
+  animation: ignite 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Colour at the edges, near-white at the core, and a two-step glow around it. */
+.segment {
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    var(--blade),
+    color-mix(in srgb, var(--blade) 25%, white) 35% 65%,
+    var(--blade)
+  );
+  box-shadow:
+    0 0 4px var(--blade),
+    0 0 12px color-mix(in srgb, var(--blade) 60%, transparent);
+  transition: width var(--transition-base);
+}
+
+/* The tip is rounded, wherever the blade ends. */
+.segment:last-child {
+  border-radius: 0 999px 999px 0;
+}
+
+@keyframes ignite {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blade {
+    animation: none;
+  }
+}

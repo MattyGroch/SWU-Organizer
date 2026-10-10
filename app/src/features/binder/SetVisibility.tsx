@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { writeHiddenSets } from '~/data/binderSettings';
 import type { SetManifestEntry } from '~/domain/catalog';
 import type { SetKey } from '~/domain/types';
+import { Checkbox } from '~/ui/Checkbox';
 
 import styles from './BinderDialog.module.css';
 
@@ -54,8 +55,7 @@ export function SetVisibility({ entries, hidden, onClose }: Props) {
           const shown = !draft.has(entry.key);
           return (
             <label key={entry.key} className={styles.option}>
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={shown}
                 // Keep at least one binder.
                 disabled={shown && shownCount === 1}

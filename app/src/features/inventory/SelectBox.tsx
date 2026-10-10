@@ -1,3 +1,5 @@
+import { Checkbox } from '~/ui/Checkbox';
+
 import type { CheckState } from './bulkSelection';
 import styles from './SelectBox.module.css';
 
@@ -8,21 +10,15 @@ type Props = {
   onChange: () => void;
 };
 
-/** A row or check-all tick box with a finger-sized hit area; 'some' shows the dash. */
+/** A row or check-all tick box with no visible text; 'some' shows the dash. */
 export function SelectBox({ state, label, disabled, onChange }: Props) {
-  const checked = state === true || state === 'all';
-  const indeterminate = state === 'some';
   return (
     <label className={styles.box} title={label}>
-      <input
-        type="checkbox"
-        ref={(el) => {
-          if (el) el.indeterminate = indeterminate;
-        }}
-        checked={checked}
+      <Checkbox
+        checked={state === true || state === 'all'}
+        indeterminate={state === 'some'}
         disabled={disabled}
         aria-label={label}
-        aria-checked={indeterminate ? 'mixed' : checked}
         onChange={onChange}
       />
     </label>

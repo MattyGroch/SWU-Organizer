@@ -1,23 +1,6 @@
-/* At least 40px square to tap on a phone, without growing the row's text. */
+/* Takes the 40px square the hit area covers, without growing the row's text. */
 .box {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  min-height: 40px;
+  padding: 10px;
   margin: calc(-1 * var(--space-2)) 0;
-  cursor: pointer;
-}
-
-.box input {
-  width: 20px;
-  height: 20px;
-  margin: 0;
-  accent-color: var(--color-link);
-  cursor: inherit;
-}
-
-.box:has(input:disabled) {
-  cursor: default;
-  opacity: 0.35;
 }

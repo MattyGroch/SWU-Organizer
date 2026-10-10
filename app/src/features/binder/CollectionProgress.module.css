@@ -22,32 +22,6 @@
   white-space: nowrap;
 }
 
-/* The track is the empty state: a filter that matches nothing shows a plain bar. */
-.bar {
-  display: flex;
-  height: 10px;
-  overflow: hidden;
-  border-radius: 5px;
-  background: var(--color-surface-sunken);
-}
-
-.segment {
-  height: 100%;
-  transition: width var(--transition-base);
-}
-
-.segment[data-status='complete'] {
-  background: var(--color-success);
-}
-
-.segment[data-status='partial'] {
-  background: var(--color-warning);
-}
-
-.segment[data-status='none'] {
-  background: var(--color-danger);
-}
-
 .legend {
   display: flex;
   justify-content: space-between;
@@ -68,7 +42,7 @@
   color: var(--color-danger-fg);
 }
 
-/* Compact: percent and counts on one line over a thin bar — the phone layout. */
+/* Compact: percent and counts on one line over a thin blade — the phone layout. */
 .progress[data-compact] {
   gap: 4px;
 }
@@ -80,8 +54,4 @@
 .progress[data-compact] .legend {
   gap: var(--space-3);
   justify-content: flex-end;
-}
-
-.progress[data-compact] .bar {
-  height: 6px;
 }

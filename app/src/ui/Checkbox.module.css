@@ -1,0 +1,105 @@
+/* At least 40px square to tap on a phone, pulled in by negative margins so the row's
+   height still comes from its text. */
+.hit {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: -10px -10px -10px -10px;
+}
+
+/* The real input covers the whole hit area, invisible, so every tap lands on it. */
+.input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.input:disabled {
+  cursor: default;
+}
+
+/* The drawn box: the HUD's cut corner, dim edge, dark fill. */
+.box {
+  --edge: var(--color-border-interactive);
+  --cut: 5px;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    0 100%
+  );
+  border: 1px solid var(--edge);
+  background:
+    linear-gradient(-45deg, var(--edge) 0 calc(var(--cut) * 0.7071 + 0.8px), transparent 0)
+      border-box,
+    rgb(6 14 22 / 0.9) padding-box;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+@media (hover: hover) {
+  .input:hover:not(:disabled) + .box {
+    --edge: var(--hud);
+  }
+}
+
+/* Ticked or part-ticked: lit in the HUD colour with an inner glow. */
+.input:is(:checked, :indeterminate) + .box {
+  --edge: var(--hud);
+  background:
+    linear-gradient(-45deg, var(--edge) 0 calc(var(--cut) * 0.7071 + 0.8px), transparent 0)
+      border-box,
+    color-mix(in srgb, var(--hud) 22%, rgb(8 22 34)) padding-box;
+  box-shadow: inset 0 0 8px color-mix(in srgb, var(--hud) 45%, transparent);
+}
+
+/* The tick: a white-hot stroke with a glow. */
+.input:checked:not(:indeterminate) + .box::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid color-mix(in srgb, var(--hud) 25%, white);
+  border-width: 0 2.5px 2.5px 0;
+  filter: drop-shadow(0 0 2px var(--hud));
+  transform: rotate(45deg);
+}
+
+/* The dash: a short lit blade across the middle. */
+.input:indeterminate + .box::after {
+  content: '';
+  position: absolute;
+  top: calc(50% - 1.5px);
+  right: 4px;
+  left: 4px;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--hud) 25%, white);
+  box-shadow: 0 0 4px var(--hud);
+}
+
+/* The box is clipped, so the ring goes on the hit area around it. */
+.hit:has(.input:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -6px;
+}
+
+.hit:has(.input:disabled) {
+  opacity: 0.35;
+}
