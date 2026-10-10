@@ -182,9 +182,11 @@
   cursor: pointer;
 }
 
-/* Clear all without the Name group around it: level with the bottom of the chip groups. */
+/* Clear all without the Name group around it: level with the chips, which sit inside the
+   groups' bottom padding and border. */
 .clearAlone {
   align-self: flex-end;
+  margin-bottom: calc(var(--space-3) + 1px);
 }
 
 .clear:disabled {
