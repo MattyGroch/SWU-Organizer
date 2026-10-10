@@ -466,7 +466,7 @@ describe('sets hidden from the binder', () => {
   });
 });
 
-describe('bulk edit', () => {
+describe('mass edit', () => {
   // jsdom implements <dialog> but not its modal API.
   beforeEach(() => {
     HTMLDialogElement.prototype.showModal ??= function showModal(this: HTMLDialogElement) {
@@ -486,8 +486,8 @@ describe('bulk edit', () => {
     await renderApp('/inventory/SOR/list');
 
     await user.click(screen.getByRole('button', { name: 'Legendary' }));
-    await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
-    const dialog = screen.getByRole('dialog', { name: 'Bulk edit' });
+    await user.click(screen.getByRole('button', { name: 'Mass edit' }));
+    const dialog = screen.getByRole('dialog', { name: 'Mass edit' });
     expect(dialog).toHaveTextContent(/Legendary/);
 
     await user.click(within(dialog).getByRole('button', { name: /^Fill to playset/ }));
@@ -510,8 +510,8 @@ describe('bulk edit', () => {
     await renderApp('/inventory/SOR/list');
 
     await user.click(screen.getByRole('button', { name: 'Legendary' }));
-    await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
-    const dialog = screen.getByRole('dialog', { name: 'Bulk edit' });
+    await user.click(screen.getByRole('button', { name: 'Mass edit' }));
+    const dialog = screen.getByRole('dialog', { name: 'Mass edit' });
     await user.click(within(dialog).getByRole('radio', { name: 'Whole collection' }));
     expect(within(dialog).getByRole('alert')).toHaveTextContent(/TS26/);
 
@@ -552,8 +552,8 @@ describe('bulk edit', () => {
     });
     await renderApp();
 
-    await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
-    const dialog = screen.getByRole('dialog', { name: 'Bulk edit' });
+    await user.click(screen.getByRole('button', { name: 'Mass edit' }));
+    const dialog = screen.getByRole('dialog', { name: 'Mass edit' });
     await user.click(within(dialog).getByText('Reset…'));
     const button = within(dialog).getByRole('button', { name: 'Erase everything' });
     expect(button).toBeDisabled();
@@ -568,7 +568,7 @@ describe('bulk edit', () => {
     await renderApp();
     await user.click(cell(/Director Krennic/));
 
-    await user.click(screen.getByRole('button', { name: 'Bulk edit' }));
+    await user.click(screen.getByRole('button', { name: 'Mass edit' }));
     await user.keyboard('+');
     expect(await db.owned.count()).toBe(0);
   });

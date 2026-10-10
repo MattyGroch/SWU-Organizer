@@ -47,6 +47,12 @@
   min-width: 0;
 }
 
+.actions {
+  display: flex;
+  grid-column: 3;
+  justify-self: end;
+}
+
 @media (min-width: 761px) {
   .strip {
     position: sticky;
@@ -96,6 +102,27 @@
 
   .extra {
     align-self: stretch;
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* The actions sit at the right end of the extra's row. */
+  .strip:has(.actions) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  .strip:has(.actions) .nav.nav {
+    grid-column: 1 / -1;
+  }
+
+  .strip:has(.actions) .extra {
+    grid-column: 1;
+  }
+
+  .actions {
+    grid-column: 2;
+    align-self: stretch;
+    align-items: center;
     border-top: 1px solid var(--color-border);
   }
 }

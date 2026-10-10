@@ -74,7 +74,8 @@ export function InventoryNav({
 
 /**
  * The inventory's sub-nav: a dark strip hanging from the app bar, with Binder · List · Bulk
- * and, beside them (below them on a phone), whatever the page puts there — the set's name.
+ * and, beside them (below them on a phone), whatever the page puts there — the set's name —
+ * with the page's own settings at the far right.
  * It sits first on the page, flush under the bar; on wider screens it pins there as the page
  * scrolls, and publishes its height so the binder's selected-card panel pins below it.
  */
@@ -82,16 +83,20 @@ export function InventorySubnav({
   setKey,
   current,
   children,
+  actions,
 }: {
   setKey?: SetKey;
   current: InventoryPlace;
   children?: ReactNode;
+  /** Buttons at the strip's right edge, e.g. the set settings. */
+  actions?: ReactNode;
 }) {
   const strip = usePublishedHeight<HTMLDivElement>('--inventory-subnav-height');
   return (
     <div ref={strip} className={styles.strip}>
       <InventoryNav setKey={setKey} current={current} />
       {children && <div className={styles.extra}>{children}</div>}
+      {actions && <div className={styles.actions}>{actions}</div>}
     </div>
   );
 }

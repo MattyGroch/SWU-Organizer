@@ -57,7 +57,6 @@ import {
 } from '~/data/binderSettings';
 import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
 import { BulkEditDialog } from '~/features/bulk/BulkEditDialog';
-import { ImportDialog } from '~/features/import/ImportDialog';
 import { CardSearch } from '~/features/search/CardSearch';
 import { InventorySubnav } from '~/features/inventory/InventoryNav';
 import {
@@ -123,7 +122,6 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   const activeFilters = activeFilterCount(filters);
   const [bulkOpen, setBulkOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-  const [importOpen, setImportOpen] = useState(false);
   const [hideSetsOpen, setHideSetsOpen] = useState(false);
   const [buyListOpen, setBuyListOpen] = useState(false);
   /** The filter panel, opened from the funnel: open to start with on desktop, where it fits. */
@@ -146,7 +144,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     }
   }, [hiddenSets, visibleEntries, set.setKey, navigate]);
 
-  /** Sets that have a binder, and the ones hidden — for whole-collection bulk edits. */
+  /** Sets that have a binder, and the ones hidden — for whole-collection mass edits. */
   const binderSets = visibleEntries;
   const hiddenSetKeys = useMemo(
     () => [...hidden].filter((key) => entries.some((e) => e.key === key)),
@@ -367,7 +365,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   // One global key handler, driven by the pure `resolveShortcut` map.
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      // A modal (import, bulk edit) owns the keyboard: without this, `]` or Shift+−
+      // A modal (import, mass edit) owns the keyboard: without this, `]` or Shift+−
       // pressed inside one would change set or clear a slot in the binder behind it.
       if (document.querySelector('dialog[open]')) return;
       const intent = resolveShortcut(event, {
@@ -476,13 +474,6 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     />
   );
 
-  const hideSetsButton = (onClick: () => void) => (
-    <button type="button" className={styles.action} onClick={onClick}>
-      Hide sets
-      {hidden.size > 0 && <span className={styles.badge}>{hidden.size} hidden</span>}
-    </button>
-  );
-
   const setSelect = (
     <select
       className={styles.setSelect}
@@ -512,7 +503,21 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
 
   return (
     <div className={styles.page}>
-      <InventorySubnav setKey={set.setKey} current={view}>
+      <InventorySubnav
+        setKey={set.setKey}
+        current={view}
+        actions={
+          <button
+            type="button"
+            className={styles.setSettings}
+            aria-label={hidden.size > 0 ? `Hide sets, ${hidden.size} hidden` : 'Hide sets'}
+            title={hidden.size > 0 ? `Hide sets — ${hidden.size} hidden` : 'Hide sets'}
+            onClick={() => setHideSetsOpen(true)}
+          >
+            <GearIcon />
+          </button>
+        }
+      >
         {/* The set's name, with a step either way. The picker lies invisibly over the
               name, so clicking the name opens it. */}
         <div className={styles.setHeader}>
@@ -574,54 +579,40 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
 
         {!narrow && (
           <button type="button" className={styles.action} onClick={() => setBulkOpen(true)}>
-            Bulk edit
+            Mass edit
           </button>
         )}
 
-        <details className={styles.more} ref={moreRef}>
-          <summary
-            className={styles.moreSummary}
-            aria-label={
-              narrow
-                ? 'More: hide sets, bulk edit, import, copy'
-                : 'More: hide sets, shortcuts, import'
-            }
-          >
-            ⋯
-          </summary>
-          <div className={styles.morePanel}>
-            {hideSetsButton(() => fromMore(() => setHideSetsOpen(true)))}
-            {narrow ? (
+        {narrow ? (
+          <details className={styles.more} ref={moreRef}>
+            <summary className={styles.moreSummary} aria-label="More: mass edit, buy list, totals">
+              ⋯
+            </summary>
+            <div className={styles.morePanel}>
               <button
                 type="button"
                 className={styles.action}
                 onClick={() => fromMore(() => setBulkOpen(true))}
               >
-                Bulk edit
+                Mass edit
               </button>
-            ) : (
-              <button
-                type="button"
-                className={styles.action}
-                onClick={() => fromMore(() => setHelpOpen(true))}
-                aria-keyshortcuts="Shift+?"
-              >
-                Keyboard shortcuts
-                <span className={styles.badge}>?</span>
-              </button>
-            )}
-            <button
-              type="button"
-              className={styles.action}
-              onClick={() => fromMore(() => setImportOpen(true))}
-            >
-              Import / export
-            </button>
-            {/* Beside the progress bar on desktop. */}
-            {narrow && buyListButton(() => fromMore(() => setBuyListOpen(true)))}
-            {narrow && totalsList}
-          </div>
-        </details>
+              {/* Beside the progress bar on desktop. */}
+              {buyListButton(() => fromMore(() => setBuyListOpen(true)))}
+              {totalsList}
+            </div>
+          </details>
+        ) : (
+          <button
+            type="button"
+            className={styles.helpButton}
+            aria-label="Keyboard shortcuts"
+            aria-keyshortcuts="Shift+?"
+            title="Keyboard shortcuts — ?"
+            onClick={() => setHelpOpen(true)}
+          >
+            ?
+          </button>
+        )}
 
         {/* Phones: opened, the filters take a full row under search, the funnel and ⋯. */}
         {narrow && !showBinder && filtersOpen && (
@@ -671,7 +662,6 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
           onClose={() => setPendingBulk(null)}
         />
       )}
-      {importOpen && <ImportDialog catalog={loadedSets} onClose={() => setImportOpen(false)} />}
 
       <div className={styles.panelSlot} data-active={binder.active !== null}>
         <SelectedCardPanel
@@ -813,6 +803,22 @@ function FunnelIcon() {
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
       <path
         d="M3 4h18l-7 8.5V19l-4 2v-8.5L3 4z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** A cog, for the set settings at the sub-nav's right. */
+function GearIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+      <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
         fill="none"
         stroke="currentColor"
         strokeWidth="2"
