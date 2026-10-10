@@ -144,7 +144,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     }
   }, [hiddenSets, visibleEntries, set.setKey, navigate]);
 
-  /** Sets that have a binder, and the ones hidden — for whole-collection bulk edits. */
+  /** Sets that have a binder, and the ones hidden — for whole-collection mass edits. */
   const binderSets = visibleEntries;
   const hiddenSetKeys = useMemo(
     () => [...hidden].filter((key) => entries.some((e) => e.key === key)),
@@ -365,7 +365,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   // One global key handler, driven by the pure `resolveShortcut` map.
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      // A modal (import, bulk edit) owns the keyboard: without this, `]` or Shift+−
+      // A modal (import, mass edit) owns the keyboard: without this, `]` or Shift+−
       // pressed inside one would change set or clear a slot in the binder behind it.
       if (document.querySelector('dialog[open]')) return;
       const intent = resolveShortcut(event, {
@@ -579,13 +579,13 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
 
         {!narrow && (
           <button type="button" className={styles.action} onClick={() => setBulkOpen(true)}>
-            Bulk edit
+            Mass edit
           </button>
         )}
 
         {narrow ? (
           <details className={styles.more} ref={moreRef}>
-            <summary className={styles.moreSummary} aria-label="More: bulk edit, buy list, totals">
+            <summary className={styles.moreSummary} aria-label="More: mass edit, buy list, totals">
               ⋯
             </summary>
             <div className={styles.morePanel}>
@@ -594,7 +594,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
                 className={styles.action}
                 onClick={() => fromMore(() => setBulkOpen(true))}
               >
-                Bulk edit
+                Mass edit
               </button>
               {/* Beside the progress bar on desktop. */}
               {buyListButton(() => fromMore(() => setBuyListOpen(true)))}

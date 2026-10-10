@@ -183,7 +183,7 @@
 }
 
 /*
- * ⋯ More (phones only): bulk edit, the TCGplayer copy buttons and the totals. Where the
+ * ⋯ More (phones only): mass edit, the TCGplayer copy buttons and the totals. Where the
  * button lands depends on how the toolbar wraps, so the panel hangs from the toolbar instead,
  * just below the button and the screen's width less its gutters.
  */
