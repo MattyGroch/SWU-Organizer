@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 import type { DeckHold } from '~/domain/deckBuild';
 import { formatUsd } from '~/ui/format';
+import { useFillViewport } from '~/ui/useFillViewport';
 
 import { STATUS_GLYPH, STATUS_LABEL, type CardRow } from './cardRows';
 import styles from './CardTable.module.css';
@@ -43,6 +44,8 @@ export function CardTable({
   onScrollTopChange,
 }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  // Tall windows (a portrait monitor) get a list that reaches the bottom of the screen.
+  useFillViewport(scrollRef, rows.length > 0);
   const [scrollTop, setScrollTop] = useState(initialScrollTop);
 
   // Before paint, so a restored list never flashes its first rows. The browser clamps an
