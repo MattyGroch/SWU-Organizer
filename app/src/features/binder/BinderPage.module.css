@@ -211,9 +211,10 @@
   cursor: pointer;
 }
 
-/* Desktop: the keyboard shortcuts, where the phone has ⋯. */
+/* Desktop: the keyboard shortcuts, where the phone has ⋯, pushed to the toolbar's right end. */
 .helpButton {
   height: auto;
+  margin-left: auto;
 }
 
 .moreSummary::-webkit-details-marker {
