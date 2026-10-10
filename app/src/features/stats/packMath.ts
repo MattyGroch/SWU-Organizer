@@ -174,6 +174,28 @@ export function estimatePackMix(
   return { boosters, carbonite };
 }
 
+/**
+ * Whether a set's Commons and Uncommons look trimmed to playsets — most of them at
+ * exactly a playset and hardly any past it — the way a binder looks before its bulk box
+ * is entered (or after the extras went). The extras would have held foils and Hyperspace
+ * too, so pack counts read from such a set are a floor.
+ */
+export function looksTrimmed(set: LoadedSet, owned: ReadonlyMap<number, OwnedCounts>): boolean {
+  let cards = 0;
+  let atLeast = 0;
+  let over = 0;
+  for (const card of set.cardsByBase.values()) {
+    const pool = poolOf(card);
+    if (pool !== 'common' && pool !== 'uncommon') continue;
+    const quota = quotaForCard(card);
+    const total = ownedFor(owned, card.base).total;
+    cards += 1;
+    if (total >= quota) atLeast += 1;
+    if (total > quota) over += 1;
+  }
+  return cards > 0 && atLeast / cards >= 0.5 && over / cards < 0.15;
+}
+
 /** Owned copies of each printing signal: Commons and Uncommons, and every Prestige. */
 export function signalCounts(
   set: LoadedSet,

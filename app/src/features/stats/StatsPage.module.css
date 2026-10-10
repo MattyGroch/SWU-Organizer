@@ -31,6 +31,10 @@
   font-size: var(--font-size-sm);
 }
 
+.note[data-warning] {
+  color: var(--color-warning-fg);
+}
+
 .muted {
   color: var(--color-text-muted);
   font-weight: 400;

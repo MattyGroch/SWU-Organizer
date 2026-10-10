@@ -15,6 +15,7 @@ import { indexOwnership, type OwnedCounts } from '~/domain/ownership';
 import {
   cardRates,
   estimatePackMix,
+  looksTrimmed,
   expectedCompletion,
   hitRates,
   packsToFinish,
@@ -189,5 +190,35 @@ describe('telling boosters from Carbonite', () => {
     expect(mix.carbonite).toBeGreaterThanOrEqual(0);
     expect(mix.boosters).toBeGreaterThanOrEqual(0);
     expect(mix.boosters + mix.carbonite).toBeGreaterThan(0);
+  });
+});
+
+describe('looksTrimmed', () => {
+  const set = realSet('SOR');
+  const low = (rarity?: string, type?: string) =>
+    type !== 'Leader' && type !== 'Base' && (rarity === 'Common' || rarity === 'Uncommon');
+
+  it('spots commons cut to playsets', () => {
+    expect(
+      looksTrimmed(
+        set,
+        own(set, (r, t) => (low(r, t) ? 3 : 0)),
+      ),
+    ).toBe(true);
+  });
+
+  it('leaves a binder with its extras, or a thin one, alone', () => {
+    expect(
+      looksTrimmed(
+        set,
+        own(set, (r, t) => (low(r, t) ? 5 : 0)),
+      ),
+    ).toBe(false);
+    expect(
+      looksTrimmed(
+        set,
+        own(set, (r, t) => (low(r, t) ? 1 : 0)),
+      ),
+    ).toBe(false);
   });
 });

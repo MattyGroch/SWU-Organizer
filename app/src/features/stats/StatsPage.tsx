@@ -32,6 +32,7 @@ import {
 import {
   cardRates,
   estimatePackMix,
+  looksTrimmed,
   expectedCompletion,
   hitRates,
   mixedRates,
@@ -282,6 +283,7 @@ function PackStats({ set, owned }: { set: LoadedSet; owned: ReadonlyMap<number, 
     [set, profiles, owned],
   );
   const hits = hitRates(set, profiles, owned, mix);
+  const trimmed = useMemo(() => looksTrimmed(set, owned), [set, owned]);
 
   const actual =
     rates.length > 0 ? rates.filter((r) => r.owned >= r.quota).length / rates.length : 0;
@@ -330,6 +332,13 @@ function PackStats({ set, owned }: { set: LoadedSet; owned: ReadonlyMap<number, 
           {carbonite ? ', and Prestige cards — a Carbonite pack has far more of each' : ''}. Plain
           copies aren't counted, since extras get thrown out and singles fill the gaps; nor are
           promos.
+        </p>
+      )}
+      {mix && trimmed && (
+        <p className={styles.note} data-warning>
+          Most of this set's Commons and Uncommons sit at exactly a playset, so its extras — foils
+          and Hyperspace among them — aren't recorded. Read these counts as a minimum until the bulk
+          box is entered.
         </p>
       )}
 
