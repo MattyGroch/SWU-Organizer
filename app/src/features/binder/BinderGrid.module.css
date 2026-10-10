@@ -31,6 +31,21 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* One page on a desktop: its cards the size they are in the spread, centred. */
+.grid[data-single='true'] {
+  width: 50%;
+  margin-inline: auto;
+}
+
+.grid[data-single='true'] .row {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* Full Size: the page as wide as the window. */
+.grid[data-single='true'][data-full='true'] {
+  width: 100%;
+}
+
 /* A two-page spread cannot shrink below legibility, so on narrow screens the spread
    scrolls sideways as a unit rather than hiding a page — which would silently show the
    wrong half, since the left page is the even one only on some spreads. */
@@ -52,6 +67,7 @@
 
   /* One page: four columns that fit the screen, nothing to scroll. */
   .grid[data-single='true'] {
+    width: auto;
     overflow-x: visible;
     gap: var(--space-1);
   }

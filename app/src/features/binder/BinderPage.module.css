@@ -105,6 +105,24 @@
   gap: var(--space-4);
 }
 
+/* The pager centred over the binder; on desktop the layout toggle sits at the far right. */
+.binderBar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.binderBar > :first-child {
+  grid-column: 2;
+}
+
+.layoutSlot {
+  display: flex;
+  grid-column: 3;
+  gap: var(--space-2);
+  justify-self: end;
+}
+
 /*
  * Wider screens: a selected card's panel pins just below the app header and sub-nav, so
  * its controls stay in reach when the window is too short for them and the spread

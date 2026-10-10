@@ -7,9 +7,9 @@ import { isInventoryView, type InventoryView } from './views';
  * Where you were in the Inventory tab, so leaving it and coming back (or reopening the
  * app) lands there again rather than on the newest set's first binder page.
  *
- * Three things are remembered: the place — which set, and Binder, List or Bulk; per set,
- * the binder page, the selected card and how far the list was scrolled; and the list's
- * filters. Positions are per set so `[`/`]` and swiping between sets also return to where
+ * Four things are remembered: the place — which set, and Binder, List or Bulk; per set,
+ * the binder page, the selected card and how far the list was scrolled; the list's
+ * filters; and whether a desktop binder shows a spread or one page, and at what size. Positions are per set so `[`/`]` and swiping between sets also return to where
  * each one was left. Filters are not: they already carry over from set to set.
  *
  * Kept in memory and mirrored to localStorage. Storage is a convenience: without it, the
@@ -17,6 +17,12 @@ import { isInventoryView, type InventoryView } from './views';
  */
 
 export type InventoryPlace = InventoryView | 'bulk';
+
+/** A desktop binder shows a two-page spread, or one page at a time as on a phone. */
+export type BinderLayout = 'spread' | 'page';
+
+/** One page on a desktop: cards at spread size, or the page as wide as the window. */
+export type BinderZoom = 'standard' | 'full';
 
 export type SetPosition = {
   /** The binder page on screen. */
@@ -31,11 +37,15 @@ const LAST_SET_KEY = 'inventory:lastSet';
 const LAST_VIEW_KEY = 'inventory:lastView';
 const POSITIONS_KEY = 'inventory:positions';
 const FILTERS_KEY = 'inventory:filters';
+const BINDER_LAYOUT_KEY = 'inventory:binderLayout';
+const BINDER_ZOOM_KEY = 'inventory:binderZoom';
 
 let lastSet: SetKey | undefined;
 let lastView: InventoryPlace | undefined;
 let positions: Record<SetKey, SetPosition> | undefined;
 let filters: Filters | undefined;
+let binderLayout: BinderLayout | undefined;
+let binderZoom: BinderZoom | undefined;
 let flushTimer: ReturnType<typeof setTimeout> | undefined;
 
 function read(key: string): string | undefined {
@@ -151,12 +161,34 @@ export function rememberFilters(next: Filters) {
   write(FILTERS_KEY, JSON.stringify(next));
 }
 
+/** The desktop binder's layout as last chosen; a spread until one is. */
+export function readBinderLayout(): BinderLayout {
+  return (binderLayout ??= read(BINDER_LAYOUT_KEY) === 'page' ? 'page' : 'spread');
+}
+
+export function rememberBinderLayout(next: BinderLayout) {
+  binderLayout = next;
+  write(BINDER_LAYOUT_KEY, next);
+}
+
+/** The desktop single page's size as last chosen; standard until one is. */
+export function readBinderZoom(): BinderZoom {
+  return (binderZoom ??= read(BINDER_ZOOM_KEY) === 'full' ? 'full' : 'standard');
+}
+
+export function rememberBinderZoom(next: BinderZoom) {
+  binderZoom = next;
+  write(BINDER_ZOOM_KEY, next);
+}
+
 /** Tests only: forget everything held in memory, so the next read goes to storage. */
 export function resetLastPlaceForTests() {
   lastSet = undefined;
   lastView = undefined;
   positions = undefined;
   filters = undefined;
+  binderLayout = undefined;
+  binderZoom = undefined;
   if (flushTimer !== undefined) clearTimeout(flushTimer);
   flushTimer = undefined;
 }
