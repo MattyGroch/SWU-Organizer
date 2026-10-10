@@ -183,15 +183,16 @@
 }
 
 /*
- * ⋯ More (phones): bulk edit, import/export, the TCGplayer copy buttons and the totals.
- * Where the button lands depends on how the toolbar wraps, so the panel hangs from the
- * toolbar instead, just below the button and the screen's width less its gutters.
+ * ⋯ More (phones only): bulk edit, the TCGplayer copy buttons and the totals. Where the
+ * button lands depends on how the toolbar wraps, so the panel hangs from the toolbar instead,
+ * just below the button and the screen's width less its gutters.
  */
 .more {
   position: static;
 }
 
-.moreSummary {
+.moreSummary,
+.helpButton {
   composes: ui-btn from global;
   display: flex;
   align-items: center;
@@ -208,6 +209,11 @@
   line-height: 1;
   list-style: none;
   cursor: pointer;
+}
+
+/* Desktop: the keyboard shortcuts, where the phone has ⋯. */
+.helpButton {
+  height: auto;
 }
 
 .moreSummary::-webkit-details-marker {
@@ -233,29 +239,6 @@
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
 }
 
-.badge {
-  margin-left: var(--space-2);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-xs);
-}
-
-/* Desktop: a dropdown under the ⋯ button, at its right edge. */
-@media (min-width: 761px) {
-  .more {
-    position: relative;
-  }
-
-  .moreSummary {
-    height: auto;
-  }
-
-  .morePanel {
-    right: 0;
-    left: auto;
-    width: 260px;
-  }
-}
-
 .morePanel .copyGroup {
   flex-direction: column;
   align-items: stretch;
@@ -279,6 +262,23 @@
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
+}
+
+/* The set settings (hide sets), at the sub-nav's right. */
+.setSettings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  border: none;
+  background: none;
+  color: var(--color-text-subtle);
+  cursor: pointer;
+}
+
+.setSettings:hover {
+  color: var(--color-text);
 }
 
 .setStep:disabled {
