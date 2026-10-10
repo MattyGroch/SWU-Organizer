@@ -38,7 +38,7 @@ export function CollectionProgress({
       segments={[
         { percent: share(complete), color: 'var(--color-success)' },
         { percent: share(partial), color: 'var(--color-warning)' },
-        { percent: share(missing), color: 'var(--color-danger)', dim: true },
+        { percent: share(missing), color: 'var(--color-danger)' },
       ]}
     />
   );

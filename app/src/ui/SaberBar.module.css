@@ -58,17 +58,6 @@
   transition: width var(--transition-base);
 }
 
-.segment[data-dim] {
-  background: linear-gradient(
-    to bottom,
-    var(--blade),
-    color-mix(in srgb, var(--blade) 60%, white) 40% 60%,
-    var(--blade)
-  );
-  box-shadow: 0 0 5px color-mix(in srgb, var(--blade) 45%, transparent);
-  opacity: 0.75;
-}
-
 /* The tip is rounded, wherever the blade ends. */
 .segment:last-child {
   border-radius: 0 999px 999px 0;

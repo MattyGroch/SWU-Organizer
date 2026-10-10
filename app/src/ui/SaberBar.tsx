@@ -6,8 +6,6 @@ export type SaberSegment = {
   percent: number;
   /** Blade colour; the HUD's when left out. */
   color?: string;
-  /** Glows less: the part of the blade that isn't the point, e.g. what's missing. */
-  dim?: boolean;
 };
 
 type Props = AriaAttributes & {
@@ -39,7 +37,6 @@ export function SaberBar({ segments, compact = false, className, ...rest }: Prop
             <span
               key={i}
               className={styles.segment}
-              data-dim={s.dim || undefined}
               style={
                 {
                   width: `${s.percent}%`,
