@@ -30,13 +30,33 @@ export type PackPool =
   | 'leaderRare'
   | 'baseCommon';
 
+/**
+ * One kind of pull the hit table tracks, with how many a booster and a Carbonite pack
+ * hold on average.
+ */
 export type PackHit = {
   label: string;
   variants: readonly VariantSlug[];
-  /** Only cards of these rarities count; every rarity when absent. */
+  /** Only non-leader cards of these rarities count; every card when absent. */
   rarities?: readonly string[];
-  /** Expected copies per pack. */
-  perPack: number;
+  booster: number;
+  carbonite: number;
+};
+
+/**
+ * The printings a pack's Commons and Uncommons come in, plus its Prestige cards (any
+ * rarity). Boosters are mostly plain Commons; a Carbonite pack has none, so the mix of
+ * printings tells the two apart. Commons and Uncommons, because nobody buys them as
+ * singles; Prestige, because a Carbonite pack always has one.
+ */
+export type PackSignal = 'normal' | 'foil' | 'hyperspace' | 'hyperspaceFoil' | 'prestige';
+
+export const SIGNAL_VARIANTS: Readonly<Record<PackSignal, readonly VariantSlug[]>> = {
+  normal: ['normal'],
+  foil: ['foil'],
+  hyperspace: ['hyperspace'],
+  hyperspaceFoil: ['hyperspace-foil'],
+  prestige: ['prestige', 'prestige-foil', 'prestige-serialized'],
 };
 
 export type PackProfile = {
@@ -46,10 +66,15 @@ export type PackProfile = {
   summary: string;
   /** Expected cards per pack from each pool, any printing. */
   pools: Partial<Record<PackPool, number>>;
-  hits: readonly PackHit[];
+  /** Expected copies per pack of each signal. */
+  signature: Readonly<Record<PackSignal, number>>;
 };
 
-export type SetPackProfiles = { booster: PackProfile; carbonite?: PackProfile };
+export type SetPackProfiles = {
+  booster: PackProfile;
+  carbonite?: PackProfile;
+  hits: readonly PackHit[];
+};
 
 export const BOOSTER_PRICE = 5;
 export const CARBONITE_PRICE = 24;
@@ -98,24 +123,9 @@ const BEFORE_LAW: PackProfile = {
   summary:
     '16 cards: a leader, a base, 9 Commons, 3 Uncommons, a Rare or Legendary (1 in 8) and a foil of any rarity. Any card can be Hyperspace.',
   pools: BEFORE_LAW_POOLS,
-  hits: [
-    {
-      label: 'Legendary',
-      variants: PACK_PRINTINGS,
-      rarities: ['Legendary'],
-      perPack: BEFORE_LAW_POOLS.legendary,
-    },
-    { label: 'Foil', variants: ['foil'], perPack: 5 / 6 },
-    { label: 'Hyperspace', variants: HYPERSPACE, perPack: 1 / 2 + 1 / 6 },
-    { label: 'Hyperspace Foil', variants: ['hyperspace-foil'], perPack: 1 / 6 },
-    {
-      label: 'Hyperspace Rare/Legendary',
-      variants: HYPERSPACE,
-      rarities: RARE_OR_LEGENDARY,
-      perPack: 1 / 21 + 1 / 72 + 1 / 53 + 1 / 181,
-    },
-    { label: 'Showcase', variants: ['showcase'], perPack: 1 / 288 },
-  ],
+  // The foil slot's Common or Uncommon (88%) is a foil 5 times in 6, else a Hyperspace
+  // Foil; of the other twelve, a Hyperspace Common 1 in 3 packs and the odd Uncommon.
+  signature: { normal: 11.58, foil: 0.74, hyperspace: 0.42, hyperspaceFoil: 0.15, prestige: 0 },
 };
 
 /** LAW on. Foil slot: always a Hyperspace Foil, Rare 1 in 24, Legendary 1 in 96. */
@@ -127,31 +137,18 @@ const FROM_LAW: PackProfile = {
   summary:
     '16 cards: a leader, a base, 9 Commons, 3 Uncommons, a Rare or Legendary (1 in 8) and a Hyperspace Foil of any rarity. At least one Hyperspace card besides; no plain foils.',
   pools: FROM_LAW_POOLS,
-  hits: [
-    {
-      label: 'Legendary',
-      variants: PACK_PRINTINGS,
-      rarities: ['Legendary'],
-      perPack: FROM_LAW_POOLS.legendary,
-    },
-    { label: 'Hyperspace Foil', variants: ['hyperspace-foil'], perPack: 1 },
-    {
-      label: 'Hyperspace Rare/Legendary',
-      variants: HYPERSPACE,
-      rarities: RARE_OR_LEGENDARY,
-      perPack: 1 / 12 + 1 / 24 + 1 / 48 + 1 / 96,
-    },
-    { label: 'Prestige', variants: ['prestige'], perPack: 1 / 18 },
-    { label: 'Showcase', variants: ['showcase'], perPack: 1 / 288 },
-  ],
+  // The Hyperspace Foil is a Common or Uncommon 95% of the time; a Hyperspace Common is
+  // guaranteed, "sometimes more" taken as a tenth of a card.
+  signature: { normal: 10.95, foil: 0, hyperspace: 1.05, hyperspaceFoil: 0.95, prestige: 1 / 18 },
 };
 
 /**
  * Carbonite: 16 cards, every one a special printing — a Hyperspace or Showcase leader, a
  * Prestige, and 14 foils and Hyperspace. No base. The Prestige is left out of the pools:
- * which cards have one varies, and it's one card in sixteen.
+ * which cards have one varies, and it's one card in sixteen. Of the 14, about 12 are
+ * Commons and Uncommons, in the pack's own split of printings.
  */
-function carbonite(summary: string): PackProfile {
+function carbonite(summary: string, signature: PackProfile['signature']): PackProfile {
   return {
     name: 'Carbonite',
     price: CARBONITE_PRICE,
@@ -164,27 +161,77 @@ function carbonite(summary: string): PackProfile {
       leaderCommon: 1 - RARE_LEADER_SHARE,
       leaderRare: RARE_LEADER_SHARE,
     },
-    hits: [],
+    signature,
   };
 }
 
 const CARBONITE_BEFORE_LAW = carbonite(
   '16 cards: a Hyperspace or Showcase leader, 7 foils, 5 Hyperspace, 2 Hyperspace Foils and a Prestige.',
+  { normal: 0, foil: 6, hyperspace: 4.3, hyperspaceFoil: 1.7, prestige: 1 },
 );
 const CARBONITE_FROM_LAW = carbonite(
   '16 cards: a Hyperspace or Showcase leader, 6 Hyperspace Foils, 8 Hyperspace and a Prestige.',
+  { normal: 0, foil: 0, hyperspace: 6.86, hyperspaceFoil: 5.14, prestige: 1 },
 );
 
+/**
+ * The hit table before LAW. Carbonite figures: its 14 non-leader cards hold about 2 Rares
+ * or Legendaries, half of them Hyperspace; its leader is Hyperspace, or Showcase 1 in 20.
+ */
+const HITS_BEFORE_LAW: readonly PackHit[] = [
+  {
+    label: 'Legendary',
+    variants: PACK_PRINTINGS,
+    rarities: ['Legendary'],
+    booster: BEFORE_LAW_POOLS.legendary,
+    carbonite: 0.4,
+  },
+  { label: 'Foil', variants: ['foil'], booster: 5 / 6, carbonite: 7 },
+  { label: 'Hyperspace', variants: HYPERSPACE, booster: 1 / 2 + 1 / 6, carbonite: 7 + 19 / 20 },
+  { label: 'Hyperspace Foil', variants: ['hyperspace-foil'], booster: 1 / 6, carbonite: 2 },
+  {
+    label: 'Hyperspace R/L',
+    variants: HYPERSPACE,
+    rarities: RARE_OR_LEGENDARY,
+    booster: 1 / 21 + 1 / 72 + 1 / 53 + 1 / 181,
+    carbonite: 1,
+  },
+  { label: 'Prestige', variants: SIGNAL_VARIANTS.prestige, booster: 0, carbonite: 1 },
+  { label: 'Showcase', variants: ['showcase'], booster: 1 / 288, carbonite: 1 / 20 },
+];
+
+/** LAW on. A Carbonite pack's non-leader cards are all Hyperspace, so both its Rares are. */
+const HITS_FROM_LAW: readonly PackHit[] = [
+  {
+    label: 'Legendary',
+    variants: PACK_PRINTINGS,
+    rarities: ['Legendary'],
+    booster: FROM_LAW_POOLS.legendary,
+    carbonite: 0.4,
+  },
+  { label: 'Hyperspace', variants: ['hyperspace'], booster: 1.2, carbonite: 8 + 47 / 48 },
+  { label: 'Hyperspace Foil', variants: ['hyperspace-foil'], booster: 1, carbonite: 6 },
+  {
+    label: 'Hyperspace R/L',
+    variants: HYPERSPACE,
+    rarities: RARE_OR_LEGENDARY,
+    booster: 1 / 12 + 1 / 24 + 1 / 48 + 1 / 96,
+    carbonite: 2,
+  },
+  { label: 'Prestige', variants: SIGNAL_VARIANTS.prestige, booster: 1 / 18, carbonite: 1 },
+  { label: 'Showcase', variants: ['showcase'], booster: 1 / 288, carbonite: 1 / 48 },
+];
+
 const PROFILES: Readonly<Record<SetKey, SetPackProfiles>> = {
-  SOR: { booster: BEFORE_LAW },
-  SHD: { booster: BEFORE_LAW },
-  TWI: { booster: BEFORE_LAW },
-  JTL: { booster: BEFORE_LAW, carbonite: CARBONITE_BEFORE_LAW },
-  LOF: { booster: BEFORE_LAW, carbonite: CARBONITE_BEFORE_LAW },
-  SEC: { booster: BEFORE_LAW, carbonite: CARBONITE_BEFORE_LAW },
-  LAW: { booster: FROM_LAW, carbonite: CARBONITE_FROM_LAW },
-  ASH: { booster: FROM_LAW, carbonite: CARBONITE_FROM_LAW },
-  HMW: { booster: FROM_LAW, carbonite: CARBONITE_FROM_LAW },
+  SOR: { booster: BEFORE_LAW, hits: HITS_BEFORE_LAW },
+  SHD: { booster: BEFORE_LAW, hits: HITS_BEFORE_LAW },
+  TWI: { booster: BEFORE_LAW, hits: HITS_BEFORE_LAW },
+  JTL: { booster: BEFORE_LAW, carbonite: CARBONITE_BEFORE_LAW, hits: HITS_BEFORE_LAW },
+  LOF: { booster: BEFORE_LAW, carbonite: CARBONITE_BEFORE_LAW, hits: HITS_BEFORE_LAW },
+  SEC: { booster: BEFORE_LAW, carbonite: CARBONITE_BEFORE_LAW, hits: HITS_BEFORE_LAW },
+  LAW: { booster: FROM_LAW, carbonite: CARBONITE_FROM_LAW, hits: HITS_FROM_LAW },
+  ASH: { booster: FROM_LAW, carbonite: CARBONITE_FROM_LAW, hits: HITS_FROM_LAW },
+  HMW: { booster: FROM_LAW, carbonite: CARBONITE_FROM_LAW, hits: HITS_FROM_LAW },
 };
 
 /** The packs a set came in; undefined for sets sold only as decks (IBH, Twin Suns). */

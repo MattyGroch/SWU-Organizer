@@ -3,12 +3,18 @@ import { resolve } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { parseSetCatalog, toLoadedSet, type LoadedSet } from '~/domain/catalog';
+import {
+  parseSetCatalog,
+  toLoadedSet,
+  type CatalogCard,
+  type LoadedSet,
+  type VariantSlug,
+} from '~/domain/catalog';
 import { indexOwnership, type OwnedCounts } from '~/domain/ownership';
 
 import {
   cardRates,
-  estimatePacksOpened,
+  estimatePackMix,
   expectedCompletion,
   hitRates,
   packsToFinish,
@@ -70,19 +76,20 @@ describe('pack maths on Spark of Rebellion', () => {
     expect(perPack).toBeLessThan(1 / 6);
   });
 
-  it('counts packs from commons and uncommons, ignoring promos', () => {
+  it('counts boosters from commons and uncommons, ignoring promos', () => {
     // A playset of every common and uncommon is 450 cards: about 35 packs' worth.
     const owned = own(set, (rarity, type) =>
       type !== 'Leader' && type !== 'Base' && (rarity === 'Common' || rarity === 'Uncommon')
         ? 3
         : 0,
     );
-    const packs = estimatePacksOpened(set, booster, owned)!;
-    expect(packs).toBeGreaterThan(30);
-    expect(packs).toBeLessThan(40);
+    const mix = estimatePackMix(set, packProfiles('SOR')!, owned)!;
+    expect(mix.carbonite).toBe(0);
+    expect(mix.boosters).toBeGreaterThan(30);
+    expect(mix.boosters).toBeLessThan(45);
 
     const promoOnly = indexOwnership([{ base: 5, variant: 'promo', count: 10 }]);
-    expect(estimatePacksOpened(set, booster, promoOnly)).toBeUndefined();
+    expect(estimatePackMix(set, packProfiles('SOR')!, promoOnly)).toBeUndefined();
   });
 
   it('fills commons long before legendaries', () => {
@@ -111,8 +118,58 @@ describe('pack maths on Spark of Rebellion', () => {
       // Two Hyperspace copies of a common base.
       { base: 21, variant: 'hyperspace', count: 2 },
     ]);
-    const hits = hitRates(set, booster, owned);
+    const hits = hitRates(set, packProfiles('SOR')!, owned);
     expect(hits.find((h) => h.label === 'Hyperspace')!.owned).toBe(2);
     expect(hits.find((h) => h.label === 'Legendary')!.owned).toBe(0);
+  });
+});
+
+describe('telling boosters from Carbonite', () => {
+  /** Spreads `n` copies of one printing over the cards that have it, round-robin. */
+  function spread(
+    set: LoadedSet,
+    variant: VariantSlug,
+    n: number,
+    pick: (card: CatalogCard) => boolean,
+  ) {
+    const cards = [...set.cardsByBase.values()].filter(
+      (card) => pick(card) && card.printings.some((p) => p.variant === variant),
+    );
+    return Array.from({ length: Math.round(n) }, (_, i) => ({
+      base: cards[i % cards.length]!.base,
+      variant,
+      count: 1,
+    }));
+  }
+
+  it('reads 33 boosters and 12 Carbonite packs back out of Homeworlds', () => {
+    const set = realSet('HMW');
+    const lowCard = (card: CatalogCard) => {
+      const pool = poolOf(card);
+      return pool === 'common' || pool === 'uncommon';
+    };
+    const [boosters, carbonite] = [33, 12];
+    const owned = indexOwnership([
+      ...spread(set, 'normal', boosters * 10.95, lowCard),
+      ...spread(set, 'hyperspace', boosters * 1.05 + carbonite * 6.86, lowCard),
+      ...spread(set, 'hyperspace-foil', boosters * 0.95 + carbonite * 5.14, lowCard),
+      ...spread(set, 'prestige', boosters / 18 + carbonite, () => true),
+    ]);
+    const mix = estimatePackMix(set, packProfiles('HMW')!, owned)!;
+    expect(mix.boosters).toBeCloseTo(33, 0);
+    expect(mix.carbonite).toBeCloseTo(12, 0);
+
+    const hsFoil = hitRates(set, packProfiles('HMW')!, owned, mix).find(
+      (h) => h.label === 'Hyperspace Foil',
+    )!;
+    expect(hsFoil.expected).toBeCloseTo(33 + 12 * 6, -1);
+  });
+
+  it('never fits a negative count', () => {
+    const set = realSet('HMW');
+    const owned = indexOwnership(spread(set, 'normal', 300, (card) => poolOf(card) === 'common'));
+    const mix = estimatePackMix(set, packProfiles('HMW')!, owned)!;
+    expect(mix.carbonite).toBe(0);
+    expect(mix.boosters).toBeGreaterThan(20);
   });
 });

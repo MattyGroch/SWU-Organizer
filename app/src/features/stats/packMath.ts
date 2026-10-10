@@ -1,7 +1,13 @@
-import type { CatalogCard, LoadedSet, VariantSlug } from '~/domain/catalog';
+import type { CatalogCard, LoadedSet } from '~/domain/catalog';
 import { ownedFor, quotaForCard, type OwnedCounts } from '~/domain/ownership';
 
-import type { PackProfile, PackPool } from './packProfiles';
+import {
+  SIGNAL_VARIANTS,
+  type PackPool,
+  type PackProfile,
+  type PackSignal,
+  type SetPackProfiles,
+} from './packProfiles';
 
 /**
  * Pack arithmetic for the Stats page: how many packs a collection looks like, how lucky
@@ -12,9 +18,6 @@ import type { PackProfile, PackPool } from './packProfiles';
  * is its pool's cards-per-pack over the pool's size. Copies then arrive as a Poisson
  * process, one per card, independent of the others — close enough for "about how many".
  */
-
-/** Promos come from events, not packs: they never count toward pack estimates. */
-const PACK_VARIANTS = (variant: VariantSlug) => variant !== 'promo' && variant !== 'promo-foil';
 
 /** Which pool a card is pulled from, or none for cards packs don't carry (Specials). */
 export function poolOf(card: Pick<CatalogCard, 'type' | 'rarity'>): PackPool | undefined {
@@ -42,16 +45,13 @@ export function poolOf(card: Pick<CatalogCard, 'type' | 'rarity'>): PackPool | u
   }
 }
 
-/** Copies of a card that could have come out of a pack. */
-export function packCopies(counts: OwnedCounts): number {
-  let n = 0;
-  for (const [variant, count] of Object.entries(counts.byVariant) as Array<[VariantSlug, number]>) {
-    if (PACK_VARIANTS(variant)) n += count;
-  }
-  return n;
-}
-
-type CardRate = { card: CatalogCard; pool: PackPool; rate: number; quota: number; owned: number };
+export type CardRate = {
+  card: CatalogCard;
+  pool: PackPool;
+  rate: number;
+  quota: number;
+  owned: number;
+};
 
 /** Every pack card in the set with its expected copies per pack. */
 export function cardRates(
@@ -94,25 +94,120 @@ export function poissonAtLeast(mean: number, k: number): number {
   return Math.max(0, 1 - below);
 }
 
+export type PackMix = { boosters: number; carbonite: number };
+
 /**
- * About how many packs the collection represents, from the commons and uncommons: they
- * are the bulk of every pack and the cards nobody buys as singles, so they say most about
- * packs opened. Undefined when there are none to go on.
+ * About how many boosters and Carbonite packs the collection represents.
+ *
+ * Each kind of pack leaves its own mix of printings among the Commons and Uncommons — a
+ * booster's are nearly all plain, a Carbonite pack's are all foil or Hyperspace — and its
+ * own share of Prestige cards. So the copies of each printing are fitted as a blend of
+ * the two, by least squares weighted for counting noise (each count's variance is about
+ * its mean, so the fit is re-weighted by the counts it predicts a few times over). Sets
+ * without Carbonite fit boosters alone. Undefined when there's nothing to go on.
  */
-export function estimatePacksOpened(
+export function estimatePackMix(
   set: LoadedSet,
-  profile: PackProfile,
+  profiles: SetPackProfiles,
   owned: ReadonlyMap<number, OwnedCounts>,
-): number | undefined {
-  const perPack = (profile.pools.common ?? 0) + (profile.pools.uncommon ?? 0);
-  if (perPack <= 0) return undefined;
-  let copies = 0;
-  for (const card of set.cardsByBase.values()) {
-    const pool = poolOf(card);
-    if (pool !== 'common' && pool !== 'uncommon') continue;
-    copies += packCopies(ownedFor(owned, card.base));
+): PackMix | undefined {
+  const observed = signalCounts(set, owned);
+  const signals = Object.keys(SIGNAL_VARIANTS) as PackSignal[];
+  if (signals.every((signal) => observed[signal] === 0)) return undefined;
+
+  const a = profiles.booster.signature;
+  const c = profiles.carbonite?.signature;
+  let boosters = 0;
+  let carbonite = 0;
+  for (let round = 0; round < 6; round++) {
+    // Neyman weights to start (from what's seen), then Pearson (from what's predicted).
+    const weight = (signal: PackSignal) =>
+      1 /
+      Math.max(
+        round === 0 ? observed[signal] : a[signal] * boosters + (c?.[signal] ?? 0) * carbonite,
+        1,
+      );
+    let aa = 0;
+    let ac = 0;
+    let cc = 0;
+    let ao = 0;
+    let co = 0;
+    for (const signal of signals) {
+      const w = weight(signal);
+      const ai = a[signal];
+      const ci = c?.[signal] ?? 0;
+      const o = observed[signal];
+      aa += w * ai * ai;
+      ac += w * ai * ci;
+      cc += w * ci * ci;
+      ao += w * ai * o;
+      co += w * ci * o;
+    }
+    const det = aa * cc - ac * ac;
+    if (c && det > 1e-12) {
+      boosters = (ao * cc - co * ac) / det;
+      carbonite = (co * aa - ao * ac) / det;
+    } else {
+      boosters = aa > 0 ? ao / aa : 0;
+      carbonite = 0;
+    }
+    // Neither count can be negative: pin one at zero and fit the other alone.
+    if (carbonite < 0) {
+      carbonite = 0;
+      boosters = aa > 0 ? ao / aa : 0;
+    } else if (boosters < 0) {
+      boosters = 0;
+      carbonite = cc > 0 ? co / cc : 0;
+    }
   }
-  return copies > 0 ? copies / perPack : undefined;
+  return { boosters, carbonite };
+}
+
+/** Owned copies of each printing signal: Commons and Uncommons, and every Prestige. */
+export function signalCounts(
+  set: LoadedSet,
+  owned: ReadonlyMap<number, OwnedCounts>,
+): Record<PackSignal, number> {
+  const counts: Record<PackSignal, number> = {
+    normal: 0,
+    foil: 0,
+    hyperspace: 0,
+    hyperspaceFoil: 0,
+    prestige: 0,
+  };
+  for (const card of set.cardsByBase.values()) {
+    const byVariant = ownedFor(owned, card.base).byVariant;
+    const pool = poolOf(card);
+    const low = pool === 'common' || pool === 'uncommon';
+    for (const signal of Object.keys(counts) as PackSignal[]) {
+      if (signal !== 'prestige' && !low) continue;
+      for (const variant of SIGNAL_VARIANTS[signal]) counts[signal] += byVariant[variant] ?? 0;
+    }
+  }
+  return counts;
+}
+
+/**
+ * Each pack card's expected copies from a mix of packs: the booster and Carbonite rates,
+ * weighted by how many of each. `quota` and `owned` as `cardRates` gives them.
+ */
+export function mixedRates(
+  set: LoadedSet,
+  profiles: SetPackProfiles,
+  owned: ReadonlyMap<number, OwnedCounts>,
+  mix: PackMix,
+): CardRate[] {
+  const byBase = new Map<number, CardRate>();
+  const add = (profile: PackProfile | undefined, packs: number) => {
+    if (!profile || packs <= 0) return;
+    for (const r of cardRates(set, profile, owned)) {
+      const prior = byBase.get(r.card.base);
+      byBase.set(r.card.base, { ...r, rate: (prior?.rate ?? 0) + r.rate * packs });
+    }
+  };
+  add(profiles.booster, mix.boosters);
+  add(profiles.carbonite, mix.carbonite);
+  return [...byBase.values()];
 }
 
 /** Expected share of pack cards with a full playset after `packs` packs, from nothing. */
@@ -164,25 +259,36 @@ export function packsToFinish(rates: readonly CardRate[], cap = 100_000): PacksT
 
 export type HitRate = {
   label: string;
-  /** Copies of these printings you own (pack printings only). */
+  /** Copies of these printings you own. */
   owned: number;
-  /** Expected per pack, from the profile. */
-  perPack: number;
+  /** Expected copies from the packs in `mix`; undefined without one. */
+  expected?: number;
+  /** Per booster and per Carbonite pack, from FFG's odds. */
+  booster: number;
+  carbonite: number;
 };
 
-/** Owned copies of each tracked kind of hit, beside how often a pack holds one. */
+/** Owned copies of each tracked kind of hit, beside what that mix of packs should give. */
 export function hitRates(
   set: LoadedSet,
-  profile: PackProfile,
+  profiles: SetPackProfiles,
   owned: ReadonlyMap<number, OwnedCounts>,
+  mix?: PackMix,
 ): HitRate[] {
-  return profile.hits.map((hit) => {
+  return profiles.hits.map((hit) => {
     let count = 0;
     for (const card of set.cardsByBase.values()) {
-      if (hit.rarities && !hit.rarities.includes(card.rarity ?? '')) continue;
+      if (hit.rarities && (card.type === 'Leader' || !hit.rarities.includes(card.rarity ?? '')))
+        continue;
       const counts = ownedFor(owned, card.base);
       for (const variant of hit.variants) count += counts.byVariant[variant] ?? 0;
     }
-    return { label: hit.label, owned: count, perPack: hit.perPack };
+    return {
+      label: hit.label,
+      owned: count,
+      expected: mix && mix.boosters * hit.booster + mix.carbonite * hit.carbonite,
+      booster: hit.booster,
+      carbonite: hit.carbonite,
+    };
   });
 }

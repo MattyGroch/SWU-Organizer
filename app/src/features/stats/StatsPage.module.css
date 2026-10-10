@@ -201,6 +201,15 @@
   gap: var(--space-3);
 }
 
+.oddsInline {
+  display: none;
+}
+
+/* A table wider than a phone scrolls on its own rather than pushing the page sideways. */
+.tableScroll {
+  overflow-x: auto;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -235,6 +244,14 @@
   white-space: nowrap;
 }
 
+.luck {
+  color: var(--color-danger-fg);
+}
+
+.luck[data-up='true'] {
+  color: var(--color-success-fg);
+}
+
 /* Under the packs figure: how far either side of it the luck can run. */
 .range {
   display: block;
@@ -244,6 +261,17 @@
 }
 
 @media (max-width: 760px) {
+  .oddsCol {
+    display: none;
+  }
+
+  .oddsInline {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    font-weight: 400;
+  }
+
   .breakdownRow {
     grid-template-columns: 7rem 1fr auto;
     gap: var(--space-2);

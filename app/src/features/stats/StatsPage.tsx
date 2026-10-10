@@ -30,9 +30,10 @@ import {
 } from './collectionStats';
 import {
   cardRates,
-  estimatePacksOpened,
+  estimatePackMix,
   expectedCompletion,
   hitRates,
+  mixedRates,
   packsToFinish,
 } from './packMath';
 import { packProfiles, type PackProfile } from './packProfiles';
@@ -255,14 +256,17 @@ function Tile({ label, value, card }: { label: string; value: string; card?: Car
 
 function PackStats({ set, owned }: { set: LoadedSet; owned: ReadonlyMap<number, OwnedCounts> }) {
   const profiles = packProfiles(set.setKey)!;
-  const booster = profiles.booster;
-  const opened = estimatePacksOpened(set, booster, owned);
-  const rates = useMemo(() => cardRates(set, booster, owned), [set, booster, owned]);
-  const hits = hitRates(set, booster, owned);
+  const { booster, carbonite } = profiles;
+  const mix = useMemo(() => estimatePackMix(set, profiles, owned), [set, profiles, owned]);
+  const rates = useMemo(
+    () => mixedRates(set, profiles, owned, { boosters: 1, carbonite: 0 }),
+    [set, profiles, owned],
+  );
+  const hits = hitRates(set, profiles, owned, mix);
 
   const actual =
     rates.length > 0 ? rates.filter((r) => r.owned >= r.quota).length / rates.length : 0;
-  const expected = opened ? expectedCompletion(rates, opened) : 0;
+  const expected = mix ? expectedCompletion(mixedRates(set, profiles, owned, mix), 1) : 0;
 
   const singles = useMemo(
     () =>
@@ -273,53 +277,87 @@ function PackStats({ set, owned }: { set: LoadedSet; owned: ReadonlyMap<number, 
   );
   const finishes = useMemo(
     () =>
-      [booster, profiles.carbonite]
+      [booster, carbonite]
         .filter((p): p is PackProfile => !!p)
         .map((profile) => ({
           profile,
           finish: packsToFinish(cardRates(set, profile, owned)),
         })),
-    [set, owned, booster, profiles.carbonite],
+    [set, owned, booster, carbonite],
   );
 
   return (
     <div className={styles.packs}>
-      <p className={styles.note}>{booster.summary}</p>
+      <p className={styles.note}>
+        <strong>Booster:</strong> {booster.summary}
+        {carbonite && (
+          <>
+            {' '}
+            <strong>Carbonite:</strong> {carbonite.summary}
+          </>
+        )}
+      </p>
 
       <div className={styles.tiles}>
-        <Tile label="Packs opened, about" value={opened ? whole(opened) : '—'} />
+        <Tile label="Boosters, about" value={mix ? whole(mix.boosters) : '—'} />
+        {carbonite && <Tile label="Carbonite, about" value={mix ? whole(mix.carbonite) : '—'} />}
         <Tile label="Playsets complete" value={percent(actual)} />
-        <Tile label="The odds say" value={opened ? percent(expected) : '—'} />
+        <Tile label="The odds say" value={mix ? percent(expected) : '—'} />
       </div>
-      {opened && (
+      {mix && (
         <p className={styles.note}>
-          {luckLine(actual, expected)} The pack count comes from your commons and uncommons (
-          {whole(booster.pools.common! + booster.pools.uncommon!)} a pack); promos and Special cards
-          aren't counted.
+          {luckLine(actual, expected)} The pack counts are read from your Commons and Uncommons —{' '}
+          {carbonite
+            ? 'plain ones come from boosters, foil and Hyperspace ones mostly from Carbonite — and your Prestige cards.'
+            : 'about 12 a pack.'}{' '}
+          Promos and Special cards aren't counted.
         </p>
       )}
 
-      <table className={styles.table}>
-        <caption className={styles.caption}>Hit rate</caption>
-        <thead>
-          <tr>
-            <th scope="col">Pull</th>
-            <th scope="col">You own</th>
-            <th scope="col">Yours</th>
-            <th scope="col">Odds</th>
-          </tr>
-        </thead>
-        <tbody>
-          {hits.map((hit) => (
-            <tr key={hit.label}>
-              <th scope="row">{hit.label}</th>
-              <td>{whole(hit.owned)}</td>
-              <td>{opened ? oneIn(hit.owned / opened) : '—'}</td>
-              <td>{oneIn(hit.perPack)}</td>
+      <div className={styles.tableScroll}>
+        <table className={styles.table}>
+          <caption className={styles.caption}>Hit rate · odds per pack</caption>
+          <thead>
+            <tr>
+              <th scope="col">Pull</th>
+              <th scope="col">Own</th>
+              <th scope="col" title="What the packs above should have given">
+                Expected
+              </th>
+              <th scope="col" className={styles.oddsCol}>
+                Booster
+              </th>
+              {carbonite && (
+                <th scope="col" className={styles.oddsCol}>
+                  Carbonite
+                </th>
+              )}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {hits.map((hit) => (
+              <tr key={hit.label}>
+                <th scope="row">
+                  {hit.label}
+                  {/* Phones: the odds columns fold into a line under the name. */}
+                  <span className={styles.oddsInline}>
+                    {carbonite
+                      ? `Booster ${oneIn(hit.booster)} · Carbonite ${oneIn(hit.carbonite)}`
+                      : oneIn(hit.booster)}
+                  </span>
+                </th>
+                <td>
+                  {whole(hit.owned)}
+                  {hit.expected !== undefined && <Luck owned={hit.owned} expected={hit.expected} />}
+                </td>
+                <td>{hit.expected === undefined ? '—' : about(hit.expected)}</td>
+                <td className={styles.oddsCol}>{oneIn(hit.booster)}</td>
+                {carbonite && <td className={styles.oddsCol}>{oneIn(hit.carbonite)}</td>}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <table className={styles.table}>
         <caption className={styles.caption}>Finishing the playsets</caption>
@@ -361,9 +399,34 @@ function PackStats({ set, owned }: { set: LoadedSet; owned: ReadonlyMap<number, 
       <p className={styles.note}>
         Any printing fills a playset, so foils and Hyperspace count. Singles are priced at each
         card's Normal printing. Packs are a rough model: every card of a rarity is assumed equally
-        likely.
+        likely, and FFG doesn't publish the Rare leader rate or a Carbonite pack's rarity mix, so
+        those are estimates.
       </p>
     </div>
+  );
+}
+
+/** A count to the nearest whole, or tenth when it's small. */
+function about(n: number): string {
+  return n < 10 ? String(Number(n.toFixed(1))) : whole(n);
+}
+
+/**
+ * ▲ or ▼ beside a count well off what the packs should give: more than a couple of
+ * standard deviations (counts vary by about their square root).
+ */
+function Luck({ owned, expected }: { owned: number; expected: number }) {
+  const spread = 2 * Math.sqrt(Math.max(expected, 1));
+  if (Math.abs(owned - expected) <= spread) return null;
+  const up = owned > expected;
+  return (
+    <span
+      className={styles.luck}
+      data-up={up}
+      title={up ? 'Well above the odds' : 'Well below the odds'}
+    >
+      {up ? ' ▲' : ' ▼'}
+    </span>
   );
 }
 
