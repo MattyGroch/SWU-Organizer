@@ -25,6 +25,7 @@ import {
   printingBreakdown,
   printingProgress,
   setCompletions,
+  sumCompletions,
   type CardHighlight,
   type PrintingGroup,
 } from './collectionStats';
@@ -91,6 +92,8 @@ export function StatsPage({ entries, sets }: Props) {
 
   const highlights = useMemo(() => collectionHighlights(allSets, ownership), [allSets, ownership]);
   const completions = useMemo(() => setCompletions(shownSets, ownership), [shownSets, ownership]);
+  const allTotals = useMemo(() => sumCompletions(completions), [completions]);
+  const { chase } = highlights;
   const breakdown = useMemo(() => printingBreakdown(ownership.values()), [ownership]);
 
   const packSets = shownSets.filter((set) => packProfiles(set.setKey));
@@ -114,17 +117,21 @@ export function StatsPage({ entries, sets }: Props) {
         <h2 id="stats-collection" className={styles.heading}>
           Collection
         </h2>
+        <CollectionProgress totals={allTotals} title="All sets" />
         <div className={styles.tiles}>
           <Tile label="Copies" value={whole(highlights.copies)} />
           <Tile label="Different cards" value={whole(highlights.cards)} />
           <Tile label="Market value" value={formatUsd(highlights.value)} />
-          {highlights.mostCopies && (
-            <Tile
-              label="Most copies"
-              value={`${highlights.mostCopies.amount}×`}
-              card={highlights.mostCopies}
-            />
-          )}
+          <Tile
+            label="To finish, in singles"
+            value={formatUsd(allTotals.missingCost)}
+            note="Missing cards at their Normal price"
+          />
+          <Tile
+            label="Chase cards"
+            value={whole(chase.showcase + chase.serialized + chase.prestigeFoil)}
+            note={`${chase.showcase} Showcase\n${chase.serialized} Serialized\n${chase.prestigeFoil} Prestige Foil`}
+          />
           {highlights.mostValuable && (
             <Tile
               label="Most valuable"
@@ -234,11 +241,23 @@ export function StatsPage({ entries, sets }: Props) {
   );
 }
 
-function Tile({ label, value, card }: { label: string; value: string; card?: CardHighlight }) {
+function Tile({
+  label,
+  value,
+  card,
+  note,
+}: {
+  label: string;
+  value: string;
+  card?: CardHighlight;
+  /** A small line under the value. */
+  note?: string;
+}) {
   return (
     <div className={styles.tile}>
       <span className={styles.tileLabel}>{label}</span>
       <span className={styles.tileValue}>{value}</span>
+      {note && <span className={styles.tileNote}>{note}</span>}
       {card && (
         <Link
           to="/inventory/$setKey/$view"

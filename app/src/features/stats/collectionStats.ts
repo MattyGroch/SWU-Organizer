@@ -9,6 +9,23 @@ import type { CollectionTotals } from '~/features/binder/cardRows';
  * page reads every owned row once and hands it here, indexed per set.
  */
 
+/** Every set's playset counts and costs added together, for the all-sets bar. */
+export function sumCompletions(completions: readonly SetCompletion[]): CollectionTotals {
+  const sum: CollectionTotals = {
+    cards: 0,
+    complete: 0,
+    partial: 0,
+    missing: 0,
+    value: 0,
+    missingCost: 0,
+    inBulk: 0,
+  };
+  for (const { totals } of completions) {
+    for (const key of Object.keys(sum) as Array<keyof CollectionTotals>) sum[key] += totals[key];
+  }
+  return sum;
+}
+
 export type SetCompletion = {
   setKey: SetKey;
   label: string;
@@ -115,8 +132,8 @@ export type CollectionHighlights = {
   /** Distinct cards with at least one copy. */
   cards: number;
   value: number;
-  /** The card you own the most copies of. */
-  mostCopies?: CardHighlight;
+  /** Copies of the chase printings: Showcase, Prestige Serialized and Prestige Foil. */
+  chase: { showcase: number; serialized: number; prestigeFoil: number };
   /** The card whose owned copies are worth the most together. */
   mostValuable?: CardHighlight;
 };
@@ -125,7 +142,12 @@ export function collectionHighlights(
   sets: readonly LoadedSet[],
   ownership: ReadonlyMap<SetKey, ReadonlyMap<number, OwnedCounts>>,
 ): CollectionHighlights {
-  const out: CollectionHighlights = { copies: 0, cards: 0, value: 0 };
+  const out: CollectionHighlights = {
+    copies: 0,
+    cards: 0,
+    value: 0,
+    chase: { showcase: 0, serialized: 0, prestigeFoil: 0 },
+  };
   for (const set of sets) {
     const owned = ownership.get(set.setKey);
     if (!owned) continue;
@@ -143,7 +165,9 @@ export function collectionHighlights(
       out.copies += counts.total;
       out.cards += 1;
       out.value += value;
-      if (counts.total > (out.mostCopies?.amount ?? 0)) out.mostCopies = highlight(counts.total);
+      out.chase.showcase += counts.byVariant.showcase ?? 0;
+      out.chase.serialized += counts.byVariant['prestige-serialized'] ?? 0;
+      out.chase.prestigeFoil += counts.byVariant['prestige-foil'] ?? 0;
       if (value > (out.mostValuable?.amount ?? 0)) out.mostValuable = highlight(value);
     }
   }

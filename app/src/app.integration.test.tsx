@@ -651,7 +651,9 @@ describe('the stats page', () => {
     expect(within(subnav).getByRole('link', { name: 'Binder' })).not.toHaveAttribute(
       'aria-current',
     );
-    expect(screen.getAllByRole('link', { name: /Inferno Four/ }).length).toBeGreaterThan(0);
+    // Four copies of one SOR card: its playset done, so one card complete across all sets.
+    expect(screen.getByText('All sets')).toBeInTheDocument();
+    expect(screen.getAllByRole('img', { name: /^1 complete/ }).length).toBeGreaterThan(0);
     expect(screen.getByRole('combobox', { name: 'Set' })).toHaveValue('SOR');
 
     const nav = screen.getByRole('navigation', { name: 'Main' });

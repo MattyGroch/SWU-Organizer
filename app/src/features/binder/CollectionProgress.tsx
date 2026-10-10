@@ -5,6 +5,8 @@ type Props = {
   totals: CollectionTotals;
   /** One line — percent, counts and a thin bar — for phones, where height is scarce. */
   compact?: boolean;
+  /** The heading's words; "Collection status" unless given. */
+  title?: string;
 };
 
 /**
@@ -14,7 +16,11 @@ type Props = {
  * Restored from the legacy app, where it was the at-a-glance read on a set. Segment
  * widths are shares of the filtered card count, so the bar always fills exactly.
  */
-export function CollectionProgress({ totals, compact = false }: Props) {
+export function CollectionProgress({
+  totals,
+  compact = false,
+  title = 'Collection status',
+}: Props) {
   const { cards, complete, partial, missing } = totals;
   const share = (n: number) => (cards ? (n / cards) * 100 : 0);
   const percentComplete = Math.round(share(complete));
@@ -59,7 +65,7 @@ export function CollectionProgress({ totals, compact = false }: Props) {
     <div className={styles.progress}>
       <div className={styles.heading}>
         <span>
-          Collection status <span className={styles.cards}>· {cards} cards</span>
+          {title} <span className={styles.cards}>· {cards} cards</span>
         </span>
         <span className={styles.percent}>{percentComplete}% complete</span>
       </div>
