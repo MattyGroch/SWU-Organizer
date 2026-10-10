@@ -26,6 +26,7 @@ import type { SearchCatalog, SearchSuggestion } from '~/domain/search';
 
 import { AddToBulkDialog } from './AddToBulkDialog';
 import { BinderGrid } from './BinderGrid';
+import { BinderLayoutToggle } from './BinderLayoutToggle';
 import {
   activeFilterCount,
   buildCardRows,
@@ -60,10 +61,13 @@ import { ImportDialog } from '~/features/import/ImportDialog';
 import { CardSearch } from '~/features/search/CardSearch';
 import { InventorySubnav } from '~/features/inventory/InventoryNav';
 import {
+  readBinderLayout,
   readFilters,
   readPosition,
+  rememberBinderLayout,
   rememberFilters,
   rememberPosition,
+  type BinderLayout,
 } from '~/features/inventory/lastPlace';
 import type { InventoryView } from '~/features/inventory/views';
 import { formatUsd } from '~/ui/format';
@@ -94,6 +98,13 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   /** Phones get a shorter stack of controls, so the card table has the screen. */
   const narrow = useNarrow();
   const showBinder = view === 'binder';
+  /** A desktop chooses between the spread and one page; a phone only has room for a page. */
+  const [layout, setLayoutState] = useState<BinderLayout>(readBinderLayout);
+  const setLayout = useCallback((next: BinderLayout) => {
+    setLayoutState(next);
+    rememberBinderLayout(next);
+  }, []);
+  const onePage = narrow || layout === 'page';
   const moreRef = useRef<HTMLDetailsElement>(null);
   const [filters, setFiltersState] = useState<Filters>(readFilters);
   /** Filters survive leaving the tab: they are kept for the next visit. */
@@ -385,7 +396,8 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
           break;
         case 'stepSpread':
           event.preventDefault();
-          binder.stepSpread(intent.delta);
+          if (onePage) binder.stepPage(intent.delta);
+          else binder.stepSpread(intent.delta);
           break;
         case 'stepSet':
           event.preventDefault();
@@ -412,7 +424,15 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [binder, goToSet, adjustDefault, adjustVariant, fillSelectedPlayset, clearSelectedSlot]);
+  }, [
+    binder,
+    onePage,
+    goToSet,
+    adjustDefault,
+    adjustVariant,
+    fillSelectedPlayset,
+    clearSelectedSlot,
+  ]);
 
   /** Copy buy list: beside the progress on desktop, in More on a phone. */
   const buyListButton = (onClick: () => void) => (
@@ -675,26 +695,33 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
       </div>
 
       {/* A two-page spread is too wide for a phone, so a phone shows one page at a time,
-          turned by dragging it sideways. */}
+          turned by dragging it sideways. A desktop can choose either. */}
       {showBinder ? (
         <div className={styles.binderArea}>
-          {narrow ? (
-            <SpreadPager
-              unit="page"
-              value={binder.viewPage}
-              total={binder.geometry.totalPages}
-              onGoTo={binder.goToPage}
-              onStep={binder.stepPage}
-            />
-          ) : (
-            <SpreadPager
-              unit="spread"
-              value={binder.viewSpread}
-              total={binder.geometry.totalSpreads}
-              onGoTo={binder.goToSpread}
-              onStep={binder.stepSpread}
-            />
-          )}
+          <div className={styles.binderBar}>
+            {onePage ? (
+              <SpreadPager
+                unit="page"
+                value={binder.viewPage}
+                total={binder.geometry.totalPages}
+                onGoTo={binder.goToPage}
+                onStep={binder.stepPage}
+              />
+            ) : (
+              <SpreadPager
+                unit="spread"
+                value={binder.viewSpread}
+                total={binder.geometry.totalSpreads}
+                onGoTo={binder.goToSpread}
+                onStep={binder.stepSpread}
+              />
+            )}
+            {!narrow && (
+              <div className={styles.layoutSlot}>
+                <BinderLayoutToggle layout={layout} onChange={setLayout} />
+              </div>
+            )}
+          </div>
 
           {narrow ? (
             <SwipePage
@@ -727,6 +754,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
               focusRequest={binder.focusRequest}
               promoArt={promoArt}
               onSelect={binder.selectCard}
+              singlePage={onePage ? binder.viewPage : undefined}
             />
           )}
         </div>

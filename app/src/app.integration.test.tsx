@@ -284,6 +284,27 @@ describe('binder, end to end', () => {
     await waitFor(() => expect(screen.getByRole('grid')).toHaveAccessibleName('Binder, page 1'));
   });
 
+  it('switches a desktop binder to one page at a time, and remembers it', async () => {
+    const user = userEvent.setup();
+    await renderApp();
+
+    await user.keyboard('.');
+    await waitFor(() =>
+      expect(screen.getByRole('grid')).toHaveAccessibleName('Binder spread, pages 2 and 3'),
+    );
+
+    await user.click(screen.getByRole('radio', { name: /Page/ }));
+    expect(screen.getByRole('grid')).toHaveAccessibleName('Binder, page 2');
+    expect(localStorage.getItem('inventory:binderLayout')).toBe('page');
+
+    // , and . turn single pages now.
+    await user.keyboard('.');
+    await waitFor(() => expect(screen.getByRole('grid')).toHaveAccessibleName('Binder, page 3'));
+
+    await user.click(screen.getByRole('radio', { name: /Spread/ }));
+    expect(screen.getByRole('grid')).toHaveAccessibleName('Binder spread, pages 2 and 3');
+  });
+
   it('pages the binder to a card chosen from search', async () => {
     const user = userEvent.setup();
     await renderApp();
