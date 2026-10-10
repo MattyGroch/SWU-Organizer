@@ -79,11 +79,6 @@
   font-size: var(--font-size-md);
 }
 
-.toggle input {
-  width: 28px;
-  height: 28px;
-}
-
 .progressRow {
   display: flex;
   flex-wrap: wrap;
@@ -100,12 +95,6 @@
 .progressText {
   color: var(--color-text-subtle);
   font-size: var(--font-size-md);
-}
-
-.progress {
-  width: 100%;
-  height: 8px;
-  accent-color: var(--color-link);
 }
 
 .link {

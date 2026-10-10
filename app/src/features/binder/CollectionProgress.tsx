@@ -1,3 +1,5 @@
+import { SaberBar } from '~/ui/SaberBar';
+
 import type { CollectionTotals } from './cardRows';
 import styles from './CollectionProgress.module.css';
 
@@ -10,7 +12,7 @@ type Props = {
 };
 
 /**
- * Complete / partial / missing as one stacked bar, over whatever the filters currently
+ * Complete / partial / missing as one stacked saber blade, over whatever the filters currently
  * show — filter to Rares and it is the Rare playset progress.
  *
  * Restored from the legacy app, where it was the at-a-glance read on a set. Segment
@@ -28,19 +30,17 @@ export function CollectionProgress({
   const summary = `${complete} complete, ${partial} in progress, ${missing} not collected, of ${cards} cards`;
 
   const bar = (
-    <div className={styles.bar} role="img" aria-label={summary} title={summary}>
-      <span
-        className={styles.segment}
-        data-status="complete"
-        style={{ width: `${share(complete)}%` }}
-      />
-      <span
-        className={styles.segment}
-        data-status="partial"
-        style={{ width: `${share(partial)}%` }}
-      />
-      <span className={styles.segment} data-status="none" style={{ width: `${share(missing)}%` }} />
-    </div>
+    <SaberBar
+      role="img"
+      aria-label={summary}
+      title={summary}
+      compact={compact}
+      segments={[
+        { percent: share(complete), color: 'var(--color-success)' },
+        { percent: share(partial), color: 'var(--color-warning)' },
+        { percent: share(missing), color: 'var(--color-danger)', dim: true },
+      ]}
+    />
   );
 
   if (compact) {
@@ -70,23 +70,7 @@ export function CollectionProgress({
         <span className={styles.percent}>{percentComplete}% complete</span>
       </div>
 
-      <div className={styles.bar} role="img" aria-label={summary} title={summary}>
-        <span
-          className={styles.segment}
-          data-status="complete"
-          style={{ width: `${share(complete)}%` }}
-        />
-        <span
-          className={styles.segment}
-          data-status="partial"
-          style={{ width: `${share(partial)}%` }}
-        />
-        <span
-          className={styles.segment}
-          data-status="none"
-          style={{ width: `${share(missing)}%` }}
-        />
-      </div>
+      {bar}
 
       <div className={styles.legend} aria-hidden="true">
         <span data-status="complete">✓ {complete}</span>

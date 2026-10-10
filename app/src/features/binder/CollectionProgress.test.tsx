@@ -15,6 +15,10 @@ const totals = (over: Partial<CollectionTotals>): CollectionTotals => ({
   ...over,
 });
 
+/** The blade's lit segments, by width; empty ones aren't drawn. */
+const segmentWidths = (bar: HTMLElement) =>
+  [...bar.querySelectorAll<HTMLElement>('[style*="width"]')].map((s) => s.style.width);
+
 describe('CollectionProgress', () => {
   it('sizes each segment as its share of the filtered cards', () => {
     render(
@@ -22,15 +26,13 @@ describe('CollectionProgress', () => {
     );
     const bar = screen.getByRole('img');
     expect(bar).toHaveAccessibleName('2 complete, 1 in progress, 1 not collected, of 4 cards');
-    const widths = [...bar.children].map((c) => (c as HTMLElement).style.width);
-    expect(widths).toEqual(['50%', '25%', '25%']);
+    expect(segmentWidths(bar)).toEqual(['50%', '25%', '25%']);
     expect(screen.getByText('50% complete')).toBeInTheDocument();
   });
 
-  it('shows an empty bar rather than NaN when the filters match nothing', () => {
+  it('shows an unlit blade rather than NaN when the filters match nothing', () => {
     render(<CollectionProgress totals={totals({})} />);
-    const widths = [...screen.getByRole('img').children].map((c) => (c as HTMLElement).style.width);
-    expect(widths).toEqual(['0%', '0%', '0%']);
+    expect(segmentWidths(screen.getByRole('img'))).toEqual([]);
     expect(screen.getByText('0% complete')).toBeInTheDocument();
   });
 });

@@ -22,6 +22,7 @@ import {
 } from '~/domain/decks';
 import type { ResolvedDeckRow } from '~/domain/decklist';
 import type { SetKey } from '~/domain/types';
+import { Checkbox } from '~/ui/Checkbox';
 import { formatUsd } from '~/ui/format';
 import { useToast } from '~/ui/toastContext';
 
@@ -163,8 +164,7 @@ export function DeckCheck({ sets, lookup, owned, onSave, onClose }: Props) {
           </label>
 
           <label className={styles.checkbox}>
-            <input
-              type="checkbox"
+            <Checkbox
               checked={includeSideboard}
               onChange={(event) => setIncludeSideboard(event.target.checked)}
             />

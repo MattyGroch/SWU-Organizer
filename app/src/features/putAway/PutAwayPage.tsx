@@ -32,6 +32,8 @@ import {
 } from '~/domain/putAway';
 import type { SetKey } from '~/domain/types';
 import { stackEntry, usePlaceScan, type Printing } from '~/features/scan/usePlaceScan';
+import { Checkbox } from '~/ui/Checkbox';
+import { SaberBar } from '~/ui/SaberBar';
 import { useToast } from '~/ui/toastContext';
 
 import { FixCardSheet } from './FixCardSheet';
@@ -160,8 +162,7 @@ function Setup({
 
       {speechSupported() && (
         <label className={styles.toggle}>
-          <input
-            type="checkbox"
+          <Checkbox
             checked={speech}
             onChange={(e) => void writeMeta(db, SPEECH_KEY, e.target.checked ? 'on' : 'off')}
           />
@@ -394,7 +395,14 @@ function Walk({
           </button>
         </span>
       </div>
-      <progress className={styles.progress} max={steps.length} value={index} />
+      <SaberBar
+        role="progressbar"
+        aria-label="Put Away progress"
+        aria-valuemin={0}
+        aria-valuemax={steps.length}
+        aria-valuenow={index}
+        segments={[{ percent: steps.length ? (index / steps.length) * 100 : 0 }]}
+      />
       {waiting > 0 && step?.kind !== 'bulk' && (
         <p className={styles.waiting} role="status">
           {waiting === 1 ? '1 card' : `${waiting} cards`} to one side — handled at the end

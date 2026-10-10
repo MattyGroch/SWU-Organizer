@@ -5,6 +5,7 @@ import { variantLabel, type VariantSlug } from '~/domain/catalog';
 import type { CatalogLookup, ImportResult, SkipReason } from '~/domain/import';
 import { quotaForCard } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
+import { Checkbox } from '~/ui/Checkbox';
 
 import styles from './ImportDialog.module.css';
 import { downloadBackup } from './downloadBackup';
@@ -297,8 +298,7 @@ export function ImportDialog({ catalog, onClose }: Props) {
 
             {result.deckLibrary && (
               <label className={styles.deckOption}>
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={restoreDecks}
                   onChange={(event) => setRestoreDecks(event.target.checked)}
                 />

@@ -18,6 +18,7 @@ import { quotaForCard } from '~/domain/ownership';
 import { STATUS_LABEL, type CardRow, type Filters } from '~/features/binder/cardRows';
 import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
 import { downloadBackup } from '~/features/import/downloadBackup';
+import { Checkbox } from '~/ui/Checkbox';
 import { useToast } from '~/ui/toastContext';
 
 import styles from './BulkEditDialog.module.css';
@@ -295,8 +296,7 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
             ))}
           </div>
           <label className={styles.checkbox}>
-            <input
-              type="checkbox"
+            <Checkbox
               checked={unbuildOnClear}
               onChange={(event) => setUnbuildOnClear(event.target.checked)}
             />
@@ -319,8 +319,7 @@ export function BulkEditDialog({ set, rows, filters, binderSets, hiddenSetKeys, 
               . Undo is offered right after, but a backup survives closing the page.
             </p>
             <label className={styles.checkbox}>
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={unbuildOnReset}
                 onChange={(event) => setUnbuildOnReset(event.target.checked)}
               />

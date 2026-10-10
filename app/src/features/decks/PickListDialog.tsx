@@ -17,6 +17,7 @@ import type { DeckLibrary, SavedDeck } from '~/domain/decks';
 import { pocketSpill, subtractVariants, sumVariants, type VariantCounts } from '~/domain/ownership';
 import { buildPutBackList } from '~/domain/pickList';
 import type { SetKey } from '~/domain/types';
+import { Checkbox } from '~/ui/Checkbox';
 import { useToast } from '~/ui/toastContext';
 
 import { AspectIcons } from '../binder/AspectIcons';
@@ -307,8 +308,7 @@ export function PickListDialog({
           </p>
 
           <label className={styles.checkbox}>
-            <input
-              type="checkbox"
+            <Checkbox
               checked={includeSideboard}
               onChange={(event) => setIncludeSideboard(event.target.checked)}
             />
@@ -378,8 +378,7 @@ export function PickListDialog({
                   return (
                     <li key={offer.id}>
                       <label className={styles.checkbox}>
-                        <input
-                          type="checkbox"
+                        <Checkbox
                           checked={taken.has(offer.id)}
                           onChange={() => toggleTake(offer.id)}
                         />
