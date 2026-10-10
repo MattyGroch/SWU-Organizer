@@ -1,0 +1,256 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  /* The sub-nav cancels the page's gap under it; give the first section room again. */
+  padding-top: var(--space-4);
+  min-width: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.heading {
+  color: var(--hud);
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.note {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.muted {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-3);
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.tileLabel {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tileValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.tileCard {
+  overflow: hidden;
+  color: var(--color-link);
+  font-size: var(--font-size-sm);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.setList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: var(--space-3);
+  padding: 0;
+  list-style: none;
+}
+
+.setRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--row-accent, var(--color-border-strong));
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.setName {
+  overflow: hidden;
+  color: var(--color-text);
+  font-weight: 700;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.setName:hover {
+  color: var(--color-link);
+}
+
+.masterSet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.masterSet strong {
+  color: var(--color-text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.breakdownRow {
+  display: grid;
+  grid-template-columns: 9rem 1fr 7.5rem;
+  gap: var(--space-3);
+  align-items: center;
+  font-size: var(--font-size-sm);
+}
+
+.breakdownTrack {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: var(--color-surface-sunken);
+}
+
+.breakdownFill {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+  background: var(--color-text-muted);
+}
+
+.breakdownFill[data-variant='foil'],
+.breakdownFill[data-variant='hyperspace-foil'],
+.breakdownFill[data-variant='promo-foil'],
+.breakdownFill[data-variant='prestige-foil'] {
+  background: linear-gradient(90deg, #7dd3fc, #c084fc, #fcd34d);
+}
+
+.breakdownFill[data-variant='hyperspace'] {
+  background: #38bdf8;
+}
+
+.breakdownFill[data-variant='promo'] {
+  background: #f472b6;
+}
+
+.breakdownFill[data-variant='prestige'],
+.breakdownFill[data-variant='prestige-serialized'] {
+  background: #e2e8f0;
+}
+
+.breakdownFill[data-variant='showcase'] {
+  background: var(--rarity-rare);
+}
+
+.breakdownValue {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.packHead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.select {
+  max-width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.packs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.caption {
+  padding-bottom: var(--space-2);
+  color: var(--color-text-subtle);
+  font-weight: 700;
+  text-align: left;
+}
+
+.table th,
+.table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.table thead th {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.table tbody th {
+  font-weight: 600;
+}
+
+.table td {
+  white-space: nowrap;
+}
+
+/* Under the packs figure: how far either side of it the luck can run. */
+.range {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  white-space: normal;
+}
+
+@media (max-width: 760px) {
+  .breakdownRow {
+    grid-template-columns: 7rem 1fr auto;
+    gap: var(--space-2);
+  }
+
+  .table th,
+  .table td {
+    padding: var(--space-2);
+  }
+}

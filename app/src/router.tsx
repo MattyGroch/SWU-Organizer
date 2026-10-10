@@ -20,6 +20,7 @@ import { binderEntries, readHiddenSets } from '~/data/binderSettings';
 import { BinderRoute } from '~/routes/BinderRoute';
 import { BulkPage } from '~/features/inventory/BulkPage';
 import { readLastSet, readLastView } from '~/features/inventory/lastPlace';
+import { StatsPage } from '~/features/stats/StatsPage';
 import { isInventoryView, type InventoryView } from '~/features/inventory/views';
 import { NARROW_QUERY } from '~/ui/useNarrow';
 import { DeckEditRoute, DecksRoute, NewDeckRoute } from '~/routes/DecksRoute';
@@ -64,7 +65,7 @@ function defaultView(): InventoryView {
 }
 
 /**
- * The Inventory tab: wherever you last were in it — the set, and Binder, List or Bulk —
+ * The Inventory tab: wherever you last were in it — the set, and Binder, List, Bulk or Stats —
  * or, the first time (or if that set has since been hidden), the newest set with a binder.
  */
 const inventoryIndexRoute = createRoute({
@@ -73,6 +74,7 @@ const inventoryIndexRoute = createRoute({
   beforeLoad: async ({ context }) => {
     const lastView = readLastView();
     if (lastView === 'bulk') throw redirect({ to: '/inventory/bulk' });
+    if (lastView === 'stats') throw redirect({ to: '/inventory/stats' });
     const entries = await context.queryClient.ensureQueryData(manifestQuery());
     const visible = binderEntries(entries, await readHiddenSets());
     const lastSet = readLastSet();
@@ -150,6 +152,22 @@ const bulkRoute = createRoute({
     const { entries } = bulkRoute.useLoaderData();
     const { queryClient } = bulkRoute.useRouteContext();
     return <BulkPage entries={entries} sets={loadedSets(queryClient, entries)} />;
+  },
+});
+
+/** Whole-collection numbers: every set's playsets, printings, and what the packs did. */
+const statsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/inventory/stats',
+  loader: async ({ context }) => {
+    const entries = await context.queryClient.ensureQueryData(manifestQuery());
+    await Promise.all(entries.map((entry) => context.queryClient.ensureQueryData(setQuery(entry))));
+    return { entries };
+  },
+  component: function StatsRouteComponent() {
+    const { entries } = statsRoute.useLoaderData();
+    const { queryClient } = statsRoute.useRouteContext();
+    return <StatsPage entries={entries} sets={loadedSets(queryClient, entries)} />;
   },
 });
 
@@ -257,6 +275,7 @@ const routeTree = rootRoute.addChildren([
   indexRoute,
   inventoryIndexRoute,
   bulkRoute,
+  statsRoute,
   setViewRoute,
   legacyBinderRoute,
   decksRoute,

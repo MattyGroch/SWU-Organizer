@@ -6,19 +6,19 @@ import type { SetKey } from '~/domain/types';
 import { usePublishedHeight } from '~/ui/usePublishedHeight';
 
 import styles from './InventoryNav.module.css';
-import { readLastSet, rememberPlace } from './lastPlace';
+import { readLastSet, rememberPlace, type InventoryPlace } from './lastPlace';
 
 /**
- * Binder · List · Bulk. Binder and List show one set; Bulk shows the whole box, so leaving
- * it goes back to the set you were last looking at.
+ * Binder · List · Bulk · Stats. Binder and List show one set; Bulk and Stats span every
+ * set, so leaving them goes back to the set you were last looking at.
  */
 export function InventoryNav({
   setKey,
   current,
 }: {
-  /** The set on screen; absent on the Bulk page. */
+  /** The set on screen; absent on the Bulk and Stats pages. */
   setKey?: SetKey;
-  current: 'binder' | 'list' | 'bulk';
+  current: InventoryPlace;
 }) {
   // Coming back to the Inventory tab, or reopening the app, returns to this page.
   useEffect(() => {
@@ -38,8 +38,14 @@ export function InventoryNav({
       </Link>
     ) : (
       // No set opened yet: /inventory picks one, but it goes to the last view remembered,
-      // which from here is Bulk — so remember the view tapped first, or the tab loops back.
-      <Link to="/inventory" className={styles.tab} onClick={() => rememberPlace(view)}>
+      // which from here is Bulk or Stats — so remember the view tapped first, or the tab loops back.
+      // Exact, or the router marks it current on every page under /inventory.
+      <Link
+        to="/inventory"
+        activeOptions={{ exact: true }}
+        className={styles.tab}
+        onClick={() => rememberPlace(view)}
+      >
         {view === 'binder' ? 'Binder' : 'List'}
       </Link>
     );
@@ -54,6 +60,13 @@ export function InventoryNav({
         aria-current={current === 'bulk' ? 'page' : undefined}
       >
         Bulk
+      </Link>
+      <Link
+        to="/inventory/stats"
+        className={styles.tab}
+        aria-current={current === 'stats' ? 'page' : undefined}
+      >
+        Stats
       </Link>
     </nav>
   );
@@ -71,7 +84,7 @@ export function InventorySubnav({
   children,
 }: {
   setKey?: SetKey;
-  current: 'binder' | 'list' | 'bulk';
+  current: InventoryPlace;
   children?: ReactNode;
 }) {
   const strip = usePublishedHeight<HTMLDivElement>('--inventory-subnav-height');
