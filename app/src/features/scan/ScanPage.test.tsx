@@ -56,6 +56,7 @@ const sor = toLoadedSet(
         name: '2-1B Surgical Droid',
         type: 'Unit',
         aspects: [],
+        rarity: 'Uncommon',
         printings: [
           { num: '059', variant: 'normal' },
           { num: '059F', variant: 'foil' },
@@ -186,6 +187,7 @@ describe('ScanPage', () => {
       });
     });
     expect(await screen.findByRole('heading', { name: /2-1B Surgical Droid/ })).toBeInTheDocument();
+    expect(screen.getByTitle('Uncommon')).toHaveAttribute('data-rarity', 'Uncommon');
     expect(screen.getByText('Added to Intake')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Correct' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Rescan' })).toBeInTheDocument();
