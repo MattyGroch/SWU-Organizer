@@ -8,6 +8,7 @@ import {
   parsePriceTable,
   parseSetCatalog,
   parseSetManifest,
+  printingForNumber,
   setNameWithoutKey,
   toLoadedSet,
   toSearchCatalog,
@@ -303,6 +304,31 @@ describe('finishCounterpart', () => {
         'prestige-serialized',
       ),
     ).toBeUndefined();
+  });
+});
+
+describe('printingForNumber', () => {
+  const printings = [
+    { num: '167F', variant: 'foil' as const },
+    { num: '167', variant: 'normal' as const },
+    { num: '431', variant: 'hyperspace' as const },
+    { num: '431F', variant: 'hyperspace-foil' as const },
+    { num: '600', variant: 'showcase' as const },
+    { num: 'SECOP-015', variant: 'promo' as const, aliases: ['P26-014'] },
+  ];
+
+  it('picks the printing a number names, the plain one where a foil shares it', () => {
+    expect(printingForNumber(printings, { number: 167 })?.variant).toBe('normal');
+    expect(printingForNumber(printings, { number: 431 })?.variant).toBe('hyperspace');
+    expect(printingForNumber(printings, { number: 600 })?.variant).toBe('showcase');
+  });
+
+  it('reads promo numbers in their own set, aliases included', () => {
+    expect(printingForNumber(printings, { number: 15, promoSet: 'SECOP' })?.variant).toBe(
+      'promo',
+    );
+    expect(printingForNumber(printings, { number: 14, promoSet: 'P26' })?.variant).toBe('promo');
+    expect(printingForNumber(printings, { number: 15 })).toBeUndefined();
   });
 });
 

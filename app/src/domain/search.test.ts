@@ -51,11 +51,14 @@ describe('search suggestions', () => {
     expect(results[results.length - 1]?.name).toBe('Brain Invaders');
   });
 
-  it('resolves an alternate printing number to its base card', () => {
+  it('resolves an alternate printing number to its base card, keeping the number', () => {
     expect(buildSearchSuggestions('351', catalogs, 'SOR')[0]).toMatchObject({
       setKey: 'SOR',
       baseNumber: 87,
+      matched: { number: 351 },
     });
+    expect(buildSearchSuggestions('087', catalogs, 'SOR')[0]?.matched).toEqual({ number: 87 });
+    expect(buildSearchSuggestions('Vader', catalogs, 'SOR')[0]?.matched).toBeUndefined();
   });
 
   it('submits the highlighted result and falls back to the first', () => {
@@ -69,6 +72,7 @@ describe('search suggestions', () => {
       const [hit] = buildSearchSuggestions(query, catalogs, 'SOR');
       expect(hit, query).toMatchObject({ setKey: 'SOR', baseNumber: 87, kind: 'number' });
       expect(hit!.label).toContain('SOROP #15');
+      expect(hit!.matched).toEqual({ number: 15, promoSet: 'SOROP' });
     }
     expect(buildSearchSuggestions('OP 16', catalogs, 'SOR')).toEqual([]);
   });

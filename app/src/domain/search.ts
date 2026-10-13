@@ -18,6 +18,11 @@ export type SearchSuggestion = {
   type?: string;
   printingNumbers: number[];
   label: string;
+  /**
+   * The number a number search matched, when it named one printing rather than the card:
+   * `431` (SEC's Hyperspace), or `15` in the promo set `SOROP`.
+   */
+  matched?: { number: number; promoSet?: string };
 };
 
 type RankedSuggestion = SearchSuggestion & { score: number };
@@ -72,6 +77,7 @@ export function buildSearchSuggestions(
           type: card.Type,
           printingNumbers: catalog.printingNumbersByBase.get(card.Number) ?? [card.Number],
           label: `${card.Name}${card.Subtitle ? ` - ${card.Subtitle}` : ''} — #${card.Number} (${catalog.setKey}) · ${hit.set} #${hit.number}`,
+          matched: { number: hit.number, promoSet: hit.set },
           score: catalog.setKey === currentSetKey ? 0 : 50,
         });
         continue;
@@ -96,6 +102,7 @@ export function buildSearchSuggestions(
         type: card.Type,
         printingNumbers,
         label: `${card.Name}${card.Subtitle ? ` - ${card.Subtitle}` : ''} — #${card.Number} (${catalog.setKey})`,
+        ...(exactPrinting ? { matched: { number: numericQuery } } : {}),
         score,
       };
       const identity = `${catalog.setKey}:${card.Number}`;

@@ -228,6 +228,27 @@ export function printingNumbers(printing: Printing): readonly string[] {
   return printing.aliases?.length ? [printing.num, ...printing.aliases] : [printing.num];
 }
 
+/**
+ * The printing a searched number names: `431` is the card's Hyperspace, `15` with promo
+ * set `SOROP` its weekly-play promo. A number shared by a printing and its foil sibling
+ * (`059`, `059F`) picks the plainer one, as a scan of the same card would. Undefined when
+ * no printing carries the number.
+ */
+export function printingForNumber(
+  printings: readonly Printing[],
+  matched: { number: number; promoSet?: string },
+): Printing | undefined {
+  const hits = printings.filter((printing) =>
+    printingNumbers(printing).some((num) => {
+      const promo = promoParts(num);
+      if (matched.promoSet)
+        return promo?.set === matched.promoSet && numericPart(promo.number) === matched.number;
+      return !promo && numericPart(num) === matched.number;
+    }),
+  );
+  return hits.sort((a, b) => VARIANTS.indexOf(a.variant) - VARIANTS.indexOf(b.variant))[0];
+}
+
 export type CatalogCard = {
   base: number;
   name: string;
