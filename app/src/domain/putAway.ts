@@ -191,6 +191,10 @@ function markTurns(steps: PutAwayStep[]): void {
  * A better printing bumps the weakest copy in its pocket. When that copy is in this same
  * stack — three Normals scanned, then a Hyperspace — it never reaches the binder: one of
  * those Normals goes straight to bulk, and the Hyperspace has nothing to take out.
+ *
+ * Swaps chain: a Hyperspace scanned to replace the binder's Normal, then a Prestige
+ * scanned to replace that Hyperspace. The Hyperspace goes straight to bulk too, and the
+ * Prestige takes out the Normal in its place — one trip to the pocket, not two.
  */
 function resolveSwaps(cards: readonly StackCardInput[]): {
   victims: Set<string>;
@@ -198,21 +202,26 @@ function resolveSwaps(cards: readonly StackCardInput[]): {
 } {
   const victims = new Set<string>();
   const upgraded = new Map<string, StackCardInput>();
-  for (const card of cards) {
+  // Oldest scan first (the stack is top first): a card only ever replaces one scanned
+  // before it, and by then that one's own swap is settled.
+  for (let i = cards.length - 1; i >= 0; i--) {
+    const card = cards[i]!;
     if (card.fate !== 'binder' || !card.swapOut) continue;
     const { num } = card.swapOut;
     const victim = cards.find(
-      (c) =>
+      (c, j) =>
+        j > i &&
         c.fate === 'binder' &&
         c.setKey === card.setKey &&
         c.num === num &&
-        !c.swapOut &&
         !victims.has(c.id),
     );
     if (!victim) continue;
     victims.add(victim.id);
+    // Whatever the victim was to take out of the pocket, this card takes out instead.
+    const inherited = (upgraded.get(victim.id) ?? victim).swapOut;
     const { swapOut: _, ...rest } = card;
-    upgraded.set(card.id, rest);
+    upgraded.set(card.id, inherited ? { ...rest, swapOut: inherited } : rest);
   }
   return { victims, upgraded };
 }
