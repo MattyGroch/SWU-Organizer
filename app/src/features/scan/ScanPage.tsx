@@ -13,6 +13,7 @@ import {
   artUrl,
   toSearchCatalog,
   finishCounterpart,
+  printingForNumber,
   variantAxes,
   variantLabel,
   variantShortLabel,
@@ -330,13 +331,16 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
 
   /**
    * A card the scanner gave up on, found by title or number instead: recorded like a
-   * scan of its plainest printing (Correct changes it), minding the binder pocket the same
+   * scan of the printing its number names (SEC 431 is the Hyperspace), or of its plainest
+   * printing when found by title (Correct changes it), minding the binder pocket the same
    * way. Then scanning carries on with the next card.
    */
   const lookUp = useCallback(
     async (suggestion: SearchSuggestion) => {
       const printings = sets.get(suggestion.setKey)?.printingsByBase.get(suggestion.baseNumber);
-      const printing = sourcePrinting(printings ?? []);
+      const printing =
+        (suggestion.matched && printingForNumber(printings ?? [], suggestion.matched)) ??
+        sourcePrinting(printings ?? []);
       if (!printing) return;
       const chosen = asFound({
         setKey: suggestion.setKey,
