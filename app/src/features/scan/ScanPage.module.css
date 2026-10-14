@@ -170,6 +170,13 @@
   margin-left: var(--space-1);
 }
 
+/* Sized up from the meta text so the colour reads at a glance. */
+.rarity {
+  margin-right: var(--space-2);
+  font-size: 1.25em;
+  vertical-align: -0.2em;
+}
+
 .added {
   color: var(--color-success-fg);
   font-weight: 700;

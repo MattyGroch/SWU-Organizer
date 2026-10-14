@@ -23,6 +23,7 @@ import { quotaForCard, type PocketRoom } from '~/domain/ownership';
 import { cardLead, type Match, type ScanEntry as IndexEntry } from '~/domain/scan/index';
 import type { SearchSuggestion } from '~/domain/search';
 import type { SetKey } from '~/domain/types';
+import { RarityBadge } from '~/features/binder/RarityBadge';
 import { Pocket } from '~/features/putAway/Pocket';
 import { CardSearch } from '~/features/search/CardSearch';
 import { useToast } from '~/ui/toastContext';
@@ -835,6 +836,9 @@ function LatestScan({
           {card?.Subtitle && <span className={styles.subtitle}>{card.Subtitle}</span>}
         </h2>
         <p className={styles.meta}>
+          <RarityBadge className={styles.rarity} rarity={card?.Rarity} title={card?.Rarity}>
+            <span className="visually-hidden">{card?.Rarity}</span>
+          </RarityBadge>
           {chosen.setKey} #{chosen.num} · {variantLabel(chosen.variant)}
           {fromBack && ' · read from the back'}
         </p>
