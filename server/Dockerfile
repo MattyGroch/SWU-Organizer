@@ -3,7 +3,7 @@
 # prebuilt linux-x64 binaries for glibc but NOT for Alpine's musl. On Alpine
 # we'd have to compile from source (python3/make/g++), which has been flaky
 # in Portainer builds. Debian pulls the prebuild and skips native compile.
-FROM node:20-bookworm-slim AS build
+FROM node:24-bookworm-slim AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
@@ -13,7 +13,7 @@ RUN npm run build
 RUN npm prune --omit=dev
 
 # ---------- runtime ----------
-FROM node:20-bookworm-slim
+FROM node:24-bookworm-slim
 WORKDIR /app
 RUN apt-get update \
     && apt-get install -y --no-install-recommends wget \
