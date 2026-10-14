@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { binderLayout, pageToSpread } from './binder';
+import type { VariantSlug } from './catalog';
 import {
   nextInHand,
   pileCell,
@@ -246,6 +247,74 @@ describe('planPutAway', () => {
     };
     const { filed } = play([hyper], planPutAway([hyper], { setOrder: SET_ORDER, sorters: 1 }));
     expect(filed[0]!.card.swapOut).toEqual({ num: '040', variant: 'normal' });
+  });
+
+  /** A better printing of SOR 40, scanned to take `out` out of its pocket. */
+  function upgrade(num: string, variant: VariantSlug, out: StackCardInput): StackCardInput {
+    return {
+      ...card('SOR', 40),
+      num,
+      variant,
+      swapOut: { num: out.num, variant: out.variant },
+    };
+  }
+
+  it('skips a better printing that a still better one scanned later replaces', () => {
+    // The binder holds a Normal. A Hyperspace is scanned to replace it, then a Prestige
+    // to replace the Hyperspace: the Prestige goes in, the Normal comes out, and the
+    // Hyperspace never visits the binder.
+    const normal = card('SOR', 40);
+    const hyper = upgrade('300', 'hyperspace', normal);
+    const prestige = upgrade('600', 'prestige', hyper);
+    const stack = [prestige, hyper];
+    const steps = planPutAway(stack, { setOrder: SET_ORDER, sorters: 1 });
+    const { filed, aside } = play(stack, steps);
+    expect(filed.map((s) => s.card.num)).toEqual(['600']);
+    expect(filed[0]!.card.swapOut).toEqual({ num: '040', variant: 'normal' });
+    expect(aside.map((c) => c.id)).toEqual([hyper.id]);
+    expect(steps.flatMap((s) => (s.kind === 'bulk' ? s.cards.map((l) => l.reason) : []))).toEqual([
+      'replaced',
+    ]);
+  });
+
+  it('follows a longer chain of upgrades to the one copy in the binder', () => {
+    const normal = card('SOR', 40);
+    const hyper = upgrade('300', 'hyperspace', normal);
+    const hyperFoil = upgrade('400', 'hyperspace-foil', hyper);
+    const prestige = upgrade('600', 'prestige', hyperFoil);
+    const stack = [prestige, card('SOR', 12), hyperFoil, hyper];
+    const { filed, aside } = play(stack, planPutAway(stack, { setOrder: SET_ORDER, sorters: 1 }));
+    expect(filed.map((s) => s.card.num).sort()).toEqual(['012', '600']);
+    expect(filed.find((s) => s.card.num === '600')!.card.swapOut).toEqual({
+      num: '040',
+      variant: 'normal',
+    });
+    expect(aside.map((c) => c.id).sort()).toEqual([hyper.id, hyperFoil.id].sort());
+  });
+
+  it('takes nothing out when the whole chain starts in the same stack', () => {
+    const normal = card('SOR', 40);
+    const hyper = upgrade('300', 'hyperspace', normal);
+    const prestige = upgrade('600', 'prestige', hyper);
+    const stack = [prestige, hyper, normal];
+    const { filed, aside } = play(stack, planPutAway(stack, { setOrder: SET_ORDER, sorters: 1 }));
+    expect(filed.map((s) => s.card.num)).toEqual(['600']);
+    expect(filed[0]!.card.swapOut).toBeUndefined();
+    expect(aside.map((c) => c.id).sort()).toEqual([hyper.id, normal.id].sort());
+  });
+
+  it('never lets a card replace one scanned after it', () => {
+    // The Hyperspace was scanned first, to replace a Normal already in the binder; the
+    // Normal on top of the stack came later and is a different copy.
+    const normal = card('SOR', 40);
+    const hyper = upgrade('300', 'hyperspace', normal);
+    const stack = [card('SOR', 40), hyper];
+    const { filed } = play(stack, planPutAway(stack, { setOrder: SET_ORDER, sorters: 1 }));
+    expect(filed.map((s) => s.card.num).sort()).toEqual(['040', '300']);
+    expect(filed.find((s) => s.card.num === '300')!.card.swapOut).toEqual({
+      num: '040',
+      variant: 'normal',
+    });
   });
 
   it('lists an all-bulk stack without dealing it', () => {
