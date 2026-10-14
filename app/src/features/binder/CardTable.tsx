@@ -123,21 +123,21 @@ export function CardTable({
             </th>
             <th
               scope="col"
-              className={`${styles.numericCol} ${styles.wideOnly}`}
+              className={`${styles.numericCol} ${styles.countCol} ${styles.wideOnly}`}
               title="Copies in the bulk box"
             >
               Bulk
             </th>
             <th
               scope="col"
-              className={`${styles.numericCol} ${styles.wideOnly}`}
+              className={`${styles.numericCol} ${styles.countCol} ${styles.wideOnly}`}
               title="Copies out in built decks, from the binder or the bulk box"
             >
               Decks
             </th>
             <th
               scope="col"
-              className={`${styles.numericCol} ${styles.wideOnly}`}
+              className={`${styles.numericCol} ${styles.countCol} ${styles.wideOnly}`}
               title="Copies still needed for a playset"
             >
               Need
@@ -215,14 +215,14 @@ export function CardTable({
                   )}
                   {row.inBinder}/{row.quota}
                 </td>
-                <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.inBulk || ''}</td>
+                <td className={`${styles.numericCol} ${styles.countCol} ${styles.wideOnly}`}>{row.inBulk || ''}</td>
                 <td
-                  className={`${styles.numericCol} ${styles.wideOnly}`}
+                  className={`${styles.numericCol} ${styles.countCol} ${styles.wideOnly}`}
                   title={row.inDecks ? allDecksTitle(decks.get(row.base) ?? []) : undefined}
                 >
                   {row.inDecks || ''}
                 </td>
-                <td className={`${styles.numericCol} ${styles.wideOnly}`}>{row.needed || ''}</td>
+                <td className={`${styles.numericCol} ${styles.countCol} ${styles.wideOnly}`}>{row.needed || ''}</td>
                 <td className={`${styles.numericCol} ${styles.wideOnly}`}>
                   {row.value ? formatUsd(row.value) : ''}
                 </td>

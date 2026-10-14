@@ -93,6 +93,11 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Bare counts (Bulk, Decks, Need) sit centred under their headings; money stays right-aligned. */
+.table .countCol {
+  text-align: center;
+}
+
 /* Mirrors the binder cell's ⇢ badge, pointing back at the pocket the copies left. */
 .inDecks {
   margin-right: var(--space-1);
