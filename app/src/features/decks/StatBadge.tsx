@@ -1,12 +1,11 @@
-import { useId } from 'react';
-
 import styles from './StatBadge.module.css';
+import { useBadgeIds } from './useBadgeIds';
 
 /*
  * HP and Power badges, drawn in SVG after the Star Wars: Unlimited community's stat art:
  * a glossy blue "peanut" for HP — a rounded square pinched at the waist — and a red
  * rupee-like shield for Power, whose top and bottom edges curve in to their points. The
- * number is live text, so any value works. Sized in em, like `CostBadge`.
+ * number is live text, so any value works. Sized in em, like `CostBadge`, which shares `StatNumber`.
  */
 
 /** `signed`: an upgrade's bonus, shown as +2 or −1. */
@@ -18,13 +17,7 @@ function label(value: number | undefined, signed = false): string {
   return value < 0 ? `−${-value}` : `+${value}`;
 }
 
-/** Each badge needs its own gradient ids: two badges sharing one break if one unmounts. */
-function useIds() {
-  const id = useId().replace(/:/g, '');
-  return { fill: `${id}-fill`, clip: `${id}-clip` };
-}
-
-function StatNumber({ value, fill, stroke }: { value: string; fill: string; stroke: string }) {
+export function StatNumber({ value, fill, stroke }: { value: string; fill: string; stroke: string }) {
   return (
     <text
       x="50"
@@ -49,7 +42,7 @@ const HP_PATH =
   'C30.2 96 14.8 89 10.4 76 C7.1 66 8.2 55 11.5 46 C8.2 38 8.2 30 11.5 21 C15.9 9 30.2 4 50 4 Z';
 
 export function HpBadge({ value, signed }: Props) {
-  const ids = useIds();
+  const ids = useBadgeIds();
   const text = label(value, signed);
   return (
     <svg className={styles.badge} viewBox="0 0 100 100" role="img" aria-label={`${text} HP`}>
@@ -78,7 +71,7 @@ export function HpBadge({ value, signed }: Props) {
 const POWER_PATH = 'M50 3 Q65 15 87 18 L87 82 Q65 85 50 97 Q35 85 13 82 L13 18 Q35 15 50 3 Z';
 
 export function PowerBadge({ value, signed }: Props) {
-  const ids = useIds();
+  const ids = useBadgeIds();
   const text = label(value, signed);
   return (
     <svg className={styles.badge} viewBox="0 0 100 100" role="img" aria-label={`Power ${text}`}>
