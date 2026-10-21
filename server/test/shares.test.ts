@@ -98,7 +98,7 @@ describe('public shared view', () => {
 
     const res = await request(app).get(`/api/shared/${share.token}`)
     expect(res.status).toBe(200)
-    expect(res.headers['cache-control']).toBe('no-store')
+    expect(res.headers['cache-control']).toBe('private, no-cache')
     expect(res.body.sets.SOR).toMatchObject({ data: { '1': 3 }, version: 1 })
     expect(res.body.decks).toEqual({ customDecks: [{ id: 'deck-1' }], preconOwnership: { 'SOR-heroism': 1 } })
     expect(res.body.hiddenSets).toEqual(['IBH'])

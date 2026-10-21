@@ -89,7 +89,9 @@ export function makeSharedRouter(deps: Deps): Router {
     const sets: Record<string, { data: Record<string, number>; version: number; updatedAt: number }> = {}
     for (const r of rows) sets[r.setKey] = { data: r.data, version: r.version, updatedAt: r.updatedAt }
 
-    res.set('Cache-Control', 'no-store')
+    // no-cache, not no-store: the browser keeps the copy and revalidates it every time, which is
+    // what lets a polling viewer send If-None-Match and get a 304.
+    res.set('Cache-Control', 'private, no-cache')
     // Express sends a weak ETag over the body and answers a matching If-None-Match with 304,
     // so a viewer polling an unchanged collection gets an empty reply.
     res.json({
