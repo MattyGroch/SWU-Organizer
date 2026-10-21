@@ -1,0 +1,238 @@
+import { promoParts } from '~/domain/catalog';
+
+/**
+ * Where a foil's shine stops.
+ *
+ * On a real SWU foil the art and frame are foil, but the printed game information is matte:
+ * cost, aspect icons, type bar, title, subtitle, traits, power, HP and the rules text. The
+ * binder's holo overlay is masked off exactly those, as measured on the card scans.
+ *
+ * Where they sit depends on the frame the shown art was printed in: the standard frame,
+ * or one of the two full-art promo frames.
+ */
+
+/** A box as a percentage of the printed card: left, top, right, bottom. */
+export type Box = readonly [x1: number, y1: number, x2: number, y2: number];
+
+/** The matte parts of one frame's portrait cards. */
+type PortraitFrame = {
+  cost: Box;
+  /** The aspect icons stack down the left edge from `top`, one `step` tall each. */
+  aspects: { x1: number; x2: number; top: number; step: number };
+  typeBar: Box;
+  title: Box;
+  /** Only on cards with a subtitle (unique characters); hangs under the title. */
+  subtitle: Box;
+  unit: readonly Box[];
+  upgrade: readonly Box[];
+  /** The +power/+HP shields either side of the upgrade bar. Fortifications print none. */
+  modifiers: readonly Box[];
+  event: readonly Box[];
+};
+
+/** Measured on SOR and HMW scans, the oldest and newest standard frames. */
+const STANDARD: PortraitFrame = {
+  cost: [4, 2.5, 16.5, 11.5],
+  aspects: { x1: 4.5, x2: 16, top: 11.5, step: 7.5 },
+  typeBar: [10.5, 2.5, 95, 5.5],
+  title: [16, 5.5, 95.5, 11.5],
+  subtitle: [20, 11, 89, 14],
+  unit: [
+    [4, 58, 17, 69.5], // power
+    [82, 58, 95.5, 69.5], // HP
+    [16, 63, 84, 68.5], // traits, between them
+    [5, 68.5, 95.5, 94], // rules text
+  ],
+  upgrade: [
+    [4, 55.5, 96, 82.5], // rules text
+    [14, 83, 86, 94.5], // the upgrade bar: name again and traits
+  ],
+  modifiers: [
+    [4, 83, 17, 94.5], // power
+    [82, 83, 95.5, 94.5], // HP
+  ],
+  event: [
+    [17, 11, 93, 16.5], // traits, under the title
+    [11, 18, 88.5, 50.5], // rules text; the art is below
+  ],
+};
+
+/**
+ * The light full-art promo frame: opening-night promos from SOR to SEC (SOROP…SECOP) and
+ * P25. Measured on SOROP-014, LOFOP-01, JTLOP-14 and SECOP-04.
+ */
+const PROMO_LIGHT: PortraitFrame = {
+  cost: [4.5, 5, 16.5, 13.5],
+  aspects: { x1: 5, x2: 16, top: 13.5, step: 7.5 },
+  typeBar: [19.5, 3, 80, 6.5],
+  title: [18.5, 6.5, 82, 14],
+  subtitle: [28.5, 14, 71.5, 18.5],
+  unit: [
+    [4.5, 64.5, 17, 76], // power
+    [82, 65.5, 95.5, 76], // HP
+    [18, 67, 81, 73], // traits
+    [5.5, 73, 94, 92.5], // rules text
+  ],
+  upgrade: [
+    [6, 57.5, 92, 79.5], // rules text
+    [16, 82, 84, 92], // the upgrade bar
+  ],
+  modifiers: [
+    [5, 81.5, 18, 92.5], // power
+    [82, 82, 95, 92.5], // HP
+  ],
+  event: [
+    [26, 14, 74, 17.5], // traits
+    [8, 15.5, 92, 38], // rules text; the art fills the rest
+  ],
+};
+
+/**
+ * The dark full-art promo frame, from LAW on (LAWP, ASHOP, HMWP, P26). Measured on
+ * LAWP-01, HMWP-37, HMWP-39 and ASHOP-014.
+ */
+const PROMO_DARK: PortraitFrame = {
+  cost: [4, 3, 16.5, 11.5],
+  aspects: { x1: 5, x2: 16, top: 11.5, step: 7.3 },
+  typeBar: [20, 2.5, 80, 6.5],
+  title: [16, 5.5, 87, 13.5],
+  subtitle: [25, 13.5, 74, 17.5],
+  unit: [
+    [4, 66.5, 16.5, 78.5], // power
+    [82, 67, 96, 78.5], // HP
+    [16, 70, 83, 75], // traits
+    [2.5, 75, 97, 92.5], // rules text
+  ],
+  upgrade: [
+    [4, 56, 96, 80], // rules text
+    [15.5, 82, 85, 92], // the upgrade bar
+  ],
+  modifiers: [
+    [3.5, 81, 16.5, 93], // power
+    [82.5, 81.5, 96, 93], // HP
+  ],
+  event: [
+    [24, 13, 67.5, 17.5], // traits
+    [4, 13, 96, 38.5], // rules text; the art fills the rest
+  ],
+};
+
+const LIGHT_PROMOS = new Set(['SOROP', 'SHDOP', 'TWIOP', 'JTLOP', 'LOFOP', 'SECOP', 'P25']);
+const DARK_PROMOS = new Set(['LAWP', 'ASHOP', 'HMWP', 'P26']);
+
+type FrameName = 'standard' | 'promo-light' | 'promo-dark';
+
+const FRAMES: Record<FrameName, PortraitFrame> = {
+  standard: STANDARD,
+  'promo-light': PROMO_LIGHT,
+  'promo-dark': PROMO_DARK,
+};
+
+/**
+ * The frame a printing's art is in, from its number. One-off promo lines (championship,
+ * judge, Store Showdown) have layouts of their own and aren't measured; they get the
+ * standard frame's boxes.
+ */
+export function frameOf(artNumber: string | undefined): FrameName {
+  const line = artNumber ? promoParts(artNumber)?.set : undefined;
+  if (line && LIGHT_PROMOS.has(line)) return 'promo-light';
+  if (line && DARK_PROMOS.has(line)) return 'promo-dark';
+  return 'standard';
+}
+
+/* Leaders and bases, standard frame, measured on the card as printed: landscape. */
+
+/** Their aspect icons stack down the right edge, from the top. */
+function landscapeAspects(count: number): Box[] {
+  return count > 0 ? [[88, 4, 97, 4 + 14.5 * count]] : [];
+}
+
+const LEADER: readonly Box[] = [
+  [3, 4, 88, 8], // type bar
+  [42, 7, 88.5, 15.5], // title
+  [46, 15, 86, 20.5], // subtitle
+  [45.5, 20.5, 91.5, 88.5], // rules text, and the deploy box with power and HP
+  [3.5, 80.5, 45.5, 88.5], // traits, under the art
+];
+
+const BASE: readonly Box[] = [
+  [3, 3, 12.5, 14], // HP
+  [11, 4, 88, 8], // type bar
+  [15.5, 7.5, 85, 16.5], // title
+  [3, 62.5, 97, 92], // rules text and location
+];
+
+/**
+ * A landscape box as it lands in the pocket. Leaders and bases go in turned 90°
+ * anticlockwise, so the printed top edge becomes the pocket's left and the printed right
+ * edge its top.
+ */
+export function turnAnticlockwise([x1, y1, x2, y2]: Box): Box {
+  return [y1, 100 - x2, y2, 100 - x1];
+}
+
+export type MaskedCard = {
+  type: string | undefined;
+  hasSubtitle: boolean;
+  /** How many aspect icons the card prints. */
+  aspects: number;
+  /** The printing whose art is shown, e.g. "059" or "HMWP-37": it decides the frame. */
+  artNumber?: string;
+  /** A Fortification: an upgrade for a base, printed without +power/+HP shields. */
+  fortification?: boolean;
+};
+
+/** The matte parts of a card, in the pocket's own frame. */
+export function matteBoxes({
+  type,
+  hasSubtitle,
+  aspects,
+  artNumber,
+  fortification = false,
+}: MaskedCard): readonly Box[] {
+  const kind = (type ?? '').trim().toLowerCase();
+  if (kind === 'leader') return [...LEADER, ...landscapeAspects(aspects)].map(turnAnticlockwise);
+  if (kind === 'base') return [...BASE, ...landscapeAspects(aspects)].map(turnAnticlockwise);
+
+  const frame = FRAMES[frameOf(artNumber)];
+  const { x1, x2, top, step } = frame.aspects;
+  const boxes: Box[] = [frame.cost, frame.typeBar, frame.title];
+  if (aspects > 0) boxes.push([x1, top, x2, top + step * aspects]);
+  if (kind === 'event') return [...boxes, ...frame.event];
+  // Unique upgrades carry a subtitle too.
+  if (hasSubtitle) boxes.push(frame.subtitle);
+  if (kind !== 'upgrade') return [...boxes, ...frame.unit];
+  return [...boxes, ...frame.upgrade, ...(fortification ? [] : frame.modifiers)];
+}
+
+const cache = new Map<string, string>();
+
+/**
+ * A CSS `mask-image`: opaque everywhere but the matte parts. An SVG stretched over the
+ * pocket (see `.holo` in the CSS), so the boxes are plain percentages.
+ */
+export function foilMask(card: MaskedCard): string {
+  const key = [
+    card.type,
+    card.hasSubtitle,
+    card.aspects,
+    frameOf(card.artNumber),
+    !!card.fortification,
+  ].join(':');
+  const cached = cache.get(key);
+  if (cached) return cached;
+
+  const holes = matteBoxes(card)
+    .map(
+      ([x1, y1, x2, y2]) =>
+        `<rect x='${x1}' y='${y1}' width='${x2 - x1}' height='${y2 - y1}' rx='1'/>`,
+    )
+    .join('');
+  const svg =
+    `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100' preserveAspectRatio='none'>` +
+    `<mask id='m'><rect width='100' height='100' fill='white'/><g fill='black'>${holes}</g></mask>` +
+    `<rect width='100' height='100' mask='url(#m)'/></svg>`;
+  const mask = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  cache.set(key, mask);
+  return mask;
+}
