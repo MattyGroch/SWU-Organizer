@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { foilMask, matteBoxes, turnAnticlockwise, type Box } from './foilMask';
+import { foilMask, frameOf, matteBoxes, turnAnticlockwise, type Box } from './foilMask';
 
 const inside = ([x1, y1, x2, y2]: Box) =>
   x1 >= 0 && y1 >= 0 && x2 <= 100 && y2 <= 100 && x1 < x2 && y1 < y2;
@@ -10,9 +10,12 @@ const covers = (boxes: readonly Box[], x: number, y: number) =>
 describe('matteBoxes', () => {
   it('keeps every box on the card', () => {
     for (const type of ['Unit', 'Upgrade', 'Event', 'Leader', 'Base']) {
-      for (const hasSubtitle of [false, true]) {
-        for (const aspects of [0, 1, 2]) {
-          expect(matteBoxes({ type, hasSubtitle, aspects }).every(inside)).toBe(true);
+      for (const artNumber of ['059', 'SOROP-014', 'HMWP-37']) {
+        for (const hasSubtitle of [false, true]) {
+          for (const aspects of [0, 1, 2, 3]) {
+            const boxes = matteBoxes({ type, hasSubtitle, aspects, artNumber });
+            expect(boxes.every(inside)).toBe(true);
+          }
         }
       }
     }
@@ -41,6 +44,25 @@ describe('matteBoxes', () => {
     );
   });
 
+  it('follows the full-art promo frames', () => {
+    expect(frameOf('059')).toBe('standard');
+    expect(frameOf('SOROP-014')).toBe('promo-light');
+    expect(frameOf('HMWP-37')).toBe('promo-dark');
+    // A one-off line whose layout isn't measured falls back to the standard frame.
+    expect(frameOf('C26-2')).toBe('standard');
+
+    // A dark promo event's rules text sits in the top third; the standard frame's runs to half way.
+    const event = (artNumber: string) =>
+      matteBoxes({ type: 'Event', hasSubtitle: false, aspects: 1, artNumber });
+    expect(covers(event('HMWP-37'), 50, 45)).toBe(false);
+    expect(covers(event('217'), 50, 45)).toBe(true);
+    // A dark promo unit's rules text starts lower than the standard frame's.
+    const unit = (artNumber: string) =>
+      matteBoxes({ type: 'Unit', hasSubtitle: false, aspects: 1, artNumber });
+    expect(covers(unit('HMWP-39'), 50, 72)).toBe(true);
+    expect(covers(unit('HMWP-39'), 50, 64)).toBe(false);
+  });
+
   it('masks one aspect icon per aspect', () => {
     const below = (aspects: number) =>
       covers(matteBoxes({ type: 'Unit', hasSubtitle: false, aspects }), 10, 22);
@@ -65,5 +87,6 @@ describe('foilMask', () => {
     expect(mask).toMatch(/^url\("data:image\/svg\+xml,/);
     expect(foilMask({ ...card })).toBe(mask);
     expect(foilMask({ ...card, aspects: 1 })).not.toBe(mask);
+    expect(foilMask({ ...card, artNumber: 'HMWP-39' })).not.toBe(mask);
   });
 });

@@ -70,9 +70,8 @@ export function BinderCell({
   const pocket = pocketCounts(counts, held);
   // The slot shows its pocket only: bulk-box copies live in the List and Bulk pages.
   const choice = catalogCard ? selectArtPrinting(catalogCard, pocket) : undefined;
-  const { src, state } = useCardImage(
-    choice ? artUrl(setKey, shownArtNumber(choice.printing, promoArt)) : undefined,
-  );
+  const artNumber = choice ? shownArtNumber(choice.printing, promoArt) : undefined;
+  const { src, state } = useCardImage(artNumber ? artUrl(setKey, artNumber) : undefined);
 
   const onHand = pocket.total;
   const inBinder = binderCount(onHand, quota);
@@ -145,6 +144,7 @@ export function BinderCell({
                       type: card.Type,
                       hasSubtitle: !!card.Subtitle,
                       aspects: card.Aspects?.length ?? 0,
+                      artNumber,
                     }),
                   }),
               } as CSSProperties
