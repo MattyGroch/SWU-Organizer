@@ -122,7 +122,7 @@ export function foilMask(card: MaskedCard): string {
     )
     .join('');
   const svg =
-    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'>` +
+    `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100' preserveAspectRatio='none'>` +
     `<mask id='m'><rect width='100' height='100' fill='white'/><g fill='black'>${holes}</g></mask>` +
     `<rect width='100' height='100' mask='url(#m)'/></svg>`;
   const mask = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;

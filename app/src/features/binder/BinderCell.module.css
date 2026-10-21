@@ -210,7 +210,16 @@
   mix-blend-mode: soft-light;
 }
 
-/* The matte text boxes are masked off per card in BinderCell, from foilMask.ts. */
+/*
+ * The matte parts are masked off per card in BinderCell, from foilMask.ts. Its mask is an
+ * SVG in percentages: stretch it over the whole card, once. Left to the browser, a square
+ * viewBox can come out as a card-wide square tile, repeated down the card.
+ */
+.holo {
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  mask-position: 0 0;
+}
 
 @keyframes foil-drift {
   0%,
