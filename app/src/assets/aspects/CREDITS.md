@@ -4,4 +4,6 @@ The six aspect icons here (Vigilance, Command, Aggression, Cunning, Villainy, He
 
 They were cropped from a single sheet and resized to 96px WebP for the app. Star Wars: Unlimited and its aspect symbols belong to Fantasy Flight Games and Lucasfilm Ltd.
 
+The cost badge (`features/decks/CostBadge.tsx`) is an SVG traced from CommCody103's fan-made cost icon, from the same post.
+
 The flat aspect symbols on the filter buttons (`features/binder/AspectGlyph.tsx`) and the unique-card star (`features/binder/UniqueMark.tsx`) are the vector symbols from the Star Wars: Unlimited rulebook PDF published by Fantasy Flight Games.
