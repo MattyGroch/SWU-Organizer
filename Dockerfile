@@ -4,7 +4,7 @@
 # ---------- build: the app ----------
 # Runs on the build machine's own platform: dist/ is static files, the same for every
 # target. Building it per platform made CI build arm64 under QEMU, ~5 min instead of ~35s.
-FROM --platform=$BUILDPLATFORM node:20-alpine AS build
+FROM --platform=$BUILDPLATFORM node:24-alpine AS build
 WORKDIR /build/app
 COPY app/package*.json ./
 RUN npm ci
@@ -13,7 +13,7 @@ COPY app/ ./
 RUN npm run build
 
 # ---------- runtime: nginx, plus Node for the daily price refresh ----------
-FROM node:20-alpine
+FROM node:24-alpine
 RUN apk add --no-cache nginx wget
 
 # Alpine nginx includes conf.d at root context; server{} must live in http.d (inside http{}).
