@@ -1,6 +1,7 @@
-import { copyFileSync, existsSync, mkdtempSync, readdirSync, rmSync, statSync } from 'node:fs'
+import { copyFileSync, existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import Database from 'better-sqlite3'
 import { afterEach, describe, expect, it } from 'vitest'
 import {
@@ -13,6 +14,8 @@ import {
   type Db,
 } from '../src/db.js'
 
+const SCHEMA_PATH = join(dirname(fileURLToPath(import.meta.url)), '../src/schema.sql')
+
 const dirs: string[] = []
 afterEach(() => {
   for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true })
@@ -23,7 +26,10 @@ function existingDb(): { path: string; dir: string } {
   const dir = mkdtempSync(join(tmpdir(), 'swu-db-'))
   dirs.push(dir)
   const path = join(dir, 'swu.db')
-  const db = openDb(path)
+  // The baseline alone, without the migrations openDb would run on top of it.
+  const db = new Database(path)
+  db.pragma('journal_mode = WAL')
+  db.exec(readFileSync(SCHEMA_PATH, 'utf8'))
   db.prepare("INSERT INTO users (google_sub, email, created_at) VALUES ('sub', 'a@b.c', 1)").run()
   db.prepare(
     "INSERT INTO inventories (user_id, set_key, data_json, version, updated_at) VALUES (1, 'SOR', '{\"1\":3}', 4, 1)",
@@ -50,6 +56,17 @@ describe('openDb', () => {
     expect(inventoryRows(db)).toEqual([
       { user_id: 1, set_key: 'SOR', data_json: '{"1":3}', version: 4, updated_at: 1 },
     ])
+  })
+})
+
+describe('v3 share links', () => {
+  it('adds the shares table to a baseline database and keeps its data', () => {
+    const { path } = existingDb()
+    const db = openDb(path)
+    expect(userVersion(db)).toBe(3)
+    expect(inventoryRows(db)).toHaveLength(1)
+    expect(db.prepare('SELECT * FROM shares').all()).toEqual([])
+    closeDb(db)
   })
 })
 
