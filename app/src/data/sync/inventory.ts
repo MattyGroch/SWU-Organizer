@@ -33,25 +33,17 @@ export async function snapshotSet(
 }
 
 /**
- * Writes a server payload into the local database, replacing that set.
+ * Turns a server payload into the rows it stands for, without storing them.
  *
- * A promo alias (`1050`, written by a device on an older catalog) is stored under the
- * printing it now belongs to (`P25-79`).
- *
- * Throws rather than store part of the payload: when the set's catalog is not loaded, or
- * a printing is one this catalog does not know (another device on a newer catalog). The
- * sync engine then leaves this device at its old version, so its next write merges with
- * the server's copy instead of replacing it with one missing those cards.
+ * A promo alias (`1050`, written by a device on an older catalog) resolves to the printing
+ * it now belongs to (`P25-79`). Printings this catalog does not know come back in `unknown`.
  */
-export async function applyInventoryPayload(
+export function payloadToOwned(
   setKey: SetKey,
   payload: InventoryPayload,
-  set: LoadedSet | undefined,
-  database: SwuDatabase = db,
+  set: LoadedSet,
   now = Date.now(),
-): Promise<number> {
-  if (!set) throw new Error(`Cannot apply ${setKey}: its catalog is not loaded.`);
-
+): { rows: OwnedPrinting[]; unknown: string[] } {
   const byNum = new Map<string, OwnedPrinting>();
   const unknown: string[] = [];
   for (const [num, rawCount] of Object.entries(payload)) {
@@ -85,10 +77,30 @@ export async function applyInventoryPayload(
       updatedAt: now,
     });
   }
+  return { rows: [...byNum.values()], unknown };
+}
+
+/**
+ * Writes a server payload into the local database, replacing that set.
+ *
+ * Throws rather than store part of the payload: when the set's catalog is not loaded, or
+ * a printing is one this catalog does not know (another device on a newer catalog). The
+ * sync engine then leaves this device at its old version, so its next write merges with
+ * the server's copy instead of replacing it with one missing those cards.
+ */
+export async function applyInventoryPayload(
+  setKey: SetKey,
+  payload: InventoryPayload,
+  set: LoadedSet | undefined,
+  database: SwuDatabase = db,
+  now = Date.now(),
+): Promise<number> {
+  if (!set) throw new Error(`Cannot apply ${setKey}: its catalog is not loaded.`);
+
+  const { rows, unknown } = payloadToOwned(setKey, payload, set, now);
   if (unknown.length) {
     throw new Error(`Cannot apply ${setKey}: unknown printings ${unknown.join(', ')}.`);
   }
-  const rows = [...byNum.values()];
 
   await database.transaction('rw', database.owned, async () => {
     await database.owned.where('setKey').equals(setKey).delete();

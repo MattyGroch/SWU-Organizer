@@ -9,7 +9,8 @@ type Props = {
   /** What is in the binder pocket — bulk and deck copies are not counted here. */
   counts: OwnedCounts;
   cardName: string;
-  onAdjust: (printing: Printing, delta: number) => void;
+  /** Absent when read-only: the counts show without the steppers. */
+  onAdjust?: (printing: Printing, delta: number) => void;
   /** The promo picture chosen for the binder pocket, if any. */
   promoArt?: string;
   /** Picks the promo picture; `undefined` is the default. Without it, no picker shows. */
@@ -75,17 +76,23 @@ export function VariantStrip({
             key={printing.num}
             className={styles.item}
             data-owned={owned > 0}
-            title={`${label} · #${printing.num} · press ${digit} to add, Shift+${digit} to remove`}
+            title={
+              onAdjust
+                ? `${label} · #${printing.num} · press ${digit} to add, Shift+${digit} to remove`
+                : `${label} · #${printing.num}`
+            }
           >
-            <button
-              type="button"
-              className={styles.step}
-              disabled={owned === 0}
-              onClick={() => onAdjust(printing, -1)}
-              aria-label={`Remove one ${label} ${cardName}. Keyboard Shift+${digit}.`}
-            >
-              −
-            </button>
+            {onAdjust && (
+              <button
+                type="button"
+                className={styles.step}
+                disabled={owned === 0}
+                onClick={() => onAdjust(printing, -1)}
+                aria-label={`Remove one ${label} ${cardName}. Keyboard Shift+${digit}.`}
+              >
+                −
+              </button>
+            )}
             {artOptions.length > 1 && onChoosePromoArt ? (
               <button
                 type="button"
@@ -102,14 +109,16 @@ export function VariantStrip({
             ) : (
               <span className={styles.badge}>{badge}</span>
             )}
-            <button
-              type="button"
-              className={styles.step}
-              onClick={() => onAdjust(printing, 1)}
-              aria-label={`Add one ${label} ${cardName}, number ${printing.num}. ${owned} in binder. Keyboard ${digit}.`}
-            >
-              +
-            </button>
+            {onAdjust && (
+              <button
+                type="button"
+                className={styles.step}
+                onClick={() => onAdjust(printing, 1)}
+                aria-label={`Add one ${label} ${cardName}, number ${printing.num}. ${owned} in binder. Keyboard ${digit}.`}
+              >
+                +
+              </button>
+            )}
           </li>
         );
       })}

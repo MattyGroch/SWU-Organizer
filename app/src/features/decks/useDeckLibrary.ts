@@ -2,6 +2,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useCallback, useMemo } from 'react';
 
 import { db } from '~/data/db';
+import { useSharedCollection } from '~/data/shared';
 import { deconstructDeck, updateDeckLibrary } from '~/data/deckLibrary';
 import type { QuotaOf } from '~/data/spill';
 import {
@@ -31,11 +32,21 @@ import type { SetKey } from '~/domain/types';
 export function useDeckLibrary() {
   // `null` when no library has been saved yet: `undefined` must mean only "not read yet",
   // or a device that has never saved a deck would wait on it forever.
-  const row = useLiveQuery(async () => (await db.deckLibrary.get('library')) ?? null, []);
+  // Viewing a share, the decks are the owner's: what they hold out of the binder.
+  const shared = useSharedCollection();
+  const row = useLiveQuery(
+    async () => (shared ? undefined : ((await db.deckLibrary.get('library')) ?? null)),
+    [shared],
+  );
 
   const library = useMemo<DeckLibrary>(
-    () => (row === undefined ? emptyDeckLibrary : parseDeckLibrary(row?.json ?? null)),
-    [row],
+    () =>
+      shared
+        ? shared.library
+        : row === undefined
+          ? emptyDeckLibrary
+          : parseDeckLibrary(row?.json ?? null),
+    [row, shared],
   );
 
   const togglePrecon = useCallback(async (key: string) => {

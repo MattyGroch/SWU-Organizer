@@ -1,7 +1,8 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo } from 'react';
 
-import { db } from '~/data/db';
+import { db, type OwnedPrinting } from '~/data/db';
+import { useSharedCollection } from '~/data/shared';
 import { indexOwnership, type OwnedCounts } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 
@@ -19,6 +20,24 @@ const EMPTY = new Map<number, OwnedCounts>();
  * — re-renders the binder without any explicit notification plumbing.
  */
 export function useSetOwnership(setKey: SetKey): ReadonlyMap<number, OwnedCounts> {
-  const rows = useLiveQuery(() => db.owned.where('setKey').equals(setKey).toArray(), [setKey]);
-  return useMemo(() => (rows ? indexOwnership(rows) : EMPTY), [rows]);
+  // Viewing a share, the counts are the owner's, and the local database is never read.
+  const shared = useSharedCollection();
+  const rows = useLiveQuery<OwnedPrinting[] | undefined>(
+    () => (shared ? undefined : db.owned.where('setKey').equals(setKey).toArray()),
+    [setKey, shared],
+  );
+  return useMemo(() => {
+    const source = shared ? shared.owned.filter((row) => row.setKey === setKey) : rows;
+    return source ? indexOwnership(source) : EMPTY;
+  }, [rows, shared, setKey]);
+}
+
+/** Every owned printing in every set: yours, or the share's. `undefined` while loading. */
+export function useAllOwned(): OwnedPrinting[] | undefined {
+  const shared = useSharedCollection();
+  const rows = useLiveQuery<OwnedPrinting[] | undefined>(
+    () => (shared ? undefined : db.owned.toArray()),
+    [shared],
+  );
+  return shared ? shared.owned : rows;
 }

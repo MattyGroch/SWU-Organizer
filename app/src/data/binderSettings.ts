@@ -4,6 +4,7 @@ import type { SetManifestEntry } from '~/domain/catalog';
 import type { SetKey } from '~/domain/types';
 
 import { db, readMeta, writeMeta, type SwuDatabase } from './db';
+import { pushShareHiddenSets, useSharedCollection } from './shared';
 
 /**
  * Sets kept out of the binder view.
@@ -33,12 +34,17 @@ export async function writeHiddenSets(
   hidden: Iterable<SetKey>,
   database: SwuDatabase = db,
 ): Promise<void> {
-  await writeMeta(database, HIDDEN_SETS_KEY, JSON.stringify([...hidden].sort()));
+  const sorted = [...hidden].sort();
+  await writeMeta(database, HIDDEN_SETS_KEY, JSON.stringify(sorted));
+  // A share link shows the binders you see.
+  void pushShareHiddenSets(sorted);
 }
 
 /** `undefined` while the first read is in flight. */
 export function useHiddenSets(): Set<SetKey> | undefined {
-  return useLiveQuery(() => readHiddenSets(), []);
+  const shared = useSharedCollection();
+  const local = useLiveQuery(() => (shared ? undefined : readHiddenSets()), [shared]);
+  return shared ? shared.hiddenSets : local;
 }
 
 /** The manifest entries that get a binder, in manifest order. */
@@ -94,5 +100,10 @@ export async function writePromoArt(
 
 /** `undefined` while the first read is in flight. */
 export function usePromoArt(): PromoArtChoices | undefined {
-  return useLiveQuery(() => readPromoArt(), []);
+  // Picture choices are this device's own, so a share shows the default promo art.
+  const shared = useSharedCollection();
+  const local = useLiveQuery(() => (shared ? undefined : readPromoArt()), [shared]);
+  return shared ? NO_PROMO_ART : local;
 }
+
+const NO_PROMO_ART: PromoArtChoices = {};

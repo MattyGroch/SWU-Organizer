@@ -1,9 +1,6 @@
-import { Link } from '@tanstack/react-router';
-import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo, useState, type CSSProperties } from 'react';
 
 import { binderEntries, useHiddenSets } from '~/data/binderSettings';
-import { db } from '~/data/db';
 import {
   setNameWithoutKey,
   variantLabel,
@@ -13,9 +10,11 @@ import {
 import { indexOwnership, type OwnedCounts } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 import { buildCardRows, EMPTY_FILTERS } from '~/features/binder/cardRows';
+import { useAllOwned } from '~/features/binder/useOwnership';
 import { CollectionProgress } from '~/features/binder/CollectionProgress';
 import { setAccent } from '~/features/binder/setAccent';
 import { InventorySubnav } from '~/features/inventory/InventoryNav';
+import { InventoryLink } from '~/features/inventory/inventoryLinks';
 import { formatUsd } from '~/ui/format';
 import { Loader } from '~/ui/Loader';
 import { SetBadge } from '~/ui/SetBadge';
@@ -69,7 +68,7 @@ function oneIn(perPack: number): string {
  * behind them.
  */
 export function StatsPage({ entries, sets }: Props) {
-  const rows = useLiveQuery(() => db.owned.toArray(), []);
+  const rows = useAllOwned();
   const hidden = useHiddenSets();
 
   const ownership = useMemo(() => {
@@ -158,13 +157,12 @@ export function StatsPage({ entries, sets }: Props) {
                 className={styles.setRow}
                 style={accent ? ({ '--row-accent': accent } as CSSProperties) : undefined}
               >
-                <Link
-                  to="/inventory/$setKey/$view"
-                  params={{ setKey: set.setKey, view: 'binder' }}
+                <InventoryLink
+                  target={{ place: 'set', setKey: set.setKey, view: 'binder' }}
                   className={styles.setName}
                 >
                   {setNameWithoutKey(set.label, set.setKey)} <SetBadge setKey={set.setKey} />
-                </Link>
+                </InventoryLink>
                 <CollectionProgress totals={completion.totals} compact />
                 <div className={styles.masterSet}>
                   {(Object.keys(progress) as PrintingGroup[])
@@ -260,15 +258,13 @@ function Tile({
       <span className={styles.tileValue}>{value}</span>
       {note && <span className={styles.tileNote}>{note}</span>}
       {card && (
-        <Link
-          to="/inventory/$setKey/$view"
-          params={{ setKey: card.setKey, view: 'binder' }}
-          search={{ card: card.base }}
+        <InventoryLink
+          target={{ place: 'set', setKey: card.setKey, view: 'binder', card: card.base }}
           className={styles.tileCard}
         >
           {card.name}
           {card.subtitle && <span className={styles.muted}> · {card.subtitle}</span>}
-        </Link>
+        </InventoryLink>
       )}
     </div>
   );

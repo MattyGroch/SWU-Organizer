@@ -4,6 +4,7 @@ import {
   createRouter,
   Outlet,
   redirect,
+  useRouterState,
   type RouterHistory,
 } from '@tanstack/react-router';
 import type { QueryClient } from '@tanstack/react-query';
@@ -17,6 +18,8 @@ import {
   setQuery,
 } from '~/data/catalog';
 import { binderEntries, readHiddenSets } from '~/data/binderSettings';
+import { sharedQuery } from '~/data/shared';
+import type { SetKey } from '~/domain/types';
 import { BinderRoute } from '~/routes/BinderRoute';
 import { BulkPage } from '~/features/inventory/BulkPage';
 import { readLastSet, readLastView } from '~/features/inventory/lastPlace';
@@ -27,6 +30,7 @@ import { DeckEditRoute, DecksRoute, NewDeckRoute } from '~/routes/DecksRoute';
 import { IntakePage } from '~/features/intake/IntakePage';
 import { PutAwayPage } from '~/features/putAway/PutAwayPage';
 import { ScanPage } from '~/features/scan/ScanPage';
+import { ShareError, ShareLayout } from '~/features/share/ShareShell';
 import { AppShell } from '~/ui/AppShell';
 import { Loader } from '~/ui/Loader';
 
@@ -39,11 +43,19 @@ import { Loader } from '~/ui/Loader';
 export type RouterContext = { queryClient: QueryClient };
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
-  component: () => (
-    <AppShell>
+  component: function Root() {
+    // A share link brings its own frame (no tabs, account or sync: it isn't your collection).
+    const sharing = useRouterState({
+      select: (state) => state.location.pathname.startsWith('/share/'),
+    });
+    return sharing ? (
       <Outlet />
-    </AppShell>
-  ),
+    ) : (
+      <AppShell>
+        <Outlet />
+      </AppShell>
+    );
+  },
 });
 
 const indexRoute = createRoute({
@@ -106,18 +118,10 @@ const setViewRoute = createRoute({
         params: { setKey: params.setKey, view: 'binder' },
       });
     }
-    const entries = await context.queryClient.ensureQueryData(manifestQuery());
-    const entry = entries.find((e) => e.key === params.setKey);
-    if (!entry) throw redirect({ to: '/inventory' });
+    const loaded = await loadSetView(context.queryClient, params.setKey, await readHiddenSets());
     // A set hidden from the binder has no pages; send its link to the default binder.
-    const visible = binderEntries(entries, await readHiddenSets());
-    if (!visible.some((e) => e.key === params.setKey)) throw redirect({ to: '/inventory' });
-
-    // Only the active set is awaited; the rest warm in the background so first paint
-    // never waits on them.
-    const set = await context.queryClient.ensureQueryData(setQuery(entry));
-    prefetchOtherSets(context.queryClient, entries, params.setKey);
-    return { set, entries, view: params.view };
+    if (!loaded) throw redirect({ to: '/inventory' });
+    return { ...loaded, view: params.view };
   },
   component: function SetViewRouteComponent() {
     const { set, entries, view } = setViewRoute.useLoaderData();
@@ -125,6 +129,31 @@ const setViewRoute = createRoute({
     return <BinderRoute set={set} entries={entries} view={view} selectCard={card} />;
   },
 });
+
+/**
+ * The set a Binder or List page shows, with every manifest entry — or `undefined` for a set
+ * that doesn't exist or is hidden from the binder.
+ */
+async function loadSetView(queryClient: QueryClient, setKey: string, hidden: ReadonlySet<SetKey>) {
+  const entries = await queryClient.ensureQueryData(manifestQuery());
+  const entry = entries.find((e) => e.key === setKey);
+  if (!entry) return undefined;
+  const visible = binderEntries(entries, hidden);
+  if (!visible.some((e) => e.key === setKey)) return undefined;
+
+  // Only the active set is awaited; the rest warm in the background so first paint
+  // never waits on them.
+  const set = await queryClient.ensureQueryData(setQuery(entry));
+  prefetchOtherSets(queryClient, entries, setKey);
+  return { set, entries };
+}
+
+/** Every set's catalog, for the pages that span the whole collection. */
+async function loadAllSets(queryClient: QueryClient) {
+  const entries = await queryClient.ensureQueryData(manifestQuery());
+  await Promise.all(entries.map((entry) => queryClient.ensureQueryData(setQuery(entry))));
+  return { entries };
+}
 
 /** Links from before the Inventory tab, e.g. `/binder/SOR?card=31`. */
 const legacyBinderRoute = createRoute({
@@ -143,11 +172,7 @@ const legacyBinderRoute = createRoute({
 const bulkRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/inventory/bulk',
-  loader: async ({ context }) => {
-    const entries = await context.queryClient.ensureQueryData(manifestQuery());
-    await Promise.all(entries.map((entry) => context.queryClient.ensureQueryData(setQuery(entry))));
-    return { entries };
-  },
+  loader: ({ context }) => loadAllSets(context.queryClient),
   component: function BulkRouteComponent() {
     const { entries } = bulkRoute.useLoaderData();
     const { queryClient } = bulkRoute.useRouteContext();
@@ -159,11 +184,7 @@ const bulkRoute = createRoute({
 const statsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/inventory/stats',
-  loader: async ({ context }) => {
-    const entries = await context.queryClient.ensureQueryData(manifestQuery());
-    await Promise.all(entries.map((entry) => context.queryClient.ensureQueryData(setQuery(entry))));
-    return { entries };
-  },
+  loader: ({ context }) => loadAllSets(context.queryClient),
   component: function StatsRouteComponent() {
     const { entries } = statsRoute.useLoaderData();
     const { queryClient } = statsRoute.useRouteContext();
@@ -271,6 +292,94 @@ const putAwayRoute = createRoute({
   },
 });
 
+/**
+ * A share link: someone else's collection, read-only — Binder, List, Bulk and Stats, in a
+ * shell of its own with a way back to yours. Nothing here reads or writes this device's data.
+ */
+const shareRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/share/$token',
+  component: function ShareRouteComponent() {
+    const { token } = shareRoute.useParams();
+    const { queryClient } = shareRoute.useRouteContext();
+    return <ShareLayout queryClient={queryClient} token={token} />;
+  },
+});
+
+/** The share's newest set that has a binder, as a phone or a desktop would open it. */
+const shareIndexRoute = createRoute({
+  getParentRoute: () => shareRoute,
+  path: '/',
+  beforeLoad: async ({ context, params }) => {
+    const shared = await context.queryClient.ensureQueryData(
+      sharedQuery(context.queryClient, params.token),
+    );
+    const entries = await context.queryClient.ensureQueryData(manifestQuery());
+    const key = newestSetKey(binderEntries(entries, shared.hiddenSets));
+    throw redirect({
+      to: '/share/$token/$setKey/$view',
+      params: { token: params.token, setKey: key ?? 'SOR', view: defaultView() },
+    });
+  },
+  errorComponent: ShareError,
+});
+
+const shareSetViewRoute = createRoute({
+  getParentRoute: () => shareRoute,
+  path: '$setKey/$view',
+  validateSearch: (search: Record<string, unknown>): { card?: number } => {
+    const card = Number(search.card);
+    return Number.isInteger(card) && card > 0 ? { card } : {};
+  },
+  loader: async ({ context, params }) => {
+    const shared = await context.queryClient.ensureQueryData(
+      sharedQuery(context.queryClient, params.token),
+    );
+    const view = isInventoryView(params.view) ? params.view : 'binder';
+    const loaded = await loadSetView(context.queryClient, params.setKey, shared.hiddenSets);
+    if (!loaded || view !== params.view) {
+      throw redirect({ to: '/share/$token', params: { token: params.token } });
+    }
+    return { ...loaded, view };
+  },
+  component: function ShareSetViewRouteComponent() {
+    const { set, entries, view } = shareSetViewRoute.useLoaderData();
+    const { card } = shareSetViewRoute.useSearch();
+    return <BinderRoute set={set} entries={entries} view={view} selectCard={card} />;
+  },
+  errorComponent: ShareError,
+});
+
+const shareBulkRoute = createRoute({
+  getParentRoute: () => shareRoute,
+  path: 'bulk',
+  loader: async ({ context, params }) => {
+    await context.queryClient.ensureQueryData(sharedQuery(context.queryClient, params.token));
+    return loadAllSets(context.queryClient);
+  },
+  component: function ShareBulkRouteComponent() {
+    const { entries } = shareBulkRoute.useLoaderData();
+    const { queryClient } = shareBulkRoute.useRouteContext();
+    return <BulkPage entries={entries} sets={loadedSets(queryClient, entries)} />;
+  },
+  errorComponent: ShareError,
+});
+
+const shareStatsRoute = createRoute({
+  getParentRoute: () => shareRoute,
+  path: 'stats',
+  loader: async ({ context, params }) => {
+    await context.queryClient.ensureQueryData(sharedQuery(context.queryClient, params.token));
+    return loadAllSets(context.queryClient);
+  },
+  component: function ShareStatsRouteComponent() {
+    const { entries } = shareStatsRoute.useLoaderData();
+    const { queryClient } = shareStatsRoute.useRouteContext();
+    return <StatsPage entries={entries} sets={loadedSets(queryClient, entries)} />;
+  },
+  errorComponent: ShareError,
+});
+
 const routeTree = rootRoute.addChildren([
   indexRoute,
   inventoryIndexRoute,
@@ -284,6 +393,7 @@ const routeTree = rootRoute.addChildren([
   intakeRoute,
   scanRoute,
   putAwayRoute,
+  shareRoute.addChildren([shareIndexRoute, shareSetViewRoute, shareBulkRoute, shareStatsRoute]),
 ]);
 
 /** `history` defaults to the browser's; tests pass an in-memory one. */
