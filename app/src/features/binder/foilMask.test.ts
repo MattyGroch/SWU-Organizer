@@ -35,6 +35,12 @@ describe('matteBoxes', () => {
     expect(covers(boxes, 50, 40)).toBe(false); // the art
   });
 
+  it('keeps an event’s traits strip matte, under its title', () => {
+    expect(covers(matteBoxes({ type: 'Event', hasSubtitle: false, aspects: 1 }), 55, 14)).toBe(
+      true,
+    );
+  });
+
   it('masks one aspect icon per aspect', () => {
     const below = (aspects: number) =>
       covers(matteBoxes({ type: 'Unit', hasSubtitle: false, aspects }), 10, 22);

@@ -46,6 +46,7 @@ const EVENT: readonly Box[] = [
   COST,
   TYPE_BAR,
   TITLE,
+  [17, 11, 93, 16.5], // traits, under the title
   [11, 18, 88.5, 50.5], // rules text; the art is below
 ];
 
