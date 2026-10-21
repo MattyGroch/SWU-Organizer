@@ -63,6 +63,15 @@ describe('matteBoxes', () => {
     expect(covers(unit('HMWP-39'), 50, 64)).toBe(false);
   });
 
+  it('leaves a Fortification’s bottom corners foil: it has no +power/+HP shields', () => {
+    const upgrade = (fortification: boolean) =>
+      matteBoxes({ type: 'Upgrade', hasSubtitle: false, aspects: 1, fortification });
+    expect(covers(upgrade(false), 10, 88)).toBe(true);
+    expect(covers(upgrade(true), 10, 88)).toBe(false);
+    // The upgrade bar between them is matte either way.
+    expect(covers(upgrade(true), 50, 88)).toBe(true);
+  });
+
   it('masks one aspect icon per aspect', () => {
     const below = (aspects: number) =>
       covers(matteBoxes({ type: 'Unit', hasSubtitle: false, aspects }), 10, 22);

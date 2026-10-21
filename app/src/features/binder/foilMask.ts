@@ -25,6 +25,8 @@ type PortraitFrame = {
   subtitle: Box;
   unit: readonly Box[];
   upgrade: readonly Box[];
+  /** The +power/+HP shields either side of the upgrade bar. Fortifications print none. */
+  modifiers: readonly Box[];
   event: readonly Box[];
 };
 
@@ -43,9 +45,11 @@ const STANDARD: PortraitFrame = {
   ],
   upgrade: [
     [4, 55.5, 96, 82.5], // rules text
-    [4, 83, 17, 94.5], // power modifier
-    [82, 83, 95.5, 94.5], // HP modifier
-    [14, 83, 86, 94.5], // the upgrade bar: name again and traits, between the modifiers
+    [14, 83, 86, 94.5], // the upgrade bar: name again and traits
+  ],
+  modifiers: [
+    [4, 83, 17, 94.5], // power
+    [82, 83, 95.5, 94.5], // HP
   ],
   event: [
     [17, 11, 93, 16.5], // traits, under the title
@@ -71,9 +75,11 @@ const PROMO_LIGHT: PortraitFrame = {
   ],
   upgrade: [
     [6, 57.5, 92, 79.5], // rules text
-    [5, 81.5, 18, 92.5], // power modifier
-    [82, 82, 95, 92.5], // HP modifier
     [16, 82, 84, 92], // the upgrade bar
+  ],
+  modifiers: [
+    [5, 81.5, 18, 92.5], // power
+    [82, 82, 95, 92.5], // HP
   ],
   event: [
     [26, 14, 74, 17.5], // traits
@@ -99,9 +105,11 @@ const PROMO_DARK: PortraitFrame = {
   ],
   upgrade: [
     [4, 56, 96, 80], // rules text
-    [3.5, 81, 16.5, 93], // power modifier
-    [82.5, 81.5, 96, 93], // HP modifier
     [15.5, 82, 85, 92], // the upgrade bar
+  ],
+  modifiers: [
+    [3.5, 81, 16.5, 93], // power
+    [82.5, 81.5, 96, 93], // HP
   ],
   event: [
     [24, 13, 67.5, 17.5], // traits
@@ -170,10 +178,18 @@ export type MaskedCard = {
   aspects: number;
   /** The printing whose art is shown, e.g. "059" or "HMWP-37": it decides the frame. */
   artNumber?: string;
+  /** A Fortification: an upgrade for a base, printed without +power/+HP shields. */
+  fortification?: boolean;
 };
 
 /** The matte parts of a card, in the pocket's own frame. */
-export function matteBoxes({ type, hasSubtitle, aspects, artNumber }: MaskedCard): readonly Box[] {
+export function matteBoxes({
+  type,
+  hasSubtitle,
+  aspects,
+  artNumber,
+  fortification = false,
+}: MaskedCard): readonly Box[] {
   const kind = (type ?? '').trim().toLowerCase();
   if (kind === 'leader') return [...LEADER, ...landscapeAspects(aspects)].map(turnAnticlockwise);
   if (kind === 'base') return [...BASE, ...landscapeAspects(aspects)].map(turnAnticlockwise);
@@ -185,7 +201,8 @@ export function matteBoxes({ type, hasSubtitle, aspects, artNumber }: MaskedCard
   if (kind === 'event') return [...boxes, ...frame.event];
   // Unique upgrades carry a subtitle too.
   if (hasSubtitle) boxes.push(frame.subtitle);
-  return [...boxes, ...(kind === 'upgrade' ? frame.upgrade : frame.unit)];
+  if (kind !== 'upgrade') return [...boxes, ...frame.unit];
+  return [...boxes, ...frame.upgrade, ...(fortification ? [] : frame.modifiers)];
 }
 
 const cache = new Map<string, string>();
@@ -195,7 +212,13 @@ const cache = new Map<string, string>();
  * pocket (see `.holo` in the CSS), so the boxes are plain percentages.
  */
 export function foilMask(card: MaskedCard): string {
-  const key = `${card.type}:${card.hasSubtitle}:${card.aspects}:${frameOf(card.artNumber)}`;
+  const key = [
+    card.type,
+    card.hasSubtitle,
+    card.aspects,
+    frameOf(card.artNumber),
+    !!card.fortification,
+  ].join(':');
   const cached = cache.get(key);
   if (cached) return cached;
 

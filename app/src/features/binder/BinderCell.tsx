@@ -145,6 +145,7 @@ export function BinderCell({
                       hasSubtitle: !!card.Subtitle,
                       aspects: card.Aspects?.length ?? 0,
                       artNumber,
+                      fortification: card.Traits?.includes('FORTIFICATION') ?? false,
                     }),
                   }),
               } as CSSProperties
