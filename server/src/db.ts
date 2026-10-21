@@ -25,7 +25,21 @@ export interface Migration {
  * - carry existing rows forward (prefer adding a table or column to dropping one),
  * - leave schema.sql alone: it is the baseline for a new database, and the steps run after it.
  */
-export const MIGRATIONS: Migration[] = []
+export const MIGRATIONS: Migration[] = [
+  {
+    // v3: share links. One per user; the token is the only thing a visitor needs.
+    to: 3,
+    up: (db) =>
+      db.exec(`
+        CREATE TABLE shares (
+          user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+          token TEXT UNIQUE NOT NULL,
+          hidden_sets_json TEXT NOT NULL DEFAULT '[]',
+          created_at INTEGER NOT NULL
+        );
+      `),
+  },
+]
 
 export function openDb(dbPath: string): Db {
   if (dbPath !== ':memory:') {
