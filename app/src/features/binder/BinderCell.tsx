@@ -12,6 +12,7 @@ import type { Card } from '~/domain/types';
 import type { CSSProperties, PointerEvent } from 'react';
 
 import { aspectBackground, isLightFill } from './aspect';
+import { foilMask } from './foilMask';
 import styles from './BinderCell.module.css';
 import { pocketDeckNames, pocketDecksTitle } from './deckHolds';
 import { RarityBadge } from './RarityBadge';
@@ -129,11 +130,25 @@ export function BinderCell({
           <span
             className={styles.holo}
             aria-hidden="true"
-            // Where the matte text box sits depends on the card's layout (see the CSS).
             data-card-type={card.Type}
             data-full-foil={choice?.fullFoil}
-            // Staggers the idle animation, so a page of foils doesn't shimmer in lockstep.
-            style={{ '--foil-seed': (parseInt(String(card.Number), 10) || 0) % 7 } as CSSProperties}
+            style={
+              {
+                // Staggers the idle animation, so a page of foils doesn't shimmer in lockstep.
+                '--foil-seed': (parseInt(String(card.Number), 10) || 0) % 7,
+                // Off the matte text boxes, which sit where the card's layout puts them. Not
+                // over the text layout (no art), and not on Prestige and Showcase, which are
+                // foil edge to edge.
+                ...(showArt &&
+                  !choice?.fullFoil && {
+                    maskImage: foilMask({
+                      type: card.Type,
+                      hasSubtitle: !!card.Subtitle,
+                      aspects: card.Aspects?.length ?? 0,
+                    }),
+                  }),
+              } as CSSProperties
+            }
           />
         )}
 

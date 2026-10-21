@@ -210,49 +210,7 @@
   mix-blend-mode: soft-light;
 }
 
-/*
- * Only the art is foil: on a real SWU foil the title/subtitle box and the rules text box
- * are printed matte, so the overlay is masked off them. Measured on the card scans, as a
- * share of the pocket's height (portrait) or width (sideways cards).
- */
-
-/* Units: the title box across the top (~0–17%), traits and rules text below the art
-   (~60% on). */
-.art:not([data-rotated='true']) ~ .holo {
-  mask-image: linear-gradient(to bottom, transparent 16%, #000 19%, #000 56%, transparent 64%);
-}
-
-/* Upgrades: the same, but their rules box starts higher, just past half way. */
-.art:not([data-rotated='true']) ~ .holo[data-card-type='Upgrade'] {
-  mask-image: linear-gradient(to bottom, transparent 16%, #000 19%, #000 51%, transparent 55%);
-}
-
-/* Events: the title, then the rules text, across the top half; the art is below. */
-.art:not([data-rotated='true']) ~ .holo[data-card-type='Event'] {
-  mask-image: linear-gradient(to bottom, transparent 49%, #000 54%);
-}
-
-/* Leaders go in turned 90° anticlockwise. Their art, printed down the left, ends up along
-   the pocket's bottom; the title and rules boxes (printed right) at its top; the traits bar
-   (printed bottom left) along its right edge. */
-.art[data-rotated='true'] ~ .holo[data-card-type='Leader'] {
-  mask-image:
-    linear-gradient(to bottom, transparent 55%, #000 59%),
-    linear-gradient(to right, #000 77%, transparent 80%);
-  mask-composite: intersect;
-}
-
-/* Bases, turned the same way: the title (printed top) is the pocket's left edge, the rules
-   text and name bar (printed bottom) its right; the art is the band between. */
-.art[data-rotated='true'] ~ .holo[data-card-type='Base'] {
-  mask-image: linear-gradient(to right, transparent 13%, #000 16%, #000 56%, transparent 60%);
-}
-
-/* Prestige and Showcase foils are foil edge to edge, text boxes and all. As specific as the
-   per-type rules above, and after them, so it wins for every type. */
-.art ~ .holo[data-full-foil='true'][data-card-type] {
-  mask-image: none;
-}
+/* The matte text boxes are masked off per card in BinderCell, from foilMask.ts. */
 
 @keyframes foil-drift {
   0%,

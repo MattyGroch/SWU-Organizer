@@ -163,7 +163,7 @@ describe('foil finish', () => {
     await waitFor(() => artElement(container));
 
     expect(screen.getByRole('button')).toHaveAttribute('data-foil', 'true');
-    // The layer knows the card type, so the CSS can keep an Event's text box matte.
+    // The layer knows the card type, which decides where its matte text boxes are.
     expect(container.querySelector('[data-card-type]')).toHaveAttribute('data-card-type', 'Unit');
     expect(screen.getByRole('button')).toHaveAccessibleName(/Includes a foil\./);
   });
