@@ -43,7 +43,7 @@ type Props = {
   putBack?: { refs: DeckCardRef[]; after: DeckLibrary };
 };
 
-type Named = { name: string; subtitle?: string; aspects?: string[] };
+type Named = { name: string; subtitle?: string; type?: string; aspects?: string[] };
 
 /**
  * Walk-the-binder list for building a deck, completing a partly built one, or filing one
@@ -84,7 +84,7 @@ export function PickListDialog({
   const card = (setKey: SetKey, baseNumber: number): Named => {
     const found = lookup.get(setKey)?.byNumber.get(baseNumber);
     return found
-      ? { name: found.Name, subtitle: found.Subtitle, aspects: found.Aspects }
+      ? { name: found.Name, subtitle: found.Subtitle, type: found.Type, aspects: found.Aspects }
       : { name: `#${baseNumber}` };
   };
 
@@ -137,8 +137,7 @@ export function PickListDialog({
   async function copyPurchaseList() {
     const text = unowned
       .map((line) => {
-        const { name, subtitle } = card(line.setKey, line.baseNumber);
-        return formatMissingLine(name, subtitle, line.setKey, line.unowned);
+        return formatMissingLine(card(line.setKey, line.baseNumber), line.setKey, line.unowned);
       })
       .join('\n');
     try {

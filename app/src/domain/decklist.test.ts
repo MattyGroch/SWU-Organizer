@@ -937,14 +937,24 @@ describe('computeDeckRows and summarizeDeck', () => {
 
 describe('formatMissingLine', () => {
   it('formats with a subtitle', () => {
-    expect(formatMissingLine('Bo-Katan Kryze', 'Reclaiming Mandalore', 'ASH', 2)).toBe(
-      '2 Bo-Katan Kryze - Reclaiming Mandalore [ASH]',
-    );
+    expect(
+      formatMissingLine(
+        { name: 'Bo-Katan Kryze', subtitle: 'Reclaiming Mandalore', type: 'Leader' },
+        'ASH',
+        2,
+      ),
+    ).toBe('2 Bo-Katan Kryze - Reclaiming Mandalore [ASH]');
   });
 
   it('formats without a subtitle', () => {
-    expect(formatMissingLine('Stronger Together', undefined, 'ASH', 3)).toBe(
+    expect(formatMissingLine({ name: 'Stronger Together', type: 'Event' }, 'ASH', 3)).toBe(
       '3 Stronger Together [ASH]',
+    );
+  });
+
+  it('leaves the planet off a base, as TCGplayer lists it', () => {
+    expect(formatMissingLine({ name: 'Echo Base', subtitle: 'Hoth', type: 'Base' }, 'SOR', 1)).toBe(
+      '1 Echo Base [SOR]',
     );
   });
 });
