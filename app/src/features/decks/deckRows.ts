@@ -26,6 +26,7 @@ function refToRow(
     name: card.Name,
     subtitle: card.Subtitle,
     type: card.Type,
+    arenas: card.Arenas,
     aspects: card.Aspects,
     cost: card.Cost,
     power: card.Power,
@@ -38,6 +39,60 @@ function refToRow(
     needed,
     rowCost: needed * price,
   };
+}
+
+/** Units by arena, then events and upgrades: the order a deck lists its cards in. */
+export const CARD_GROUPS: Array<{
+  label: string;
+  test: (type: string | undefined, arenas: string[] | undefined) => boolean;
+}> = [
+  { label: 'Ground units', test: (type, arenas) => type === 'Unit' && !arenas?.includes('Space') },
+  { label: 'Space units', test: (type, arenas) => type === 'Unit' && !!arenas?.includes('Space') },
+  { label: 'Events', test: (type) => type === 'Event' },
+  { label: 'Upgrades', test: (type) => type === 'Upgrade' },
+];
+
+/** A row's place in `CARD_GROUPS`; anything else comes after, as "Other". */
+export function cardGroupIndex(type: string | undefined, arenas: string[] | undefined): number {
+  const index = CARD_GROUPS.findIndex((g) => g.test(type, arenas));
+  return index === -1 ? CARD_GROUPS.length : index;
+}
+
+export function cardGroupLabel(groupIndex: number): string {
+  return CARD_GROUPS[groupIndex]?.label ?? 'Other';
+}
+
+const ROLE_ORDER: Record<DeckRole, number> = { leader: 0, base: 1, deck: 2, sideboard: 3 };
+
+/**
+ * Rows in deck order: leader, base, main deck, sideboard; within those, by group, then
+ * cost and name. Each keeps its index into `rows`, for columns aligned with the input.
+ */
+export function orderDeckRows<
+  Row extends Pick<DeckRowWithNeed, 'role' | 'type' | 'arenas' | 'cost' | 'name'>,
+>(rows: Row[]): Array<{ row: Row; index: number; group: number }> {
+  return rows
+    .map((row, index) => ({ row, index, group: cardGroupIndex(row.type, row.arenas) }))
+    .sort(
+      (a, b) =>
+        ROLE_ORDER[a.row.role] - ROLE_ORDER[b.row.role] ||
+        a.group - b.group ||
+        (a.row.cost ?? 0) - (b.row.cost ?? 0) ||
+        a.row.name.localeCompare(b.row.name),
+    );
+}
+
+/**
+ * What kind of card a row is, for the deck table: "Ground unit", "Space unit", "Upgrade",
+ * "Event". Leaders and bases say so in their role, so they get nothing.
+ */
+export function cardKind(
+  type: string | undefined,
+  arenas: string[] | undefined,
+): string | undefined {
+  if (!type || type === 'Leader' || type === 'Base') return undefined;
+  if (type === 'Unit' && arenas?.length) return `${arenas.join('/')} unit`;
+  return type;
 }
 
 /** A stored deck (saved or precon) as table rows, each with what you have and still need. */

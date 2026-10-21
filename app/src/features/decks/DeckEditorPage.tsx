@@ -36,7 +36,14 @@ import { CardSearch } from './CardSearch';
 import { CostBadge } from './CostBadge';
 import { CardStats } from './StatBadge';
 import styles from './DeckEditorPage.module.css';
-import { contentsToRows, deckAspects, type OwnedLookup } from './deckRows';
+import {
+  CARD_GROUPS,
+  cardGroupIndex,
+  cardGroupLabel,
+  contentsToRows,
+  deckAspects,
+  type OwnedLookup,
+} from './deckRows';
 import type { SearchHit, SearchMode } from './deckSearch';
 import { PickListDialog } from './PickListDialog';
 import { useDeckCollection, type OwnershipBySet } from './useDeckCollection';
@@ -475,14 +482,6 @@ function Slot({
   );
 }
 
-/** Units by arena, then events and upgrades — each by cost, then name. */
-const GROUPS: Array<{ label: string; test: (c: Card | undefined) => boolean }> = [
-  { label: 'Ground units', test: (c) => c?.Type === 'Unit' && !c.Arenas?.includes('Space') },
-  { label: 'Space units', test: (c) => c?.Type === 'Unit' && !!c.Arenas?.includes('Space') },
-  { label: 'Events', test: (c) => c?.Type === 'Event' },
-  { label: 'Upgrades', test: (c) => c?.Type === 'Upgrade' },
-];
-
 function ZoneList({
   title,
   zone,
@@ -510,9 +509,10 @@ function ZoneList({
     const cb = card(b);
     return (ca?.Cost ?? 0) - (cb?.Cost ?? 0) || (ca?.Name ?? '').localeCompare(cb?.Name ?? '');
   });
-  const groups = GROUPS.map((g) => ({ ...g, refs: sorted.filter((r) => g.test(card(r))) }));
-  const other = sorted.filter((r) => !GROUPS.some((g) => g.test(card(r))));
-  if (other.length) groups.push({ label: 'Other', test: () => false, refs: other });
+  const groups = [...CARD_GROUPS.keys(), CARD_GROUPS.length].map((index) => ({
+    label: cardGroupLabel(index),
+    refs: sorted.filter((r) => cardGroupIndex(card(r)?.Type, card(r)?.Arenas) === index),
+  }));
   const otherZone = zone === 'main' ? 'sideboard' : 'main deck';
 
   return (

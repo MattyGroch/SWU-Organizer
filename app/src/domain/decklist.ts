@@ -52,6 +52,8 @@ export type ResolvedDeckRow = {
   name: string;
   subtitle?: string;
   type?: string;
+  /** Where a unit fights: ['Ground'] or ['Space']. */
+  arenas?: string[];
   /** As the card prints them, e.g. ['Vigilance', 'Heroism']. */
   aspects?: string[];
   /** Resources to play it (a leader's is its deploy cost); bases have none. */
@@ -622,6 +624,7 @@ export function resolveDeckList(
         name: resolved.card.Name,
         subtitle: resolved.card.Subtitle,
         type: resolved.card.Type,
+        arenas: resolved.card.Arenas,
         aspects: resolved.card.Aspects,
         cost: resolved.card.Cost,
         power: resolved.card.Power,
