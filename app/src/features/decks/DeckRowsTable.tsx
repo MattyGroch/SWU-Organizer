@@ -36,8 +36,10 @@ type Props = {
 /** A deck's cards with what you have and what is still needed — used everywhere a deck is shown. */
 export function DeckRowsTable({ rows, label, box }: Props) {
   // Grouped like the deck editor; `index` still points into `rows`, which `box` follows.
+  // The sideboard is at most 10 cards, so it stays one group, still in that order.
   const ordered = orderDeckRows(rows);
-  const groupKey = ({ row, group }: (typeof ordered)[number]) => `${row.role}:${group}`;
+  const groupKey = ({ row, group }: (typeof ordered)[number]) =>
+    row.role === 'sideboard' ? row.role : `${row.role}:${group}`;
   const groupCounts = new Map<string, number>();
   for (const entry of ordered) {
     const key = groupKey(entry);
@@ -111,8 +113,7 @@ export function DeckRowsTable({ rows, label, box }: Props) {
                 {startsGroup && (
                   <tr className={styles.groupRow}>
                     <th scope="colgroup" colSpan={columns}>
-                      {row.role === 'sideboard' && 'Sideboard · '}
-                      {cardGroupLabel(group)}{' '}
+                      {row.role === 'sideboard' ? 'Sideboard' : cardGroupLabel(group)}{' '}
                       <span className={styles.groupCount}>{groupCounts.get(key)}</span>
                     </th>
                   </tr>
