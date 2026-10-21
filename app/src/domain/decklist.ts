@@ -691,17 +691,22 @@ export function summarizeDeck(rows: DeckRowWithNeed[], includeSideboard: boolean
 export function formatMissingCardsList(rows: DeckRowWithNeed[], includeSideboard: boolean): string {
   return rows
     .filter((r) => (r.role !== 'sideboard' || includeSideboard) && r.needed > 0)
-    .map((r) => formatMissingLine(r.name, r.subtitle, r.setKey, r.needed))
+    .map((r) => formatMissingLine(r, r.setKey, r.needed))
     .join('\n');
 }
 
+/**
+ * `3 Vader - Dark Lord [SOR]` — the paste format TCGplayer's mass entry accepts. The set
+ * code must be in brackets, and a base goes by its name alone: TCGplayer doesn't list the
+ * planet.
+ */
 export function formatMissingLine(
-  name: string,
-  subtitle: string | undefined,
-  setKey: SetKey,
+  card: { name: string; subtitle?: string; type?: string },
+  setKey: string,
   qty: number,
 ): string {
-  const namePart = subtitle ? `${name} - ${subtitle}` : name;
+  const namePart =
+    card.subtitle && card.type !== 'Base' ? `${card.name} - ${card.subtitle}` : card.name;
   return `${qty} ${namePart} [${setKey}]`;
 }
 

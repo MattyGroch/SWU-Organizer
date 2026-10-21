@@ -181,9 +181,9 @@ describe('missingListText', () => {
     const rows = buildCardRows(set, indexOwnership([]), filters());
     expect(missingListText(rows, 'SOR', 'fullNeeded')).toBe(
       [
-        '1 Director Krennic - Aspiring to Authority (SOR)',
-        '3 2-1B Surgical Droid (SOR)',
-        '3 Nameless Scout (SOR)',
+        '1 Director Krennic - Aspiring to Authority [SOR]',
+        '3 2-1B Surgical Droid [SOR]',
+        '3 Nameless Scout [SOR]',
       ].join('\n'),
     );
   });

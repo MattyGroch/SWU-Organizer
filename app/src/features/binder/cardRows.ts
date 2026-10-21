@@ -1,4 +1,5 @@
 import type { CatalogCard, LoadedSet } from '~/domain/catalog';
+import { formatMissingLine } from '~/domain/decklist';
 import {
   NO_HOMES,
   binderCount,
@@ -230,12 +231,6 @@ export function hasActiveFilters(filters: Filters): boolean {
     filters.hideInDecks ||
     filters.text.trim() !== ''
   );
-}
-
-/** `3 Vader - Dark Lord (SOR)` — the paste format TCGplayer's mass-entry box accepts. */
-export function formatMissingLine(row: CardRow, setKey: string, quantity: number): string {
-  const name = row.subtitle ? `${row.name} - ${row.subtitle}` : row.name;
-  return `${quantity} ${name} (${setKey})`;
 }
 
 /** What the copy buttons would put on the clipboard for these rows — shown on the buttons. */
