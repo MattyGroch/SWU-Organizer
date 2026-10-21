@@ -2,6 +2,7 @@ import { useRef, useState, type ReactNode } from 'react';
 
 import { SIGN_IN_URL } from '~/data/sync/account';
 import { CollectionImportDialog } from '~/features/import/CollectionImportDialog';
+import { ShareDialog } from '~/features/share/ShareDialog';
 
 import styles from './AccountMenu.module.css';
 import { useSync, type SyncView } from './syncContext';
@@ -30,6 +31,7 @@ export function AccountMenu() {
   const { account, status, lastSyncedAt, syncNow, signOut } = useSync();
   const menuRef = useRef<HTMLDetailsElement>(null);
   const [importOpen, setImportOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   if (account === undefined) return null;
 
@@ -121,10 +123,24 @@ export function AccountMenu() {
           <div className={styles.dataSection}>
             <p className={styles.sectionLabel}>Your data</p>
             {importButton}
+            {/* A share link is served from your synced copy, so it needs an account. */}
+            {typeof account === 'object' && (
+              <button
+                type="button"
+                className={styles.button}
+                onClick={() => {
+                  if (menuRef.current) menuRef.current.open = false;
+                  setShareOpen(true);
+                }}
+              >
+                Share collection
+              </button>
+            )}
           </div>
         </div>
       </details>
       {importOpen && <CollectionImportDialog onClose={() => setImportOpen(false)} />}
+      {shareOpen && <ShareDialog onClose={() => setShareOpen(false)} />}
     </>
   );
 }

@@ -5,7 +5,12 @@ import { SwuDatabase } from '../db';
 import { adjustPrinting, defaultPrinting, printingFor } from '../inventory';
 import { parseSetCatalog, toLoadedSet, type LoadedSet } from '~/domain/catalog';
 
-import { applyInventoryPayload, createInventorySync, snapshotSet } from './inventory';
+import {
+  applyInventoryPayload,
+  createInventorySync,
+  payloadToOwned,
+  snapshotSet,
+} from './inventory';
 
 function makeSet(): LoadedSet {
   return toLoadedSet(
@@ -136,6 +141,47 @@ describe('applyInventoryPayload', () => {
   it('ignores non-positive counts', async () => {
     await applyInventoryPayload('SOR', { '059': 0, '324': -1 }, set, database);
     expect(await database.owned.count()).toBe(0);
+  });
+});
+
+describe('payloadToOwned', () => {
+  it('resolves rows, with bulk copies, without touching the database', async () => {
+    const { rows, unknown } = payloadToOwned('SOR', { '059': 3, '059@bulk': 1, '324': 1 }, set, 5);
+    expect(unknown).toEqual([]);
+    expect([...rows].sort((a, b) => a.id.localeCompare(b.id))).toEqual([
+      {
+        id: 'SOR:059',
+        setKey: 'SOR',
+        base: 59,
+        num: '059',
+        variant: 'normal',
+        count: 3,
+        bulk: 1,
+        updatedAt: 5,
+      },
+      {
+        id: 'SOR:324',
+        setKey: 'SOR',
+        base: 59,
+        num: '324',
+        variant: 'hyperspace',
+        count: 1,
+        updatedAt: 5,
+      },
+    ]);
+    expect(await database.owned.count()).toBe(0);
+  });
+
+  it('reports printings this catalog does not know, and keeps the rest', () => {
+    const { rows, unknown } = payloadToOwned('SOR', { '059': 1, '999': 2 }, set);
+    expect(unknown).toEqual(['999']);
+    expect(rows.map((r) => r.num)).toEqual(['059']);
+  });
+
+  it('gives the rows applyInventoryPayload stores', async () => {
+    const payload = { '059': 2, '059F': 1, '059@bulk': 1 };
+    await applyInventoryPayload('SOR', payload, set, database, 7);
+    expect(await database.owned.toArray()).toEqual(payloadToOwned('SOR', payload, set, 7).rows);
   });
 });
 

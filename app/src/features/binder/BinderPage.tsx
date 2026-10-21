@@ -1,4 +1,3 @@
-import { useNavigate } from '@tanstack/react-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { defaultPrinting, printingFor } from '~/data/inventory';
@@ -59,6 +58,8 @@ import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
 import { BulkEditDialog } from '~/features/bulk/BulkEditDialog';
 import { CardSearch } from '~/features/search/CardSearch';
 import { InventorySubnav } from '~/features/inventory/InventoryNav';
+import { useInventoryNavigate } from '~/features/inventory/inventoryNavigate';
+import { useSharedCollection } from '~/data/shared';
 import {
   readBinderLayout,
   readBinderZoom,
@@ -93,7 +94,9 @@ type Props = {
 };
 
 export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props) {
-  const navigate = useNavigate();
+  const navigate = useInventoryNavigate();
+  /** A share link: someone else's binder, to look through but not change. */
+  const readOnly = useSharedCollection() !== null;
   const binder = useBinder(set);
   const ownership = useSetOwnership(set.setKey);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -140,7 +143,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
   // Hiding the set on screen leaves nothing to show here; go to the default binder.
   useEffect(() => {
     if (hiddenSets && !visibleEntries.some((e) => e.key === set.setKey)) {
-      void navigate({ to: '/inventory' });
+      void navigate({ place: 'home' });
     }
   }, [hiddenSets, visibleEntries, set.setKey, navigate]);
 
@@ -209,15 +212,8 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
       const index = visibleEntries.findIndex((e) => e.key === set.setKey);
       if (index === -1 || visibleEntries.length < 2) return;
       const next = visibleEntries[(index + delta + visibleEntries.length) % visibleEntries.length];
-      // `search: {}` is deliberate — the router preserves search params by default, and a
-      // stale `?card=` would select an unrelated card in the set you just moved to.
-      if (next) {
-        void navigate({
-          to: '/inventory/$setKey/$view',
-          params: { setKey: next.key, view },
-          search: {},
-        });
-      }
+      // No card: a stale `?card=` would select an unrelated card in the set you moved to.
+      if (next) void navigate({ place: 'set', setKey: next.key, view });
     },
     [visibleEntries, set.setKey, navigate, view],
   );
@@ -309,19 +305,18 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
         // position in the URL without stacking history entries.
         binder.selectNumber(suggestion.baseNumber);
         appliedSelectionRef.current = `${set.setKey}:${suggestion.baseNumber}`;
-        void navigate({
-          to: '/inventory/$setKey/$view',
-          params: { setKey: set.setKey, view },
-          search: { card: suggestion.baseNumber },
-          replace: true,
-        });
+        void navigate(
+          { place: 'set', setKey: set.setKey, view, card: suggestion.baseNumber },
+          { replace: true },
+        );
         return;
       }
 
       void navigate({
-        to: '/inventory/$setKey/$view',
-        params: { setKey: suggestion.setKey, view },
-        search: { card: suggestion.baseNumber },
+        place: 'set',
+        setKey: suggestion.setKey,
+        view,
+        card: suggestion.baseNumber,
       });
     },
     [set.setKey, navigate, binder, view],
@@ -410,20 +405,15 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
           goToSet(intent.delta);
           break;
         case 'adjustDefault':
-          event.preventDefault();
-          adjustDefault(intent.delta);
-          break;
         case 'adjustVariant':
-          event.preventDefault();
-          adjustVariant(intent.hotkey, intent.delta);
-          break;
         case 'fillPlayset':
-          event.preventDefault();
-          fillSelectedPlayset();
-          break;
         case 'clearSlot':
+          if (readOnly) break;
           event.preventDefault();
-          clearSelectedSlot();
+          if (intent.type === 'adjustDefault') adjustDefault(intent.delta);
+          else if (intent.type === 'adjustVariant') adjustVariant(intent.hotkey, intent.delta);
+          else if (intent.type === 'fillPlayset') fillSelectedPlayset();
+          else clearSelectedSlot();
           break;
       }
     };
@@ -438,6 +428,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
     adjustVariant,
     fillSelectedPlayset,
     clearSelectedSlot,
+    readOnly,
   ]);
 
   /** Copy buy list: beside the progress on desktop, in More on a phone. */
@@ -479,13 +470,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
       className={styles.setSelect}
       aria-label="Card set"
       value={set.setKey}
-      onChange={(event) =>
-        navigate({
-          to: '/inventory/$setKey/$view',
-          params: { setKey: event.target.value, view },
-          search: {},
-        })
-      }
+      onChange={(event) => void navigate({ place: 'set', setKey: event.target.value, view })}
     >
       {visibleEntries.map((entry) => (
         <option key={entry.key} value={entry.key}>
@@ -507,15 +492,17 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
         setKey={set.setKey}
         current={view}
         actions={
-          <button
-            type="button"
-            className={styles.setSettings}
-            aria-label={hidden.size > 0 ? `Hide sets, ${hidden.size} hidden` : 'Hide sets'}
-            title={hidden.size > 0 ? `Hide sets — ${hidden.size} hidden` : 'Hide sets'}
-            onClick={() => setHideSetsOpen(true)}
-          >
-            <GearIcon />
-          </button>
+          !readOnly && (
+            <button
+              type="button"
+              className={styles.setSettings}
+              aria-label={hidden.size > 0 ? `Hide sets, ${hidden.size} hidden` : 'Hide sets'}
+              title={hidden.size > 0 ? `Hide sets — ${hidden.size} hidden` : 'Hide sets'}
+              onClick={() => setHideSetsOpen(true)}
+            >
+              <GearIcon />
+            </button>
+          )
         }
       >
         {/* The set's name, with a step either way. The picker lies invisibly over the
@@ -577,7 +564,7 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
           </button>
         )}
 
-        {!narrow && (
+        {!narrow && !readOnly && (
           <button type="button" className={styles.action} onClick={() => setBulkOpen(true)}>
             Mass edit
           </button>
@@ -585,17 +572,22 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
 
         {narrow ? (
           <details className={styles.more} ref={moreRef}>
-            <summary className={styles.moreSummary} aria-label="More: mass edit, buy list, totals">
+            <summary
+              className={styles.moreSummary}
+              aria-label={readOnly ? 'More: buy list, totals' : 'More: mass edit, buy list, totals'}
+            >
               ⋯
             </summary>
             <div className={styles.morePanel}>
-              <button
-                type="button"
-                className={styles.action}
-                onClick={() => fromMore(() => setBulkOpen(true))}
-              >
-                Mass edit
-              </button>
+              {!readOnly && (
+                <button
+                  type="button"
+                  className={styles.action}
+                  onClick={() => fromMore(() => setBulkOpen(true))}
+                >
+                  Mass edit
+                </button>
+              )}
               {/* Beside the progress bar on desktop. */}
               {buyListButton(() => fromMore(() => setBuyListOpen(true)))}
               {totalsList}
@@ -678,15 +670,19 @@ export function BinderPage({ set, entries, view, loadedSets, selectCard }: Props
                 })
               : 0
           }
-          onAdjust={adjustDefault}
-          onAdjustPrinting={adjustPrinting_}
+          onAdjust={readOnly ? undefined : adjustDefault}
+          onAdjustPrinting={readOnly ? undefined : adjustPrinting_}
+          linkDecks={!readOnly}
           promoArt={
             binder.active
               ? promoArt?.[promoArtKey(set.setKey, binder.active.card.Number)]
               : undefined
           }
-          onChoosePromoArt={(num) =>
-            binder.active && void writePromoArt(set.setKey, binder.active.card.Number, num)
+          onChoosePromoArt={
+            readOnly
+              ? undefined
+              : (num) =>
+                  binder.active && void writePromoArt(set.setKey, binder.active.card.Number, num)
           }
           onClose={binder.clearSelection}
         />

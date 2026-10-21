@@ -28,8 +28,11 @@ type Props = {
   decks: readonly DeckHold[];
   /** The card's binder playset. */
   quota: number;
-  onAdjust: (delta: number) => void;
-  onAdjustPrinting: (printing: Printing, delta: number) => void;
+  /** Absent when read-only (a share link): the counts show, with nothing to change them. */
+  onAdjust?: (delta: number) => void;
+  onAdjustPrinting?: (printing: Printing, delta: number) => void;
+  /** Absent when the decks aren't yours to open (a share link): their names show as text. */
+  linkDecks?: boolean;
   /** The promo picture chosen for this card's binder pocket, if any. */
   promoArt?: string;
   onChoosePromoArt?: (num: string | undefined) => void;
@@ -56,6 +59,7 @@ export function SelectedCardPanel({
   onAdjustPrinting,
   promoArt,
   onChoosePromoArt,
+  linkDecks = true,
   onClose,
 }: Props) {
   if (!active) {
@@ -122,16 +126,18 @@ export function SelectedCardPanel({
 
       <div className={styles.side}>
         <div className={styles.quantity}>
-          <button
-            type="button"
-            className={styles.qtyButton}
-            onClick={() => onAdjust(-1)}
-            disabled={pocket.total === 0}
-            aria-label={`Remove one ${card.Name}`}
-            title="Remove one — keyboard -"
-          >
-            −
-          </button>
+          {onAdjust && (
+            <button
+              type="button"
+              className={styles.qtyButton}
+              onClick={() => onAdjust(-1)}
+              disabled={pocket.total === 0}
+              aria-label={`Remove one ${card.Name}`}
+              title="Remove one — keyboard -"
+            >
+              −
+            </button>
+          )}
 
           <p className={styles.qtyValue} aria-live="polite">
             <span className={styles.qtyNumbers}>
@@ -145,23 +151,33 @@ export function SelectedCardPanel({
             </span>
           </p>
 
-          <button
-            type="button"
-            className={styles.qtyButton}
-            onClick={() => onAdjust(1)}
-            aria-label={`Add one ${card.Name}`}
-            title="Add one — keyboard +"
-          >
-            +
-          </button>
+          {onAdjust && (
+            <button
+              type="button"
+              className={styles.qtyButton}
+              onClick={() => onAdjust(1)}
+              aria-label={`Add one ${card.Name}`}
+              title="Add one — keyboard +"
+            >
+              +
+            </button>
+          )}
         </div>
         {decks.length > 0 && (
           <ul className={styles.deckList} aria-label="In decks">
             {decks.map((d) => (
               <li key={d.deckId}>
-                <Link to="/decks/$deckId" params={{ deckId: d.deckId }} className={styles.deckLink}>
-                  {d.name}
-                </Link>
+                {linkDecks ? (
+                  <Link
+                    to="/decks/$deckId"
+                    params={{ deckId: d.deckId }}
+                    className={styles.deckLink}
+                  >
+                    {d.name}
+                  </Link>
+                ) : (
+                  d.name
+                )}
                 {d.binder + d.bulk > 1 && (
                   <span className={styles.deckCount}> ×{d.binder + d.bulk}</span>
                 )}

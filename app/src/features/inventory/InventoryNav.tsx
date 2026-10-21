@@ -1,11 +1,12 @@
-import { Link } from '@tanstack/react-router';
 import { useEffect, type ReactNode } from 'react';
 
+import { useSharedCollection } from '~/data/shared';
 import type { SetKey } from '~/domain/types';
 
 import { usePublishedHeight } from '~/ui/usePublishedHeight';
 
 import styles from './InventoryNav.module.css';
+import { InventoryLink } from './inventoryLinks';
 import { readLastSet, rememberPlace, type InventoryPlace } from './lastPlace';
 
 /**
@@ -20,54 +21,56 @@ export function InventoryNav({
   setKey?: SetKey;
   current: InventoryPlace;
 }) {
+  // A share link is someone else's collection: where you were in it isn't your place.
+  const shared = useSharedCollection() !== null;
+
   // Coming back to the Inventory tab, or reopening the app, returns to this page.
   useEffect(() => {
-    rememberPlace(current, setKey);
-  }, [current, setKey]);
+    if (!shared) rememberPlace(current, setKey);
+  }, [current, setKey, shared]);
 
-  const key = setKey ?? readLastSet();
+  const key = setKey ?? (shared ? undefined : readLastSet());
   const setLink = (view: 'binder' | 'list') =>
     key ? (
-      <Link
-        to="/inventory/$setKey/$view"
-        params={{ setKey: key, view }}
+      <InventoryLink
+        target={{ place: 'set', setKey: key, view }}
         className={styles.tab}
         aria-current={current === view ? 'page' : undefined}
       >
         {view === 'binder' ? 'Binder' : 'List'}
-      </Link>
+      </InventoryLink>
     ) : (
       // No set opened yet: /inventory picks one, but it goes to the last view remembered,
       // which from here is Bulk or Stats — so remember the view tapped first, or the tab loops back.
       // Exact, or the router marks it current on every page under /inventory.
-      <Link
-        to="/inventory"
+      <InventoryLink
+        target={{ place: 'home' }}
         activeOptions={{ exact: true }}
         className={styles.tab}
-        onClick={() => rememberPlace(view)}
+        onClick={shared ? undefined : () => rememberPlace(view)}
       >
         {view === 'binder' ? 'Binder' : 'List'}
-      </Link>
+      </InventoryLink>
     );
 
   return (
     <nav className={styles.nav} aria-label="Inventory">
       {setLink('binder')}
       {setLink('list')}
-      <Link
-        to="/inventory/bulk"
+      <InventoryLink
+        target={{ place: 'bulk' }}
         className={styles.tab}
         aria-current={current === 'bulk' ? 'page' : undefined}
       >
         Bulk
-      </Link>
-      <Link
-        to="/inventory/stats"
+      </InventoryLink>
+      <InventoryLink
+        target={{ place: 'stats' }}
         className={styles.tab}
         aria-current={current === 'stats' ? 'page' : undefined}
       >
         Stats
-      </Link>
+      </InventoryLink>
     </nav>
   );
 }

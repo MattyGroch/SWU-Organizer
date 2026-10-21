@@ -1,0 +1,50 @@
+/* The share's header: the app bar, but with a read-only notice and a way home in place of tabs. */
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  align-items: baseline;
+  margin-left: auto;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-subtle);
+}
+
+.notice strong {
+  color: var(--color-text);
+}
+
+.exit {
+  composes: ui-tab from global;
+  flex-shrink: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-interactive);
+  border-radius: var(--radius-lg);
+  color: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.gone {
+  max-width: 32rem;
+  margin: var(--space-8, 3rem) auto;
+  text-align: center;
+}
+
+.gone h2 {
+  margin-bottom: var(--space-3);
+  font-size: var(--font-size-lg);
+}
+
+.gone p {
+  margin-bottom: var(--space-4);
+  color: var(--color-text-subtle);
+}
+
+@media (max-width: 760px) {
+  .notice {
+    grid-row: 1;
+    grid-column: 1;
+    margin-left: 0;
+  }
+}

@@ -1,10 +1,9 @@
-import { Link } from '@tanstack/react-router';
-import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo, useState } from 'react';
 
-import { db } from '~/data/db';
 import type { LoadedSet, SetManifestEntry } from '~/domain/catalog';
+import { useSharedCollection } from '~/data/shared';
 import type { SetKey } from '~/domain/types';
+import { useAllOwned } from '~/features/binder/useOwnership';
 import { AspectIcons } from '~/features/binder/AspectIcons';
 import { EMPTY_FILTERS, hasActiveFilters, type Filters } from '~/features/binder/cardRows';
 import { FilterBar } from '~/features/binder/FilterBar';
@@ -24,6 +23,7 @@ import {
 import { BulkSelectionBar } from './BulkSelectionBar';
 import { isSelectable, rowId } from './bulkSelection';
 import { InventorySubnav } from './InventoryNav';
+import { InventoryLink } from './inventoryLinks';
 import { RemoveFromBulkDialog } from './RemoveFromBulkDialog';
 import { SelectBox } from './SelectBox';
 import { useBulkSelection } from './useBulkSelection';
@@ -59,7 +59,10 @@ type Props = {
  */
 export function BulkPage({ entries, sets }: Props) {
   const { library } = useDeckLibrary();
-  const owned = useLiveQuery(() => db.owned.filter((row) => (row.bulk ?? 0) > 0).toArray(), []);
+  /** A share link: the box to look through, with nothing to take out of it. */
+  const readOnly = useSharedCollection() !== null;
+  const allOwned = useAllOwned();
+  const owned = useMemo(() => allOwned?.filter((row) => (row.bulk ?? 0) > 0), [allOwned]);
   const [query, setQuery] = useState('');
   const [setFilter, setSetFilter] = useState<SetKey | ''>('');
   const [chips, setChips] = useState<Filters>(EMPTY_FILTERS);
@@ -136,14 +139,16 @@ export function BulkPage({ entries, sets }: Props) {
           <table className={styles.table} aria-label="Bulk box">
             <thead>
               <tr>
-                <th scope="col" className={styles.pick}>
-                  <SelectBox
-                    state={selection.stateOf(rows)}
-                    label={`Select all ${rows.length} ${rows.length === 1 ? 'card' : 'cards'} shown`}
-                    disabled={!rows.some(isSelectable)}
-                    onChange={() => selection.toggleAll(rows)}
-                  />
-                </th>
+                {!readOnly && (
+                  <th scope="col" className={styles.pick}>
+                    <SelectBox
+                      state={selection.stateOf(rows)}
+                      label={`Select all ${rows.length} ${rows.length === 1 ? 'card' : 'cards'} shown`}
+                      disabled={!rows.some(isSelectable)}
+                      onChange={() => selection.toggleAll(rows)}
+                    />
+                  </th>
+                )}
                 <th scope="col" className={styles.where}>
                   Card
                 </th>
@@ -166,14 +171,16 @@ export function BulkPage({ entries, sets }: Props) {
               return (
                 <tbody key={section.key}>
                   <tr className={styles.sectionRow}>
-                    <th scope="rowgroup" colSpan={7}>
+                    <th scope="rowgroup" colSpan={readOnly ? 6 : 7}>
                       <div className={styles.sectionHead}>
-                        <SelectBox
-                          state={selection.stateOf(section.rows)}
-                          label={`Select every card in ${section.label}`}
-                          disabled={!section.rows.some(isSelectable)}
-                          onChange={() => selection.toggleAll(section.rows)}
-                        />
+                        {!readOnly && (
+                          <SelectBox
+                            state={selection.stateOf(section.rows)}
+                            label={`Select every card in ${section.label}`}
+                            disabled={!section.rows.some(isSelectable)}
+                            onChange={() => selection.toggleAll(section.rows)}
+                          />
+                        )}
                         <button
                           type="button"
                           className={styles.sectionToggle}
@@ -196,14 +203,16 @@ export function BulkPage({ entries, sets }: Props) {
                         key={rowId(row)}
                         className={selection.selected.has(rowId(row)) ? styles.picked : undefined}
                       >
-                        <td className={styles.pick}>
-                          <SelectBox
-                            state={selection.selected.has(rowId(row))}
-                            label={`Select ${row.name}`}
-                            disabled={!isSelectable(row)}
-                            onChange={() => selection.toggle(rowId(row))}
-                          />
-                        </td>
+                        {!readOnly && (
+                          <td className={styles.pick}>
+                            <SelectBox
+                              state={selection.selected.has(rowId(row))}
+                              label={`Select ${row.name}`}
+                              disabled={!isSelectable(row)}
+                              onChange={() => selection.toggle(rowId(row))}
+                            />
+                          </td>
+                        )}
                         <td className={styles.where}>
                           {row.setKey} #{row.base}
                         </td>
@@ -216,13 +225,16 @@ export function BulkPage({ entries, sets }: Props) {
                           </RarityBadge>
                         </td>
                         <td className={styles.name}>
-                          <Link
-                            to="/inventory/$setKey/$view"
-                            params={{ setKey: row.setKey, view: 'list' }}
-                            search={{ card: row.base }}
+                          <InventoryLink
+                            target={{
+                              place: 'set',
+                              setKey: row.setKey,
+                              view: 'list',
+                              card: row.base,
+                            }}
                           >
                             {row.name}
-                          </Link>
+                          </InventoryLink>
                           {row.subtitle && <span className={styles.subtitle}>{row.subtitle}</span>}
                           <span className={styles.narrowWhere}>
                             {row.setKey} #{row.base}
@@ -238,7 +250,7 @@ export function BulkPage({ entries, sets }: Props) {
                                 </span>
                               )}
                             </span>
-                            {row.boxCount > 0 && (
+                            {!readOnly && row.boxCount > 0 && (
                               <button
                                 type="button"
                                 className={styles.remove}
@@ -261,7 +273,7 @@ export function BulkPage({ entries, sets }: Props) {
         </div>
       )}
 
-      <BulkSelectionBar selection={selection} />
+      {!readOnly && <BulkSelectionBar selection={selection} />}
 
       {removing && (
         <RemoveFromBulkDialog
