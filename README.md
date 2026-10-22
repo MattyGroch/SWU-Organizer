@@ -7,13 +7,15 @@ Live at **[swu.mattyflix.com](https://swu.mattyflix.com)** (sign-in is limited t
 ## Features
 
 - **Binder view** — every set laid out as binder spreads, with real card art, the playset count in each pocket, and a foil mark on foil copies. Leaders and Bases sit sideways, as they do in a pocket.
-- **Every printing tracked** — Normal, Foil, Hyperspace, Hyperspace Foil, Showcase, Prestige, Prestige Foil and Prestige Serialized are counted separately, and the binder shows the most premium copy you own.
-- **Fast filing** — keyboard-first: `+`/`−` for a card, `1`–`8` for a specific printing, arrows to move, `/` to search across every set. Press `?` in the app for the full list.
+- **Every printing tracked** — Normal, Foil, Hyperspace, Hyperspace Foil, Promo, Promo Foil, Showcase, Prestige, Prestige Foil and Prestige Serialized are counted separately, and the binder shows the most premium copy you own.
+- **Fast filing** — keyboard-first: `+`/`−` for a card, `1`–`8` (then `9` and `0` for the promos) for a specific printing, arrows to move, `/` to search across every set. Press `?` in the app for the full list.
 - **Decks** — paste a decklist (swudb JSON, Melee, picklist or plain text) to check it against your collection and its format's rules (Premier, Twin Suns). Save it, then construct it with a pick list in binder order; deconstruct puts the same printings back. A deck can be partly built, flagged with what's missing and whether you own it elsewhere.
 - **Precons** — owned precon decks count toward your collection but stay sealed.
 - **Card scanner** — point a phone at a card: it is recognised from the card art (every printing, including Hyperspace and Leader backs, ~99% on the right card and treatment) and either queued for your collection or looked up in your binder. It knows when a binder pocket is already full — "add to bulk" — and when a better printing should bump a weaker copy out.
 - **Intake** — a review queue for cards entering the collection (scanned cards, or a deck bought built): check each copy's printing before it counts.
-- **Bulk edit, import and backup** — fill or clear whatever the filters show; import SW-Unlimited, SWUDB or Hyperspace Vault exports; download a full backup and restore it with add / only-missing / keep-higher / replace options.
+- **Put away** — after you commit an intake batch, a guided walk-through (it can read each step aloud) takes the cards to their binder pockets, sorted into piles, and sets aside the ones that need a decision.
+- **Stats** — collection value and progress, per set and per printing, plus pack math for what opening packs is expected to yield.
+- **Bulk edit, import and backup** — fill or clear whatever the filters show; import SW-Unlimited, SWUDB or Hyperspace Vault exports; download a full backup (decks included) and restore it with add / only-missing / keep-higher / replace options.
 - **Cloud sync** — sign in with Google to keep every device in step; offline changes sync later, and edits on two devices merge.
 - **Works on a phone, and offline** — on small screens the binder becomes a searchable list with the selected card's controls at hand. Add it to your home screen to install it as an app; after one visit it opens, and scans, without a connection.
 
@@ -22,7 +24,7 @@ Live at **[swu.mattyflix.com](https://swu.mattyflix.com)** (sign-in is limited t
 | Path                    | What it is                                                                            |
 | ----------------------- | ------------------------------------------------------------------------------------- |
 | `app/`                  | The web app — React 19, Vite, TanStack Router/Query, IndexedDB (Dexie).               |
-| `server/`               | The sync API — Express, SQLite, Google OAuth.                                         |
+| `server/`               | The sync API — Express, SQLite, Google OAuth (inventories and decks).                 |
 | `scripts/`              | The card-data pipeline: builds the catalog from swu-db.com and validates it.          |
 | `app/public/sets/`      | The committed card catalog, refreshed daily by CI.                                    |
 | `app/public/precons/`   | Precon decklists.                                                                     |
