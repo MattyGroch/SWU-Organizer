@@ -8,6 +8,7 @@ import {
   type DeckStatus,
   type HomeLookup,
 } from '~/domain/deckBuild';
+import { formatSwudbJson } from '~/domain/deckExport';
 import {
   formatMissingCardsList,
   type DeckLookupSet,
@@ -262,6 +263,18 @@ function SavedDeckItem({
     }
   }
 
+  async function copyExport() {
+    try {
+      await navigator.clipboard.writeText(formatSwudbJson(deck));
+      showToast({
+        tone: 'success',
+        message: `“${deck.name}” copied. Paste it into Karabast or swudb.com’s deck import.`,
+      });
+    } catch {
+      showToast({ tone: 'danger', message: 'Copy failed.' });
+    }
+  }
+
   function commitRename() {
     const name = nameDraft.trim();
     if (name && name !== deck.name) onUpdate({ name });
@@ -348,6 +361,14 @@ function SavedDeckItem({
           </Link>
           <button type="button" className={styles.action} onClick={() => void copyMissing()}>
             Copy missing
+          </button>
+          <button
+            type="button"
+            className={styles.action}
+            title="Copy the deck as JSON, to play it on Karabast or import it into swudb.com"
+            onClick={() => void copyExport()}
+          >
+            Export
           </button>
         </span>
       </div>
