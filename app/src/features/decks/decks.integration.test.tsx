@@ -423,6 +423,16 @@ describe('decks tab, end to end', () => {
     await waitFor(async () => expect((await readDeckLibrary()).customDecks).toHaveLength(1));
   });
 
+  it('exports a deck as the JSON Karabast and swudb.com import', async () => {
+    const user = userEvent.setup();
+    await renderDecks();
+    await pasteAndSave(user);
+
+    await user.click(within(myDecks()).getByRole('button', { name: 'Export' }));
+    await screen.findByText(/“Krennic Troopers” copied/);
+    expect(await navigator.clipboard.readText()).toBe(DECK);
+  });
+
   it('adds a deck bought already built through intake, with a variant corrected', async () => {
     const user = userEvent.setup();
     await renderDecks();
