@@ -495,4 +495,45 @@ describe('decks tab, end to end', () => {
       variants: { normal: 2, hyperspace: 1 },
     });
   });
+
+  it('adds the cards a part-built deck is missing, straight into its box', async () => {
+    const user = userEvent.setup();
+    await own(1, 1);
+    await own(19, 1);
+    await own(33, 1);
+    await renderDecks();
+    await pasteAndSave(user);
+
+    await user.click(within(myDecks()).getByRole('button', { name: 'Construct' }));
+    await user.click(
+      within(screen.getByRole('dialog')).getByRole('button', {
+        name: 'Mark as built, cards missing',
+      }),
+    );
+    expect(await within(myDecks()).findByText('2 not owned')).toBeInTheDocument();
+
+    await user.click(within(myDecks()).getByRole('button', { name: 'Add missing' }));
+    const batch = await screen.findByRole(
+      'region',
+      { name: 'Krennic Troopers · missing cards' },
+      { timeout: 5000 },
+    );
+    // Only the two troopers not owned are queued.
+    const lines = await db.intakeLines.toArray();
+    expect(lines.map((l) => [l.base, l.count])).toEqual([[33, 2]]);
+    await user.click(within(batch).getByRole('button', { name: 'Add 2 cards to deck’s box' }));
+
+    await waitFor(async () => expect(await db.intakeLines.count()).toBe(0));
+    const [trooper] = await db.owned.where('[setKey+base]').equals(['SOR', 33]).toArray();
+    expect(trooper).toMatchObject({ variant: 'normal', count: 3 });
+    const [deck] = (await readDeckLibrary()).customDecks;
+    expect(deck).toMatchObject({ constructed: true });
+    // The box keeps the trooper pulled from the binder and gains the two bought.
+    expect(deck!.pulledCards).toContainEqual({
+      setKey: 'SOR',
+      baseNumber: 33,
+      count: 3,
+      variants: { normal: 3 },
+    });
+  });
 });

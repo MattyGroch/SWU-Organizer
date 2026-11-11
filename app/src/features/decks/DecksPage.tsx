@@ -1,7 +1,7 @@
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 
-import { queueDeck } from '~/data/intake';
+import { queueDeck, queueMissing } from '~/data/intake';
 
 import type { LoadedSet } from '~/domain/catalog';
 import type { SavedDeck } from '~/domain/decks';
@@ -58,6 +58,19 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
     void navigate({ to: '/intake' });
   }
 
+  async function onQueueMissing(deck: SavedDeck) {
+    const batchId = await queueMissing(deck, sets, owned);
+    if (!batchId) {
+      showToast({ tone: 'info', message: `Nothing missing for “${deck.name}”.` });
+      return;
+    }
+    showToast({
+      tone: 'info',
+      message: `Missing cards for “${deck.name}” queued — check their printings, then add them.`,
+    });
+    void navigate({ to: '/intake' });
+  }
+
   const pickListDeck = pickList
     ? (library.customDecks.find((d) => d.id === pickList.id) ?? null)
     : null;
@@ -75,6 +88,7 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
         onDelete={onDelete}
         onOpenPickList={(deck, mode) => setPickList({ id: deck.id, mode })}
         onQueue={(deck) => void onQueue(deck)}
+        onQueueMissing={(deck) => void onQueueMissing(deck)}
         onImport={() => setImporting(true)}
         onAdjustBox={(deck, row, delta, max) =>
           void deckLibrary.adjustBox(deck.id, row.setKey, row.baseNumber, delta, max, homes)

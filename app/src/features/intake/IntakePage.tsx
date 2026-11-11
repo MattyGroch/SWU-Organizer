@@ -157,8 +157,9 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
       </div>
       {batch.kind === 'deck' && (
         <p className={styles.note}>
-          These go straight into the deck’s box: the deck is marked built, and your binder counts do
-          not change.
+          {batch.missingOnly
+            ? 'The cards this deck was missing. They go straight into its box, alongside any already there, and your binder counts do not change.'
+            : 'These go straight into the deck’s box: the deck is marked built, and your binder counts do not change.'}
         </p>
       )}
       {deckScan && (
@@ -239,7 +240,7 @@ function Batch({ batch, sets }: { batch: BatchWithLines; sets: Map<SetKey, Loade
             onClick={() => void commit()}
           >
             {batch.kind === 'deck'
-              ? `Add ${batch.copies} ${batch.copies === 1 ? 'card' : 'cards'} & mark deck built`
+              ? `Add ${batch.copies} ${batch.copies === 1 ? 'card' : 'cards'} ${batch.missingOnly ? 'to deck’s box' : '& mark deck built'}`
               : `Add ${batch.copies} ${batch.copies === 1 ? 'card' : 'cards'} to collection`}
           </button>
         )}
