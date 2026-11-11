@@ -1,5 +1,11 @@
 import type { LoadedSet, Printing, VariantSlug } from '~/domain/catalog';
-import { applyConstruct, cardKey, parseCardKey } from '~/domain/deckBuild';
+import {
+  applyConstruct,
+  cardKey,
+  parseCardKey,
+  requiredCounts,
+  type OwnedLookup,
+} from '~/domain/deckBuild';
 import {
   deckContentsFromRows,
   type DeckCardRef,
@@ -24,6 +30,7 @@ import {
   emptyOwnedRow,
   printingId,
   withCount,
+  type IntakeBatch,
   type IntakeLine,
   type OwnedPrinting,
   type SwuDatabase,
@@ -51,17 +58,54 @@ export async function queueDeck(
 ): Promise<string> {
   const existing = await database.intakeBatches.where('deckId').equals(deck.id).first();
   if (existing) return existing.id;
+  return addDeckBatch(
+    { label: deck.name, deckId: deck.id },
+    requiredCounts(deck, includeSideboard),
+    sets,
+    database,
+    now,
+  );
+}
 
-  const refs = [deck.leader, deck.base, ...deck.mainDeck];
-  if (deck.secondLeader) refs.push(deck.secondLeader);
-  if (includeSideboard) refs.push(...deck.sideboard);
+/**
+ * Queues only the cards a deck still needs to buy — what it lists, less every copy owned
+ * anywhere — for singles bought to finish it. Committed, they go into its box like any deck
+ * batch's, so a deck built from the collection is then complete. Returns null when nothing
+ * is missing, and the existing batch if the deck is already queued.
+ */
+export async function queueMissing(
+  deck: SavedDeck,
+  sets: ReadonlyMap<SetKey, LoadedSet>,
+  owned: OwnedLookup,
+  { database = db, now = Date.now() } = {},
+): Promise<string | null> {
+  const existing = await database.intakeBatches.where('deckId').equals(deck.id).first();
+  if (existing) return existing.id;
 
-  const counts = new Map<string, number>();
-  for (const ref of refs) {
-    const key = cardKey(ref.setKey, ref.baseNumber);
-    counts.set(key, (counts.get(key) ?? 0) + ref.count);
+  const missing = new Map<string, number>();
+  for (const [key, count] of requiredCounts(deck)) {
+    const { setKey, baseNumber } = parseCardKey(key);
+    const short = count - owned(setKey, baseNumber);
+    if (short > 0) missing.set(key, short);
   }
+  if (!missing.size) return null;
+  return addDeckBatch(
+    { label: `${deck.name} · missing cards`, deckId: deck.id, missingOnly: true },
+    missing,
+    sets,
+    database,
+    now,
+  );
+}
 
+/** A deck batch of `counts` copies per card, each at its Normal printing. */
+async function addDeckBatch(
+  batch: Pick<IntakeBatch, 'label' | 'deckId' | 'missingOnly'>,
+  counts: ReadonlyMap<string, number>,
+  sets: ReadonlyMap<SetKey, LoadedSet>,
+  database: SwuDatabase,
+  now: number,
+): Promise<string> {
   const batchId = newId();
   const lines: IntakeLine[] = [];
   let order = 0;
@@ -83,10 +127,9 @@ export async function queueDeck(
 
   await database.transaction('rw', database.intakeBatches, database.intakeLines, async () => {
     await database.intakeBatches.add({
+      ...batch,
       id: batchId,
       kind: 'deck',
-      label: deck.name,
-      deckId: deck.id,
       createdAt: now,
     });
     await database.intakeLines.bulkAdd(lines);

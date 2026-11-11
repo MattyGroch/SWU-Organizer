@@ -63,7 +63,8 @@ export type CardImageRow = {
  * A group of cards waiting to be added to the collection, reviewed before they count.
  *
  * `deck` batches come from "Add to collection" on a saved deck: committing adds the cards
- * and marks that deck built with them in its box. `scan` batches are for the scanner.
+ * and marks that deck built with them in its box. With `missingOnly`, they came from "Add
+ * missing" and are only the cards the deck lacked, joining whatever its box already holds. `scan` batches are for the scanner.
  * `deckScan` batches are a built deck run through the scanner: building one saves it as a
  * deck, then commits it like a `deck` batch.
  */
@@ -72,6 +73,7 @@ export type IntakeBatch = {
   kind: 'deck' | 'scan' | 'deckScan';
   label: string;
   deckId?: string;
+  missingOnly?: boolean;
   createdAt: number;
 };
 

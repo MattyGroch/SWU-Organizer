@@ -47,6 +47,7 @@ type Props = {
   onOpenPickList: (deck: SavedDeck, mode: 'construct' | 'deconstruct') => void;
   onAdjustBox: (deck: SavedDeck, row: DeckRowWithNeed, delta: 1 | -1, max: number) => void;
   onQueue: (deck: SavedDeck) => void;
+  onQueueMissing: (deck: SavedDeck) => void;
   onImport: () => void;
 };
 
@@ -69,6 +70,7 @@ export function SavedDecks({
   onOpenPickList,
   onAdjustBox,
   onQueue,
+  onQueueMissing,
   onImport,
 }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -112,6 +114,7 @@ export function SavedDecks({
             onOpenPickList={(mode) => onOpenPickList(deck, mode)}
             onAdjustBox={(row, delta, max) => onAdjustBox(deck, row, delta, max)}
             onQueue={() => onQueue(deck)}
+            onQueueMissing={() => onQueueMissing(deck)}
           />
         ))}
       </ul>
@@ -132,6 +135,7 @@ type ItemProps = {
   onOpenPickList: (mode: 'construct' | 'deconstruct') => void;
   onAdjustBox: (row: DeckRowWithNeed, delta: 1 | -1, max: number) => void;
   onQueue: () => void;
+  onQueueMissing: () => void;
 };
 
 /**
@@ -240,6 +244,7 @@ function SavedDeckItem({
   onOpenPickList,
   onAdjustBox,
   onQueue,
+  onQueueMissing,
 }: ItemProps) {
   const showToast = useToast();
   const [renaming, setRenaming] = useState(false);
@@ -349,6 +354,16 @@ function SavedDeckItem({
               onClick={onQueue}
             >
               Add to collection
+            </button>
+          )}
+          {needed > 0 && (
+            <button
+              type="button"
+              className={styles.action}
+              title="Bought the cards this deck is missing? Queue just those for review, then add them to your collection and into the deck's box."
+              onClick={onQueueMissing}
+            >
+              Add missing
             </button>
           )}
           <Link
