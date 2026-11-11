@@ -32,7 +32,7 @@ async function fetchJSON(url, timeoutMs = 30000) {
 }
 
 /**
- * @typedef {{ setId: string, fullName: string, numberCards?: number, parentSetId?: string, releaseDate?: string }} ApiSet
+ * @typedef {{ setId: string, fullName: string, numberCards?: number, isBaseSet?: boolean, parentSetId?: string, releaseDate?: string }} ApiSet
  */
 
 /**
@@ -55,7 +55,10 @@ function discover(rows, ov) {
 
     const parent = r.parentSetId != null && String(r.parentSetId).trim() !== '';
     const n = Number(r.numberCards);
-    const cardsOk = Number.isFinite(n) && n >= MIN_CARDS;
+    // The API flags every product set (mainline, mini sets like Icons, preconstructed-deck
+    // sets) as a base set, and leaves promos unflagged. Size alone can't tell them apart: a
+    // mini set is under MIN_CARDS. The size check stays as a fallback for rows without the flag.
+    const cardsOk = r.isBaseSet === true || (Number.isFinite(n) && n >= MIN_CARDS);
     const name = String(r.fullName || '').trim();
     const nameLooksPromoSubset = name.includes(' - ');
     const entry = { name: name || id, releaseDate: r.releaseDate };
