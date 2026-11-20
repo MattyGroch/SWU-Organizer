@@ -27,6 +27,9 @@ COPY --from=build /build/app/dist /usr/share/nginx/html
 # 0027) leaves them unreadable to nginx's non-root workers, which then answer 403 for
 # everything copied from app/public — catalogs, precons, fonts. Normalise them here.
 RUN chmod -R a+rX /usr/share/nginx/html
+# The card art cache (nginx.conf), writable by nginx's workers. It lives in the container,
+# so a new image starts it empty and it refills as pages are opened.
+RUN mkdir -p /var/cache/nginx/card-art && chown -R nginx:nginx /var/cache/nginx
 # Fail the build, not the deploy, if the nginx config is broken.
 RUN mkdir -p /run/nginx && nginx -t
 COPY scripts/fetch-catalog-prices.mjs /app/scripts/fetch-catalog-prices.mjs
