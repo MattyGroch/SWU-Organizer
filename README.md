@@ -62,7 +62,7 @@ To check the app on a phone on the same network: `npm run dev -- --host` in `app
 
 Prices are not committed by CI: the production container refreshes them when it starts and every 24 hours.
 
-The scanner's index is rebuilt by hand when a set is added: `cd app && npx tsx scripts/build-scan-index.ts` downloads any new card images (cached in `~/.cache/swu-organizer/card-art`), fingerprints every printing, writes `app/public/scan-data/`, and self-tests recognition — it fails if accuracy drops below 95%.
+The scanner's index is rebuilt by the same workflow whenever the card data changes, and lands in the same pull request. To rebuild it by hand: `cd app && npx tsx scripts/build-scan-index.ts` downloads any new card images (cached in `~/.cache/swu-organizer/card-art`), fingerprints every printing, writes `app/public/scan-data/`, and self-tests recognition — it fails if accuracy drops below 95%. If that self-test fails in CI, the pull request keeps the old index and says so, and the run ends red.
 
 ```bash
 npm ci                     # at the repo root
