@@ -50,5 +50,17 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # No deploy step: Watchtower on the host pulls the new `latest` on its next check
-      # (see docs/deploy.md).
+      # Tell Portainer to pull the fresh image and redeploy the stack. Runs for main
+      # pushes and manual runs (the way to test it); never for tags.
+      - name: Trigger Portainer redeploy
+        if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+        env:
+          PORTAINER_WEBHOOK_URL: ${{ secrets.PORTAINER_WEBHOOK_URL }}
+        run: |
+          if [ -z "$PORTAINER_WEBHOOK_URL" ]; then
+            echo "PORTAINER_WEBHOOK_URL is not set" >&2
+            exit 1
+          fi
+          curl --fail --silent --show-error --retry 3 --retry-delay 5 \
+            --max-time 120 -X POST "$PORTAINER_WEBHOOK_URL"
+          echo "Portainer webhook accepted"
