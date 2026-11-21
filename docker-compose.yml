@@ -22,7 +22,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.swu-organizer.entrypoints=websecure"
       - "traefik.http.routers.swu-organizer.rule=Host(`swu.mattyflix.com`)"
-      - "traefik.http.routers.swu-organizer.priority=1"
+      - "traefik.http.routers.swu-organizer.priority=2"
       - "traefik.http.services.swu-organizer.loadbalancer.server.port=8080"
     networks:
       - proxy
