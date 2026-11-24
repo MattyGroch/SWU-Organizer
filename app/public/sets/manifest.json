@@ -157,6 +157,13 @@
         "P26",
         "C26"
       ]
+    },
+    {
+      "key": "IC27",
+      "label": "Icons 2027 (IC27)",
+      "file": "SWU-IC27.json",
+      "cards": 194,
+      "printings": 566
     }
   ]
 }
