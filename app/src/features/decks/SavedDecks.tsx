@@ -266,10 +266,12 @@ function UpgradeRow({
   const [confirming, setConfirming] = useState(false);
   const { page, row, column } = binderLayout(u.baseNumber);
   return (
-    <li>
-      {u.count > 1 ? `${u.count} × ` : ''}
-      <strong>{cardName}</strong>: {variantLabel(u.from)} → {variantLabel(u.to)}
-      {u.alsoFor && <span className={styles.shared}> · also fits {u.alsoFor.join(', ')}</span>}{' '}
+    <li className={styles.upgradeItem}>
+      <span className={styles.upgradeText}>
+        {u.count > 1 ? `${u.count} × ` : ''}
+        <strong>{cardName}</strong>: {variantLabel(u.from)} → {variantLabel(u.to)}
+        {u.alsoFor && <span className={styles.shared}> · also fits {u.alsoFor.join(', ')}</span>}
+      </span>
       {!confirming && (
         <button
           type="button"
@@ -289,7 +291,7 @@ function UpgradeRow({
               row {row}, column {column}.
             </li>
             <li>
-              Put it in “{deckName}”’s box in place of the {variantLabel(u.from)}.
+              Put it in the “{deckName}” box in place of the {variantLabel(u.from)}.
             </li>
             <li>
               {toBulk
