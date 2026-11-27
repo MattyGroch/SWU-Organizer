@@ -70,7 +70,7 @@ type Item = {
   /** What is recorded for this scan — the top match, or the user's correction. */
   chosen: Printing;
   /** Set while the scan is waiting for the user: unsure which card, or which set. */
-  question: 'card' | 'set' | null;
+  question: 'card' | 'set' | 'wrongSet' | null;
   receipt: ScanReceipt | null;
   /**
    * Set when the card's binder pocket was already full: `full` (no better than what is
@@ -145,6 +145,13 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
   const foilsRef = useRef(foils);
   // Only Bulk Scan has the switch; elsewhere each card's printing is set on its own.
   foilsRef.current = foils && mode === 'add';
+  /**
+   * Bulk Scan: the set the whole stack is from, so a reprint isn't asked about. `null` is
+   * Auto. Not remembered: it is back to Auto each visit.
+   */
+  const [setChoice, setSetChoice] = useState<SetKey | null>(null);
+  const setChoiceRef = useRef(setChoice);
+  setChoiceRef.current = mode === 'add' ? setChoice : null;
   const [items, setItems] = useState<Item[]>([]);
   /** The latest items, for the scanner's callback (which outlives a render). */
   const itemsRef = useRef(items);
@@ -273,13 +280,32 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
             nameOf(m.entry) === nameOf(top.entry) &&
             m.cardScore - topCardScore <= REPRINT_GAP,
         );
-      const question: Item['question'] = reprint
-        ? 'set'
-        : runnerUp && cardLead(result.matches) < CARD_MARGIN
-          ? 'card'
-          : null;
+      // A set picked up front answers the set question: the card's printing in that set, or
+      // a flag when the card isn't in it at all.
+      const wanted = setChoiceRef.current;
+      let pick = top.entry;
+      let outOfSet = false;
+      if (wanted && top.entry.setKey !== wanted) {
+        const inSet =
+          (result.twins ?? []).find((t) => t.setKey === wanted && sameCard(t, top.entry)) ??
+          cards.find(
+            (m) =>
+              m.entry.setKey === wanted &&
+              nameOf(m.entry) === nameOf(top.entry) &&
+              m.cardScore - topCardScore <= REPRINT_GAP,
+          )?.entry;
+        if (inSet) pick = inSet;
+        else outOfSet = true;
+      }
+      const question: Item['question'] = outOfSet
+        ? 'wrongSet'
+        : reprint && !wanted
+          ? 'set'
+          : runnerUp && cardLead(result.matches) < CARD_MARGIN
+            ? 'card'
+            : null;
 
-      const chosen = asFound(asPrinting(top));
+      const chosen = asFound(asPrinting({ entry: pick }));
       const id = nextId.current++;
       pendingRef.current = { id, result, chosen, question };
       let placed: Pick<Item, 'receipt' | 'room'> = { receipt: null, room: null };
@@ -290,7 +316,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
           // Added, wherever it ends up: binder or bulk is put-away's business, not the scan's.
           navigator.vibrate?.(40);
         }
-        if (mode === 'add') {
+        if (mode === 'add' && question !== 'wrongSet') {
           // Logged even while unsure: the card is in the stack either way.
           stackCardId = await logScan(
             stackEntry({ chosen, question, ...placed }, sets.get(chosen.setKey)),
@@ -495,6 +521,24 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
             ))}
           </select>
         </label>
+        {/* A stack from one set needs no "which set?" for each reprint. */}
+        {mode === 'add' && (
+          <label className={styles.modeLabel}>
+            <span className="visually-hidden">Set</span>
+            <select
+              className={styles.mode}
+              value={setChoice ?? ''}
+              onChange={(event) => setSetChoice((event.target.value || null) as SetKey | null)}
+            >
+              <option value="">Set: Auto</option>
+              {[...sets.entries()].map(([key, set]) => (
+                <option key={key} value={key}>
+                  {key} · {set.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
         {/* Only a bulk run has stacks of foils to put through. */}
         {mode === 'add' && (
           <button
@@ -850,7 +894,14 @@ function LatestScan({
           {fromBack && ' · read from the back'}
         </p>
 
-        {item.question === 'set' ? (
+        {item.question === 'wrongSet' ? (
+          <div className={styles.question}>
+            <p>
+              This card isn't in the set you chose, so it wasn't added. Take it out of the stack,
+              then Rescan.
+            </p>
+          </div>
+        ) : item.question === 'set' ? (
           <div className={styles.question}>
             <p>This card looks the same in more than one set. Which is it?</p>
             <div className={styles.choices}>

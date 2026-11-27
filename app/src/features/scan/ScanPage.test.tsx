@@ -380,6 +380,43 @@ describe('ScanPage', () => {
     expect(await stack()).toEqual([['200', 'binder', null]]);
   });
 
+  it('with a set chosen up front, files a reprint in that set without asking', async () => {
+    renderPage([['SHD', shd]]);
+    await waitFor(() => expect(fire).not.toBeNull());
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Set' }), 'SHD');
+    await act(async () => {
+      fire!({
+        matches: [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)],
+        at: 1,
+        afterGap: true,
+        tooClose: false,
+        twins: [{ setKey: 'SHD', num: '200', base: 200, variant: 'normal' }],
+      });
+    });
+    expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+    expect(screen.queryByText(/looks the same in more than one set/)).toBeNull();
+    expect((await db.intakeLines.toArray()).map((l) => `${l.setKey}:${l.num}`)).toEqual([
+      'SHD:200',
+    ]);
+  });
+
+  it('with a set chosen up front, flags a card that is not in it and adds nothing', async () => {
+    renderPage([['SHD', shd]]);
+    await waitFor(() => expect(fire).not.toBeNull());
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Set' }), 'SHD');
+    await act(async () => {
+      fire!({
+        matches: [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)],
+        at: 1,
+        afterGap: true,
+        tooClose: false,
+      });
+    });
+    expect(await screen.findByText(/isn't in the set you chose/)).toBeInTheDocument();
+    expect(await db.intakeLines.count()).toBe(0);
+    expect(await stack()).toEqual([]);
+  });
+
   it('adds a scan straight away when its only twin is a different card', async () => {
     renderPage([['SHD', shd]]);
     await waitFor(() => expect(fire).not.toBeNull());
