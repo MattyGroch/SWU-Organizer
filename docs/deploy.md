@@ -1,38 +1,47 @@
 # Deploying
 
-Production runs on one host with Docker Compose behind Traefik: the app container (`Dockerfile`, nginx) and the sync API (`server/Dockerfile`, SQLite). Traefik sends `swu.mattyflix.com/api/*` to the API and everything else to the app. The app runs the image CI publishes to Docker Hub (`mattygroch/swu-organizer`) on every merge to `main`, and Watchtower keeps it current; the API is built on the host from this repo.
+Production runs on one Docker host with Compose behind Traefik: the app container (`Dockerfile`, nginx) and the sync API (`server/Dockerfile`, SQLite). Traefik sends `swu.mattyflix.com/api/*` to the API and everything else to the app.
 
-Portainer is not in the loop for now; when it is back, the same `docker-compose.yml` and variables work as a stack.
+## Where it runs
 
-## Watchtower
+- **Host:** the `docker` VM (ID 120) on the Proxmox host `pve`, at 192.168.5.10. `ssh docker` reaches it as root; `ssh proxmox` reaches `pve`.
+- **Portainer:** `https://192.168.5.10:9443`. The deployment is the stack `swu-organizer` (stack ID 7) on the `local` environment (ID 3). It is a git stack: Portainer pulls `docker-compose.yml` from `main` of this repo. Portainer keeps its own copy of the files in its data volume, so the host has **no checkout** of the repo (there is no `/opt/swu-organizer`).
+- **Settings** (`SESSION_SECRET`, the Google OAuth values, `ALLOWED_EMAILS`, the redirect URLs) are the stack's **Environment variables** in Portainer, not a `.env` file. `.env.example` lists the names.
+- **Data:** the API's SQLite files are in `/var/config/swu-organizer/` on the VM (`swu.db`, with `-wal` and `-shm` beside it while it runs), and snapshots go in `snapshots/` beside them.
+- **Access for scripts and sessions:** a Portainer access token (My account → Access tokens) sent as an `X-API-Key` header. Matt's is in `~/.portainer_api_key`; never print it or commit it.
 
-The host runs Watchtower, which updates a container when the registry has a newer image for the tag it runs. That is what deploys the app:
+## How a deploy happens
 
 1. A PR merges to `main` (a feature, or the daily data refresh with a new set).
-2. `docker-publish.yml` builds the image and pushes `latest`, `main` and `sha-<commit>` (release tags `v*.*.*` push that tag too) — about five minutes.
-3. On its next check — once a day — Watchtower pulls the new `latest` and restarts the app container: a few seconds' downtime.
+2. `docker-publish.yml` builds the image and pushes `latest`, `main` and `sha-<commit>` (release tags `v*.*.*` push that tag too), which takes about five minutes.
+3. The workflow's last step, "Trigger Portainer redeploy", POSTs to the stack's webhook (the repo secret `PORTAINER_WEBHOOK_URL`). Portainer pulls `main` and redeploys the stack, which recreates the containers: a few seconds' downtime. The step runs for pushes to `main` and for manual runs, never for tags, and the job fails if the secret is missing.
 
-The app service is labelled `com.centurylinklabs.watchtower.enable=true`; the API carries `…=false` (it is built on the host, so there is nothing to pull). Watchtower's schedule is its own container's setting on the host, not part of this repo.
+**Every merge therefore reaches prod within minutes**, not within a day. Snapshot before merging, not after.
+
+Watchtower still runs on the host as a fallback. The app service is labelled `com.centurylinklabs.watchtower.enable=true`, so it also picks up a newer `latest` on its own schedule; the API carries `…=false`. Watchtower's schedule is its own container's setting, not part of this repo.
 
 ## Everyday deploys
 
-- **Wait for Watchtower** — merged changes are live within a day.
-- **Now:** `cd /opt/swu-organizer && docker compose up -d swu-organizer` — the service always pulls its tag on `up`.
-- **API changes** (`server/`): `git pull && docker compose up -d --build swu-api`.
-- **Compose or `.env` changes:** `git pull && docker compose up -d`.
+- **Merge** and wait: it is live once the "Publish Docker image" run finishes.
+- **Redeploy without a merge:** re-run "Publish Docker image" on `main` (it has a manual trigger and fires the webhook), or open the stack in Portainer and choose **Pull and redeploy**.
+- **Compose or environment changes:** a merged compose change arrives with the next redeploy. Environment variables are edited in the stack's editor in Portainer, then **Update the stack**.
+- **API changes** (`server/`) ship in the same redeploy, and they usually change stored data, so snapshot first. After a server change, check that the API image was rebuilt: `ssh docker docker image inspect swu-organizer-swu-api --format '{{.Created}}'`.
 
 ## Snapshot the database
 
 Do this before merging or deploying anything that changes stored data. SQLite keeps recent writes in the `-wal` file. A cleanly stopped API folds them into `swu.db` and leaves it on its own, but copy all three files together anyway, in case it was killed:
 
 ```bash
-cd /opt/swu-organizer
+ssh docker
 snap=/var/config/swu-organizer/snapshots/$(date +%F-%H%M)
-docker compose stop swu-api
-mkdir -p "$snap"
-cp -a /var/config/swu-organizer/swu.db* "$snap"/
-docker compose start swu-api
+docker stop swu-api
+mkdir -p "$snap" && cp -a /var/config/swu-organizer/swu.db* "$snap"/
+docker start swu-api
 ```
+
+Stopping the API takes sync offline for about twenty seconds; the app container keeps serving. Docker can report the API as `starting` for up to a minute after the start before the health check passes. Check `docker ps` before you merge.
+
+The stop and start can go through the Portainer API instead (`POST /api/endpoints/3/docker/containers/swu-api/stop`, then `…/start`, with the `X-API-Key` header). The copy itself still runs on the VM over SSH. Stop only the `swu-api` container: the stack-level stop in Portainer takes the app down too.
 
 To restore: stop the API, move the current `swu.db*` aside, copy the snapshot's files back, then start the API again.
 
@@ -40,20 +49,17 @@ The server copy only holds what has synced. Also choose **Download backup** in t
 
 ## Trying a branch before merging
 
-Build the checkout instead of the published image:
-
-```bash
-git fetch && git checkout <branch>
-docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build swu-organizer
-```
-
-The local image (`swu-organizer-local`) has a name Docker Hub doesn't know, so Watchtower leaves it in place until you switch back: `git checkout main && docker compose up -d swu-organizer`.
+Prod has no checkout to build from, so try a branch with its own dev server against a local API (see `CLAUDE.md`). `docker-compose.build.yml` builds a checkout instead of pulling the published image, for a machine that has one; it is not used on prod.
 
 ## Rolling back the app
 
-Every merge stays on Docker Hub under a fixed tag. Pin one in `.env` — `SWU_APP_TAG=v2.0.0` or `SWU_APP_TAG=sha-6be7a7f` — and run `docker compose up -d swu-organizer`. Watchtower follows the pinned tag, which never changes, so it stays put. Remove the line (and `up -d` again) to follow `latest` once the fix is merged.
+Every merge stays on Docker Hub under a fixed tag. In Portainer, open the stack's Environment variables, add `SWU_APP_TAG` set to a tag, such as `v2.0.0` or `sha-6be7a7f`, and **Update the stack**. The variable stays across redeploys, so later merges don't move the app off the pinned tag, and Watchtower follows the pinned tag too. Delete the variable and update the stack again to follow `latest` once the fix is merged.
+
+This rolls back the app image only. The API is built from `server/` in the stack's checkout of `main`, and the database doesn't roll back; restore a snapshot for that.
 
 ## First v2 deploy (clean database)
+
+> **Historical.** This is the October 2026 cutover, done on the old host (`photon`). That host, its `/opt/swu-organizer` checkout and Portainer stack 99 are gone since the move to the Proxmox VM. It is kept for the record, not as a procedure.
 
 v1 ran as Portainer stack 99, from a Portainer-managed directory (no git checkout) with a `restore-override.yml` pointing the frontend at the Docker Hub image and Portainer's `stack.env` for settings. v2 moves to a plain checkout in `/opt/swu-organizer`.
 
@@ -102,6 +108,8 @@ Finally, in the browser: on `localhost:5173` choose **Download backup**; on `swu
 The card catalog updates through the daily data PR (`update-sets.yml`). A new set joins it only once every card is listed and every picture is on the CDN (`scripts/check-readiness.mjs`), so prerelease listings wait. Merging the PR publishes a new image, which Watchtower deploys. Prices refresh inside the running app container every 24 hours on their own.
 
 ## Rolling back to v1
+
+> **Historical.** Written for the old host. The steps below name paths and a Portainer stack (99) that no longer exist; adapt them rather than paste them.
 
 v1's exact images were tagged before the cutover: `swu-organizer-swu-api:v1-rollback` and `mattygroch/swu-organizer:v1-rollback`. Use those — the v2 build has taken over the `swu-organizer-swu-api` name, and Docker Hub's `:latest` is v2 once the PR is merged. Portainer's stack 99 directory still holds v1's compose files and `stack.env`.
 

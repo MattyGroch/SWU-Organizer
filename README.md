@@ -73,7 +73,7 @@ npm test                   # pipeline tests
 
 ## Deployment
 
-`docker-compose.yml` runs two containers behind Traefik on one host: the app (`Dockerfile`, nginx on port 8080) and the API (`server/Dockerfile`, port 3001, SQLite on a mounted volume). Traefik sends `/api` to the API and everything else to the app. The app runs the image published to Docker Hub on every merge to `main`, and Watchtower on the host deploys each new one within a day (`docker compose up -d swu-organizer` deploys at once); the API is built on the host. Settings go in a `.env` next to the compose file (template: `.env.example`).
+`docker-compose.yml` runs two containers behind Traefik on one host: the app (`Dockerfile`, nginx on port 8080) and the API (`server/Dockerfile`, port 3001, SQLite on a mounted volume). Traefik sends `/api` to the API and everything else to the app. Production runs it as a Portainer stack that tracks `main`. The app runs the image published to Docker Hub on every merge to `main`, and once that is published CI calls the stack's Portainer webhook, which redeploys within minutes (Watchtower on the host is a fallback). Settings are the stack's environment variables in Portainer; to run compose by hand, put them in a `.env` next to the compose file (template: `.env.example`).
 
 Full steps — everyday deploys, trying a branch, pinning a tag to roll back: [`docs/deploy.md`](docs/deploy.md).
 
