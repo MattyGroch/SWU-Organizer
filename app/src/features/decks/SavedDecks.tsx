@@ -10,7 +10,7 @@ import {
 } from '~/domain/deckBuild';
 import { variantLabel } from '~/domain/catalog';
 import { formatSwudbJson } from '~/domain/deckExport';
-import { deckUpgrades, upgradeCount, type DeckUpgrade } from '~/domain/deckUpgrades';
+import { libraryUpgrades, upgradeCount, type DeckUpgrade } from '~/domain/deckUpgrades';
 import {
   formatMissingCardsList,
   type DeckLookupSet,
@@ -77,6 +77,8 @@ export function SavedDecks({
 }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const decks = library.customDecks;
+  // Worked out across every deck at once, so a binder copy is offered to one deck only.
+  const upgradesByDeck = libraryUpgrades(library, homes);
 
   return (
     <section className={styles.panel} aria-labelledby="my-decks-title">
@@ -106,7 +108,7 @@ export function SavedDecks({
             key={deck.id}
             deck={deck}
             status={deckStatus(deck, library, homes)}
-            upgrades={deckUpgrades(deck, library, homes)}
+            upgrades={upgradesByDeck.get(deck.id) ?? []}
             lookup={lookup}
             owned={owned}
             pullable={pullable}

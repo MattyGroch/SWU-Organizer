@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import type { HomeLookup } from './deckBuild';
 import type { DeckLibrary, SavedDeck } from './decks';
-import { deckUpgrades, upgradeCount } from './deckUpgrades';
+import { deckUpgrades, libraryUpgrades, upgradeCount } from './deckUpgrades';
 import type { VariantCounts } from './ownership';
 
 const ref = (
@@ -113,5 +113,50 @@ describe('deckUpgrades', () => {
     const lib = library(deck('a', [ref(33, 1, { normal: 1 })], false));
     const homes = owning({ 33: { normal: 1, hyperspace: 1 } });
     expect(deckUpgrades(lib.customDecks[0]!, lib, homes)).toEqual([]);
+  });
+});
+
+describe('libraryUpgrades across decks', () => {
+  const twoDecks = () => {
+    // Two built decks, three Normals each; the binder pocket holds the rest.
+    const a = deck('a', [ref(33, 3, { normal: 3 })]);
+    const b = deck('b', [ref(33, 3, { normal: 3 })]);
+    return { a, b, lib: library(a, b) };
+  };
+
+  it('offers each binder copy to one deck only', () => {
+    const { lib } = twoDecks();
+    const homes = owning({ 33: { normal: 6, hyperspace: 3 } });
+    const found = libraryUpgrades(lib, homes);
+    // Three Hyperspaces, not six swaps: the first deck takes them all.
+    expect(upgradeCount(found.get('a') ?? [])).toBe(3);
+    expect(found.get('b')).toBeUndefined();
+  });
+
+  it('splits copies between decks once the first has had its share', () => {
+    const a = deck('a', [ref(33, 1, { normal: 1 })]);
+    const b = deck('b', [ref(33, 3, { normal: 3 })]);
+    const homes = owning({ 33: { normal: 4, hyperspace: 3 } });
+    const found = libraryUpgrades(library(a, b), homes);
+    expect(upgradeCount(found.get('a') ?? [])).toBe(1);
+    expect(upgradeCount(found.get('b') ?? [])).toBe(2);
+  });
+
+  it('gives a copy to the deck it improves most, whatever the library order', () => {
+    const a = deck('a', [ref(33, 1, { hyperspace: 1 })]);
+    const b = deck('b', [ref(33, 1, { normal: 1 })]);
+    const homes = owning({ 33: { hyperspace: 1, normal: 1, showcase: 1 } });
+    const found = libraryUpgrades(library(a, b), homes);
+    expect(found.get('b')).toEqual([
+      { setKey: 'SOR', baseNumber: 33, from: 'normal', to: 'showcase', count: 1 },
+    ]);
+    expect(found.get('a')).toBeUndefined();
+  });
+
+  it('never offers more copies than the binder holds, in total', () => {
+    const { lib } = twoDecks();
+    const homes = owning({ 33: { normal: 6, hyperspace: 2 } });
+    const total = [...libraryUpgrades(lib, homes).values()].flat();
+    expect(upgradeCount(total)).toBe(2);
   });
 });
