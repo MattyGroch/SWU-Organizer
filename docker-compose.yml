@@ -1,8 +1,9 @@
 # SWU Organizer on one host behind Traefik: the app and the sync API (server/).
 #
-# The app runs the image CI publishes to Docker Hub on every merge to main; Watchtower
-# pulls a new one within a day. To update now: `docker compose up -d swu-organizer`.
-# The API is built here: `docker compose up -d --build swu-api`. See docs/deploy.md.
+# Production runs this file as a Portainer stack that tracks main. The app runs the image
+# CI publishes to Docker Hub on every merge to main; CI then calls the stack's Portainer
+# webhook, which pulls main and redeploys. Watchtower is a fallback for the app image.
+# The API is built from server/. See docs/deploy.md.
 
 # A fixed project name: the stack keeps one identity whichever directory it is run from.
 name: swu-organizer

@@ -50,8 +50,8 @@ There's no `TODO.md` any more. Matt files ideas and bugs as issues; sessions rev
 
 ## Deploying
 
-- **Production** (swu.mattyflix.com) runs the image CI publishes from `main` (`mattygroch/swu-organizer:latest`). Watchtower installs it daily at about 04:30 UTC.
-- **Every merge reaches prod by itself** within a day, through Watchtower. So the snapshot for a risky change comes before the merge, not before the deploy.
-- **To deploy sooner:** after a merge, wait for the "Publish Docker image" run for the new `main` commit to finish. Then ask the production session (Remote Control, "Live prod site work") to `git pull && docker compose up -d swu-organizer`.
-- **API changes don't deploy through Watchtower.** The API is built on the host (`git pull && docker compose up -d --build swu-api`). Snapshot the database first.
+- **Production** (swu.mattyflix.com) is the Portainer stack `swu-organizer` (stack 7) on the `docker` VM (`ssh docker`), tracking `docker-compose.yml` on `main`. The app runs the image CI publishes (`mattygroch/swu-organizer:latest`).
+- **Every merge reaches prod within minutes.** When "Publish Docker image" finishes for a `main` commit, its last step calls the stack's Portainer webhook, which pulls `main` and redeploys. So the snapshot for a risky change comes before the merge, not after. Watchtower is only a fallback for the app image.
+- **To redeploy without a merge:** re-run "Publish Docker image" on `main` (it has a manual trigger), or use **Pull and redeploy** on the stack in Portainer.
+- **Snapshots and Portainer access** are in `docs/deploy.md`. The Portainer API token is in `~/.portainer_api_key` (never print it). Stopping or restarting prod containers still needs Matt's go-ahead.
 - **Read `docs/deploy.md`** for snapshots, rollback and everything else.
