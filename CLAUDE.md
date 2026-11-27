@@ -30,10 +30,9 @@ There's no `TODO.md` any more. Matt files ideas and bugs as issues; sessions rev
   ```bash
   git -C ~/SWU-Organizer fetch origin
   git -C ~/SWU-Organizer worktree add -b <branch> ~/SWU-Organizer-worktrees/<branch> origin/main
-  ln -s ~/SWU-Organizer/app/node_modules ~/SWU-Organizer-worktrees/<branch>/app/node_modules
-  ln -s ~/SWU-Organizer/node_modules ~/SWU-Organizer-worktrees/<branch>/node_modules
+  cd ~/SWU-Organizer-worktrees/<branch> && npm ci && npm ci --prefix app
   ```
-  Then work, test and commit only inside that folder.
+  The main checkout has no `node_modules` to share, so each worktree installs its own (symlinking to it leaves dangling links and `vitest` fails with `Cannot find package`). Then work, test and commit only inside that folder.
 - **Remove the worktree once its PR merges:** `git -C ~/SWU-Organizer worktree remove --force <path>`, then delete the branch. Leave other sessions' worktrees alone; `git worktree list` shows them all.
 
 ## Working in WSL
