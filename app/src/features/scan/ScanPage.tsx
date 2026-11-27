@@ -459,6 +459,9 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
       if (item.receipt) await unqueueScan(item.receipt);
       if (item.added) await undoQuickAdd(item.added);
       setItems((current) => current.filter((i) => i.id !== item.id));
+      // A removed read must not linger as the "read being saved": onResult would take it for
+      // the latest card and drop the rescan of the same card as a re-read.
+      if (pendingRef.current?.id === item.id) pendingRef.current = null;
       if (again) {
         setCleared(true);
         setHeld(false);
