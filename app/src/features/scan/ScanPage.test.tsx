@@ -456,6 +456,25 @@ describe('ScanPage', () => {
     expect(lines.map((l) => [l.num, l.count])).toEqual([['059', 1]]);
   });
 
+  it('adds the same card again after Rescan, with no gap since the first read', async () => {
+    renderPage();
+    await waitFor(() => expect(fire).not.toBeNull());
+    const droid = [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)];
+    await act(async () => fire!({ matches: droid, at: 1, afterGap: true, tooClose: false }));
+    expect(await screen.findByRole('heading', { name: /2-1B Surgical Droid/ })).toBeInTheDocument();
+    await waitFor(async () => expect(await db.intakeLines.count()).toBe(1));
+
+    await userEvent.click(screen.getByRole('button', { name: 'Rescan' }));
+    await waitFor(async () => expect(await db.intakeLines.count()).toBe(0));
+
+    // The card never left the guide, so the scanner reports no gap: it still counts.
+    await act(async () => fire!({ matches: droid, at: 2, afterGap: false, tooClose: false }));
+    expect(await screen.findByRole('heading', { name: /2-1B Surgical Droid/ })).toBeInTheDocument();
+    await waitFor(async () =>
+      expect((await db.intakeLines.toArray()).map((l) => [l.num, l.count])).toEqual([['059', 1]]),
+    );
+  });
+
   it('clears the result on Rescan rather than showing the scan before it', async () => {
     renderPage();
     await waitFor(() => expect(fire).not.toBeNull());
