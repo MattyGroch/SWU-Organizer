@@ -36,6 +36,10 @@ There's no `TODO.md` any more. Matt files ideas and bugs as issues; sessions rev
   Then work, test and commit only inside that folder.
 - **Remove the worktree once its PR merges:** `git -C ~/SWU-Organizer worktree remove --force <path>`, then delete the branch. Leave other sessions' worktrees alone; `git worktree list` shows them all.
 
+## Working in WSL
+
+On Matt's Windows machine, keep the clone and every worktree on the Linux filesystem (`~/SWU-Organizer`, `~/SWU-Organizer-worktrees`), never under `/mnt/c`. The Windows drive is slow (tests time out) and case-insensitive (`AspectIcons.tsx` and `aspectIcons.ts` collide). Run `npm ci` inside each worktree's `app/`; the `node_modules` symlinks above only work when the main clone has installed dependencies. A dev server started with `--host` is reachable from the Windows browser at `http://localhost:<port>`.
+
 ## Commits and PRs
 
 - **Stage only the files you changed, by exact path.** Never `git add -A`, `git add .` or a whole folder. Check `git diff --cached --stat` before committing. A changed file you didn't touch belongs to someone else: leave it unstaged.

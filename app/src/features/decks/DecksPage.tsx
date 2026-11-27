@@ -14,7 +14,7 @@ import { DeckCheck } from './DeckCheck';
 import styles from './DecksPage.module.css';
 import { PickListDialog } from './PickListDialog';
 import { PreconList } from './PreconList';
-import { SavedDecks } from './SavedDecks';
+import { SavedDecks, type DecksView } from './SavedDecks';
 import { useDeckCollection, type OwnershipBySet } from './useDeckCollection';
 import { useDeckLibrary } from './useDeckLibrary';
 
@@ -30,6 +30,7 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
   const showToast = useToast();
   const navigate = useNavigate();
   const [importing, setImporting] = useState(false);
+  const [view, setView] = useState<DecksView>('decks');
   const [pickList, setPickList] = useState<{
     id: string;
     mode: 'construct' | 'deconstruct';
@@ -111,6 +112,16 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
         onQueue={(deck) => void onQueue(deck)}
         onQueueMissing={(deck) => void onQueueMissing(deck)}
         onImport={() => setImporting(true)}
+        view={view}
+        onViewChange={setView}
+        preconsPanel={
+          <PreconList
+            precons={precons}
+            ownership={library.preconOwnership}
+            onToggle={(key) => void deckLibrary.togglePrecon(key)}
+            onSetOwned={(keys, value) => void deckLibrary.setPreconsOwned(keys, value)}
+          />
+        }
         onSwap={(deck, u) => void onSwap(deck, u)}
         onAdjustBox={(deck, row, delta, max) =>
           void deckLibrary.adjustBox(deck.id, row.setKey, row.baseNumber, delta, max, homes)
@@ -126,13 +137,6 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
           onClose={() => setImporting(false)}
         />
       )}
-
-      <PreconList
-        precons={precons}
-        ownership={library.preconOwnership}
-        onToggle={(key) => void deckLibrary.togglePrecon(key)}
-        onSetOwned={(keys, value) => void deckLibrary.setPreconsOwned(keys, value)}
-      />
 
       {pickList && pickListDeck && (
         <PickListDialog
