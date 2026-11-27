@@ -70,6 +70,14 @@ async function pasteAndSave(user: ReturnType<typeof userEvent.setup>) {
 
 const myDecks = () => screen.getByRole('region', { name: 'My decks' });
 
+/** The single deck row on the page. */
+const onlyItem = () => within(myDecks()).findByRole('listitem');
+
+/** Opens a deck row's ⋯ menu so its items can be reached. */
+async function openMenu(user: ReturnType<typeof userEvent.setup>, scope: HTMLElement) {
+  await user.click(within(scope).getByLabelText(/More actions for/));
+}
+
 beforeEach(async () => {
   await db.open();
   await db.owned.clear();
@@ -156,7 +164,7 @@ describe('decks tab, end to end', () => {
         variants: { normal: 3 },
       });
     });
-    expect(await within(myDecks()).findByText('Built')).toBeInTheDocument();
+    expect(await within(await onlyItem()).findByText('Built')).toBeInTheDocument();
 
     await user.click(within(myDecks()).getByRole('button', { name: 'Deconstruct' }));
     const putBack = screen.getByRole('dialog', { name: /Deconstruct: Krennic Troopers/ });
@@ -177,6 +185,7 @@ describe('decks tab, end to end', () => {
     await renderDecks();
     await pasteAndSave(user);
 
+    await openMenu(user, myDecks());
     await user.click(within(myDecks()).getByRole('link', { name: 'Edit' }));
     const main = await screen.findByRole('region', { name: 'Main deck' }, { timeout: 5000 });
     await user.click(within(main).getByRole('button', { name: /Move one Death Trooper to/ }));
@@ -254,8 +263,9 @@ describe('decks tab, end to end', () => {
     await user.click(within(myDecks()).getByRole('button', { name: 'Construct' }));
     const build = screen.getByRole('dialog', { name: /Construct: Krennic Troopers/ });
     await user.click(within(build).getByRole('button', { name: 'Mark as built' }));
-    expect(await within(myDecks()).findByText('Built')).toBeInTheDocument();
+    expect(await within(await onlyItem()).findByText('Built')).toBeInTheDocument();
 
+    await openMenu(user, myDecks());
     await user.click(within(myDecks()).getByRole('link', { name: 'Edit' }));
     const main = await screen.findByRole('region', { name: 'Main deck' }, { timeout: 5000 });
     await user.click(within(main).getByRole('button', { name: 'One fewer Death Trooper' }));
@@ -276,7 +286,7 @@ describe('decks tab, end to end', () => {
         variants: { normal: 2 },
       });
     });
-    expect(await within(myDecks()).findByText('Built')).toBeInTheDocument();
+    expect(await within(await onlyItem()).findByText('Built')).toBeInTheDocument();
   });
 
   it('builds with cards missing, telling owned-elsewhere from not owned', async () => {
@@ -319,6 +329,8 @@ describe('decks tab, end to end', () => {
 
     // Left them in the other deck: this one is built, missing 2 that are owned elsewhere.
     const items = within(myDecks()).getAllByRole('listitem');
+    expect(await within(items[0]!).findByText('2 missing')).toBeInTheDocument();
+    await user.click(within(items[0]!).getByRole('button', { name: /Krennic Troopers/ }));
     expect(await within(items[0]!).findByText('2 owned elsewhere')).toBeInTheDocument();
     expect(within(items[0]!).queryByText(/not owned/)).not.toBeInTheDocument();
   });
@@ -367,8 +379,9 @@ describe('decks tab, end to end', () => {
       expect(other).toMatchObject({ constructed: true, pulledCards: [] });
     });
     const after = within(myDecks()).getAllByRole('listitem');
-    expect(await within(after[0]!).findByText('Built')).toBeInTheDocument();
-    expect(within(after[1]!).getByText('Built · cards missing')).toBeInTheDocument();
+    // The deck that lost its cards is under Needs attention, listed after the built one.
+    expect(await within(after[1]!).findByText(/^\d+ missing$/)).toBeInTheDocument();
+    expect(within(after[0]!).getByText('Built')).toBeInTheDocument();
   });
 
   it('moves single cards between the box and the binder', async () => {
@@ -382,7 +395,7 @@ describe('decks tab, end to end', () => {
     await user.click(
       within(screen.getByRole('dialog')).getByRole('button', { name: 'Mark as built' }),
     );
-    await within(myDecks()).findByText('Built');
+    await within(await onlyItem()).findByText('Built');
 
     await user.click(within(myDecks()).getByRole('button', { name: /Krennic Troopers/ }));
     await user.click(
@@ -393,7 +406,7 @@ describe('decks tab, end to end', () => {
     await user.click(
       within(myDecks()).getByRole('button', { name: /Put one Death Trooper from the binder/ }),
     );
-    expect(await within(myDecks()).findByText('Built')).toBeInTheDocument();
+    expect(await within(await onlyItem()).findByText('Built')).toBeInTheDocument();
   });
 
   it('flags cards you do not own at all', async () => {
@@ -407,7 +420,58 @@ describe('decks tab, end to end', () => {
       within(dialog).getByRole('heading', { name: 'Not owned — purchase list' }),
     ).toBeInTheDocument();
     await user.click(within(dialog).getByRole('button', { name: 'Mark as built, cards missing' }));
+    await user.click(await within(myDecks()).findByRole('button', { name: /Krennic Troopers/ }));
     expect(await within(myDecks()).findByText('5 not owned')).toBeInTheDocument();
+  });
+
+  it('lists owned precons on their own tab, apart from your decks', async () => {
+    const user = userEvent.setup();
+    await db.deckLibrary.put({
+      id: 'library',
+      updatedAt: 0,
+      json: JSON.stringify({
+        customDecks: [],
+        preconOwnership: { 'TS26-master-and-apprentice': 1 },
+      }),
+    });
+    await renderDecks();
+    await pasteAndSave(user);
+
+    // The Decks tab shows only your own deck; the precon is not in it.
+    const own = within(myDecks()).getAllByRole('listitem');
+    expect(own).toHaveLength(1);
+    expect(own[0]).toHaveTextContent('Krennic Troopers');
+    expect(within(myDecks()).queryByText(/Master and Apprentice/)).not.toBeInTheDocument();
+
+    await user.click(within(myDecks()).getByRole('radio', { name: /^Precons/ }));
+    const precons = within(myDecks()).getAllByRole('listitem');
+    expect(precons[0]).toHaveTextContent(/Master and Apprentice/);
+    expect(within(myDecks()).queryByText('Krennic Troopers')).not.toBeInTheDocument();
+    // A precon can't be edited, so its menu has no Edit.
+    await openMenu(user, precons[0]!);
+    expect(within(precons[0]!).queryByRole('link', { name: 'Edit' })).not.toBeInTheDocument();
+  });
+
+  it('offers Copy missing only where a deck has cards missing', async () => {
+    const user = userEvent.setup();
+    await own(1, 1);
+    await own(19, 1);
+    await own(33, 3);
+    await renderDecks();
+    await pasteAndSave(user);
+
+    await openMenu(user, await onlyItem());
+    expect(within(myDecks()).getByRole('button', { name: 'Copy missing' })).toBeInTheDocument();
+
+    await user.click(within(myDecks()).getByRole('button', { name: 'Construct' }));
+    await user.click(
+      within(screen.getByRole('dialog')).getByRole('button', { name: 'Mark as built' }),
+    );
+    await within(await onlyItem()).findByText('Built');
+    await openMenu(user, await onlyItem());
+    expect(
+      within(myDecks()).queryByRole('button', { name: 'Copy missing' }),
+    ).not.toBeInTheDocument();
   });
 
   it('deletes a deck with undo', async () => {
@@ -428,6 +492,7 @@ describe('decks tab, end to end', () => {
     await renderDecks();
     await pasteAndSave(user);
 
+    await openMenu(user, myDecks());
     await user.click(within(myDecks()).getByRole('button', { name: 'Export' }));
     await screen.findByText(/“Krennic Troopers” copied/);
     expect(await navigator.clipboard.readText()).toBe(DECK);
@@ -438,6 +503,7 @@ describe('decks tab, end to end', () => {
     await renderDecks();
     await pasteAndSave(user);
 
+    await openMenu(user, myDecks());
     await user.click(within(myDecks()).getByRole('button', { name: 'Add to collection' }));
     const batch = await screen.findByRole(
       'region',
@@ -510,8 +576,10 @@ describe('decks tab, end to end', () => {
         name: 'Mark as built, cards missing',
       }),
     );
+    await user.click(await within(myDecks()).findByRole('button', { name: /Krennic Troopers/ }));
     expect(await within(myDecks()).findByText('2 not owned')).toBeInTheDocument();
 
+    await openMenu(user, myDecks());
     await user.click(within(myDecks()).getByRole('button', { name: 'Add missing' }));
     const batch = await screen.findByRole(
       'region',
@@ -561,7 +629,7 @@ describe('deck upgrades from the binder', () => {
     await user.click(within(myDecks()).getByRole('button', { name: 'Construct' }));
     const dialog = screen.getByRole('dialog', { name: /Construct: Krennic Troopers/ });
     await user.click(within(dialog).getByRole('button', { name: 'Mark as built' }));
-    expect(await within(myDecks()).findByText('Built')).toBeInTheDocument();
+    expect(await within(await onlyItem()).findByText('Built')).toBeInTheDocument();
   }
 
   it('flags a better printing scanned into the binder, and lists it without changing the deck', async () => {
@@ -602,7 +670,7 @@ describe('deck upgrades from the binder', () => {
     await pasteAndSave(user);
 
     // Saved but not built: its copies are still in the binder, nothing to swap.
-    expect(within(myDecks()).getByText('Not built')).toBeInTheDocument();
+    expect(within(myDecks()).getByText('All owned')).toBeInTheDocument();
     expect(within(myDecks()).queryByText(/upgrade/)).not.toBeInTheDocument();
   });
 

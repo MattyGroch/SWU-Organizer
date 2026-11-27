@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import {
   cardKey,
@@ -25,7 +25,9 @@ import { useToast } from '~/ui/toastContext';
 
 import { AspectIcons } from '../binder/AspectIcons';
 
+import { DeckMenu } from './DeckMenu';
 import { DeckRowsTable, type BoxColumn } from './DeckRowsTable';
+import { DECK_GROUPS, groupDecks, type DeckGroupKey } from './deckGroups';
 import {
   cardsNeeded,
   contentsToRows,
@@ -56,7 +58,24 @@ type Props = {
   onQueue: (deck: SavedDeck) => void;
   onQueueMissing: (deck: SavedDeck) => void;
   onImport: () => void;
+  view: DecksView;
+  onViewChange: (view: DecksView) => void;
+  /** Shown under the Precons tab: the checklist for marking which precons you own. */
+  preconsPanel: ReactNode;
 };
+
+export type DecksView = 'decks' | 'precons';
+
+const CLOSED_KEY = 'swu.decks.closedGroups';
+
+function readClosed(): DeckGroupKey[] {
+  try {
+    const raw = JSON.parse(localStorage.getItem(CLOSED_KEY) ?? 'null') as unknown;
+    return Array.isArray(raw) ? (raw as DeckGroupKey[]) : [];
+  } catch {
+    return [];
+  }
+}
 
 /**
  * Saved decklists.
@@ -83,8 +102,12 @@ export function SavedDecks({
   onQueue,
   onQueueMissing,
   onImport,
+  view,
+  onViewChange,
+  preconsPanel,
 }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [closed, setClosed] = useState<DeckGroupKey[]>(readClosed);
   const decks = library.customDecks;
   // Every deck that could use a binder copy is flagged, so you choose which one gets it.
   const upgradesByDeck = libraryUpgrades(library, homes);
@@ -92,6 +115,65 @@ export function SavedDecks({
   const preconNames = new Map(
     decks.flatMap((deck) => (deck.precon ? [[deck.precon, deck.name] as const] : [])),
   );
+  const statusOf = (deck: SavedDeck) => deckStatus(deck, library, homes);
+  const neededOf = (deck: SavedDeck) => cardsNeeded(deck, owned);
+  const groups = groupDecks(decks, statusOf, neededOf);
+  const mine = decks.filter((deck) => !deck.precon);
+  const precons = decks.filter((deck) => deck.precon);
+
+  // A deck that changes section (built, deconstructed, a card lost) opens the one it lands
+  // in, so it never vanishes into a collapsed list. This is not remembered.
+  const lastGroup = useRef<Map<string, DeckGroupKey> | null>(null);
+  const placement = DECK_GROUPS.flatMap(({ key }) =>
+    groups[key].map((deck) => [deck.id, key] as const),
+  );
+  const placementKey = placement.map(([id, key]) => `${id}:${key}`).join('|');
+  useEffect(() => {
+    const now = new Map(placement);
+    const before = lastGroup.current;
+    lastGroup.current = now;
+    if (!before) return;
+    const landed = new Set<DeckGroupKey>();
+    for (const [id, key] of now) if (before.has(id) && before.get(id) !== key) landed.add(key);
+    if (landed.size > 0) setClosed((prev) => prev.filter((key) => !landed.has(key)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- placementKey stands for placement
+  }, [placementKey]);
+
+  function toggleGroup(key: DeckGroupKey) {
+    const next = closed.includes(key) ? closed.filter((k) => k !== key) : [...closed, key];
+    setClosed(next);
+    try {
+      localStorage.setItem(CLOSED_KEY, JSON.stringify(next));
+    } catch {
+      // Remembering the layout is a convenience only.
+    }
+  }
+
+  function renderDeck(deck: SavedDeck) {
+    return (
+      <SavedDeckItem
+        key={deck.id}
+        deck={deck}
+        library={library}
+        preconNames={preconNames}
+        status={statusOf(deck)}
+        upgrades={upgradesByDeck.get(deck.id) ?? []}
+        holdings={holdings.get(deck.id)}
+        lookup={lookup}
+        owned={owned}
+        pullable={pullable}
+        expanded={expandedId === deck.id}
+        onToggle={() => setExpandedId(expandedId === deck.id ? null : deck.id)}
+        onUpdate={(patch) => onUpdate(deck.id, patch)}
+        onDelete={() => onDelete(deck, decks.indexOf(deck))}
+        onOpenPickList={(mode) => onOpenPickList(deck, mode)}
+        onAdjustBox={(row, delta, max) => onAdjustBox(deck, row, delta, max)}
+        onSwap={(upgrade) => onSwap(deck, upgrade)}
+        onQueue={() => onQueue(deck)}
+        onQueueMissing={() => onQueueMissing(deck)}
+      />
+    );
+  }
 
   return (
     <section className={styles.panel} aria-labelledby="my-decks-title">
@@ -108,38 +190,72 @@ export function SavedDecks({
         </Link>
       </div>
 
-      {!loading && decks.length === 0 && (
-        <p className={styles.empty}>
-          No saved decks yet. Choose <strong>New deck</strong> to build one, or{' '}
-          <strong>Import</strong> to paste a decklist.
-        </p>
+      <div className={styles.tabs} role="radiogroup" aria-label="Show">
+        <button
+          type="button"
+          role="radio"
+          className={styles.tab}
+          aria-checked={view === 'decks'}
+          onClick={() => onViewChange('decks')}
+        >
+          Decks ({mine.length})
+        </button>
+        <button
+          type="button"
+          role="radio"
+          className={styles.tab}
+          aria-checked={view === 'precons'}
+          onClick={() => onViewChange('precons')}
+        >
+          Precons ({precons.length})
+        </button>
+      </div>
+
+      {view === 'decks' && (
+        <>
+          {!loading && mine.length === 0 && (
+            <p className={styles.empty}>
+              No saved decks yet. Choose <strong>New deck</strong> to build one, or{' '}
+              <strong>Import</strong> to paste a decklist.
+            </p>
+          )}
+          {DECK_GROUPS.map(({ key, title, hint }) => {
+            const list = groups[key];
+            if (list.length === 0) return null;
+            const open = !closed.includes(key);
+            return (
+              <div key={key} className={styles.group} data-group={key}>
+                <button
+                  type="button"
+                  className={styles.groupHeader}
+                  aria-expanded={open}
+                  onClick={() => toggleGroup(key)}
+                >
+                  <span className={styles.chevron} aria-hidden="true">
+                    {open ? '▾' : '▸'}
+                  </span>
+                  <span className={styles.groupTitle}>{title}</span>
+                  <span className={styles.count}>{list.length}</span>
+                  <span className={styles.groupHint}>{hint}</span>
+                </button>
+                {open && <ul className={styles.list}>{list.map(renderDeck)}</ul>}
+              </div>
+            );
+          })}
+        </>
       )}
 
-      <ul className={styles.list}>
-        {decks.map((deck, index) => (
-          <SavedDeckItem
-            key={deck.id}
-            deck={deck}
-            library={library}
-            preconNames={preconNames}
-            status={deckStatus(deck, library, homes)}
-            upgrades={upgradesByDeck.get(deck.id) ?? []}
-            holdings={holdings.get(deck.id)}
-            lookup={lookup}
-            owned={owned}
-            pullable={pullable}
-            expanded={expandedId === deck.id}
-            onToggle={() => setExpandedId(expandedId === deck.id ? null : deck.id)}
-            onUpdate={(patch) => onUpdate(deck.id, patch)}
-            onDelete={() => onDelete(deck, index)}
-            onOpenPickList={(mode) => onOpenPickList(deck, mode)}
-            onAdjustBox={(row, delta, max) => onAdjustBox(deck, row, delta, max)}
-            onSwap={(upgrade) => onSwap(deck, upgrade)}
-            onQueue={() => onQueue(deck)}
-            onQueueMissing={() => onQueueMissing(deck)}
-          />
-        ))}
-      </ul>
+      {view === 'precons' && (
+        <>
+          {!loading && precons.length === 0 && (
+            <p className={styles.empty}>
+              No precons marked as owned yet. Mark them in <strong>Precon decks</strong> below.
+            </p>
+          )}
+          {precons.length > 0 && <ul className={styles.list}>{precons.map(renderDeck)}</ul>}
+          {preconsPanel}
+        </>
+      )}
     </section>
   );
 }
@@ -199,7 +315,8 @@ function boxColumn(
   };
 }
 
-function StatusBadges({
+/** One pill says where the deck stands; the breakdown of what is missing lives in the details. */
+function StatusPill({
   deck,
   status,
   needed,
@@ -211,12 +328,9 @@ function StatusBadges({
   switch (status.state) {
     case 'unbuilt':
       return (
-        <>
-          <span className={styles.badge}>Not built</span>
-          <span className={styles.badge} data-tone={needed > 0 ? 'warning' : 'success'}>
-            {needed > 0 ? `Need ${needed} to buy` : 'All owned'}
-          </span>
-        </>
+        <span className={styles.badge} data-tone={needed > 0 ? 'warning' : 'success'}>
+          {needed > 0 ? `Need ${needed} to buy` : 'All owned'}
+        </span>
       );
     case 'complete':
       return (
@@ -224,55 +338,61 @@ function StatusBadges({
           {deck.precon ? 'Complete' : 'Built'}
         </span>
       );
-    case 'partial':
+    case 'partial': {
+      const total =
+        status.missingOwned + status.missingInBulk + status.missingInPrecon + status.missingUnowned;
       return (
-        <>
-          <span className={styles.badge} data-tone="warning">
-            {deck.precon ? 'Cards missing' : 'Built · cards missing'}
-          </span>
-          {status.missingOwned > 0 && (
-            <span
-              className={styles.badge}
-              data-tone="warning"
-              title={
-                deck.precon
-                  ? 'You own these — they are in the binder, or lent to a deck you built.'
-                  : 'You own these — they are in the binder or another deck.'
-              }
-            >
-              {status.missingOwned} owned elsewhere
-            </span>
-          )}
-          {status.missingInBulk > 0 && (
-            <span
-              className={styles.badge}
-              data-tone="warning"
-              title="You own these — they are in the bulk box."
-            >
-              {status.missingInBulk} in bulk
-            </span>
-          )}
-          {status.missingInPrecon > 0 && (
-            <span
-              className={styles.badge}
-              data-tone="warning"
-              title="You own these — they are in a precon. Complete the deck to take them from it."
-            >
-              {status.missingInPrecon} in a precon
-            </span>
-          )}
-          {status.missingUnowned > 0 && (
-            <span
-              className={styles.badge}
-              data-tone="danger"
-              title={`You do not own enough of these for “${deck.name}”.`}
-            >
-              {status.missingUnowned} not owned
-            </span>
-          )}
-        </>
+        <span
+          className={styles.badge}
+          data-tone={status.missingUnowned > 0 ? 'danger' : 'warning'}
+          title="Open the deck to see where the missing cards are."
+        >
+          {total} missing
+        </span>
       );
+    }
   }
+}
+
+function MissingBreakdown({ deck, status }: { deck: SavedDeck; status: DeckStatus }) {
+  if (status.state !== 'partial') return null;
+  const parts: { text: string; tone: string; title: string }[] = [];
+  if (status.missingOwned > 0)
+    parts.push({
+      text: `${status.missingOwned} owned elsewhere`,
+      tone: 'warning',
+      title: deck.precon
+        ? 'You own these — they are in the binder, or lent to a deck you built.'
+        : 'You own these — they are in the binder or another deck.',
+    });
+  if (status.missingInBulk > 0)
+    parts.push({
+      text: `${status.missingInBulk} in bulk`,
+      tone: 'warning',
+      title: 'You own these — they are in the bulk box.',
+    });
+  if (status.missingInPrecon > 0)
+    parts.push({
+      text: `${status.missingInPrecon} in a precon`,
+      tone: 'warning',
+      title: 'You own these — they are in a precon. Complete the deck to take them from it.',
+    });
+  if (status.missingUnowned > 0)
+    parts.push({
+      text: `${status.missingUnowned} not owned`,
+      tone: 'danger',
+      title: `You do not own enough of these for “${deck.name}”.`,
+    });
+  return (
+    <p className={styles.breakdown}>
+      <span>Missing:</span>
+      {parts.map((part) => (
+        <span key={part.text} className={styles.badge} data-tone={part.tone} title={part.title}>
+          {part.text}
+        </span>
+      ))}
+    </p>
+  );
 }
 
 function UpgradeRow({
@@ -440,16 +560,8 @@ function SavedDeckItem({
         )}
 
         <span className={styles.badges}>
-          {deck.precon && (
-            <span
-              className={styles.badge}
-              title="A preconstructed deck you own. Its cards can be pulled for your own decks."
-            >
-              Precon
-            </span>
-          )}
           <span className={styles.badge}>{formatLabel(deck)}</span>
-          <StatusBadges deck={deck} status={status} needed={needed} />
+          <StatusPill deck={deck} status={status} needed={needed} />
           {upgrades.length > 0 && (
             <button
               type="button"
@@ -478,61 +590,67 @@ function SavedDeckItem({
               {status.state === 'partial' ? 'Complete' : 'Construct'}
             </button>
           )}
-          {status.state !== 'unbuilt' && !deck.precon && (
+          {status.state === 'complete' && !deck.precon && (
             <button
               type="button"
-              className={status.state === 'complete' ? styles.primary : styles.action}
+              className={styles.primary}
               onClick={() => onOpenPickList('deconstruct')}
             >
               Deconstruct
             </button>
           )}
-          {status.state === 'unbuilt' && (
+          <DeckMenu label={`More actions for ${deck.name}`}>
+            {status.state === 'partial' && !deck.precon && (
+              <button type="button" onClick={() => onOpenPickList('deconstruct')}>
+                Deconstruct
+              </button>
+            )}
+            {status.state === 'unbuilt' && (
+              <button
+                type="button"
+                title="Bought this deck already built? Queue its cards for review, then add them to your collection with the deck marked built."
+                onClick={onQueue}
+              >
+                Add to collection
+              </button>
+            )}
+            {needed > 0 && !deck.precon && (
+              <button
+                type="button"
+                title="Bought the cards this deck is missing? Queue just those for review, then add them to your collection and into the deck's box."
+                onClick={onQueueMissing}
+              >
+                Add missing
+              </button>
+            )}
+            {!deck.precon && (
+              <Link
+                to="/decks/$deckId"
+                params={{ deckId: deck.id }}
+                title="Change the list: move cards between main deck and sideboard, add or remove cards"
+              >
+                Edit
+              </Link>
+            )}
+            {status.state !== 'complete' && (
+              <button type="button" onClick={() => void copyMissing()}>
+                Copy missing
+              </button>
+            )}
             <button
               type="button"
-              className={styles.action}
-              title="Bought this deck already built? Queue its cards for review, then add them to your collection with the deck marked built."
-              onClick={onQueue}
+              title="Copy the deck as JSON, to play it on Karabast or import it into swudb.com"
+              onClick={() => void copyExport()}
             >
-              Add to collection
+              Export
             </button>
-          )}
-          {needed > 0 && !deck.precon && (
-            <button
-              type="button"
-              className={styles.action}
-              title="Bought the cards this deck is missing? Queue just those for review, then add them to your collection and into the deck's box."
-              onClick={onQueueMissing}
-            >
-              Add missing
-            </button>
-          )}
-          {!deck.precon && (
-            <Link
-              to="/decks/$deckId"
-              params={{ deckId: deck.id }}
-              className={styles.action}
-              title="Change the list: move cards between main deck and sideboard, add or remove cards"
-            >
-              Edit
-            </Link>
-          )}
-          <button type="button" className={styles.action} onClick={() => void copyMissing()}>
-            Copy missing
-          </button>
-          <button
-            type="button"
-            className={styles.action}
-            title="Copy the deck as JSON, to play it on Karabast or import it into swudb.com"
-            onClick={() => void copyExport()}
-          >
-            Export
-          </button>
+          </DeckMenu>
         </span>
       </div>
 
       {expanded && (
         <div id={panelId} className={styles.details}>
+          <MissingBreakdown deck={deck} status={status} />
           {!deck.precon && (
             <div className={styles.settings}>
               <span className={styles.spacer} />
