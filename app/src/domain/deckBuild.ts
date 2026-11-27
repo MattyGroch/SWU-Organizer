@@ -5,6 +5,7 @@ import type { DeckLibrary, SavedDeck } from './decks';
 import {
   DECK_PULL_ORDER,
   NO_HOMES,
+  VALUE_ORDER,
   addHomes,
   addVariants,
   pullableCount,
@@ -445,6 +446,59 @@ export function adjustInBox(
     customDecks: library.customDecks.map((d) =>
       d.id === deckId ? touch(d, { pulledCards: boxToRefs(box) }, now) : d,
     ),
+  };
+}
+
+/**
+ * Trades one copy in a built deck's box for a better printing from the binder pocket: the
+ * better copy goes into the box, and the copy it replaces comes out.
+ *
+ * Only the deck's own record changes. Every copy keeps its home, so the collection is not
+ * touched: the copy that comes out goes back where it came from — the binder pocket, into
+ * the slot the upgrade just emptied, or the bulk box when that is where it was pulled from.
+ * It prefers a binder-homed copy, so the pocket stays full. The bulk box never refills a
+ * pocket.
+ *
+ * Returns null, changing nothing, when the swap no longer holds: the deck is not built or
+ * no longer holds that printing, the pocket no longer holds the better one (another deck
+ * took it), or it is not actually better. A Prestige Serialized never goes into a deck.
+ */
+export function swapInBox(
+  library: DeckLibrary,
+  deckId: string,
+  setKey: SetKey,
+  baseNumber: number,
+  from: VariantSlug,
+  to: VariantSlug,
+  homes: HomeLookup,
+  now = new Date().toISOString(),
+): { library: DeckLibrary; toBulk: boolean } | null {
+  const deck = library.customDecks.find((d) => d.id === deckId);
+  if (!deck?.constructed) return null;
+  if (to === 'prestige-serialized' || VALUE_ORDER.indexOf(to) >= VALUE_ORDER.indexOf(from)) {
+    return null;
+  }
+
+  const box = new Map(deckHoldings(library).get(deckId) ?? []);
+  const key = cardKey(setKey, baseNumber);
+  const current = box.get(key) ?? NO_HOMES;
+  const leavesBinder = (current.binder[from] ?? 0) > 0;
+  if (!leavesBinder && (current.bulk[from] ?? 0) <= 0) return null;
+  if ((inPlace(homes, library)(setKey, baseNumber).binder[to] ?? 0) <= 0) return null;
+
+  const out: Homes = leavesBinder
+    ? { binder: { [from]: 1 }, bulk: {} }
+    : { binder: {}, bulk: { [from]: 1 } };
+  box.set(key, addHomes(subtractHomes(current, out), { binder: { [to]: 1 }, bulk: {} }));
+
+  return {
+    toBulk: !leavesBinder,
+    library: {
+      ...library,
+      customDecks: library.customDecks.map((d) =>
+        d.id === deckId ? touch(d, { pulledCards: boxToRefs(box) }, now) : d,
+      ),
+    },
   };
 }
 

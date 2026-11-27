@@ -6,6 +6,7 @@ import {
   applyDeckEdit,
   applyDeconstruct,
   available,
+  deckHoldings,
   deckStatus,
   decksHoldingInSet,
   editReturns,
@@ -14,6 +15,7 @@ import {
   planConstruct,
   pulledTotals,
   requiredCounts,
+  swapInBox,
   type HomeLookup,
 } from './deckBuild';
 import type { DeckLibrary, SavedDeck } from './decks';
@@ -443,5 +445,114 @@ describe('decksHoldingInSet', () => {
     ]);
     expect(holds.get(40)).toEqual([{ deckId: 'b', name: 'B', binder: 1, bulk: 0 }]);
     expect(holds.has(1)).toBe(false);
+  });
+});
+
+describe('swapInBox', () => {
+  const held = (lib: DeckLibrary, id: string, base: number) =>
+    deckHoldings(lib).get(id)!.get(`SOR:${base}`)!;
+
+  it('trades a binder copy in, and the deck copy takes its slot in the pocket', () => {
+    const a = deck('a', { constructed: true, pulledCards: [ref(33, 3, { normal: 3 })] });
+    const lib = library(a);
+    const homes = owning({ 33: { normal: 4, prestige: 1 } });
+
+    const result = swapInBox(lib, 'a', 'SOR', 33, 'normal', 'prestige', homes)!;
+    expect(result.toBulk).toBe(false);
+    const box = held(result.library, 'a', 33);
+    expect(box.binder.prestige).toBe(1);
+    expect(box.binder.normal).toBe(2);
+    // The pocket still holds two copies: the Prestige left it, the Normal came back.
+    const pocket = inPlace(homes, result.library)('SOR', 33).binder;
+    expect(pocket.prestige ?? 0).toBe(0);
+    expect(pocket.normal).toBe(2);
+    // Only the deck's record moved; the one passed in is untouched.
+    expect(lib.customDecks[0]!.pulledCards).toEqual([ref(33, 3, { normal: 3 })]);
+  });
+
+  it('sends a copy pulled from the bulk box back to bulk, and leaves the pocket short', () => {
+    const a = deck('a', {
+      constructed: true,
+      pulledCards: [ref(33, 1, { normal: 1 }, { normal: 1 })],
+    });
+    const homes = owning({ 33: { prestige: 1 } }, { 33: { normal: 1 } });
+
+    const result = swapInBox(library(a), 'a', 'SOR', 33, 'normal', 'prestige', homes)!;
+    expect(result.toBulk).toBe(true);
+    const box = held(result.library, 'a', 33);
+    expect(box.binder.prestige).toBe(1);
+    expect(box.bulk.normal ?? 0).toBe(0);
+    // Bulk never refills the binder: the pocket is now empty.
+    const pocket = inPlace(homes, result.library)('SOR', 33);
+    expect(pocket.binder.prestige ?? 0).toBe(0);
+    expect(pocket.bulk.normal).toBe(1);
+  });
+
+  it('takes a binder-homed copy out before one that came from bulk', () => {
+    const a = deck('a', {
+      constructed: true,
+      pulledCards: [ref(33, 2, { normal: 2 }, { normal: 1 })],
+    });
+    const homes = owning({ 33: { normal: 1, prestige: 1 } }, { 33: { normal: 1 } });
+    const result = swapInBox(library(a), 'a', 'SOR', 33, 'normal', 'prestige', homes)!;
+    expect(result.toBulk).toBe(false);
+    expect(held(result.library, 'a', 33).bulk.normal).toBe(1);
+  });
+
+  it('does nothing when the swap no longer holds', () => {
+    const a = deck('a', { constructed: true, pulledCards: [ref(33, 1, { normal: 1 })] });
+    const lib = library(a);
+    const withPrestige = owning({ 33: { normal: 1, prestige: 1 } });
+    const swap = (over: Parameters<typeof swapInBox>) => swapInBox(...over);
+
+    // Better copy is not in the pocket (another deck holds it, or it is in bulk).
+    expect(
+      swapInBox(lib, 'a', 'SOR', 33, 'normal', 'prestige', owning({ 33: { normal: 1 } })),
+    ).toBe(null);
+    expect(
+      swapInBox(
+        lib,
+        'a',
+        'SOR',
+        33,
+        'normal',
+        'prestige',
+        owning({ 33: { normal: 1 } }, { 33: { prestige: 1 } }),
+      ),
+    ).toBe(null);
+    // Not better, or the deck does not hold that printing.
+    expect(swapInBox(lib, 'a', 'SOR', 33, 'normal', 'normal', withPrestige)).toBe(null);
+    expect(swapInBox(lib, 'a', 'SOR', 33, 'hyperspace', 'prestige', withPrestige)).toBe(null);
+    // A Prestige Serialized never goes into a deck.
+    expect(
+      swapInBox(
+        lib,
+        'a',
+        'SOR',
+        33,
+        'normal',
+        'prestige-serialized',
+        owning({ 33: { normal: 1, 'prestige-serialized': 1 } }),
+      ),
+    ).toBe(null);
+    // Not built.
+    const unbuilt = library(deck('a', { constructed: false, pulledCards: [] }));
+    expect(swapInBox(unbuilt, 'a', 'SOR', 33, 'normal', 'prestige', withPrestige)).toBe(null);
+    void swap;
+  });
+
+  it('cannot be applied twice for one binder copy', () => {
+    const a = deck('a', { constructed: true, pulledCards: [ref(33, 3, { normal: 3 })] });
+    const homes = owning({ 33: { normal: 4, prestige: 1 } });
+    const once = swapInBox(library(a), 'a', 'SOR', 33, 'normal', 'prestige', homes)!;
+    expect(swapInBox(once.library, 'a', 'SOR', 33, 'normal', 'prestige', homes)).toBe(null);
+  });
+
+  it('leaves the other deck’s flag nothing to claim once one deck has the copy', () => {
+    const a = deck('a', { constructed: true, pulledCards: [ref(33, 3, { normal: 3 })] });
+    const b = deck('b', { constructed: true, pulledCards: [ref(33, 3, { normal: 3 })] });
+    const homes = owning({ 33: { normal: 7, prestige: 1 } });
+    const once = swapInBox(library(a, b), 'a', 'SOR', 33, 'normal', 'prestige', homes)!;
+    expect(swapInBox(once.library, 'b', 'SOR', 33, 'normal', 'prestige', homes)).toBe(null);
   });
 });
