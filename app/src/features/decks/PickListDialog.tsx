@@ -7,14 +7,24 @@ import {
   cardKey,
   heldByHome,
   planConstruct,
+  preconFills,
+  preconReleases,
   type ConstructLine,
   type HomeLookup,
   type TakeFromDeck,
 } from '~/domain/deckBuild';
 import type { DeckCardRef } from '~/domain/deckContents';
 import { formatMissingLine, type DeckLookupSet } from '~/domain/decklist';
-import type { DeckLibrary, SavedDeck } from '~/domain/decks';
-import { pocketSpill, subtractVariants, sumVariants, type VariantCounts } from '~/domain/ownership';
+import type { DeckLibrary, PreconLoan, SavedDeck } from '~/domain/decks';
+import {
+  addHomes,
+  addVariants,
+  NO_HOMES,
+  pocketSpill,
+  subtractVariants,
+  sumVariants,
+  type VariantCounts,
+} from '~/domain/ownership';
 import { buildPutBackList } from '~/domain/pickList';
 import type { SetKey } from '~/domain/types';
 import { Checkbox } from '~/ui/Checkbox';
@@ -40,7 +50,7 @@ type Props = {
    * Deconstruct mode for an edited deck: only the copies leaving its box, and the library
    * once they have. Without it, the whole box goes back.
    */
-  putBack?: { refs: DeckCardRef[]; after: DeckLibrary };
+  putBack?: { refs: DeckCardRef[]; loans?: PreconLoan[]; after: DeckLibrary };
 };
 
 type Named = { name: string; subtitle?: string; type?: string; aspects?: string[] };
@@ -200,14 +210,27 @@ export function PickListDialog({
     if (mode !== 'deconstruct') return null;
     const toBinder: DeckCardRef[] = [];
     const toBulk: PrintedLine[] = [];
+    const after = putBack?.after ?? applyDeconstruct(library, deck.id);
+    // Precons missing a card are rebuilt first: those copies go in them, not home.
+    const intoPrecons = preconFills(library, after);
+    const fill = (ref: DeckCardRef) =>
+      intoPrecons
+        .filter((f) => f.setKey === ref.setKey && f.baseNumber === ref.baseNumber)
+        .reduce((homes, f) => addHomes(homes, f.homes), NO_HOMES);
     for (const ref of putBack?.refs ?? deck.pulledCards) {
-      const bulk = ref.fromBulk ?? {};
-      const binder = sumVariants(subtractVariants(ref.variants ?? { normal: ref.count }, bulk));
+      const into = fill(ref);
+      const bulk = subtractVariants(ref.fromBulk ?? {}, into.bulk);
+      const binder = sumVariants(
+        subtractVariants(
+          subtractVariants(ref.variants ?? { normal: ref.count }, ref.fromBulk ?? {}),
+          into.binder,
+        ),
+      );
       if (binder > 0) toBinder.push({ ...ref, count: binder });
       if (sumVariants(bulk) > 0) toBulk.push({ ...ref, printings: bulk });
     }
     // Pockets that filled up while these were out keep only their best playset.
-    const heldAfter = heldByHome(putBack?.after ?? applyDeconstruct(library, deck.id));
+    const heldAfter = heldByHome(after);
     const overflow: PrintedLine[] = [];
     for (const ref of toBinder) {
       const key = cardKey(ref.setKey, ref.baseNumber);
@@ -218,11 +241,38 @@ export function PickListDialog({
       );
       if (sumVariants(printings) > 0) overflow.push({ ...ref, printings });
     }
+    // Borrowed from a precon: they return to that precon's box, not to the binder.
+    const loans = (putBack ? (putBack.loans ?? []) : (deck.borrowed ?? [])).map((loan) => ({
+      ...loan,
+      precon: library.customDecks.find((d) => d.precon === loan.preconKey)?.name ?? loan.preconKey,
+    }));
+    // A precon refilled from the binder holds one too many once its card is back.
+    const releases = inCardOrder(
+      preconReleases(library, after).map((release) => ({
+        ...release,
+        printings: addVariants(release.homes.binder, release.homes.bulk),
+        precon:
+          library.customDecks.find((d) => d.precon === release.preconKey)?.name ??
+          release.preconKey,
+      })),
+      setOrder,
+    );
+    const fills = inCardOrder(
+      intoPrecons.map((f) => ({
+        ...f,
+        printings: addVariants(f.homes.binder, f.homes.bulk),
+        precon: library.customDecks.find((d) => d.precon === f.preconKey)?.name ?? f.preconKey,
+      })),
+      setOrder,
+    );
     return {
       binder: buildPutBackList(toBinder, lookup, setOrder),
       binderCount: toBinder.reduce((sum, ref) => sum + ref.count, 0),
       bulk: inCardOrder(toBulk, setOrder),
       overflow: inCardOrder(overflow, setOrder),
+      loans,
+      releases,
+      fills,
     };
   }, [mode, deck, library, homes, quotaOf, lookup, setOrder, putBack]);
 
@@ -294,6 +344,77 @@ export function PickListDialog({
               card={card}
             />
           )}
+          {putAway.fills.length > 0 && (
+            <section className={styles.group} aria-labelledby="into-precons-title">
+              <h3 id="into-precons-title" className={styles.groupTitle}>
+                Into precons first
+              </h3>
+              <p className={styles.muted}>
+                These precons are missing these cards, so they are rebuilt before anything goes back
+                to the binder or bulk box.
+              </p>
+              <ul className={styles.plain}>
+                {putAway.fills.map((fill) => {
+                  const { name, subtitle, aspects } = card(fill.setKey, fill.baseNumber);
+                  return (
+                    <li key={`${fill.preconKey}:${cardKey(fill.setKey, fill.baseNumber)}`}>
+                      {sumVariants(fill.printings)}×{' '}
+                      <AspectIcons className={styles.aspects} aspects={aspects} /> {name}
+                      {subtitle ? ` - ${subtitle}` : ''} ({fill.setKey}) — into{' '}
+                      <strong>{fill.precon}</strong>, {printingsLabel(fill.printings)}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )}
+          {putAway.releases.length > 0 && (
+            <section className={styles.group} aria-labelledby="out-of-precons-title">
+              <h3 id="out-of-precons-title" className={styles.groupTitle}>
+                Out of precons
+              </h3>
+              <p className={styles.muted}>
+                You filled these precons from your binder while a card was lent out. Now that it is
+                back, take the extra copy out and put it back where it came from.
+              </p>
+              <ul className={styles.plain}>
+                {putAway.releases.map((release) => {
+                  const { name, subtitle, aspects } = card(release.setKey, release.baseNumber);
+                  return (
+                    <li key={`${release.preconKey}:${cardKey(release.setKey, release.baseNumber)}`}>
+                      {sumVariants(release.printings)}×{' '}
+                      <AspectIcons className={styles.aspects} aspects={aspects} /> {name}
+                      {subtitle ? ` - ${subtitle}` : ''} ({release.setKey}) — out of{' '}
+                      <strong>{release.precon}</strong>, {printingsLabel(release.printings)}
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )}
+          {putAway.loans.length > 0 && (
+            <section className={styles.group} aria-labelledby="to-precons-title">
+              <h3 id="to-precons-title" className={styles.groupTitle}>
+                Back to their precons
+              </h3>
+              <p className={styles.muted}>
+                These came from precons, so each goes back in its own deck box.
+              </p>
+              <ul className={styles.plain}>
+                {putAway.loans.map((loan) => {
+                  const { name, subtitle, aspects } = card(loan.setKey, loan.baseNumber);
+                  return (
+                    <li key={`${loan.preconKey}:${cardKey(loan.setKey, loan.baseNumber)}`}>
+                      {loan.count}× <AspectIcons className={styles.aspects} aspects={aspects} />{' '}
+                      {name}
+                      {subtitle ? ` - ${subtitle}` : ''} ({loan.setKey}) — into{' '}
+                      <strong>{loan.precon}</strong>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          )}
           <div className={styles.buttons}>
             <button type="button" className={styles.primary} onClick={() => void markReturned()}>
               {putBack ? 'Save and mark as put back' : 'Mark as put away'}
@@ -359,41 +480,25 @@ export function PickListDialog({
             />
           )}
 
-          {deckOffers.length > 0 && (
-            <section className={styles.group} aria-labelledby="from-decks-title">
-              <h3 id="from-decks-title" className={styles.groupTitle}>
-                In other built decks
-              </h3>
-              <p className={styles.muted}>
-                The binder and bulk box are out of these. Take them and that deck stays built,
-                flagged as missing the card — or leave them, and this deck is built without it.
-              </p>
-              <ul className={styles.offers}>
-                {deckOffers.map((offer) => {
-                  const { name, subtitle, aspects } = card(
-                    offer.line.setKey,
-                    offer.line.baseNumber,
-                  );
-                  return (
-                    <li key={offer.id}>
-                      <label className={styles.checkbox}>
-                        <Checkbox
-                          checked={taken.has(offer.id)}
-                          onChange={() => toggleTake(offer.id)}
-                        />
-                        <span>
-                          Take <strong>{offer.source.available}×</strong>{' '}
-                          <AspectIcons className={styles.aspects} aspects={aspects} /> {name}
-                          {subtitle ? ` - ${subtitle}` : ''} ({offer.line.setKey}) from{' '}
-                          <strong>{offer.source.deckName}</strong>
-                        </span>
-                      </label>
-                    </li>
-                  );
-                })}
-              </ul>
-            </section>
-          )}
+          <OfferList
+            id="from-decks-title"
+            title="In other built decks"
+            note="The binder and bulk box are out of these. Take them and that deck stays built, flagged as missing the card — or leave them, and this deck is built without it."
+            offers={deckOffers.filter((offer) => !offer.source.precon)}
+            taken={taken}
+            onToggle={toggleTake}
+            card={card}
+          />
+
+          <OfferList
+            id="from-precons-title"
+            title="In your precons"
+            note="Only a precon has these. Take one and that precon is marked as missing the card; it goes back when this deck is put away or no longer lists it. Leave them, and this deck is built without it."
+            offers={deckOffers.filter((offer) => offer.source.precon)}
+            taken={taken}
+            onToggle={toggleTake}
+            card={card}
+          />
 
           {unowned.length > 0 && (
             <section className={styles.group} aria-labelledby="purchase-title">
@@ -437,6 +542,58 @@ export function PickListDialog({
         </div>
       )}
     </dialog>
+  );
+}
+
+type Offer = {
+  line: ConstructLine;
+  source: ConstructLine['fromDecks'][number];
+  id: string;
+};
+
+function OfferList({
+  id,
+  title,
+  note,
+  offers,
+  taken,
+  onToggle,
+  card,
+}: {
+  id: string;
+  title: string;
+  note: string;
+  offers: Offer[];
+  taken: Set<string>;
+  onToggle: (id: string) => void;
+  card: (setKey: SetKey, baseNumber: number) => Named;
+}) {
+  if (offers.length === 0) return null;
+  return (
+    <section className={styles.group} aria-labelledby={id}>
+      <h3 id={id} className={styles.groupTitle}>
+        {title}
+      </h3>
+      <p className={styles.muted}>{note}</p>
+      <ul className={styles.offers}>
+        {offers.map((offer) => {
+          const { name, subtitle, aspects } = card(offer.line.setKey, offer.line.baseNumber);
+          return (
+            <li key={offer.id}>
+              <label className={styles.checkbox}>
+                <Checkbox checked={taken.has(offer.id)} onChange={() => onToggle(offer.id)} />
+                <span>
+                  Take <strong>{offer.source.available}×</strong>{' '}
+                  <AspectIcons className={styles.aspects} aspects={aspects} /> {name}
+                  {subtitle ? ` - ${subtitle}` : ''} ({offer.line.setKey}) from{' '}
+                  <strong>{offer.source.deckName}</strong>
+                </span>
+              </label>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 

@@ -233,13 +233,17 @@ const deckEditRoute = createRoute({
     const entries = await context.queryClient.ensureQueryData(manifestQuery());
     // The card lookup searches every set.
     await Promise.all(entries.map((entry) => context.queryClient.ensureQueryData(setQuery(entry))));
-    return { entries };
+    // Precons take back the cards an edit drops, so the editor needs them too.
+    const precons = await context.queryClient.ensureQueryData(preconQuery()).catch(() => []);
+    return { entries, precons };
   },
   component: function DeckEditRouteComponent() {
-    const { entries } = deckEditRoute.useLoaderData();
+    const { entries, precons } = deckEditRoute.useLoaderData();
     const { deckId } = deckEditRoute.useParams();
     const { queryClient } = deckEditRoute.useRouteContext();
-    return <DeckEditRoute sets={loadedSets(queryClient, entries)} deckId={deckId} />;
+    return (
+      <DeckEditRoute sets={loadedSets(queryClient, entries)} precons={precons} deckId={deckId} />
+    );
   },
 });
 

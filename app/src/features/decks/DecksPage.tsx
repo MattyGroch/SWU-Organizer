@@ -25,7 +25,7 @@ type Props = {
 };
 
 export function DecksPage({ sets, binderOwnership, precons }: Props) {
-  const deckLibrary = useDeckLibrary();
+  const deckLibrary = useDeckLibrary(precons);
   const { library, loading } = deckLibrary;
   const showToast = useToast();
   const navigate = useNavigate();

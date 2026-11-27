@@ -5,6 +5,7 @@ import { db } from '~/data/db';
 import { useSharedCollection } from '~/data/shared';
 import {
   deconstructDeck,
+  editDeck,
   readDeckLibrary,
   updateDeckLibrary,
   writeDeckLibrary,
@@ -14,6 +15,9 @@ import {
   createSavedDeck,
   emptyDeckLibrary,
   parseDeckLibrary,
+  preconDeckId,
+  withoutPrecons,
+  withPrecons,
   type DeckLibrary,
   type NewSavedDeckInput,
   type SavedDeck,
@@ -22,11 +26,13 @@ import {
   adjustInBox,
   applyConstruct,
   swapInBox,
+  type DeckEdit,
   type HomeLookup,
   type TakeFromDeck,
 } from '~/domain/deckBuild';
 import type { VariantSlug } from '~/domain/catalog';
 import type { DeckCardRef } from '~/domain/deckContents';
+import type { PreconCatalogEntry } from '~/domain/precons';
 import type { ResolvedDeckRow } from '~/domain/decklist';
 import type { SetKey } from '~/domain/types';
 
@@ -36,7 +42,19 @@ import type { SetKey } from '~/domain/types';
  * Reads go through `useLiveQuery`, so a change from anywhere — this tab, another tab, a
  * sync pull — re-renders without explicit notification plumbing.
  */
-export function useDeckLibrary() {
+const NO_PRECONS: PreconCatalogEntry[] = [];
+
+/** A library with the deck that stood in for each precon in `keys` forgotten. */
+function forgetPreconDecks(library: DeckLibrary, keys: readonly string[]): DeckLibrary {
+  const ids = new Set(keys.map(preconDeckId));
+  return { ...library, customDecks: library.customDecks.filter((deck) => !ids.has(deck.id)) };
+}
+
+/**
+ * Pass the precon catalog to see owned precons as built decks beside the saved ones (see
+ * `withPrecons`); without it, `library` is exactly what is stored.
+ */
+export function useDeckLibrary(precons: PreconCatalogEntry[] = NO_PRECONS) {
   // `null` when no library has been saved yet: `undefined` must mean only "not read yet",
   // or a device that has never saved a deck would wait on it forever.
   // Viewing a share, the decks are the owner's: what they hold out of the binder.
@@ -46,31 +64,43 @@ export function useDeckLibrary() {
     [shared],
   );
 
-  const library = useMemo<DeckLibrary>(
-    () =>
-      shared
-        ? shared.library
-        : row === undefined
-          ? emptyDeckLibrary
-          : parseDeckLibrary(row?.json ?? null),
-    [row, shared],
+  const library = useMemo<DeckLibrary>(() => {
+    const stored = shared
+      ? shared.library
+      : row === undefined
+        ? emptyDeckLibrary
+        : parseDeckLibrary(row?.json ?? null);
+    return withPrecons(stored, precons);
+  }, [row, shared, precons]);
+
+  /** An update made on the library as the view shows it, saved back without the stand-ins. */
+  const updateWithPrecons = useCallback(
+    async (update: (current: DeckLibrary) => DeckLibrary) => {
+      await updateDeckLibrary((current) => withoutPrecons(update(withPrecons(current, precons))));
+    },
+    [precons],
   );
 
   const togglePrecon = useCallback(async (key: string) => {
     await updateDeckLibrary((current) => {
       const owned = (current.preconOwnership[key] ?? 0) > 0;
-      return {
+      const next = {
         ...current,
         preconOwnership: { ...current.preconOwnership, [key]: owned ? 0 : 1 },
       };
+      // Not owned any more: copies refilled into it from the binder are simply back there.
+      return owned ? forgetPreconDecks(next, [key]) : next;
     });
   }, []);
 
   const setPreconCopies = useCallback(async (key: string, copies: number) => {
-    await updateDeckLibrary((current) => ({
-      ...current,
-      preconOwnership: { ...current.preconOwnership, [key]: Math.max(0, Math.floor(copies)) },
-    }));
+    await updateDeckLibrary((current) => {
+      const next = {
+        ...current,
+        preconOwnership: { ...current.preconOwnership, [key]: Math.max(0, Math.floor(copies)) },
+      };
+      return copies > 0 ? next : forgetPreconDecks(next, [key]);
+    });
   }, []);
 
   const addDeck = useCallback(async (rows: ResolvedDeckRow[], input: NewSavedDeckInput) => {
@@ -114,21 +144,30 @@ export function useDeckLibrary() {
     await updateDeckLibrary((current) => {
       const preconOwnership = { ...current.preconOwnership };
       for (const key of keys) preconOwnership[key] = owned ? 1 : 0;
-      return { ...current, preconOwnership };
+      const next = { ...current, preconOwnership };
+      return owned ? next : forgetPreconDecks(next, keys);
     });
   }, []);
 
   const construct = useCallback(
     async (deckId: string, pulls: DeckCardRef[], takes: TakeFromDeck[], homes: HomeLookup) => {
-      await updateDeckLibrary((current) => applyConstruct(current, deckId, pulls, takes, homes));
+      await updateWithPrecons((current) => applyConstruct(current, deckId, pulls, takes, homes));
     },
-    [],
+    [updateWithPrecons],
   );
 
   /** Returns how many copies went to the bulk box because their pocket had filled up. */
   const deconstruct = useCallback(
-    (deckId: string, quotaOf: QuotaOf) => deconstructDeck(deckId, quotaOf),
-    [],
+    (deckId: string, quotaOf: QuotaOf) =>
+      deconstructDeck(deckId, quotaOf, undefined, undefined, precons),
+    [precons],
+  );
+
+  /** Saves an edited list; cards it drops refill any precon missing them before going home. */
+  const edit = useCallback(
+    (deckId: string, change: DeckEdit, quotaOf: QuotaOf) =>
+      editDeck(deckId, change, quotaOf, undefined, undefined, precons),
+    [precons],
   );
 
   const adjustBox = useCallback(
@@ -140,11 +179,11 @@ export function useDeckLibrary() {
       max: number,
       homes: HomeLookup,
     ) => {
-      await updateDeckLibrary((current) =>
+      await updateWithPrecons((current) =>
         adjustInBox(current, deckId, setKey, baseNumber, delta, max, homes),
       );
     },
-    [],
+    [updateWithPrecons],
   );
 
   /**
@@ -162,7 +201,7 @@ export function useDeckLibrary() {
       homes: HomeLookup,
     ): Promise<{ toBulk: boolean } | null> => {
       const result = swapInBox(
-        await readDeckLibrary(),
+        withPrecons(await readDeckLibrary(), precons),
         deckId,
         setKey,
         baseNumber,
@@ -171,10 +210,10 @@ export function useDeckLibrary() {
         homes,
       );
       if (!result) return null;
-      await writeDeckLibrary(result.library);
+      await writeDeckLibrary(withoutPrecons(result.library));
       return { toBulk: result.toBulk };
     },
-    [],
+    [precons],
   );
 
   /** Puts a deleted deck back where it was — the undo for `deleteDeck`. */
@@ -206,6 +245,7 @@ export function useDeckLibrary() {
     setPreconsOwned,
     construct,
     deconstruct,
+    edit,
     adjustBox,
     swap,
   };

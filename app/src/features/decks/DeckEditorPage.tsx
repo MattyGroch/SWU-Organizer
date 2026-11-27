@@ -1,9 +1,16 @@
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 
-import { addNewDeck, editDeck } from '~/data/deckLibrary';
+import { addNewDeck, editDeck as saveDeckEdit } from '~/data/deckLibrary';
+import type { QuotaOf } from '~/data/spill';
 import type { LoadedSet } from '~/domain/catalog';
-import { applyDeckEdit, deckStatus, editReturns, type DeckEdit } from '~/domain/deckBuild';
+import {
+  applyDeckEdit,
+  deckStatus,
+  editLoanReturns,
+  editReturns,
+  type DeckEdit,
+} from '~/domain/deckBuild';
 import type { DeckCardRef, DeckContents } from '~/domain/deckContents';
 import {
   addToZone,
@@ -25,7 +32,8 @@ import {
   type PlayFormat,
 } from '~/domain/deckLegality';
 import { formatDeckList, type DeckLookupSet } from '~/domain/decklist';
-import { deckFormat, type DeckLibrary, type SavedDeck } from '~/domain/decks';
+import type { PreconCatalogEntry } from '~/domain/precons';
+import { deckFormat, type DeckLibrary, type PreconLoan, type SavedDeck } from '~/domain/decks';
 import type { Card, SetKey } from '~/domain/types';
 import { Loader } from '~/ui/Loader';
 import { useToast } from '~/ui/toastContext';
@@ -51,6 +59,8 @@ import { useDeckLibrary } from './useDeckLibrary';
 
 type Props = {
   sets: Map<SetKey, LoadedSet>;
+  /** Owned precons take back any card the edit drops that they are missing. */
+  precons: PreconCatalogEntry[];
   binderOwnership: OwnershipBySet;
   deckId: string;
 };
@@ -69,8 +79,8 @@ const draftOf = (deck: SavedDeck): Draft => ({
  * the new list no longer holds, to put back; cards it adds leave the deck missing them,
  * for Complete to pull.
  */
-export function DeckEditorPage({ sets, binderOwnership, deckId }: Props) {
-  const { library, loading } = useDeckLibrary();
+export function DeckEditorPage({ sets, precons, binderOwnership, deckId }: Props) {
+  const { library, loading, edit } = useDeckLibrary(precons);
   const deck = library.customDecks.find((d) => d.id === deckId);
 
   if (loading) return <Loader label="Loading deck" />;
@@ -91,6 +101,7 @@ export function DeckEditorPage({ sets, binderOwnership, deckId }: Props) {
       binderOwnership={binderOwnership}
       library={library}
       deck={deck}
+      saveEdit={edit}
     />
   );
 }
@@ -105,12 +116,15 @@ export function DeckEditor({
   library,
   deck,
   isNew = false,
+  saveEdit = saveDeckEdit,
 }: {
   sets: Map<SetKey, LoadedSet>;
   binderOwnership: OwnershipBySet;
   library: DeckLibrary;
   deck: SavedDeck;
   isNew?: boolean;
+  /** Saves an edited list; the page passes one that knows the precons. */
+  saveEdit?: (deckId: string, edit: DeckEdit, quotaOf: QuotaOf) => Promise<number>;
 }) {
   const { lookup, setOrder, owned, homes, quotaOf } = useDeckCollection(
     sets,
@@ -125,7 +139,11 @@ export function DeckEditor({
   const [mode, setMode] = useState<SearchMode>('cards');
   const [leaderSlot, setLeaderSlot] = useState<0 | 1>(0);
   const [tab, setTab] = useState<'deck' | 'search'>('deck');
-  const [putBack, setPutBack] = useState<{ refs: DeckCardRef[]; edit: DeckEdit } | null>(null);
+  const [putBack, setPutBack] = useState<{
+    refs: DeckCardRef[];
+    loans: PreconLoan[];
+    edit: DeckEdit;
+  } | null>(null);
 
   const setList = useMemo(() => [...sets.values()], [sets]);
   const pool = useMemo(() => buildCardPool(setList), [setList]);
@@ -200,12 +218,13 @@ export function DeckEditor({
       return;
     }
     const refs = editReturns(library, deck.id, next.contents);
-    if (refs.length) {
-      setPutBack({ refs, edit: next });
+    const loans = editLoanReturns(library, deck.id, next.contents);
+    if (refs.length || loans.length) {
+      setPutBack({ refs, loans, edit: next });
       return;
     }
     try {
-      await editDeck(deck.id, next, quotaOf);
+      await saveEdit(deck.id, next, quotaOf);
     } catch {
       showToast({ tone: 'danger', message: `“${deck.name}” could not be saved.` });
       return;
@@ -412,12 +431,13 @@ export function DeckEditor({
           quotaOf={quotaOf}
           putBack={{
             refs: putBack.refs,
+            loans: putBack.loans,
             after: applyDeckEdit(library, deck.id, putBack.edit),
           }}
           onClose={() => setPutBack(null)}
           onConstruct={() => {}}
           onDeconstruct={async () => {
-            const moved = await editDeck(deck.id, putBack.edit, quotaOf);
+            const moved = await saveEdit(deck.id, putBack.edit, quotaOf);
             void navigate({ to: '/decks' });
             return moved;
           }}
