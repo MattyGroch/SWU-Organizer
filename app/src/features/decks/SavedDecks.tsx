@@ -64,6 +64,9 @@ type Props = {
  * A deck is *built* once its cards are pulled from the binder into its box. A built deck
  * can lose cards — to another deck, or one at a time with − — and stays listed, flagged
  * with what is missing and whether you own those copies elsewhere.
+ *
+ * Owned precons are listed after them, tagged Precon: sealed decks that are complete until
+ * a card is taken for another deck. They cannot be edited, renamed, deleted or taken apart.
  */
 export function SavedDecks({
   library,
@@ -86,6 +89,9 @@ export function SavedDecks({
   // Every deck that could use a binder copy is flagged, so you choose which one gets it.
   const upgradesByDeck = libraryUpgrades(library, homes);
   const holdings = deckHoldings(library);
+  const preconNames = new Map(
+    decks.flatMap((deck) => (deck.precon ? [[deck.precon, deck.name] as const] : [])),
+  );
 
   return (
     <section className={styles.panel} aria-labelledby="my-decks-title">
@@ -114,6 +120,8 @@ export function SavedDecks({
           <SavedDeckItem
             key={deck.id}
             deck={deck}
+            library={library}
+            preconNames={preconNames}
             status={deckStatus(deck, library, homes)}
             upgrades={upgradesByDeck.get(deck.id) ?? []}
             holdings={holdings.get(deck.id)}
@@ -138,6 +146,9 @@ export function SavedDecks({
 
 type ItemProps = {
   deck: SavedDeck;
+  library: DeckLibrary;
+  /** Precon catalog key -> its name, for saying where a borrowed card came from. */
+  preconNames: Map<string, string>;
   status: DeckStatus;
   /** Better printings in the binder than the ones this built deck holds. */
   upgrades: DeckUpgrade[];
@@ -163,11 +174,12 @@ type ItemProps = {
  */
 function boxColumn(
   deck: SavedDeck,
+  library: DeckLibrary,
   rows: DeckRowWithNeed[],
   pullable: OwnedLookup,
   onAdjust: ItemProps['onAdjustBox'],
 ): BoxColumn {
-  const remaining = inBoxCounts(deck);
+  const remaining = inBoxCounts(deck, library);
   const listed = new Map<string, number>();
   for (const row of rows) {
     const key = cardKey(row.setKey, row.baseNumber);
@@ -209,20 +221,24 @@ function StatusBadges({
     case 'complete':
       return (
         <span className={styles.badge} data-tone="success">
-          Built
+          {deck.precon ? 'Complete' : 'Built'}
         </span>
       );
     case 'partial':
       return (
         <>
           <span className={styles.badge} data-tone="warning">
-            Built · cards missing
+            {deck.precon ? 'Cards missing' : 'Built · cards missing'}
           </span>
           {status.missingOwned > 0 && (
             <span
               className={styles.badge}
               data-tone="warning"
-              title="You own these — they are in the binder or another deck."
+              title={
+                deck.precon
+                  ? 'You own these — they are in the binder, or lent to a deck you built.'
+                  : 'You own these — they are in the binder or another deck.'
+              }
             >
               {status.missingOwned} owned elsewhere
             </span>
@@ -234,6 +250,15 @@ function StatusBadges({
               title="You own these — they are in the bulk box."
             >
               {status.missingInBulk} in bulk
+            </span>
+          )}
+          {status.missingInPrecon > 0 && (
+            <span
+              className={styles.badge}
+              data-tone="warning"
+              title="You own these — they are in a precon. Complete the deck to take them from it."
+            >
+              {status.missingInPrecon} in a precon
             </span>
           )}
           {status.missingUnowned > 0 && (
@@ -320,6 +345,8 @@ function UpgradeRow({
 
 function SavedDeckItem({
   deck,
+  library,
+  preconNames,
   status,
   upgrades,
   holdings,
@@ -413,6 +440,14 @@ function SavedDeckItem({
         )}
 
         <span className={styles.badges}>
+          {deck.precon && (
+            <span
+              className={styles.badge}
+              title="A preconstructed deck you own. Its cards can be pulled for your own decks."
+            >
+              Precon
+            </span>
+          )}
           <span className={styles.badge}>{formatLabel(deck)}</span>
           <StatusBadges deck={deck} status={status} needed={needed} />
           {upgrades.length > 0 && (
@@ -443,7 +478,7 @@ function SavedDeckItem({
               {status.state === 'partial' ? 'Complete' : 'Construct'}
             </button>
           )}
-          {status.state !== 'unbuilt' && (
+          {status.state !== 'unbuilt' && !deck.precon && (
             <button
               type="button"
               className={status.state === 'complete' ? styles.primary : styles.action}
@@ -462,7 +497,7 @@ function SavedDeckItem({
               Add to collection
             </button>
           )}
-          {needed > 0 && (
+          {needed > 0 && !deck.precon && (
             <button
               type="button"
               className={styles.action}
@@ -472,14 +507,16 @@ function SavedDeckItem({
               Add missing
             </button>
           )}
-          <Link
-            to="/decks/$deckId"
-            params={{ deckId: deck.id }}
-            className={styles.action}
-            title="Change the list: move cards between main deck and sideboard, add or remove cards"
-          >
-            Edit
-          </Link>
+          {!deck.precon && (
+            <Link
+              to="/decks/$deckId"
+              params={{ deckId: deck.id }}
+              className={styles.action}
+              title="Change the list: move cards between main deck and sideboard, add or remove cards"
+            >
+              Edit
+            </Link>
+          )}
           <button type="button" className={styles.action} onClick={() => void copyMissing()}>
             Copy missing
           </button>
@@ -496,22 +533,48 @@ function SavedDeckItem({
 
       {expanded && (
         <div id={panelId} className={styles.details}>
-          <div className={styles.settings}>
-            <span className={styles.spacer} />
-            <button
-              type="button"
-              className={styles.action}
-              onClick={() => {
-                setNameDraft(deck.name);
-                setRenaming(true);
-              }}
-            >
-              Rename
-            </button>
-            <button type="button" className={styles.danger} onClick={onDelete}>
-              Delete
-            </button>
-          </div>
+          {!deck.precon && (
+            <div className={styles.settings}>
+              <span className={styles.spacer} />
+              <button
+                type="button"
+                className={styles.action}
+                onClick={() => {
+                  setNameDraft(deck.name);
+                  setRenaming(true);
+                }}
+              >
+                Rename
+              </button>
+              <button type="button" className={styles.danger} onClick={onDelete}>
+                Delete
+              </button>
+            </div>
+          )}
+          {(deck.borrowed?.length ?? 0) > 0 && (
+            <section className={styles.upgrades} aria-label="Borrowed from precons">
+              <h3 className={styles.upgradesTitle}>Borrowed from precons</h3>
+              <p className={styles.upgradesNote}>
+                These went from a precon into this deck. Deconstructing the deck, or taking the card
+                out of its list, puts each one back in its precon.
+              </p>
+              <ul className={styles.upgradeList}>
+                {deck.borrowed?.map((loan) => (
+                  <li
+                    key={`${loan.preconKey}:${loan.setKey}:${loan.baseNumber}`}
+                    className={styles.upgradeItem}
+                  >
+                    {loan.count}×{' '}
+                    <strong>
+                      {lookup.get(loan.setKey)?.byNumber.get(loan.baseNumber)?.Name ??
+                        `#${loan.baseNumber}`}
+                    </strong>{' '}
+                    from {preconNames.get(loan.preconKey) ?? loan.preconKey}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           {upgrades.length > 0 && (
             <section className={styles.upgrades} aria-label="Upgrades in your binder">
               <h3 className={styles.upgradesTitle}>Upgrades in your binder</h3>
@@ -541,7 +604,9 @@ function SavedDeckItem({
           <DeckRowsTable
             rows={rows}
             label={`${deck.name} cards`}
-            box={deck.constructed ? boxColumn(deck, rows, pullable, onAdjustBox) : undefined}
+            box={
+              deck.constructed ? boxColumn(deck, library, rows, pullable, onAdjustBox) : undefined
+            }
           />
         </div>
       )}

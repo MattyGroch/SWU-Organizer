@@ -12,8 +12,9 @@ type Props = {
 /**
  * Preconstructed decks you own.
  *
- * Precons stay sealed: their cards are part of your collection (for exports to other
- * tools) but never part of deck building, since they are never broken up to pull from.
+ * Owning one lists it in My decks. It stays sealed, and its cards are part of your
+ * collection, until a deck you are building needs a card only a precon has and you choose
+ * to take it from there; the precon is then marked as missing that card.
  */
 export function PreconList({ precons, ownership, onToggle, onSetOwned }: Props) {
   if (precons.length === 0) return null;
@@ -59,8 +60,8 @@ export function PreconList({ precons, ownership, onToggle, onSetOwned }: Props) 
         </span>
       </div>
       <p className={styles.lead}>
-        Owned precons count toward your collection but stay sealed — their cards are never pulled
-        for decks.
+        Owned precons are listed in My decks and count toward your collection. They stay sealed
+        unless you choose to take a card from one for a deck.
       </p>
 
       <div className={styles.groups}>

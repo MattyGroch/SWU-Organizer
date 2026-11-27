@@ -114,6 +114,7 @@ describe('deckStatus', () => {
       state: 'partial',
       missingOwned: 1,
       missingInBulk: 0,
+      missingInPrecon: 0,
       missingUnowned: 1,
     });
   });
@@ -323,6 +324,7 @@ describe('the bulk box', () => {
       state: 'partial',
       missingOwned: 0,
       missingInBulk: 1,
+      missingInPrecon: 0,
       missingUnowned: 1,
     });
   });

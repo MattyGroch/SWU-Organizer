@@ -15,8 +15,23 @@ export function DecksRoute({ sets, precons }: Props) {
   return <DecksPage sets={sets} binderOwnership={useOwnershipBySet()} precons={precons} />;
 }
 
-export function DeckEditRoute({ sets, deckId }: { sets: Map<SetKey, LoadedSet>; deckId: string }) {
-  return <DeckEditorPage sets={sets} binderOwnership={useOwnershipBySet()} deckId={deckId} />;
+export function DeckEditRoute({
+  sets,
+  precons,
+  deckId,
+}: {
+  sets: Map<SetKey, LoadedSet>;
+  precons: PreconCatalogEntry[];
+  deckId: string;
+}) {
+  return (
+    <DeckEditorPage
+      sets={sets}
+      precons={precons}
+      binderOwnership={useOwnershipBySet()}
+      deckId={deckId}
+    />
+  );
 }
 
 export function NewDeckRoute({ sets }: { sets: Map<SetKey, LoadedSet> }) {

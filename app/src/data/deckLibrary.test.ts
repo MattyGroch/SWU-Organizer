@@ -152,6 +152,55 @@ describe('a deck copy that outranks a full pocket', () => {
   });
 });
 
+describe('deconstructDeck with owned precons', () => {
+  let database: SwuDatabase;
+
+  // A precon whose #33s went to deck B; deck A, holding two #33 from the binder, is put away.
+  const precon = {
+    key: 'p',
+    label: 'Precon',
+    setKey: 'SOR',
+    aspect: 'Heroism',
+    file: 'p.json',
+    contents: { leader: ref(2, 1), base: ref(20, 1), mainDeck: [ref(33, 2)], sideboard: [] },
+  };
+  const b: SavedDeck = {
+    ...deck,
+    id: 'b',
+    constructed: true,
+    pulledCards: [],
+    borrowed: [{ preconKey: 'p', setKey: 'SOR', baseNumber: 33, count: 2 }],
+  };
+  const a: SavedDeck = { ...deck, pulledCards: [{ ...ref(33, 2), variants: { normal: 2 } }] };
+
+  beforeEach(async () => {
+    database = new SwuDatabase(`test-${crypto.randomUUID()}`);
+    await database.open();
+    // A library as an older build wrote it: no precon deck stored.
+    await writeDeckLibraryQuietly({ customDecks: [a, b], preconOwnership: { p: 1 } }, database);
+  });
+
+  it('refills the precon first and stores only those copies, as a deck of its own', async () => {
+    await deconstructDeck('a', () => 3, database, Date.now(), [precon]);
+    const library = await readDeckLibrary(database);
+    expect(library.preconOwnership).toEqual({ p: 1 });
+    expect(library.customDecks.map((d) => d.id)).toEqual(['a', 'b', 'precon:p']);
+    expect(library.customDecks[0]).toMatchObject({ constructed: false, pulledCards: [] });
+    expect(library.customDecks[2]!.pulledCards).toEqual([
+      { setKey: 'SOR', baseNumber: 33, count: 2, variants: { normal: 2 } },
+    ]);
+    // B's loan is untouched.
+    expect(library.customDecks[1]!.borrowed).toHaveLength(1);
+  });
+
+  it('stores nothing extra when no precon is missing the card', async () => {
+    await deconstructDeck('b', () => 3, database, Date.now(), [precon]);
+    const library = await readDeckLibrary(database);
+    expect(library.customDecks.map((d) => d.id)).toEqual(['a', 'b']);
+    expect(library.customDecks[1]).not.toHaveProperty('borrowed');
+  });
+});
+
 describe('addNewDeck', () => {
   it('adds the deck with the list the editor gave it, once', async () => {
     const database = new SwuDatabase(`test-${crypto.randomUUID()}`);

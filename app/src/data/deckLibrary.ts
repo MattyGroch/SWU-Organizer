@@ -1,5 +1,12 @@
 import { applyDeckEdit, applyDeconstruct, editReturns, type DeckEdit } from '~/domain/deckBuild';
-import { parseDeckLibrary, type DeckLibrary, type SavedDeck } from '~/domain/decks';
+import {
+  parseDeckLibrary,
+  withoutPrecons,
+  withPrecons,
+  type DeckLibrary,
+  type SavedDeck,
+} from '~/domain/decks';
+import type { PreconCatalogEntry } from '~/domain/precons';
 
 import { notifyDeckLibraryChanged, notifyInventoryChanged } from './changes';
 import { db, type SwuDatabase } from './db';
@@ -66,16 +73,18 @@ export async function deconstructDeck(
   quotaOf: QuotaOf,
   database: SwuDatabase = db,
   now = Date.now(),
+  precons: PreconCatalogEntry[] = [],
 ): Promise<number> {
   let cards: Array<{ setKey: string; base: number }> = [];
   let moved = 0;
   await database.transaction('rw', database.owned, database.deckLibrary, async () => {
-    const library = await readDeckLibrary(database);
+    // Seen with its owned precons, which take back any card they are missing first.
+    const library = withPrecons(await readDeckLibrary(database), precons);
     const deck = library.customDecks.find((d) => d.id === deckId);
     if (!deck) return;
     cards = deck.pulledCards.map((ref) => ({ setKey: ref.setKey, base: ref.baseNumber }));
     const next = applyDeconstruct(library, deckId, new Date(now).toISOString());
-    await writeDeckLibraryQuietly(next, database, now);
+    await writeDeckLibraryQuietly(withoutPrecons(next), database, now);
     moved = await spillCards(database, cards, quotaOf, now);
   });
   notifyDeckLibraryChanged();
@@ -95,18 +104,19 @@ export async function editDeck(
   quotaOf: QuotaOf,
   database: SwuDatabase = db,
   now = Date.now(),
+  precons: PreconCatalogEntry[] = [],
 ): Promise<number> {
   let cards: Array<{ setKey: string; base: number }> = [];
   let moved = 0;
   await database.transaction('rw', database.owned, database.deckLibrary, async () => {
-    const library = await readDeckLibrary(database);
+    const library = withPrecons(await readDeckLibrary(database), precons);
     if (!library.customDecks.some((d) => d.id === deckId)) return;
     cards = editReturns(library, deckId, edit.contents).map((ref) => ({
       setKey: ref.setKey,
       base: ref.baseNumber,
     }));
     const next = applyDeckEdit(library, deckId, edit, new Date(now).toISOString());
-    await writeDeckLibraryQuietly(next, database, now);
+    await writeDeckLibraryQuietly(withoutPrecons(next), database, now);
     moved = await spillCards(database, cards, quotaOf, now);
   });
   notifyDeckLibraryChanged();

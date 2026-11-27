@@ -12,6 +12,19 @@ import {
 import { isPlayFormat, type PlayFormat } from './deckLegality';
 import type { PreconCatalogEntry } from './precons';
 import { newId } from './id';
+import type { SetKey } from './types';
+
+/**
+ * Copies of one card taken out of an owned precon's box and now sitting in a built deck's
+ * box. The precon's copies are not in the binder or the bulk box, so they cannot go back
+ * by the usual home: this record says which precon each one returns to.
+ */
+export type PreconLoan = {
+  preconKey: string;
+  setKey: SetKey;
+  baseNumber: number;
+  count: number;
+};
 
 export type SavedDeck = DeckContents & {
   id: string;
@@ -30,6 +43,16 @@ export type SavedDeck = DeckContents & {
   pulledCards: DeckCardRef[];
   /** The format it is built for. Absent on decks saved before formats were stored. */
   format?: PlayFormat;
+  /**
+   * Cards this built deck holds that belong to precons. Only meaningful while
+   * `constructed`; cleared on deconstruct, which puts each back in its precon.
+   */
+  borrowed?: PreconLoan[];
+  /**
+   * Set on the deck that stands for an owned precon (see `withPrecons`): the precon's
+   * catalog key. Its box holds the precon's own copies plus any pulled in from the binder.
+   */
+  precon?: string;
 };
 
 /** A deck's format; older decks without one are Twin Suns with two leaders, else Premier. */
@@ -145,6 +168,59 @@ export function newDeck(
   };
 }
 
+export const PRECON_DECK_PREFIX = 'precon:';
+export const preconDeckId = (key: string): string => `${PRECON_DECK_PREFIX}${key}`;
+
+/**
+ * The library as the Decks view sees it: each owned precon stands in as a built deck,
+ * after the saved ones. It is derived, so nothing is stored until a precon is refilled
+ * from the binder: only then is its deck kept in `customDecks`, holding just those
+ * pulled-in cards. Its list always comes from the catalog.
+ */
+export function withPrecons(library: DeckLibrary, catalog: PreconCatalogEntry[]): DeckLibrary {
+  const stored = new Map(library.customDecks.map((deck) => [deck.id, deck]));
+  const listed = new Set(catalog.map((entry) => preconDeckId(entry.key)));
+  const standIns: SavedDeck[] = [];
+  for (const entry of catalog) {
+    if ((library.preconOwnership[entry.key] ?? 0) <= 0) continue;
+    const id = preconDeckId(entry.key);
+    const own = stored.get(id);
+    const { secondLeader, ...contents } = entry.contents;
+    standIns.push({
+      ...contents,
+      ...(secondLeader && { secondLeader }),
+      id,
+      name: entry.label,
+      createdAt: own?.createdAt ?? '',
+      updatedAt: own?.updatedAt ?? '',
+      physical: false,
+      copies: 1,
+      sourceText: '',
+      constructed: true,
+      pulledCards: own?.pulledCards ?? [],
+      format: secondLeader ? 'twinSuns' : 'premier',
+      precon: entry.key,
+    });
+  }
+  return {
+    ...library,
+    // A stored precon deck is replaced by its stand-in, or dropped once the precon is no
+    // longer owned. One the catalog did not load is left alone, so a write cannot lose it.
+    customDecks: [...library.customDecks.filter((deck) => !listed.has(deck.id)), ...standIns],
+  };
+}
+
+/**
+ * The inverse of `withPrecons`, for saving. A precon's deck is kept only while it holds
+ * cards pulled in from the binder; one that holds none is derived again on the next read.
+ */
+export function withoutPrecons(library: DeckLibrary): DeckLibrary {
+  return {
+    ...library,
+    customDecks: library.customDecks.filter((deck) => !deck.precon || deck.pulledCards.length > 0),
+  };
+}
+
 /** Owned totals contributed by the deck library: owned precons + physical custom decks, uncapped. */
 export function deriveOwnedTotals(
   library: DeckLibrary,
@@ -187,6 +263,17 @@ function isSavedDeck(value: unknown): value is SavedDeck {
   );
 }
 
+function isPreconLoan(value: unknown): value is PreconLoan {
+  return (
+    isRecord(value) &&
+    typeof value.preconKey === 'string' &&
+    typeof value.setKey === 'string' &&
+    Number.isInteger(value.baseNumber) &&
+    Number.isInteger(value.count) &&
+    (value.count as number) > 0
+  );
+}
+
 function isDeletedDecks(value: unknown): value is Record<string, string> {
   return isRecord(value) && Object.values(value).every((v) => typeof v === 'string');
 }
@@ -204,11 +291,16 @@ export function parseDeckLibrary(raw: string | null): DeckLibrary {
     const parsed: unknown = JSON.parse(raw);
     if (!isRecord(parsed)) return { ...emptyDeckLibrary };
     const customDecks = Array.isArray(parsed.customDecks)
-      ? parsed.customDecks.filter(isSavedDeck).map((d) => ({
-          ...d,
-          constructed: d.constructed ?? false,
-          pulledCards: d.pulledCards ?? [],
-        }))
+      ? parsed.customDecks.filter(isSavedDeck).map((d) => {
+          const { borrowed, ...rest } = d;
+          const loans = Array.isArray(borrowed) ? borrowed.filter(isPreconLoan) : [];
+          return {
+            ...rest,
+            constructed: d.constructed ?? false,
+            pulledCards: d.pulledCards ?? [],
+            ...(loans.length > 0 && { borrowed: loans }),
+          };
+        })
       : [];
     const preconOwnership = isPreconOwnership(parsed.preconOwnership) ? parsed.preconOwnership : {};
     const deletedDecks = isDeletedDecks(parsed.deletedDecks) ? parsed.deletedDecks : undefined;
