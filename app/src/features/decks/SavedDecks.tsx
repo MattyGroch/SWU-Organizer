@@ -3,11 +3,14 @@ import { useState } from 'react';
 
 import {
   cardKey,
+  deckHoldings,
   deckStatus,
   inBoxCounts,
   type DeckStatus,
   type HomeLookup,
 } from '~/domain/deckBuild';
+import type { Homes } from '~/domain/ownership';
+import { binderLayout } from '~/domain/binder';
 import { variantLabel } from '~/domain/catalog';
 import { formatSwudbJson } from '~/domain/deckExport';
 import { libraryUpgrades, upgradeCount, type DeckUpgrade } from '~/domain/deckUpgrades';
@@ -48,6 +51,8 @@ type Props = {
   onDelete: (deck: SavedDeck, index: number) => void;
   onOpenPickList: (deck: SavedDeck, mode: 'construct' | 'deconstruct') => void;
   onAdjustBox: (deck: SavedDeck, row: DeckRowWithNeed, delta: 1 | -1, max: number) => void;
+  /** Trades one copy in the deck for a better printing from the binder. */
+  onSwap: (deck: SavedDeck, upgrade: DeckUpgrade) => void;
   onQueue: (deck: SavedDeck) => void;
   onQueueMissing: (deck: SavedDeck) => void;
   onImport: () => void;
@@ -71,6 +76,7 @@ export function SavedDecks({
   onDelete,
   onOpenPickList,
   onAdjustBox,
+  onSwap,
   onQueue,
   onQueueMissing,
   onImport,
@@ -79,6 +85,7 @@ export function SavedDecks({
   const decks = library.customDecks;
   // Every deck that could use a binder copy is flagged, so you choose which one gets it.
   const upgradesByDeck = libraryUpgrades(library, homes);
+  const holdings = deckHoldings(library);
 
   return (
     <section className={styles.panel} aria-labelledby="my-decks-title">
@@ -109,6 +116,7 @@ export function SavedDecks({
             deck={deck}
             status={deckStatus(deck, library, homes)}
             upgrades={upgradesByDeck.get(deck.id) ?? []}
+            holdings={holdings.get(deck.id)}
             lookup={lookup}
             owned={owned}
             pullable={pullable}
@@ -118,6 +126,7 @@ export function SavedDecks({
             onDelete={() => onDelete(deck, index)}
             onOpenPickList={(mode) => onOpenPickList(deck, mode)}
             onAdjustBox={(row, delta, max) => onAdjustBox(deck, row, delta, max)}
+            onSwap={(upgrade) => onSwap(deck, upgrade)}
             onQueue={() => onQueue(deck)}
             onQueueMissing={() => onQueueMissing(deck)}
           />
@@ -132,6 +141,8 @@ type ItemProps = {
   status: DeckStatus;
   /** Better printings in the binder than the ones this built deck holds. */
   upgrades: DeckUpgrade[];
+  /** What the deck's box holds, per card, by home: where a swapped-out copy goes back to. */
+  holdings: Map<string, Homes> | undefined;
   lookup: Map<SetKey, DeckLookupSet>;
   owned: OwnedLookup;
   pullable: OwnedLookup;
@@ -141,6 +152,7 @@ type ItemProps = {
   onDelete: () => void;
   onOpenPickList: (mode: 'construct' | 'deconstruct') => void;
   onAdjustBox: (row: DeckRowWithNeed, delta: 1 | -1, max: number) => void;
+  onSwap: (upgrade: DeckUpgrade) => void;
   onQueue: () => void;
   onQueueMissing: () => void;
 };
@@ -238,10 +250,77 @@ function StatusBadges({
   }
 }
 
+function UpgradeRow({
+  upgrade: u,
+  deckName,
+  cardName,
+  toBulk,
+  onSwap,
+}: {
+  upgrade: DeckUpgrade;
+  deckName: string;
+  cardName: string;
+  toBulk: boolean;
+  onSwap: () => void;
+}) {
+  const [confirming, setConfirming] = useState(false);
+  const { page, row, column } = binderLayout(u.baseNumber);
+  return (
+    <li>
+      {u.count > 1 ? `${u.count} × ` : ''}
+      <strong>{cardName}</strong>: {variantLabel(u.from)} → {variantLabel(u.to)}
+      {u.alsoFor && <span className={styles.shared}> · also fits {u.alsoFor.join(', ')}</span>}{' '}
+      {!confirming && (
+        <button
+          type="button"
+          className={styles.action}
+          title={u.count > 1 ? 'Swaps one copy at a time' : undefined}
+          aria-label={`Swap ${variantLabel(u.to)} ${cardName} into ${deckName}`}
+          onClick={() => setConfirming(true)}
+        >
+          Swap
+        </button>
+      )}
+      {confirming && (
+        <div className={styles.confirm} role="group" aria-label={`Confirm swap for ${cardName}`}>
+          <ol className={styles.steps}>
+            <li>
+              Take the {variantLabel(u.to)} {cardName} out of the binder: {u.setKey} page {page},
+              row {row}, column {column}.
+            </li>
+            <li>
+              Put it in “{deckName}”’s box in place of the {variantLabel(u.from)}.
+            </li>
+            <li>
+              {toBulk
+                ? `Put the ${variantLabel(u.from)} back in the bulk box.`
+                : `Put the ${variantLabel(u.from)} in that binder pocket.`}
+            </li>
+          </ol>
+          <button
+            type="button"
+            className={styles.primary}
+            onClick={() => {
+              setConfirming(false);
+              onSwap();
+            }}
+          >
+            Swap now
+          </button>{' '}
+          <button type="button" className={styles.action} onClick={() => setConfirming(false)}>
+            Cancel
+          </button>
+        </div>
+      )}
+    </li>
+  );
+}
+
 function SavedDeckItem({
   deck,
   status,
   upgrades,
+  holdings,
   lookup,
   owned,
   pullable,
@@ -251,6 +330,7 @@ function SavedDeckItem({
   onDelete,
   onOpenPickList,
   onAdjustBox,
+  onSwap,
   onQueue,
   onQueueMissing,
 }: ItemProps) {
@@ -434,22 +514,24 @@ function SavedDeckItem({
             <section className={styles.upgrades} aria-label="Upgrades in your binder">
               <h3 className={styles.upgradesTitle}>Upgrades in your binder</h3>
               <p className={styles.upgradesNote}>
-                Swap these into the deck for a better-looking build. Nothing changes until you do. A
-                copy shared with another deck is noted; once one deck has it, the other’s flag
-                clears.
+                Swap one in for a better-looking build. Nothing changes until you confirm. A copy
+                shared with another deck is noted; once one deck has it, the other’s flag clears.
               </p>
               <ul className={styles.upgradeList}>
                 {upgrades.map((u) => (
-                  <li key={`${u.setKey}:${u.baseNumber}:${u.from}:${u.to}`}>
-                    {u.count > 1 ? `${u.count} × ` : ''}
-                    <strong>
-                      {lookup.get(u.setKey)?.byNumber.get(u.baseNumber)?.Name ?? `#${u.baseNumber}`}
-                    </strong>
-                    : {variantLabel(u.from)} → {variantLabel(u.to)}
-                    {u.alsoFor && (
-                      <span className={styles.shared}> · also fits {u.alsoFor.join(', ')}</span>
-                    )}
-                  </li>
+                  <UpgradeRow
+                    key={`${u.setKey}:${u.baseNumber}:${u.from}:${u.to}`}
+                    upgrade={u}
+                    deckName={deck.name}
+                    cardName={
+                      lookup.get(u.setKey)?.byNumber.get(u.baseNumber)?.Name ?? `#${u.baseNumber}`
+                    }
+                    // The old copy goes back to bulk only when none of the deck's are binder-homed.
+                    toBulk={
+                      !((holdings?.get(cardKey(u.setKey, u.baseNumber))?.binder[u.from] ?? 0) > 0)
+                    }
+                    onSwap={() => onSwap(u)}
+                  />
                 ))}
               </ul>
             </section>

@@ -605,4 +605,73 @@ describe('deck upgrades from the binder', () => {
     expect(within(myDecks()).getByText('Not built')).toBeInTheDocument();
     expect(within(myDecks()).queryByText(/upgrade/)).not.toBeInTheDocument();
   });
+
+  it('swaps the better copy into the deck after a confirm, touching only the deck', async () => {
+    const user = userEvent.setup();
+    await buildDeck(user);
+    await ownTrooper('hyperspace', '299');
+    await user.click(await within(myDecks()).findByRole('button', { name: /1 upgrade in binder/ }));
+
+    await user.click(
+      within(myDecks()).getByRole('button', {
+        name: 'Swap Hyperspace Death Trooper into Krennic Troopers',
+      }),
+    );
+    // Nothing changes until it is confirmed, and the steps say what to do with the cards.
+    const confirm = within(myDecks()).getByRole('group', {
+      name: /Confirm swap for Death Trooper/,
+    });
+    expect(confirm).toHaveTextContent(/SOR page 3, row 3, column 1/);
+    expect(confirm).toHaveTextContent(/Put the Normal in that binder pocket/);
+    expect((await readDeckLibrary()).customDecks[0]!.pulledCards).toContainEqual({
+      setKey: 'SOR',
+      baseNumber: 33,
+      count: 3,
+      variants: { normal: 3 },
+    });
+
+    await user.click(within(confirm).getByRole('button', { name: 'Swap now' }));
+
+    await waitFor(async () => {
+      const [deck] = (await readDeckLibrary()).customDecks;
+      expect(deck!.pulledCards).toContainEqual({
+        setKey: 'SOR',
+        baseNumber: 33,
+        count: 3,
+        variants: { normal: 2, hyperspace: 1 },
+      });
+    });
+    // The collection itself is untouched: same rows, same counts, nothing moved to bulk.
+    const rows = await db.owned.where('[setKey+base]').equals(['SOR', 33]).toArray();
+    expect(rows.map((r) => [r.variant, r.count, r.bulk ?? 0]).sort()).toEqual([
+      ['hyperspace', 1, 0],
+      ['normal', 3, 0],
+    ]);
+    // The flag clears, and the toast says where the old copy goes.
+    await waitFor(() => expect(within(myDecks()).queryByText(/upgrade/)).not.toBeInTheDocument());
+    expect(await screen.findByText(/Put the Normal in the binder pocket/)).toBeInTheDocument();
+  });
+
+  it('changes nothing when the swap is cancelled', async () => {
+    const user = userEvent.setup();
+    await buildDeck(user);
+    await ownTrooper('hyperspace', '299');
+    await user.click(await within(myDecks()).findByRole('button', { name: /1 upgrade in binder/ }));
+    await user.click(
+      within(myDecks()).getByRole('button', {
+        name: 'Swap Hyperspace Death Trooper into Krennic Troopers',
+      }),
+    );
+    await user.click(within(myDecks()).getByRole('button', { name: 'Cancel' }));
+
+    expect(
+      within(myDecks()).queryByRole('group', { name: /Confirm swap/ }),
+    ).not.toBeInTheDocument();
+    expect((await readDeckLibrary()).customDecks[0]!.pulledCards).toContainEqual({
+      setKey: 'SOR',
+      baseNumber: 33,
+      count: 3,
+      variants: { normal: 3 },
+    });
+  });
 });

@@ -182,6 +182,18 @@
   font-size: var(--font-size-xs);
 }
 
+.confirm {
+  margin: var(--space-1) 0 var(--space-2);
+  padding: var(--space-2);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md, 6px);
+}
+
+.steps {
+  margin: 0 0 var(--space-2);
+  padding-left: var(--space-4);
+}
+
 .shared {
   color: var(--color-text-subtle);
 }
