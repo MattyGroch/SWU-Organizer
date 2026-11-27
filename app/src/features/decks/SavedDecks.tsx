@@ -438,7 +438,9 @@ function SavedDeckItem({
                 {upgrades.map((u) => (
                   <li key={`${u.setKey}:${u.baseNumber}:${u.from}:${u.to}`}>
                     {u.count > 1 ? `${u.count} × ` : ''}
-                    <strong>{lookup.get(u.setKey)?.byNumber.get(u.baseNumber)?.Name ?? `#${u.baseNumber}`}</strong>
+                    <strong>
+                      {lookup.get(u.setKey)?.byNumber.get(u.baseNumber)?.Name ?? `#${u.baseNumber}`}
+                    </strong>
                     : {variantLabel(u.from)} → {variantLabel(u.to)}
                   </li>
                 ))}

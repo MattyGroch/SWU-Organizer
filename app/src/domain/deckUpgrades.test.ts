@@ -34,7 +34,10 @@ const deck = (id: string, pulled: ReturnType<typeof ref>[], built = true): Saved
   sideboard: [],
 });
 
-const library = (...decks: SavedDeck[]): DeckLibrary => ({ customDecks: decks, preconOwnership: {} });
+const library = (...decks: SavedDeck[]): DeckLibrary => ({
+  customDecks: decks,
+  preconOwnership: {},
+});
 
 /** Whole-collection homes per base number: what is owned, binder-homed and bulk-homed. */
 const owning =
