@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createMemoryHistory, RouterProvider } from '@tanstack/react-router';
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { configure, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -16,6 +16,12 @@ import { ToastProvider } from '~/ui/Toasts';
  * The Decks tab over the real stack and the real committed catalog: paste → save → My
  * decks → construct → deconstruct → delete/undo, with every step persisted to IndexedDB.
  */
+
+// These tests resolve decks over every set in the real catalog, so a step can outlast Testing
+// Library's 1s default for findBy*/waitFor when CI is loaded (issue #199). Give every async
+// query 5s, and the tests themselves room to spend it.
+configure({ asyncUtilTimeout: 5000 });
+vi.setConfig({ testTimeout: 20_000 });
 
 const publicDir = join(dirname(fileURLToPath(import.meta.url)), '../../../public');
 
