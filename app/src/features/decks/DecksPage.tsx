@@ -3,7 +3,8 @@ import { useState } from 'react';
 
 import { queueDeck, queueMissing } from '~/data/intake';
 
-import type { LoadedSet } from '~/domain/catalog';
+import { variantLabel, type LoadedSet } from '~/domain/catalog';
+import type { DeckUpgrade } from '~/domain/deckUpgrades';
 import type { SavedDeck } from '~/domain/decks';
 import type { PreconCatalogEntry } from '~/domain/precons';
 import type { SetKey } from '~/domain/types';
@@ -71,6 +72,26 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
     void navigate({ to: '/intake' });
   }
 
+  async function onSwap(deck: SavedDeck, u: DeckUpgrade) {
+    const result = await deckLibrary.swap(deck.id, u.setKey, u.baseNumber, u.from, u.to, homes);
+    const name = lookup.get(u.setKey)?.byNumber.get(u.baseNumber)?.Name ?? 'the card';
+    if (!result) {
+      showToast({
+        tone: 'info',
+        message: `That swap no longer applies to “${deck.name}”. Nothing was changed.`,
+      });
+      return;
+    }
+    showToast({
+      tone: 'success',
+      message:
+        `Swapped ${variantLabel(u.to)} ${name} into “${deck.name}”. ` +
+        (result.toBulk
+          ? `Put the ${variantLabel(u.from)} back in the bulk box.`
+          : `Put the ${variantLabel(u.from)} in the binder pocket.`),
+    });
+  }
+
   const pickListDeck = pickList
     ? (library.customDecks.find((d) => d.id === pickList.id) ?? null)
     : null;
@@ -90,6 +111,7 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
         onQueue={(deck) => void onQueue(deck)}
         onQueueMissing={(deck) => void onQueueMissing(deck)}
         onImport={() => setImporting(true)}
+        onSwap={(deck, u) => void onSwap(deck, u)}
         onAdjustBox={(deck, row, delta, max) =>
           void deckLibrary.adjustBox(deck.id, row.setKey, row.baseNumber, delta, max, homes)
         }

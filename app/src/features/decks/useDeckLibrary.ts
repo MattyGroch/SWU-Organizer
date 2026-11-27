@@ -3,7 +3,12 @@ import { useCallback, useMemo } from 'react';
 
 import { db } from '~/data/db';
 import { useSharedCollection } from '~/data/shared';
-import { deconstructDeck, updateDeckLibrary } from '~/data/deckLibrary';
+import {
+  deconstructDeck,
+  readDeckLibrary,
+  updateDeckLibrary,
+  writeDeckLibrary,
+} from '~/data/deckLibrary';
 import type { QuotaOf } from '~/data/spill';
 import {
   createSavedDeck,
@@ -16,9 +21,11 @@ import {
 import {
   adjustInBox,
   applyConstruct,
+  swapInBox,
   type HomeLookup,
   type TakeFromDeck,
 } from '~/domain/deckBuild';
+import type { VariantSlug } from '~/domain/catalog';
 import type { DeckCardRef } from '~/domain/deckContents';
 import type { ResolvedDeckRow } from '~/domain/decklist';
 import type { SetKey } from '~/domain/types';
@@ -140,6 +147,36 @@ export function useDeckLibrary() {
     [],
   );
 
+  /**
+   * Trades one copy in a built deck's box for a better printing from the binder. Writes
+   * only when the swap still holds, and returns where the old copy goes (`toBulk`), or
+   * null when it no longer applies and nothing was written.
+   */
+  const swap = useCallback(
+    async (
+      deckId: string,
+      setKey: SetKey,
+      baseNumber: number,
+      from: VariantSlug,
+      to: VariantSlug,
+      homes: HomeLookup,
+    ): Promise<{ toBulk: boolean } | null> => {
+      const result = swapInBox(
+        await readDeckLibrary(),
+        deckId,
+        setKey,
+        baseNumber,
+        from,
+        to,
+        homes,
+      );
+      if (!result) return null;
+      await writeDeckLibrary(result.library);
+      return { toBulk: result.toBulk };
+    },
+    [],
+  );
+
   /** Puts a deleted deck back where it was — the undo for `deleteDeck`. */
   const restoreDeck = useCallback(async (deck: SavedDeck, index: number) => {
     await updateDeckLibrary((current) => {
@@ -170,5 +207,6 @@ export function useDeckLibrary() {
     construct,
     deconstruct,
     adjustBox,
+    swap,
   };
 }
