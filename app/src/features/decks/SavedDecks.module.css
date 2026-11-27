@@ -182,6 +182,10 @@
   font-size: var(--font-size-xs);
 }
 
+.shared {
+  color: var(--color-text-subtle);
+}
+
 .upgradeList {
   margin: 0;
   padding-left: var(--space-4);

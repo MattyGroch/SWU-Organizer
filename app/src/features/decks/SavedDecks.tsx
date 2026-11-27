@@ -77,7 +77,7 @@ export function SavedDecks({
 }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const decks = library.customDecks;
-  // Worked out across every deck at once, so a binder copy is offered to one deck only.
+  // Every deck that could use a binder copy is flagged, so you choose which one gets it.
   const upgradesByDeck = libraryUpgrades(library, homes);
 
   return (
@@ -434,7 +434,9 @@ function SavedDeckItem({
             <section className={styles.upgrades} aria-label="Upgrades in your binder">
               <h3 className={styles.upgradesTitle}>Upgrades in your binder</h3>
               <p className={styles.upgradesNote}>
-                Swap these into the deck for a better-looking build. Nothing changes until you do.
+                Swap these into the deck for a better-looking build. Nothing changes until you do. A
+                copy shared with another deck is noted; once one deck has it, the other’s flag
+                clears.
               </p>
               <ul className={styles.upgradeList}>
                 {upgrades.map((u) => (
@@ -444,6 +446,9 @@ function SavedDeckItem({
                       {lookup.get(u.setKey)?.byNumber.get(u.baseNumber)?.Name ?? `#${u.baseNumber}`}
                     </strong>
                     : {variantLabel(u.from)} → {variantLabel(u.to)}
+                    {u.alsoFor && (
+                      <span className={styles.shared}> · also fits {u.alsoFor.join(', ')}</span>
+                    )}
                   </li>
                 ))}
               </ul>

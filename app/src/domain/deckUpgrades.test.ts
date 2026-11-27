@@ -117,46 +117,44 @@ describe('deckUpgrades', () => {
 });
 
 describe('libraryUpgrades across decks', () => {
-  const twoDecks = () => {
-    // Two built decks, three Normals each; the binder pocket holds the rest.
+  it('flags every deck that could use a shared binder copy', () => {
+    // Two built decks, three Normals each; one Prestige sits in the binder.
     const a = deck('a', [ref(33, 3, { normal: 3 })]);
     const b = deck('b', [ref(33, 3, { normal: 3 })]);
-    return { a, b, lib: library(a, b) };
-  };
-
-  it('offers each binder copy to one deck only', () => {
-    const { lib } = twoDecks();
-    const homes = owning({ 33: { normal: 6, hyperspace: 3 } });
-    const found = libraryUpgrades(lib, homes);
-    // Three Hyperspaces, not six swaps: the first deck takes them all.
-    expect(upgradeCount(found.get('a') ?? [])).toBe(3);
-    expect(found.get('b')).toBeUndefined();
-  });
-
-  it('splits copies between decks once the first has had its share', () => {
-    const a = deck('a', [ref(33, 1, { normal: 1 })]);
-    const b = deck('b', [ref(33, 3, { normal: 3 })]);
-    const homes = owning({ 33: { normal: 4, hyperspace: 3 } });
+    const homes = owning({ 33: { normal: 6, prestige: 1 } });
     const found = libraryUpgrades(library(a, b), homes);
-    expect(upgradeCount(found.get('a') ?? [])).toBe(1);
-    expect(upgradeCount(found.get('b') ?? [])).toBe(2);
-  });
-
-  it('gives a copy to the deck it improves most, whatever the library order', () => {
-    const a = deck('a', [ref(33, 1, { hyperspace: 1 })]);
-    const b = deck('b', [ref(33, 1, { normal: 1 })]);
-    const homes = owning({ 33: { hyperspace: 1, normal: 1, showcase: 1 } });
-    const found = libraryUpgrades(library(a, b), homes);
-    expect(found.get('b')).toEqual([
-      { setKey: 'SOR', baseNumber: 33, from: 'normal', to: 'showcase', count: 1 },
+    expect(found.get('a')).toEqual([
+      { setKey: 'SOR', baseNumber: 33, from: 'normal', to: 'prestige', count: 1, alsoFor: ['B'] },
     ]);
+    expect(found.get('b')).toEqual([
+      { setKey: 'SOR', baseNumber: 33, from: 'normal', to: 'prestige', count: 1, alsoFor: ['A'] },
+    ]);
+  });
+
+  it('clears the other deck’s flag once one deck has taken the copy', () => {
+    const before = library(
+      deck('a', [ref(33, 3, { normal: 3 })]),
+      deck('b', [ref(33, 3, { normal: 3 })]),
+    );
+    expect(libraryUpgrades(before, owning({ 33: { normal: 6, prestige: 1 } })).size).toBe(2);
+
+    // Deck A swaps the Prestige in and its Normal goes to the pocket: nothing better remains.
+    const after = library(
+      deck('a', [ref(33, 3, { normal: 2, prestige: 1 })]),
+      deck('b', [ref(33, 3, { normal: 3 })]),
+    );
+    const found = libraryUpgrades(after, owning({ 33: { normal: 6, prestige: 1 } }));
+    expect(found.get('b')).toBeUndefined();
     expect(found.get('a')).toBeUndefined();
   });
 
-  it('never offers more copies than the binder holds, in total', () => {
-    const { lib } = twoDecks();
-    const homes = owning({ 33: { normal: 6, hyperspace: 2 } });
-    const total = [...libraryUpgrades(lib, homes).values()].flat();
-    expect(upgradeCount(total)).toBe(2);
+  it('shows no alsoFor note when only one deck could use the copy', () => {
+    const a = deck('a', [ref(33, 1, { normal: 1 })]);
+    const b = deck('b', [ref(33, 1, { prestige: 1 })]);
+    const found = libraryUpgrades(
+      library(a, b),
+      owning({ 33: { normal: 1, prestige: 1, hyperspace: 1 } }),
+    );
+    expect(found.get('a')?.[0]?.alsoFor).toBeUndefined();
   });
 });
