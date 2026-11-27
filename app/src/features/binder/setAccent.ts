@@ -15,6 +15,8 @@ export const SET_ACCENTS: Readonly<Record<string, string>> = {
   LAW: '#f95a25',
   ASH: '#566a80',
   HMW: '#12853f',
+  // Marketing white, FFFFFF to F5F5F5; the bottom of the range keeps it visibly lit on the dark ground.
+  IC27: '#f5f5f5',
 };
 
 export function setAccent(setKey: string): string | undefined {

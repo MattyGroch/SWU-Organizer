@@ -7,6 +7,11 @@ describe('setAccent', () => {
     expect(setAccent('SOR')).toMatch(/^#[0-9a-f]{6}$/);
   });
 
+  it('has an off-white accent for Icons 2027, with black text on it', () => {
+    expect(setAccent('IC27')).toBe('#f5f5f5');
+    expect(accentText('#f5f5f5')).toBe('#000000');
+  });
+
   it('returns undefined for sets without an accent', () => {
     expect(setAccent('IBH')).toBeUndefined();
     expect(setAccent('NOPE')).toBeUndefined();
