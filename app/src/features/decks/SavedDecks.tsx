@@ -8,7 +8,9 @@ import {
   type DeckStatus,
   type HomeLookup,
 } from '~/domain/deckBuild';
+import { variantLabel } from '~/domain/catalog';
 import { formatSwudbJson } from '~/domain/deckExport';
+import { libraryUpgrades, upgradeCount, type DeckUpgrade } from '~/domain/deckUpgrades';
 import {
   formatMissingCardsList,
   type DeckLookupSet,
@@ -75,6 +77,8 @@ export function SavedDecks({
 }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const decks = library.customDecks;
+  // Every deck that could use a binder copy is flagged, so you choose which one gets it.
+  const upgradesByDeck = libraryUpgrades(library, homes);
 
   return (
     <section className={styles.panel} aria-labelledby="my-decks-title">
@@ -104,6 +108,7 @@ export function SavedDecks({
             key={deck.id}
             deck={deck}
             status={deckStatus(deck, library, homes)}
+            upgrades={upgradesByDeck.get(deck.id) ?? []}
             lookup={lookup}
             owned={owned}
             pullable={pullable}
@@ -125,6 +130,8 @@ export function SavedDecks({
 type ItemProps = {
   deck: SavedDeck;
   status: DeckStatus;
+  /** Better printings in the binder than the ones this built deck holds. */
+  upgrades: DeckUpgrade[];
   lookup: Map<SetKey, DeckLookupSet>;
   owned: OwnedLookup;
   pullable: OwnedLookup;
@@ -234,6 +241,7 @@ function StatusBadges({
 function SavedDeckItem({
   deck,
   status,
+  upgrades,
   lookup,
   owned,
   pullable,
@@ -325,6 +333,22 @@ function SavedDeckItem({
         <span className={styles.badges}>
           <span className={styles.badge}>{formatLabel(deck)}</span>
           <StatusBadges deck={deck} status={status} needed={needed} />
+          {upgrades.length > 0 && (
+            <button
+              type="button"
+              className={styles.badgeButton}
+              data-tone="info"
+              aria-expanded={expanded}
+              aria-controls={panelId}
+              title="Your binder holds better printings of cards in this deck. Open the deck to see them."
+              onClick={() => {
+                if (!expanded) onToggle();
+              }}
+            >
+              {upgradeCount(upgrades)} {upgradeCount(upgrades) === 1 ? 'upgrade' : 'upgrades'} in
+              binder
+            </button>
+          )}
         </span>
 
         <span className={styles.actions}>
@@ -406,6 +430,30 @@ function SavedDeckItem({
               Delete
             </button>
           </div>
+          {upgrades.length > 0 && (
+            <section className={styles.upgrades} aria-label="Upgrades in your binder">
+              <h3 className={styles.upgradesTitle}>Upgrades in your binder</h3>
+              <p className={styles.upgradesNote}>
+                Swap these into the deck for a better-looking build. Nothing changes until you do. A
+                copy shared with another deck is noted; once one deck has it, the other’s flag
+                clears.
+              </p>
+              <ul className={styles.upgradeList}>
+                {upgrades.map((u) => (
+                  <li key={`${u.setKey}:${u.baseNumber}:${u.from}:${u.to}`}>
+                    {u.count > 1 ? `${u.count} × ` : ''}
+                    <strong>
+                      {lookup.get(u.setKey)?.byNumber.get(u.baseNumber)?.Name ?? `#${u.baseNumber}`}
+                    </strong>
+                    : {variantLabel(u.from)} → {variantLabel(u.to)}
+                    {u.alsoFor && (
+                      <span className={styles.shared}> · also fits {u.alsoFor.join(', ')}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
           <DeckRowsTable
             rows={rows}
             label={`${deck.name} cards`}

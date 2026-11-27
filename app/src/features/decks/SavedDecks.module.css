@@ -149,6 +149,49 @@
   color: var(--color-danger-fg);
 }
 
+.badgeButton {
+  padding: 2px var(--space-2);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--color-surface-raised, transparent);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.badgeButton[data-tone='info'] {
+  border-color: var(--color-border-strong);
+}
+
+.upgrades {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md, 6px);
+}
+
+.upgradesTitle {
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
+
+.upgradesNote {
+  margin: var(--space-1) 0;
+  color: var(--color-text-subtle);
+  font-size: var(--font-size-xs);
+}
+
+.shared {
+  color: var(--color-text-subtle);
+}
+
+.upgradeList {
+  margin: 0;
+  padding-left: var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

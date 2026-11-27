@@ -537,3 +537,72 @@ describe('decks tab, end to end', () => {
     });
   });
 });
+
+describe('deck upgrades from the binder', () => {
+  /** A Death Trooper (#33) printing other than the Normal; `num` is its own collector number. */
+  async function ownTrooper(variant: 'hyperspace' | 'foil', num: string, count = 1) {
+    await db.owned.put({
+      id: printingId('SOR', num),
+      setKey: 'SOR',
+      base: 33,
+      num,
+      variant,
+      count,
+      updatedAt: 0,
+    });
+  }
+
+  async function buildDeck(user: ReturnType<typeof userEvent.setup>) {
+    await own(1, 1);
+    await own(19, 1);
+    await own(33, 3);
+    await renderDecks();
+    await pasteAndSave(user);
+    await user.click(within(myDecks()).getByRole('button', { name: 'Construct' }));
+    const dialog = screen.getByRole('dialog', { name: /Construct: Krennic Troopers/ });
+    await user.click(within(dialog).getByRole('button', { name: 'Mark as built' }));
+    expect(await within(myDecks()).findByText('Built')).toBeInTheDocument();
+  }
+
+  it('flags a better printing scanned into the binder, and lists it without changing the deck', async () => {
+    const user = userEvent.setup();
+    await buildDeck(user);
+    expect(within(myDecks()).queryByText(/upgrade/)).not.toBeInTheDocument();
+
+    // The three Normals are in the deck; a Hyperspace lands in the binder.
+    await ownTrooper('hyperspace', '299');
+    const badge = await within(myDecks()).findByRole('button', { name: /1 upgrade in binder/ });
+
+    await user.click(badge);
+    const list = within(myDecks()).getByRole('region', { name: 'Upgrades in your binder' });
+    expect(list).toHaveTextContent(/Death Trooper: Normal → Hyperspace/);
+
+    // Read-only: the deck's box and the collection are exactly as they were.
+    const [deck] = (await readDeckLibrary()).customDecks;
+    expect(deck!.pulledCards).toContainEqual({
+      setKey: 'SOR',
+      baseNumber: 33,
+      count: 3,
+      variants: { normal: 3 },
+    });
+    const rows = await db.owned.where('[setKey+base]').equals(['SOR', 33]).toArray();
+    expect(rows.map((r) => [r.variant, r.count]).sort()).toEqual([
+      ['hyperspace', 1],
+      ['normal', 3],
+    ]);
+  });
+
+  it('shows nothing for a deck that is not built, or when nothing in the binder is better', async () => {
+    const user = userEvent.setup();
+    await own(1, 1);
+    await own(19, 1);
+    await own(33, 3);
+    await ownTrooper('hyperspace', '299');
+    await renderDecks();
+    await pasteAndSave(user);
+
+    // Saved but not built: its copies are still in the binder, nothing to swap.
+    expect(within(myDecks()).getByText('Not built')).toBeInTheDocument();
+    expect(within(myDecks()).queryByText(/upgrade/)).not.toBeInTheDocument();
+  });
+});
