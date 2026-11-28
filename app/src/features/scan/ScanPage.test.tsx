@@ -447,6 +447,29 @@ describe('ScanPage', () => {
     expect(await stack()).toEqual([]);
   });
 
+  it('an out-of-set card can still be added on purpose with Correct', async () => {
+    renderPage([['SHD', shd]]);
+    await waitFor(() => expect(fire).not.toBeNull());
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Set' }), 'SHD');
+    await act(async () => {
+      fire!({
+        matches: [match('059', 59, 'normal', 10), match('080', 80, 'normal', 90)],
+        at: 1,
+        afterGap: true,
+        tooClose: false,
+      });
+    });
+    expect(await screen.findByText(/Correct adds it from another set/)).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Correct' }));
+    await userEvent.click(screen.getByTitle(/^Normal · 059/));
+    await waitFor(async () =>
+      expect((await db.intakeLines.toArray()).map((l) => `${l.setKey}:${l.num}`)).toEqual([
+        'SOR:059',
+      ]),
+    );
+    expect(await stack()).toEqual([['059', 'binder', null]]);
+  });
+
   it('adds a scan straight away when its only twin is a different card', async () => {
     renderPage([['SHD', shd]]);
     await waitFor(() => expect(fire).not.toBeNull());

@@ -918,8 +918,8 @@ function LatestScan({
         {item.question === 'wrongSet' ? (
           <div className={styles.question}>
             <p>
-              This card isn't in the set you chose, so it wasn't added. Take it out of the stack,
-              then Rescan.
+              Read as {nameOf(chosen)} ({chosen.setKey}), which isn't in the set you chose, so it
+              wasn't added. Correct adds it from another set; Rescan reads it again.
             </p>
           </div>
         ) : item.question === 'set' ? (
