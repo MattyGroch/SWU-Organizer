@@ -10,6 +10,8 @@ import {
 import { indexOwnership, type OwnedCounts } from '~/domain/ownership';
 import type { SetKey } from '~/domain/types';
 import { buildCardRows, EMPTY_FILTERS } from '~/features/binder/cardRows';
+import type { PreconCatalogEntry } from '~/domain/precons';
+import { useDeckLibrary } from '~/features/decks/useDeckLibrary';
 import { useAllOwned } from '~/features/binder/useOwnership';
 import { CollectionProgress } from '~/features/binder/CollectionProgress';
 import { setAccent } from '~/features/binder/setAccent';
@@ -25,6 +27,7 @@ import {
   printingProgress,
   setCompletions,
   sumCompletions,
+  withPreconCards,
   type CardHighlight,
   type PrintingGroup,
 } from './collectionStats';
@@ -40,9 +43,13 @@ import {
 import { packProfiles, type PackProfile } from './packProfiles';
 import styles from './StatsPage.module.css';
 
+const NO_PRECONS: PreconCatalogEntry[] = [];
+
 type Props = {
   entries: SetManifestEntry[];
   sets: Map<SetKey, LoadedSet>;
+  /** Precon decklists: the ones you own count toward the collection. */
+  precons?: PreconCatalogEntry[];
 };
 
 const GROUP_LABEL: Record<PrintingGroup, string> = {
@@ -67,9 +74,11 @@ function oneIn(perPack: number): string {
  * copies split by printing — and, per booster set, what the cards say about the packs
  * behind them.
  */
-export function StatsPage({ entries, sets }: Props) {
+export function StatsPage({ entries, sets, precons = NO_PRECONS }: Props) {
   const rows = useAllOwned();
   const hidden = useHiddenSets();
+
+  const { library } = useDeckLibrary(precons);
 
   const ownership = useMemo(() => {
     const bySet = new Map<SetKey, Map<number, OwnedCounts>>();
@@ -77,8 +86,8 @@ export function StatsPage({ entries, sets }: Props) {
     const grouped = new Map<SetKey, typeof rows>();
     for (const row of rows) grouped.set(row.setKey, [...(grouped.get(row.setKey) ?? []), row]);
     for (const [setKey, setRows] of grouped) bySet.set(setKey, indexOwnership(setRows));
-    return bySet;
-  }, [rows]);
+    return withPreconCards(bySet, precons, library.preconOwnership);
+  }, [rows, precons, library.preconOwnership]);
 
   // Every set counts toward the totals; the per-set bars follow the binder's shown sets.
   const allSets = useMemo(

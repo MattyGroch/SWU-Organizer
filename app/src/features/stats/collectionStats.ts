@@ -1,5 +1,7 @@
 import { VARIANTS, type LoadedSet, type VariantSlug } from '~/domain/catalog';
 import { cardValue, ownedFor, type OwnedCounts, type VariantCounts } from '~/domain/ownership';
+import type { DeckCardRef } from '~/domain/deckContents';
+import type { PreconCatalogEntry } from '~/domain/precons';
 import type { SetKey } from '~/domain/types';
 import { buildCardRows, collectionTotals, EMPTY_FILTERS } from '~/features/binder/cardRows';
 import type { CollectionTotals } from '~/features/binder/cardRows';
@@ -8,6 +10,52 @@ import type { CollectionTotals } from '~/features/binder/cardRows';
  * The Stats page's whole-collection numbers. Pure, so they test without a database: the
  * page reads every owned row once and hands it here, indexed per set.
  */
+
+type OwnershipBySet = ReadonlyMap<SetKey, ReadonlyMap<number, OwnedCounts>>;
+
+/**
+ * The collection with owned precons added in. A precon's own cards are never in the owned
+ * table (it stays sealed, or lends them to a deck), but they are yours, so each counts as
+ * a Normal copy: its whole list, once per copy of the precon. Copies a deck refilled
+ * into a precon came from the binder and are already counted there, so this adds nothing
+ * for them. Returns `ownership` itself when no precon is owned.
+ */
+export function withPreconCards(
+  ownership: OwnershipBySet,
+  precons: readonly PreconCatalogEntry[],
+  preconOwnership: Readonly<Record<string, number>>,
+): OwnershipBySet {
+  const added = new Map<SetKey, Map<number, number>>();
+  const add = (ref: DeckCardRef | undefined, copies: number) => {
+    if (!ref || ref.count <= 0) return;
+    const set = added.get(ref.setKey) ?? new Map<number, number>();
+    set.set(ref.baseNumber, (set.get(ref.baseNumber) ?? 0) + ref.count * copies);
+    added.set(ref.setKey, set);
+  };
+  for (const precon of precons) {
+    const copies = Math.floor(preconOwnership[precon.key] ?? 0);
+    if (copies <= 0) continue;
+    const { leader, secondLeader, base, mainDeck, sideboard } = precon.contents;
+    for (const ref of [leader, secondLeader, base, ...mainDeck, ...sideboard]) add(ref, copies);
+  }
+  if (added.size === 0) return ownership;
+
+  const result = new Map<SetKey, Map<number, OwnedCounts>>();
+  for (const [setKey, counts] of ownership) result.set(setKey, new Map(counts));
+  for (const [setKey, bases] of added) {
+    const set = result.get(setKey) ?? new Map<number, OwnedCounts>();
+    for (const [base, n] of bases) {
+      const had = set.get(base) ?? { total: 0, byVariant: {} };
+      set.set(base, {
+        ...had,
+        total: had.total + n,
+        byVariant: { ...had.byVariant, normal: (had.byVariant.normal ?? 0) + n },
+      });
+    }
+    result.set(setKey, set);
+  }
+  return result;
+}
 
 /** Every set's playset counts and costs added together, for the all-sets bar. */
 export function sumCompletions(completions: readonly SetCompletion[]): CollectionTotals {
