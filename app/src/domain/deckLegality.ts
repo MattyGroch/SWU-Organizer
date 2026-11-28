@@ -13,9 +13,11 @@ export function isPlayFormat(value: unknown): value is PlayFormat {
 }
 
 /**
- * Sets that have rotated out of Premier. Rotation began with A Lawless Time (March 2026),
- * which took the first three sets out; newer sets are legal until a later rotation adds
- * them here. Eternal and Twin Suns allow every set.
+ * Sets that have rotated out of Premier. Rotation happens every March: the day that month's
+ * set releases, the three oldest legal sets drop out. The first, with A Lawless Time
+ * (March 2026), took out the first three sets. Add the next three here on each March release
+ * day; until then they stay legal. A card reprinted in a legal set stays legal. Eternal and
+ * Twin Suns allow every set.
  */
 export const ROTATED_FROM_PREMIER: ReadonlySet<SetKey> = new Set(['SOR', 'SHD', 'TWI']);
 
