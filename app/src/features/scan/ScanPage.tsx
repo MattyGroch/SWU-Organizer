@@ -297,13 +297,33 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
         if (inSet) pick = inSet;
         else outOfSet = true;
       }
+      // With a set chosen, only that set's printings are rivals: the card's own reprints
+      // elsewhere must not read as doubt. Its lead is judged on the in-set ranking.
+      let setLead = Infinity;
+      let setRunnerUp = false;
+      if (wanted && !outOfSet) {
+        const ranked = result.inSet ?? result.matches.filter((m) => m.entry.setKey === wanted);
+        const best = ranked[0];
+        if (best && best.entry.base === pick.base) {
+          pick = best.entry;
+          setLead = cardLead(ranked);
+          setRunnerUp = ranked.some((m) => m.entry.base !== best.entry.base);
+        } else if (best) {
+          setLead = 0; // the set's closest card isn't the one the global read found
+          setRunnerUp = true;
+        }
+      }
       const question: Item['question'] = outOfSet
         ? 'wrongSet'
-        : reprint && !wanted
-          ? 'set'
-          : runnerUp && cardLead(result.matches) < CARD_MARGIN
+        : wanted
+          ? setRunnerUp && setLead < CARD_MARGIN
             ? 'card'
-            : null;
+            : null
+          : reprint
+            ? 'set'
+            : runnerUp && cardLead(result.matches) < CARD_MARGIN
+              ? 'card'
+              : null;
 
       const chosen = asFound(asPrinting({ entry: pick }));
       const id = nextId.current++;
@@ -352,6 +372,7 @@ export function ScanPage({ sets }: { sets: Map<SetKey, LoadedSet> }) {
     index: index.data,
     view,
     active: scanning && !asking && !holding,
+    setKey: mode === 'add' ? setChoice : null,
     onResult: (r) => void onResult(r).catch(failed),
   });
 

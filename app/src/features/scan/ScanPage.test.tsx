@@ -127,6 +127,13 @@ const match = (num: string, base: number, variant: string, score: number) => ({
   bits: score,
 });
 
+const shdEntry = (num: string, base: number) => ({
+  setKey: 'SHD',
+  num,
+  base,
+  variant: 'normal',
+});
+
 describe('ScanPage', () => {
   beforeEach(async () => {
     localStorage.clear();
@@ -398,6 +405,29 @@ describe('ScanPage', () => {
     expect((await db.intakeLines.toArray()).map((l) => `${l.setKey}:${l.num}`)).toEqual([
       'SHD:200',
     ]);
+  });
+
+  it('with a set chosen up front, its reprint elsewhere is not a rival: no "right card?" question', async () => {
+    renderPage([['SHD', shd]]);
+    await waitFor(() => expect(fire).not.toBeNull());
+    await userEvent.selectOptions(screen.getByRole('combobox', { name: 'Set' }), 'SHD');
+    await act(async () => {
+      fire!({
+        // Globally the SOR printing barely leads the SHD one (a near-twin)...
+        matches: [match('059', 59, 'normal', 10), match('080', 80, 'normal', 12)],
+        at: 1,
+        afterGap: true,
+        tooClose: false,
+        twins: [{ setKey: 'SHD', num: '200', base: 200, variant: 'normal' }],
+        // ...but inside SHD the card stands well clear of everything else.
+        inSet: [
+          { ...match('200', 200, 'normal', 12), entry: shdEntry('200', 200) },
+          { ...match('300', 300, 'normal', 90), entry: shdEntry('300', 300) },
+        ],
+      });
+    });
+    expect(await screen.findByText('Added to Intake')).toBeInTheDocument();
+    expect(screen.queryByText(/right card/)).toBeNull();
   });
 
   it('with a set chosen up front, flags a card that is not in it and adds nothing', async () => {
