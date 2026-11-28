@@ -144,3 +144,20 @@ suite('twinsOf', () => {
     expect(twinsOf(small, { entry: twinEntries[0]!, index: 0 })).toEqual([]);
   });
 });
+
+suite('rankMatches within one set', () => {
+  it('leaves other sets out, so a reprint there is not a rival', () => {
+    const e: ScanEntry[] = [
+      { setKey: 'SOR', num: '059', base: 59, variant: 'normal' },
+      { setKey: 'IBH', num: '012', base: 12, variant: 'normal' },
+      { setKey: 'IBH', num: '020', base: 20, variant: 'normal' },
+    ];
+    const d = [fp(0x0f0f0f0f, 100, 30), fp(0x0f0f0f0f, 100, 30), fp(0xf0f0f0f0, 40, 30)];
+    const { bin, json } = packIndex(e, d);
+    const index = parseIndex(bin.buffer.slice(0) as ArrayBuffer, JSON.parse(JSON.stringify(json)));
+    const q = fp(0x0f0f0f0f, 100, 30);
+    expect(rankMatches(index, q, 5).map((m) => m.entry.setKey)).toContain('SOR');
+    const inSet = rankMatches(index, q, 5, 'IBH');
+    expect(inSet.map((m) => m.entry.num)).toEqual(['012', '020']);
+  });
+});

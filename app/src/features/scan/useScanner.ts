@@ -54,6 +54,11 @@ export type ScanResult = {
    * which the camera can't tell apart (see `twinsOf`).
    */
   twins?: ScanEntry[];
+  /**
+   * With a set chosen: the ranking over that set's printings alone, so the same card
+   * reprinted elsewhere doesn't count as a rival to it.
+   */
+  inSet?: Match[];
 };
 
 /**
@@ -65,6 +70,7 @@ export function useScanner({
   index,
   view,
   active,
+  setKey,
   onResult,
 }: {
   videoRef: RefObject<HTMLVideoElement | null>;
@@ -72,8 +78,12 @@ export function useScanner({
   /** The on-screen viewfinder box, which decides where the guide is. */
   view: View | null;
   active: boolean;
+  /** Set to look in only; others' fingerprints are left out of the ranking. */
+  setKey?: string | null;
   onResult: (result: ScanResult) => void;
 }) {
+  const setKeyRef = useRef(setKey);
+  setKeyRef.current = setKey;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const trackerRef = useRef(createTracker());
   const missesRef = useRef(createMissCounter());
@@ -197,6 +207,9 @@ export function useScanner({
           afterGap,
           tooClose: cardOverflows(scene),
           twins: matches[0] ? twinsOf(index, matches[0]) : [],
+          inSet: setKeyRef.current
+            ? rankMatches(index, located.descriptor, 8, setKeyRef.current)
+            : undefined,
         });
       } catch (error) {
         console.error('Scan failed', error);

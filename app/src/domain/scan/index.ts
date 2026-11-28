@@ -232,11 +232,18 @@ const sameCard = (a: ScanEntry, b: ScanEntry) => a.setKey === b.setKey && a.base
  * which is where Normal and Hyperspace differ. Stage 2 never lets the side features pull a
  * different card ahead: they only decide between printings of the card stage 1 found.
  */
-export function rankMatches(index: ScanIndex, query: Descriptor, limit = 5): Match[] {
+export function rankMatches(
+  index: ScanIndex,
+  query: Descriptor,
+  limit = 5,
+  /** Only consider printings in this set, so other sets' reprints can't crowd the ranking. */
+  setKey?: string,
+): Match[] {
   const count = index.entries.length;
   const shortlist: Match[] = [];
   const size = Math.max(limit, SHORTLIST);
   for (let i = 0; i < count; i++) {
+    if (setKey && index.entries[i]!.setKey !== setKey) continue;
     const bits = hammingDistance(query.hash, index.hashes, i * HASH_WORDS);
     const score =
       bits + COLOR_WEIGHT * byteDistance(query.color, index.colors, i * COLOR_BYTES, COLOR_BYTES);
