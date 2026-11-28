@@ -15,6 +15,7 @@ import {
   planConstruct,
   pulledTotals,
   requiredCounts,
+  swapAllInBox,
   swapInBox,
   type HomeLookup,
 } from './deckBuild';
@@ -556,5 +557,67 @@ describe('swapInBox', () => {
     const homes = owning({ 33: { normal: 7, prestige: 1 } });
     const once = swapInBox(library(a, b), 'a', 'SOR', 33, 'normal', 'prestige', homes)!;
     expect(swapInBox(once.library, 'b', 'SOR', 33, 'normal', 'prestige', homes)).toBe(null);
+  });
+});
+
+describe('swapAllInBox', () => {
+  it('swaps every copy of every listed upgrade, in one pass', () => {
+    const a = deck('a', {
+      constructed: true,
+      pulledCards: [ref(33, 3, { normal: 3 }), ref(40, 1, { normal: 1 })],
+    });
+    const homes = owning({
+      33: { normal: 3, hyperspace: 2 },
+      40: { normal: 1, prestige: 1 },
+    });
+    const { library: after, applied } = swapAllInBox(
+      library(a),
+      'a',
+      [
+        { setKey: 'SOR', baseNumber: 33, from: 'normal', to: 'hyperspace', count: 2 },
+        { setKey: 'SOR', baseNumber: 40, from: 'normal', to: 'prestige', count: 1 },
+      ],
+      homes,
+    );
+    expect(applied.map((x) => [x.baseNumber, x.to, x.toBulk])).toEqual([
+      [33, 'hyperspace', false],
+      [33, 'hyperspace', false],
+      [40, 'prestige', false],
+    ]);
+    const box = deckHoldings(after).get('a')!;
+    expect(box.get('SOR:33')!.binder).toEqual({ normal: 1, hyperspace: 2 });
+    expect(box.get('SOR:40')!.binder).toEqual({ prestige: 1 });
+  });
+
+  it('skips a swap that no longer holds and still does the rest', () => {
+    const a = deck('a', {
+      constructed: true,
+      pulledCards: [ref(33, 1, { normal: 1 }), ref(40, 1, { normal: 1 })],
+    });
+    // The pocket for #33 has no Hyperspace any more; #40's is fine.
+    const homes = owning({ 33: { normal: 1 }, 40: { normal: 1, prestige: 1 } });
+    const { applied } = swapAllInBox(
+      library(a),
+      'a',
+      [
+        { setKey: 'SOR', baseNumber: 33, from: 'normal', to: 'hyperspace', count: 1 },
+        { setKey: 'SOR', baseNumber: 40, from: 'normal', to: 'prestige', count: 1 },
+      ],
+      homes,
+    );
+    expect(applied.map((x) => x.baseNumber)).toEqual([40]);
+  });
+
+  it('leaves the library as it was when nothing holds', () => {
+    const a = deck('a', { constructed: true, pulledCards: [ref(33, 1, { normal: 1 })] });
+    const lib = library(a);
+    const result = swapAllInBox(
+      lib,
+      'a',
+      [{ setKey: 'SOR', baseNumber: 33, from: 'normal', to: 'hyperspace', count: 1 }],
+      owning({ 33: { normal: 1 } }),
+    );
+    expect(result.applied).toEqual([]);
+    expect(result.library).toBe(lib);
   });
 });

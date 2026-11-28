@@ -659,14 +659,14 @@ describe('deck upgrades from the binder', () => {
   it('flags a better printing scanned into the binder, and lists it without changing the deck', async () => {
     const user = userEvent.setup();
     await buildDeck(user);
-    expect(within(myDecks()).queryByText(/upgrade/)).not.toBeInTheDocument();
+    expect(within(myDecks()).queryByText(/bling potential/i)).not.toBeInTheDocument();
 
     // The three Normals are in the deck; a Hyperspace lands in the binder.
     await ownTrooper('hyperspace', '299');
-    const badge = await within(myDecks()).findByRole('button', { name: /1 upgrade in binder/ });
+    const badge = await within(myDecks()).findByRole('button', { name: /Bling potential · 1/ });
 
     await user.click(badge);
-    const list = within(myDecks()).getByRole('region', { name: 'Upgrades in your binder' });
+    const list = within(myDecks()).getByRole('region', { name: 'Bling potential in your binder' });
     expect(list).toHaveTextContent(/Death Trooper: Normal → Hyperspace/);
 
     // Read-only: the deck's box and the collection are exactly as they were.
@@ -695,14 +695,14 @@ describe('deck upgrades from the binder', () => {
 
     // Saved but not built: its copies are still in the binder, nothing to swap.
     expect(within(myDecks()).getByText('All owned')).toBeInTheDocument();
-    expect(within(myDecks()).queryByText(/upgrade/)).not.toBeInTheDocument();
+    expect(within(myDecks()).queryByText(/bling potential/i)).not.toBeInTheDocument();
   });
 
   it('swaps the better copy into the deck after a confirm, touching only the deck', async () => {
     const user = userEvent.setup();
     await buildDeck(user);
     await ownTrooper('hyperspace', '299');
-    await user.click(await within(myDecks()).findByRole('button', { name: /1 upgrade in binder/ }));
+    await user.click(await within(myDecks()).findByRole('button', { name: /Bling potential · 1/ }));
 
     await user.click(
       within(myDecks()).getByRole('button', {
@@ -740,15 +740,57 @@ describe('deck upgrades from the binder', () => {
       ['normal', 3, 0],
     ]);
     // The flag clears, and the toast says where the old copy goes.
-    await waitFor(() => expect(within(myDecks()).queryByText(/upgrade/)).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(within(myDecks()).queryByText(/bling potential/i)).not.toBeInTheDocument(),
+    );
     expect(await screen.findByText(/Put the Normal in the binder pocket/)).toBeInTheDocument();
+  });
+
+  it('swaps every bling copy at once from a pick list, writing only the deck', async () => {
+    const user = userEvent.setup();
+    await buildDeck(user);
+    await ownTrooper('hyperspace', '299', 2);
+    await user.click(await within(myDecks()).findByRole('button', { name: /Bling potential · 2/ }));
+
+    await user.click(
+      within(myDecks()).getByRole('button', { name: 'Swap all bling into Krennic Troopers' }),
+    );
+    const confirm = within(myDecks()).getByRole('group', {
+      name: /Confirm swap all for Krennic Troopers/,
+    });
+    expect(confirm).toHaveTextContent(/Pick list: 2 copies/);
+    expect(confirm).toHaveTextContent(/SOR page 3, row 3, column 1/);
+    // Nothing is written until confirmed.
+    expect((await readDeckLibrary()).customDecks[0]!.pulledCards).toContainEqual({
+      setKey: 'SOR',
+      baseNumber: 33,
+      count: 3,
+      variants: { normal: 3 },
+    });
+
+    await user.click(within(confirm).getByRole('button', { name: 'Swap all now' }));
+    await waitFor(async () => {
+      const [deck] = (await readDeckLibrary()).customDecks;
+      expect(deck!.pulledCards).toContainEqual({
+        setKey: 'SOR',
+        baseNumber: 33,
+        count: 3,
+        variants: { normal: 1, hyperspace: 2 },
+      });
+    });
+    const rows = await db.owned.where('[setKey+base]').equals(['SOR', 33]).toArray();
+    expect(rows.map((r) => [r.variant, r.count, r.bulk ?? 0]).sort()).toEqual([
+      ['hyperspace', 2, 0],
+      ['normal', 3, 0],
+    ]);
+    expect(await screen.findByText(/Swapped 2 copies into/)).toBeInTheDocument();
   });
 
   it('changes nothing when the swap is cancelled', async () => {
     const user = userEvent.setup();
     await buildDeck(user);
     await ownTrooper('hyperspace', '299');
-    await user.click(await within(myDecks()).findByRole('button', { name: /1 upgrade in binder/ }));
+    await user.click(await within(myDecks()).findByRole('button', { name: /Bling potential · 1/ }));
     await user.click(
       within(myDecks()).getByRole('button', {
         name: 'Swap Hyperspace Death Trooper into Krennic Troopers',

@@ -93,6 +93,24 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
     });
   }
 
+  async function onSwapAll(deck: SavedDeck, upgrades: DeckUpgrade[]) {
+    const applied = await deckLibrary.swapAll(deck.id, upgrades, homes);
+    if (applied.length === 0) {
+      showToast({
+        tone: 'info',
+        message: `Those swaps no longer apply to “${deck.name}”. Nothing was changed.`,
+      });
+      return;
+    }
+    const skipped = upgrades.reduce((n, u) => n + u.count, 0) - applied.length;
+    showToast({
+      tone: 'success',
+      message:
+        `Swapped ${applied.length} ${applied.length === 1 ? 'copy' : 'copies'} into “${deck.name}”.` +
+        (skipped > 0 ? ` ${skipped} no longer applied and were left alone.` : ''),
+    });
+  }
+
   const pickListDeck = pickList
     ? (library.customDecks.find((d) => d.id === pickList.id) ?? null)
     : null;
@@ -123,6 +141,7 @@ export function DecksPage({ sets, binderOwnership, precons }: Props) {
           />
         }
         onSwap={(deck, u) => void onSwap(deck, u)}
+        onSwapAll={(deck, list) => void onSwapAll(deck, list)}
         onAdjustBox={(deck, row, delta, max) =>
           void deckLibrary.adjustBox(deck.id, row.setKey, row.baseNumber, delta, max, homes)
         }
