@@ -77,7 +77,25 @@ async function pasteAndSave(user: ReturnType<typeof userEvent.setup>) {
 const myDecks = () => screen.getByRole('region', { name: 'My decks' });
 
 /** The single deck row on the page. */
-const onlyItem = () => within(myDecks()).findByRole('listitem');
+/**
+ * A deck's list item, looked up fresh. A deck whose status changes (built, a card lost) is
+ * re-mounted under another group heading, so an element held across that change is detached
+ * and anything queried or clicked on it silently misses.
+ */
+const deckItem = (name = 'Krennic Troopers') => {
+  const found = within(myDecks())
+    .getAllByRole('listitem')
+    .find((li) => within(li).queryByRole('button', { name: new RegExp(name) }));
+  if (!found) throw new Error(`No deck list item for ${name}`);
+  return found;
+};
+
+/**
+ * Waits until the deck shows `text`. The status text only appears once the deck has landed
+ * under its new group, so this is also the point after which it is safe to click on it.
+ */
+const expectDeckText = (text: string | RegExp, name?: string) =>
+  waitFor(() => expect(within(deckItem(name)).getByText(text)).toBeInTheDocument());
 
 /** Opens a deck row's ⋯ menu so its items can be reached. */
 async function openMenu(user: ReturnType<typeof userEvent.setup>, scope: HTMLElement) {
@@ -170,7 +188,7 @@ describe('decks tab, end to end', () => {
         variants: { normal: 3 },
       });
     });
-    expect(await within(await onlyItem()).findByText('Built')).toBeInTheDocument();
+    await expectDeckText('Built');
 
     await user.click(within(myDecks()).getByRole('button', { name: 'Deconstruct' }));
     const putBack = screen.getByRole('dialog', { name: /Deconstruct: Krennic Troopers/ });
@@ -269,7 +287,7 @@ describe('decks tab, end to end', () => {
     await user.click(within(myDecks()).getByRole('button', { name: 'Construct' }));
     const build = screen.getByRole('dialog', { name: /Construct: Krennic Troopers/ });
     await user.click(within(build).getByRole('button', { name: 'Mark as built' }));
-    expect(await within(await onlyItem()).findByText('Built')).toBeInTheDocument();
+    await expectDeckText('Built');
 
     await openMenu(user, myDecks());
     await user.click(within(myDecks()).getByRole('link', { name: 'Edit' }));
@@ -292,7 +310,7 @@ describe('decks tab, end to end', () => {
         variants: { normal: 2 },
       });
     });
-    expect(await within(await onlyItem()).findByText('Built')).toBeInTheDocument();
+    await expectDeckText('Built');
   });
 
   it('builds with cards missing, telling owned-elsewhere from not owned', async () => {
@@ -334,11 +352,10 @@ describe('decks tab, end to end', () => {
     await user.click(within(dialog).getByRole('button', { name: 'Mark as built, cards missing' }));
 
     // Left them in the other deck: this one is built, missing 2 that are owned elsewhere.
-    const items = within(myDecks()).getAllByRole('listitem');
-    expect(await within(items[0]!).findByText('2 missing')).toBeInTheDocument();
-    await user.click(within(items[0]!).getByRole('button', { name: /Krennic Troopers/ }));
-    expect(await within(items[0]!).findByText('2 owned elsewhere')).toBeInTheDocument();
-    expect(within(items[0]!).queryByText(/not owned/)).not.toBeInTheDocument();
+    await expectDeckText('2 missing');
+    await user.click(within(deckItem()).getByRole('button', { name: /Krennic Troopers/ }));
+    await expectDeckText('2 owned elsewhere');
+    expect(within(deckItem()).queryByText(/not owned/)).not.toBeInTheDocument();
   });
 
   it('takes a card from another built deck, leaving that one flagged', async () => {
@@ -371,8 +388,8 @@ describe('decks tab, end to end', () => {
       }),
     });
 
-    const items = await within(myDecks()).findAllByRole('listitem');
-    await user.click(within(items[0]!).getByRole('button', { name: 'Construct' }));
+    await waitFor(() => expect(within(myDecks()).getAllByRole('listitem')).toHaveLength(2));
+    await user.click(within(deckItem()).getByRole('button', { name: 'Construct' }));
     const dialog = screen.getByRole('dialog', { name: /Construct/ });
     for (const box of within(dialog).getAllByRole('checkbox', { name: /^Take/ })) {
       await user.click(box);
@@ -384,10 +401,9 @@ describe('decks tab, end to end', () => {
       expect(mine).toMatchObject({ constructed: true });
       expect(other).toMatchObject({ constructed: true, pulledCards: [] });
     });
-    const after = within(myDecks()).getAllByRole('listitem');
-    // The deck that lost its cards is under Needs attention, listed after the built one.
-    expect(await within(after[1]!).findByText(/^\d+ missing$/)).toBeInTheDocument();
-    expect(within(after[0]!).getByText('Built')).toBeInTheDocument();
+    // The deck that lost its cards is under Needs attention; the one it took from stays built.
+    await expectDeckText(/^\d+ missing$/, 'Other deck');
+    await expectDeckText('Built', 'Krennic Troopers');
   });
 
   it('moves single cards between the box and the binder', async () => {
@@ -401,7 +417,7 @@ describe('decks tab, end to end', () => {
     await user.click(
       within(screen.getByRole('dialog')).getByRole('button', { name: 'Mark as built' }),
     );
-    await within(await onlyItem()).findByText('Built');
+    await expectDeckText('Built');
 
     await user.click(within(myDecks()).getByRole('button', { name: /Krennic Troopers/ }));
     await user.click(
@@ -412,7 +428,7 @@ describe('decks tab, end to end', () => {
     await user.click(
       within(myDecks()).getByRole('button', { name: /Put one Death Trooper from the binder/ }),
     );
-    expect(await within(await onlyItem()).findByText('Built')).toBeInTheDocument();
+    await expectDeckText('Built');
   });
 
   it('flags cards you do not own at all', async () => {
@@ -426,7 +442,8 @@ describe('decks tab, end to end', () => {
       within(dialog).getByRole('heading', { name: 'Not owned — purchase list' }),
     ).toBeInTheDocument();
     await user.click(within(dialog).getByRole('button', { name: 'Mark as built, cards missing' }));
-    await user.click(await within(myDecks()).findByRole('button', { name: /Krennic Troopers/ }));
+    await expectDeckText(/^\d+ missing$/);
+    await user.click(within(deckItem()).getByRole('button', { name: /Krennic Troopers/ }));
     expect(await within(myDecks()).findByText('5 not owned')).toBeInTheDocument();
   });
 
@@ -466,15 +483,15 @@ describe('decks tab, end to end', () => {
     await renderDecks();
     await pasteAndSave(user);
 
-    await openMenu(user, await onlyItem());
+    await openMenu(user, deckItem());
     expect(within(myDecks()).getByRole('button', { name: 'Copy missing' })).toBeInTheDocument();
 
     await user.click(within(myDecks()).getByRole('button', { name: 'Construct' }));
     await user.click(
       within(screen.getByRole('dialog')).getByRole('button', { name: 'Mark as built' }),
     );
-    await within(await onlyItem()).findByText('Built');
-    await openMenu(user, await onlyItem());
+    await expectDeckText('Built');
+    await openMenu(user, deckItem());
     expect(
       within(myDecks()).queryByRole('button', { name: 'Copy missing' }),
     ).not.toBeInTheDocument();
@@ -582,7 +599,8 @@ describe('decks tab, end to end', () => {
         name: 'Mark as built, cards missing',
       }),
     );
-    await user.click(await within(myDecks()).findByRole('button', { name: /Krennic Troopers/ }));
+    await expectDeckText(/^\d+ missing$/);
+    await user.click(within(deckItem()).getByRole('button', { name: /Krennic Troopers/ }));
     expect(await within(myDecks()).findByText('2 not owned')).toBeInTheDocument();
 
     await openMenu(user, myDecks());
@@ -635,7 +653,7 @@ describe('deck upgrades from the binder', () => {
     await user.click(within(myDecks()).getByRole('button', { name: 'Construct' }));
     const dialog = screen.getByRole('dialog', { name: /Construct: Krennic Troopers/ });
     await user.click(within(dialog).getByRole('button', { name: 'Mark as built' }));
-    expect(await within(await onlyItem()).findByText('Built')).toBeInTheDocument();
+    await expectDeckText('Built');
   }
 
   it('flags a better printing scanned into the binder, and lists it without changing the deck', async () => {
