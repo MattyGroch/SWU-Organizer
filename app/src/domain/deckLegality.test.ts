@@ -5,6 +5,8 @@ import {
   deckStats,
   detectPlayFormat,
   isLegalIn,
+  PREMIER_ROTATIONS,
+  rotatedFromPremier,
 } from './deckLegality';
 import type { ResolvedDeckRow } from './decklist';
 
@@ -265,5 +267,88 @@ describe('Premier rotation', () => {
     expect(checkDeckLegality(rows, 'eternal', pool).issues.some((i) => i.code === 'rotated')).toBe(
       false,
     );
+  });
+
+  describe('Icons 2027 reprints of rotated cards', () => {
+    const iconCard = (Name: string, Number: number, Subtitle?: string) => ({
+      Name,
+      Subtitle,
+      Number,
+      Set: '',
+    });
+    const iconsPool = buildCardPool([
+      {
+        setKey: 'SOR',
+        baseCards: [iconCard('Echo Base', 1, 'Hoth'), iconCard('Death Trooper', 2)],
+      },
+      {
+        setKey: 'SHD',
+        baseCards: [iconCard('Rune Haako', 3, 'Scheming Second'), iconCard('Only Old', 4)],
+      },
+      {
+        setKey: 'IC27',
+        baseCards: [iconCard('Echo Base', 10, 'Hoth'), iconCard('Death Trooper', 11)],
+      },
+    ]);
+
+    it('a rotated card reprinted in IC27 is Premier-legal again, whichever print is used', () => {
+      expect(
+        isLegalIn('premier', { name: 'Echo Base', subtitle: 'Hoth', setKey: 'SOR' }, iconsPool),
+      ).toBe(true);
+      expect(isLegalIn('premier', { name: 'Death Trooper', setKey: 'SOR' }, iconsPool)).toBe(true);
+      expect(isLegalIn('premier', { name: 'Death Trooper', setKey: 'IC27' }, iconsPool)).toBe(true);
+    });
+
+    it('matches on name and subtitle, so a rotated card sharing only a name stays illegal', () => {
+      expect(
+        isLegalIn('premier', { name: 'Rune Haako', subtitle: 'Scheming Second', setKey: 'SHD' }, iconsPool),
+      ).toBe(false);
+      expect(isLegalIn('premier', { name: 'Only Old', setKey: 'SHD' }, iconsPool)).toBe(false);
+      expect(
+        isLegalIn('premier', { name: 'Echo Base', subtitle: 'Other', setKey: 'SOR' }, iconsPool),
+      ).toBe(false);
+    });
+
+    it('the deck check raises no rotation error for old prints of reprinted cards', () => {
+      const rows = [
+        row({ role: 'leader', setKey: 'SOR', baseNumber: 1, count: 1, name: 'Echo Base', subtitle: 'Hoth' }),
+        row({ role: 'deck', setKey: 'SOR', baseNumber: 2, count: 3, name: 'Death Trooper' }),
+        row({ role: 'deck', setKey: 'SHD', baseNumber: 4, count: 1, name: 'Only Old' }),
+      ];
+      const rotated = checkDeckLegality(rows, 'premier', iconsPool).issues.filter(
+        (i) => i.code === 'rotated',
+      );
+      expect(rotated.map((i) => i.message)).toEqual([
+        'Only Old has rotated out of Premier — none of its sets are legal.',
+      ]);
+    });
+  });
+});
+
+describe('Premier rotation schedule', () => {
+  const day = (iso: string) => new Date(`${iso}T12:00:00`);
+
+  it('the first rotation took SOR, SHD and TWI out, and everything else stays legal', () => {
+    expect([...rotatedFromPremier(day('2026-11-28'))].sort()).toEqual(['SHD', 'SOR', 'TWI']);
+  });
+
+  it('a rotation with no announced date is not in force', () => {
+    const pending = PREMIER_ROTATIONS.find((r) => r.sets.includes('SEC'));
+    expect(pending?.effective).toBeNull();
+    expect(rotatedFromPremier(day('2099-01-01')).has('SEC')).toBe(false);
+  });
+
+  it('a dated rotation switches on at its day, not before', () => {
+    const schedule = [
+      { sets: ['SOR'], effective: '2026-03-01' },
+      { sets: ['JTL', 'LOF', 'SEC'], effective: '2027-03-12' },
+    ];
+    expect(rotatedFromPremier(day('2027-03-11'), schedule).has('JTL')).toBe(false);
+    expect([...rotatedFromPremier(day('2027-03-12'), schedule)].sort()).toEqual([
+      'JTL',
+      'LOF',
+      'SEC',
+      'SOR',
+    ]);
   });
 });
