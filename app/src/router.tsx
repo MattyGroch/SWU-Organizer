@@ -184,11 +184,16 @@ const bulkRoute = createRoute({
 const statsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/inventory/stats',
-  loader: ({ context }) => loadAllSets(context.queryClient),
+  loader: async ({ context }) => ({
+    ...(await loadAllSets(context.queryClient)),
+    precons: await context.queryClient.ensureQueryData(preconQuery()).catch(() => []),
+  }),
   component: function StatsRouteComponent() {
-    const { entries } = statsRoute.useLoaderData();
+    const { entries, precons } = statsRoute.useLoaderData();
     const { queryClient } = statsRoute.useRouteContext();
-    return <StatsPage entries={entries} sets={loadedSets(queryClient, entries)} />;
+    return (
+      <StatsPage entries={entries} sets={loadedSets(queryClient, entries)} precons={precons} />
+    );
   },
 });
 
@@ -374,12 +379,17 @@ const shareStatsRoute = createRoute({
   path: 'stats',
   loader: async ({ context, params }) => {
     await context.queryClient.ensureQueryData(sharedQuery(context.queryClient, params.token));
-    return loadAllSets(context.queryClient);
+    return {
+      ...(await loadAllSets(context.queryClient)),
+      precons: await context.queryClient.ensureQueryData(preconQuery()).catch(() => []),
+    };
   },
   component: function ShareStatsRouteComponent() {
-    const { entries } = shareStatsRoute.useLoaderData();
+    const { entries, precons } = shareStatsRoute.useLoaderData();
     const { queryClient } = shareStatsRoute.useRouteContext();
-    return <StatsPage entries={entries} sets={loadedSets(queryClient, entries)} />;
+    return (
+      <StatsPage entries={entries} sets={loadedSets(queryClient, entries)} precons={precons} />
+    );
   },
   errorComponent: ShareError,
 });
