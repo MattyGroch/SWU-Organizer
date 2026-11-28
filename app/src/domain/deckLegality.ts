@@ -12,14 +12,48 @@ export function isPlayFormat(value: unknown): value is PlayFormat {
   return typeof value === 'string' && (PLAY_FORMATS as readonly string[]).includes(value);
 }
 
+export type PremierRotation = {
+  /** Sets that leave Premier in this rotation. */
+  sets: readonly SetKey[];
+  /**
+   * The release day of the March set that triggers it, as a local `YYYY-MM-DD`. `null` while the
+   * day is not yet announced: the rotation is known but not in force, so nothing rotates early.
+   */
+  effective: string | null;
+};
+
 /**
- * Sets that have rotated out of Premier. Rotation happens every March: the day that month's
- * set releases, the three oldest legal sets drop out. The first, with A Lawless Time
- * (March 2026), took out the first three sets. Add the next three here on each March release
- * day; until then they stay legal. A card reprinted in a legal set stays legal. Eternal and
+ * Premier rotation, every March: the day that month's set releases, the three oldest legal sets
+ * drop out. Each rotation takes effect on its own date, so a future one can be listed ahead of
+ * time and switches on by itself. A card reprinted in a legal set stays legal. Eternal and
  * Twin Suns allow every set.
  */
-export const ROTATED_FROM_PREMIER: ReadonlySet<SetKey> = new Set(['SOR', 'SHD', 'TWI']);
+export const PREMIER_ROTATIONS: readonly PremierRotation[] = [
+  // A Lawless Time, March 2026: the first three sets.
+  { sets: ['SOR', 'SHD', 'TWI'], effective: '2026-03-01' },
+  // Legacy of Skywalker, March 2027. Set the date once the release day is announced.
+  { sets: ['JTL', 'LOF', 'SEC'], effective: null },
+];
+
+function localDay(date: Date): string {
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${mm}-${dd}`;
+}
+
+/** Sets that have rotated out of Premier as of `today` (the device's local date). */
+export function rotatedFromPremier(
+  today: Date = new Date(),
+  rotations: readonly PremierRotation[] = PREMIER_ROTATIONS,
+): ReadonlySet<SetKey> {
+  const day = localDay(today);
+  const rotated = new Set<SetKey>();
+  for (const rotation of rotations) {
+    if (rotation.effective === null || rotation.effective > day) continue;
+    for (const setKey of rotation.sets) rotated.add(setKey);
+  }
+  return rotated;
+}
 
 export type FormatRules = {
   label: string;
@@ -55,17 +89,19 @@ export function buildCardPool(sets: Iterable<{ setKey: SetKey; baseCards: Card[]
 }
 
 /**
- * Is this card legal in the format? Premier needs a printing in a set that has not rotated;
+ * Is this card legal in the format on `today`? Premier needs a printing in a set that has not rotated;
  * every other format takes any set. A card missing from the pool is judged by its own set.
  */
 export function isLegalIn(
   format: PlayFormat,
   card: { name: string; subtitle?: string; setKey: SetKey },
   pool?: CardPool,
+  today: Date = new Date(),
 ): boolean {
   if (format !== 'premier') return true;
+  const rotated = rotatedFromPremier(today);
   const printedIn = pool?.get(titleKeyOf(card.name, card.subtitle)) ?? [card.setKey];
-  return [...printedIn].some((setKey) => !ROTATED_FROM_PREMIER.has(setKey));
+  return [...printedIn].some((setKey) => !rotated.has(setKey));
 }
 
 export type DeckLegalityIssueCode =
@@ -158,6 +194,7 @@ export function checkDeckLegality(
   rows: ResolvedDeckRow[],
   choice: FormatChoice = 'auto',
   pool?: CardPool,
+  today: Date = new Date(),
 ): DeckLegality {
   const format = choice === 'auto' ? detectPlayFormat(rows) : choice;
   const rules = FORMAT_RULES[format];
@@ -237,7 +274,7 @@ export function checkDeckLegality(
   // Rotation needs to know every set a title is printed in, so it is checked only with a pool.
   const rotated = new Set<string>();
   for (const row of pool ? rows : []) {
-    if (isLegalIn(format, row, pool)) continue;
+    if (isLegalIn(format, row, pool, today)) continue;
     rotated.add(displayTitle(row));
   }
   for (const title of rotated) {
