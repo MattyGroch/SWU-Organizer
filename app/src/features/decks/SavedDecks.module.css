@@ -172,6 +172,14 @@
   border-radius: var(--radius-md, 6px);
 }
 
+.upgradesHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
 .upgradesTitle {
   margin: 0;
   font-size: var(--font-size-sm);

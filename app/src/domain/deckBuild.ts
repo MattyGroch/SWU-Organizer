@@ -785,6 +785,48 @@ export function swapInBox(
   };
 }
 
+/** One copy traded by `swapAllInBox`, in the order it was applied. */
+export type AppliedSwap = {
+  setKey: SetKey;
+  baseNumber: number;
+  from: VariantSlug;
+  to: VariantSlug;
+  /** Where the copy that comes out goes: the bulk box, or the pocket the better one left. */
+  toBulk: boolean;
+};
+
+/**
+ * Runs `swapInBox` once per copy for every swap in `swaps`, each judged against the result
+ * of the one before, so a swap that stopped holding (another deck took the copy) is skipped
+ * and the rest still go through. Pure: nothing is written, so it also previews exactly what
+ * a "swap all" would do. `applied` is empty, and `library` unchanged, when nothing holds.
+ */
+export function swapAllInBox(
+  library: DeckLibrary,
+  deckId: string,
+  swaps: readonly {
+    setKey: SetKey;
+    baseNumber: number;
+    from: VariantSlug;
+    to: VariantSlug;
+    count: number;
+  }[],
+  homes: HomeLookup,
+  now = new Date().toISOString(),
+): { library: DeckLibrary; applied: AppliedSwap[] } {
+  let current = library;
+  const applied: AppliedSwap[] = [];
+  for (const { setKey, baseNumber, from, to, count } of swaps) {
+    for (let i = 0; i < count; i++) {
+      const result = swapInBox(current, deckId, setKey, baseNumber, from, to, homes, now);
+      if (!result) break;
+      current = result.library;
+      applied.push({ setKey, baseNumber, from, to, toBulk: result.toBulk });
+    }
+  }
+  return { library: current, applied };
+}
+
 /** `count` copies to send back from a box: bulk-box copies first, then the least valuable. */
 function takeBack(from: Homes, count: number): Homes {
   const bulk = takeVariants(from.bulk, count, RETURN_ORDER);

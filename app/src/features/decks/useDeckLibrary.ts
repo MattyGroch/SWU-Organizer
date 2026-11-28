@@ -25,7 +25,9 @@ import {
 import {
   adjustInBox,
   applyConstruct,
+  swapAllInBox,
   swapInBox,
+  type AppliedSwap,
   type DeckEdit,
   type HomeLookup,
   type TakeFromDeck,
@@ -216,6 +218,28 @@ export function useDeckLibrary(precons: PreconCatalogEntry[] = NO_PRECONS) {
     [precons],
   );
 
+  /**
+   * Every swap in `swaps` for one deck, in a single write. Each is re-checked against the
+   * stored library, so any that no longer hold are skipped. Returns what was applied.
+   */
+  const swapAll = useCallback(
+    async (
+      deckId: string,
+      swaps: Parameters<typeof swapAllInBox>[2],
+      homes: HomeLookup,
+    ): Promise<AppliedSwap[]> => {
+      const result = swapAllInBox(
+        withPrecons(await readDeckLibrary(), precons),
+        deckId,
+        swaps,
+        homes,
+      );
+      if (result.applied.length) await writeDeckLibrary(withoutPrecons(result.library));
+      return result.applied;
+    },
+    [precons],
+  );
+
   /** Puts a deleted deck back where it was — the undo for `deleteDeck`. */
   const restoreDeck = useCallback(async (deck: SavedDeck, index: number) => {
     await updateDeckLibrary((current) => {
@@ -248,5 +272,6 @@ export function useDeckLibrary(precons: PreconCatalogEntry[] = NO_PRECONS) {
     edit,
     adjustBox,
     swap,
+    swapAll,
   };
 }

@@ -6,6 +6,7 @@ import {
   deckHoldings,
   deckStatus,
   inBoxCounts,
+  swapAllInBox,
   type DeckStatus,
   type HomeLookup,
 } from '~/domain/deckBuild';
@@ -55,6 +56,8 @@ type Props = {
   onAdjustBox: (deck: SavedDeck, row: DeckRowWithNeed, delta: 1 | -1, max: number) => void;
   /** Trades one copy in the deck for a better printing from the binder. */
   onSwap: (deck: SavedDeck, upgrade: DeckUpgrade) => void;
+  /** Swap every bling-potential copy for a deck in one go. */
+  onSwapAll: (deck: SavedDeck, upgrades: DeckUpgrade[]) => void;
   onQueue: (deck: SavedDeck) => void;
   onQueueMissing: (deck: SavedDeck) => void;
   onImport: () => void;
@@ -99,6 +102,7 @@ export function SavedDecks({
   onOpenPickList,
   onAdjustBox,
   onSwap,
+  onSwapAll,
   onQueue,
   onQueueMissing,
   onImport,
@@ -159,6 +163,7 @@ export function SavedDecks({
         status={statusOf(deck)}
         upgrades={upgradesByDeck.get(deck.id) ?? []}
         holdings={holdings.get(deck.id)}
+        homes={homes}
         lookup={lookup}
         owned={owned}
         pullable={pullable}
@@ -169,6 +174,7 @@ export function SavedDecks({
         onOpenPickList={(mode) => onOpenPickList(deck, mode)}
         onAdjustBox={(row, delta, max) => onAdjustBox(deck, row, delta, max)}
         onSwap={(upgrade) => onSwap(deck, upgrade)}
+        onSwapAll={(upgrades) => onSwapAll(deck, upgrades)}
         onQueue={() => onQueue(deck)}
         onQueueMissing={() => onQueueMissing(deck)}
       />
@@ -270,6 +276,7 @@ type ItemProps = {
   upgrades: DeckUpgrade[];
   /** What the deck's box holds, per card, by home: where a swapped-out copy goes back to. */
   holdings: Map<string, Homes> | undefined;
+  homes: HomeLookup;
   lookup: Map<SetKey, DeckLookupSet>;
   owned: OwnedLookup;
   pullable: OwnedLookup;
@@ -280,6 +287,7 @@ type ItemProps = {
   onOpenPickList: (mode: 'construct' | 'deconstruct') => void;
   onAdjustBox: (row: DeckRowWithNeed, delta: 1 | -1, max: number) => void;
   onSwap: (upgrade: DeckUpgrade) => void;
+  onSwapAll: (upgrades: DeckUpgrade[]) => void;
   onQueue: () => void;
   onQueueMissing: () => void;
 };
@@ -463,6 +471,100 @@ function UpgradeRow({
   );
 }
 
+/**
+ * "Swap all": previews exactly what swapping every copy would do, as a pick list in binder
+ * order (set, page, row, column) so one pass through the binder pulls them all. Nothing is
+ * written until it is confirmed.
+ */
+function SwapAll({
+  deck,
+  library,
+  homes,
+  upgrades,
+  lookup,
+  onSwapAll,
+}: {
+  deck: SavedDeck;
+  library: DeckLibrary;
+  homes: HomeLookup;
+  upgrades: DeckUpgrade[];
+  lookup: Map<SetKey, DeckLookupSet>;
+  onSwapAll: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const plan = open ? swapAllInBox(library, deck.id, upgrades, homes).applied : [];
+  const nameOf = (setKey: SetKey, base: number) =>
+    lookup.get(setKey)?.byNumber.get(base)?.Name ?? `#${base}`;
+  const spot = (setKey: SetKey, base: number) => {
+    const { page, row, column } = binderLayout(base);
+    return { setKey, base, page, row, column };
+  };
+  const pick = plan
+    .map((p) => ({ ...p, ...spot(p.setKey, p.baseNumber) }))
+    .sort(
+      (a, b) =>
+        a.setKey.localeCompare(b.setKey) || a.page - b.page || a.row - b.row || a.column - b.column,
+    );
+  const toBulk = pick.filter((p) => p.toBulk).length;
+  return (
+    <>
+      {!open && (
+        <button
+          type="button"
+          className={styles.action}
+          aria-label={`Swap all bling into ${deck.name}`}
+          onClick={() => setOpen(true)}
+        >
+          Swap all
+        </button>
+      )}
+      {open && (
+        <div
+          className={styles.confirm}
+          role="group"
+          aria-label={`Confirm swap all for ${deck.name}`}
+        >
+          <p className={styles.upgradesNote}>
+            Pick list: {pick.length} {pick.length === 1 ? 'copy' : 'copies'}, in binder order. For
+            each, take the bling copy from the binder and put it in the “{deck.name}” box, then put
+            the copy it replaces where it says.
+          </p>
+          <ol className={styles.steps}>
+            {pick.map((p, i) => (
+              <li key={i}>
+                <strong>{nameOf(p.setKey, p.baseNumber)}</strong>: take {variantLabel(p.to)} from{' '}
+                {p.setKey} page {p.page}, row {p.row}, column {p.column}. Pull the{' '}
+                {variantLabel(p.from)} out of the deck;{' '}
+                {p.toBulk ? 'it goes back in the bulk box.' : 'it goes in that binder pocket.'}
+              </li>
+            ))}
+          </ol>
+          {toBulk > 0 && (
+            <p className={styles.upgradesNote}>
+              {toBulk} of the swapped-out {toBulk === 1 ? 'copy goes' : 'copies go'} to the bulk
+              box.
+            </p>
+          )}
+          <button
+            type="button"
+            className={styles.primary}
+            disabled={pick.length === 0}
+            onClick={() => {
+              setOpen(false);
+              onSwapAll();
+            }}
+          >
+            Swap all now
+          </button>{' '}
+          <button type="button" className={styles.action} onClick={() => setOpen(false)}>
+            Cancel
+          </button>
+        </div>
+      )}
+    </>
+  );
+}
+
 function SavedDeckItem({
   deck,
   library,
@@ -470,6 +572,7 @@ function SavedDeckItem({
   status,
   upgrades,
   holdings,
+  homes,
   lookup,
   owned,
   pullable,
@@ -480,6 +583,7 @@ function SavedDeckItem({
   onOpenPickList,
   onAdjustBox,
   onSwap,
+  onSwapAll,
   onQueue,
   onQueueMissing,
 }: ItemProps) {
@@ -569,13 +673,12 @@ function SavedDeckItem({
               data-tone="info"
               aria-expanded={expanded}
               aria-controls={panelId}
-              title="Your binder holds better printings of cards in this deck. Open the deck to see them."
+              title="Your binder holds flashier printings of cards in this deck. Open the deck to see them."
               onClick={() => {
                 if (!expanded) onToggle();
               }}
             >
-              {upgradeCount(upgrades)} {upgradeCount(upgrades) === 1 ? 'upgrade' : 'upgrades'} in
-              binder
+              Bling potential · {upgradeCount(upgrades)}
             </button>
           )}
         </span>
@@ -694,11 +797,24 @@ function SavedDeckItem({
             </section>
           )}
           {upgrades.length > 0 && (
-            <section className={styles.upgrades} aria-label="Upgrades in your binder">
-              <h3 className={styles.upgradesTitle}>Upgrades in your binder</h3>
+            <section className={styles.upgrades} aria-label="Bling potential in your binder">
+              <div className={styles.upgradesHead}>
+                <h3 className={styles.upgradesTitle}>Bling potential in your binder</h3>
+                {upgradeCount(upgrades) > 1 && (
+                  <SwapAll
+                    deck={deck}
+                    library={library}
+                    homes={homes}
+                    upgrades={upgrades}
+                    lookup={lookup}
+                    onSwapAll={() => onSwapAll(upgrades)}
+                  />
+                )}
+              </div>
               <p className={styles.upgradesNote}>
-                Swap one in for a better-looking build. Nothing changes until you confirm. A copy
-                shared with another deck is noted; once one deck has it, the other’s flag clears.
+                Swap one in for a flashier build, or swap them all and get a pick list. Nothing
+                changes until you confirm. A copy shared with another deck is noted; once one deck
+                has it, the other’s flag clears.
               </p>
               <ul className={styles.upgradeList}>
                 {upgrades.map((u) => (
